@@ -5023,9 +5023,6 @@ div.Disco-AttachmentUpload-CommentDialog table td.thumbnail img {
 div.Disco-AttachmentUpload-ImageDialog {
   background-color: #000 !important;
   padding: 0 !important;
-  overflow: hidden !important;
-  width: 720px !important;
-  height: 540px !important;
 }
 body > .User_FlagAssignment_Tooltip span.name {
   display: block;

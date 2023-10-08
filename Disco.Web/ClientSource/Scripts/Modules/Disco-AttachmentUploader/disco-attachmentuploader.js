@@ -1,6 +1,4 @@
-﻿/// <reference path="webcam.js" />
-
-; (function (window, document, $, Webcam) {
+﻿(function (window, document, $) {
     "use strict";
 
     var attachmentUploader = function (uploadUrl, dropTarget, uploadProgressContainer) {
@@ -82,12 +80,11 @@
 
         // #region Webcam Support
         self.uploadImage = function () {
-            var mediaWidth = 720;
-            var mediaHeight = 540;
-            var mediaStream;
+            let mediaStream = null;
+            let videoStreaming = false;
 
             // Setup Dialog
-            var dialog = $('<div>')
+            var dialog = $('<div><video></video></div>')
                 .attr({
                     id: 'Disco_AttachmentUpload_ImageDialog',
                     title: 'Upload Image',
@@ -98,46 +95,68 @@
                 draggable: false,
                 modal: true,
                 resizable: false,
-                width: mediaWidth,
-                height: mediaHeight,
+                width: 720,
+                height: 405,
                 close: function () {
-                    Webcam.reset();
+                    if (mediaStream) {
+                        mediaStream.getTracks().forEach(track => track.stop());
+                    }
                     window.setTimeout(function () {
                         dialog.dialog('destroy');
                     }, 1);
                 }
             }).closest('.ui-dialog').children('.ui-dialog-titlebar').css('border-bottom', 'none');
+            const video = dialog.find('video')[0];
 
-            var dialogButtons = [{
-                text: 'Capture',
-                click: captureImage
-            }];
+            navigator.mediaDevices
+                .getUserMedia({
+                    audio: false,
+                    video: {
+                        width: { ideal: 1080 },
+                        height: { ideal: 720 },
+                        facingMode: 'environment'
+                    }
+                })
+                .then(stream => {
+                    mediaStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(err => {
+                    console.error(err);
+                    dialog.dialog('destroy');
+                });
 
-            // Capturing
-            function captureImage() {
-                var dataUri = Webcam.snap();
-                self._uploadImage(dataUri);
-            }
-            Webcam.set({
-                width: mediaWidth,
-                height: mediaHeight,
-                dest_width: mediaWidth * 1.5,
-                dest_height: mediaHeight * 1.5,
-                jpeg_quality: 95
-            });
-            Webcam.setSWFLocation('/ClientSource/Scripts/Modules/Disco-AttachmentUploader/webcam.swf');
-            Webcam.on('error', function (error) {
-                alert(error);
-                dialog.dialog('close');
-            });
-            Webcam.on('live', function () {
-                dialog.dialog('option', 'buttons', dialogButtons);
-                dialog.closest('.ui-dialog')
-                    .children('.ui-dialog-buttonpane')
-                    .css('margin-top', 0)
-                    .find('.ui-button:first').focus();
-            });
-            Webcam.attach(dialog.attr('id'));
+            video.addEventListener('canplay', ev => {
+                if (!videoStreaming) {
+                    const width = 720;
+                    let height = video.videoHeight / (video.videoWidth / width);
+                    if (isNaN(height)) {
+                        height = 405;
+                    }
+                    video.setAttribute('width', width);
+                    video.setAttribute('height', height);
+                    videoStreaming = true;
+                    dialog.dialog('option', 'buttons', [{
+                        text: 'Capture',
+                        click: () => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = video.videoWidth;
+                            canvas.height = video.videoHeight;
+                            const context = canvas.getContext('2d');
+                            context.drawImage(video, 0, 0);
+                            canvas.toBlob(blob => {
+                                self._uploadImage(blob);
+                            }, 'image/jpg');
+                        }
+                    }]);
+                    dialog.css('height', '');
+                    dialog.closest('.ui-dialog')
+                        .children('.ui-dialog-buttonpane')
+                        .css('margin-top', 0)
+                        .find('.ui-button:first').focus();
+                }
+            })
         };
         // #endregion
 
@@ -198,28 +217,18 @@
             });
         };
 
-        self._uploadImage = function (dataUri) {
-
-            if (self._hideFlashVideoOverlay())
-                $('#webcam_movie_obj, #webcam_movie_embed').css('display', 'none');
-
-            var imageData = dataUri.replace(/^data\:image\/\w+\;base64\,/, '');
-
-            var imageBlob = new Blob([Webcam.base64DecToArr(imageData)], { type: 'image/jpeg' });
-
+        self._uploadImage = function (blob) {
             var fileName = 'CapturedImage-' + moment().format('YYYYMMDD-HHmmss') + '.jpg';
 
             self.getFileComments(fileName, function (img) {
+                const dataUri = URL.createObjectURL(blob);
                 img.attr('src', dataUri);
                 return true;
             }, function (result, comments) {
-                if (self._hideFlashVideoOverlay())
-                    $('#webcam_movie_obj, #webcam_movie_embed').css('display', '');
-
                 if (!result)
                     return;
 
-                self._uploadFile(imageBlob, fileName, comments);
+                self._uploadFile(blob, fileName, comments);
             });
         };
 
@@ -279,23 +288,6 @@
         };
         // #endregion
 
-        // Flash Video hides Dom elements (comment dialog) in <= Win7
-        self.__hideFlashVideoOverlay = null;
-        self._hideFlashVideoOverlay = function () {
-            if (self.__hideFlashVideoOverlay === null) {
-                self.__hideFlashVideoOverlay = false;
-
-                // Test for: <= Windows 7
-                try {
-                    var match = /(windows nt) ([\w.]+)/.exec(navigator.userAgent.toLowerCase());
-                    if (!!match && parseFloat(match[2]) <= 6.2) 
-                        self.__hideFlashVideoOverlay = true;
-                } catch (e) { }
-            }
-
-            return self.__hideFlashVideoOverlay;
-        }
-
         return self;
     };
 
@@ -304,4 +296,4 @@
     }
     document.Disco.AttachmentUploader = attachmentUploader;
 
-}(this, document, $, Webcam));
+}(this, document, $));

@@ -1330,7 +1330,6 @@
     <None Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions\disco.jQueryExtensions.js" />
     <None Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers\disco.propertychangehelpers.js" />
     <None Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" />
-    <None Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" />
     <None Include="ClientSource\Scripts\Core.js" />
     <Content Include="ClientSource\Scripts\Core.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
@@ -1354,7 +1353,6 @@
     <Content Include="ClientSource\Scripts\Modules\Disco-jQueryExtensions\disco.jQueryExtensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-PropertyChangeHelpers\disco.propertychangehelpers.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-Isotope\jquery.isotope.js" Condition=" '$(Configuration)' == 'Debug' " />
-    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core.min.js">
       <DependentUpon>Core.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1371,7 +1369,6 @@
       <DependentUpon>Disco-AttachmentUploader.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ClientSource\Scripts\Modules\Disco-AttachmentUploader\webcam.swf" />
     <None Include="ClientSource\Scripts\Modules\Disco-CreateJob.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-CreateJob.min.js">
