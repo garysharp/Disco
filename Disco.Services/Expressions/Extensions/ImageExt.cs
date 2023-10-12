@@ -118,14 +118,27 @@ namespace Disco.Services.Expressions.Extensions
         }
         public static BitmapImageExpressionResult OrganisationLogo()
         {
-            var configCache = new Disco.Data.Configuration.SystemConfiguration(null);
+            var configCache = new Data.Configuration.SystemConfiguration(null);
             BitmapImageExpressionResult result;
             using (var orgLogo = configCache.OrganisationLogo)
             {
                 result = ImageFromStream(orgLogo);
             }
-            result.LosslessFormat = true;
+            result.Format = Models.Services.Expressions.Extensions.ImageExpressionFormat.Png;
             return result;
+        }
+
+        public static QrCodeImageExpressionResult QrCode(string content)
+        {
+            return new QrCodeImageExpressionResult(content, 'M');
+        }
+
+        public static QrCodeImageExpressionResult QrCode(string content, string errorCorrectionLevel)
+        {
+            if (string.IsNullOrWhiteSpace(errorCorrectionLevel))
+                errorCorrectionLevel = "M";
+
+            return new QrCodeImageExpressionResult(content, errorCorrectionLevel[0]);
         }
 
     }

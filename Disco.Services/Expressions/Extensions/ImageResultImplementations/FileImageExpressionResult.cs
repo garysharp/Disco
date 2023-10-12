@@ -18,20 +18,28 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             this.AbsoluteFilePath = AbsoluteFilePath;
         }
 
-        public override Stream GetImage(int Width, int Height)
+        public override MemoryStream GetImage(int width, int height)
         {
-            using (Image SourceImage = Bitmap.FromFile(AbsoluteFilePath))
+            using (var sourceImage = Image.FromFile(AbsoluteFilePath))
             {
-                return RenderImage(SourceImage, Width, Height);
+                return RenderBitmapImage(sourceImage, width, height);
             }
         }
 
-        public override Stream GetImage()
+        public override MemoryStream GetImage(out int width, out int height)
         {
             var stream = new MemoryStream();
             using (var fileStream = File.OpenRead(AbsoluteFilePath))
                 fileStream.CopyTo(stream);
             stream.Position = 0;
+
+            using (var sourceImage = Image.FromStream(stream))
+            {
+                width = sourceImage.Width;
+                height = sourceImage.Height;
+            }
+            stream.Position = 0;
+
             return stream;
         }
     }

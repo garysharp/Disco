@@ -53,6 +53,7 @@ namespace Disco.Web
             InitalizeCoreEnvironment(Database);
 
             // Initialize Expressions
+            Disco.Services.Expressions.Extensions.ImageResultImplementations.QrCodeImageExpressionResult.CCITTG4EncoderCompressDelegate = Disco.BI.Interop.Pdf.Utilities.GetCCITTG4EncoderCompressDelegate();
             Disco.Services.Expressions.Expression.InitializeExpressions();
 
             // Initialize Job Queues

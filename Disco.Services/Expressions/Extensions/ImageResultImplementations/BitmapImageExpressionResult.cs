@@ -16,14 +16,19 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             this.Image = Image;
         }
 
-        public override Stream GetImage(int Width, int Height)
+        public override MemoryStream GetImage(int width, int height)
         {
-            return RenderImage(Image, Width, Height);
+            return RenderBitmapImage(Image, width, height);
         }
 
-        public override Stream GetImage()
+        public override MemoryStream GetImage(out int width, out int height)
         {
-            return OutputImage(Image);
+            var image = Image;
+            
+            width = image.Width;
+            height = image.Height;
+            
+            return OutputBitmapImage(image);
         }
     }
 }

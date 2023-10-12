@@ -8,8 +8,24 @@ namespace Disco.Services.Documents
 {
     public static class QRCodeBinaryEncoder
     {
+        public static byte[] Encode(string content, ErrorCorrectionLevel ecLevel, out int width, out int height)
+        {
+            var code = Encoder.encode(content, ecLevel, null);
 
-        public static byte[] Encode(byte[] Content, int Width, int Height)
+            var array = code.Matrix.Array;
+            width = code.Matrix.Width;
+            height = code.Matrix.Height;
+
+            return scaleMatrix(code.Matrix.Array, width, height);
+        }
+
+        public static byte[] Encode(string content, ErrorCorrectionLevel ecLevel, int width, int height)
+        {
+            var code = Encoder.encode(content, ecLevel, null);
+            return scaleMatrix(code.Matrix.Array, width, height);
+        }
+
+        public static byte[] Encode(byte[] content, out int width, out int height)
         {
             var ecLevel = ErrorCorrectionLevel.L;
             var bits = new BitArray();
@@ -17,7 +33,7 @@ namespace Disco.Services.Documents
             var mode = Mode.BYTE;
             var bitsNeeded = 4 +
                 mode.getCharacterCountBits(ZXing.QrCode.Internal.Version.getVersionForNumber(1)) +
-                (Content.Length * 8);
+                (content.Length * 8);
 
             var version = ChooseVersion(bitsNeeded, out ecLevel);
             var ecBlocks = version.getECBlocksForLevel(ecLevel);
@@ -28,12 +44,12 @@ namespace Disco.Services.Documents
             bits.appendBits(mode.Bits, 4);
 
             // Write the number of bytes
-            bits.appendBits(Content.Length, mode.getCharacterCountBits(version));
+            bits.appendBits(content.Length, mode.getCharacterCountBits(version));
 
             // Write the bytes
-            for (int i = 0; i < Content.Length; i++)
+            for (int i = 0; i < content.Length; i++)
             {
-                bits.appendBits(Content[i], 8);
+                bits.appendBits(content[i], 8);
             }
 
             // Terminate the bit stream
@@ -72,7 +88,10 @@ namespace Disco.Services.Documents
             MatrixUtil.buildMatrix(finalBits, ecLevel, version, maskPattern, matrix);
 
             // Render matrix to bytes
-            return scaleMatrix(matrix.Array, Width, Height);
+            width = matrix.Width;
+            height = matrix.Height;
+            return scaleMatrix(matrix.Array, width, height);
+            //return FlattenMatrix(matrix.Array, width, height);
         }
 
         private static ZXing.QrCode.Internal.Version ChooseVersion(int RequiredBits, out ErrorCorrectionLevel ECLevel)
@@ -242,17 +261,17 @@ namespace Disco.Services.Documents
             return bestMaskPattern;
         }
 
-        private static byte[] scaleMatrix(byte[][] matrix, int Width, int Height)
+        private static byte[] scaleMatrix(byte[][] matrix, int width, int height)
         {
             var matrixWidth = matrix[0].Length;
             var matrixHeight = matrix.Length;
-            Width = Math.Max(Width, matrixWidth);
-            Height = Math.Max(Height, matrixHeight);
-            var byteColumns = (Width + 7) / 8;
-            var outputBytes = new byte[byteColumns * Height];
-            var scale = Math.Min(Width / (matrixWidth + 1), Height / (matrixHeight + 1));
-            var offsetX = (Width - (matrixWidth * scale)) / 2;
-            var offsetY = (Height - (matrixHeight * scale)) / 2;
+            width = Math.Max(width, matrixWidth);
+            height = Math.Max(height, matrixHeight);
+            var byteColumns = (width + 7) / 8;
+            var outputBytes = new byte[byteColumns * height];
+            var scale = Math.Max(1, Math.Min(width / (matrixWidth + 1), height / (matrixHeight + 1)));
+            var offsetX = (width - (matrixWidth * scale)) / 2;
+            var offsetY = (height - (matrixHeight * scale)) / 2;
             // initialize output bytes
             for (int i = 0; i < outputBytes.Length; i++)
             {

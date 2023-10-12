@@ -113,18 +113,42 @@ namespace Disco.Services.Documents.AttachmentImport
         {
             var qrReader = new QRCodeMultiReader();
 
-            var qrReaderHints = new Dictionary<DecodeHintType, object>() {
-                { DecodeHintType.TRY_HARDER, true }
-            };
-
             var qrImageSource = new BitmapLuminanceSource((Bitmap)Image);
 
             var qrBinarizer = new HybridBinarizer(qrImageSource);
             var qrBinaryBitmap = new BinaryBitmap(qrBinarizer);
 
+            Result DetectDocumentUniqueIdentifier(BinaryBitmap bitmap)
+            {
+                var qrReaderHints = new Dictionary<DecodeHintType, object>() {
+                    { DecodeHintType.TRY_HARDER, true }
+                };
+
+                var qrCodeResults = qrReader.decodeMultiple(bitmap, qrReaderHints);
+
+                if (qrCodeResults != null && qrCodeResults.Length > 0)
+                {
+                    if (qrCodeResults.Length > 1)
+                    {
+                        // multiple qr codes on page, test for byte-mark
+                        foreach (var qr in qrCodeResults)
+                        {
+                            if (qr.ResultMetadata.TryGetValue(ResultMetadataType.BYTE_SEGMENTS, out var byteSegments))
+                            {
+                                var qrBytes = ((List<byte[]>)byteSegments)[0];
+                                if (DocumentUniqueIdentifier.IsDocumentUniqueIdentifier(qrBytes))
+                                    return qr;
+                            }
+                        }
+                    }
+                    return qrCodeResults[0];
+                }
+                return null;
+            }
+
             try
             {
-                qrCodeResult = qrReader.decodeMultiple(qrBinaryBitmap, qrReaderHints)?.FirstOrDefault();
+                qrCodeResult = DetectDocumentUniqueIdentifier(qrBinaryBitmap);
                 qrCodeResultScale = 1F;
             }
             catch (ReaderException)
@@ -148,7 +172,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
                     try
                     {
-                        qrCodeResult = qrReader.decodeMultiple(qrBinaryBitmap, qrReaderHints)?.FirstOrDefault();
+                        qrCodeResult = DetectDocumentUniqueIdentifier(qrBinaryBitmap);
                         qrCodeResultScale = 1.75F;
                     }
                     catch (ReaderException)
@@ -171,7 +195,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
                         try
                         {
-                            qrCodeResult = qrReader.decodeMultiple(qrBinaryBitmap, qrReaderHints)?.FirstOrDefault();
+                            qrCodeResult = DetectDocumentUniqueIdentifier(qrBinaryBitmap);
                             qrCodeResultScale = 2F;
                         }
                         catch (ReaderException)

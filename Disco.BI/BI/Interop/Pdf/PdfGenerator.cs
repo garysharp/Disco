@@ -1,8 +1,8 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Data.Repository;
-using Disco.Models.BI.Expressions;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Models.Services.Expressions.Extensions;
 using Disco.Services;
 using Disco.Services.Documents;
 using Disco.Services.Expressions;
@@ -270,14 +270,15 @@ namespace Disco.BI.Interop.Pdf
                         // Encode to QRCode byte array
                         var pageUniqueIdWidth = (int)pdfFieldPosition.position.Width;
                         var pageUniqueIdHeight = (int)pdfFieldPosition.position.Height;
-                        var pageUniqueIdEncoded = QRCodeBinaryEncoder.Encode(pageUniqueIdBytes, pageUniqueIdWidth, pageUniqueIdHeight);
+                        var pageUniqueIdEncoded = QRCodeBinaryEncoder.Encode(pageUniqueIdBytes, out var qrWidth, out var qrHeight);
 
                         // Encode byte array to Image
-                        var pageUniqueIdImageData = CCITTG4Encoder.Compress(pageUniqueIdEncoded, pageUniqueIdWidth, pageUniqueIdHeight);
-                        var pageUniqueIdImage = iTextSharp.text.Image.GetInstance(pageUniqueIdWidth, pageUniqueIdHeight, false, 256, 1, pageUniqueIdImageData, null);
+                        var pageUniqueIdImageData = CCITTG4Encoder.Compress(pageUniqueIdEncoded, qrWidth, qrHeight);
+                        var pageUniqueIdImage = iTextSharp.text.Image.GetInstance(qrWidth, qrHeight, false, 256, 1, pageUniqueIdImageData, null);
 
                         // Add to the pdf page
                         pageUniqueIdImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
+                        pageUniqueIdImage.ScaleToFit(pdfFieldPosition.position.Width, pdfFieldPosition.position.Height);
                         pdfStamper.GetOverContent(pdfFieldPosition.page).AddImage(pageUniqueIdImage);
                     }
                     // Hide Fields
@@ -315,7 +316,22 @@ namespace Disco.BI.Interop.Pdf
                                     for (int pdfFieldOrdinal = 0; pdfFieldOrdinal < fields.Size; pdfFieldOrdinal++)
                                     {
                                         AcroFields.FieldPosition pdfFieldPosition = pdfFieldPositions[pdfFieldOrdinal];
-                                        iTextSharp.text.Image pdfImage = iTextSharp.text.Image.GetInstance(imageResult.GetImage((int)(pdfFieldPosition.position.Width * 1.6), (int)(pdfFieldPosition.position.Height * 1.6)));
+
+                                        iTextSharp.text.Image pdfImage;
+                                        var imageWidth = (int)(pdfFieldPosition.position.Width * 1.6);
+                                        var imageHeight = (int)(pdfFieldPosition.position.Height * 1.6);
+                                        if (imageResult.Format == ImageExpressionFormat.Jpeg || imageResult.Format == ImageExpressionFormat.Png)
+                                        {
+                                            pdfImage = iTextSharp.text.Image.GetInstance(imageResult.GetImage(imageWidth, imageHeight));
+                                        }
+                                        else if (imageResult.Format == ImageExpressionFormat.CcittG4)
+                                        {
+                                            var imageData = imageResult.GetImage(out imageWidth, out imageHeight);
+                                            pdfImage = iTextSharp.text.Image.GetInstance(imageWidth, imageHeight, false, 256, 1, imageData.GetBuffer(), null);
+                                        }
+                                        else
+                                            throw new NotSupportedException($"Unexpected image format {imageResult.Format}");
+
                                         pdfImage.SetAbsolutePosition(pdfFieldPosition.position.Left, pdfFieldPosition.position.Bottom);
                                         pdfImage.ScaleToFit(pdfFieldPosition.position.Width, pdfFieldPosition.position.Height);
                                         pdfStamper.GetOverContent(pdfFieldPosition.page).AddImage(pdfImage);

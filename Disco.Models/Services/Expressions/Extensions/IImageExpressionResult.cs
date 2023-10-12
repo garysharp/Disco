@@ -1,13 +1,13 @@
 ﻿using System.IO;
 
-namespace Disco.Models.BI.Expressions
+namespace Disco.Models.Services.Expressions.Extensions
 {
     public interface IImageExpressionResult
     {
-        Stream GetImage(int Width, int Height);
-        Stream GetImage();
+        MemoryStream GetImage(int width, int height);
+        MemoryStream GetImage(out int width, out int height);
         byte Quality { get; set; }
-        bool LosslessFormat { get; set; }
+        ImageExpressionFormat Format { get; set; }
         bool ShowField { get; set; }
         string BackgroundColour { get; set; }
         bool BackgroundPreferTransparent { get; set; }

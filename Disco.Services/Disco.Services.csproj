@@ -317,6 +317,7 @@
     <Compile Include="Expressions\Extensions\ImageResultImplementations\BitmapImageExpressionResult.cs" />
     <Compile Include="Expressions\Extensions\ImageResultImplementations\FileImageExpressionResult.cs" />
     <Compile Include="Expressions\Extensions\ImageResultImplementations\FileMontageImageExpressionResult.cs" />
+    <Compile Include="Expressions\Extensions\ImageResultImplementations\QrCodeImageExpressionResult.cs" />
     <Compile Include="Expressions\Extensions\UserExt.cs" />
     <Compile Include="Expressions\IExpressionPart.cs" />
     <Compile Include="Expressions\LazyDictionary.cs" />

@@ -9,7 +9,6 @@ using Disco.Services.Interop.ActiveDirectory;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Linq;

@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Config\OrganisationAddress.cs" />
+    <Compile Include="Services\Expressions\Extensions\ImageExpressionFormat.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\BaseBoard.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Battery.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Bios.cs" />
@@ -86,7 +87,7 @@
     <Compile Include="Services\Authorization\IClaimNavigatorItem.cs" />
     <Compile Include="Services\Authorization\IRoleToken.cs" />
     <Compile Include="Services\Documents\DocumentState.cs" />
-    <Compile Include="BI\Expressions\IImageExpressionResult.cs" />
+    <Compile Include="Services\Expressions\Extensions\IImageExpressionResult.cs" />
     <Compile Include="Services\Jobs\Statistics\DailyOpenedClosedItem.cs" />
     <Compile Include="ClientServices\EnrolResponse.cs" />
     <Compile Include="ClientServices\MacEnrol.cs" />

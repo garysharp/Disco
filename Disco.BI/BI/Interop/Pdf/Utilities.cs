@@ -1,5 +1,7 @@
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.codec;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,6 +9,11 @@ namespace Disco.BI.Interop.Pdf
 {
     public static class Utilities
     {
+        public static Func<byte[], int, int, byte[]> GetCCITTG4EncoderCompressDelegate()
+        {
+            return CCITTG4Encoder.Compress;
+        }
+
         public static Stream JoinPdfs(bool InsertBlankPages, List<Stream> Pdfs)
         {
             if (Pdfs.Count == 0)

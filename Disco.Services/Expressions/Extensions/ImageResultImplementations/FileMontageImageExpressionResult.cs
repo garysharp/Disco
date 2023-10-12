@@ -27,17 +27,17 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
             Padding = 4;
         }
 
-        public override Stream GetImage(int Width, int Height)
+        public override MemoryStream GetImage(int width, int height)
         {
-            return DoLayout(Width, Height);
+            return DoLayout(width, height, out _, out _);
         }
 
-        public override Stream GetImage()
+        public override MemoryStream GetImage(out int width, out int height)
         {
-            return DoLayout(width: null, height: null);
+            return DoLayout(width: null, height: null, out width, out height);
         }
 
-        private Stream DoLayout(int? width, int? height)
+        private MemoryStream DoLayout(int? width, int? height, out int resultWidth, out int resultHeight)
         {
             List<Image> images = new List<Image>();
             try
@@ -81,7 +81,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                         montageGraphics.SmoothingMode = SmoothingMode.HighQuality;
 
                         // Draw Background
-                        if (!LosslessFormat || !BackgroundPreferTransparent)
+                        if (Format == Models.Services.Expressions.Extensions.ImageExpressionFormat.Jpeg || !BackgroundPreferTransparent)
                         {
                             Brush backgroundBrush = Brushes.White;
                             if (!string.IsNullOrEmpty(BackgroundColour))
@@ -96,7 +96,9 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                         else
                             DoTableLayout(images, montageGraphics);
                     }
-                    return OutputImage(montageImage);
+                    resultWidth = width.Value;
+                    resultHeight = height.Value;
+                    return OutputBitmapImage(montageImage);
                 }
             }
             catch (Exception) { throw; }
@@ -111,7 +113,6 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
 
         private void DoHorizontalLayout(List<Image> Images, Graphics MontageGraphics)
         {
-
             float imageScale;
             float imagePosition = 0;
             int imagesWidthTotal = Images.Sum(i => i.Width);

@@ -1,7 +1,7 @@
 using Disco.Data.Repository;
-using Disco.Models.BI.Expressions;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Models.Services.Expressions.Extensions;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Spring.Core.TypeResolution;
 using Spring.Expressions;
