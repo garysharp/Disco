@@ -582,13 +582,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                            <span");
 
-WriteLiteral(" class=\"action upload fa fa-upload disabled\"");
+WriteLiteral(" class=\"action enabled upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo fa fa-camera disabled\"");
+WriteLiteral(" class=\"action enabled photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -1025,28 +1025,34 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            var attac
             #line hidden
 WriteLiteral("\',\r\n                $Attachments.find(\'.Disco-AttachmentUpload-DropTarget\'),\r\n   " +
 "             $Attachments.find(\'.Disco-AttachmentUpload-Progress\'));\r\n\r\n        " +
-"    var $attachmentInput = $Attachments.find(\'.attachmentInput\');\r\n            $" +
-"attachmentInput.find(\'.photo\').click(function () {\r\n                if ($(this)." +
-"hasClass(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco IC" +
-"T Server, please refresh this page and try again\');\r\n                else\r\n     " +
-"               attachmentUploader.uploadImage();\r\n            });\r\n            $" +
-"attachmentInput.find(\'.upload\').click(function () {\r\n                if ($(this)" +
-".hasClass(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco I" +
-"CT Server, please refresh this page and try again\');\r\n                else\r\n    " +
-"                attachmentUploader.uploadFiles();\r\n            });\r\n\r\n          " +
-"  var resourcesTab;\r\n            $(document).on(\'dragover\', function () {\r\n     " +
-"           if (!resourcesTab) {\r\n                    var tabs = $Attachments.clo" +
-"sest(\'.ui-tabs\');\r\n                    resourcesTab = {\r\n                       " +
-" tabs: tabs,\r\n                        resourcesIndex: tabs.children(\'ul.ui-tabs-" +
-"nav\').find(\'a[href=\"#jobDetailTab-Resources\"]\').closest(\'li\').index()\r\n         " +
-"           };\r\n                }\r\n                var selectedIndex = resourcesT" +
-"ab.tabs.tabs(\'option\', \'active\');\r\n                if (resourcesTab.resourcesInd" +
-"ex !== selectedIndex)\r\n                    resourcesTab.tabs.tabs(\'option\', \'act" +
-"ive\', resourcesTab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n" +
-"            ");
+"    var $attachmentInput = $Attachments.find(\'.attachmentInput\');\r\n            i" +
+"f (window.location.protocol != \'https:\') {\r\n                $attachmentInput.fin" +
+"d(\'.photo\')\r\n                    .removeClass(\'enabled\')\r\n                    .a" +
+"ddClass(\'disabled\')\r\n                    .attr(\'title\', \'Capture Image: this fun" +
+"ctionality is only available over a HTTPS connection\');\r\n            }\r\n        " +
+"    $attachmentInput.find(\'.photo\').click(function () {\r\n                if (!$(" +
+"this).hasClass(\'enabled\'))\r\n                    alert(\'This functionality is onl" +
+"y available over a HTTPS connection\');\r\n                else if ($(this).hasClas" +
+"s(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Serve" +
+"r, please refresh this page and try again\');\r\n                else\r\n            " +
+"        attachmentUploader.uploadImage();\r\n            });\r\n            $attachm" +
+"entInput.find(\'.upload\').click(function () {\r\n                if ($(this).hasCla" +
+"ss(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Serv" +
+"er, please refresh this page and try again\');\r\n                else\r\n           " +
+"         attachmentUploader.uploadFiles();\r\n            });\r\n\r\n            var r" +
+"esourcesTab;\r\n            $(document).on(\'dragover\', function () {\r\n            " +
+"    if (!resourcesTab) {\r\n                    var tabs = $Attachments.closest(\'." +
+"ui-tabs\');\r\n                    resourcesTab = {\r\n                        tabs: " +
+"tabs,\r\n                        resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').f" +
+"ind(\'a[href=\"#jobDetailTab-Resources\"]\').closest(\'li\').index()\r\n                " +
+"    };\r\n                }\r\n                var selectedIndex = resourcesTab.tabs" +
+".tabs(\'option\', \'active\');\r\n                if (resourcesTab.resourcesIndex !== " +
+"selectedIndex)\r\n                    resourcesTab.tabs.tabs(\'option\', \'active\', r" +
+"esourcesTab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n       " +
+"     ");
 
             
-            #line 353 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 361 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1055,13 +1061,13 @@ WriteLiteral("\',\r\n                $Attachments.find(\'.Disco-AttachmentUpload
 WriteLiteral("\r\n");
 
             
-            #line 355 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 363 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 355 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 363 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyAttachments || canRemoveOwnAttachments)
             {
             
@@ -1096,7 +1102,7 @@ WriteLiteral(@"
                             url: '");
 
             
-            #line 382 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 390 "..\..\Views\Job\JobParts\Resources.cshtml"
                              Write(Url.Action(MVC.API.Job.AttachmentRemove()));
 
             
@@ -1132,7 +1138,7 @@ WriteLiteral(@"',
             ");
 
             
-            #line 409 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 417 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1142,7 +1148,7 @@ WriteLiteral("\r\n            function addAttachment(key, quick) {\r\n          
 "id: key };\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 414 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 422 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Attachment()));
 
             
@@ -1153,13 +1159,13 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "\'OK\') {\r\n                            var a = d.Attachment;\r\n");
 
             
-            #line 420 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 428 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 420 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 428 "..\..\Views\Job\JobParts\Resources.cshtml"
                                  if (canRemoveAnyAttachments)
                                 {
 
@@ -1173,7 +1179,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 423 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 431 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else if (canRemoveOwnAttachments)
                                 {
@@ -1186,7 +1192,7 @@ WriteLiteral("                                ");
 WriteLiteral("buildAttachment(a, (a.AuthorId === \'");
 
             
-            #line 426 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 434 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                       Write(CurrentUser.UserId);
 
             
@@ -1197,7 +1203,7 @@ WriteLiteral("\'), quick);");
 WriteLiteral("\r\n");
 
             
-            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 435 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else
                                 {
@@ -1212,7 +1218,7 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 431 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 439 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
 
             
@@ -1239,7 +1245,7 @@ WriteLiteral(@"                        } else {
                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 450 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 458 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                   Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -1271,7 +1277,7 @@ WriteLiteral(@"/' + a.Id);
                             img.attr('src', '");
 
             
-            #line 473 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 481 "..\..\Views\Job\JobParts\Resources.cshtml"
                                          Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
@@ -1318,14 +1324,14 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 "script>\r\n");
 
             
-            #line 543 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 551 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 544 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 552 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs || canShowAttachments)
 {
 
@@ -1335,7 +1341,7 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var jobId = parseInt(\'");
 
             
-            #line 548 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 556 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1345,7 +1351,7 @@ WriteLiteral("\');\r\n\r\n            //#region LiveEvents\r\n            var hu
 "dates;\r\n\r\n            // Map Functions\r\n");
 
             
-            #line 554 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 562 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
             
@@ -1356,14 +1362,14 @@ WriteLiteral("\r\n            hub.client.addLog = document.DiscoFunctions.liveLo
 "      ");
 
             
-            #line 558 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 566 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
             #line default
             #line hidden
             
-            #line 559 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 567 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
             
@@ -1384,7 +1390,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 572 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 580 "..\..\Views\Job\JobParts\Resources.cshtml"
        }
 
             
@@ -1394,39 +1400,39 @@ WriteLiteral("\r\n            $.connection.hub.qs = { JobId: jobId };\r\n       
 "ub.error(onHubFailed);\r\n            $.connection.hub.disconnected(onHubFailed);\r" +
 "\n\r\n            $.connection.hub.reconnecting(function () {\r\n                $(\'#" +
 "CommentsContainer\').find(\'span.action\').addClass(\'disabled\');\r\n                $" +
-"(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabled\');\r\n           " +
-" });\r\n            $.connection.hub.reconnected(function () {\r\n                $(" +
-"\'#CommentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n            " +
-"    $(\'#AttachmentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n   " +
-"         });\r\n\r\n            // Start Connection\r\n            $.connection.hub.st" +
-"art(function () {\r\n                $(\'#CommentsContainer\').find(\'span.action\').r" +
-"emoveClass(\'disabled\');\r\n                $(\'#AttachmentsContainer\').find(\'span.a" +
-"ction\').removeClass(\'disabled\');\r\n            }).fail(onHubFailed);\r\n\r\n         " +
-"   function onHubFailed(error) {\r\n                // Disable UI\r\n               " +
-" $(\'#CommentsContainer\').find(\'textarea.commentInput\').attr(\'readonly\', \'readonl" +
-"y\');\r\n                $(\'#CommentsContainer\').find(\'span.action\').addClass(\'disa" +
-"bled\');\r\n                $(\'#AttachmentsContainer\').find(\'span.action\').addClass" +
-"(\'disabled\');\r\n\r\n                // Show Dialog Message\r\n                if ($(\'" +
-".disconnected-dialog\').length == 0) {\r\n                    $(\'<div>\')\r\n         " +
-"               .addClass(\'dialog disconnected-dialog\')\r\n                        " +
-".html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i" +
-" class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT " +
-"Server</h3><div>This page is not receiving live updates. Please ensure you are c" +
-"onnected to the server, then refresh this page to enable features.</div>\')\r\n    " +
-"                    .dialog({\r\n                            resizable: false,\r\n  " +
-"                          title: \'Disconnected\',\r\n                            wi" +
-"dth: 400,\r\n                            modal: true,\r\n                           " +
-" buttons: {\r\n                                \'Refresh Now\': function () {\r\n     " +
-"                               $(this).dialog(\'option\', \'buttons\', null);\r\n     " +
-"                               window.location.reload(true);\r\n                  " +
-"              },\r\n                                \'Close\': function () {\r\n      " +
-"                              $(this).dialog(\'destroy\');\r\n                      " +
-"          }\r\n                            }\r\n                        });\r\n       " +
-"         }\r\n            }\r\n\r\n            //#endregion\r\n        });\r\n    </script" +
-">\r\n");
+"(\'#AttachmentsContainer\').find(\'span.action.enabled\').addClass(\'disabled\');\r\n   " +
+"         });\r\n            $.connection.hub.reconnected(function () {\r\n          " +
+"      $(\'#CommentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n    " +
+"            $(\'#AttachmentsContainer\').find(\'span.action.enabled\').removeClass(\'" +
+"disabled\');\r\n            });\r\n\r\n            // Start Connection\r\n            $.c" +
+"onnection.hub.start(function () {\r\n                $(\'#CommentsContainer\').find(" +
+"\'span.action\').removeClass(\'disabled\');\r\n                $(\'#AttachmentsContaine" +
+"r\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n            }).fail(on" +
+"HubFailed);\r\n\r\n            function onHubFailed(error) {\r\n                // Dis" +
+"able UI\r\n                $(\'#CommentsContainer\').find(\'textarea.commentInput\').a" +
+"ttr(\'readonly\', \'readonly\');\r\n                $(\'#CommentsContainer\').find(\'span" +
+".action\').addClass(\'disabled\');\r\n                $(\'#AttachmentsContainer\').find" +
+"(\'span.action.enabled\').addClass(\'disabled\');\r\n\r\n                // Show Dialog " +
+"Message\r\n                if ($(\'.disconnected-dialog\').length == 0) {\r\n         " +
+"           $(\'<div>\')\r\n                        .addClass(\'dialog disconnected-di" +
+"alog\')\r\n                        .html(\'<h3><span class=\"fa-stack fa-lg\"><i class" +
+"=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>" +
+"Disconnected from the Disco ICT Server</h3><div>This page is not receiving live " +
+"updates. Please ensure you are connected to the server, then refresh this page t" +
+"o enable features.</div>\')\r\n                        .dialog({\r\n                 " +
+"           resizable: false,\r\n                            title: \'Disconnected\'," +
+"\r\n                            width: 400,\r\n                            modal: tr" +
+"ue,\r\n                            buttons: {\r\n                                \'Re" +
+"fresh Now\': function () {\r\n                                    $(this).dialog(\'o" +
+"ption\', \'buttons\', null);\r\n                                    window.location.r" +
+"eload(true);\r\n                                },\r\n                              " +
+"  \'Close\': function () {\r\n                                    $(this).dialog(\'de" +
+"stroy\');\r\n                                }\r\n                            }\r\n    " +
+"                    });\r\n                }\r\n            }\r\n\r\n            //#endr" +
+"egion\r\n        });\r\n    </script>\r\n");
 
             
-            #line 625 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 633 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default

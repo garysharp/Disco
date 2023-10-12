@@ -46,7 +46,7 @@
                     {
                         <div class="Disco-AttachmentUpload-Progress"></div>
                         <div class="attachmentInput clearfix">
-                            <span class="action upload fa fa-upload disabled" title="Attach File"></span><span class="action photo fa fa-camera disabled" title="Capture Image"></span>
+                            <span class="action enabled upload fa fa-upload disabled" title="Attach File"></span><span class="action enabled photo fa fa-camera disabled" title="Capture Image"></span>
                         </div>
                     }
                     <script type="text/javascript">
@@ -71,20 +71,20 @@
                             $.connection.hub.disconnected(onHubFailed);
 
                             $.connection.hub.reconnecting(function () {
-                                $('#AttachmentsContainer').find('span.action').addClass('disabled');
+                                $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
                             });
                             $.connection.hub.reconnected(function () {
-                                $('#AttachmentsContainer').find('span.action').removeClass('disabled');
+                                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
                             });
 
                             // Start Connection
                             $.connection.hub.start(function () {
-                                $('#AttachmentsContainer').find('span.action').removeClass('disabled');
+                                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
                             }).fail(onHubFailed);
 
                             function onHubFailed(error) {
                                 // Disable UI
-                                $('#AttachmentsContainer').find('span.action').addClass('disabled');
+                                $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
 
                                 // Show Dialog Message
                                 if ($('.disconnected-dialog').length == 0) {
@@ -238,8 +238,16 @@
                             $Attachments.find('.Disco-AttachmentUpload-Progress'));
 
                             var $attachmentInput = $Attachments.find('.attachmentInput');
+                            if (window.location.protocol != 'https:') {
+                                $attachmentInput.find('.photo')
+                                    .removeClass('enabled')
+                                    .addClass('disabled')
+                                    .attr('title', 'Capture Image: this functionality is only available over a HTTPS connection');
+                            }
                             $attachmentInput.find('.photo').click(function () {
-                                if ($(this).hasClass('disabled'))
+                                if (!$(this).hasClass('enabled'))
+                                    alert('This functionality is only available over a HTTPS connection');
+                                else if ($(this).hasClass('disabled'))
                                     alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
                                 else
                                     attachmentUploader.uploadImage();

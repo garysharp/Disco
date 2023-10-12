@@ -344,13 +344,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                            <span");
 
-WriteLiteral(" class=\"action upload fa fa-upload disabled\"");
+WriteLiteral(" class=\"action enabled upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo fa fa-camera disabled\"");
+WriteLiteral(" class=\"action enabled photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -398,40 +398,40 @@ WriteLiteral(@">
 WriteLiteral("\' };\r\n                            $.connection.hub.error(onHubFailed);\r\n         " +
 "                   $.connection.hub.disconnected(onHubFailed);\r\n\r\n              " +
 "              $.connection.hub.reconnecting(function () {\r\n                     " +
-"           $(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabled\');\r" +
-"\n                            });\r\n                            $.connection.hub.r" +
-"econnected(function () {\r\n                                $(\'#AttachmentsContain" +
-"er\').find(\'span.action\').removeClass(\'disabled\');\r\n                            }" +
-");\r\n\r\n                            // Start Connection\r\n                         " +
-"   $.connection.hub.start(function () {\r\n                                $(\'#Att" +
-"achmentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n              " +
-"              }).fail(onHubFailed);\r\n\r\n                            function onHu" +
-"bFailed(error) {\r\n                                // Disable UI\r\n               " +
-"                 $(\'#AttachmentsContainer\').find(\'span.action\').addClass(\'disabl" +
-"ed\');\r\n\r\n                                // Show Dialog Message\r\n               " +
-"                 if ($(\'.disconnected-dialog\').length == 0) {\r\n                 " +
-"                   $(\'<div>\')\r\n                                        .addClass" +
-"(\'dialog disconnected-dialog\')\r\n                                        .html(\'<" +
-"h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"" +
-"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT Server</" +
-"h3><div>This page is not receiving live updates. Please ensure you are connected" +
-" to the server, then refresh this page to enable features.</div>\')\r\n            " +
-"                            .dialog({\r\n                                         " +
-"   resizable: false,\r\n                                            title: \'Discon" +
-"nected\',\r\n                                            width: 400,\r\n             " +
-"                               modal: true,\r\n                                   " +
-"         buttons: {\r\n                                                \'Refresh No" +
-"w\': function () {\r\n                                                    $(this).d" +
-"ialog(\'option\', \'buttons\', null);\r\n                                             " +
-"       window.location.reload(true);\r\n                                          " +
-"      },\r\n                                                \'Close\': function () {" +
-"\r\n                                                    $(this).dialog(\'destroy\');" +
-"\r\n                                                }\r\n                           " +
-"                 }\r\n                                        });\r\n               " +
-"                 }\r\n                            }\r\n\r\n                           " +
-" function onAddAttachment(id, quick) {\r\n                                var data" +
-" = { id: id };\r\n                                $.ajax({\r\n                      " +
-"              url: \'");
+"           $(\'#AttachmentsContainer\').find(\'span.action.enabled\').addClass(\'disa" +
+"bled\');\r\n                            });\r\n                            $.connecti" +
+"on.hub.reconnected(function () {\r\n                                $(\'#Attachment" +
+"sContainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n             " +
+"               });\r\n\r\n                            // Start Connection\r\n         " +
+"                   $.connection.hub.start(function () {\r\n                       " +
+"         $(\'#AttachmentsContainer\').find(\'span.action.enabled\').removeClass(\'dis" +
+"abled\');\r\n                            }).fail(onHubFailed);\r\n\r\n                 " +
+"           function onHubFailed(error) {\r\n                                // Dis" +
+"able UI\r\n                                $(\'#AttachmentsContainer\').find(\'span.a" +
+"ction.enabled\').addClass(\'disabled\');\r\n\r\n                                // Show" +
+" Dialog Message\r\n                                if ($(\'.disconnected-dialog\').l" +
+"ength == 0) {\r\n                                    $(\'<div>\')\r\n                 " +
+"                       .addClass(\'dialog disconnected-dialog\')\r\n                " +
+"                        .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-" +
+"wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconne" +
+"cted from the Disco ICT Server</h3><div>This page is not receiving live updates." +
+" Please ensure you are connected to the server, then refresh this page to enable" +
+" features.</div>\')\r\n                                        .dialog({\r\n         " +
+"                                   resizable: false,\r\n                          " +
+"                  title: \'Disconnected\',\r\n                                      " +
+"      width: 400,\r\n                                            modal: true,\r\n   " +
+"                                         buttons: {\r\n                           " +
+"                     \'Refresh Now\': function () {\r\n                             " +
+"                       $(this).dialog(\'option\', \'buttons\', null);\r\n             " +
+"                                       window.location.reload(true);\r\n          " +
+"                                      },\r\n                                      " +
+"          \'Close\': function () {\r\n                                              " +
+"      $(this).dialog(\'destroy\');\r\n                                              " +
+"  }\r\n                                            }\r\n                            " +
+"            });\r\n                                }\r\n                            " +
+"}\r\n\r\n                            function onAddAttachment(id, quick) {\r\n        " +
+"                        var data = { id: id };\r\n                                " +
+"$.ajax({\r\n                                    url: \'");
 
             
             #line 117 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
@@ -644,33 +644,40 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-DropTa" +
 "rget\'),\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-" +
 "Progress\'));\r\n\r\n                            var $attachmentInput = $Attachments." +
-"find(\'.attachmentInput\');\r\n                            $attachmentInput.find(\'.p" +
-"hoto\').click(function () {\r\n                                if ($(this).hasClass" +
-"(\'disabled\'))\r\n                                    alert(\'Disconnected from the " +
-"Disco ICT Server, please refresh this page and try again\');\r\n                   " +
-"             else\r\n                                    attachmentUploader.upload" +
-"Image();\r\n                            });\r\n                            $attachme" +
-"ntInput.find(\'.upload\').click(function () {\r\n                                if " +
-"($(this).hasClass(\'disabled\'))\r\n                                    alert(\'Disco" +
-"nnected from the Disco ICT Server, please refresh this page and try again\');\r\n  " +
-"                              else\r\n                                    attachme" +
-"ntUploader.uploadFiles();\r\n                            });\r\n\r\n                  " +
-"          var resourcesTab;\r\n                            $(document).on(\'dragove" +
-"r\', function () {\r\n                                if (!resourcesTab) {\r\n       " +
-"                             var tabs = $Attachments.closest(\'.ui-tabs\');\r\n     " +
-"                               resourcesTab = {\r\n                               " +
-"         tabs: tabs,\r\n                                        resourcesIndex: ta" +
-"bs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#DeviceDetailTab-Resources\"]\').close" +
-"st(\'li\').index()\r\n                                    };\r\n                      " +
-"          }\r\n                                var selectedIndex = resourcesTab.ta" +
-"bs.tabs(\'option\', \'active\');\r\n                                if (resourcesTab.r" +
-"esourcesIndex !== selectedIndex)\r\n                                    resourcesT" +
-"ab.tabs.tabs(\'option\', \'active\', resourcesTab.resourcesIndex);\r\n                " +
-"            });\r\n                            //#endregion\r\n                     " +
-"       ");
+"find(\'.attachmentInput\');\r\n                            if (window.location.proto" +
+"col != \'https:\') {\r\n                                $attachmentInput.find(\'.phot" +
+"o\')\r\n                                    .removeClass(\'enabled\')\r\n              " +
+"                      .addClass(\'disabled\')\r\n                                   " +
+" .attr(\'title\', \'Capture Image: this functionality is only available over a HTTP" +
+"S connection\');\r\n                            }\r\n                            $att" +
+"achmentInput.find(\'.photo\').click(function () {\r\n                               " +
+" if (!$(this).hasClass(\'enabled\'))\r\n                                    alert(\'T" +
+"his functionality is only available over a HTTPS connection\');\r\n                " +
+"                else if ($(this).hasClass(\'disabled\'))\r\n                        " +
+"            alert(\'Disconnected from the Disco ICT Server, please refresh this p" +
+"age and try again\');\r\n                                else\r\n                    " +
+"                attachmentUploader.uploadImage();\r\n                            }" +
+");\r\n                            $attachmentInput.find(\'.upload\').click(function " +
+"() {\r\n                                if ($(this).hasClass(\'disabled\'))\r\n       " +
+"                             alert(\'Disconnected from the Disco ICT Server, plea" +
+"se refresh this page and try again\');\r\n                                else\r\n   " +
+"                                 attachmentUploader.uploadFiles();\r\n            " +
+"                });\r\n\r\n                            var resourcesTab;\r\n          " +
+"                  $(document).on(\'dragover\', function () {\r\n                    " +
+"            if (!resourcesTab) {\r\n                                    var tabs =" +
+" $Attachments.closest(\'.ui-tabs\');\r\n                                    resource" +
+"sTab = {\r\n                                        tabs: tabs,\r\n                 " +
+"                       resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(\'a[h" +
+"ref=\"#DeviceDetailTab-Resources\"]\').closest(\'li\').index()\r\n                     " +
+"               };\r\n                                }\r\n                          " +
+"      var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'active\');\r\n         " +
+"                       if (resourcesTab.resourcesIndex !== selectedIndex)\r\n     " +
+"                               resourcesTab.tabs.tabs(\'option\', \'active\', resour" +
+"cesTab.resourcesIndex);\r\n                            });\r\n                      " +
+"      //#endregion\r\n                            ");
 
             
-            #line 271 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 279 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    }
 
             
@@ -679,7 +686,7 @@ WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-Atta
 WriteLiteral("                        ");
 
             
-            #line 272 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 280 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -712,7 +719,7 @@ WriteLiteral(@"
                                             url: '");
 
             
-            #line 297 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 305 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                              Write(Url.Action(MVC.API.Device.AttachmentRemove()));
 
             
@@ -740,7 +747,7 @@ WriteLiteral("\',\r\n                                            dataType: \'jso
 "endregion\r\n                        ");
 
             
-            #line 324 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 332 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -777,7 +784,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 345 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 353 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             
