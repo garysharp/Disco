@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Logging;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -147,7 +148,15 @@ namespace Disco.Services.Devices.Importing.Fields
 
                     if (adAccount != null && !adAccount.IsCriticalSystemObject)
                     {
-                        adAccount.SetDescription(Device);
+                        try
+                        {
+                            adAccount.SetDescription(Device);
+                        }
+                        catch (Exception ex)
+                        {
+                            SystemLog.LogWarning($"Unable to update AD Machine Account Description for {Device.DeviceDomainId}: {ex.Message}");
+                            throw;
+                        }
                         DeviceADDescriptionSet = true;
                     }
                 }

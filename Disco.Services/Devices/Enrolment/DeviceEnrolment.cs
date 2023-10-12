@@ -579,11 +579,18 @@ namespace Disco.Services.Devices.Enrolment
                 if (adMachineAccount != null && !adMachineAccount.IsCriticalSystemObject)
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 75, "Updating Active Directory Computer Account Properties");
-                    // Use non-Wlan Adapter with fastest speed
-                    var macAddress = Request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
-                    adMachineAccount.UpdateNetbootGUID(Request.Hardware.UUID, macAddress);
-                    if (RepoDevice.AssignedUser != null)
-                        adMachineAccount.SetDescription(RepoDevice);
+                    try
+                    {
+                        // Use non-Wlan Adapter with fastest speed
+                        var macAddress = Request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
+                        adMachineAccount.UpdateNetbootGUID(Request.Hardware.UUID, macAddress);
+                        if (RepoDevice.AssignedUser != null)
+                            adMachineAccount.SetDescription(RepoDevice);
+                    }
+                    catch (Exception ex)
+                    {
+                        EnrolmentLog.LogSessionWarning(sessionId, $"Unable to update AD Machine Account attributes: {ex.Message}");
+                    }
                 }
                 if (RepoDevice.DeviceProfile.DistributionType == DeviceProfile.DistributionTypes.OneToOne)
                 {

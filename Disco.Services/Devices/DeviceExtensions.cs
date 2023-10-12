@@ -5,6 +5,7 @@ using Disco.Services.Authorization;
 using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Logging;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
@@ -188,8 +189,15 @@ namespace Disco.Services
             if (ActiveDirectory.IsValidDomainAccountId(d.DeviceDomainId))
             {
                 var adMachineAccount = ActiveDirectory.RetrieveADMachineAccount(d.DeviceDomainId);
-                if (adMachineAccount != null)
-                    adMachineAccount.SetDescription(d);
+                try
+                {
+                    if (adMachineAccount != null)
+                        adMachineAccount.SetDescription(d);
+                }
+                catch (Exception ex)
+                {
+                    SystemLog.LogWarning($"Unable to update AD Machine Account Description for {d.DeviceDomainId}: {ex.Message}");
+                }
             }
 
             return newDua;
