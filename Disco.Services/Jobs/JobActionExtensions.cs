@@ -661,7 +661,9 @@ namespace Disco.Services
                 JobId = j.Id,
                 TechUserId = Technician.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("# Job Forcibly Closed\r\n{0}", string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)
+                Comments = $@"## Job Forcibly Closed
+
+{(string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)}"
             };
             Database.JobLogs.Add(jobLog);
 
@@ -700,10 +702,21 @@ namespace Disco.Services
 
             return j.ClosedDate.HasValue;
         }
-        public static void OnReopen(this Job j)
+        public static void OnReopen(this Job j, DiscoDataContext database, User technician)
         {
             if (!j.CanReopen())
                 throw new InvalidOperationException("Reopen was Denied");
+
+            var log = new JobLog()
+            {
+                JobId = j.Id,
+                TechUserId = technician.UserId,
+                Timestamp = DateTime.Now,
+                Comments = $@"## Job Re-Opened
+
+Previously Closed by {j.ClosedTechUser.DisplayName} [`@{j.ClosedTechUser.FriendlyId()}`] at `{j.ClosedDate:yyyy-MM-dd HH:mm}`.",
+            };
+            database.JobLogs.Add(log);
 
             j.ClosedDate = null;
             j.ClosedTechUserId = null;

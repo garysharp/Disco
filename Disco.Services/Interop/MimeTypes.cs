@@ -54,6 +54,8 @@ namespace Disco.Services.Interop
                     return "video/x-ms-wmv";
                 case "mov":
                     return "video/quicktime";
+                case "js":
+                    return "application/javascript";
             }
 
             // Check System Registry

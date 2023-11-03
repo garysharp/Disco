@@ -268,8 +268,6 @@ namespace Disco.BI.Interop.Pdf
                         var pageUniqueIdBytes = pageUniqueId.ToQRCodeBytes();
 
                         // Encode to QRCode byte array
-                        var pageUniqueIdWidth = (int)pdfFieldPosition.position.Width;
-                        var pageUniqueIdHeight = (int)pdfFieldPosition.position.Height;
                         var pageUniqueIdEncoded = QRCodeBinaryEncoder.Encode(pageUniqueIdBytes, out var qrWidth, out var qrHeight);
 
                         // Encode byte array to Image

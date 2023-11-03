@@ -1,19 +1,16 @@
-﻿using Disco.BI.Extensions;
-using Disco.Models.Repository;
-using Disco.Models.Services.Documents;
+﻿using Disco.Models.Repository;
 using Disco.Models.Services.Job;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Documents;
 using Disco.Services.Interop;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.Statistics;
 using Disco.Services.Users;
 using Disco.Services.Web;
-using Disco.Web.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -1729,12 +1726,14 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Job.Actions.Reopen)]
         public virtual ActionResult Reopen(int id, bool redirect)
         {
-            var j = Database.Jobs.Find(id);
+            var j = Database.Jobs
+                .Include(x => x.ClosedTechUser)
+                .FirstOrDefault(x => x.Id == id);
             if (j != null)
             {
                 if (j.CanReopen())
                 {
-                    j.OnReopen();
+                    j.OnReopen(Database, CurrentUser);
 
                     Database.SaveChanges();
                     if (redirect)
