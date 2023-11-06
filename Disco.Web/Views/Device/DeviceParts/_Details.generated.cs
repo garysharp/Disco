@@ -366,20 +366,23 @@ WriteLiteral("</td>\r\n                                            <td>\r\n");
             #line 92 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (b.ConfigOptions != null)
                                                 {
-                                                    
-            
-            #line default
-            #line hidden
-            
-            #line 94 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                               Write(string.Join("; ", b.ConfigOptions));
 
             
             #line default
             #line hidden
+WriteLiteral("                                                    ");
+
             
             #line 94 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                       
+                                                     Write(string.Join("; ", b.ConfigOptions));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+            
+            #line 95 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -540,20 +543,23 @@ WriteLiteral("</td>\r\n                                            <td>\r\n");
             #line 135 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (c.OEMStringArray != null)
                                                 {
-                                                    
-            
-            #line default
-            #line hidden
-            
-            #line 137 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                               Write(string.Join("; ", c.OEMStringArray));
 
             
             #line default
             #line hidden
+WriteLiteral("                                                    ");
+
             
             #line 137 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                        
+                                                     Write(string.Join("; ", c.OEMStringArray));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+            
+            #line 138 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -617,20 +623,23 @@ WriteLiteral("                                            </td>\r\n             
             #line 147 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (c.Roles != null)
                                                 {
-                                                    
-            
-            #line default
-            #line hidden
-            
-            #line 149 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                               Write(string.Join("; ", c.Roles));
 
             
             #line default
             #line hidden
+WriteLiteral("                                                    ");
+
             
             #line 149 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                               
+                                                     Write(string.Join("; ", c.Roles));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+            
+            #line 150 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -1282,43 +1291,43 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                            <span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 19877), Tuple.Create("\"", 19913)
+WriteAttribute("title", Tuple.Create(" title=\"", 19916), Tuple.Create("\"", 19952)
             
             #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-, Tuple.Create(Tuple.Create("", 19885), Tuple.Create<System.Object, System.Int32>(partitionTitle
+, Tuple.Create(Tuple.Create("", 19924), Tuple.Create<System.Object, System.Int32>(partitionTitle
             
             #line default
             #line hidden
-, 19885), false)
-, Tuple.Create(Tuple.Create(" ", 19902), Tuple.Create("&#xA", 19903), true)
+, 19924), false)
+, Tuple.Create(Tuple.Create(" ", 19941), Tuple.Create("&#xA", 19942), true)
             
             #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-               , Tuple.Create(Tuple.Create("", 19907), Tuple.Create<System.Object, System.Int32>(tag
+               , Tuple.Create(Tuple.Create("", 19946), Tuple.Create<System.Object, System.Int32>(tag
             
             #line default
             #line hidden
-, 19907), false)
+, 19946), false)
 );
 
-WriteAttribute("style", Tuple.Create(" style=\"", 19914), Tuple.Create("\"", 19976)
-, Tuple.Create(Tuple.Create("", 19922), Tuple.Create("left:", 19922), true)
+WriteAttribute("style", Tuple.Create(" style=\"", 19953), Tuple.Create("\"", 20015)
+, Tuple.Create(Tuple.Create("", 19961), Tuple.Create("left:", 19961), true)
             
             #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                   , Tuple.Create(Tuple.Create(" ", 19927), Tuple.Create<System.Object, System.Int32>(offsetPercentage
+                                   , Tuple.Create(Tuple.Create(" ", 19966), Tuple.Create<System.Object, System.Int32>(offsetPercentage
             
             #line default
             #line hidden
-, 19928), false)
-, Tuple.Create(Tuple.Create("", 19947), Tuple.Create("%;", 19947), true)
-, Tuple.Create(Tuple.Create(" ", 19949), Tuple.Create("width:", 19950), true)
+, 19967), false)
+, Tuple.Create(Tuple.Create("", 19986), Tuple.Create("%;", 19986), true)
+, Tuple.Create(Tuple.Create(" ", 19988), Tuple.Create("width:", 19989), true)
             
             #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                , Tuple.Create(Tuple.Create(" ", 19956), Tuple.Create<System.Object, System.Int32>(widthPercentage
+                                                                , Tuple.Create(Tuple.Create(" ", 19995), Tuple.Create<System.Object, System.Int32>(widthPercentage
             
             #line default
             #line hidden
-, 19957), false)
-, Tuple.Create(Tuple.Create("", 19975), Tuple.Create("%", 19975), true)
+, 19996), false)
+, Tuple.Create(Tuple.Create("", 20014), Tuple.Create("%", 20014), true)
 );
 
 WriteLiteral(">\r\n");
@@ -1341,25 +1350,25 @@ WriteLiteral("                                                                  
 
 WriteLiteral(" class=\"freespace\"");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 20235), Tuple.Create("\"", 20310)
-, Tuple.Create(Tuple.Create("", 20243), Tuple.Create("left:", 20243), true)
+WriteAttribute("style", Tuple.Create(" style=\"", 20274), Tuple.Create("\"", 20349)
+, Tuple.Create(Tuple.Create("", 20282), Tuple.Create("left:", 20282), true)
             
             #line 353 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                        , Tuple.Create(Tuple.Create(" ", 20248), Tuple.Create<System.Object, System.Int32>(100 - freeSpacePercentage
+                        , Tuple.Create(Tuple.Create(" ", 20287), Tuple.Create<System.Object, System.Int32>(100 - freeSpacePercentage
             
             #line default
             #line hidden
-, 20249), false)
-, Tuple.Create(Tuple.Create("", 20277), Tuple.Create("%;", 20277), true)
-, Tuple.Create(Tuple.Create(" ", 20279), Tuple.Create("width:", 20280), true)
+, 20288), false)
+, Tuple.Create(Tuple.Create("", 20316), Tuple.Create("%;", 20316), true)
+, Tuple.Create(Tuple.Create(" ", 20318), Tuple.Create("width:", 20319), true)
             
             #line 353 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                              , Tuple.Create(Tuple.Create(" ", 20286), Tuple.Create<System.Object, System.Int32>(freeSpacePercentage
+                                                              , Tuple.Create(Tuple.Create(" ", 20325), Tuple.Create<System.Object, System.Int32>(freeSpacePercentage
             
             #line default
             #line hidden
-, 20287), false)
-, Tuple.Create(Tuple.Create("", 20309), Tuple.Create("%", 20309), true)
+, 20326), false)
+, Tuple.Create(Tuple.Create("", 20348), Tuple.Create("%", 20348), true)
 );
 
 WriteLiteral("></span>\r\n");

@@ -206,9 +206,6 @@ namespace Links
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string disco_attachmentuploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-attachmentuploader.min.js") ? Url("disco-attachmentuploader.min.js") : Url("disco-attachmentuploader.js");
                     public static readonly string disco_attachmentuploader_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-attachmentuploader.min.js") ? Url("disco-attachmentuploader.min.js") : Url("disco-attachmentuploader.js");
-                    public static readonly string webcam_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/webcam.min.js") ? Url("webcam.min.js") : Url("webcam.js");
-                    public static readonly string webcam_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/webcam.min.js") ? Url("webcam.min.js") : Url("webcam.js");
-                    public static readonly string webcam_swf = Url("webcam.swf");
                 }
             
                 public static readonly string Disco_AttachmentUploader_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Disco-AttachmentUploader.min.js") ? Url("Disco-AttachmentUploader.min.js") : Url("Disco-AttachmentUploader.js");
@@ -931,8 +928,6 @@ namespace Links
                         {
                             public const string disco_attachmentuploader_js = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/disco-attachmentuploader.js"; 
                             public const string disco_attachmentuploader_js_ = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/disco-attachmentuploader.js"; 
-                            public const string webcam_js = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/webcam.js"; 
-                            public const string webcam_js_ = "~/ClientSource/Scripts/Modules/Disco-AttachmentUploader/webcam.js"; 
                         }
                     }
                     public static partial class Disco_CreateJob 

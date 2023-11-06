@@ -91,7 +91,7 @@
                                             <td>
                                                 @if (b.ConfigOptions != null)
                                                 {
-                                                    @string.Join("; ", b.ConfigOptions)
+                                                    <text>@string.Join("; ", b.ConfigOptions)</text>
                                                 }
                                             </td>
                                             <td>@b.Version</td>
@@ -134,7 +134,7 @@
                                             <td>
                                                 @if (c.OEMStringArray != null)
                                                 {
-                                                    @string.Join("; ", c.OEMStringArray)
+                                                    <text>@string.Join("; ", c.OEMStringArray)</text>
                                                 }
                                             </td>
                                             <td>
@@ -146,7 +146,7 @@
                                             <td>
                                                 @if (c.Roles != null)
                                                 {
-                                                    @string.Join("; ", c.Roles)
+                                                    <text>@string.Join("; ", c.Roles)</text>
                                                 }
                                             </td>
                                         </tr>
