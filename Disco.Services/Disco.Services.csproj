@@ -94,8 +94,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RazorGenerator.Mvc.2.2.3\lib\net40\RazorGenerator.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Renci.SshNet">
-      <HintPath>..\..\..\Resources\Libraries\SshNet\Renci.SshNet.dll</HintPath>
+    <Reference Include="Renci.SshNet, Version=2023.0.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2023.0.0\lib\net462\Renci.SshNet.dll</HintPath>
     </Reference>
     <Reference Include="Spring.Core">
       <HintPath>..\..\..\Resources\Libraries\Spring.NET\Spring.Core.dll</HintPath>
