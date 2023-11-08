@@ -6,6 +6,7 @@ using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Disco.Services.Searching
@@ -61,13 +62,11 @@ namespace Disco.Services.Searching
 
         public static JobTableModel SearchJobsTable(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit, bool IncludeJobStatus = true, bool SearchDetails = false)
         {
-            int termInt = default(int);
-
-            IQueryable<Job> query = default(IQueryable<Job>);
+            var query = default(IQueryable<Job>);
 
             string userIdTerm = Term.Contains('\\') ? Term : ActiveDirectory.ParseDomainAccountId(Term);
 
-            if (int.TryParse(Term, out termInt))
+            if (int.TryParse(Term, out var termInt))
             {
                 // Term is a Number (int)
                 if (SearchDetails)
@@ -82,7 +81,10 @@ namespace Disco.Services.Searching
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term) ||
                         j.JobLogs.Any(jl => jl.Comments.Contains(Term)) ||
-                        j.JobAttachments.Any(ja => ja.Comments.Contains(Term)));
+                        j.JobAttachments.Any(ja => ja.Comments.Contains(Term)) ||
+                        j.JobMetaWarranty.ExternalReference.Contains(Term) ||
+                        j.JobMetaNonWarranty.RepairerReference.Contains(Term) ||
+                        j.JobMetaNonWarranty.PurchaseOrderReference.Contains(Term));
                 }
                 else
                 {
@@ -110,7 +112,10 @@ namespace Disco.Services.Searching
                         j.User.GivenName.Contains(Term) ||
                         j.User.DisplayName.Contains(Term) ||
                         j.JobLogs.Any(jl => jl.Comments.Contains(Term)) ||
-                        j.JobAttachments.Any(ja => ja.Comments.Contains(Term)));
+                        j.JobAttachments.Any(ja => ja.Comments.Contains(Term)) ||
+                        j.JobMetaWarranty.ExternalReference.Contains(Term) ||
+                        j.JobMetaNonWarranty.RepairerReference.Contains(Term) ||
+                        j.JobMetaNonWarranty.PurchaseOrderReference.Contains(Term));
                 }
                 else
                 {
@@ -137,7 +142,11 @@ namespace Disco.Services.Searching
 
         public static IQueryable<Job> BuildJobTableModel(DiscoDataContext Database)
         {
-            return Database.Jobs.Include("JobType").Include("Device").Include("User").Include("OpenedTechUser");
+            return Database.Jobs
+                .Include(j => j.JobType)
+                .Include(j => j.Device)
+                .Include(j => j.User)
+                .Include(j => j.OpenedTechUser);
         }
         #endregion
 
