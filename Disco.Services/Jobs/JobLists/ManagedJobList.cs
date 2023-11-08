@@ -2,6 +2,8 @@
 using Disco.Data.Repository.Monitor;
 using Disco.Models.Repository;
 using Disco.Models.Services.Jobs.JobLists;
+using Disco.Services.Authorization;
+using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Logging;
 using Disco.Services.Users;
 using System;
@@ -12,10 +14,8 @@ using System.Reactive.Linq;
 namespace Disco.Services.Jobs.JobLists
 {
     using FilterFunc = Func<IQueryable<Job>, IQueryable<Job>>;
-    using SortFunc = Func<IEnumerable<JobTableItemModel>, IEnumerable<JobTableItemModel>>;
     using OpenFilterFunc = Func<IEnumerable<JobTableStatusItemModel>, IEnumerable<JobTableStatusItemModel>>;
-using Disco.Services.Authorization;
-    using Disco.Services.Jobs.JobQueues;
+    using SortFunc = Func<IEnumerable<JobTableItemModel>, IEnumerable<JobTableItemModel>>;
 
     public class ManagedJobList : JobTableModel, IDisposable
     {
@@ -87,7 +87,7 @@ using Disco.Services.Authorization;
                 allJobs = allJobs.Concat(queueJobs).ToList();
             else
                 allJobs = queueJobs.ToList();
-            
+
             var allJobsSorted = allJobs
                 .OrderByDescending(i => i.Item2).ThenByDescending(i => i.Item3).ThenBy(i => i.Item4).ThenBy(i => i.Item1.OpenedDate).Select(q => q.Item1);
 

@@ -1,4 +1,5 @@
 ﻿using Disco.Services.Logging.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -44,10 +45,8 @@ namespace Disco.Services.Logging
         public static void LogException(string Component, Exception ex)
         {
             // Handle Special-Case Errors
-            if (ex is System.Data.Entity.Validation.DbEntityValidationException)
+            if (ex is System.Data.Entity.Validation.DbEntityValidationException dbException)
             {
-                var dbException = (System.Data.Entity.Validation.DbEntityValidationException)ex;
-
                 StringBuilder message = new StringBuilder();
                 message.AppendLine("Validation failed for one or more entities:");
                 foreach (var dbEntityError in dbException.EntityValidationErrors)
@@ -64,11 +63,67 @@ namespace Disco.Services.Logging
             {
                 if (ex.InnerException != null)
                 {
-                    Log(EventTypeIds.ExceptionWithInner, Component, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace);
+                    // serialize inner exceptions for advanced troubleshooting
+                    var serialized = string.Empty;
+                    try
+                    {
+                        serialized = JsonConvert.SerializeObject(new SerializedException(ex, 5));
+                    }
+                    catch (Exception) { }
+
+                    Log(EventTypeIds.ExceptionWithInner, Component, ex.GetType().Name, ex.Message, ex.StackTrace, ex.InnerException.GetType().Name, ex.InnerException.Message, ex.InnerException.StackTrace, serialized);
                 }
                 else
                 {
                     Log(EventTypeIds.Exception, Component, ex.GetType().Name, ex.Message, ex.StackTrace);
+                }
+            }
+        }
+        private class SerializedException
+        {
+            public string Type { get; set; }
+            public string Message { get; set; }
+            public string StackTrace { get; set; }
+            public List<SerializedException> Children { get; set; }
+
+            public SerializedException(Exception ex, int depth)
+            {
+                Type = ex.GetType().Name;
+                StackTrace = ex.StackTrace;
+                Message = ex.Message;
+
+                if (ex is System.Data.Entity.Validation.DbEntityValidationException dbException)
+                {
+                    StringBuilder message = new StringBuilder();
+                    message.AppendLine("Validation failed for one or more entities:");
+                    foreach (var dbEntityError in dbException.EntityValidationErrors)
+                    {
+                        message.Append("'").Append(dbEntityError.Entry.Entity.GetType().Name).AppendLine("' Object");
+                        foreach (var dbValidationError in dbEntityError.ValidationErrors)
+                        {
+                            message.Append("  ").Append(dbValidationError.PropertyName).Append(": ").AppendLine(dbValidationError.ErrorMessage);
+                        }
+                    }
+                    Message = message.ToString();
+                }
+
+                if (depth > 0)
+                {
+                    if (ex is AggregateException exAg)
+                    {
+                        Children = new List<SerializedException>();
+                        foreach (var inner in exAg.InnerExceptions)
+                        {
+                            Children.Add(new SerializedException(inner, depth - 1));
+                        }
+                    }
+                    else if (ex.InnerException != null)
+                    {
+                        Children = new List<SerializedException>()
+                        {
+                            new SerializedException(ex.InnerException, depth - 1)
+                        };
+                    }
                 }
             }
         }
