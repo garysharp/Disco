@@ -16,10 +16,10 @@ namespace Disco.Services.Plugins
         {
             Status.UpdateStatus(0, "Updating plugins after Disco ICT update", "Starting, please wait...");
 
-            // Wait for App to Load (10 Seconds)
-            for (int i = 0; i < 10; i++)
+            // Wait for App to Load (3 Seconds)
+            for (int i = 0; i < 3; i++)
             {
-                Status.UpdateStatus(10 * i);
+                Status.UpdateStatus(33 * i);
                 System.Threading.Thread.Sleep(1000);
             }
 
