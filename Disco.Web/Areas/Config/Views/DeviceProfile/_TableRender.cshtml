@@ -24,7 +24,8 @@
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
+        var isDecommissioned = item.DeviceCount > 0 && item.DeviceDecommissionedCount >= item.DeviceCount;
+        <tr class="@(isDecommissioned ? "hidden" : null)">
             <td>
                 @Html.ActionLink(item.Name, MVC.Config.DeviceProfile.Index(item.Id))
             </td>
@@ -64,5 +65,9 @@
                 </td>
             }
         </tr>
+        if (isDecommissioned)
+        {
+            <tr class="hidden decommissioned-padding"></tr>
+        }
     }
 </table>

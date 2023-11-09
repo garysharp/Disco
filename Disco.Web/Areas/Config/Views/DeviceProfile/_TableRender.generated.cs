@@ -109,16 +109,29 @@ WriteLiteral("    </tr>\r\n");
             #line 25 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
      foreach (var item in Model)
     {
+        var isDecommissioned = item.DeviceCount > 0 && item.DeviceDecommissionedCount >= item.DeviceCount;
 
             
             #line default
             #line hidden
-WriteLiteral("        <tr>\r\n            <td>\r\n");
+WriteLiteral("        <tr");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 769), Tuple.Create("\"", 814)
+            
+            #line 28 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+, Tuple.Create(Tuple.Create("", 777), Tuple.Create<System.Object, System.Int32>(isDecommissioned ? "hidden" : null
+            
+            #line default
+            #line hidden
+, 777), false)
+);
+
+WriteLiteral(">\r\n            <td>\r\n");
 
 WriteLiteral("                ");
 
             
-            #line 29 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 30 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
            Write(Html.ActionLink(item.Name, MVC.Config.DeviceProfile.Index(item.Id)));
 
             
@@ -129,7 +142,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 32 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 33 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
            Write(Html.DisplayFor(modelItem => item.Description));
 
             
@@ -140,7 +153,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                ");
 
             
-            #line 35 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 36 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
            Write(Html.DisplayFor(modelItem => item.DistributionType));
 
             
@@ -149,13 +162,13 @@ WriteLiteral("                ");
 WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 
             
-            #line 38 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 39 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 38 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 39 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                  if (item.DeviceCount > 0 && Authorization.Has(Claims.Device.Search))
                 {
 
@@ -165,7 +178,7 @@ WriteLiteral("\r\n            </td>\r\n            <td>\r\n");
 WriteLiteral("                    <span>");
 
             
-            #line 40 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                      Write(Html.ActionLink(string.Format("View {0}", item.DeviceCount), MVC.Search.Query(item.Id.ToString(), "DeviceProfile")));
 
             
@@ -174,7 +187,7 @@ WriteLiteral("                    <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 42 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                 }
                 else
                 {
@@ -185,7 +198,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("                    <span>");
 
             
-            #line 44 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 45 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                      Write(item.DeviceCount.ToString("n0"));
 
             
@@ -194,7 +207,7 @@ WriteLiteral("                    <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 45 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 46 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                 }
 
             
@@ -203,7 +216,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("                ");
 
             
-            #line 46 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 47 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                  if (item.DeviceDecommissionedCount > 0)
                 {
 
@@ -214,21 +227,21 @@ WriteLiteral("                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1540), Tuple.Create("\"", 1611)
+WriteAttribute("title", Tuple.Create(" title=\"", 1694), Tuple.Create("\"", 1765)
             
-            #line 48 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 1548), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
+            #line 49 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+, Tuple.Create(Tuple.Create("", 1702), Tuple.Create<System.Object, System.Int32>(item.DeviceDecommissionedCount.ToString("n0")
             
             #line default
             #line hidden
-, 1548), false)
-, Tuple.Create(Tuple.Create(" ", 1596), Tuple.Create("Decommissioned", 1597), true)
+, 1702), false)
+, Tuple.Create(Tuple.Create(" ", 1750), Tuple.Create("Decommissioned", 1751), true)
 );
 
 WriteLiteral(">\r\n                        (");
 
             
-            #line 49 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 50 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                      Write(item.DeviceDecommissionedCount.ToString("n0"));
 
             
@@ -237,7 +250,7 @@ WriteLiteral(">\r\n                        (");
 WriteLiteral(")\r\n                    </span>\r\n");
 
             
-            #line 51 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 52 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                 }
 
             
@@ -246,13 +259,13 @@ WriteLiteral(")\r\n                    </span>\r\n");
 WriteLiteral("            </td>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 54 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 53 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 54 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
              if (showTags)
             {
 
@@ -262,13 +275,13 @@ WriteLiteral("            </td>\r\n");
 WriteLiteral("                <td>\r\n");
 
             
-            #line 56 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 57 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 56 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 57 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                      if (item.IsLinked)
                     {
 
@@ -284,7 +297,7 @@ WriteLiteral(" title=\"Is Linked\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 59 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 60 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                     }
                     else
                     {
@@ -299,7 +312,7 @@ WriteLiteral("&nbsp;");
 WriteLiteral("\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 64 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
                     }
 
             
@@ -308,7 +321,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                </td>\r\n");
 
             
-            #line 65 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 66 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
             }
 
             
@@ -317,7 +330,22 @@ WriteLiteral("                </td>\r\n");
 WriteLiteral("        </tr>\r\n");
 
             
-            #line 67 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+            #line 68 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+        if (isDecommissioned)
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <tr");
+
+WriteLiteral(" class=\"hidden decommissioned-padding\"");
+
+WriteLiteral("></tr>\r\n");
+
+            
+            #line 71 "..\..\Areas\Config\Views\DeviceProfile\_TableRender.cshtml"
+        }
     }
 
             

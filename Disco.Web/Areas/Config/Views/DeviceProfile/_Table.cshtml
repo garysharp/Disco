@@ -2,6 +2,22 @@
 @using Disco.Web.Areas.Config.Models.DeviceProfile
 @{
     Authorization.Require(Claims.Config.DeviceProfile.Show);
+    var hasDecommissionedBatches = Model.DeviceProfiles.Any(dp => dp.DeviceCount > 0 && dp.DeviceDecommissionedCount >= dp.DeviceCount);
+}
+@if (hasDecommissionedBatches)
+{
+    <a id="Config_DeviceProfiles_ShowDecommissioned" href="#" class="button small">Show Decommissioned (@(Model.DeviceProfiles.Count(db => db.DeviceCount > 0 && db.DeviceDecommissionedCount >= db.DeviceCount)))</a>
+    <script>
+        $(function () {
+            $('#Config_DeviceProfiles_ShowDecommissioned').click(function () {
+                $(this).remove();
+                $('.deviceProfileTable')
+                    .find('tr.hidden').removeClass('hidden')
+                    .filter('.decommissioned-padding').remove();
+                return false;
+            }).detach().appendTo('#layout_PageHeading');
+        })
+    </script>
 }
 @if (DiscoApplication.MultiSiteMode)
 {
@@ -9,11 +25,11 @@
     foreach (var deviceProfilesGroup in deviceProfilesGrouped)
     {
         if (deviceProfilesGroup.Key != null)
-        { <h2>@deviceProfilesGroup.Key</h2> }
-    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, deviceProfilesGroup.Cast<_IndexModelItem>(), new ViewDataDictionary())        
-    }
+        {<h2>@deviceProfilesGroup.Key</h2> }
+    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, deviceProfilesGroup.Cast<_IndexModelItem>(), new ViewDataDictionary())
+}
 }
 else
-{ 
-    @Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, Model.DeviceProfiles.Cast<_IndexModelItem>(), new ViewDataDictionary())
+{
+@Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, Model.DeviceProfiles.Cast<_IndexModelItem>(), new ViewDataDictionary())
 }

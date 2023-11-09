@@ -53,6 +53,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
             #line 3 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
   
     Authorization.Require(Claims.Config.DeviceProfile.Show);
+    var hasDecommissionedBatches = Model.DeviceProfiles.Any(dp => dp.DeviceCount > 0 && dp.DeviceDecommissionedCount >= dp.DeviceCount);
 
             
             #line default
@@ -60,7 +61,54 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
 WriteLiteral("\r\n");
 
             
-            #line 6 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+            #line 7 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+ if (hasDecommissionedBatches)
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <a");
+
+WriteLiteral(" id=\"Config_DeviceProfiles_ShowDecommissioned\"");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(">Show Decommissioned (");
+
+            
+            #line 9 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+                                                                                                    Write(Model.DeviceProfiles.Count(db => db.DeviceCount > 0 && db.DeviceDecommissionedCount >= db.DeviceCount));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(")</a>\r\n");
+
+WriteLiteral(@"    <script>
+        $(function () {
+            $('#Config_DeviceProfiles_ShowDecommissioned').click(function () {
+                $(this).remove();
+                $('.deviceProfileTable')
+                    .find('tr.hidden').removeClass('hidden')
+                    .filter('.decommissioned-padding').remove();
+                return false;
+            }).detach().appendTo('#layout_PageHeading');
+        })
+    </script>
+");
+
+            
+            #line 21 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+}
+
+            
+            #line default
+            #line hidden
+            
+            #line 22 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
  if (DiscoApplication.MultiSiteMode)
 {
     var deviceProfilesGrouped = Model.DeviceProfiles.OrderBy(i => i.AddressName).GroupBy(i => i.AddressName);
@@ -71,11 +119,11 @@ WriteLiteral("\r\n");
             
             #line default
             #line hidden
-WriteLiteral(" <h2>");
+WriteLiteral("<h2>");
 
             
-            #line 12 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
-         Write(deviceProfilesGroup.Key);
+            #line 28 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+        Write(deviceProfilesGroup.Key);
 
             
             #line default
@@ -83,40 +131,40 @@ WriteLiteral(" <h2>");
 WriteLiteral("</h2> ");
 
             
-            #line 12 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
-                                            }
+            #line 28 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+                                           }
     
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+            #line 29 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
 Write(Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, deviceProfilesGroup.Cast<_IndexModelItem>(), new ViewDataDictionary()));
 
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
-                                                                                                                                             
-    }
+            #line 29 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+                                                                                                                                     
+}
 }
 else
-{ 
-    
+{
+
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+            #line 34 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
 Write(Html.Partial(MVC.Config.DeviceProfile.Views._TableRender, Model.DeviceProfiles.Cast<_IndexModelItem>(), new ViewDataDictionary()));
 
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
-                                                                                                                                      
+            #line 34 "..\..\Areas\Config\Views\DeviceProfile\_Table.cshtml"
+                                                                                                                                  
 }
 
             
