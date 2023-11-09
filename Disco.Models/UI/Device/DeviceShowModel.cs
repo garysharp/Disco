@@ -10,9 +10,11 @@ namespace Disco.Models.UI.Device
         Repository.Device Device { get; set; }
 
         List<Repository.DeviceProfile> DeviceProfiles { get; set; }
+        HashSet<int> DecommissionedDeviceProfileIds { get; set; }
         OrganisationAddress DeviceProfileDefaultOrganisationAddress { get; set; }
 
         List<Repository.DeviceBatch> DeviceBatches { get; set; }
+        HashSet<int> DecommissionedDeviceBatchIds { get; set; }
 
         JobTableModel Jobs { get; set; }
 

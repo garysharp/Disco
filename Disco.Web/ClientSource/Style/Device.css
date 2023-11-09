@@ -213,6 +213,10 @@
   background-color: #cddbec;
   font-weight: 600;
 }
+#Device_Show_Policies_Profile_Actions_Update_Dialog label,
+#Device_Show_Policies_Batch_Actions_Update_Dialog label {
+  display: block;
+}
 #DeviceDetailTab-JobsContainer div.jobTable {
   margin: -1px;
   border: 1px solid #ddd;

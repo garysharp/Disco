@@ -245,10 +245,30 @@ namespace Disco.Web.Controllers
             //}
 
             if (Authorization.Has(Claims.Device.Properties.DeviceProfile))
-                m.DeviceProfiles = Database.DeviceProfiles.ToList();
+            {
+                var profiles = Database.DeviceProfiles.Select(dp =>
+                new
+                {
+                    Profile = dp,
+                    DecommissionedCount = dp.Devices.Count(d => d.DecommissionedDate.HasValue),
+                    DeviceCount = dp.Devices.Count(),
+                }).ToList();
+                m.DeviceProfiles = profiles.Select(p => p.Profile).OrderBy(p => p.Name).ToList();
+                m.DecommissionedDeviceProfileIds = new HashSet<int>(profiles.Where(p => p.DeviceCount > 0 && p.DecommissionedCount == p.DeviceCount).Select(p => p.Profile.Id));
+            }
 
             if (Authorization.Has(Claims.Device.Properties.DeviceBatch))
-                m.DeviceBatches = Database.DeviceBatches.ToList();
+            {
+                var batches = Database.DeviceBatches.Select(db =>
+                new
+                {
+                    Batch = db,
+                    DecommissionedCount = db.Devices.Count(d => d.DecommissionedDate.HasValue),
+                    DeviceCount = db.Devices.Count(),
+                }).ToList();
+                m.DeviceBatches = batches.Select(b => b.Batch).OrderBy(b => b.Name).ToList();
+                m.DecommissionedDeviceBatchIds = new HashSet<int>(batches.Where(b => b.DeviceCount > 0 && b.DecommissionedCount == b.DeviceCount).Select(b => b.Batch.Id));
+            }
 
             if (Authorization.Has(Claims.Device.ShowJobs))
             {

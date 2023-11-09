@@ -393,11 +393,23 @@
                                 <ul class="none">
                                     @foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
                                     {
-                                        <li>
-                                            <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" id="DeviceProfile_@(dp.Id)" /><label for="DeviceProfile_@(dp.Id)" title="Distribution: @(dp.DistributionType)">@dp.Name</label>
+                                        var isDecommissioned = Model.DecommissionedDeviceProfileIds.Contains(dp.Id);
+                                        <li class="@(isDecommissioned ? "hidden" : null)">
+                                            <label title="Distribution: @(dp.DistributionType)">
+                                                <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" />
+                                                @dp.Name
+                                            </label>
                                         </li>
+                                        if (isDecommissioned)
+                                        {
+                                            <li class="hidden decommissioned-padding"></li>
+                                        }
                                     }
                                 </ul>
+                                @if (Model.DecommissionedDeviceProfileIds.Count > 0)
+                                {
+                                    <a class="button small show-decommissioned" href="#">Show Decommissioned</a>
+                                }
                             </div>
                         </div>
                         <script>
@@ -442,6 +454,16 @@
                                             dialogContainers.removeClass('selected');
                                             $(this).closest('li').addClass('selected');
                                         });
+                                        buttonDialog.find('.show-decommissioned')
+                                            .click(function (e) {
+                                                e.preventDefault();
+                                                var $this = $(this);
+                                                buttonDialog.find('ul.none')
+                                                    .find('li.hidden').removeClass('hidden')
+                                                    .filter('.decommissioned-padding').remove();
+                                                $this.remove();
+                                                return false;
+                                            })
                                     }
 
                                     dialogInputs.filter('[data-deviceprofileid=' + currentProfile + ']').prop('checked', true).change();
@@ -523,11 +545,23 @@
                                 <ul class="none">
                                     @foreach (var db in Model.DeviceBatches.OrderBy(i => i.Name))
                                     {
-                                        <li>
-                                            <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" id="DeviceBatch_@(db.Id)" /><label for="DeviceBatch_@(db.Id)" title="Purchased: @(db.PurchaseDate.ToLongDateString())">@db.Name</label>
+                                        var isDecommissioned = Model.DecommissionedDeviceBatchIds.Contains(db.Id);
+                                        <li class="@(isDecommissioned ? "hidden" : null)">
+                                            <label title="Purchased: @(db.PurchaseDate.ToLongDateString())">
+                                                <input type="radio" data-devicebatchid="@db.Id" name="DeviceBatch" />
+                                                @db.Name
+                                            </label>
                                         </li>
+                                        if (isDecommissioned)
+                                        {
+                                            <li class="hidden decommissioned-padding"></li>
+                                        }
                                     }
                                 </ul>
+                                @if (Model.DecommissionedDeviceBatchIds.Count > 0)
+                                {
+                                    <a class="button small show-decommissioned" href="#">Show Decommissioned</a>
+                                }
                             </div>
                         </div>
                         <script>
@@ -572,6 +606,16 @@
                                             dialogContainers.removeClass('selected');
                                             $(this).closest('li').addClass('selected');
                                         });
+                                        buttonDialog.find('.show-decommissioned')
+                                            .click(function (e) {
+                                                e.preventDefault();
+                                                var $this = $(this);
+                                                buttonDialog.find('ul.none')
+                                                    .find('li.hidden').removeClass('hidden')
+                                                    .filter('.decommissioned-padding').remove();
+                                                $this.remove();
+                                                return false;
+                                            })
                                     }
 
                                     if (!!currentBatch) {

@@ -14,11 +14,13 @@ namespace Disco.Web.Models.Device
         public Disco.Models.Repository.Device Device { get; set; }
 
         public List<Disco.Models.Repository.DeviceProfile> DeviceProfiles { get; set; }
+        public HashSet<int> DecommissionedDeviceProfileIds { get; set; }
         public Disco.Models.BI.Config.OrganisationAddress DeviceProfileDefaultOrganisationAddress { get; set; }
         public List<PluginFeatureManifest> DeviceProfileCertificateProviders { get; set; }
         public List<PluginFeatureManifest> DeviceProfileWirelessProfileProviders { get; set; }
 
         public List<Disco.Models.Repository.DeviceBatch> DeviceBatches { get; set; }
+        public HashSet<int> DecommissionedDeviceBatchIds { get; set; }
         public JobTableModel Jobs { get; set; }
         public List<Disco.Models.Repository.DeviceCertificate> Certificates { get; set; }
 
