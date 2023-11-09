@@ -865,7 +865,11 @@ WriteLiteral(">\r\n    $(function () {\r\n        var $providerId = $(\'#Warrant
 "dressId.change(updateDetails);\r\n\r\n        var manualProvider = $(\'#ManualProvide" +
 "rName\');\r\n        if (manualProvider.length > 0 && !manualProvider.val()) {\r\n   " +
 "         manualProvider.focus();\r\n        } else {\r\n            $(\'#FaultDescrip" +
-"tion\').focus();\r\n        }\r\n    });\r\n</script>\r\n");
+"tion\').focus();\r\n        }\r\n\r\n        $(\'#publishJobAttachments\').on(\'click\', \'i" +
+"nput\', function (e) {\r\n            e.preventDefault();\r\n            setTimeout(f" +
+"unction () {\r\n                var $i = $(e.currentTarget);\r\n                $i.p" +
+"rop(\'checked\', !$i.prop(\'checked\'));\r\n            }, 0);\r\n            return fal" +
+"se;\r\n        });\r\n    });\r\n</script>\r\n");
 
         }
     }

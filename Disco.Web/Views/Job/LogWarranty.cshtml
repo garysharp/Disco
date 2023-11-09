@@ -191,5 +191,14 @@
         } else {
             $('#FaultDescription').focus();
         }
+
+        $('#publishJobAttachments').on('click', 'input', function (e) {
+            e.preventDefault();
+            setTimeout(function () {
+                var $i = $(e.currentTarget);
+                $i.prop('checked', !$i.prop('checked'));
+            }, 0);
+            return false;
+        });
     });
 </script>
