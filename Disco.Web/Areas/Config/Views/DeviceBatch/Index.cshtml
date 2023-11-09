@@ -19,11 +19,11 @@
             <a id="Config_DeviceBatches_ShowDecommissioned" href="#" class="button small">Show Decommissioned (@(Model.DeviceBatches.Count(db => db.DeviceCount > 0 && db.DeviceDecommissionedCount >= db.DeviceCount)))</a>
             <script>
                 $(function () {
-                    //$Config_DeviceBatches_ShowDecommissioned = $('#Config_DeviceBatches_ShowDecommissioned');
-
                     $('#Config_DeviceBatches_ShowDecommissioned').click(function () {
                         $(this).remove();
-                        $('#Config_DeviceBatches_List').find('tr.hidden').show();
+                        $('#Config_DeviceBatches_List')
+                            .find('tr.hidden').removeClass('hidden')
+                            .filter('.decommissioned-padding').remove();
                         return false;
                     }).detach().appendTo('#layout_PageHeading');
                 })
@@ -94,6 +94,10 @@
                         </td>
                     }
                 </tr>
+                if (isDecommissioned)
+                {
+                    <tr class="hidden decommissioned-padding"></tr>
+                }
             }
         </table>
     }
