@@ -1,13 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Disco.Models.Exporting;
+using Disco.Models.Services.Exporting;
+using System.ComponentModel.DataAnnotations;
 
 namespace Disco.Models.Services.Devices.Exporting
 {
-    public class DeviceExportOptions
+    public class DeviceExportOptions : IExportOptions
     {
         public DeviceExportTypes ExportType { get; set; }
         public int? ExportTypeTargetId { get; set; }
         
-        public bool ExcelFormat { get; set; }
+        public ExportFormat Format { get; set; }
+        public string FilenamePrefix { get; } = "DiscoDeviceExport";
+        public string ExcelWorksheetName { get; } = "DeviceExport";
+        public string ExcelTableName { get; } = "Devices";
 
         // Device
         [Display(ShortName = "Device", Name = "Serial Number", Description = "The device serial number")]
@@ -136,7 +141,7 @@ namespace Disco.Models.Services.Devices.Exporting
             return new DeviceExportOptions()
             {
                 ExportType = DeviceExportTypes.All,
-                ExcelFormat = true,
+                Format = ExportFormat.Xlsx,
                 DeviceSerialNumber = true,
                 ModelId = true,
                 ProfileId = true,

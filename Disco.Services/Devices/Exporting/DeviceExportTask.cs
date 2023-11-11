@@ -2,6 +2,7 @@
 using Disco.Services.Tasks;
 using Quartz;
 using Disco.Data.Repository;
+using Disco.Services.Exporting;
 
 namespace Disco.Services.Devices.Exporting
 {
@@ -13,10 +14,10 @@ namespace Disco.Services.Devices.Exporting
         public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public static DeviceExportTaskContext ScheduleNow(DeviceExportOptions Options)
+        public static ExportTaskContext<DeviceExportOptions> ScheduleNow(DeviceExportOptions Options)
         {
             // Build Context
-            var context = new DeviceExportTaskContext(Options);
+            var context = new ExportTaskContext<DeviceExportOptions>(Options);
 
             // Build Data Map
             var task = new DeviceExportTask();
@@ -30,7 +31,7 @@ namespace Disco.Services.Devices.Exporting
 
         protected override void ExecuteTask()
         {
-            var context = (DeviceExportTaskContext)ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
+            var context = (ExportTaskContext<DeviceExportOptions>)ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
 
             Status.UpdateStatus(10, "Exporting Device Records", "Starting...");
 

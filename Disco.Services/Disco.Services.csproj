@@ -247,7 +247,8 @@
     <Compile Include="Devices\Enrolment\LogMacAddressImportingTask.cs" />
     <Compile Include="Devices\Exporting\DeviceExport.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTask.cs" />
-    <Compile Include="Devices\Exporting\DeviceExportTaskContext.cs" />
+    <Compile Include="Exporting\ExportHelpers.cs" />
+    <Compile Include="Exporting\ExportTaskContext.cs" />
     <Compile Include="Devices\Importing\BaseDeviceImportContext.cs" />
     <Compile Include="Devices\Importing\CsvDeviceImportDataReader.cs" />
     <Compile Include="Devices\Importing\DeviceImport.cs" />

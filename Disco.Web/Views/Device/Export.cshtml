@@ -33,9 +33,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>&nbsp;</th>
+                    <th>@Html.LabelFor(m => m.Options.Format)</th>
                     <td>
-                        @Html.CheckBoxFor(m => m.Options.ExcelFormat) <label for="Options_ExcelFormat">Microsoft Excel Format</label>
+                        @Html.DropDownListFor(m => m.Options.Format, Enum.GetNames(typeof(Disco.Models.Exporting.ExportFormat)).Select(v => new SelectListItem() { Value = v, Text = v }))
                     </td>
                 </tr>
             </table>
@@ -141,7 +141,7 @@
                         if ($exportingDialog == null) {
                             $exportingDialog = $('#Devices_Export_Exporting').dialog({
                                 width: 400,
-                                height: 160,
+                                height: 164,
                                 resizable: false,
                                 modal: true,
                                 autoOpen: false
@@ -159,6 +159,7 @@
 
                 $('#Devices_Export_Download_Dialog').dialog({
                     width: 400,
+                    height: 164,
                     resizable: false,
                     modal: true,
                     autoOpen: true
@@ -181,7 +182,7 @@
             $('#Devices_Export_Download_Dialog')
                 .dialog({
                     width: 400,
-                    height: 160,
+                    height: 164,
                     resizable: false,
                     modal: true,
                     autoOpen: true

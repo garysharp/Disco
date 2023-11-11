@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Config\OrganisationAddress.cs" />
+    <Compile Include="Exporting\ExportFieldMetadata.cs" />
+    <Compile Include="Exporting\ExportFormat.cs" />
+    <Compile Include="Exporting\IExportRecord.cs" />
     <Compile Include="Services\Expressions\Extensions\ImageExpressionFormat.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\BaseBoard.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Battery.cs" />
@@ -66,13 +69,13 @@
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileStore.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs" />
     <Compile Include="Repository\Device\DeviceBatchAttachment.cs" />
-    <Compile Include="Services\Devices\Exporting\DeviceExportFieldMetadata.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportDataReader.cs" />
     <Compile Include="Services\Documents\DocumentField.cs" />
     <Compile Include="Services\Documents\DocumentFieldType.cs" />
     <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
     <Compile Include="Services\Documents\OnImportUserFlagRule.cs" />
+    <Compile Include="Exporting\IExportOptions.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />
     <Compile Include="ClientServices\Register.cs" />
@@ -126,7 +129,7 @@
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="Repository\User\AuthorizationRole.cs" />
     <Compile Include="Services\Devices\Exporting\DeviceExportRecord.cs" />
-    <Compile Include="Services\Devices\Exporting\DeviceExportResult.cs" />
+    <Compile Include="Exporting\ExportResult.cs" />
     <Compile Include="Services\Devices\Exporting\DeviceExportTypes.cs" />
     <Compile Include="Services\Devices\Exporting\DeviceExportOptions.cs" />
     <Compile Include="Services\Devices\Importing\DeviceImportFieldTypes.cs" />

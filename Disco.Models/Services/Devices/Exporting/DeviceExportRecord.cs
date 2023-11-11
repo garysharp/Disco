@@ -1,11 +1,12 @@
 ﻿using Disco.Models.ClientServices.EnrolmentInformation;
+using Disco.Models.Exporting;
 using Disco.Models.Repository;
 using System;
 using System.Collections.Generic;
 
 namespace Disco.Models.Services.Devices.Exporting
 {
-    public class DeviceExportRecord
+    public class DeviceExportRecord : IExportRecord
     {
         public Device Device { get; set; }
 

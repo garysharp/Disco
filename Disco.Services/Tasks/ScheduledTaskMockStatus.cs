@@ -15,6 +15,8 @@ namespace Disco.Services.Tasks
         public double ProgressMultiplier { get; set; }
         public byte ProgressOffset { get; set; }
 
+        public DateTime? StartedTimestamp { get; } = DateTime.Now;
+
         public string FinishedMessage { get; set; }
         public string FinishedUrl { get; set; }
 

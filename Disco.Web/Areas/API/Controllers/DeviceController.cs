@@ -1,5 +1,6 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Models.Repository;
+using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Models.Services.Documents;
 using Disco.Services;
@@ -7,6 +8,7 @@ using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
 using Disco.Services.Devices.Importing;
 using Disco.Services.Documents;
+using Disco.Services.Exporting;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
@@ -678,7 +680,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentNullException("Id");
 
             string key = string.Format(ExportSessionCacheKey, Id);
-            var context = HttpRuntime.Cache.Get(key) as DeviceExportTaskContext;
+            var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<DeviceExportOptions>;
 
             if (context == null)
                 throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", "Id");
@@ -686,22 +688,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (context.Result == null || context.Result.Result == null)
                 throw new ArgumentException("The export session is still running, or failed to complete successfully", "Id");
 
-            string filename;
-            string mimeType;
-            if (context.Options.ExcelFormat)
-            {
-                filename = $"DiscoDeviceExport-{context.TaskStatus.StartedTimestamp.Value:yyyyMMdd-HHmmss}.xlsx";
-                mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            }
-            else
-            {
-                filename = $"DiscoDeviceExport-{context.TaskStatus.StartedTimestamp.Value:yyyyMMdd-HHmmss}.csv";
-                mimeType = "text/csv";
-            }
-
             var fileStream = context.Result.Result;
 
-            return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, mimeType, filename);
+            return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
         }
 
         #endregion

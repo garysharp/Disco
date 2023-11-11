@@ -12,7 +12,9 @@ namespace Disco.Services.Tasks
         bool IgnoreCurrentDescription { get; set; }
         double ProgressMultiplier { get; set; }
         byte ProgressOffset { get; set; }
-        
+
+        DateTime? StartedTimestamp { get; }
+
         string FinishedMessage { get; }
         string FinishedUrl { get; }
         

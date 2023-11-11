@@ -4,7 +4,7 @@ using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Devices.Exporting;
+using Disco.Services.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Plugins.Features.UIExtension;
@@ -118,7 +118,7 @@ namespace Disco.Web.Controllers
             if (!string.IsNullOrWhiteSpace(DownloadId))
             {
                 string key = string.Format(Areas.API.Controllers.DeviceController.ExportSessionCacheKey, DownloadId);
-                var context = HttpRuntime.Cache.Get(key) as DeviceExportTaskContext;
+                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<DeviceExportOptions>;
 
                 if (context != null)
                 {
