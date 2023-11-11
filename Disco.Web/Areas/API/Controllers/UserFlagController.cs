@@ -1,12 +1,18 @@
 ﻿using Disco.Models.Repository;
+using Disco.Models.Services.Users.UserFlags;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
+using Disco.Web.Areas.Config.Models.UserFlag;
+using Disco.Web.Extensions;
 using System;
 using System.Linq;
+using System.Web;
+using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -400,6 +406,54 @@ namespace Disco.Web.Areas.API.Controllers
 
             return Json(assignedUsers, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        #region Exporting
+        internal const string ExportSessionCacheKey = "UserFlagExportContext_{0}";
+
+        [DiscoAuthorize(Claims.Config.UserFlag.Export)]
+        public virtual ActionResult Export(ExportModel Model)
+        {
+            if (Model == null || Model.Options == null)
+                throw new ArgumentNullException(nameof(Model));
+
+            // Start Export
+            var exportContext = UserFlagExportTask.ScheduleNow(Model.Options);
+
+            // Store Export Context in Web Cache
+            string key = string.Format(ExportSessionCacheKey, exportContext.TaskStatus.SessionId);
+            HttpRuntime.Cache.Insert(key, exportContext, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
+
+            // Set Task Finished Url
+            var finishedActionResult = MVC.Config.UserFlag.Export(exportContext.TaskStatus.SessionId, null, null);
+            exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult));
+
+            // Try waiting for completion
+            if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
+                return RedirectToAction(finishedActionResult);
+            else
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(exportContext.TaskStatus.SessionId));
+        }
+        [DiscoAuthorize(Claims.Config.UserFlag.Export)]
+        public virtual ActionResult ExportRetrieve(string Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException("Id");
+
+            string key = string.Format(ExportSessionCacheKey, Id);
+            var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<UserFlagExportOptions>;
+
+            if (context == null)
+                throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", nameof(Id));
+
+            if (context.Result == null || context.Result.Result == null)
+                throw new ArgumentException("The export session is still running, or failed to complete successfully", nameof(Id));
+
+            var fileStream = context.Result.Result;
+
+            return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
+        }
+
         #endregion
     }
 }

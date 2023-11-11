@@ -461,6 +461,8 @@
     <Compile Include="Users\Contact\UserContactService.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserFlags\Cache.cs" />
+    <Compile Include="Users\UserFlags\UserFlagExport.cs" />
+    <Compile Include="Users\UserFlags\UserFlagExportTask.cs" />
     <Compile Include="Users\UserFlags\UserFlagExtensions.cs" />
     <Compile Include="Users\UserFlags\UserFlagUserDevicesManagedGroup.cs" />
     <Compile Include="Users\UserFlags\UserFlagUsersManagedGroup.cs" />

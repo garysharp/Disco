@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         @if (string.IsNullOrWhiteSpace(item.Description))
-                    {
+                        {
                             <span class="smallMessage">&lt;none&gt;</span>
                         }
                         else
@@ -65,10 +65,14 @@
             }
         </table>
     }
+<div class="actionBar">
+    @if (Authorization.Has(Claims.Config.UserFlag.Export) && Model.UserFlags.Count > 0)
+    {
+        @Html.ActionLinkButton("Export", MVC.Config.UserFlag.Export())
+    }
     @if (Authorization.Has(Claims.Config.UserFlag.Create))
     {
-        <div class="actionBar">
-            @Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create())
-        </div>
+        @Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create())
     }
+</div>
 </div>

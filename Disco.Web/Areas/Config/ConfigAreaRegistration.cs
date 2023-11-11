@@ -130,6 +130,11 @@ namespace Disco.Web.Areas.Config
                 new { controller = "UserFlag", action = "Create", id = UrlParameter.Optional }
             );
             context.MapRoute(
+                "Config_UserFlag_Export",
+                "Config/UserFlag/Export",
+                new { controller = "UserFlag", action = "Export", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
                 "Config_UserFlag",
                 "Config/UserFlag/{id}",
                 new { controller = "UserFlag", action = "Index", id = UrlParameter.Optional }

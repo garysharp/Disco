@@ -1,12 +1,19 @@
-﻿using Disco.Models.Repository;
+﻿using Disco.Models.Areas.Config.UI.UserFlag;
+using Disco.Models.Repository;
+using Disco.Models.Services.Devices.Exporting;
+using Disco.Models.Services.Users.UserFlags;
 using Disco.Models.UI.Config.UserFlag;
 using Disco.Services.Authorization;
+using Disco.Services.Exporting;
 using Disco.Services.Extensions;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
+using Disco.Web.Areas.Config.Models.UserFlag;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -114,5 +121,42 @@ namespace Disco.Web.Areas.Config.Controllers
 
             return View(model);
         }
+
+        #region Export
+
+        [DiscoAuthorizeAny(Claims.Config.UserFlag.Export), HttpGet]
+        public virtual ActionResult Export(string DownloadId, int? UserFlagId, bool? CurrentOnly)
+        {
+            var m = new ExportModel()
+            {
+                Options = UserFlagExportOptions.DefaultOptions(),
+                UserFlags = UserFlagService.GetUserFlags(),
+            };
+
+            if (!string.IsNullOrWhiteSpace(DownloadId))
+            {
+                string key = string.Format(API.Controllers.UserFlagController.ExportSessionCacheKey, DownloadId);
+                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<UserFlagExportOptions>;
+
+                if (context != null)
+                {
+                    m.ExportSessionResult = context.Result;
+                    m.ExportSessionId = DownloadId;
+                }
+            }
+
+            if (UserFlagId.HasValue && CurrentOnly.HasValue)
+            {
+                m.Options.UserFlagIds = new List<int>() { UserFlagId.Value };
+                m.Options.CurrentOnly = CurrentOnly.Value;
+            }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigUserFlagExportModel>(this.ControllerContext, m);
+
+            return View(m);
+        }
+
+        #endregion
     }
 }

@@ -234,6 +234,7 @@
     <Compile Include="Areas\Config\Models\Shared\DeviceGroupDocumentTemplateBulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\UserFlag\ExportModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceBatch\CreateModel.cs" />
@@ -344,6 +345,11 @@
     </Compile>
     <Compile Include="Areas\Config\Views\UserFlag\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\UserFlag\Export.generated.cs">
+      <DependentUpon>Export.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -1295,6 +1301,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Config\Views\UserFlag\Export.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Export.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Areas\Config\Views\UserFlag\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -2393,6 +2403,7 @@
     <Folder Include="Areas\API\Models\AuthorizationRole\" />
     <Folder Include="Areas\API\Models\JobQueue\" />
     <Folder Include="Areas\API\Models\Search\" />
+    <Folder Include="Areas\API\Models\UserFlag\" />
     <Folder Include="Areas\API\Models\WirelessCertificate\" />
     <Folder Include="Areas\Services\Models\" />
   </ItemGroup>

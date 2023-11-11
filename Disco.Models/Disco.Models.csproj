@@ -158,6 +158,8 @@
     <Compile Include="Services\Searching\ISearchResultItem.cs" />
     <Compile Include="Services\Searching\JobSearchResultItem.cs" />
     <Compile Include="Services\Searching\UserSearchResultItem.cs" />
+    <Compile Include="Services\Users\UserFlags\UserFlagExportOptions.cs" />
+    <Compile Include="Services\Users\UserFlags\UserFlagExportRecord.cs" />
     <Compile Include="UI\BaseUIModel.cs" />
     <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleCreateModel.cs" />
     <Compile Include="UI\Config\AuthorizationRole\ConfigAuthorizationRoleIndexModel.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="UI\Config\UserFlag\ConfigUserFlagCreateModel.cs" />
     <Compile Include="UI\Config\UserFlag\ConfigUserFlagIndexModel.cs" />
     <Compile Include="UI\Config\UserFlag\ConfigUserFlagShowModel.cs" />
+    <Compile Include="UI\Config\UserFlag\ConfigUserFlagExportModel.cs" />
     <Compile Include="UI\Device\DeviceAddOfflineModel.cs" />
     <Compile Include="UI\Device\DeviceExportModel.cs" />
     <Compile Include="UI\Device\DeviceImportHeadersModel.cs" />

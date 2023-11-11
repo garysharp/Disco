@@ -65,6 +65,12 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public UserFlagController Actions { get { return MVC.Config.UserFlag; } }
@@ -83,6 +89,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string Index = "Index";
             public readonly string Create = "Create";
+            public readonly string Export = "Export";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -90,6 +97,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public const string Index = "Index";
             public const string Create = "Create";
+            public const string Export = "Export";
         }
 
 
@@ -109,6 +117,16 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string model = "model";
         }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string DownloadId = "DownloadId";
+            public readonly string UserFlagId = "UserFlagId";
+            public readonly string CurrentOnly = "CurrentOnly";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -120,10 +138,12 @@ namespace Disco.Web.Areas.Config.Controllers
             public class _ViewNamesClass
             {
                 public readonly string Create = "Create";
+                public readonly string Export = "Export";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
             }
             public readonly string Create = "~/Areas/Config/Views/UserFlag/Create.cshtml";
+            public readonly string Export = "~/Areas/Config/Views/UserFlag/Export.cshtml";
             public readonly string Index = "~/Areas/Config/Views/UserFlag/Index.cshtml";
             public readonly string Show = "~/Areas/Config/Views/UserFlag/Show.cshtml";
         }
@@ -166,6 +186,20 @@ namespace Disco.Web.Areas.Config.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             CreateOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DownloadId, int? UserFlagId, bool? CurrentOnly);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Export(string DownloadId, int? UserFlagId, bool? CurrentOnly)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DownloadId", DownloadId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UserFlagId", UserFlagId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CurrentOnly", CurrentOnly);
+            ExportOverride(callInfo, DownloadId, UserFlagId, CurrentOnly);
             return callInfo;
         }
 

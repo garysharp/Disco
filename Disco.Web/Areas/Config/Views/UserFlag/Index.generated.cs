@@ -197,7 +197,7 @@ WriteLiteral("\r\n                        </a>\r\n                    </td>\r\n 
             
             #line 39 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                          if (string.IsNullOrWhiteSpace(item.Description))
-                    {
+                        {
 
             
             #line default
@@ -342,41 +342,67 @@ WriteLiteral("        </table>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("    ");
-
-            
-            #line 68 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-     if (Authorization.Has(Claims.Config.UserFlag.Create))
-    {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        <div");
+WriteLiteral("<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("            ");
-
+            
+            #line 69 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 69 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+     if (Authorization.Has(Claims.Config.UserFlag.Export) && Model.UserFlags.Count > 0)
+    {
+        
+            
+            #line default
+            #line hidden
             
             #line 71 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-       Write(Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create()));
+   Write(Html.ActionLinkButton("Export", MVC.Config.UserFlag.Export()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </div>\r\n");
-
             
-            #line 73 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 71 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                                                                      
     }
 
             
             #line default
             #line hidden
-WriteLiteral("</div>");
+WriteLiteral("    ");
+
+            
+            #line 73 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+     if (Authorization.Has(Claims.Config.UserFlag.Create))
+    {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+   Write(Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                                                                                
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n</div>");
 
         }
     }

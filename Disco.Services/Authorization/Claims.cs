@@ -77,6 +77,7 @@ namespace Disco.Services.Authorization
 				{ "Config.UserFlag.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Configure, (c, v) => c.Config.UserFlag.Configure = v, "Configure User Flags", "Can configure user flags", false) },
 				{ "Config.UserFlag.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Create, (c, v) => c.Config.UserFlag.Create = v, "Create User Flags", "Can create user flags", false) },
 				{ "Config.UserFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Delete, (c, v) => c.Config.UserFlag.Delete = v, "Delete User Flags", "Can delete user flags", false) },
+				{ "Config.UserFlag.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Export, (c, v) => c.Config.UserFlag.Export = v, "Export User Flag Assignments", "Can export user flag assignments", false) },
 				{ "Config.UserFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Show, (c, v) => c.Config.UserFlag.Show = v, "Show User Flags", "Can show user flags", false) },
 				{ "Config.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Show, (c, v) => c.Config.Show = v, "Show Configuration", "Can show the configuration menu", false) },
 				{ "Job.Lists.AllOpen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AllOpen, (c, v) => c.Job.Lists.AllOpen = v, "All Open List", "Can show list", false) },
@@ -306,6 +307,7 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.UserFlag.Configure", false),
 				            new ClaimNavigatorItem("Config.UserFlag.Create", false),
 				            new ClaimNavigatorItem("Config.UserFlag.Delete", false),
+				            new ClaimNavigatorItem("Config.UserFlag.Export", false),
 				            new ClaimNavigatorItem("Config.UserFlag.Show", false)
 				        }),
 				        new ClaimNavigatorItem("Config.Show", false)
@@ -593,6 +595,7 @@ namespace Disco.Services.Authorization
 			c.Config.UserFlag.Configure = true;
 			c.Config.UserFlag.Create = true;
 			c.Config.UserFlag.Delete = true;
+			c.Config.UserFlag.Export = true;
 			c.Config.UserFlag.Show = true;
 			c.Config.Show = true;
 			c.Job.Lists.AllOpen = true;
@@ -1108,6 +1111,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can delete user flags</para>
                 /// </summary>
                 public const string Delete = "Config.UserFlag.Delete";
+
+                /// <summary>Export User Flag Assignments
+                /// <para>Can export user flag assignments</para>
+                /// </summary>
+                public const string Export = "Config.UserFlag.Export";
 
                 /// <summary>Show User Flags
                 /// <para>Can show user flags</para>

@@ -11,6 +11,8 @@
     var canDelete = Authorization.Has(Claims.Config.UserFlag.Delete);
     var canBulkAssignment = Authorization.HasAll(Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments);
     var canShowUsers = Model.CurrentAssignmentCount > 0 && Authorization.HasAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
+    var canExportCurrent = Model.CurrentAssignmentCount > 0 && Authorization.Has(Claims.Config.UserFlag.Export);
+    var canExportAll = Model.TotalAssignmentCount > 0 && Authorization.Has(Claims.Config.UserFlag.Export);
 
     var hideAdvanced =
         Model.UserFlag.UserDevicesLinkedGroup == null &&
@@ -398,9 +400,17 @@
         </tr>
     </table>
 </div>
-@if (canBulkAssignment || canDelete || canShowUsers)
+@if (canBulkAssignment || canDelete || canShowUsers || canExportCurrent || canExportAll)
 {
     <div class="actionBar">
+        @if (canExportCurrent)
+        {
+            @Html.ActionLinkButton("Export Current Assignments", MVC.Config.UserFlag.Export(null, Model.UserFlag.Id, true), "Config_UserFlags_Actions_ExportCurrent_Button")
+        }
+        @if (canExportAll)
+        {
+            @Html.ActionLinkButton("Export All Assignments", MVC.Config.UserFlag.Export(null, Model.UserFlag.Id, false), "Config_UserFlags_Actions_ExportAll_Button")
+        }
         @if (canBulkAssignment)
         {
             <a href="#" id="Config_UserFlags_BulkAssign_Button" class="button">Bulk Assign Users</a>
@@ -537,9 +547,6 @@
                 });
             </script>
         }
-
-
-
         @if (canDelete)
         {
             @Html.ActionLinkButton("Delete", MVC.API.UserFlag.Delete(Model.UserFlag.Id, true), "Config_UserFlags_Actions_Delete_Button")
