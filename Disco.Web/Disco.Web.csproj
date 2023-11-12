@@ -1424,6 +1424,9 @@
     </None>
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" />
     <Conent Include="ClientSource\Scripts\Modules\tinymce\themes\simple\theme.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <None Include="ClientSource\Style\FontAwesome\animated.less" />
+    <Content Include="ClientSource\Style\FontAwesome\fontawesome-webfont.woff2" />
+    <None Include="ClientSource\Style\FontAwesome\screen-reader.less" />
     <None Include="ClientSource\Style\tinymce\content.css">
       <DependentUpon>content.less</DependentUpon>
     </None>
@@ -1632,7 +1635,6 @@
     <None Include="ClientSource\Style\FontAwesome\mixins.less" />
     <None Include="ClientSource\Style\FontAwesome\path.less" />
     <None Include="ClientSource\Style\FontAwesome\rotated-flipped.less" />
-    <None Include="ClientSource\Style\FontAwesome\spinning.less" />
     <None Include="ClientSource\Style\FontAwesome\stacked.less" />
     <None Include="ClientSource\Style\FontAwesome\variables.less" />
     <None Include="ClientSource\Style\Images\Actions\dataTableFirst.png" />
