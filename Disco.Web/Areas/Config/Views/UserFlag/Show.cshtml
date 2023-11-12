@@ -114,16 +114,16 @@
                         <a id="Config_UserFlags_Icon_Update" href="#" class="button small">Update</a>
                         <div id="Config_UserFlags_Icon_Update_Dialog" class="dialog" title="User Flag Icon">
                             <div>
-                                <div class="icons">
-                                    @foreach (var icon in Model.Icons)
-                                    {
-                                        <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
-                                    }
-                                </div>
                                 <div class="colours">
                                     @foreach (var colour in Model.ThemeColours)
                                     {
                                         <i data-colour="@(colour.Key)" class="fa fa-square d-@(colour.Key)" title="@colour.Value"></i>
+                                    }
+                                </div>
+                                <div class="icons">
+                                    @foreach (var icon in Model.Icons)
+                                    {
+                                        <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
                                     }
                                 </div>
                             </div>
@@ -138,8 +138,7 @@
                                             resizable: false,
                                             modal: true,
                                             autoOpen: false,
-                                            width: 780,
-                                            height: 540,
+                                            width: 1000,
                                             buttons: {
                                                 "Save": save,
                                                 Cancel: cancel
