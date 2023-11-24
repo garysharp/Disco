@@ -71,6 +71,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersUpstream);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Devices()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Devices);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public SearchController Actions { get { return MVC.API.Search; } }
@@ -89,6 +95,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string QuickQuery = "QuickQuery";
             public readonly string UsersUpstream = "UsersUpstream";
+            public readonly string Devices = "Devices";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -96,6 +103,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string QuickQuery = "QuickQuery";
             public const string UsersUpstream = "UsersUpstream";
+            public const string Devices = "Devices";
         }
 
 
@@ -113,6 +121,15 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_UsersUpstream UsersUpstreamParams { get { return s_params_UsersUpstream; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_UsersUpstream
+        {
+            public readonly string Term = "Term";
+            public readonly string Limit = "Limit";
+        }
+        static readonly ActionParamsClass_Devices s_params_Devices = new ActionParamsClass_Devices();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Devices DevicesParams { get { return s_params_Devices; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Devices
         {
             public readonly string Term = "Term";
             public readonly string Limit = "Limit";
@@ -159,6 +176,19 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Term", Term);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Limit", Limit);
             UsersUpstreamOverride(callInfo, Term, Limit);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Term, int Limit);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Devices(string Term, int Limit)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Devices);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Term", Term);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Limit", Limit);
+            DevicesOverride(callInfo, Term, Limit);
             return callInfo;
         }
 

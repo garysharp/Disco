@@ -214,6 +214,7 @@
     <Compile Include="Areas\API\Controllers\JobQueueJobController.cs" />
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\API\Controllers\SearchController.cs" />
+    <Compile Include="Areas\API\Models\DeviceModel\TestComputerNameTemplateModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\AddOnImportUserFlagRuleModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\BulkGenerateUserModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\DocumentHandlersModel.cs" />

@@ -592,6 +592,7 @@ namespace Links
                 public const string UrlPath = "~/ClientSource/Style/FontAwesome";
                 public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
                 public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                public static readonly string animated_less = Url("animated.less");
                 public static readonly string bordered_pulled_less = Url("bordered-pulled.less");
                 public static readonly string core_less = Url("core.less");
                 public static readonly string fixed_width_less = Url("fixed-width.less");
@@ -600,6 +601,7 @@ namespace Links
                 public static readonly string fontawesome_webfont_svg = Url("fontawesome-webfont.svg");
                 public static readonly string fontawesome_webfont_ttf = Url("fontawesome-webfont.ttf");
                 public static readonly string fontawesome_webfont_woff = Url("fontawesome-webfont.woff");
+                public static readonly string fontawesome_webfont_woff2 = Url("fontawesome-webfont.woff2");
                 public static readonly string FontAwesome_otf = Url("FontAwesome.otf");
                 public static readonly string icons_less = Url("icons.less");
                 public static readonly string larger_less = Url("larger.less");
@@ -607,7 +609,7 @@ namespace Links
                 public static readonly string mixins_less = Url("mixins.less");
                 public static readonly string path_less = Url("path.less");
                 public static readonly string rotated_flipped_less = Url("rotated-flipped.less");
-                public static readonly string spinning_less = Url("spinning.less");
+                public static readonly string screen_reader_less = Url("screen-reader.less");
                 public static readonly string stacked_less = Url("stacked.less");
                 public static readonly string variables_less = Url("variables.less");
             }

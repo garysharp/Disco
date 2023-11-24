@@ -295,46 +295,227 @@
                 Template Expression:
             </th>
             <td>
+                <div id="displayComputerNameTemplate" class="code">
+                    @if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        @Model.DeviceProfile.ComputerNameTemplate
+                    }
+                </div>
                 @if (canConfig && canConfigExpression)
                 {
-                    @Html.EditorFor(model => model.DeviceProfile.ComputerNameTemplate)
-                    @AjaxHelpers.AjaxSave()
-                    @AjaxHelpers.AjaxLoader()
-                    <a id="expressionBrowserAnchor" href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))">&nbsp;</a>
+                    <a id="changeComputerNameTemplate" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
+                    <div id="dialogComputerNameTemplate" title="Computer Name Template" class="dialog">
+                        @using (Html.BeginForm(MVC.API.DeviceProfile.UpdateComputerNameTemplate(Model.DeviceProfile.Id, null, false)))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.TextArea("ComputerNameTemplate", Model.DeviceProfile.ComputerNameTemplate, new { spellcheck = "false", required = "required" })
+                        }
+                        <div class="hidden info-box error code whitespace-pre-wrap">
+                        </div>
+                        <div class="test hidden">
+                            @using (Html.BeginForm(MVC.API.DeviceProfile.TestComputerNameTemplate(Model.DeviceProfile.Id)))
+                            {
+                                @Html.AntiForgeryToken();
+                                <table class="genericData">
+                                    <thead>
+                                        <tr>
+                                            <th>Serial Number</th>
+                                            <th>Current</th>
+                                            <th>Result</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input id="ComputerNameTemplateTestSearch" name="UserSpecifiedDeviceSerialNumber" type="text" placeholder="Device Serial Number" spellcheck="false" />
+                                            </td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                        <button id="ComputerNameTemplateTest" class="button small" type="button">Test Template</button>@AjaxHelpers.AjaxLoader()
+                    </div>
                     <script type="text/javascript">
-                        $(function () {
-                            var field = $('#DeviceProfile_ComputerNameTemplate');
-                            var fieldOriginalWidth, fieldOriginalHeight;
+                        $(() => {
+                            let $dialog = null;
+                            let $textarea = null;
+                            let currentValue = null;
 
-                            document.DiscoFunctions.PropertyChangeHelper(
-                                field,
-                                'None',
-                                '@Url.Action(MVC.API.DeviceProfile.UpdateComputerNameTemplate(Model.DeviceProfile.Id))',
-                                'ComputerNameTemplate'
-                            );
+                            $('#changeComputerNameTemplate').click(e => {
+                                e.preventDefault();
 
-                            field.focus(function () {
-                                fieldOriginalWidth = field.width();
-                                fieldOriginalHeight = field.height();
-                                field.css('overflow', 'visible').animate({ width: field.parent().width() - 52, height: 75 }, 200);
-                            }).blur(function () {
-                                field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
-                            }).attr('placeholder', 'None').attr('spellcheck', 'false');
+                                if (!$dialog) {
+                                    $textarea = $('#ComputerNameTemplate');
+                                    currentValue = $textarea.val();
+                                    $dialog = $('#dialogComputerNameTemplate').dialog({
+                                        autoOpen: false,
+                                        buttons: null,
+                                        draggable: false,
+                                        modal: true,
+                                        resizable: false,
+                                        width: 700,
+                                        buttons: {
+                                            "Cancel": () => {
+                                                $textarea.val(currentValue);
+                                                $dialog.find('.error').addClass('hidden');
+                                                $dialog.dialog("close");
+                                            },
+                                            "Expression Browser": () => {
+                                                window.open('@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))', '_blank');
+                                            },
+                                            "Save": () => {
+                                                const $form = $textarea.closest('form');
+                                                $(this).find('.error').addClass('hidden');
+
+                                                if ($form[0].reportValidity()) {
+                                                    const body = new FormData($form[0]);
+                                                    const url = $form.attr('action');
+
+                                                    const $ajaxLoading = $('#changeComputerNameTemplate').nextAll('.ajaxLoading').first();
+                                                    $ajaxLoading.show();
+                                                    $dialog.dialog('close');
+
+                                                    fetch(url, {
+                                                        method: 'POST',
+                                                        body: body
+                                                    }).then(response => {
+                                                        if (response.ok) {
+                                                            currentValue = $textarea.val();
+                                                            const $display = $('#displayComputerNameTemplate');
+                                                            if (currentValue) {
+                                                                $display.text(currentValue);
+                                                            } else {
+                                                                $display.html('<span class="smallMessage">&lt;None Specified&gt;</span>');
+                                                            }
+                                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                                        } else if (response.status == 400) {
+                                                            response.json().then(data => {
+                                                                $ajaxLoading.hide();
+                                                                $dialog.dialog('open');
+                                                                $dialog.find('.error').text(data).removeClass('hidden');
+                                                                console.error(data);
+                                                            })
+                                                        }
+                                                    }).catch(error => {
+                                                        alert('Unable to save computer name template');
+                                                        $ajaxLoading.hide();
+                                                        $dialog.dialog('open');
+                                                        $dialog.find('.error').text('Unable to save computer name template: ' + error).removeClass('hidden');
+                                                        console.error(error);
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
+                                    const $buttonTest = $dialog.find('#ComputerNameTemplateTest');
+                                    $buttonTest.click(e => {
+                                        e.preventDefault();
+                                        const $test = $dialog.find('.test');
+
+                                        const $ajaxLoading = $(e.currentTarget).nextAll('.ajaxLoading').first();
+                                        $ajaxLoading.show();
+
+                                        const $form = $test.find('form');
+                                        const url = $form.attr('action');
+                                        const body = new FormData($form[0]);
+                                        body.append('ComputerNameTemplate', $textarea.val());
+
+                                        fetch(url, {
+                                            method: 'POST',
+                                            body: body
+                                        }).then(response => {
+                                            if (response.ok) {
+                                                response.json().then(data => {
+                                                    const $table = $test.find('table tbody');
+                                                    if (data.UserSpecifiedResult) {
+                                                        const result = data.UserSpecifiedResult;
+                                                        const row = $table.find('tr').first();
+                                                        row.find('input').val(result.DeviceSerialNumber);
+                                                        const columns = row.find('td');
+                                                        columns.eq(1).html('');
+                                                        $('<span class="code">').text(result.DeviceComputerName)
+                                                            .appendTo(columns.eq(1))
+                                                        columns.eq(2).html('');
+                                                        $('<span class="code">').text(result.RenderedComputerName)
+                                                            .appendTo(columns.eq(2))
+                                                        if (!result.Success) {
+                                                            $('<div class="info-box error code whitespace-pre-wrap">').text(result.ErrorMessage).appendTo(columns[2]);
+                                                        }
+                                                    }
+                                                    if (data.RandomDeviceResults) {
+                                                        $table.find('tr').slice(1).remove();
+                                                        for (var i = 0; i < data.RandomDeviceResults.length; i++) {
+                                                            const result = data.RandomDeviceResults[i];
+                                                            const row = $('<tr><td></td><td></td><td></td></tr>');
+                                                            const columns = row.find('td');
+                                                            $('<a>').attr({
+                                                                href: result.Url,
+                                                                target: '_blank'
+                                                            }).text(result.DeviceSerialNumber)
+                                                                .appendTo(columns.eq(0));
+                                                            $('<span class="code">').text(result.DeviceComputerName)
+                                                                .appendTo(columns.eq(1))
+                                                            $('<span class="code">').text(result.RenderedComputerName)
+                                                                .appendTo(columns.eq(2))
+                                                            if (!result.Success) {
+                                                                $('<div class="info-box error code whitespace-pre-wrap">').text(result.ErrorMessage).appendTo(columns.eq(2));
+                                                            }
+                                                            row.appendTo($table);
+                                                        }
+                                                    }
+                                                    $test.removeClass('hidden');
+                                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                                });
+                                            } else if (response.status == 400) {
+                                                response.json().then(data => {
+                                                    $ajaxLoading.hide();
+                                                    $test.addClass('hidden');
+                                                    $dialog.find('.error').text(data).removeClass('hidden');
+                                                    console.error(data);
+                                                })
+                                            }
+                                        }).catch(error => {
+                                            $ajaxLoading.hide();
+                                            $test.addClass('hidden');
+                                            $dialog.find('.error').text('Unable to test computer name template: ' + error).removeClass('hidden');
+                                            console.error(error);
+                                        });
+
+                                        return false;
+                                    })
+                                    const $testSearchText = $dialog.find('#ComputerNameTemplateTestSearch');
+                                    $testSearchText.autocomplete({
+                                        source: '@(Url.Action(MVC.API.Search.Devices()))',
+                                        minLength: 2,
+                                        focus: function (e, ui) {
+                                            $testSearchText.val(ui.item.Id);
+                                            return false;
+                                        },
+                                        select: function (e, ui) {
+                                            $testSearchText.val(ui.item.Id).blur();
+                                            $buttonTest.click();
+                                            return false;
+                                        }
+                                    }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                        return $('<li>')
+                                            .data('item.autocomplete', item)
+                                            .append($('<a>').text(item.Description))
+                                            .appendTo(ul);
+                                    };
+                                }
+                                $dialog.dialog('open');
+
+                                return false;
+                            });
                         });
                     </script>
-                }
-                else
-                {
-                    <div id="displayComputerNameTemplate" class="code">
-                        @if (string.IsNullOrWhiteSpace(Model.DeviceProfile.ComputerNameTemplate))
-                        {
-                            <span class="smallMessage">&lt;None Specified&gt;</span>
-                        }
-                        else
-                        {
-                            @Model.DeviceProfile.ComputerNameTemplate
-                        }
-                    </div>
                 }
                 <div style="margin-top: 8px;">
                     @if (canConfig)

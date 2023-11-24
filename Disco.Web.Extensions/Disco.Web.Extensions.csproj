@@ -107,6 +107,7 @@
     <Compile Include="MvcExtensions\File\FileExtensions.cs" />
     <Compile Include="MvcExtensions\JsonNet\JsonDotNetValueProviderFactory.cs" />
     <Compile Include="MvcExtensions\JsonNet\JsonNetResult.cs" />
+    <Compile Include="MvcExtensions\JsonStatusCodeResult.cs" />
     <Compile Include="MvcExtensions\PartialCompiled\PartialCompiledHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MvcExtensions\XmlResult.cs" />

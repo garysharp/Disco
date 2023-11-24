@@ -69,5 +69,20 @@ namespace Disco.Web.Areas.API.Controllers
 
             return Json(results, JsonRequestBehavior.AllowGet);
         }
+
+        [DiscoAuthorize(Claims.Device.Search)]
+        public virtual ActionResult Devices(string Term, int Limit = 15)
+        {
+            if (string.IsNullOrWhiteSpace(Term))
+                throw new ArgumentNullException("Term", "The search query term is required");
+            if (Term.Length < 2)
+                throw new ArgumentException("The search query term must be at least two characters", "Term");
+            if (Limit < 1)
+                throw new ArgumentException("The search query limit cannot be less than 1", "Limit");
+
+            var results = Search.SearchDevices(Database, Term, Limit);
+
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
     }
 }

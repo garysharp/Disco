@@ -2,16 +2,20 @@
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.ManagedGroups;
+using Disco.Services.Expressions;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.CertificateAuthorityProvider;
 using Disco.Services.Plugins.Features.CertificateProvider;
 using Disco.Services.Plugins.Features.WirelessProfileProvider;
 using Disco.Services.Tasks;
+using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.DeviceModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -27,7 +31,6 @@ namespace Disco.Web.Areas.API.Controllers
         const string pWirelessProfileProviders = "wirelessprofileproviders";
         const string pOrganisationalUnit = "organisationalunit";
         const string pDefaultOrganisationAddress = "defaultorganisationaddress";
-        const string pComputerNameTemplate = "computernametemplate";
         const string pEnforceComputerNameConvention = "enforcecomputernameconvention";
         const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
         const string pProvisionADAccount = "provisionadaccount";
@@ -37,7 +40,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
+        public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.DeviceProfile.Configure);
 
@@ -78,10 +81,6 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pDefaultOrganisationAddress:
                             UpdateDefaultOrganisationAddress(deviceProfile, value);
-                            break;
-                        case pComputerNameTemplate:
-                            Authorization.Require(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
-                            UpdateComputerNameTemplate(deviceProfile, value);
                             break;
                         case pEnforceComputerNameConvention:
                             UpdateEnforceComputerNameConvention(deviceProfile, value);
@@ -129,91 +128,209 @@ namespace Disco.Web.Areas.API.Controllers
         #region Update Shortcut Methods
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateDescription(int id, string Description = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateName(int id, string ProfileName = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateName(int id, string ProfileName = null, bool? redirect = null)
         {
             return Update(id, pName, ProfileName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateShortName(int id, string ShortName = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateShortName(int id, string ShortName = null, bool? redirect = null)
         {
             return Update(id, pShortName, ShortName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateDistributionType(int id, string DistributionType = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateDistributionType(int id, string DistributionType = null, bool? redirect = null)
         {
             return Update(id, pDistributionType, DistributionType, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateCertificateProviders(int id, string CertificateProviders = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateCertificateProviders(int id, string CertificateProviders = null, bool? redirect = null)
         {
             return Update(id, pCertificateProviders, CertificateProviders, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateCertificateAuthorityProviders(int id, string CertificateAuthorityProviders = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateCertificateAuthorityProviders(int id, string CertificateAuthorityProviders = null, bool? redirect = null)
         {
             return Update(id, pCertificateAuthorityProviders, CertificateAuthorityProviders, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateWirelessProfileProviders(int id, string WirelessProfileProviders = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateWirelessProfileProviders(int id, string WirelessProfileProviders = null, bool? redirect = null)
         {
             return Update(id, pWirelessProfileProviders, WirelessProfileProviders, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit = null, bool? redirect = null)
         {
             return Update(id, pOrganisationalUnit, OrganisationalUnit, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateDefaultOrganisationAddress(int id, string DefaultOrganisationAddress = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateDefaultOrganisationAddress(int id, string DefaultOrganisationAddress = null, bool? redirect = null)
         {
             return Update(id, pDefaultOrganisationAddress, DefaultOrganisationAddress, redirect);
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Configure, Claims.Config.DeviceProfile.ConfigureComputerNameTemplate)]
-        public virtual ActionResult UpdateComputerNameTemplate(int id, string ComputerNameTemplate = null, Nullable<bool> redirect = null)
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateComputerNameTemplate(int id, string ComputerNameTemplate = null, bool? redirect = null)
         {
-            return Update(id, pComputerNameTemplate, ComputerNameTemplate, redirect);
+            var deviceProfile = Database.DeviceProfiles.Find(id);
+
+            if (deviceProfile == null)
+                throw new ArgumentException("Invalid Device Profile Id", nameof(id));
+
+            if (string.IsNullOrWhiteSpace(ComputerNameTemplate))
+                throw new Exception("ComputerNameTemplate is Required");
+
+            var expression = new EvaluateExpressionPart(ComputerNameTemplate);
+            if (expression.ParseError)
+            {
+                return this.JsonStatusCode(400, expression.ParseErrorMessage);
+            }
+
+            deviceProfile.ComputerNameTemplate = ComputerNameTemplate;
+
+            Database.SaveChanges();
+
+            deviceProfile.ComputerNameInvalidateCache();
+
+            if (redirect.GetValueOrDefault(false))
+                return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
+            else
+                return Json("OK");
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Configure, Claims.Config.DeviceProfile.ConfigureComputerNameTemplate)]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult TestComputerNameTemplate(int id, string ComputerNameTemplate = null, string UserSpecifiedDeviceSerialNumber = null)
+        {
+            Database.Configuration.LazyLoadingEnabled = true;
+            var deviceProfile = Database.DeviceProfiles.Find(id);
+
+            if (deviceProfile == null)
+                throw new ArgumentException("Invalid Device Profile Id", nameof(id));
+
+            if (string.IsNullOrWhiteSpace(ComputerNameTemplate))
+                throw new Exception("ComputerNameTemplate is Required");
+
+            var expression = Expression.TokenizeSingleDynamic(null, ComputerNameTemplate, 0);
+            if (expression.First().ParseError)
+            {
+                return this.JsonStatusCode(400, expression.First().ParseErrorMessage);
+            }
+
+            var result = new TestComputerNameTemplateModel()
+            {
+                DeviceProfileId = deviceProfile.Id,
+                ComputerNameTemplate = ComputerNameTemplate,
+            };
+
+            TestComputerNameTemplateModel.TestComputerNameTemplateResultModel evaluateDevice(Disco.Models.Repository.Device device)
+            {
+                var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null, device);
+                var deviceResult = new TestComputerNameTemplateModel.TestComputerNameTemplateResultModel()
+                {
+                    DeviceSerialNumber = device.SerialNumber,
+                    DeviceComputerName = device.ComputerName,
+                };
+                try
+                {
+                    var rendered = expression.EvaluateFirst<string>(device, evaluatorVariables);
+                    deviceResult.Url = Url.Action(MVC.Device.Show(device.SerialNumber));
+                    deviceResult.RenderedComputerName = rendered;
+                    deviceResult.Success = true;
+
+                    if (string.IsNullOrWhiteSpace(rendered))
+                    {
+                        deviceResult.Success = false;
+                        deviceResult.ErrorMessage = "Rendered computer name is null or blank";
+                    }
+                    else
+                    {
+                        if (rendered.Length > 15)
+                        {
+                            deviceResult.Success = false;
+                            deviceResult.ErrorMessage = "Must be no more than 15 characters";
+                        }
+                        var invalidCharacters = Regex.Matches(rendered, @"[^a-z0-9\-]", RegexOptions.IgnoreCase);
+                        if (invalidCharacters.Count > 0)
+                        {
+                            deviceResult.Success = false;
+                            deviceResult.ErrorMessage = $"Invalid characters: {string.Join(" ", invalidCharacters.Cast<Match>().Select(m => m.Value.Replace(" ", "{space}")).Distinct())}";
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    deviceResult.Success = false;
+                    deviceResult.ErrorMessage = $"{ex.Message} [{ex.GetType().Name}]";
+                }
+                return deviceResult;
+            }
+
+            if (!string.IsNullOrWhiteSpace(UserSpecifiedDeviceSerialNumber))
+            {
+                var device = Database.Devices.FirstOrDefault(d => d.SerialNumber == UserSpecifiedDeviceSerialNumber);
+                if (device == null)
+                    return this.JsonStatusCode(400, "Invalid user-specified device serial number");
+                result.UserSpecifiedResult = evaluateDevice(device);
+            }
+
+            result.RandomDeviceResults = Database.Devices
+                .Where(d => d.DeviceProfileId == deviceProfile.Id && d.SerialNumber != UserSpecifiedDeviceSerialNumber)
+                .OrderBy(d => Guid.NewGuid())
+                .Take(6)
+                .ToList()
+                .Select(d => evaluateDevice(d))
+                .ToList();
+
+            if (result.UserSpecifiedResult == null && result.RandomDeviceResults.Count > 0)
+            {
+                result.UserSpecifiedResult = result.RandomDeviceResults.First();
+                result.RandomDeviceResults.RemoveAt(0);
+            }
+
+            return Json(result);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateEnforceComputerNameConvention(int id, string EnforceComputerNameConvention = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateEnforceComputerNameConvention(int id, string EnforceComputerNameConvention = null, bool? redirect = null)
         {
             return Update(id, pEnforceComputerNameConvention, EnforceComputerNameConvention, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateEnforceOrganisationalUnit(int id, string EnforceOrganisationalUnit = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateEnforceOrganisationalUnit(int id, string EnforceOrganisationalUnit = null, bool? redirect = null)
         {
             return Update(id, pEnforceOrganisationalUnit, EnforceOrganisationalUnit, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, bool? redirect = null)
         {
             return Update(id, pProvisionADAccount, ProvisionADAccount, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateAssignedUserLocalAdmin(int id, string AssignedUserLocalAdmin = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateAssignedUserLocalAdmin(int id, string AssignedUserLocalAdmin = null, bool? redirect = null)
         {
             return Update(id, pAssignedUserLocalAdmin, AssignedUserLocalAdmin, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateAllowUntrustedReimageJobEnrolment(int id, string AllowUntrustedReimageJobEnrolment = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateAllowUntrustedReimageJobEnrolment(int id, string AllowUntrustedReimageJobEnrolment = null, bool? redirect = null)
         {
             return Update(id, pAllowUntrustedReimageJobEnrolment, AllowUntrustedReimageJobEnrolment, redirect);
         }
@@ -444,20 +561,6 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        private void UpdateComputerNameTemplate(DeviceProfile deviceProfile, string ComputerNameTemplate)
-        {
-            Authorization.Require(Claims.Config.DeviceProfile.ConfigureComputerNameTemplate);
-
-            if (string.IsNullOrWhiteSpace(ComputerNameTemplate))
-                throw new Exception("ComputerNameTemplate is Required");
-
-            deviceProfile.ComputerNameTemplate = ComputerNameTemplate;
-
-            Database.SaveChanges();
-
-            deviceProfile.ComputerNameInvalidateCache();
-        }
-
         private void UpdateDefaultOrganisationAddress(DeviceProfile deviceProfile, string DefaultOrganisationAddress)
         {
             if (string.IsNullOrEmpty(DefaultOrganisationAddress))
@@ -593,7 +696,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Delete)]
-        public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
+        public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
             {
@@ -623,7 +726,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Defaults
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.ConfigureDefaults)]
-        public virtual ActionResult Default(int id, Nullable<bool> redirect = null)
+        public virtual ActionResult Default(int id, bool? redirect = null)
         {
             try
             {
@@ -649,7 +752,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.ConfigureDefaults)]
-        public virtual ActionResult DefaultAddDeviceOffline(int id, Nullable<bool> redirect = false)
+        public virtual ActionResult DefaultAddDeviceOffline(int id, bool? redirect = false)
         {
             try
             {

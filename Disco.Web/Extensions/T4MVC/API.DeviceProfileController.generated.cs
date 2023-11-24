@@ -127,6 +127,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult TestComputerNameTemplate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TestComputerNameTemplate);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateEnforceComputerNameConvention()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEnforceComputerNameConvention);
@@ -212,6 +218,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateOrganisationalUnit = "UpdateOrganisationalUnit";
             public readonly string UpdateDefaultOrganisationAddress = "UpdateDefaultOrganisationAddress";
             public readonly string UpdateComputerNameTemplate = "UpdateComputerNameTemplate";
+            public readonly string TestComputerNameTemplate = "TestComputerNameTemplate";
             public readonly string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public readonly string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
@@ -238,6 +245,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateOrganisationalUnit = "UpdateOrganisationalUnit";
             public const string UpdateDefaultOrganisationAddress = "UpdateDefaultOrganisationAddress";
             public const string UpdateComputerNameTemplate = "UpdateComputerNameTemplate";
+            public const string TestComputerNameTemplate = "TestComputerNameTemplate";
             public const string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public const string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
@@ -361,6 +369,16 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string ComputerNameTemplate = "ComputerNameTemplate";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_TestComputerNameTemplate s_params_TestComputerNameTemplate = new ActionParamsClass_TestComputerNameTemplate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_TestComputerNameTemplate TestComputerNameTemplateParams { get { return s_params_TestComputerNameTemplate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_TestComputerNameTemplate
+        {
+            public readonly string id = "id";
+            public readonly string ComputerNameTemplate = "ComputerNameTemplate";
+            public readonly string UserSpecifiedDeviceSerialNumber = "UserSpecifiedDeviceSerialNumber";
         }
         static readonly ActionParamsClass_UpdateEnforceComputerNameConvention s_params_UpdateEnforceComputerNameConvention = new ActionParamsClass_UpdateEnforceComputerNameConvention();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -630,6 +648,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ComputerNameTemplate", ComputerNameTemplate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateComputerNameTemplateOverride(callInfo, id, ComputerNameTemplate, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TestComputerNameTemplateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ComputerNameTemplate, string UserSpecifiedDeviceSerialNumber);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TestComputerNameTemplate(int id, string ComputerNameTemplate, string UserSpecifiedDeviceSerialNumber)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TestComputerNameTemplate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ComputerNameTemplate", ComputerNameTemplate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UserSpecifiedDeviceSerialNumber", UserSpecifiedDeviceSerialNumber);
+            TestComputerNameTemplateOverride(callInfo, id, ComputerNameTemplate, UserSpecifiedDeviceSerialNumber);
             return callInfo;
         }
 
