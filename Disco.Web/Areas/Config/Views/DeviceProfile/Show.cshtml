@@ -690,6 +690,14 @@
                         </span>
                     </div>
                 }
+                @if (!Model.OrganisationalUnitExists)
+                {
+                    <div class="info-box error">
+                        <p class="fa-p">
+                            <i class="fa fa-exclamation-triangle"></i>The Organisational Unit could not be found.
+                        </p>
+                    </div>
+                }
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {

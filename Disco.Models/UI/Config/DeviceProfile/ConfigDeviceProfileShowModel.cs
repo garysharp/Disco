@@ -8,8 +8,10 @@ namespace Disco.Models.UI.Config.DeviceProfile
     {
         Repository.DeviceProfile DeviceProfile { get; set; }
         OrganisationAddress DefaultOrganisationAddress { get; set; }
-
         List<OrganisationAddress> OrganisationAddresses { get; set; }
+
+        string FriendlyOrganisationalUnitName { get; }
+        bool OrganisationalUnitExists { get; set; }
 
         int DeviceCount { get; set; }
         int DeviceDecommissionedCount { get; set; }

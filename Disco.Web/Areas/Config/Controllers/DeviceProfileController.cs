@@ -12,6 +12,7 @@ using Disco.Services.Plugins.Features.WirelessProfileProvider;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -45,6 +46,29 @@ namespace Disco.Web.Areas.Config.Controllers
                 DeviceProfileDevicesManagedGroup devicesManagedGroup;
                 if (DeviceProfileDevicesManagedGroup.TryGetManagedGroup(m.DeviceProfile, out devicesManagedGroup))
                     m.DevicesLinkedGroup = devicesManagedGroup;
+
+                // Ensure Specified OU Exists
+                if (string.IsNullOrEmpty(m.DeviceProfile.OrganisationalUnit))
+                {
+                    m.OrganisationalUnitExists = true; // default container
+                }
+                else
+                {
+                    try
+                    {
+                        var ou = m.DeviceProfile.OrganisationalUnit;
+                        var domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(ou);
+                        var domainController = domain.GetAvailableDomainController();
+                        using (var deOU = domainController.RetrieveDirectoryEntry(ou, new string[] { "distinguishedName" }))
+                        {
+                            m.OrganisationalUnitExists = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        m.OrganisationalUnitExists = false;
+                    }
+                }
 
                 m.CertificateProviders = Plugins.GetPluginFeatures(typeof(CertificateProviderFeature));
                 m.CertificateAuthorityProviders = Plugins.GetPluginFeatures(typeof(CertificateAuthorityProviderFeature));

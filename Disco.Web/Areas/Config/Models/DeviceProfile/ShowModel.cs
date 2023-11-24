@@ -34,6 +34,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
                 }
             }
         }
+        public bool OrganisationalUnitExists { get; set; }
 
         public List<PluginFeatureManifest> CertificateProviders { get; set; }
         public List<PluginFeatureManifest> CertificateAuthorityProviders { get; set; }
