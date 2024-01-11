@@ -35,7 +35,10 @@ namespace Disco.Services.Devices.Importing.Fields
 
             try
             {
-                parsedValue = ActiveDirectory.ParseDomainAccountId(parsedValue);
+                if (ActiveDirectory.IsValidDomainAccountId(parsedValue, out var accountUsername, out var accountDomain))
+                    parsedValue = $@"{accountDomain.NetBiosName}\{accountUsername}";
+                else
+                    return Error(@"The expected format is 'DOMAIN\ComputerName'");
             }
             catch (ArgumentException ex) when (ex.ParamName == "NetBiosName")
             {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using System;
 using System.Data.SqlClient;
-using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices;
+using System.DirectoryServices.ActiveDirectory;
+using System.Linq;
 
 namespace Disco.Data.Repository
 {
@@ -370,7 +368,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                 string defaultNamingContext;
                 using (Domain d = Domain.GetComputerDomain())
                 {
-                    string ldapPath = string.Format("LDAP://{0}/", d.Name);
+                    string ldapPath = $"LDAP://{d.Name}/";
                     string configurationNamingContext;
 
                     using (var adRootDSE = new DirectoryEntry(ldapPath + "RootDSE"))
@@ -381,7 +379,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
 
                     using (var configSearchRoot = new DirectoryEntry(ldapPath + "CN=Partitions," + configurationNamingContext))
                     {
-                        var configSearchFilter = string.Format("(&(objectcategory=Crossref)(dnsRoot={0})(netBIOSName=*))", d.Name);
+                        var configSearchFilter = $"(&(objectcategory=Crossref)(dnsRoot={d.Name})(netBIOSName=*))";
                         var configSearchLoadProperites = new string[] { "NetBIOSName" };
 
                         using (var configSearcher = new DirectorySearcher(configSearchRoot, configSearchFilter, configSearchLoadProperites, SearchScope.OneLevel))
@@ -403,14 +401,14 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                 // Authorization Roles
                 foreach (var authRole in Database.AuthorizationRoles.Where(ar => ar.SubjectIds != null).ToList())
                 {
-                    var ids = string.Join(",", authRole.SubjectIds.Split(',').Select(id => id.Contains('\\') ? id : string.Format("{0}\\{1}", netBiosName, id)));
+                    var ids = string.Join(",", authRole.SubjectIds.Split(',').Select(id => id.Contains('\\') ? id : $@"{netBiosName}\{id}"));
                     if (ids != authRole.SubjectIds)
                         authRole.SubjectIds = ids;
                 }
                 // Job Queues
                 foreach (var jobQueue in Database.JobQueues.Where(jq => jq.SubjectIds != null).ToList())
                 {
-                    var ids = string.Join(",", jobQueue.SubjectIds.Split(',').Select(id => id.Contains('\\') ? id : string.Format("{0}\\{1}", netBiosName, id)));
+                    var ids = string.Join(",", jobQueue.SubjectIds.Split(',').Select(id => id.Contains('\\') ? id : $@"{netBiosName}\{id}"));
                     if (ids != jobQueue.SubjectIds)
                         jobQueue.SubjectIds = ids;
                 }
@@ -418,9 +416,9 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                 foreach (var deviceProfile in Database.DeviceProfiles.Where(dp => dp.OrganisationalUnit == null || !dp.OrganisationalUnit.Contains(@"DC=")).ToList())
                 {
                     if (string.IsNullOrWhiteSpace(deviceProfile.OrganisationalUnit))
-                        deviceProfile.OrganisationalUnit = string.Format("CN=Computers,{0}", defaultNamingContext);
+                        deviceProfile.OrganisationalUnit = $"CN=Computers,{defaultNamingContext}";
                     else
-                        deviceProfile.OrganisationalUnit = string.Format("{0},{1}", deviceProfile.OrganisationalUnit, defaultNamingContext);
+                        deviceProfile.OrganisationalUnit = $"{deviceProfile.OrganisationalUnit},{defaultNamingContext}";
                 }
                 Database.SaveChanges();
 
@@ -451,7 +449,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                 // MIGRATE DEVICES
                 foreach (var device in Database.Devices.Where(d => d.DeviceDomainId != null && !d.DeviceDomainId.Contains(@"\")).ToList())
                 {
-                    device.DeviceDomainId = string.Format("{0}\\{1}", netBiosName, device.DeviceDomainId);
+                    device.DeviceDomainId = $@"{netBiosName}\{device.DeviceDomainId}";
                 }
                 Database.SaveChanges();
 
@@ -462,7 +460,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                     idExisting.Value = user.UserId;
 
                     SqlParameter idNew = new SqlParameter("@IdNew", System.Data.SqlDbType.NVarChar, 50);
-                    idNew.Value = string.Format("{0}\\{1}", netBiosName, user.UserId);
+                    idNew.Value = $@"{netBiosName}\{user.UserId}";
 
                     Database.Database.ExecuteSqlCommand(MigratePreDomainUsers_Sql, idExisting, idNew);
                 }

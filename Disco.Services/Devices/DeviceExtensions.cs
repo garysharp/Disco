@@ -189,14 +189,16 @@ namespace Disco.Services
             if (ActiveDirectory.IsValidDomainAccountId(d.DeviceDomainId))
             {
                 var adMachineAccount = ActiveDirectory.RetrieveADMachineAccount(d.DeviceDomainId);
-                try
+                if (adMachineAccount != null)
                 {
-                    if (adMachineAccount != null)
+                    try
+                    {
                         adMachineAccount.SetDescription(d);
-                }
-                catch (Exception ex)
-                {
-                    SystemLog.LogWarning($"Unable to update AD Machine Account Description for {d.DeviceDomainId}: {ex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        SystemLog.LogWarning($"Unable to update AD Machine Account Description for {d.DeviceDomainId}: {ex.Message}");
+                    }
                 }
             }
 

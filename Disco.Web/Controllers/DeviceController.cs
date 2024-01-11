@@ -84,7 +84,14 @@ namespace Disco.Web.Controllers
             {
                 try
                 {
-                    m.Device.DeviceDomainId = ActiveDirectory.ParseDomainAccountId(m.Device.DeviceDomainId);
+                    if (ActiveDirectory.IsValidDomainAccountId(m.Device.DeviceDomainId, out var accountUsername, out var accountDomain))
+                    {
+                        m.Device.DeviceDomainId = $@"{accountDomain.NetBiosName}\{accountUsername}";
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Device.DeviceDomainId", @"The computer name must be in the format 'DOMAIN\Username'");
+                    }
                 }
                 catch (ArgumentException ex)
                 {

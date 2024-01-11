@@ -392,7 +392,6 @@ namespace Disco.Services.Devices.Enrolment
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.SerialNumber);
                     DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
 
-
                     var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
@@ -400,13 +399,10 @@ namespace Disco.Services.Devices.Enrolment
                     else
                         EnrolmentLog.LogSessionDevice(sessionId, Request.SerialNumber, deviceModel.Id);
 
-                    if (domain == null)
-                        domain = ActiveDirectory.Context.GetDomainByName(Request.DNSDomainName);
-
                     RepoDevice = new Device
                     {
                         SerialNumber = Request.SerialNumber,
-                        DeviceDomainId = string.Format(@"{0}\{1}", domain.NetBiosName, Request.ComputerName),
+                        DeviceDomainId = domain == null ? Request.ComputerName : $@"{domain.NetBiosName}\{Request.ComputerName}",
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
@@ -437,6 +433,10 @@ namespace Disco.Services.Devices.Enrolment
                         EnrolmentLog.LogSessionDevice(sessionId, Request.SerialNumber, deviceModel.Id);
 
                     RepoDevice.DeviceModel = deviceModel;
+
+                    var deviceDomainId = domain == null ? Request.ComputerName : $@"{domain.NetBiosName}\{Request.ComputerName}";
+                    if (!string.Equals(RepoDevice.DeviceDomainId, deviceDomainId, StringComparison.Ordinal))
+                        RepoDevice.DeviceDomainId = deviceDomainId;
 
                     var lanMacAddresses = string.Join("; ", Request.Hardware.NetworkAdapters?.Where(na => !na.IsWlanAdapter).Select(na => na.MACAddress));
                     var wlanMacAddresses = string.Join("; ", Request.Hardware.NetworkAdapters?.Where(na => na.IsWlanAdapter).Select(na => na.MACAddress));
@@ -481,6 +481,11 @@ namespace Disco.Services.Devices.Enrolment
 
                         if (string.IsNullOrEmpty(RepoDevice.DeviceDomainId) || RepoDevice.DeviceProfile.EnforceComputerNameConvention)
                             RepoDevice.DeviceDomainId = RepoDevice.ComputerNameRender(Database, domain);
+                        else if (!ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId))
+                            if (RepoDevice.DeviceProfile.EnforceComputerNameConvention)
+                                RepoDevice.DeviceDomainId = RepoDevice.ComputerNameRender(Database, domain);
+                            else
+                                RepoDevice.DeviceDomainId = $@"{domain.NetBiosName}\{Request.ComputerName}";
 
                         string offlineProvisionDiagnosicInfo;
                         EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, RepoDevice.SerialNumber, RepoDevice.DeviceDomainId);
@@ -497,12 +502,8 @@ namespace Disco.Services.Devices.Enrolment
                         response.ComputerName = adMachineAccount.Name;
                         response.DomainName = adMachineAccount.Domain.NetBiosName;
                     }
-                    else if (ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId))
+                    else if (ActiveDirectory.IsValidDomainAccountId(RepoDevice.DeviceDomainId, out var accountUsername, out var accountDomain))
                     {
-                        string accountUsername;
-                        ADDomain accountDomain;
-                        ActiveDirectory.ParseDomainAccountId(RepoDevice.DeviceDomainId, out accountUsername, out accountDomain);
-
                         response.DomainName = accountDomain == null ? null : accountDomain.NetBiosName;
                         response.ComputerName = accountUsername;
                     }
