@@ -22,7 +22,7 @@ namespace Disco.Services
 
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                EnrolResponse response = DeviceEnrolment.Enrol(database, username, request);
+                EnrolResponse response = WindowsDeviceEnrolment.Enrol(database, username, request);
                 database.SaveChanges();
                 return response;
             }
@@ -61,7 +61,7 @@ namespace Disco.Services
 
             using (DiscoDataContext database = new DiscoDataContext())
             {
-                MacEnrolResponse response = DeviceEnrolment.MacEnrol(database, request, false);
+                MacEnrolResponse response = MacDeviceEnrolment.Enrol(database, request, false);
                 database.SaveChanges();
                 return response;
             }

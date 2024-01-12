@@ -81,7 +81,7 @@ namespace Disco.Web.Areas.Services.Controllers
                         using (var database = new DiscoDataContext())
                         {
                             var host = HttpContext.Request.UserHostAddress;
-                            MacSecureEnrolResponse enrolResponse = DeviceEnrolment.MacSecureEnrol(database, host);
+                            MacSecureEnrolResponse enrolResponse = MacDeviceEnrolment.SecureEnrol(database, host);
                             database.SaveChanges();
                             return Json(enrolResponse, JsonRequestBehavior.AllowGet);
                         }

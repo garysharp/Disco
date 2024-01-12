@@ -240,11 +240,12 @@
     <Compile Include="Devices\DeviceProfileExtensions.cs" />
     <Compile Include="Devices\DeviceBatchUpdatesHub.cs" />
     <Compile Include="Devices\DeviceWirelessProfileExtensions.cs" />
-    <Compile Include="Devices\Enrolment\DeviceEnrolment.cs" />
+    <Compile Include="Devices\Enrolment\WindowsDeviceEnrolment.cs" />
     <Compile Include="Devices\Enrolment\EnrolmentLog.cs" />
     <Compile Include="Devices\Enrolment\EnrolmentSafeException.cs" />
     <Compile Include="Devices\Enrolment\EnrolmentTypes.cs" />
     <Compile Include="Devices\Enrolment\LogMacAddressImportingTask.cs" />
+    <Compile Include="Devices\Enrolment\MacDeviceEnrolment.cs" />
     <Compile Include="Devices\Exporting\DeviceExport.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTask.cs" />
     <Compile Include="Exporting\ExportHelpers.cs" />
