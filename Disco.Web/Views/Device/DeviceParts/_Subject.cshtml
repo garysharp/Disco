@@ -386,31 +386,38 @@
                     </table>
                     @if (Model.Device.CanUpdateDeviceProfile())
                     {
-                        @Html.ActionLinkSmallButton("Update Profile", MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber, redirect: true), "Device_Show_Policies_Profile_Actions_Update_Button")
+                        <button id="Device_Show_Policies_Profile_Actions_Update_Button" class="button small">Update Profile</button>
 
                         <div id="Device_Show_Policies_Profile_Actions_Update_Dialog" class="dialog" title="Assign to Device Profile">
-                            <div>
-                                <ul class="none">
-                                    @foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
-                                    {
-                                        var isDecommissioned = Model.DecommissionedDeviceProfileIds.Contains(dp.Id);
-                                        <li class="@(isDecommissioned ? "hidden" : null)">
-                                            <label title="Distribution: @(dp.DistributionType)">
-                                                <input type="radio" data-deviceprofileid="@dp.Id" name="DeviceProfile" />
-                                                @dp.Name
-                                            </label>
-                                        </li>
-                                        if (isDecommissioned)
+                            @using (Html.BeginForm(MVC.API.Device.UpdateDeviceProfileId(Model.Device.SerialNumber, redirect: true)))
+                            {
+                                <div class="profile-list">
+                                    @Html.AntiForgeryToken()
+                                    <ul class="none">
+                                        @foreach (var dp in Model.DeviceProfiles.OrderBy(i => i.Name))
                                         {
-                                            <li class="hidden decommissioned-padding"></li>
+                                            var isDecommissioned = Model.DecommissionedDeviceProfileIds.Contains(dp.Id);
+                                            <li class="@(isDecommissioned ? "hidden" : null)">
+                                                <label title="Distribution: @(dp.DistributionType)">
+                                                    <input type="radio" name="DeviceProfileId" value="@dp.Id" data-ouenforced="@dp.EnforceOrganisationalUnit" @(Model.Device.DeviceProfileId == dp.Id ? "checked " : null) />
+                                                    @dp.Name
+                                                </label>
+                                            </li>
+                                            if (isDecommissioned)
+                                            {
+                                                <li class="hidden decommissioned-padding"></li>
+                                            }
                                         }
+                                    </ul>
+                                    @if (Model.DecommissionedDeviceProfileIds.Count > 0)
+                                    {
+                                        <a class="button small show-decommissioned" href="#">Show Decommissioned</a>
                                     }
-                                </ul>
-                                @if (Model.DecommissionedDeviceProfileIds.Count > 0)
-                                {
-                                    <a class="button small show-decommissioned" href="#">Show Decommissioned</a>
-                                }
-                            </div>
+                                </div>
+                                <div class="enforce-ou">
+                                    <input id="deviceProfileMoveOrganisationalUnit" type="checkbox" name="enforceOrganisationalUnit" value="true" /><label for="deviceProfileMoveOrganisationalUnit">Move to Profiles Organisational Unit</label>
+                                </div>
+                            }
                         </div>
                         <script>
                             $(function () {
@@ -420,7 +427,8 @@
                                 var dialogInputs = null;
                                 var dialogContainers = null;
 
-                                button.click(function () {
+                                button.click(function (e) {
+                                    e.preventDefault();
 
                                     if (!buttonDialog) {
                                         buttonDialog = $('#Device_Show_Policies_Profile_Actions_Update_Dialog')
@@ -431,13 +439,12 @@
                                                                 autoOpen: false,
                                                                 buttons: {
                                                                     "Update Profile": function () {
-                                                                        var deviceProfileId = dialogInputs.filter(':checked').attr('data-deviceprofileid');
-
+                                                                        var deviceProfileId = dialogInputs.filter(':checked').val();
                                                                         if (deviceProfileId) {
                                                                             var $this = $(this);
                                                                             $this.dialog("disable");
                                                                             $this.dialog("option", "buttons", null);
-                                                                            window.location.href = button.attr('href') + '&DeviceProfileId=' + deviceProfileId;
+                                                                            $this.find('form').submit();
                                                                         } else {
                                                                             alert('A device profile must be selected');
                                                                         }
@@ -447,12 +454,15 @@
                                                                     }
                                                                 }
                                                             });
-                                        dialogInputs = buttonDialog.find('input');
+                                        dialogInputs = buttonDialog.find('input[type="radio"]');
                                         dialogContainers = dialogInputs.closest('li');
 
                                         dialogInputs.change(function () {
+                                            const $this = $(this);
                                             dialogContainers.removeClass('selected');
-                                            $(this).closest('li').addClass('selected');
+
+                                            $this.closest('li').addClass('selected');
+                                            $('#deviceProfileMoveOrganisationalUnit').prop('checked', $this.attr('data-ouenforced') === 'True');
                                         });
                                         buttonDialog.find('.show-decommissioned')
                                             .click(function (e) {

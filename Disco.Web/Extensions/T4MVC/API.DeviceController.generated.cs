@@ -320,6 +320,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string DeviceProfileId = "DeviceProfileId";
+            public readonly string enforceOrganisationalUnit = "enforceOrganisationalUnit";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateDeviceBatchId s_params_UpdateDeviceBatchId = new ActionParamsClass_UpdateDeviceBatchId();
@@ -582,16 +583,17 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateDeviceProfileIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DeviceProfileId, bool redirect);
+        partial void UpdateDeviceProfileIdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DeviceProfileId, bool enforceOrganisationalUnit, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId, bool enforceOrganisationalUnit, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDeviceProfileId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceProfileId", DeviceProfileId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "enforceOrganisationalUnit", enforceOrganisationalUnit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateDeviceProfileIdOverride(callInfo, id, DeviceProfileId, redirect);
+            UpdateDeviceProfileIdOverride(callInfo, id, DeviceProfileId, enforceOrganisationalUnit, redirect);
             return callInfo;
         }
 

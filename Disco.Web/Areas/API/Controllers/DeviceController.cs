@@ -3,6 +3,7 @@ using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Models.Services.Documents;
+using System.Data.Entity;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
@@ -22,6 +23,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
+using Disco.Services.Logging;
 
 namespace Disco.Web.Areas.API.Controllers
 {
@@ -113,10 +115,54 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Update Shortcut Methods
 
-        [DiscoAuthorize(Claims.Device.Properties.DeviceProfile)]
-        public virtual ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId = null, bool redirect = false)
+        [DiscoAuthorize(Claims.Device.Properties.DeviceProfile), HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId = null, bool enforceOrganisationalUnit = false, bool redirect = false)
         {
-            return Update(id, pDeviceProfileId, DeviceProfileId, redirect);
+            var updateResult = Update(id, pDeviceProfileId, DeviceProfileId, redirect);
+
+            if (enforceOrganisationalUnit)
+            {
+                var device = Database.Devices
+                    .Include(d => d.DeviceProfile)
+                    .First(d => d.SerialNumber == id);
+
+                if (ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId, out ADDomain deviceDomain))
+                {
+                    var ou = device.DeviceProfile.OrganisationalUnit;
+                    if (string.IsNullOrWhiteSpace(ou))
+                        ou = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer;
+                    var domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(ou);
+
+                    if (domain != deviceDomain)
+                        SystemLog.LogWarning($"Device '{device.SerialNumber}' [{device.DeviceDomainId}] is not in the same domain as the Organisational Unit '{ou}' and cannot be moved");
+                    else
+                    {
+                        var domainController = domain.GetAvailableDomainController(RequireWritable: true);
+                        var deviceAccount = domainController.RetrieveADMachineAccount(device.DeviceDomainId);
+
+                        if (deviceAccount == null)
+                            SystemLog.LogWarning($"Device '{device.SerialNumber}' [{device.DeviceDomainId}] was not found on the domain controller");
+                        else
+                        {
+                            if (!string.Equals(deviceAccount.ParentDistinguishedName, ou, StringComparison.OrdinalIgnoreCase))
+                            {
+                                try
+                                {
+                                    var existingOu = deviceAccount.ParentDistinguishedName;
+                                    deviceAccount.MoveOrganisationalUnit(domainController, ou);
+                                    SystemLog.LogInformation($"Device Profile Updated; Moved Device '{device.SerialNumber}' [{device.DeviceDomainId}] from '{existingOu}' to '{ou}'");
+                                }
+                                catch (Exception ex)
+                                {
+                                    SystemLog.LogException($"Failed to move Device '{device.SerialNumber}' [{device.DeviceDomainId}] from '{deviceAccount.ParentDistinguishedName}' to '{ou}'", ex);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return updateResult;
         }
 
         [DiscoAuthorize(Claims.Device.Properties.DeviceBatch)]

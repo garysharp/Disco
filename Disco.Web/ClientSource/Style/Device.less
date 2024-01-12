@@ -170,7 +170,10 @@
 }
 
 #Device_Show_Policies_Profile_Actions_Update_Dialog, #Device_Show_Policies_Batch_Actions_Update_Dialog {
-    ul {
+    .profile-list {
+        max-height: 300px;
+        overflow-y: auto;
+
         li {
             background-color: @white;
             padding: 2px 0 2px 4px;
@@ -185,8 +188,8 @@
             }
         }
     }
-    label {
-        display: block;
+    .enforce-ou {
+        padding-top: .5em;
     }
 }
 
@@ -619,9 +622,9 @@
                         background-color: @TableDataRowBackgroundColor;
                     }
 
-                        td:nth-child(n+3) {
-                            color: @SubtleBorderColour;
-                        }
+                    td:nth-child(n+3) {
+                        color: @SubtleBorderColour;
+                    }
                 }
 
                 tr.actionModified {

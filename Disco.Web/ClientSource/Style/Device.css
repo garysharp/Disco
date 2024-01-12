@@ -199,23 +199,28 @@
   border-top: none;
   background-color: #eee;
 }
-#Device_Show_Policies_Profile_Actions_Update_Dialog ul li,
-#Device_Show_Policies_Batch_Actions_Update_Dialog ul li {
+#Device_Show_Policies_Profile_Actions_Update_Dialog .profile-list,
+#Device_Show_Policies_Batch_Actions_Update_Dialog .profile-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+#Device_Show_Policies_Profile_Actions_Update_Dialog .profile-list li,
+#Device_Show_Policies_Batch_Actions_Update_Dialog .profile-list li {
   background-color: #fff;
   padding: 2px 0 2px 4px;
 }
-#Device_Show_Policies_Profile_Actions_Update_Dialog ul li:nth-child(odd),
-#Device_Show_Policies_Batch_Actions_Update_Dialog ul li:nth-child(odd) {
+#Device_Show_Policies_Profile_Actions_Update_Dialog .profile-list li:nth-child(odd),
+#Device_Show_Policies_Batch_Actions_Update_Dialog .profile-list li:nth-child(odd) {
   background-color: hsl(0, 0%, 98.5%);
 }
-#Device_Show_Policies_Profile_Actions_Update_Dialog ul li.selected,
-#Device_Show_Policies_Batch_Actions_Update_Dialog ul li.selected {
+#Device_Show_Policies_Profile_Actions_Update_Dialog .profile-list li.selected,
+#Device_Show_Policies_Batch_Actions_Update_Dialog .profile-list li.selected {
   background-color: #cddbec;
   font-weight: 600;
 }
-#Device_Show_Policies_Profile_Actions_Update_Dialog label,
-#Device_Show_Policies_Batch_Actions_Update_Dialog label {
-  display: block;
+#Device_Show_Policies_Profile_Actions_Update_Dialog .enforce-ou,
+#Device_Show_Policies_Batch_Actions_Update_Dialog .enforce-ou {
+  padding-top: 0.5em;
 }
 #DeviceDetailTab-JobsContainer div.jobTable {
   margin: -1px;
