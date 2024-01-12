@@ -568,17 +568,26 @@
                         </div>
                         <div id="treeOrganisationalUnit" class="organisationalUnitTree">
                         </div>
+                        @using (Html.BeginForm(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, redirect: true), FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken();
+                            <input type="hidden" name="OrganisationalUnit" />
+                            <div class="enforceOrganisationalUnit">
+                                <input id="enforceOrganisationalUnit" type="checkbox" name="enforce" value="true" /> <label for="enforceOrganisationalUnit">Move all profile devices to this organisational unit</label>
+                            </div>
+                        }
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            var ouSetUrl = '@Url.Action(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, null, true))';
                             var ouValue = $('#DeviceProfile_OrganisationalUnit').attr('data-value');
                             var $ouTree = null;
                             var ouTree = null;
                             var $dialog = null;
+                            var $enforceCheckbox;
                             var ouSet = function (ou) {
-                                var url = ouSetUrl + '&' + $.param({ OrganisationalUnit: ou })
-                                window.location.href = url;
+                                const $form = $dialog.find('form');
+                                $form.find('input[name="OrganisationalUnit"]').val(ou);
+                                $form.submit();
                             }
                             var expandNodeTree = function (node) {
                                 var parent = node.parent;
@@ -604,7 +613,6 @@
                             }
                             var ouChange = function () {
                                 if (!$dialog) {
-
                                     $dialog = $('#dialogOrganisationalUnit').dialog({
                                         autoOpen: false,
                                         buttons: null,
@@ -619,7 +627,8 @@
 
                                     $ouTree = $('#treeOrganisationalUnit');
                                     $dialog.css('overflow', 'visible');
-                                    $ouTree.css('height', '100%');
+
+                                    $enforceCheckbox = $('#enforceOrganisationalUnit');
 
                                     $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
                                         $loading.hide();
@@ -641,7 +650,7 @@
 
                                         // Set Buttons
                                         $dialog.dialog('option', 'buttons', {
-                                            'Use Default Container': function () {
+                                            'Use Default Computers Container': function () {
                                                 var $this = $(this);
                                                 $this.css('overflow', 'hidden');
                                                 $this.dialog("disable");
@@ -669,6 +678,8 @@
                                     });
                                 }
                                 $dialog.dialog('open');
+
+                                $enforceCheckbox.prop('checked', $('#DeviceProfile_EnforceOrganisationalUnit').prop('checked'));
 
                                 if (ouTree) {
                                     // Expand

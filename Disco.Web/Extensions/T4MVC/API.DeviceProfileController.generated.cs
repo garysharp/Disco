@@ -348,6 +348,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string OrganisationalUnit = "OrganisationalUnit";
+            public readonly string enforce = "enforce";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateDefaultOrganisationAddress s_params_UpdateDefaultOrganisationAddress = new ActionParamsClass_UpdateDefaultOrganisationAddress();
@@ -610,16 +611,17 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateOrganisationalUnitOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string OrganisationalUnit, bool? redirect);
+        partial void UpdateOrganisationalUnitOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string OrganisationalUnit, bool enforce, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit, bool enforce, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOrganisationalUnit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OrganisationalUnit", OrganisationalUnit);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "enforce", enforce);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateOrganisationalUnitOverride(callInfo, id, OrganisationalUnit, redirect);
+            UpdateOrganisationalUnitOverride(callInfo, id, OrganisationalUnit, enforce, redirect);
             return callInfo;
         }
 

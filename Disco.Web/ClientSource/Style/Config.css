@@ -293,33 +293,39 @@ table.deviceProfileTable th.deviceCount {
   width: 100%;
   font-family: Consolas, "Courier New", monospace;
 }
-.organisationalUnitTree span.fancytree-node {
+#dialogOrganisationalUnit .enforceOrganisationalUnit {
+  line-height: 2.2em;
+}
+#dialogOrganisationalUnit .organisationalUnitTree {
+  height: 380px;
+}
+#dialogOrganisationalUnit .organisationalUnitTree span.fancytree-node {
   padding: 1px;
   border: none;
 }
-.organisationalUnitTree span.fancytree-node > span.fancytree-icon {
+#dialogOrganisationalUnit .organisationalUnitTree span.fancytree-node > span.fancytree-icon {
   background: none;
   display: inline-block;
   font-family: FontAwesome;
   font-size: 1.2em;
   width: 14px;
 }
-.organisationalUnitTree span.fancytree-ico-ef > span.fancytree-icon:before {
+#dialogOrganisationalUnit .organisationalUnitTree span.fancytree-ico-ef > span.fancytree-icon:before {
   color: #1e6dab;
   font-size: 1em;
   content: "\f07c";
 }
-.organisationalUnitTree span.fancytree-ico-cf > span.fancytree-icon:before {
+#dialogOrganisationalUnit .organisationalUnitTree span.fancytree-ico-cf > span.fancytree-icon:before {
   color: #1e6dab;
   font-size: 1em;
   content: "\f07b";
 }
-.organisationalUnitTree ul.fancytree-container > li > span > span.fancytree-icon:before {
+#dialogOrganisationalUnit .organisationalUnitTree ul.fancytree-container > li > span > span.fancytree-icon:before {
   color: #FA6800;
   font-size: 1em;
   content: "\f0e8";
 }
-.organisationalUnitTree span.fancytree-node.fancytree-selected {
+#dialogOrganisationalUnit .organisationalUnitTree span.fancytree-node.fancytree-selected {
   font-style: normal;
   background: none;
 }

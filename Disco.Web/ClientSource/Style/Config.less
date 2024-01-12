@@ -250,43 +250,52 @@ table.deviceProfileTable {
     }
 }
 
-.organisationalUnitTree {
-    span.fancytree-node {
-        padding: 1px;
-        border: none;
+#dialogOrganisationalUnit {
+    .enforceOrganisationalUnit {
+        line-height: 2.2em;
     }
 
-    span.fancytree-node > span.fancytree-icon {
-        background: none;
-        display: inline-block;
-        font-family: FontAwesome;
-        font-size: 1.2em;
-        width: 14px;
-    }
+    .organisationalUnitTree {
+        height: 380px;
 
-    span.fancytree-ico-ef > span.fancytree-icon:before {
-        color: @StatusInformation;
-        font-size: 1em;
-        content: "\f07c";
-    }
+        span.fancytree-node {
+            padding: 1px;
+            border: none;
+        }
 
-    span.fancytree-ico-cf > span.fancytree-icon:before {
-        color: @StatusInformation;
-        font-size: 1em;
-        content: "\f07b";
-    }
+        span.fancytree-node > span.fancytree-icon {
+            background: none;
+            display: inline-block;
+            font-family: FontAwesome;
+            font-size: 1.2em;
+            width: 14px;
+        }
 
-    ul.fancytree-container > li > span > span.fancytree-icon:before {
-        color: @StatusAlert;
-        font-size: 1em;
-        content: "\f0e8";
-    }
+        span.fancytree-ico-ef > span.fancytree-icon:before {
+            color: @StatusInformation;
+            font-size: 1em;
+            content: "\f07c";
+        }
 
-    span.fancytree-node.fancytree-selected {
-        font-style: normal;
-        background: none;
+        span.fancytree-ico-cf > span.fancytree-icon:before {
+            color: @StatusInformation;
+            font-size: 1em;
+            content: "\f07b";
+        }
+
+        ul.fancytree-container > li > span > span.fancytree-icon:before {
+            color: @StatusAlert;
+            font-size: 1em;
+            content: "\f0e8";
+        }
+
+        span.fancytree-node.fancytree-selected {
+            font-style: normal;
+            background: none;
+        }
     }
 }
+
 
 #Config_System_AD_SearchScope_Dialog_Loading, #dialogOrganisationalUnit_Loading {
     text-align: center;
@@ -2201,5 +2210,4 @@ h1.Config_DocumentTemplates {
 }
 
 .dialog-bulk-generate {
-
 }

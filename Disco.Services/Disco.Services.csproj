@@ -346,6 +346,7 @@
     <Compile Include="Interop\ActiveDirectory\ADMachineAccount.cs" />
     <Compile Include="Interop\ActiveDirectory\ADManagedGroup.cs" />
     <Compile Include="Interop\ActiveDirectory\ADManagedGroupsSyncTask.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADEnforceDeviceProfileOrganisationalUnitTask.cs" />
     <Compile Include="Interop\ActiveDirectory\ADOrganisationalUnit.cs" />
     <Compile Include="Interop\ActiveDirectory\ADSearchResult.cs" />
     <Compile Include="Interop\ActiveDirectory\ADSite.cs" />

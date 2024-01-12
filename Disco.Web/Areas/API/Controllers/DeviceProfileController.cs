@@ -169,10 +169,21 @@ namespace Disco.Web.Areas.API.Controllers
             return Update(id, pWirelessProfileProviders, WirelessProfileProviders, redirect);
         }
 
-        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit = null, bool? redirect = null)
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure), HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit = null, bool enforce = false, bool? redirect = null)
         {
-            return Update(id, pOrganisationalUnit, OrganisationalUnit, redirect);
+            var updateResult = Update(id, pOrganisationalUnit, OrganisationalUnit, redirect);
+
+            if (enforce)
+            {
+                var status = ADEnforceDeviceProfileOrganisationalUnitTask.EnforceDeviceProfileOrganisationalUnit(id);
+                status.SetFinishedUrl(Url.Action(MVC.Config.DeviceProfile.Index(id)));
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+            }
+            else
+            {
+                return updateResult;
+            }
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
