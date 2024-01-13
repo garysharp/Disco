@@ -52,6 +52,8 @@
     <Compile Include="Exporting\ExportFieldMetadata.cs" />
     <Compile Include="Exporting\ExportFormat.cs" />
     <Compile Include="Exporting\IExportRecord.cs" />
+    <Compile Include="Repository\Device\Flag\DeviceFlag.cs" />
+    <Compile Include="Repository\Device\Flag\DeviceFlagAssignment.cs" />
     <Compile Include="Services\Expressions\Extensions\ImageExpressionFormat.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\BaseBoard.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Battery.cs" />

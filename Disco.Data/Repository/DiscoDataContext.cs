@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Disco.Models.Repository;
+using System;
 using System.Data.Entity;
-using Disco.Models.Repository;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Disco.Data.Repository
@@ -38,6 +35,8 @@ namespace Disco.Data.Repository
         public virtual DbSet<DeviceBatchAttachment> DeviceBatchAttachments { get; set; }
         public virtual DbSet<DeviceComponent> DeviceComponents { get; set; }
         public virtual DbSet<DeviceAttachment> DeviceAttachments { get; set; }
+        public virtual DbSet<DeviceFlag> DeviceFlags { get; set; }
+        public virtual DbSet<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
 
         public virtual DbSet<DeviceCertificate> DeviceCertificates { get; set; }
 
