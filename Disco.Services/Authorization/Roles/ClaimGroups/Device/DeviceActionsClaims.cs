@@ -25,6 +25,12 @@
 
         [ClaimDetails("Generate Documents", "Can generate documents for jobs")]
         public bool GenerateDocuments { get; set; }
+        [ClaimDetails("Add Device Flags", "Can add device flags")]
+        public bool AddFlags { get; set; }
+        [ClaimDetails("Remove Device Flags", "Can remove device flags")]
+        public bool RemoveFlags { get; set; }
+        [ClaimDetails("Edit Device Flags", "Can edit device flags")]
+        public bool EditFlags { get; set; }
 
         [ClaimDetails("Enrol Devices", "Can add devices offline and enrol devices with the Bootstrapper")]
         public bool EnrolDevices { get; set; }
