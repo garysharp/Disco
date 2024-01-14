@@ -61,10 +61,25 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             return false;
         }
+
         public bool TryGetValue(string Key, out ADManagedGroup ManagedGroup)
         {
             return managedGroups.TryGetValue(Key, out ManagedGroup);
         }
+        public bool TryGetValue<T>(string key, out T managedGroup) where T : ADManagedGroup
+        {
+            if (managedGroups.TryGetValue(key, out var item) && item is T typedItem)
+            {
+                managedGroup = typedItem;
+                return true;
+            }
+            else
+            {
+                managedGroup = null;
+                return false;
+            }
+        }
+
         public List<ADManagedGroup> Values
         {
             get
