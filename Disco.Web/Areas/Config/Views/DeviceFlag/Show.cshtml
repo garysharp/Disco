@@ -1,0 +1,590 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceFlag.ShowModel
+@using Disco.Services.Interop.ActiveDirectory;
+@using Disco.Services.Devices.DeviceFlags;
+@using Disco.Web.Areas.Config.Models.Shared;
+@{
+    Authorization.Require(Claims.Config.DeviceFlag.Show);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Flags", MVC.Config.DeviceFlag.Index(null), Model.DeviceFlag.ToString());
+
+    var canConfig = Authorization.Has(Claims.Config.DeviceFlag.Configure);
+    var canDelete = Authorization.Has(Claims.Config.DeviceFlag.Delete);
+    var canBulkAssignment = Authorization.HasAll(Claims.Device.Actions.AddFlags, Claims.Device.Actions.RemoveFlags, Claims.Device.ShowFlagAssignments);
+    var canShowDevices = Model.CurrentAssignmentCount > 0 && Authorization.HasAll(Claims.Device.Search, Claims.Device.ShowFlagAssignments);
+    var canExportCurrent = Model.CurrentAssignmentCount > 0 && Authorization.Has(Claims.Config.DeviceFlag.Export);
+    var canExportAll = Model.TotalAssignmentCount > 0 && Authorization.Has(Claims.Config.DeviceFlag.Export);
+
+    var hideAdvanced =
+        Model.DeviceFlag.DevicesLinkedGroup == null &&
+        Model.DeviceFlag.DeviceUsersLinkedGroup == null &&
+        Model.DeviceFlag.OnAssignmentExpression == null &&
+        Model.DeviceFlag.OnUnassignmentExpression == null;
+
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
+}
+<div id="Config_DeviceFlags_Show" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 550px">
+    <table>
+        <tr>
+            <th style="width: 150px">
+                Id:
+            </th>
+            <td>
+                @Html.DisplayFor(model => model.DeviceFlag.Id)
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td>
+                @if (canConfig)
+            {@Html.EditorFor(model => model.DeviceFlag.Name)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceFlag_Name'),
+                                'Invalid Name',
+                                '@(Url.Action(MVC.API.DeviceFlag.UpdateName(Model.DeviceFlag.Id)))',
+                                'FlagName'
+                            );
+                        });
+                    </script>
+                }
+                else
+                {
+                    @Model.DeviceFlag.Name
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Description:
+            </th>
+            <td>
+                @if (canConfig)
+                {@Html.EditorFor(model => model.DeviceFlag.Description)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceFlag_Description'),
+                                'Invalid Description',
+                                '@(Url.Action(MVC.API.DeviceFlag.UpdateDescription(Model.DeviceFlag.Id)))',
+                                'Description'
+                            );
+                        });
+                    </script>
+                }
+                else
+                {
+                    <pre>
+                    @if (string.IsNullOrEmpty(Model.DeviceFlag.Description))
+                    {
+                    <text>&lt;None&gt;</text>
+                    }
+                    else
+                    {
+                        @Model.DeviceFlag.Description.ToHtmlComment()
+                    }
+                    </pre>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Statistics:
+            </th>
+            <td>
+                <div><strong>@Model.CurrentAssignmentCount device@(Model.CurrentAssignmentCount != 1 ? "s" : null) currently assigned</strong></div>
+                <div>@Model.TotalAssignmentCount total device historical assignment@(Model.TotalAssignmentCount != 1 ? "s" : null)</div>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Icon:
+            </th>
+            <td>
+                <i id="Config_DeviceFlags_Icon" data-icon="@(Model.DeviceFlag.Icon)" data-colour="@(Model.DeviceFlag.IconColour)" class="fa fa-@(Model.DeviceFlag.Icon) fa-4x d-@(Model.DeviceFlag.IconColour)"></i>
+                @if (canConfig)
+                {
+                    <div>
+                        <a id="Config_DeviceFlags_Icon_Update" href="#" class="button small">Update</a>
+                        <div id="Config_DeviceFlags_Icon_Update_Dialog" class="dialog" title="Device Flag Icon">
+                            <div>
+                                <div class="colours">
+                                    @foreach (var colour in Model.ThemeColours)
+                                    {
+                                        <i data-colour="@(colour.Key)" class="fa fa-square d-@(colour.Key)" title="@colour.Value"></i>
+                                    }
+                                </div>
+                                <div class="icons">
+                                    @foreach (var icon in Model.Icons)
+                                    {
+                                        <i data-icon="@(icon.Key)" class="fa fa-@(icon.Key)" title="@icon.Value"></i>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            (function () {
+                                var dialog, icon, colours, icons;
+
+                                function showDialog() {
+                                    if (!dialog) {
+                                        dialog = $('#Config_DeviceFlags_Icon_Update_Dialog').dialog({
+                                            resizable: false,
+                                            modal: true,
+                                            autoOpen: false,
+                                            width: 1000,
+                                            buttons: {
+                                                "Save": save,
+                                                Cancel: cancel
+                                            }
+                                        });
+
+                                        colours = dialog.find('.colours');
+                                        icons = dialog.find('.icons');
+
+                                        colours.on('click', 'i', selectColour);
+                                        icons.on('click', 'i', selectIcon);
+                                    }
+
+                                    colours.find('i[data-colour="' + icon.attr('data-colour') + '"]').each(selectColour);
+                                    icons.find('i[data-icon="' + icon.attr('data-icon') + '"]').each(selectIcon);
+
+                                    dialog.dialog('open');
+
+                                    return false;
+                                }
+
+                                function selectColour() {
+                                    var $this = $(this),
+                                        colourCode = $this.attr('data-colour'),
+                                        previousColourCode = icons.attr('data-colour');
+
+
+                                    colours.find('i').removeClass('selected fa-check-square').addClass('fa-square');
+                                    $this.removeClass('fa-square').addClass('fa-check-square selected');
+
+                                    if (previousColourCode)
+                                        icons.removeClass('d-' + previousColourCode);
+                                    icons.attr('data-colour', colourCode)
+                                    icons.addClass('d-' + colourCode);
+                                }
+                                function selectIcon() {
+                                    var $this = $(this),
+                                        iconCode = $this.attr('data-icon');
+
+                                    icons.find('i').removeClass('selected');
+                                    $this.addClass('selected');
+                                }
+
+                                function save() {
+                                    var url = '@(Url.Action(MVC.API.DeviceFlag.UpdateIconAndColour(id: Model.DeviceFlag.Id, redirect: true)))',
+                                        data = {
+                                            Icon: icons.find('i.selected').attr('data-icon'),
+                                            IconColour: colours.find('i.selected').attr('data-colour')
+                                        };
+                                    window.location.href = url + '&' + $.param(data);
+
+                                    dialog.dialog("disable");
+                                    dialog.dialog("option", "buttons", null);
+                                }
+
+                                function cancel() {
+                                    $(this).dialog("close");
+                                }
+
+                                $(function () {
+                                    icon = $('#Config_DeviceFlags_Icon');
+                                    $('#Config_DeviceFlags_Icon_Update').click(showDialog);
+                                });
+                            }());
+                        </script>
+                    </div>
+                }
+            </td>
+        </tr>
+        @if (hideAdvanced)
+        {
+            <tr>
+                <td colspan="2" style="text-align: right;">
+                    <button id="Config_HideAdvanced_Show" class="button small">Show Advanced Options</button>
+                    <script>
+                        $(function () {
+                            $('#Config_HideAdvanced_Show').click(function () {
+                                var $this = $(this);
+                                $this.closest('.Config_HideAdvanced').removeClass('Config_HideAdvanced');
+                                $this.closest('tr').remove();
+                            });
+                        });
+                    </script>
+                </td>
+            </tr>
+        }
+        <tr class="Config_HideAdvanced_Item">
+            <th>
+                On Assignment<br />Expression:
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.EditorFor(model => model.DeviceFlag.OnAssignmentExpression)
+                    @AjaxHelpers.AjaxRemove()
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                            $(function () {
+                                var field = $('#DeviceFlag_OnAssignmentExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.DeviceFlag.UpdateOnAssignmentExpression(Model.DeviceFlag.Id))',
+                                    'OnAssignmentExpression'
+                                );
+
+                                field.focus(function () {
+                                    fieldOriginalWidth = field.width();
+                                    fieldOriginalHeight = field.height();
+                                    field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                                }).blur(function () {
+                                    field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                                }).change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                                fieldRemove.click(function () {
+                                    field.val('').change();
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                    </script>
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.DeviceFlag.OnAssignmentExpression))
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        <div class="code">
+                            @Model.DeviceFlag.OnAssignmentExpression
+                        </div>
+                    }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated whenever the flag is assigned to a device. The output of the expression will be shown with the flag assignment.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr class="Config_HideAdvanced_Item">
+            <th>
+                On Unassignment<br />Expression:
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.EditorFor(model => model.DeviceFlag.OnUnassignmentExpression)
+                    @AjaxHelpers.AjaxRemove()
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                        $(function () {
+                            var field = $('#DeviceFlag_OnUnassignmentExpression');
+                            var fieldRemove = field.next('.ajaxRemove');
+                            var fieldOriginalWidth, fieldOriginalHeight;
+
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                field,
+                                'None',
+                                '@Url.Action(MVC.API.DeviceFlag.UpdateOnUnassignmentExpression(Model.DeviceFlag.Id))',
+                                'OnUnassignmentExpression'
+                            );
+
+                            field.focus(function () {
+                                fieldOriginalWidth = field.width();
+                                fieldOriginalHeight = field.height();
+                                field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                            }).blur(function () {
+                                field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                            }).change(function () {
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                            fieldRemove.click(function () {
+                                field.val('').change();
+                            });
+
+                            if (!!field.val()) {
+                                fieldRemove.show();
+                            } else {
+                                fieldRemove.hide();
+                            }
+                        });
+                    </script>
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.DeviceFlag.OnUnassignmentExpression))
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        <div class="code">
+                            @Model.DeviceFlag.OnUnassignmentExpression
+                        </div>
+                    }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>This expression will be evaluated whenever the flag is removed from a device. The output of the expression will be shown with the flag assignment.
+                    </p>
+                </div>
+            </td>
+        </tr>
+
+        <tr class="Config_HideAdvanced_Item">
+            <th>
+                Linked Groups:
+            </th>
+            <td>
+                <div>
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DeviceFlagDevicesManagedGroup.GetCategoryDescription(Model.DeviceFlag),
+                   Description = DeviceFlagDevicesManagedGroup.GetDescription(Model.DeviceFlag),
+                   ManagedGroup = Model.DevicesLinkedGroup,
+                   IncludeFilterBeginDate = true,
+                   UpdateUrl = Url.Action(MVC.API.DeviceFlag.UpdateDevicesLinkedGroup(Model.DeviceFlag.Id, redirect: true))
+               })
+                    @Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
+               {
+                   CanConfigure = canConfig,
+                   CategoryDescription = DeviceFlagDeviceAssignedUsersManagedGroup.GetCategoryDescription(Model.DeviceFlag),
+                   Description = DeviceFlagDeviceAssignedUsersManagedGroup.GetDescription(Model.DeviceFlag),
+                   ManagedGroup = Model.AssignedUserLinkedGroup,
+                   IncludeFilterBeginDate = true,
+                   UpdateUrl = Url.Action(MVC.API.DeviceFlag.UpdateAssignedUserLinkedGroup(Model.DeviceFlag.Id, redirect: true))
+               })
+                    @if (canConfig)
+            {
+                        @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+@if (canBulkAssignment || canDelete || canShowDevices || canExportCurrent || canExportAll)
+{
+    <div class="actionBar">
+        @if (canExportCurrent)
+        {
+            @Html.ActionLinkButton("Export Current Assignments", MVC.Config.DeviceFlag.Export(null, Model.DeviceFlag.Id, true), "Config_DeviceFlags_Actions_ExportCurrent_Button")
+        }
+        @if (canExportAll)
+        {
+            @Html.ActionLinkButton("Export All Assignments", MVC.Config.DeviceFlag.Export(null, Model.DeviceFlag.Id, false), "Config_DeviceFlags_Actions_ExportAll_Button")
+        }
+        @if (canBulkAssignment)
+        {
+            <a href="#" id="Config_DeviceFlags_BulkAssign_Button" class="button">Bulk Assign Devices</a>
+            <div id="Config_DeviceFlags_BulkAssign_ModeDialog" class="dialog" title="Bulk Assign Device Mode">
+                <p>
+                    Select the mode used to assign devices:
+                </p>
+                <div>
+                    <div class="add">
+                        <h5><i class="fa fa-plus fa-fw"></i>Add</h5>
+                        <p>
+                            Specified devices will have this flag <strong>added</strong>. Devices who already have this flag will be skipped.
+                        </p>
+                    </div>
+                    <div class="override">
+                        <h5><i class="fa fa-repeat fa-fw"></i>Override</h5>
+                        <p>
+                            Specified devices will have this flag <strong>added</strong>. Specified devices which already have this flag will be skipped.
+                            Devices who already have this flag but are not specified will have the flag <strong>removed</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="Config_DeviceFlags_BulkAssign_AssignDialog" class="dialog" title="Bulk Assign Devices">
+                <div class="brief">
+                    <div>
+                        Enter multiple <strong>Device Serial Numbers</strong> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                    </div>
+                </div>
+                <div class="loading">
+                    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading current assignments...</h4>
+                </div>
+                <form action="#" method="post">
+                    <textarea id="Config_DeviceFlags_BulkAssign_AssignDialog_DeviceSerialNumbers" name="DeviceSerialNumbers"></textarea>
+                    <h4>Comments:</h4>
+                    <textarea id="Config_DeviceFlags_BulkAssign_AssignDialog_Comments" name="Comments"></textarea>
+                </form>
+            </div>
+            <script>
+                $(function () {
+                    var modeDialog, assignDialog, assignDeviceSerialNumbers;
+
+                    function showModeDialog() {
+                        if (!modeDialog) {
+                            modeDialog = $('#Config_DeviceFlags_BulkAssign_ModeDialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                width: 400,
+                                buttons: {
+                                    Cancel: function () {
+                                        $(this).dialog('close');
+                                    }
+                                }
+                            });
+
+                            modeDialog.find('.add').click(function () {
+                                modeDialog.dialog('close');
+                                showAssignDialog('Add');
+                            });
+                            modeDialog.find('.override').click(function () {
+                                modeDialog.dialog('close');
+                                showAssignDialog('Override');
+                            });
+                        }
+                        modeDialog.dialog('open');
+                    }
+                    function showAssignDialog(mode) {
+                        if (!assignDialog) {
+                            assignDialog = $('#Config_DeviceFlags_BulkAssign_AssignDialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                width: 460
+                            });
+
+                            assignDeviceSerialNumbers = $('#Config_DeviceFlags_BulkAssign_AssignDialog_DeviceSerialNumbers');
+                        }
+
+                        assignDialog.removeClass('loading');
+
+                        var buttons = {};
+                        buttons[mode + " Device Flags"] = function () {
+                            $(this).find('form').submit();
+                            $(this).dialog("disable");
+                        }
+                        buttons['Cancel'] = function () {
+                            $(this).dialog('close');
+                        }
+                        assignDialog.dialog('option', 'buttons', buttons);
+                        assignDialog.dialog('option', 'title', 'Bulk Assign Devices: ' + mode);
+
+                        if (mode == "Override") {
+                            assignDeviceSerialNumbers.closest('form').attr('action', '@(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, true)))');
+
+                            assignDialog.addClass('loading');
+                            $.getJSON('@Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id))', function (response, result) {
+                                assignDialog.removeClass('loading');
+
+                                if (result != 'success') {
+                                    alert('Unable to load current assignments:\n' + response);
+                                    assignDialog.dialog('close');
+                                } else {
+                                    if (!!response) {
+                                        assignDeviceSerialNumbers.val(response.join('\n'));
+                                    } else {
+                                        assignDeviceSerialNumbers.val('');
+                                    }
+                                }
+                            });
+                        }
+                        else // Assume Add
+                        {
+                            assignDeviceSerialNumbers.closest('form').attr('action', '@(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, false)))');
+                        }
+
+                        assignDialog.dialog('open');
+                    }
+
+                    $('#Config_DeviceFlags_BulkAssign_Button').click(function () {
+                        showModeDialog();
+                        return false;
+                    });
+                });
+            </script>
+        }
+        @if (canDelete)
+        {
+            @Html.ActionLinkButton("Delete", MVC.API.DeviceFlag.Delete(Model.DeviceFlag.Id, true), "Config_DeviceFlags_Actions_Delete_Button")
+            <div id="Config_DeviceFlags_Actions_Delete_Dialog" title="Delete this Device Flag?">
+                <p>
+                    <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+                    This item will be permanently deleted and cannot be recovered.<br />
+                    <br />
+                    @if (Model.CurrentAssignmentCount > 0)
+                    {
+                        <strong>@Model.CurrentAssignmentCount device@(Model.CurrentAssignmentCount != 1 ? "s are" : " is") currently assigned</strong>
+                        <br />
+                        <br />
+                    }
+                    Are you sure?
+                </p>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    var button = $('#Config_DeviceFlags_Actions_Delete_Button');
+                    var buttonDialog = $('#Config_DeviceFlags_Actions_Delete_Dialog');
+                    var buttonLink = button.attr('href');
+                    button.attr('href', '#');
+                    button.click(function () {
+                        buttonDialog.dialog('open');
+                        return false;
+                    });
+                    buttonDialog.dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            "Delete": function () {
+                                var $this = $(this);
+                                $this.dialog("disable");
+                                $this.dialog("option", "buttons", null);
+                                window.location.href = buttonLink;
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
+            </script>
+        }
+        @if (canShowDevices)
+        {
+            @Html.ActionLinkButton(string.Format("Show {0} device{1}", Model.CurrentAssignmentCount, (Model.CurrentAssignmentCount == 1 ? null : "s")), MVC.Search.Query(Model.DeviceFlag.Id.ToString(), "DeviceFlag"), "Config_DeviceFlags_Actions_ShowDevices_Button")
+        }
+    </div>
+}

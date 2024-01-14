@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Models.User.ShowModel
+@using Disco.Services.Devices.DeviceFlags;
 @{
     Authorization.Require(Claims.User.Show);
 
@@ -418,6 +419,55 @@
                                                             <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
                                                         </td>
                                                     </tr>
+                                                    @if (Authorization.Has(Claims.Device.ShowFlagAssignments) &&
+                                                        assignment.Device.DeviceFlagAssignments.Any(a => a.RemovedDate.HasValue))
+                                                    {
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <div class="User_Show_Assigned_Devices_CurrentAssignment_Flags">
+                                                                    @foreach (var flag in assignment.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                                                    {
+                                                                        <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                                                            <span class="details">
+                                                                                <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                                                {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                                                            </span>
+                                                                        </i>
+                                                                    }
+                                                                    <script type="text/javascript">
+                                                                        $(function () {
+                                                                            $('.User_Show_Assigned_Devices_CurrentAssignment_Flags')
+                                                                                .tooltip({
+                                                                                    items: 'i.flag',
+                                                                                    content: function () {
+                                                                                        var $this = $(this);
+                                                                                        return $this.children('.details').html();
+                                                                                    },
+                                                                                    tooltipClass: 'FlagAssignment_Tooltip',
+                                                                                    position: {
+                                                                                        my: "right top",
+                                                                                        at: "right bottom",
+                                                                                        collision: "flipfit flip"
+                                                                                    },
+                                                                                    hade: {
+                                                                                        effect: ''
+                                                                                    },
+                                                                                    close: function (e, ui) {
+                                                                                        ui.tooltip.hover(
+                                                                                            function () {
+                                                                                                $(this).stop(true).fadeTo(100, 1);
+                                                                                            },
+                                                                                            function () {
+                                                                                                $(this).fadeOut(100, function () { $(this).remove(); });
+                                                                                            });
+                                                                                    }
+                                                                                });
+                                                                        });
+                                                                    </script>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>

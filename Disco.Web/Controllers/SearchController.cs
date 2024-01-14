@@ -83,7 +83,7 @@ namespace Disco.Web.Controllers
                             var vm = Database.DeviceModels.Find(deviceModelId);
                             if (vm != null)
                             {
-                                m.FriendlyTerm = string.Format("Device Model: {0}", vm.ToString());
+                                m.FriendlyTerm = $"Device Model: {vm.ToString()}";
                                 m.Devices = Services.Searching.Search.SearchDeviceModel(Database, vm.Id);
                                 break;
                             }
@@ -100,7 +100,7 @@ namespace Disco.Web.Controllers
                             var dp = Database.DeviceProfiles.Find(deviceProfileId);
                             if (dp != null)
                             {
-                                m.FriendlyTerm = string.Format("Device Profile: {0}", dp.ToString());
+                                m.FriendlyTerm = $"Device Profile: {dp.ToString()}";
                                 m.Devices = Services.Searching.Search.SearchDeviceProfile(Database, dp.Id);
                                 break;
                             }
@@ -117,7 +117,7 @@ namespace Disco.Web.Controllers
                             var db = Database.DeviceBatches.Find(deviceBatchId);
                             if (db != null)
                             {
-                                m.FriendlyTerm = string.Format("Device Batch: {0}", db.ToString());
+                                m.FriendlyTerm = $"Device Batch: {db.ToString()}";
                                 m.Devices = Services.Searching.Search.SearchDeviceBatch(Database, db.Id);
                                 break;
                             }
@@ -233,10 +233,10 @@ namespace Disco.Web.Controllers
                         }
                     case "userflag":
                         Authorization.RequireAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
-                        int flagId;
-                        if (int.TryParse(term, out flagId))
+                        int userFlagId;
+                        if (int.TryParse(term, out userFlagId))
                         {
-                            var flag = Database.UserFlags.Find(flagId);
+                            var flag = Database.UserFlags.Find(userFlagId);
                             if (flag != null)
                             {
                                 m.FriendlyTerm = string.Format("User Flag: {0}", flag.ToString());
@@ -244,9 +244,26 @@ namespace Disco.Web.Controllers
                                 break;
                             }
                         }
-                        m.FriendlyTerm = string.Format("User Flag: {0}", term);
+                        m.FriendlyTerm = $"User Flag: {term}";
                         m.Success = false;
                         m.ErrorMessage = "Invalid User Flag Id";
+                        break;
+                    case "deviceflag":
+                        Authorization.RequireAll(Claims.Device.Search, Claims.Device.ShowFlagAssignments);
+                        int deviceFlagId;
+                        if (int.TryParse(term, out deviceFlagId))
+                        {
+                            var flag = Database.DeviceFlags.Find(deviceFlagId);
+                            if (flag != null)
+                            {
+                                m.FriendlyTerm = string.Format("Device Flag: {0}", flag.ToString());
+                                m.Devices = Services.Searching.Search.SearchDeviceFlag(Database, flag.Id);
+                                break;
+                            }
+                        }
+                        m.FriendlyTerm = $"Device Flag: {term}";
+                        m.Success = false;
+                        m.ErrorMessage = "Invalid Device Flag Id";
                         break;
                 }
             }

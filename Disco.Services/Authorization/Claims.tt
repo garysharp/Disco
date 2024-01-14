@@ -20,9 +20,6 @@
 <#@ import namespace="System.Runtime.InteropServices.CustomMarshalers" #>
 <#@ import namespace="System.Runtime.InteropServices" #>
 <#@ import namespace="System.Reflection" #>
-
-
-
 <#
    // Get the DTE service from the host
     EnvDTE.DTE Dte = null;

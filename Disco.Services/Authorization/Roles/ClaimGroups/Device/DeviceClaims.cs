@@ -25,7 +25,8 @@
         public bool ShowJobs { get; set; }
         [ClaimDetails("Show Assignment History", "Can show the assignment history for devices")]
         public bool ShowAssignmentHistory { get; set; }
-
+        [ClaimDetails("Show Device Flag Assignments", "Can show flags associated with devices")]
+        public bool ShowFlagAssignments { get; set; }
 
         public DevicePropertiesClaims Properties { get; set; }
 

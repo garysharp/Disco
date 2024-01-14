@@ -2165,6 +2165,222 @@ h1.Config_DocumentTemplates {
     }
 }
 
+#Config_DeviceFlags_Show {
+
+    #DeviceFlag_OnAssignmentExpression, #DeviceFlag_OnUnassignmentExpression {
+        height: 16px;
+        min-height: 16px;
+        overflow: hidden;
+        font-family: @FontFamilyMono;
+    }
+}
+
+#Config_DeviceFlags_Index {
+    i {
+        width: 1.2857142857142858em;
+        text-align: center;
+    }
+}
+
+#Config_DeviceFlags_Icon {
+    display: block;
+    margin: 0 0 10px 10px;
+}
+
+#Config_DeviceFlags_Icon_Update_Dialog {
+    display: none;
+
+    div.colours {
+        text-align: center;
+        font-size: 30px;
+
+        i {
+            cursor: pointer;
+            padding: 1px;
+            opacity: .9;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &.selected {
+                opacity: 1;
+            }
+        }
+    }
+
+    div.icons {
+        text-align: center;
+        font-size: 30px;
+        background-color: @white;
+        border: 1px solid @BackgroundColour;
+        margin: 6px 0 14px 0;
+
+        i {
+            width: 1.2857142857142858em;
+            text-align: center;
+            cursor: pointer;
+            padding: 4px 0px;
+            color: @HeaderBackgroundColour;
+            opacity: .6;
+
+            &:hover {
+                opacity: .9;
+                color: inherit;
+            }
+
+            &.selected {
+                opacity: 1;
+                color: inherit;
+            }
+        }
+    }
+}
+
+#Config_DeviceFlags_BulkAssign_ModeDialog {
+    & > div {
+        margin-top: 6px;
+        background-color: @white;
+        line-height: 1.3em;
+        border: 1px solid #ddd;
+
+        & > div {
+            display: block;
+            padding: 4px;
+            cursor: pointer;
+
+            &:not(:last-child) {
+                border-bottom: 1px dashed #ddd;
+            }
+
+            h5 {
+                font-size: 1.1em;
+                padding: 4px 0;
+            }
+
+            i {
+                margin-right: 4px;
+            }
+
+            &.add {
+                &:hover {
+                    background-color: hsv(hsvhue(@StatusSuccess), 13%, 100%);
+                }
+
+                i {
+                    color: @StatusSuccess;
+                }
+            }
+
+            &.override {
+                &:hover {
+                    background-color: hsv(hsvhue(@StatusError), 13%, 100%);
+                }
+
+                i {
+                    color: @StatusError;
+                }
+            }
+        }
+    }
+}
+
+#Config_DeviceFlags_BulkAssign_AssignDialog {
+    .brief {
+        margin: 0 0 8px 0;
+
+        .scopeDescBulkGenerate {
+            font-weight: @FontWeightBodyBold;
+        }
+
+        div.examples {
+            margin: 8px auto;
+            width: 300px;
+
+            div {
+                margin: 2px 4px 2px 0;
+                width: 150px;
+                float: left;
+
+                &.example1 {
+                    width: 100px;
+                }
+            }
+        }
+    }
+
+    div.loading {
+        display: none;
+        padding: 40px 0;
+        text-align: center;
+
+        i {
+            margin-right: 10px;
+            color: @StatusInformation;
+        }
+    }
+
+    #Config_DeviceFlags_BulkAssign_AssignDialog_DeviceSerialNumbers {
+        height: 200px;
+        margin-bottom: 8px;
+    }
+
+    textarea {
+        width: calc(~"100% - .5em");
+        margin: 0;
+    }
+
+    &.loading {
+        & > div.loading {
+            display: block;
+        }
+
+        & > form {
+            display: none;
+        }
+    }
+}
+
+#DeviceFlag_Export {
+    #DeviceFlag_Export_Fields {
+        #DeviceFlag_Export_Fields_Defaults {
+            font-size: .75em;
+        }
+
+        th {
+            font-size: 1.05em;
+
+            span {
+                margin-top: 4px;
+                font-size: .8em;
+            }
+        }
+    }
+}
+
+#DeviceFlag_Export_Download_Dialog {
+    padding-top: 20px;
+    text-align: center;
+
+    h4 {
+        margin-bottom: 30px;
+    }
+
+    a {
+        margin-bottom: 20px;
+    }
+}
+
+#DeviceFlag_Export_Exporting {
+    padding-top: 50px;
+    text-align: center;
+
+    i {
+        margin-right: 10px;
+        color: @StatusInformation;
+    }
+}
+
 #DocumentTemplate_BulkGenerate {
     .actions {
         padding-bottom: .5em;

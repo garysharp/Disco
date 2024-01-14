@@ -249,7 +249,7 @@
                                                                     var $this = $(this);
                                                                     return $this.children('.details').html();
                                                                 },
-                                                                tooltipClass: 'User_FlagAssignment_Tooltip',
+                                                                tooltipClass: 'FlagAssignment_Tooltip',
                                                                 position: {
                                                                     my: "right top",
                                                                     at: "right bottom",
@@ -748,6 +748,96 @@
                             return false;
                         });
 
+                    });
+                </script>
+            }
+            @if (Model.Device.CanAddDeviceFlags() && Model.AvailableDeviceFlags != null && Model.AvailableDeviceFlags.Count > 0)
+            {
+                @Html.ActionLinkSmallButton("Add Flag", MVC.API.DeviceFlagAssignment.AddDevice(), "Device_Show_Details_Actions_AddFlag_Button")
+                <div id="Device_Show_Details_Actions_AddFlag_Dialog" class="dialog" title="Add Device Flag">
+                    @using (Html.BeginForm(MVC.API.DeviceFlagAssignment.AddDevice()))
+                    {
+                        <input id="Device_Show_Details_Actions_AddFlag_Dialog_Id" type="hidden" name="id" />
+                        <input id="Device_Show_Details_Actions_AddFlag_Dialog_DeviceSerialNumber" type="hidden" name="DeviceSerialNumber" value="@Model.Device.SerialNumber" />
+                        <div class="flagPicker">
+                            @foreach (var flag in Model.AvailableDeviceFlags.OrderBy(jq => jq.Name))
+                            {
+                                <div class="flag" data-flagid="@(flag.Id)">
+                                    <i class="fa fa-@(flag.Icon) fa-fw fa-lg d-@(flag.IconColour)"></i>@flag.Name
+                                </div>
+                            }
+                        </div>
+                        <div class="details">
+                            <div>
+                                <h4>Comments</h4>
+                                <textarea name="Comments" id="Device_Show_Details_Actions_AddFlag_Dialog_Comments"></textarea>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var button = $('#Device_Show_Details_Actions_AddFlag_Button');
+                        var buttonDialog = null;
+                        var buttonLink = button.attr('href');
+
+                        var flagPicker = null;
+                        var flagAddId = null;
+                        var flagAddComments = null;
+                        var details = null;
+
+                        function flagSelected() {
+                            var flag = $(this);
+
+                            flagPicker.children().removeClass('selected');
+                            flag.addClass('selected');
+
+                            flagAddId.val(flag.attr('data-flagid'));
+
+                            details.show();
+
+                            flagAddComments.focus().select();
+                        }
+
+                        button.attr('href', '#').click(function (e) {
+                            e.preventDefault();
+
+                            if (!buttonDialog) {
+                                buttonDialog = $('#Device_Show_Details_Actions_AddFlag_Dialog');
+                                buttonDialog.dialog({
+                                    width: 600,
+                                    height: 410,
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    buttons: {
+                                        Cancel: function () {
+                                            $(this).dialog("close");
+                                        },
+                                        "Add Flag": function () {
+                                            if (!!flagAddId.val()) {
+                                                var $this = $(this);
+                                                $this.dialog("disable");
+                                                $this.dialog("option", "buttons", null);
+                                                buttonDialog.find('form').submit();
+                                            } else {
+                                                alert('Select a Device Flag');
+                                            }
+                                        }
+                                    }
+                                });
+
+                                flagAddId = $('#Device_Show_Details_Actions_AddFlag_Dialog_Id');
+                                flagAddComments = buttonDialog.find('#Device_Show_Details_Actions_AddFlag_Dialog_Comments');
+                                flagPicker = buttonDialog.find('.flagPicker');
+                                details = buttonDialog.find('.details');
+
+                                flagPicker.on('click', 'div.flag', flagSelected);
+                            }
+
+                            buttonDialog.dialog('open');
+                            return false;
+                        });
                     });
                 </script>
             }

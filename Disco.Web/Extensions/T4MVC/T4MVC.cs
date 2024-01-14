@@ -56,6 +56,8 @@ namespace T4MVC
         public Disco.Web.Areas.API.Controllers.DeviceBatchController DeviceBatch = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceBatchController();
         public Disco.Web.Areas.API.Controllers.DeviceCertificateController DeviceCertificate = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceCertificateController();
         public Disco.Web.Areas.API.Controllers.DeviceController Device = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceController();
+        public Disco.Web.Areas.API.Controllers.DeviceFlagAssignmentController DeviceFlagAssignment = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceFlagAssignmentController();
+        public Disco.Web.Areas.API.Controllers.DeviceFlagController DeviceFlag = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceFlagController();
         public Disco.Web.Areas.API.Controllers.DeviceModelController DeviceModel = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceModelController();
         public Disco.Web.Areas.API.Controllers.DeviceProfileController DeviceProfile = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceProfileController();
         public Disco.Web.Areas.API.Controllers.DocumentTemplateController DocumentTemplate = new Disco.Web.Areas.API.Controllers.T4MVC_DocumentTemplateController();
@@ -80,6 +82,7 @@ namespace T4MVC
         public Disco.Web.Areas.Config.Controllers.AuthorizationRoleController AuthorizationRole = new Disco.Web.Areas.Config.Controllers.T4MVC_AuthorizationRoleController();
         public Disco.Web.Areas.Config.Controllers.ConfigController Config = new Disco.Web.Areas.Config.Controllers.T4MVC_ConfigController();
         public Disco.Web.Areas.Config.Controllers.DeviceBatchController DeviceBatch = new Disco.Web.Areas.Config.Controllers.T4MVC_DeviceBatchController();
+        public Disco.Web.Areas.Config.Controllers.DeviceFlagController DeviceFlag = new Disco.Web.Areas.Config.Controllers.T4MVC_DeviceFlagController();
         public Disco.Web.Areas.Config.Controllers.DeviceModelController DeviceModel = new Disco.Web.Areas.Config.Controllers.T4MVC_DeviceModelController();
         public Disco.Web.Areas.Config.Controllers.DeviceProfileController DeviceProfile = new Disco.Web.Areas.Config.Controllers.T4MVC_DeviceProfileController();
         public Disco.Web.Areas.Config.Controllers.DocumentTemplateController DocumentTemplate = new Disco.Web.Areas.Config.Controllers.T4MVC_DocumentTemplateController();

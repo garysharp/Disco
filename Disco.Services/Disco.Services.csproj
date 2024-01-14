@@ -194,6 +194,7 @@
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\ConfigClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceBatch\DeviceBatchClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceCertificate\DeviceCertificateClaims.cs" />
+    <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceFlag\DeviceFlagClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceModel\DeviceModelClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DeviceProfile\DeviceProfileClaims.cs" />
     <Compile Include="Authorization\Roles\ClaimGroups\Configuration\DocumentTemplate\DocumentTemplateClaims.cs" />
@@ -248,6 +249,15 @@
     <Compile Include="Devices\Enrolment\MacDeviceEnrolment.cs" />
     <Compile Include="Devices\Exporting\DeviceExport.cs" />
     <Compile Include="Devices\Exporting\DeviceExportTask.cs" />
+    <Compile Include="Devices\DeviceFlags\Cache.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagExport.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagExportTask.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagExtensions.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagsBulkAssignTask.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagsDeleteTask.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagService.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagDeviceAssignedUsersManagedGroup.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagDevicesManagedGroup.cs" />
     <Compile Include="Exporting\ExportHelpers.cs" />
     <Compile Include="Exporting\ExportTaskContext.cs" />
     <Compile Include="Devices\Importing\BaseDeviceImportContext.cs" />

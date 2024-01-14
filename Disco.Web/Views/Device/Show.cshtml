@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
+@using Disco.Services.Devices.DeviceFlags;
 @{
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), string.Format("Device: {0}", Model.Device.SerialNumber));
 }
@@ -11,6 +12,51 @@
             });
         </script>
     </div>
+    @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+    {
+        <div id="Device_Show_Flags">
+            @foreach (var flag in Model.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+            {
+                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw fa-lg d-@(flag.Item2.IconColour)">
+                    <span class="details">
+                        <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                        {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
+                    </span>
+                </i>
+            }
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#Device_Show_Flags')
+                    .appendTo('#layout_PageHeading')
+                    .tooltip({
+                        items: 'i.flag',
+                        content: function () {
+                            var $this = $(this);
+                            return $this.children('.details').html();
+                        },
+                        tooltipClass: 'FlagAssignment_Tooltip',
+                        position: {
+                            my: "right top",
+                            at: "right bottom",
+                            collision: "flipfit flip"
+                        },
+                        hade: {
+                            effect: ''
+                        },
+                        close: function (e, ui) {
+                            ui.tooltip.hover(
+                                function () {
+                                    $(this).stop(true).fadeTo(100, 1);
+                                },
+                                function () {
+                                    $(this).fadeOut(100, function () { $(this).remove(); });
+                                });
+                        }
+                    });
+            });
+        </script>
+    }
     @Html.Partial(MVC.Device.Views.DeviceParts._Subject, Model)
     <script type="text/javascript">
         $(function () {
@@ -62,6 +108,10 @@
         @if (Authorization.Has(Claims.Device.ShowAttachments))
         {
             @Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model)
+        }
+        @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._Flags, Model)
         }
         @if (Authorization.Has(Claims.Device.ShowCertificates))
         {

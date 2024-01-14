@@ -229,6 +229,14 @@ namespace Disco.Services.Searching
                 .ToUserSearchResultItems(null);
         }
 
+        public static List<DeviceSearchResultItem> SearchDeviceFlag(DiscoDataContext Database, int deviceFlagId)
+        {
+            return Database.DeviceFlagAssignments
+                .Where(a => a.DeviceFlagId == deviceFlagId && !a.RemovedDate.HasValue)
+                .Select(a => a.Device)
+                .ToDeviceSearchResultItems(null);
+        }
+
         private static List<UserSearchResultItem> ToUserSearchResultItems(this IQueryable<User> Query, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
             if (LimitCount.HasValue)
@@ -315,7 +323,8 @@ namespace Disco.Services.Searching
                 DecommissionedDate = d.DecommissionedDate,
                 AssignedUserId = d.AssignedUserId,
                 AssignedUserDisplayName = d.AssignedUser.DisplayName,
-                JobCount = d.Jobs.Count()
+                JobCount = d.Jobs.Count(),
+                DeviceFlagAssignments = d.DeviceFlagAssignments,
             }).ToList();
         }
         #endregion

@@ -51,6 +51,7 @@ namespace Disco.Models.Repository
 
         [InverseProperty("DeviceSerialNumber")]
         public virtual IList<Job> Jobs { get; set; }
+        public virtual IList<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
 
         public override string ToString()
         {

@@ -10,6 +10,7 @@ using Disco.Services.Users;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -54,15 +55,15 @@ namespace Disco.Web.Controllers
             }
 
             m.User = Database.Users
-                .Include("DeviceUserAssignments.Device.DeviceModel")
-                .Include("DeviceUserAssignments.Device.DeviceProfile")
-                .Include("DeviceUserAssignments.Device.DeviceBatch")
-                .Include("DeviceUserAssignments.Device.DeviceDetails")
-                .Include("UserAttachments.TechUser")
-                .Include("UserAttachments.DocumentTemplate")
-                .Include("UserFlagAssignments.AddedUser")
-                .Include("UserFlagAssignments.RemovedUser")
-                .Include("UserDetails")
+                .Include(u => u.DeviceUserAssignments.Select(dua => dua.Device.DeviceModel))
+                .Include(u => u.DeviceUserAssignments.Select(dua => dua.Device.DeviceProfile))
+                .Include(u => u.DeviceUserAssignments.Select(dua => dua.Device.DeviceBatch))
+                .Include(u => u.DeviceUserAssignments.Select(dua => dua.Device.DeviceDetails))
+                .Include(u => u.UserAttachments.Select(ua => ua.TechUser))
+                .Include(u => u.UserAttachments.Select(ua => ua.DocumentTemplate))
+                .Include(u => u.UserFlagAssignments.Select(ufa => ufa.AddedUser))
+                .Include(u => u.UserFlagAssignments.Select(ufa => ufa.RemovedUser))
+                .Include(u => u.UserDetails)
                 .FirstOrDefault(um => um.UserId == id);
 
             if (m.User == null)
@@ -79,7 +80,7 @@ namespace Disco.Web.Controllers
                     HideClosedJobs = true,
                     EnablePaging = false
                 };
-                m.Jobs.Fill(Database, Disco.Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.UserId == id).OrderByDescending(j => j.Id), true);
+                m.Jobs.Fill(Database, Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.UserId == id).OrderByDescending(j => j.Id), true);
             }
 
             if (Authorization.Has(Claims.User.ShowFlagAssignments))

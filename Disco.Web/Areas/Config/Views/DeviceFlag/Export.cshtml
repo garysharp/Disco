@@ -1,0 +1,185 @@
+﻿@using Disco.Web.Areas.Config.Models.DeviceFlag;
+@model ExportModel
+@{
+    Authorization.RequireAny(Claims.Config.DeviceFlag.Export);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Flags", MVC.Config.DeviceFlag.Index(null), "Export");
+
+    var optionsMetadata = ModelMetadata.FromLambdaExpression(m => m.Options, ViewData);
+    var optionGroups = optionsMetadata.Properties.Where(p => p.ShortDisplayName != null && p.ModelType == typeof(bool) && p.PropertyName != "CurrentOnly")
+        .GroupBy(m => m.ShortDisplayName);
+}
+<div id="DeviceFlag_Export">
+    @using (Html.BeginForm(MVC.API.DeviceFlag.Export()))
+    {
+        <div id="DeviceFlag_Export_Scope" class="form" style="width: 570px">
+            <h2>Export Scope</h2>
+            <table>
+                <tr>
+                    <th style="width: 150px">
+                        Device Flags:
+                    </th>
+                    <td>
+                        @foreach (var flag in Model.DeviceFlags)
+                        {
+                            <div>
+                                <label>
+                                    <input type="checkbox" id="Options_DeviceFlagIds" name="Options.DeviceFlagIds" value="@flag.Id" @(((bool)Model.Options.DeviceFlagIds.Contains(flag.Id)) ? "checked " : null) />
+                                    <i class="fa fa-@(flag.Icon) fa-lg d-@(flag.IconColour)"></i>
+                                    <span>@flag.Name</span>
+                                </label>
+                            </div>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.Options.CurrentOnly)</th>
+                    <td>
+                        @Html.CheckBoxFor(m => m.Options.CurrentOnly)
+                        <p>Uncheck to include all historical device flag assignments.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.Options.Format)</th>
+                    <td>
+                        @Html.DropDownListFor(m => m.Options.Format, Enum.GetNames(typeof(Disco.Models.Exporting.ExportFormat)).Select(v => new SelectListItem() { Value = v, Text = v }))
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="DeviceFlag_Export_Fields" class="form" style="width: 570px; margin-top: 15px;">
+            <h2>Export Fields <a id="DeviceFlag_Export_Fields_Defaults" href="#">(Defaults)</a></h2>
+            <table>
+                @foreach (var optionGroup in optionGroups)
+                {
+                    var optionFields = optionGroup.ToList();
+                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
+                    <tr>
+                        <th style="width: 120px;">
+                            @optionGroup.Key
+                            @if (optionFields.Count > 2)
+                            {
+                                <span style="display: block;" class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
+                            }
+                        </th>
+                        <td>
+                            <div class="DeviceFlag_Export_Fields_Group">
+                                <table class="none">
+                                    <tr>
+                                        <td style="width: 50%">
+                                            <ul class="none">
+                                                @foreach (var optionItem in optionFields.Take(itemsPerColumn))
+                                                {
+                                                    <li title="@optionItem.Description">
+                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null)/><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label></li>
+                                                }
+                                            </ul>
+                                        </td>
+                                        <td style="width: 50%">
+                                            <ul class="none">
+                                                @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
+                                                {
+                                                    <li title="@optionItem.Description">
+                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null)/><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label></li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>            
+                }
+            </table>
+        </div>
+        <script>
+            $(function () {
+                var exportDefaultFields = ['Name', 'AddedDate', 'UserId', 'UserDisplayName', 'Comments'];
+                var $exportFields = $('#DeviceFlag_Export_Fields');
+                var $exportScope = $('#DeviceFlag_Export_Scope');
+                var $form = $exportScope.closest('form');
+                var $exportingDialog = null;
+
+                $exportFields.on('click', 'a.selectAll,a.selectNone', function () {
+                    var $this = $(this);
+
+                    $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
+
+                    return false;
+                });
+
+                $('#DeviceFlag_Export_Fields_Defaults').click(function () {
+
+                    $exportFields.find('input').prop('checked', false);
+
+                    $.each(exportDefaultFields, function (index, value) {
+                        $('#Options_' + value).prop('checked', true);
+                    });
+
+                    return false;
+                });
+
+                // Submit Validation
+                function submitHandler() {
+                    var exportFieldCount = $exportFields.find('input:checked').length;
+
+                    if (exportFieldCount > 0) {
+
+                        if ($exportingDialog == null) {
+                            $exportingDialog = $('#DeviceFlag_Export_Exporting').dialog({
+                                width: 400,
+                                height: 164,
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false
+                            });
+                        }
+                        $exportingDialog.dialog('open');
+
+                        $form[0].submit();
+                    }
+                    else
+                        alert('Select at least one field to export.');
+                }
+                $.validator.unobtrusive.parse($form);
+                $form.data("validator").settings.submitHandler = submitHandler;
+
+                $('#DeviceFlag_Export_Download_Dialog').dialog({
+                    width: 400,
+                    height: 164,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+                $('#DeviceFlag_Export_Button').click(function () {
+                    $form.submit();
+                });
+            });
+        </script>
+    }
+</div>
+@if (Model.ExportSessionId != null)
+{
+    <div id="DeviceFlag_Export_Download_Dialog" class="dialog" title="Export Device Flags">
+        <h4>@Model.ExportSessionResult.RecordCount record@(Model.ExportSessionResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
+        <a href="@Url.Action(MVC.API.DeviceFlag.ExportRetrieve(Model.ExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download Device Flag Export</a>
+    </div>
+    <script>
+        $(function () {
+            $('#DeviceFlag_Export_Download_Dialog')
+                .dialog({
+                    width: 400,
+                    height: 164,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+        });
+    </script>
+}
+<div id="DeviceFlag_Export_Exporting" class="dialog" title="Exporting Device Flags...">
+    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting device flags...</h4>
+</div>
+<div class="actionBar">
+    <a id="DeviceFlag_Export_Button" href="#" class="button">Export Device Flags</a>
+</div>

@@ -18,6 +18,21 @@
             margin-right: 6px;
         }
     }
+
+    #Device_Show_Flags {
+        display: inline-block;
+        float: right;
+        height: 50px;
+        font-size: 0.6em;
+
+        & > i {
+            cursor: default;
+
+            & > .details {
+                display: none;
+            }
+        }
+    }
 }
 
 #Device_Show {
@@ -188,6 +203,7 @@
             }
         }
     }
+
     .enforce-ou {
         padding-top: .5em;
     }
@@ -391,6 +407,143 @@
             }
         }
     }
+}
+
+#Device_Show_Details_Actions_AddFlag_Dialog {
+    height: 400px;
+
+    .flagPicker {
+        position: absolute;
+        width: 250px;
+        height: 300px;
+        overflow-y: auto;
+        background-color: #fcfcfc;
+        border: 1px solid #ccc;
+
+        & > div {
+            background-color: @white;
+            border-bottom: 1px solid #ddd;
+            padding: 6px 0 6px 6px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+            }
+
+            &.selected, &.selected:hover {
+                background-color: @TableDataDarkBackgroundColour;
+            }
+        }
+    }
+
+    .details {
+        display: none;
+        position: absolute;
+        left: 280px;
+        top: 1em;
+
+        h4 {
+            margin-bottom: 4px;
+        }
+
+        textarea {
+            min-width: 280px;
+            height: 200px;
+        }
+    }
+}
+
+#DeviceDetailTab-Flags {
+    #deviceFlags {
+        .tableDataDark;
+        table-layout: fixed;
+
+        i.fa-edit {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-top: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: none;
+            color: @HyperLinkColour;
+
+            &:hover {
+                color: @HyperLinkHoverColour;
+            }
+        }
+
+        td:hover i.fa-edit {
+            display: inline-block;
+        }
+
+        th.name {
+            width: 200px;
+        }
+
+        th.added {
+        }
+
+        th.removed {
+        }
+
+        tr.removed td {
+            background-color: @TableDataBorderColour;
+        }
+
+        td.name {
+            vertical-align: middle;
+
+            .fa-stack {
+                line-height: 1.6em;
+            }
+        }
+
+        td.added, td.removed {
+            vertical-align: middle;
+
+            .expressionResult {
+                margin-top: 4px;
+                font-style: italic;
+            }
+        }
+
+        td.comments {
+            vertical-align: middle;
+
+            .editable {
+                position: relative;
+            }
+
+            .commentsRaw {
+                display: none;
+            }
+        }
+
+        td.removed {
+            &.na {
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+    }
+
+    & > .none {
+        text-align: center;
+        padding: 30px 0;
+        font-style: italic;
+        background-color: @white;
+    }
+}
+
+#Device_Show_Flags_Actions_EditComments_Dialog {
+    h4 {
+        margin-bottom: 4px;
+    }
+}
+
+#Device_Show_Flags_Actions_EditComments_Dialog_Comments {
+    width: 280px;
 }
 
 #Devices_Export {

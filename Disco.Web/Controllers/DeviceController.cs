@@ -4,6 +4,7 @@ using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.DeviceFlags;
 using Disco.Services.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.DetailsProvider;
@@ -12,6 +13,7 @@ using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -226,16 +228,18 @@ namespace Disco.Web.Controllers
             Database.Configuration.LazyLoadingEnabled = true;
 
             m.Device = Database.Devices
-                .Include("DeviceModel")
-                .Include("DeviceProfile")
-                .Include("DeviceBatch")
-                .Include("DeviceDetails")
-                .Include("DeviceUserAssignments.AssignedUser.UserFlagAssignments")
-                .Include("AssignedUser.UserFlagAssignments")
-                .Include("AssignedUser.UserDetails")
-                .Include("DeviceCertificates")
-                .Include("DeviceAttachments.TechUser")
-                .Include("DeviceAttachments.DocumentTemplate")
+                .Include(d => d.DeviceModel)
+                .Include(d => d.DeviceProfile)
+                .Include(d => d.DeviceBatch)
+                .Include(d => d.DeviceDetails)
+                .Include(d => d.DeviceUserAssignments.Select(a => a.AssignedUser.UserFlagAssignments))
+                .Include(d => d.AssignedUser.UserFlagAssignments)
+                .Include(d => d.AssignedUser.UserDetails)
+                .Include(d => d.DeviceCertificates)
+                .Include(d => d.DeviceAttachments.Select(a => a.TechUser))
+                .Include(d => d.DeviceAttachments.Select(a => a.DocumentTemplate))
+                .Include(d => d.DeviceFlagAssignments.Select(a => a.AddedUser))
+                .Include(d => d.DeviceFlagAssignments.Select(a => a.RemovedUser))
                 .FirstOrDefault(d => d.SerialNumber == id);
 
             if (m.Device == null)
@@ -308,6 +312,16 @@ namespace Disco.Web.Controllers
             if (m.Device.DeviceProfile.WirelessProfileProviders != null)
             {
                 m.DeviceProfileWirelessProfileProviders = m.Device.DeviceProfile.GetWirelessProfileProviders().ToList();
+            }
+
+            if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+            {
+                var usedFlags = m.Device.DeviceFlagAssignments
+                    .Where(a => !a.RemovedDate.HasValue)
+                    .Select(a => a.DeviceFlagId)
+                    .Distinct().ToList();
+
+                m.AvailableDeviceFlags = DeviceFlagService.GetDeviceFlags().Where(f => !usedFlags.Contains(f.Id)).ToList();
             }
 
             if (Authorization.Has(Claims.User.ShowDetails))

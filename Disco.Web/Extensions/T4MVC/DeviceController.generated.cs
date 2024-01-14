@@ -218,6 +218,7 @@ namespace Disco.Web.Controllers
                     public readonly string _AssignmentHistory = "_AssignmentHistory";
                     public readonly string _Certificates = "_Certificates";
                     public readonly string _Details = "_Details";
+                    public readonly string _Flags = "_Flags";
                     public readonly string _Jobs = "_Jobs";
                     public readonly string _Resources = "_Resources";
                     public readonly string _Subject = "_Subject";
@@ -225,6 +226,7 @@ namespace Disco.Web.Controllers
                 public readonly string _AssignmentHistory = "~/Views/Device/DeviceParts/_AssignmentHistory.cshtml";
                 public readonly string _Certificates = "~/Views/Device/DeviceParts/_Certificates.cshtml";
                 public readonly string _Details = "~/Views/Device/DeviceParts/_Details.cshtml";
+                public readonly string _Flags = "~/Views/Device/DeviceParts/_Flags.cshtml";
                 public readonly string _Jobs = "~/Views/Device/DeviceParts/_Jobs.cshtml";
                 public readonly string _Resources = "~/Views/Device/DeviceParts/_Resources.cshtml";
                 public readonly string _Subject = "~/Views/Device/DeviceParts/_Subject.cshtml";

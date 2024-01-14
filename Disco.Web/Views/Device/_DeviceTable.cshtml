@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Disco.Models.Services.Searching.DeviceSearchResultItem>
+@using Disco.Services.Devices.DeviceFlags;
 @{
     var canShowDevices = Authorization.Has(Claims.Device.Show);
     var canShowUsers = Authorization.Has(Claims.User.Show);
@@ -7,7 +8,7 @@
 }
 <div class="genericData deviceTable">
     @if (Model != null && Model.Count() > 0)
-    { 
+    {
         <table class="genericData deviceTable">
             <thead>
                 <tr>
@@ -29,15 +30,32 @@
                         <td>
                             @if (canShowDevices)
                             {@Html.ActionLink(item.Id, MVC.Device.Show(item.Id))}
-                            else
-                            {@item.Id}
+                        else
+                        {@item.Id}
+                            @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+                            {
+                                @if (item.DeviceFlagAssignments != null && item.DeviceFlagAssignments.Count > 0)
+                                {
+                                    <div class="flags">
+                                        @foreach (var flag in item.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                        {
+                                            <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                                <span class="details">
+                                                    <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                    {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                                </span>
+                                            </i>
+                                        }
+                                    </div>
+                                }
+                            }
                         </td>
                         <td>
                             @item.AssetNumber
                         </td>
                         <td>
                             @if (item.DecommissionedDate.HasValue)
-                            { @CommonHelpers.FriendlyDate(item.DecommissionedDate.Value) }
+                            {@CommonHelpers.FriendlyDate(item.DecommissionedDate.Value)}
                         </td>
                         <td>
                             @if (string.IsNullOrWhiteSpace(item.ComputerName))
@@ -45,7 +63,7 @@
                                 <span class="smallMessage">Unknown</span>
                             }
                             else
-                            { 
+                            {
                                 @item.ComputerName
                             }
                         </td>
@@ -55,8 +73,8 @@
                                 <span>@item.DeviceModelDescription</span>
                             }
                             else
-                            { 
-                                <span class="smallMessage">Unknown</span>                    
+                            {
+                                <span class="smallMessage">Unknown</span>
                             }
                         </td>
                         <td>
@@ -68,25 +86,26 @@
                                 <span>@item.DeviceBatchName</span>
                             }
                             else
-                            { 
-                                <span class="smallMessage">N/A</span>                    
+                            {
+                                <span class="smallMessage">N/A</span>
                             }
                         </td>
                         <td>
                             @if (string.IsNullOrEmpty(item.AssignedUserId))
                             {
-                                <span class="smallMessage">N/A</span>                 
+                                <span class="smallMessage">N/A</span>
                             }
                             else
-                            { 
-                                <span>@if (canShowUsers)
-                                      {
-                                    @Html.ActionLink(item.AssignedUserDescription, MVC.User.Show(item.AssignedUserId))
-                                      }
-                                      else
-                                      {
-                                    @item.AssignedUserDescription
-                                      }
+                            {
+                                <span>
+                                    @if (canShowUsers)
+                                    {
+                                        @Html.ActionLink(item.AssignedUserDescription, MVC.User.Show(item.AssignedUserId))
+                                    }
+                                    else
+                                    {
+                                        @item.AssignedUserDescription
+                                    }
                                 </span>
                             }
                         </td>
@@ -97,9 +116,48 @@
                 }
             </tbody>
         </table>
+        <script type="text/javascript">
+    $(function () {
+        var userTable = $('table.deviceTable');
+
+        userTable.each(function () {
+            var $this = $(this);
+
+            if (!$this.data('deviceTable_Flags')) {
+                $this.tooltip({
+                    items: 'i.flag',
+                    content: function () {
+                        var $this = $(this);
+                        return $this.children('.details').html();
+                    },
+                    tooltipClass: 'FlagAssignment_Tooltip',
+                    position: {
+                        my: "right top",
+                        at: "right bottom",
+                        collision: "flipfit flip"
+                    },
+                    hade: {
+                        effect: ''
+                    },
+                    close: function (e, ui) {
+                        ui.tooltip.hover(
+                            function () {
+                                $(this).stop(true).fadeTo(100, 1);
+                            },
+                            function () {
+                                $(this).fadeOut(100, function () { $(this).remove(); });
+                            });
+                    }
+                });
+
+                $this.data('deviceTable_Flags', true)
+            }
+        });
+    });
+        </script>
     }
     else
-    { 
+    {
         <span class="smallMessage">No Devices Found</span>
     }
 </div>

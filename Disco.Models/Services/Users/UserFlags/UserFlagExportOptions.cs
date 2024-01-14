@@ -1,5 +1,4 @@
 ﻿using Disco.Models.Exporting;
-using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Exporting;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +15,7 @@ namespace Disco.Models.Services.Users.UserFlags
         [Required]
         public List<int> UserFlagIds { get; set; } = new List<int>();
 
-        [DisplayAttribute(Name = "Current Only")]
+        [Display(Name = "Current Only")]
         public bool CurrentOnly { get; set; }
 
         // User Flag

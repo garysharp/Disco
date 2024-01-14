@@ -22,6 +22,7 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
             DeviceCertificate = new DeviceCertificateClaims();
             Enrolment = new EnrolmentClaims();
             DeviceBatch = new DeviceBatchClaims();
+            DeviceFlag = new DeviceFlagClaims();
             DeviceModel = new DeviceModelClaims();
             DeviceProfile = new DeviceProfileClaims();
             DocumentTemplate = new DocumentTemplateClaims();
@@ -42,6 +43,8 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
         public EnrolmentClaims Enrolment { get; set; }
 
         public DeviceBatchClaims DeviceBatch { get; set; }
+
+        public DeviceFlagClaims DeviceFlag { get; set; }
 
         public DeviceModelClaims DeviceModel { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Disco.Models.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,6 +45,7 @@ namespace Disco.Models.Services.Searching
         public string DeviceBatchName { get; set; }
         public int JobCount { get; set; }
         public DateTime? DecommissionedDate { get; set; }
+        public IList<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
 
         private string[] BuildScoreValues()
         {

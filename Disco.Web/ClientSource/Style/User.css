@@ -152,6 +152,15 @@
 #User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment div.User_Show_AssignedDevices_CurrentAssignment_Details {
   float: left;
 }
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment .User_Show_Assigned_Devices_CurrentAssignment_Flags {
+  font-size: 16px;
+}
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment .User_Show_Assigned_Devices_CurrentAssignment_Flags > i {
+  cursor: default;
+}
+#User_Show #User_Show_Subjects #User_Show_AssignedDevices .User_Show_AssignedDevices_CurrentAssignment .User_Show_Assigned_Devices_CurrentAssignment_Flags > i > .details {
+  display: none;
+}
 #User_Show #User_Show_Subjects #User_Show_Subjects_Actions > td {
   padding-top: 4px;
 }

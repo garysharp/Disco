@@ -6,44 +6,51 @@
     ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.FriendlyId()));
 }
 <div id="User_Show">
-    <div id="User_Show_Flags">
-        @foreach (var flag in Model.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
-        {
-            <i class="flag fa fa-@(flag.Item2.Icon) fa-fw fa-lg d-@(flag.Item2.IconColour)"><span class="details"><span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                                                                                                                                            {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span></span></i>
-        }
-    </div>
-    <script type="text/javascript">
-        $(function () {
-            $('#User_Show_Flags')
-                .appendTo('#layout_PageHeading')
-                .tooltip({
-                    items: 'i.flag',
-                    content: function () {
-                        var $this = $(this);
-                        return $this.children('.details').html();
-                    },
-                    tooltipClass: 'User_FlagAssignment_Tooltip',
-                    position: {
-                        my: "right top",
-                        at: "right bottom",
-                        collision: "flipfit flip"
-                    },
-                    hade: {
-                        effect: ''
-                    },
-                    close: function (e, ui) {
-                        ui.tooltip.hover(
-                            function () {
-                                $(this).stop(true).fadeTo(100, 1);
-                            },
-                            function () {
-                                $(this).fadeOut(100, function () { $(this).remove(); });
-                            });
-                    }
-                });
-        });
-    </script>
+    @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+    {
+        <div id="User_Show_Flags">
+            @foreach (var flag in Model.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+            {
+                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw fa-lg d-@(flag.Item2.IconColour)">
+                    <span class="details">
+                        <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                        {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
+                    </span>
+                </i>
+            }
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#User_Show_Flags')
+                    .appendTo('#layout_PageHeading')
+                    .tooltip({
+                        items: 'i.flag',
+                        content: function () {
+                            var $this = $(this);
+                            return $this.children('.details').html();
+                        },
+                        tooltipClass: 'FlagAssignment_Tooltip',
+                        position: {
+                            my: "right top",
+                            at: "right bottom",
+                            collision: "flipfit flip"
+                        },
+                        hade: {
+                            effect: ''
+                        },
+                        close: function (e, ui) {
+                            ui.tooltip.hover(
+                                function () {
+                                    $(this).stop(true).fadeTo(100, 1);
+                                },
+                                function () {
+                                    $(this).fadeOut(100, function () { $(this).remove(); });
+                                });
+                        }
+                    });
+            });
+        </script>
+    }
     @Html.Partial(MVC.User.Views.UserParts._Subject, Model)
     <script type="text/javascript">
         $(function () {

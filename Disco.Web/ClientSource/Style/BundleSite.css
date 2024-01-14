@@ -5209,14 +5209,17 @@ table.genericData td.id a {
 .dataTables_wrapper table > thead tr > th.sorting_disabled {
   background-image: none;
 }
-table.userTable div.flags {
+table.userTable div.flags,
+table.deviceTable div.flags {
   display: inline-block;
   float: right;
 }
-table.userTable div.flags > i {
+table.userTable div.flags > i,
+table.deviceTable div.flags > i {
   cursor: default;
 }
-table.userTable div.flags > i > .details {
+table.userTable div.flags > i > .details,
+table.deviceTable div.flags > i > .details {
   display: none;
 }
 .jobStatus {
@@ -5689,15 +5692,15 @@ div.Disco-AttachmentUpload-ImageDialog {
   background-color: #000 !important;
   padding: 0 !important;
 }
-body > .User_FlagAssignment_Tooltip span.name {
+body > .FlagAssignment_Tooltip span.name {
   display: block;
   font-weight: 600;
 }
-body > .User_FlagAssignment_Tooltip span.comments {
+body > .FlagAssignment_Tooltip span.comments {
   display: block;
   padding: 2px 0 2px 4px;
 }
-body > .User_FlagAssignment_Tooltip span.added {
+body > .FlagAssignment_Tooltip span.added {
   font-style: italic;
   font-size: 0.9em;
 }

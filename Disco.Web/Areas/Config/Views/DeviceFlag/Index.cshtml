@@ -1,0 +1,78 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceFlag.IndexModel
+@{
+    Authorization.Require(Claims.Config.DeviceFlag.Show);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Flags");
+    var showTags = Model.DeviceFlags.Keys.Any(i => i.DevicesLinkedGroup != null || i.DeviceUsersLinkedGroup != null ||
+        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null);
+}
+<div id="Config_DeviceFlags_Index">
+    @if (Model.DeviceFlags.Count == 0)
+    {
+        <div class="form" style="width: 450px; padding: 100px 0;">
+            <h2>No device flags are configured</h2>
+        </div>
+    }
+    else
+    {
+        <table class="tableData">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Current&nbsp;Assignments</th>
+                @if (showTags)
+                {
+                    <th>&nbsp;</th>
+                }
+            </tr>
+            @foreach (var pair in Model.DeviceFlags.OrderBy(i => i.Key.Name))
+            {
+                var item = pair.Key;
+                var assignmentCount = pair.Value;
+                <tr>
+                    <td>
+                        <a href="@Url.Action(MVC.Config.DeviceFlag.Index(item.Id))">
+                            <i class="fa fa-@(item.Icon) fa-lg d-@(item.IconColour)"></i>
+                            @item.Name
+                        </a>
+                    </td>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(item.Description))
+                        {
+                            <span class="smallMessage">&lt;none&gt;</span>
+                        }
+                        else
+                        {
+                            @item.Description.ToHtmlComment()
+                        }
+                    </td>
+                    <td>
+                        @assignmentCount.ToString("N0")
+                    </td>
+                    @if (showTags)
+                    {
+                        <td>
+                            @if (item.DevicesLinkedGroup != null || item.DeviceUsersLinkedGroup != null)
+                            {
+                                <i class="fa fa-link fa-lg success" title="Is Linked"></i>
+                            }
+                            @if (item.OnAssignmentExpression != null || item.OnUnassignmentExpression != null)
+                            {
+                                <i class="fa fa-bolt fa-lg alert" title="Has Expressions"></i>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+<div class="actionBar">
+    @if (Authorization.Has(Claims.Config.DeviceFlag.Export) && Model.DeviceFlags.Count > 0)
+    {
+        @Html.ActionLinkButton("Export", MVC.Config.DeviceFlag.Export())
+    }
+    @if (Authorization.Has(Claims.Config.DeviceFlag.Create))
+    {
+        @Html.ActionLinkButton("Create Device Flag", MVC.Config.DeviceFlag.Create())
+    }
+</div>
+</div>
