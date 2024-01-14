@@ -63,6 +63,10 @@
         {
             @Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model)
         }
+        @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+        {
+            @Html.Partial(MVC.Device.Views.DeviceParts._Flags, Model)
+        }
         @if (Authorization.Has(Claims.Device.ShowCertificates))
         {
             @Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model)

@@ -1,0 +1,182 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+@using Disco.Services.Devices.DeviceFlags;
+@{
+    Authorization.Require(Claims.Device.ShowFlagAssignments);
+
+    var hasRemove = Authorization.Has(Claims.Device.Actions.RemoveFlags);
+    var hasEdit = Authorization.Has(Claims.Device.Actions.EditFlags);
+
+    var hasDeviceFlagShow = Authorization.Has(Claims.Config.DeviceFlag.Show);
+    var activeAssignmentCount = Model.Device.DeviceFlagAssignments == null ? 0 : Model.Device.DeviceFlagAssignments.Count(a => !a.RemovedDate.HasValue);
+
+    var flagAssignments = Model.Device.DeviceFlagAssignments.Select(a => Tuple.Create(a, DeviceFlagService.GetDeviceFlag(a.DeviceFlagId))).ToList();
+}
+<div id="DeviceDetailTab-Flags" class="DevicePart">
+    @if (flagAssignments.Count > 0)
+    {
+        <table id="deviceFlags">
+            <tr>
+                <th class="name">Name</th>
+                <th class="added">Added</th>
+                <th class="sla">Comments</th>
+                <th class="removed">Removed</th>
+            </tr>
+            @foreach (var fa in flagAssignments.OrderByDescending(a => a.Item1.AddedDate))
+            {
+                <tr data-deviceflagassignmentid="@fa.Item1.Id" data-flagassignmentaddeddate="@(fa.Item1.AddedDate.ToString("s"))" class="@(!fa.Item1.RemovedDate.HasValue ? "added" : "removed")">
+                    <td class="name">
+                        <i class="fa fa-@(fa.Item2.Icon) fa-fw fa-lg d-@(fa.Item2.IconColour)"></i>
+                        @if (hasDeviceFlagShow)
+                        {
+                            @Html.ActionLink(fa.Item2.Name, MVC.Config.DeviceFlag.Index(fa.Item2.Id))
+                        }
+                        else
+                        {
+                            @fa.Item2.Name
+                        }
+                    </td>
+                    <td class="added">
+                        @CommonHelpers.FriendlyDateAndUser(fa.Item1.AddedDate, fa.Item1.AddedUser)
+                        @if (fa.Item1.OnAssignmentExpressionResult != null)
+                        {
+                            <div class="expressionResult">@fa.Item1.OnAssignmentExpressionResult</div>
+                        }
+                    </td>
+                    <td class="comments">
+                        @if (hasEdit)
+                        {
+                            <div class="editable"><i class="fa fa-fw fa-edit" title="Edit Comments"></i></div>
+                        }
+                        @if (fa.Item1.Comments == null)
+                        {
+                            <div class="comments smallMessage">[no comments]</div>
+                        }
+                        else
+                        {
+                            <div class="comments">@fa.Item1.Comments.ToHtmlComment()</div>
+                            <div class="commentsRaw">@fa.Item1.Comments</div>
+                        }
+                    </td>
+                    <td class="removed@(!fa.Item1.RemovedDate.HasValue ? " na" : null)">
+                        @if (fa.Item1.RemovedDate.HasValue)
+                        {
+                            @CommonHelpers.FriendlyDateAndUser(fa.Item1.RemovedDate.Value, fa.Item1.RemovedUser)
+                            if (fa.Item1.OnUnassignmentExpressionResult != null)
+                            {
+                                <div class="expressionResult">@fa.Item1.OnUnassignmentExpressionResult</div>
+                            }
+                        }
+                        else if (fa.Item1.CanRemove())
+                        {
+                            <a href="#" class="button small remove">Remove</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+        <div id="Device_Show_Flags_Actions_Remove_Dialog" class="dialog" title="Remove this flag from the device?">
+            @using (Html.BeginForm(MVC.API.DeviceFlagAssignment.RemoveDevice()))
+            {
+                <input id="Device_Show_Flags_Actions_Remove_Dialog_Id" type="hidden" name="id" value="" />
+                <p>
+                    <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
+                </p>
+            }
+        </div>
+        <div id="Device_Show_Flags_Actions_EditComments_Dialog" class="dialog" title="Edit the Comments">
+            @using (Html.BeginForm(MVC.API.DeviceFlagAssignment.UpdateComments()))
+            {
+                <input id="Device_Show_Flags_Actions_EditComments_Dialog_Id" type="hidden" name="id" value="" />
+                <input type="hidden" name="redirect" value="true" />
+                <h4>Comments:</h4>
+                <p>
+                    <textarea id="Device_Show_Flags_Actions_EditComments_Dialog_Comments" name="Comments" class="block"></textarea>
+                </p>
+            }
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                var deviceFlags = $('#deviceFlags');
+
+                var dialog = null;
+                var dialogEditComments = null;
+
+                deviceFlags.on('click', 'a.remove', function (e) {
+                    var $this = $(this);
+                    var DeviceFlagAssignmentId = $this.closest('tr').attr('data-deviceflagassignmentid');
+
+                    if (!dialog) {
+                        dialog = $('#Device_Show_Flags_Actions_Remove_Dialog');
+                        dialog.dialog({
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Remove Flag": function () {
+                                    var $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    $this.find('form').submit();
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+
+                    $('#Device_Show_Flags_Actions_Remove_Dialog_Id').val(DeviceFlagAssignmentId);
+                    dialog.dialog('open');
+
+                    e.preventDefault();
+                    return false;
+                });
+
+                deviceFlags.on('click', 'td.comments i.fa-edit', function (e) {
+                    var $this = $(this);
+                    var DeviceFlagAssignmentId = $this.closest('tr').attr('data-deviceflagassignmentid');
+
+                    if (!dialogEditComments) {
+                        dialogEditComments = $('#Device_Show_Flags_Actions_EditComments_Dialog');
+                        dialogEditComments.dialog({
+                            resizable: false,
+                            modal: true,
+                            width: 320,
+                            autoOpen: false,
+                            buttons: {
+                                "Save Changes": function () {
+                                    var $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    $this.find('form').submit();
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+
+                    var $comments = $this.closest('td').find('.commentsRaw');
+                    if ($comments.hasClass('smallMessage')) {
+                        $('#Device_Show_Flags_Actions_EditComments_Dialog_Comments').val('');
+                    } else {
+                        $('#Device_Show_Flags_Actions_EditComments_Dialog_Comments').val($comments.text());
+                    }
+
+                    $('#Device_Show_Flags_Actions_EditComments_Dialog_Id').val(DeviceFlagAssignmentId);
+                    dialogEditComments.dialog('open');
+                    e.preventDefault();
+                    return false;
+                });
+            });
+        </script>
+    }
+    else
+    {
+        <div class="none">This device has no associated flags</div>
+    }
+    <script>
+        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-Flags">Flags [@activeAssignmentCount]</a></li>');
+    </script>
+</div>

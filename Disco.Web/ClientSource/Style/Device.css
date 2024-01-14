@@ -404,6 +404,118 @@
   background-color: inherit;
   border: 1px solid #fff;
 }
+#Device_Show_Details_Actions_AddFlag_Dialog {
+  height: 400px;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .flagPicker {
+  position: absolute;
+  width: 250px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fcfcfc;
+  border: 1px solid #ccc;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .flagPicker > div {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  padding: 6px 0 6px 6px;
+  cursor: pointer;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .flagPicker > div:hover {
+  background-color: #f4f4f4;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .flagPicker > div.selected,
+#Device_Show_Details_Actions_AddFlag_Dialog .flagPicker > div.selected:hover {
+  background-color: #eee;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .details {
+  display: none;
+  position: absolute;
+  left: 280px;
+  top: 1em;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .details h4 {
+  margin-bottom: 4px;
+}
+#Device_Show_Details_Actions_AddFlag_Dialog .details textarea {
+  min-width: 280px;
+  height: 200px;
+}
+#DeviceDetailTab-Flags #deviceFlags {
+  border: solid 1px #d8d8d8;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+#DeviceDetailTab-Flags #deviceFlags td {
+  border: solid 1px #d8d8d8;
+  background-color: #fff;
+}
+#DeviceDetailTab-Flags #deviceFlags th {
+  background-color: #eee;
+  border: solid 1px #d8d8d8;
+}
+#DeviceDetailTab-Flags #deviceFlags i.fa-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 4px;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: none;
+  color: #335A87;
+}
+#DeviceDetailTab-Flags #deviceFlags i.fa-edit:hover {
+  color: #5e8cc2;
+}
+#DeviceDetailTab-Flags #deviceFlags td:hover i.fa-edit {
+  display: inline-block;
+}
+#DeviceDetailTab-Flags #deviceFlags th.name {
+  width: 200px;
+}
+#DeviceDetailTab-Flags #deviceFlags tr.removed td {
+  background-color: #f4f4f4;
+}
+#DeviceDetailTab-Flags #deviceFlags td.name {
+  vertical-align: middle;
+}
+#DeviceDetailTab-Flags #deviceFlags td.name .fa-stack {
+  line-height: 1.6em;
+}
+#DeviceDetailTab-Flags #deviceFlags td.added,
+#DeviceDetailTab-Flags #deviceFlags td.removed {
+  vertical-align: middle;
+}
+#DeviceDetailTab-Flags #deviceFlags td.added .expressionResult,
+#DeviceDetailTab-Flags #deviceFlags td.removed .expressionResult {
+  margin-top: 4px;
+  font-style: italic;
+}
+#DeviceDetailTab-Flags #deviceFlags td.comments {
+  vertical-align: middle;
+}
+#DeviceDetailTab-Flags #deviceFlags td.comments .editable {
+  position: relative;
+}
+#DeviceDetailTab-Flags #deviceFlags td.comments .commentsRaw {
+  display: none;
+}
+#DeviceDetailTab-Flags #deviceFlags td.removed.na {
+  vertical-align: middle;
+  text-align: center;
+}
+#DeviceDetailTab-Flags > .none {
+  text-align: center;
+  padding: 30px 0;
+  font-style: italic;
+  background-color: #fff;
+}
+#Device_Show_Flags_Actions_EditComments_Dialog h4 {
+  margin-bottom: 4px;
+}
+#Device_Show_Flags_Actions_EditComments_Dialog_Comments {
+  width: 280px;
+}
 #Devices_Export .Devices_Export_Type_Target {
   margin-top: 10px;
   display: none;

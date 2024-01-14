@@ -241,7 +241,7 @@ WriteLiteral("        ");
 
             
             #line 66 "..\..\Views\Device\Show.cshtml"
-         if (Authorization.Has(Claims.Device.ShowCertificates))
+         if (Authorization.Has(Claims.Device.ShowFlagAssignments))
         {
             
             
@@ -249,13 +249,38 @@ WriteLiteral("        ");
             #line hidden
             
             #line 68 "..\..\Views\Device\Show.cshtml"
-       Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Flags, Model));
 
             
             #line default
             #line hidden
             
             #line 68 "..\..\Views\Device\Show.cshtml"
+                                                                     
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        ");
+
+            
+            #line 70 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.Has(Claims.Device.ShowCertificates))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Views\Device\Show.cshtml"
                                                                             
         }
 
