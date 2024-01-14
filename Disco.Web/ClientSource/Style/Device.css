@@ -91,6 +91,18 @@
 #layout_PageHeading #Device_Show_Status span.icon {
   margin-right: 6px;
 }
+#layout_PageHeading #Device_Show_Flags {
+  display: inline-block;
+  float: right;
+  height: 50px;
+  font-size: 0.6em;
+}
+#layout_PageHeading #Device_Show_Flags > i {
+  cursor: default;
+}
+#layout_PageHeading #Device_Show_Flags > i > .details {
+  display: none;
+}
 #Device_Show #Device_Show_Subjects {
   table-layout: fixed;
 }

@@ -323,7 +323,8 @@ namespace Disco.Services.Searching
                 DecommissionedDate = d.DecommissionedDate,
                 AssignedUserId = d.AssignedUserId,
                 AssignedUserDisplayName = d.AssignedUser.DisplayName,
-                JobCount = d.Jobs.Count()
+                JobCount = d.Jobs.Count(),
+                DeviceFlagAssignments = d.DeviceFlagAssignments,
             }).ToList();
         }
         #endregion

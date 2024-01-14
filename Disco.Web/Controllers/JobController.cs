@@ -18,6 +18,7 @@ using Disco.Services.Web;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -298,21 +299,23 @@ namespace Disco.Web.Controllers
             var m = new Models.Job.ShowModel();
 
             m.Job = Database.Jobs
-                .Include("Device.DeviceModel")
-                .Include("Device.DeviceBatch")
-                .Include("Device.DeviceDetails")
-                .Include("DeviceHeldTechUser")
-                .Include("DeviceReadyForReturnTechUser")
-                .Include("DeviceReturnedTechUser")
-                .Include("OpenedTechUser")
-                .Include("ClosedTechUser")
-                .Include("JobType")
-                .Include("JobSubTypes")
-                .Include("User.UserFlagAssignments")
-                .Include("User.UserDetails")
-                .Include("JobLogs.TechUser")
-                .Include("JobAttachments.TechUser")
-                .Include("JobAttachments.DocumentTemplate")
+                .Include(j => j.Device.DeviceModel)
+                .Include(j => j.Device.DeviceBatch)
+                .Include(j => j.Device.DeviceProfile)
+                .Include(j => j.Device.DeviceDetails)
+                .Include(j => j.Device.DeviceFlagAssignments)
+                .Include(j => j.DeviceHeldTechUser)
+                .Include(j => j.DeviceReadyForReturnTechUser)
+                .Include(j => j.DeviceReturnedTechUser)
+                .Include(j => j.OpenedTechUser)
+                .Include(j => j.ClosedTechUser)
+                .Include(j => j.JobType)
+                .Include(j => j.JobSubTypes)
+                .Include(j => j.User.UserFlagAssignments)
+                .Include(j => j.User.UserDetails)
+                .Include(j => j.JobLogs.Select(l => l.TechUser))
+                .Include(j => j.JobAttachments.Select(a => a.TechUser))
+                .Include(j => j.JobAttachments.Select(a => a.DocumentTemplate))
                 .FirstOrDefault(j => j.Id == id.Value);
 
             if (m.Job == null)

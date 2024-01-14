@@ -5,21 +5,27 @@
 }
 <div class="genericData userTable">
     @if (Model != null && Model.Count() > 0)
-    { 
+    {
         <table class="genericData userTable">
             <thead>
                 <tr>
-                    <th>Id
+                    <th>
+                        Id
                     </th>
-                    <th>Surname
+                    <th>
+                        Surname
                     </th>
-                    <th>Given Name
+                    <th>
+                        Given Name
                     </th>
-                    <th>Display Name
+                    <th>
+                        Display Name
                     </th>
-                    <th>Assigned Devices
+                    <th>
+                        Assigned Devices
                     </th>
-                    <th>Jobs
+                    <th>
+                        Jobs
                     </th>
                 </tr>
             </thead>
@@ -36,14 +42,23 @@
                             {
                                 @item.FriendlyId
                             }
-                            @if (item.UserFlagAssignments != null && item.UserFlagAssignments.Count > 0)
-                            {<div class="flags">
-                                @foreach (var flag in item.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                            @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+                            {
+                                @if (item.UserFlagAssignments != null && item.UserFlagAssignments.Count > 0)
                                 {
-                                    <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)"><span class="details"><span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                                                                                                                                                              {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span></span></i>
+                                    <div class="flags">
+                                        @foreach (var flag in item.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                                        {
+                                            <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                                <span class="details">
+                                                    <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                    {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                                </span>
+                                            </i>
+                                        }
+                                    </div>
                                 }
-                            </div>}
+                            }
                         </td>
                         <td>
                             @item.Surname
@@ -59,9 +74,9 @@
                         </td>
                         <td>
                             @item.JobCountOpen @if (item.JobCount > item.JobCountOpen)
-                                               {
+                            {
                                 <span class="smallMessage">(@(item.JobCount - item.JobCountOpen) Closed)</span>
-                                               }
+                            }
                         </td>
                     </tr>
                 }
@@ -81,7 +96,7 @@
                                 var $this = $(this);
                                 return $this.children('.details').html();
                             },
-                            tooltipClass: 'User_FlagAssignment_Tooltip',
+                            tooltipClass: 'FlagAssignment_Tooltip',
                             position: {
                                 my: "right top",
                                 at: "right bottom",
@@ -108,7 +123,7 @@
         </script>
     }
     else
-    { 
+    {
         <span class="smallMessage">No Users Found</span>
     }
 </div>

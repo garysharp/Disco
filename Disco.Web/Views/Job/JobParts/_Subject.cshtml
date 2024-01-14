@@ -1,6 +1,7 @@
 ﻿@model Disco.Web.Models.Job.ShowModel
 @using Disco.Models.Services.Job;
 @using Disco.Services.Users.UserFlags;
+@using Disco.Services.Devices.DeviceFlags;
 @{
     Authorization.Require(Claims.Job.Show);
 }
@@ -190,69 +191,115 @@
                             {
                                 <div id="Job_Show_Device_Batch" title="Batch">@Html.ActionLink(Model.Job.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Job.Device.DeviceBatchId))</div>
                             }
+                            @if (Model.Job.Device.DeviceBatch != null)
+                            {
+                                if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
+                                {
+                                    <div id="Job_Show_Device_Details_HWar">
+                                        <div>DEVICE WARRANTY</div>
+                                        <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFullDateTime("Unknown")</span></div>
+                                        @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.WarrantyDetails))
+                                        {
+                                            <a id="Job_Show_Device_Details_HWar_Details_Button" href="#">Show Details</a>
+                                            <div id="Job_Show_Device_Details_HWar_Details_Dialog" class="dialog" title="Warranty Details for @(Model.Job.Device.DeviceBatch.Name)">
+                                                <div>@(new HtmlString(Model.Job.Device.DeviceBatch.WarrantyDetails))</div>
+                                            </div>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    var d;
+                                                    $('#Job_Show_Device_Details_HWar_Details_Button').click(function () {
+                                                        if (!d)
+                                                            d = $('#Job_Show_Device_Details_HWar_Details_Dialog').dialog({
+                                                                width: 570,
+                                                                modal: true
+                                                            });
+                                                        else
+                                                            d.dialog('open');
+                                                        return false;
+                                                    });
+                                                });
+                                            </script>
+                                        }
+                                    </div>
+                                }
+                                if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
+                                {
+                                    <div id="Job_Show_Device_Details_HNWar">
+                                        <div>INSURANCE</div>
+                                        <div id="Job_Show_Device_Details_HNWar_InsuranceSupplier">@Model.Job.Device.DeviceBatch.InsuranceSupplier</div>
+                                        <div>Until: <span id="Job_Show_Device_Details_HNWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.InsuredUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.InsuredUntil.ToFullDateTime("Unknown")</span></div>
+                                        @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.InsuranceDetails))
+                                        {
+                                            <a id="Job_Show_Device_Details_HNWar_Details_Button" href="#">Show Details</a>
+                                            <div id="Job_Show_Device_Details_HNWar_Details_Dialog" class="dialog" title="Insurance Details for @(Model.Job.Device.DeviceBatch.Name)">
+                                                <div>@(new HtmlString(Model.Job.Device.DeviceBatch.InsuranceDetails))</div>
+                                            </div>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    var d;
+                                                    $('#Job_Show_Device_Details_HNWar_Details_Button').click(function () {
+                                                        if (!d)
+                                                            d = $('#Job_Show_Device_Details_HNWar_Details_Dialog').dialog({
+                                                                width: 570,
+                                                                modal: true
+                                                            });
+                                                        else
+                                                            d.dialog('open');
+                                                        return false;
+                                                    });
+                                                });
+                                            </script>
+                                        }
+                                    </div>
+                                }
+                            }
+                            @if (Authorization.Has(Claims.Device.ShowFlagAssignments) &&
+                                Model.Job.Device.DeviceFlagAssignments != null &&
+                                Model.Job.Device.DeviceFlagAssignments.Any(a => !a.RemovedDate.HasValue))
+                            {
+                                <div id="Job_Show_Device_Flags">
+                                    @foreach (var flag in Model.Job.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                    {
+                                        <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                            <span class="details">
+                                                <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                            </span>
+                                        </i>
+                                    }
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $('#Job_Show_Device_Flags')
+                                                .tooltip({
+                                                    items: 'i.flag',
+                                                    content: function () {
+                                                        var $this = $(this);
+                                                        return $this.children('.details').html();
+                                                    },
+                                                    tooltipClass: 'FlagAssignment_Tooltip',
+                                                    position: {
+                                                        my: "right top",
+                                                        at: "right bottom",
+                                                        collision: "flipfit flip"
+                                                    },
+                                                    hade: {
+                                                        effect: ''
+                                                    },
+                                                    close: function (e, ui) {
+                                                        ui.tooltip.hover(
+                                                            function () {
+                                                                $(this).stop(true).fadeTo(100, 1);
+                                                            },
+                                                            function () {
+                                                                $(this).fadeOut(100, function () { $(this).remove(); });
+                                                            });
+                                                    }
+                                                });
+                                        });
+                                    </script>
+                                </div>
+                            }
                         </div>
-                        @if (Model.Job.Device.DeviceBatch != null)
-                        {
-                            if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
-                            {
-                                <div id="Job_Show_Device_Details_HWar">
-                                    <div>DEVICE WARRANTY</div>
-                                    <div>Until: <span id="Job_Show_Device_Details_HWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFullDateTime("Unknown")</span></div>
-                                    @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.WarrantyDetails))
-                                    {
-                                        <a id="Job_Show_Device_Details_HWar_Details_Button" href="#">Show Details</a>
-                                        <div id="Job_Show_Device_Details_HWar_Details_Dialog" class="dialog" title="Warranty Details for @(Model.Job.Device.DeviceBatch.Name)">
-                                            <div>@(new HtmlString(Model.Job.Device.DeviceBatch.WarrantyDetails))</div>
-                                        </div>
-                                        <script type="text/javascript">
-                                            $(function () {
-                                                var d;
-                                                $('#Job_Show_Device_Details_HWar_Details_Button').click(function () {
-                                                    if (!d)
-                                                        d = $('#Job_Show_Device_Details_HWar_Details_Dialog').dialog({
-                                                            width: 570,
-                                                            modal: true
-                                                        });
-                                                    else
-                                                        d.dialog('open');
-                                                    return false;
-                                                });
-                                            });
-                                        </script>
-                                    }
-                                </div>
-                            }
-                            if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
-                            {
-                                <div id="Job_Show_Device_Details_HNWar">
-                                    <div>INSURANCE</div>
-                                    <div id="Job_Show_Device_Details_HNWar_InsuranceSupplier">@Model.Job.Device.DeviceBatch.InsuranceSupplier</div>
-                                    <div>Until: <span id="Job_Show_Device_Details_HNWar_ValidUntil" data-livestamp="@Model.Job.Device.DeviceBatch.InsuredUntil.ToUnixEpoc()">@Model.Job.Device.DeviceBatch.InsuredUntil.ToFullDateTime("Unknown")</span></div>
-                                    @if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.InsuranceDetails))
-                                    {
-                                        <a id="Job_Show_Device_Details_HNWar_Details_Button" href="#">Show Details</a>
-                                        <div id="Job_Show_Device_Details_HNWar_Details_Dialog" class="dialog" title="Insurance Details for @(Model.Job.Device.DeviceBatch.Name)">
-                                            <div>@(new HtmlString(Model.Job.Device.DeviceBatch.InsuranceDetails))</div>
-                                        </div>
-                                        <script type="text/javascript">
-                                            $(function () {
-                                                var d;
-                                                $('#Job_Show_Device_Details_HNWar_Details_Button').click(function () {
-                                                    if (!d)
-                                                        d = $('#Job_Show_Device_Details_HNWar_Details_Dialog').dialog({
-                                                            width: 570,
-                                                            modal: true
-                                                        });
-                                                    else
-                                                        d.dialog('open');
-                                                    return false;
-                                                });
-                                            });
-                                        </script>
-                                    }
-                                </div>
-                            }
-                        }
                     </div>
                     @if (Model.Job.DeviceHeld.HasValue)
                     {
@@ -469,7 +516,7 @@
                                                 var $this = $(this);
                                                 return $this.children('.details').html();
                                             },
-                                            tooltipClass: 'User_FlagAssignment_Tooltip',
+                                            tooltipClass: 'FlagAssignment_Tooltip',
                                             position: {
                                                 my: "right top",
                                                 at: "right bottom",
