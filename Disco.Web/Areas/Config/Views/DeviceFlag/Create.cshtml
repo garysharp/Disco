@@ -1,0 +1,36 @@
+﻿@model Disco.Web.Areas.Config.Models.DeviceFlag.CreateModel
+@{
+    Authorization.RequireAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure);
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Flags", MVC.Config.DeviceFlag.Index(null), "Create");
+}
+@using (Html.BeginForm())
+{ 
+    @Html.HiddenFor(m => m.DeviceFlag.Icon)
+    @Html.HiddenFor(m => m.DeviceFlag.IconColour)
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th>Name:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.DeviceFlag.Name)<br />@Html.ValidationMessageFor(model => model.DeviceFlag.Name)
+                </td>
+            </tr>
+            <tr>
+                <th>Description:
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.DeviceFlag.Description)<br />@Html.ValidationMessageFor(model => model.DeviceFlag.Description)
+                </td>
+            </tr>
+        </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Create" />
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#DeviceFlag_Name').focus().select();
+        });
+    </script>
+}

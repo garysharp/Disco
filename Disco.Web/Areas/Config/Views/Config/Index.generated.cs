@@ -508,8 +508,8 @@ WriteLiteral("                        <div");
 WriteLiteral(" class=\"pageMenuBlurb\"");
 
 WriteLiteral(">\r\n                            Configure Device Profiles including computer name " +
-"generation, distribution and Active\r\n                    Directory OU layout.\r\n " +
-"                       </div>\r\n");
+"generation, distribution and Active\r\n                            Directory OU la" +
+"yout.\r\n                        </div>\r\n");
 
             
             #line 77 "..\..\Areas\Config\Views\Config\Index.cshtml"
@@ -522,7 +522,7 @@ WriteLiteral("                    ");
 
             
             #line 78 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                     if (Authorization.Has(Claims.Config.Enrolment.Show))
+                     if (Authorization.Has(Claims.Config.DeviceFlag.Show))
                     {
 
             
@@ -542,13 +542,63 @@ WriteLiteral("></i>");
             #line hidden
             
             #line 80 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                            Write(Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Flags", MVC.Config.DeviceFlag.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 80 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                                                                                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"pageMenuBlurb\"");
+
+WriteLiteral(">\r\n                            Create and manage device flags.\r\n                 " +
+"       </div>\r\n");
+
+            
+            #line 84 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    ");
+
+            
+            #line 85 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                     if (Authorization.Has(Claims.Config.Enrolment.Show))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 87 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                 
+            
+            #line default
+            #line hidden
+            
+            #line 87 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                            Write(Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 87 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                                                                                            
 
             
@@ -562,7 +612,7 @@ WriteLiteral(">\r\n                            Configure Enrolment settings incl
 "entials.\r\n                        </div>\r\n");
 
             
-            #line 84 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 91 "..\..\Areas\Config\Views\Config\Index.cshtml"
                     }
 
             
@@ -571,7 +621,7 @@ WriteLiteral(">\r\n                            Configure Enrolment settings incl
 WriteLiteral("                </div>\r\n            </td>\r\n");
 
             
-            #line 87 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 94 "..\..\Areas\Config\Views\Config\Index.cshtml"
         }
 
             
@@ -580,7 +630,7 @@ WriteLiteral("                </div>\r\n            </td>\r\n");
 WriteLiteral("        ");
 
             
-            #line 88 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 95 "..\..\Areas\Config\Views\Config\Index.cshtml"
          if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show, Claims.Config.UserFlag.Show, Claims.Config.DocumentTemplate.Show))
         {
 
@@ -590,13 +640,13 @@ WriteLiteral("        ");
 WriteLiteral("            <td>\r\n");
 
             
-            #line 91 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 98 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 91 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 98 "..\..\Areas\Config\Views\Config\Index.cshtml"
                  if (Authorization.HasAny(Claims.Config.JobPreferences.Show, Claims.Config.JobQueue.Show))
                 {
 
@@ -610,13 +660,13 @@ WriteLiteral(" class=\"pageMenuArea noSeperator\"");
 WriteLiteral(">\r\n                        <h2>Jobs</h2>\r\n");
 
             
-            #line 95 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 102 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 95 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 102 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.JobPreferences.Show))
                         {
 
@@ -630,20 +680,20 @@ WriteLiteral(" class=\"fa fa-cog\"");
 WriteLiteral("></i>");
 
             
-            #line 97 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                      
             
             #line default
             #line hidden
             
-            #line 97 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                 Write(Html.ActionLinkClass("General Preferences", MVC.Config.JobPreferences.Index(), "config"));
 
             
             #line default
             #line hidden
             
-            #line 97 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                                                                                                               
 
             
@@ -657,7 +707,7 @@ WriteLiteral(">\r\n                                Configure general preferences
 "\r\n                            </div>\r\n");
 
             
-            #line 101 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 108 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         }
 
             
@@ -666,7 +716,7 @@ WriteLiteral(">\r\n                                Configure general preferences
 WriteLiteral("                        ");
 
             
-            #line 102 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 109 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.JobQueue.Show))
                         {
 
@@ -680,20 +730,20 @@ WriteLiteral(" class=\"fa fa-cog\"");
 WriteLiteral("></i>");
 
             
-            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                      
             
             #line default
             #line hidden
             
-            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                 Write(Html.ActionLinkClass("Job Queues", MVC.Config.JobQueue.Index(), "config"));
 
             
             #line default
             #line hidden
             
-            #line 104 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 111 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                                                                                                
 
             
@@ -707,7 +757,7 @@ WriteLiteral(">\r\n                                Create and manage job queues 
 "ies and queue members.\r\n                            </div>\r\n");
 
             
-            #line 108 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 115 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         }
 
             
@@ -716,7 +766,7 @@ WriteLiteral(">\r\n                                Create and manage job queues 
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 110 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 117 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 }
 
             
@@ -725,7 +775,7 @@ WriteLiteral("                    </div>\r\n");
 WriteLiteral("                ");
 
             
-            #line 111 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 118 "..\..\Areas\Config\Views\Config\Index.cshtml"
                  if (Authorization.HasAny(Claims.Config.UserFlag.Show))
                 {
 
@@ -739,13 +789,13 @@ WriteLiteral(" class=\"pageMenuArea noSeperator\"");
 WriteLiteral(">\r\n                        <h2>Users</h2>\r\n");
 
             
-            #line 115 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 122 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 115 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 122 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.UserFlag.Show))
                         {
 
@@ -759,21 +809,21 @@ WriteLiteral(" class=\"fa fa-cog\"");
 WriteLiteral("></i>");
 
             
-            #line 117 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 124 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                      
             
             #line default
             #line hidden
             
-            #line 117 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                Write(Html.ActionLinkClass("User Flags", MVC.Config.UserFlag.Index(), "config"));
+            #line 124 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                Write(Html.ActionLinkClass("Flags", MVC.Config.UserFlag.Index(), "config"));
 
             
             #line default
             #line hidden
             
-            #line 117 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                                               
+            #line 124 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                                                                                          
 
             
             #line default
@@ -786,7 +836,7 @@ WriteLiteral(">\r\n                                Create and manage user flags.
 "             </div>\r\n");
 
             
-            #line 121 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 128 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         }
 
             
@@ -795,7 +845,7 @@ WriteLiteral(">\r\n                                Create and manage user flags.
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 123 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 130 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 }
 
             
@@ -804,7 +854,7 @@ WriteLiteral("                    </div>\r\n");
 WriteLiteral("                ");
 
             
-            #line 124 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 131 "..\..\Areas\Config\Views\Config\Index.cshtml"
                  if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show))
                 {
 
@@ -818,13 +868,13 @@ WriteLiteral(" class=\"pageMenuArea noSeperator\"");
 WriteLiteral(">\r\n                        <h2>Features</h2>\r\n");
 
             
-            #line 128 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 135 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 128 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 135 "..\..\Areas\Config\Views\Config\Index.cshtml"
                          if (Authorization.Has(Claims.Config.DocumentTemplate.Show))
                         {
 
@@ -838,20 +888,20 @@ WriteLiteral(" class=\"fa fa-cog\"");
 WriteLiteral("></i>");
 
             
-            #line 130 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 137 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                      
             
             #line default
             #line hidden
             
-            #line 130 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 137 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                 Write(Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config"));
 
             
             #line default
             #line hidden
             
-            #line 130 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 137 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                                                                                                                
 
             
@@ -866,7 +916,7 @@ WriteLiteral(">\r\n                                Create, Update and Bulk Gener
 "                   </div>\r\n");
 
             
-            #line 135 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 142 "..\..\Areas\Config\Views\Config\Index.cshtml"
                         }
 
             
@@ -875,7 +925,7 @@ WriteLiteral(">\r\n                                Create, Update and Bulk Gener
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 137 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 144 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 }
 
             
@@ -884,7 +934,7 @@ WriteLiteral("                    </div>\r\n");
 WriteLiteral("            </td>\r\n");
 
             
-            #line 139 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 146 "..\..\Areas\Config\Views\Config\Index.cshtml"
         }
 
             
@@ -893,7 +943,7 @@ WriteLiteral("            </td>\r\n");
 WriteLiteral("    </tr>\r\n</table>\r\n");
 
             
-            #line 142 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 149 "..\..\Areas\Config\Views\Config\Index.cshtml"
   
     if (Model.UpdateAvailable)
     {
@@ -911,14 +961,14 @@ WriteLiteral(" class=\"fa fa-cloud-download info\"");
 
 WriteLiteral("></i>\r\n        <div>An updated version of Disco is available</div>\r\n        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 7818), Tuple.Create("\"", 7854)
+WriteAttribute("href", Tuple.Create(" href=\"", 8211), Tuple.Create("\"", 8247)
             
-            #line 148 "..\..\Areas\Config\Views\Config\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 7825), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
+            #line 155 "..\..\Areas\Config\Views\Config\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 8218), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
             
             #line default
             #line hidden
-, 7825), false)
+, 8218), false)
 );
 
 WriteLiteral(" class=\"button small alert\"");
@@ -928,7 +978,7 @@ WriteLiteral(" target=\"_blank\"");
 WriteLiteral(">Download v");
 
             
-            #line 148 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 155 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                                                                  Write(Model.UpdateResponse.LatestVersion);
 
             
@@ -945,13 +995,13 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 156 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 163 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 156 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 163 "..\..\Areas\Config\Views\Config\Index.cshtml"
                   
         if (Model.UpdateResponse.ReleasedDate < DateTime.Now.AddDays(-14))
         {
@@ -967,7 +1017,7 @@ WriteLiteral("\r\n                updateAvailableContainer.effect(\"shake\", { t
 WriteLiteral("\r\n");
 
             
-            #line 162 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 169 "..\..\Areas\Config\Views\Config\Index.cshtml"
         }
                 
             
@@ -976,7 +1026,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n            });\r\n        })();\r\n    </script>\r\n");
 
             
-            #line 167 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 174 "..\..\Areas\Config\Views\Config\Index.cshtml"
     }
 
             

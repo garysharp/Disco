@@ -59,8 +59,9 @@ namespace Disco.Web
             // Initialize Job Queues
             Disco.Services.Jobs.JobQueues.JobQueueService.Initialize(Database);
 
-            // Initialize User Flags
+            // Initialize Flags
             Disco.Services.Users.UserFlags.UserFlagService.Initialize(Database);
+            Disco.Services.Devices.DeviceFlags.DeviceFlagService.Initialize(Database);
 
             // Initialize Satellite Managed Groups (which don't belong to any other component)
             Disco.Services.Devices.ManagedGroups.DeviceManagedGroups.Initialize(Database);

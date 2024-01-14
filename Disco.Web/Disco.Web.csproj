@@ -207,7 +207,9 @@
     <Compile Include="App_Start\OwinStartupConfig.cs" />
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\API\Controllers\DocumentTemplatePackageController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceFlagAssignmentController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagAssignmentController.cs" />
+    <Compile Include="Areas\API\Controllers\DeviceFlagController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagController.cs" />
     <Compile Include="Areas\API\Controllers\JobPreferencesController.cs" />
     <Compile Include="Areas\API\Controllers\JobQueueController.cs" />
@@ -222,6 +224,7 @@
     <Compile Include="Areas\API\Models\Shared\SubjectDescriptorModel.cs" />
     <Compile Include="Areas\API\Models\System\DomainOrganisationalUnitsModel.cs" />
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
+    <Compile Include="Areas\Config\Controllers\DeviceFlagController.cs" />
     <Compile Include="Areas\Config\Controllers\UserFlagController.cs" />
     <Compile Include="Areas\Config\Controllers\JobPreferencesController.cs" />
     <Compile Include="Areas\Config\Controllers\JobQueueController.cs" />
@@ -234,6 +237,10 @@
     <Compile Include="Areas\Config\Models\DocumentTemplate\ShowPackageModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\DeviceGroupDocumentTemplateBulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceFlag\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceFlag\ExportModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceFlag\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceFlag\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\ExportModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
@@ -343,6 +350,26 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>_DeviceGroupDocumentBulkGenerate.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceFlag\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceFlag\Export.generated.cs">
+      <DependentUpon>Export.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceFlag\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceFlag\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Areas\Config\Views\UserFlag\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
@@ -642,7 +669,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Extensions\T4MVC\API.DeviceFlagAssignmentController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\T4MVC\API.DeviceFlagController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\T4MVC\API.DocumentTemplatePackageController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\T4MVC\Config.DeviceFlagController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\T4MVCExtensions.cs" />
@@ -1298,6 +1334,22 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_DeviceGroupDocumentBulkGenerate.generated.cs</LastGenOutput>
     </None>
+    <Content Include="Areas\Config\Views\DeviceFlag\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\DeviceFlag\Export.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Export.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\DeviceFlag\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="Areas\Config\Views\DeviceFlag\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </Content>
     <None Include="Areas\Config\Views\UserFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>

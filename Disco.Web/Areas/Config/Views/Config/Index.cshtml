@@ -72,7 +72,14 @@
                         <i class="fa fa-cog"></i>@Html.ActionLinkClass("Profiles", MVC.Config.DeviceProfile.Index(), "config")
                         <div class="pageMenuBlurb">
                             Configure Device Profiles including computer name generation, distribution and Active
-                    Directory OU layout.
+                            Directory OU layout.
+                        </div>
+                    }
+                    @if (Authorization.Has(Claims.Config.DeviceFlag.Show))
+                    {
+                        <i class="fa fa-cog"></i>@Html.ActionLinkClass("Flags", MVC.Config.DeviceFlag.Index(), "config")
+                        <div class="pageMenuBlurb">
+                            Create and manage device flags.
                         </div>
                     }
                     @if (Authorization.Has(Claims.Config.Enrolment.Show))
@@ -114,7 +121,7 @@
                         <h2>Users</h2>
                         @if (Authorization.Has(Claims.Config.UserFlag.Show))
                         {
-                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("User Flags", MVC.Config.UserFlag.Index(), "config")
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("Flags", MVC.Config.UserFlag.Index(), "config")
                             <div class="pageMenuBlurb">
                                 Create and manage user flags.
                             </div>
