@@ -5,15 +5,64 @@ using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Disco.Services.Devices.Enrolment
 {
     public static class WindowsDeviceEnrolment
     {
+        private static readonly ConcurrentDictionary<string, EnrolResponse> pendingEnrolments = new ConcurrentDictionary<string, EnrolResponse>();
+
+        private static void CleanupPendingEnrolments()
+        {
+            var now = DateTimeOffset.Now;
+            var expiredEnrolments = pendingEnrolments
+                .Where(e => e.Value.PendingTimeout < now)
+                .Select(kvp => kvp.Key).ToList();
+            foreach (var expiredEnrolment in expiredEnrolments)
+                pendingEnrolments.TryRemove(expiredEnrolment, out _);
+        }
+
+        public static List<EnrolResponse> GetPendingEnrolments()
+        {
+            var now = DateTimeOffset.Now;
+            return pendingEnrolments.Values
+                .Where(e => e.PendingTimeout > now && e.IsPending)
+                .ToList();
+        }
+
+        public static void ResolvePendingEnrollment(string sessionId, bool approve, string username, string reason)
+        {
+            if (!pendingEnrolments.TryGetValue(sessionId, out var enrolResponse))
+                throw new InvalidOperationException("The pending session is invalid or has expired");
+            if (enrolResponse.PendingTimeout < DateTimeOffset.Now)
+            {
+                pendingEnrolments.TryRemove(sessionId, out _);
+                throw new InvalidOperationException("The pending session has expired");
+            }
+            if (!enrolResponse.IsPending)
+                return;
+
+            enrolResponse.IsPending = false;
+            if (approve)
+            {
+                enrolResponse.ErrorMessage = null;
+                EnrolmentLog.LogSessionPendingApproved(sessionId, username, reason);
+            }
+            else
+            {
+                enrolResponse.ErrorMessage = $"Enrollment rejected";
+                EnrolmentLog.LogSessionPendingRejected(sessionId, username, reason);
+            }
+        }
+
         public static EnrolResponse Enrol(DiscoDataContext Database, string Username, Enrol Request)
         {
+            CleanupPendingEnrolments();
+
             ADMachineAccount adMachineAccount = null;
 
             EnrolResponse response = new EnrolResponse();
@@ -29,14 +78,49 @@ namespace Disco.Services.Devices.Enrolment
                 return domain.GetAvailableDomainController(RequireWritable: true);
             });
 
-            string sessionId = Guid.NewGuid().ToString("B");
-            response.SessionId = sessionId;
-
-            EnrolmentLog.LogSessionStarting(sessionId, Request.SerialNumber, EnrolmentTypes.Normal);
-            EnrolmentLog.LogSessionDeviceInfo(sessionId, Request);
 
             try
             {
+                string sessionId;
+                bool sessionApproved = false;
+                if (!string.IsNullOrWhiteSpace(Request.PendingSessionId))
+                {
+                    if (!pendingEnrolments.TryGetValue(Request.PendingSessionId, out var pendingResponse))
+                        throw new EnrolmentSafeException("The pending session is invalid or has expired");
+                    if (pendingResponse.PendingTimeout < DateTimeOffset.Now)
+                    {
+                        pendingEnrolments.TryRemove(Request.PendingSessionId, out _);
+                        throw new EnrolmentSafeException("The pending session has expired");
+                    }
+                    if (!string.Equals(pendingResponse.PendingAuthorization, Request.PendingAuthorization, StringComparison.Ordinal))
+                        throw new EnrolmentSafeException("The pending session authorization is incorrect");
+
+                    sessionId = pendingResponse.SessionId;
+                    response = pendingResponse;
+
+                    // still pending?
+                    if (response.IsPending)
+                        return response;
+
+                    // session rejected?
+                    if (!string.IsNullOrWhiteSpace(response.ErrorMessage))
+                        throw new EnrolmentSafeException(response.ErrorMessage);
+
+                    // session approved; continue
+                    sessionApproved = true;
+
+                    EnrolmentLog.LogSessionContinuing(sessionId, Request.SerialNumber, EnrolmentTypes.Normal);
+                }
+                else
+                {
+                    sessionId = Guid.NewGuid().ToString("B");
+                    response.SessionId = sessionId;
+
+                    EnrolmentLog.LogSessionStarting(sessionId, Request.SerialNumber, EnrolmentTypes.Normal);
+                }
+
+                EnrolmentLog.LogSessionDeviceInfo(sessionId, Request);
+
                 if (Request.SerialNumber.Contains("/") || Request.SerialNumber.Contains(@"\"))
                     throw new EnrolmentSafeException(@"The serial number cannot contain '/' or '\' characters.");
 
@@ -50,46 +134,71 @@ namespace Disco.Services.Devices.Enrolment
 
                 Device RepoDevice = Database.Devices.Include("AssignedUser").Include("DeviceModel").Include("DeviceProfile").Where(d => d.SerialNumber == Request.SerialNumber).FirstOrDefault();
                 EnrolmentLog.LogSessionProgress(sessionId, 15, "Discovering User/Device Disco ICT Permissions");
-                if (isAuthenticated)
+                if (!sessionApproved)
                 {
-                    if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))
+                    try
                     {
-                        if (!authenticatedToken.Has(Claims.ComputerAccount))
-                            throw new EnrolmentSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.SerialNumber, authenticatedToken.User.UserId));
-
-                        if (domain == null)
-                            domain = ActiveDirectory.Context.GetDomainByName(Request.DNSDomainName);
-
-                        if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.ComputerName), StringComparison.OrdinalIgnoreCase))
-                            throw new EnrolmentSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.SerialNumber, authenticatedToken.User.UserId));
-                    }
-                }
-                else
-                {
-                    if (RepoDevice == null)
-                    {
-                        throw new EnrolmentSafeException(string.Format("Unknown Device Serial Number (SN: '{0}')", Request.SerialNumber));
-                    }
-                    if (!RepoDevice.AllowUnauthenticatedEnrol)
-                    {
-                        if (RepoDevice.DeviceProfile.AllowUntrustedReimageJobEnrolment)
+                        if (isAuthenticated)
                         {
-                            if (Database.Jobs.Count(j => j.DeviceSerialNumber == RepoDevice.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue) == 0)
+                            if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))
                             {
-                                throw new EnrolmentSafeException(string.Format("Device has no open 'Software - Reimage' job (SN: '{0}')", Request.SerialNumber));
+                                if (!authenticatedToken.Has(Claims.ComputerAccount))
+                                    throw new EnrolmentSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.SerialNumber, authenticatedToken.User.UserId));
+
+                                if (domain == null)
+                                    domain = ActiveDirectory.Context.GetDomainByName(Request.DNSDomainName);
+
+                                if (!authenticatedToken.User.UserId.Equals(string.Format(@"{0}\{1}$", domain.NetBiosName, Request.ComputerName), StringComparison.OrdinalIgnoreCase))
+                                    throw new EnrolmentSafeException(string.Format("Connection not correctly authenticated (SN: {0}; Auth User: {1})", Request.SerialNumber, authenticatedToken.User.UserId));
                             }
                         }
                         else
                         {
-                            throw new EnrolmentSafeException(string.Format("Device isn't allowed an Unauthenticated Enrolment (SN: '{0}')", Request.SerialNumber));
+                            if (RepoDevice == null)
+                            {
+                                throw new EnrolmentSafeException(string.Format("Unknown Device Serial Number (SN: '{0}')", Request.SerialNumber));
+                            }
+                            if (!RepoDevice.AllowUnauthenticatedEnrol)
+                            {
+                                if (RepoDevice.DeviceProfile.AllowUntrustedReimageJobEnrolment)
+                                {
+                                    if (Database.Jobs.Count(j => j.DeviceSerialNumber == RepoDevice.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue) == 0)
+                                    {
+                                        throw new EnrolmentSafeException(string.Format("Device has no open 'Software - Reimage' job (SN: '{0}')", Request.SerialNumber));
+                                    }
+                                }
+                                else
+                                {
+                                    throw new EnrolmentSafeException(string.Format("Device isn't allowed an Unauthenticated Enrolment (SN: '{0}')", Request.SerialNumber));
+                                }
+                            }
                         }
+                    }
+                    catch (EnrolmentSafeException ex)
+                    {
+                        response.IsPending = true;
+                        response.PendingReason = ex.Message;
+                        using (var rng = new RNGCryptoServiceProvider())
+                        {
+                            var authBytes = new byte[33]; // 264 bits (base64-aligned)
+                            rng.GetBytes(authBytes);
+                            response.PendingAuthorization = Convert.ToBase64String(authBytes);
+                        }
+                        response.PendingTimeout = DateTimeOffset.Now.Add(Database.DiscoConfiguration.Bootstrapper.PendingTimeout);
+
+                        EnrolmentLog.LogSessionPending(sessionId, Request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason);
+
+                        if (pendingEnrolments.TryAdd(sessionId, response))
+                            return response;
+
+                        throw;
                     }
                 }
                 if (Request.IsPartOfDomain && !string.IsNullOrWhiteSpace(Request.ComputerName))
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 20, "Loading Active Directory Computer Account");
-                    System.Guid? uuidGuid = null;
-                    System.Guid? macAddressGuid = null;
+                    Guid? uuidGuid = null;
+                    Guid? macAddressGuid = null;
                     if (!string.IsNullOrEmpty(Request.Hardware.UUID))
                         uuidGuid = ADMachineAccount.NetbootGUIDFromUUID(Request.Hardware.UUID);
 
@@ -382,24 +491,26 @@ namespace Disco.Services.Devices.Enrolment
             }
             catch (EnrolmentSafeException ex)
             {
-                EnrolmentLog.LogSessionError(sessionId, ex);
+                EnrolmentLog.LogSessionError(response.SessionId, ex);
                 return new EnrolResponse
                 {
-                    SessionId = sessionId,
+                    SessionId = response.SessionId,
                     ErrorMessage = ex.Message
                 };
             }
             catch (Exception ex2)
             {
-                EnrolmentLog.LogSessionError(sessionId, ex2);
+                EnrolmentLog.LogSessionError(response.SessionId, ex2);
                 throw ex2;
             }
             finally
             {
-                EnrolmentLog.LogSessionFinished(sessionId);
+                if (!response.IsPending)
+                    EnrolmentLog.LogSessionFinished(response.SessionId);
             }
             return response;
         }
+
 
     }
 }

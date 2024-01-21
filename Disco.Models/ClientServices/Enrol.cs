@@ -25,5 +25,8 @@ namespace Disco.Models.ClientServices
         public List<Certificate> Certificates { get; set; }
 
         public List<WirelessProfile> WirelessProfiles { get; set; }
+
+        public string PendingSessionId { get; set; }
+        public string PendingAuthorization { get; set; }
     }
 }

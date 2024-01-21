@@ -48,7 +48,7 @@ namespace Disco.Web.Areas.Config.Views.Enrolment
   
     Authorization.Require(Claims.Config.Enrolment.ShowStatus);
 
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment", MVC.Config.Enrolment.Index(), "Status");
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrollment", MVC.Config.Enrolment.Index(), "Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Isotope");
@@ -66,7 +66,7 @@ WriteLiteral(" id=\"noSessions\"");
 
 WriteLiteral(" data-bind=\"visible: noSessions\"");
 
-WriteLiteral(">\r\n        <h2>No enrolment sessions today</h2>\r\n    </div>\r\n    <div");
+WriteLiteral(">\r\n        <h2>No enrollment sessions today</h2>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" id=\"sessions\"");
 
@@ -91,7 +91,13 @@ WriteLiteral(" class=\"details\"");
 
 WriteLiteral(" data-bind=\"text: \'(\' + deviceModelDescription() + \')\'\"");
 
-WriteLiteral("></span>\r\n            </h3>\r\n            <p");
+WriteLiteral("></span>\r\n                <i");
+
+WriteLiteral(" class=\"fa fa-exclamation-circle\"");
+
+WriteLiteral(" data-bind=\"visible: isPending\"");
+
+WriteLiteral("></i>\r\n            </h3>\r\n            <p");
 
 WriteLiteral(" class=\"sessionStart\"");
 
@@ -105,7 +111,8 @@ WriteLiteral(" data-bind=\"text: progressStatus\"");
 
 WriteLiteral("></p>\r\n            <div");
 
-WriteLiteral(" data-bind=\"visible: !sessionEnded(), progressValue: progressValue\"");
+WriteLiteral(" data-bind=\"visible: !sessionEnded() && progressValue >= 0, progressValue: progre" +
+"ssValue\"");
 
 WriteLiteral(" class=\"sessionProgress\"");
 
@@ -116,6 +123,116 @@ WriteLiteral(" id=\"dialogSession\"");
 WriteLiteral(" data-bind=\"with: currentSession\"");
 
 WriteLiteral(">\r\n        <div");
+
+WriteLiteral(" class=\"sessionProgress clearfix\"");
+
+WriteLiteral(">\r\n            <p");
+
+WriteLiteral(" class=\"sessionStart\"");
+
+WriteLiteral(" data-bind=\"text: startTime\"");
+
+WriteLiteral("></p>\r\n            <p");
+
+WriteLiteral(" class=\"sessionStatus\"");
+
+WriteLiteral(" data-bind=\"text: progressStatus\"");
+
+WriteLiteral("></p>\r\n            <div");
+
+WriteLiteral(" data-bind=\"visible: !sessionEnded() && progressValue >= 0, progressValue: progre" +
+"ssValue\"");
+
+WriteLiteral("></div>\r\n            <div");
+
+WriteLiteral(" id=\"formResolveSessionPending\"");
+
+WriteLiteral(" data-bind=\"visible: isPending\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 31 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 31 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                 using (Html.BeginForm(MVC.API.Enrollment.ResolveSessionPending(), FormMethod.Post))
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+               Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                            ;
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"sessionId\"");
+
+WriteLiteral(" data-bind=\"value: id\"");
+
+WriteLiteral(" />\r\n");
+
+WriteLiteral("                    <div");
+
+WriteLiteral(" class=\"reason\"");
+
+WriteLiteral(">\r\n                        <input");
+
+WriteLiteral(" type=\"text\"");
+
+WriteLiteral(" name=\"reason\"");
+
+WriteLiteral(" placeholder=\"Reason (optional)\"");
+
+WriteLiteral(" />\r\n                    </div>\r\n");
+
+WriteLiteral("                    <div");
+
+WriteLiteral(" class=\"buttons\"");
+
+WriteLiteral(">\r\n                        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" value=\"True\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Approve</button>\r\n                        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" value=\"False\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Reject</button>\r\n                    </div>\r\n");
+
+            
+            #line 42 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </div>\r\n        </div>\r\n        <div");
 
 WriteLiteral(" class=\"sessionHeader clearfix\"");
 
@@ -180,26 +297,6 @@ WriteLiteral(" data-bind=\"text: sessionDeviceInfo().Arguments[6] + \' \' + sess
 
 WriteLiteral("></td>\r\n                </tr>\r\n            </table>\r\n        </div>\r\n        <div" +
 "");
-
-WriteLiteral(" class=\"sessionProgress clearfix\"");
-
-WriteLiteral(">\r\n            <p");
-
-WriteLiteral(" class=\"sessionStart\"");
-
-WriteLiteral(" data-bind=\"text: startTime\"");
-
-WriteLiteral("></p>\r\n            <p");
-
-WriteLiteral(" class=\"sessionStatus\"");
-
-WriteLiteral(" data-bind=\"text: progressStatus\"");
-
-WriteLiteral("></p>\r\n            <div");
-
-WriteLiteral(" data-bind=\"visible: !sessionEnded(), progressValue: progressValue\"");
-
-WriteLiteral("></div>\r\n        </div>\r\n        <div");
 
 WriteLiteral(" class=\"sessionInfoContainer clearfix\"");
 
@@ -309,7 +406,7 @@ WriteLiteral(@">
         var deviceBaseUrl = '");
 
             
-            #line 107 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 122 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -318,7 +415,7 @@ WriteLiteral(@">
 WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 
             
-            #line 108 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 123 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                Write(Url.Action(MVC.API.DeviceModel.Image()));
 
             
@@ -327,7 +424,7 @@ WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 
             
-            #line 109 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 124 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                               Write(Links.ClientSource.Style.Images.Status.warning32_png);
 
             
@@ -336,7 +433,7 @@ WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 WriteLiteral(")\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 110 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 125 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -352,39 +449,40 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "nction (e, d) {\r\n                if (self.isotopeInited) {\r\n                    " +
 "hostSessions.isotope(\'reloadItems\').isotope({ sortBy: \'original-order\' });\r\n    " +
 "            }\r\n            };\r\n        }\r\n        function sessionViewModel(id) " +
-"{\r\n            var self = this;\r\n\r\n            self.title = ko.observable(id);\r\n" +
-"            self.messages = ko.observableArray();\r\n            self.console = ko" +
-".observableArray();\r\n            self.serialNumber = ko.observable();\r\n         " +
-"   self.sessionDeviceInfo = ko.observable();\r\n            self.progressStatus = " +
-"ko.observable();\r\n            self.progressValue = ko.observable();\r\n           " +
-" self.startTime = ko.observable();\r\n            self.sessionEnded = ko.observabl" +
-"e(false);\r\n            self.progressbar = null;\r\n            self.hasError = ko." +
-"observable(false);\r\n            self.hasWarning = ko.observable(false);\r\n       " +
-"     self.deviceModelId = ko.observable();\r\n            self.deviceModelDescript" +
-"ion = ko.computed(function () {\r\n                var deviceModelId = self.device" +
-"ModelId();\r\n                var sessionDeviceInfo = self.sessionDeviceInfo();\r\n " +
-"               if (deviceModelId) {\r\n                    var dm = deviceModels[d" +
-"eviceModelId];\r\n                    if (dm) {\r\n                        if (dm.De" +
-"scription)\r\n                            return dm.Description;\r\n                " +
-"        else\r\n                            return dm.Manufacturer + \' \' + dm.Mode" +
-"l;\r\n                    }\r\n                }\r\n                if (sessionDeviceI" +
-"nfo) {\r\n                    return sessionDeviceInfo.Arguments[6] + \' \' + sessio" +
-"nDeviceInfo.Arguments[7];\r\n                }\r\n            });\r\n            self." +
-"deviceUrl = ko.computed(function () {\r\n                var serialNumber = self.s" +
-"erialNumber();\r\n                if (serialNumber)\r\n                    return de" +
-"viceBaseUrl + serialNumber;\r\n                else\r\n                    return nu" +
-"ll;\r\n            });\r\n            self.deviceModelImageUrl = ko.computed(functio" +
-"n () {\r\n                var deviceModelImage;\r\n                if (self.deviceMo" +
-"delId())\r\n                    deviceModelImage = \'url(\' + deviceModelImageUrl + " +
-"self.deviceModelId() + \')\';\r\n                else\r\n                    deviceMod" +
-"elImage = \'url(\' + deviceModelImageUrl + \')\';\r\n                if (self.hasError" +
-"())\r\n                    return iconErrorUrl + \', \' + deviceModelImage;\r\n       " +
-"         else\r\n                    if (self.hasWarning())\r\n                     " +
-"   return iconWarningUrl + \', \' + deviceModelImage;\r\n                    else\r\n " +
-"                       return \'none, \' + deviceModelImage;\r\n            });\r\n   " +
-"         self.select = function (e, d) {\r\n                vm.currentSession(self" +
-");\r\n                hostDialogSessions.dialog(\'open\');\r\n                hostDial" +
-"ogSessions.dialog(\'option\', \'title\', \'Device Enrolment: \' + self.title());\r\n    " +
+"{\r\n            var self = this;\r\n\r\n            self.id = id;\r\n            self.t" +
+"itle = ko.observable(id);\r\n            self.isPending = ko.observable(false);\r\n " +
+"           self.messages = ko.observableArray();\r\n            self.console = ko." +
+"observableArray();\r\n            self.serialNumber = ko.observable();\r\n          " +
+"  self.sessionDeviceInfo = ko.observable();\r\n            self.progressStatus = k" +
+"o.observable();\r\n            self.progressValue = ko.observable();\r\n            " +
+"self.startTime = ko.observable();\r\n            self.sessionEnded = ko.observable" +
+"(false);\r\n            self.progressbar = null;\r\n            self.hasError = ko.o" +
+"bservable(false);\r\n            self.hasWarning = ko.observable(false);\r\n        " +
+"    self.deviceModelId = ko.observable();\r\n            self.deviceModelDescripti" +
+"on = ko.computed(function () {\r\n                var deviceModelId = self.deviceM" +
+"odelId();\r\n                var sessionDeviceInfo = self.sessionDeviceInfo();\r\n  " +
+"              if (deviceModelId) {\r\n                    var dm = deviceModels[de" +
+"viceModelId];\r\n                    if (dm) {\r\n                        if (dm.Des" +
+"cription)\r\n                            return dm.Description;\r\n                 " +
+"       else\r\n                            return dm.Manufacturer + \' \' + dm.Model" +
+";\r\n                    }\r\n                }\r\n                if (sessionDeviceIn" +
+"fo) {\r\n                    return sessionDeviceInfo.Arguments[6] + \' \' + session" +
+"DeviceInfo.Arguments[7];\r\n                }\r\n            });\r\n            self.d" +
+"eviceUrl = ko.computed(function () {\r\n                var serialNumber = self.se" +
+"rialNumber();\r\n                if (serialNumber)\r\n                    return dev" +
+"iceBaseUrl + serialNumber;\r\n                else\r\n                    return nul" +
+"l;\r\n            });\r\n            self.deviceModelImageUrl = ko.computed(function" +
+" () {\r\n                var deviceModelImage;\r\n                if (self.deviceMod" +
+"elId())\r\n                    deviceModelImage = \'url(\' + deviceModelImageUrl + s" +
+"elf.deviceModelId() + \')\';\r\n                else\r\n                    deviceMode" +
+"lImage = \'url(\' + deviceModelImageUrl + \')\';\r\n                if (self.hasError(" +
+"))\r\n                    return iconErrorUrl + \', \' + deviceModelImage;\r\n        " +
+"        else\r\n                    if (self.hasWarning())\r\n                      " +
+"  return iconWarningUrl + \', \' + deviceModelImage;\r\n                    else\r\n  " +
+"                      return \'none, \' + deviceModelImage;\r\n            });\r\n    " +
+"        self.select = function (e, d) {\r\n                vm.currentSession(self)" +
+";\r\n                hostDialogSessions.dialog(\'open\');\r\n                hostDialo" +
+"gSessions.dialog(\'option\', \'title\', \'Device Enrollment: \' + self.title());\r\n    " +
 "        }\r\n        }\r\n\r\n        function parseLog(log) {\r\n            if (log.Mo" +
 "duleId === 50 && log.Arguments && log.Arguments.length > 0) {\r\n                /" +
 "/ find session\r\n                var sessionId = log.Arguments[0];\r\n             " +
@@ -413,33 +511,50 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "ion.sessionDeviceInfo(log);\r\n                            if (log.Arguments.lengt" +
 "h >= 10 && log.Arguments[9])\r\n                                session.deviceMode" +
 "lId(log.Arguments[9]);\r\n                            break;\r\n                    " +
-"    case 20: // SessionFinished\r\n                            session.sessionEnde" +
-"d(true);\r\n                            if (session.hasError())\r\n                 " +
-"               session.progressStatus(\'Enrolment Finished with an Error\');\r\n    " +
-"                        else\r\n                                if (session.hasWar" +
-"ning())\r\n                                    session.progressStatus(\'Enrolment F" +
-"inished with a Warning\');\r\n                                else\r\n               " +
-"                     session.progressStatus(\'Enrolment Finished Successfully\');\r" +
-"\n                            session.messages.unshift(log);\r\n                   " +
-"         break;\r\n                        case 21: // SessionDiagnosticInformatio" +
-"n\r\n                            session.console.push(log);\r\n                     " +
-"       break;\r\n                        case 22: // SessionWarning\r\n             " +
-"               session.hasWarning(true);\r\n                            session.me" +
-"ssages.unshift(log);\r\n                            break;\r\n                      " +
-"  case 23: // SessionError\r\n                        case 24: // SessionErrorWith" +
-"Inner\r\n                        case 25: // SessionClientError\r\n                 " +
-"           session.hasError(true);\r\n                            session.messages" +
-".unshift(log);\r\n                            break;\r\n                        defa" +
-"ult:\r\n                            session.messages.unshift(log);\r\n              " +
-"      }\r\n                }\r\n            }\r\n        }\r\n        function init() {\r" +
-"\n            hostDialogSessions.dialog({\r\n                modal: true,\r\n        " +
-"        height: 574,\r\n                width: 900,\r\n                resizable: fa" +
-"lse,\r\n                autoOpen: false\r\n            });\r\n            //hostDialog" +
-"SessionsProgress.progressbar();\r\n\r\n            // Create View Model\r\n           " +
-" vm = new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
+"    case 14: // SessionPending\r\n                            session.isPending(tr" +
+"ue);\r\n                            session.messages.unshift(log);\r\n              " +
+"              session.progressValue(-1);\r\n                            session.pr" +
+"ogressStatus(\'Pending enrollment approval\');\r\n                            break;" +
+"\r\n                        case 15: // SessionPendingApproved\r\n                  " +
+"          session.isPending(false);\r\n                            session.message" +
+"s.unshift(log);\r\n                            session.progressValue(-1);\r\n       " +
+"                     session.progressStatus(\'Enrollment approval, waiting for cl" +
+"ient\');\r\n                            break;\r\n                        case 16: //" +
+" SessionPendingRejected\r\n                            session.isPending(false);\r\n" +
+"                            session.messages.unshift(log);\r\n                    " +
+"        session.progressValue(-1);\r\n                            session.progress" +
+"Status(\'Enrollment rejected, waiting for client\');\r\n                            " +
+"break;\r\n                        case 17: // SessionContinuing\r\n                 " +
+"           session.isPending(false);\r\n                            session.messag" +
+"es.unshift(log);\r\n                            break;\r\n                        ca" +
+"se 20: // SessionFinished\r\n                            session.sessionEnded(true" +
+");\r\n                            session.isPending(false);\r\n                     " +
+"       if (session.hasError())\r\n                                session.progress" +
+"Status(\'Enrollment Finished with an Error\');\r\n                            else\r\n" +
+"                                if (session.hasWarning())\r\n                     " +
+"               session.progressStatus(\'Enrollment Finished with a Warning\');\r\n  " +
+"                              else\r\n                                    session." +
+"progressStatus(\'Enrollment Finished Successfully\');\r\n                           " +
+" session.messages.unshift(log);\r\n                            break;\r\n           " +
+"             case 21: // SessionDiagnosticInformation\r\n                         " +
+"   session.console.push(log);\r\n                            break;\r\n             " +
+"           case 22: // SessionWarning\r\n                            session.hasWa" +
+"rning(true);\r\n                            session.messages.unshift(log);\r\n      " +
+"                      break;\r\n                        case 23: // SessionError\r\n" +
+"                        case 24: // SessionErrorWithInner\r\n                     " +
+"   case 25: // SessionClientError\r\n                            session.hasError(" +
+"true);\r\n                            session.messages.unshift(log);\r\n            " +
+"                break;\r\n                        default:\r\n                      " +
+"      session.messages.unshift(log);\r\n                    }\r\n                }\r\n" +
+"            }\r\n        }\r\n        function init() {\r\n            hostDialogSessi" +
+"ons.dialog({\r\n                modal: true,\r\n                height: 574,\r\n      " +
+"          width: 900,\r\n                resizable: false,\r\n                autoOp" +
+"en: false\r\n            });\r\n            //hostDialogSessionsProgress.progressbar" +
+"();\r\n\r\n            // Create View Model\r\n            vm = new pageViewModel();\r\n" +
+"            $.ajax({\r\n                url: \'");
 
             
-            #line 274 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 314 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -473,7 +588,7 @@ WriteLiteral(@"',
                 url: '");
 
             
-            #line 299 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 339 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -512,7 +627,7 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 329 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 369 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                              Write(Disco.Services.Devices.Enrolment.EnrolmentLog.Current.LiveLogGroupName);
 
             
@@ -537,7 +652,15 @@ WriteLiteral("\' };\r\n            $.connection.hub.error(onHubFailed);\r\n\r\n 
 "                         \'Close\': function () {\r\n                               " +
 "     $(this).dialog(\'destroy\');\r\n                                }\r\n            " +
 "                }\r\n                        });\r\n                }\r\n            }" +
-"\r\n        }\r\n        init();\r\n    });\r\n</script>\r\n");
+"\r\n        }\r\n        $(\'#dialogSession\').on(\'click\', \'#formResolveSessionPending" +
+" button\', function (e) {\r\n            const $button = $(this);\r\n            cons" +
+"t $form = $button.closest(\'form\');\r\n            const body = new FormData($form[" +
+"0]);\r\n            body.append(\'approve\', $button.val());\r\n            fetch($for" +
+"m.attr(\'action\'), {\r\n                method: \'POST\',\r\n                body: body" +
+"\r\n            }).then(function (response) {\r\n                if (!response.ok) {" +
+"\r\n                    alert(\'Failed to resolve pending session: \' + response.sta" +
+"tusText);\r\n                }\r\n            });\r\n        });\r\n        init();\r\n   " +
+" });\r\n</script>\r\n");
 
         }
     }

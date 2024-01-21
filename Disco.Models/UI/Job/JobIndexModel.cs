@@ -1,4 +1,6 @@
-﻿using Disco.Models.Services.Jobs.JobLists;
+﻿using Disco.Models.ClientServices;
+using Disco.Models.Services.Jobs.JobLists;
+using System.Collections.Generic;
 
 namespace Disco.Models.UI.Job
 {
@@ -6,5 +8,6 @@ namespace Disco.Models.UI.Job
     {
         JobTableModel MyJobs { get; set; }
         JobTableModel StaleJobs { get; set; }
+        List<EnrolResponse> PendingEnrollments { get; set; }
     }
 }

@@ -208,6 +208,7 @@
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\API\Controllers\DocumentTemplatePackageController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagAssignmentController.cs" />
+    <Compile Include="Areas\API\Controllers\EnrollmentController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagAssignmentController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagController.cs" />
@@ -676,6 +677,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\API.DocumentTemplatePackageController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\T4MVC\API.EnrollmentController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\Config.DeviceFlagController.generated.cs">
@@ -1339,30 +1343,30 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_DeviceGroupDocumentBulkGenerate.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\DeviceFlag\Create.cshtml">
+    <None Include="Areas\Config\Views\DeviceFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\DeviceFlag\Export.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\DeviceFlag\Export.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Export.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\DeviceFlag\Index.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\DeviceFlag\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Areas\Config\Views\DeviceFlag\Show.cshtml">
+    </None>
+    <None Include="Areas\Config\Views\DeviceFlag\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\UserFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\UserFlag\Export.cshtml">
+    <None Include="Areas\Config\Views\UserFlag\Export.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Export.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\UserFlag\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>
@@ -1505,7 +1509,7 @@
       <DependentUpon>Disco-DataTableHelpers.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator\disco.documentgenerator.js" />
+    <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator\disco.documentgenerator.js" Condition=" '$(Configuration)' == 'Debug' " />
     <None Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator.js" />
     <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Disco-DocumentGenerator.min.js">
@@ -1941,10 +1945,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Views\Device\DeviceParts\_Flags.cshtml">
+    <None Include="Views\Device\DeviceParts\_Flags.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Flags.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Views\Device\ImportHeaders.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ImportHeaders.generated.cs</LastGenOutput>

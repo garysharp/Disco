@@ -51,7 +51,7 @@ namespace Disco.Web.Areas.Config.Views.Enrolment
     var canConfig = Authorization.Has(Claims.Config.Enrolment.Configure);
     var canShowStatus = Authorization.Has(Claims.Config.Enrolment.ShowStatus);
 
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment");
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrollment");
 
             
             #line default
@@ -62,60 +62,238 @@ WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 530px;\"");
 
-WriteLiteral(">\r\n    <h2>Apple Mac Secure Enrol</h2>\r\n    <table>\r\n        <tr>\r\n            <t" +
-"h>Username:\r\n            </th>\r\n            <td>");
+WriteLiteral(">\r\n    <table>\r\n        <tr>\r\n            <th>\r\n                Pending Timeout:\r" +
+"\n            </th>\r\n            <td>\r\n");
 
             
-            #line 16 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 17 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                  if (canConfig)
                 {
-                
-            
-            #line default
-            #line hidden
-            
-            #line 18 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-           Write(Html.TextBoxFor(model => model.MacSshUsername));
-
-            
-            #line default
-            #line hidden
-            
-            #line 18 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                                               
-                
+                    
             
             #line default
             #line hidden
             
             #line 19 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+               Write(Html.TextBoxFor(model => model.PendingTimeoutMinutes, new { type = "number", min = "1" }));
 
             
             #line default
             #line hidden
             
             #line 19 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                       
+                                                                                                              
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 20 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 20 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 21 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 21 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <span> minutes <span");
+
+WriteLiteral(" class=\"smallText\"");
+
+WriteLiteral(">(default: 30)</span></span>\r\n");
+
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                    $(function () {
+                        var $DOM = $('#PendingTimeoutMinutes');
+                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
+                        $DOM
+                    .watermark('Minutes')
+                    .focus(function () { $DOM.select() })
+                    .keydown(function (e) {
+                        $DOMAjaxSave.show();
+                        if (e.which == 13) {
+                            $(this).blur();
+                        }
+                    }).blur(function () {
+                        $DOMAjaxSave.hide();
+                    })
+                    .change(function () {
+                        $DOMAjaxSave.hide();
+                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
+                        var data = { PendingTimeoutMinutes: parseInt($DOM.val()) };
+                        if (data.PendingTimeoutMinutes <= 0) {
+                            alert('Pending Timeout must be greater than zero');
+                            $ajaxLoading.hide();
+                            return;
+                        } else {
+                        $.ajax({
+                            url: '");
+
+            
+            #line 48 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                             Write(Url.Action(MVC.API.Enrollment.PendingTimeoutMinutes()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"',
+                            dataType: 'json',
+                            method: 'POST',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to update pending timeout: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to update pending timeout: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                        }
+                    });
+                    });
+                    </script>
+");
+
+            
+            #line 69 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                }
+                else
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(TimeSpan.FromMinutes(Model.PendingTimeoutMinutes));
+
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                      
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <td");
+
+WriteLiteral(" colspan=\"2\"");
+
+WriteLiteral(">\r\n                <span");
+
+WriteLiteral(" class=\"smallText\"");
+
+WriteLiteral(@">
+                    If a device enrollment is not automatically approved it will remain pending until the timeout is reached.
+                    Pending enrollments can be approved manually from the Enrollment Status page.
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div");
+
+WriteLiteral(" class=\"form\"");
+
+WriteLiteral(" style=\"width: 530px; margin-top: 15px\"");
+
+WriteLiteral(">\r\n    <h2>Apple Mac Secure Enroll</h2>\r\n    <table>\r\n        <tr>\r\n            <" +
+"th>\r\n                Username:\r\n            </th>\r\n            <td>\r\n");
+
+            
+            #line 94 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 20 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 94 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 96 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(Html.TextBoxFor(model => model.MacSshUsername));
 
             
             #line default
             #line hidden
             
-            #line 20 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                         
+            #line 96 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                   
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 97 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+            
+            #line 97 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 98 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 98 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -142,7 +320,7 @@ WriteLiteral(@">
                             url: '");
 
             
-            #line 41 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 119 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                              Write(Url.Action(MVC.API.Bootstrapper.MacSshUsername()));
 
             
@@ -166,11 +344,11 @@ WriteLiteral(@"',
                         });
                     });
                     });
-                </script>
+                    </script>
 ");
 
             
-            #line 60 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 138 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                 }
                 else
                 {
@@ -180,49 +358,55 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral("                <span");
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 66 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 144 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                     }
                     else
                     {
-                
+                        
             
             #line default
             #line hidden
             
-            #line 69 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-           Write(Model.MacSshUsername);
+            #line 147 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                   Write(Model.MacSshUsername);
 
             
             #line default
             #line hidden
             
-            #line 69 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                     
+            #line 147 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                             
                     }
                 }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n\r\n        <tr>\r\n            <th>Password:\r\n    " +
-"        </th>\r\n            <td>");
+WriteLiteral("            </td>\r\n        </tr>\r\n\r\n        <tr>\r\n            <th>\r\n             " +
+"   Password:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 78 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 158 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 158 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                  if (canConfig)
                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                <input");
+WriteLiteral("                    <input");
 
 WriteLiteral(" id=\"MacSshPassword\"");
 
@@ -231,40 +415,40 @@ WriteLiteral(" type=\"password\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 81 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                
+            #line 161 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                    
             
             #line default
             #line hidden
             
-            #line 81 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 161 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 81 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                       
-                
+            #line 161 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                           
+                    
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 162 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                         
+            #line 162 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                             
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -291,7 +475,7 @@ WriteLiteral(@">
                             url: '");
 
             
-            #line 103 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 183 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                              Write(Url.Action(MVC.API.Bootstrapper.MacSshPassword()));
 
             
@@ -315,11 +499,11 @@ WriteLiteral(@"',
                         });
                     });
                     });
-                </script>
+                    </script>
 ");
 
             
-            #line 122 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 202 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                 }
                 else
                 {
@@ -327,14 +511,14 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
 WriteLiteral("********");
 
 WriteLiteral("\r\n");
 
             
-            #line 126 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 206 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                 }
 
             
@@ -348,14 +532,16 @@ WriteLiteral(">\r\n                <span");
 
 WriteLiteral(" class=\"smallText\"");
 
-WriteLiteral("><strong>Instructions:</strong> The above credentials must be\r\n                  " +
-"  able to connect to the requesting Apple Mac client via <a");
+WriteLiteral(">\r\n                    <strong>Instructions:</strong> The above credentials must " +
+"be\r\n                    able to connect to the requesting Apple Mac client via <" +
+"a");
 
 WriteLiteral(" target=\"_blank\"");
 
 WriteLiteral(" href=\"http://en.wikipedia.org/wiki/Secure_Shell\"");
 
-WriteLiteral(">SSH</a>. Enter/Script the following command:</span>\r\n                <div");
+WriteLiteral(">SSH</a>. Enter/Script the following command:\r\n                </span>\r\n         " +
+"       <div");
 
 WriteLiteral(" class=\"code\"");
 
@@ -376,19 +562,19 @@ WriteLiteral(" target=\"_blank\"");
 
 WriteLiteral(" href=\"http://json.org/\"");
 
-WriteLiteral(">JSON</a> response containing basic information about the enrolment.</span><br />" +
-"\r\n                <span");
+WriteLiteral(">JSON</a> response containing basic information about the enrollment.</span><br /" +
+">\r\n                <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">This command makes use of <a");
+WriteLiteral(">\r\n                    This command makes use of <a");
 
 WriteLiteral(" target=\"_blank\"");
 
 WriteLiteral(" href=\"http://curl.haxx.se/\"");
 
-WriteLiteral(">cURL</a> (bundled with OSX). Other methods can also trigger a Mac Secure Enrol,\r" +
-"\n                    such as an anchor (<span");
+WriteLiteral(">cURL</a> (bundled with OSX). Other methods can also trigger a Mac Secure Enroll," +
+"\r\n                    such as an anchor (<span");
 
 WriteLiteral(" class=\"code\"");
 
@@ -397,26 +583,27 @@ WriteLiteral(">&lt;a&gt;</span>) or <span");
 WriteLiteral(" class=\"code\"");
 
 WriteLiteral(">&lt;script&gt;</span>\r\n                    tag embedded on the organisation\'s in" +
-"tranet.</span>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
+"tranet.\r\n                </span>\r\n            </td>\r\n        </tr>\r\n    </table>" +
+"\r\n</div>\r\n");
 
             
-            #line 144 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 228 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
  if (canShowStatus && Authorization.Has(Claims.Config.Logging.Show))
 {
 
             
             #line default
             #line hidden
-WriteLiteral("    <h2>Live Enrolment Logging</h2>\r\n");
+WriteLiteral("    <h2>Live Enrollment Logging</h2>\r\n");
 
             
-            #line 147 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 231 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 147 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 231 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
 {
     IsLive = true,
@@ -430,7 +617,7 @@ Write(Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config
             #line default
             #line hidden
             
-            #line 154 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 238 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
   
 }
 
@@ -444,13 +631,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 157 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 241 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 157 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 241 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
      if (Authorization.Has(Claims.Config.Enrolment.DownloadBootstrapper))
     {
         
@@ -458,14 +645,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 159 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 243 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
    Write(Html.ActionLinkButton("Download Bootstrapper", MVC.Services.Client.Bootstrapper()));
 
             
             #line default
             #line hidden
             
-            #line 159 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 243 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                                                                                            
     }
 
@@ -475,7 +662,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 161 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 245 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
      if (canShowStatus)
     {
         
@@ -483,15 +670,15 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 163 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-   Write(Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status()));
+            #line 247 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+   Write(Html.ActionLinkButton("Enrollment Status", MVC.Config.Enrolment.Status()));
 
             
             #line default
             #line hidden
             
-            #line 163 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                                                                 
+            #line 247 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                                  
     }
 
             

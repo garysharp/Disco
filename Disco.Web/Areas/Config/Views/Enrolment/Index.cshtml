@@ -5,20 +5,98 @@
     var canConfig = Authorization.Has(Claims.Config.Enrolment.Configure);
     var canShowStatus = Authorization.Has(Claims.Config.Enrolment.ShowStatus);
 
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrolment");
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrollment");
 }
 <div class="form" style="width: 530px;">
-    <h2>Apple Mac Secure Enrol</h2>
     <table>
         <tr>
-            <th>Username:
+            <th>
+                Pending Timeout:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.TextBoxFor(model => model.MacSshUsername)
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.TextBoxFor(model => model.PendingTimeoutMinutes, new { type = "number", min = "1" })
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <span> minutes <span class="smallText">(default: 30)</span></span>
+                    <script type="text/javascript">
+                    $(function () {
+                        var $DOM = $('#PendingTimeoutMinutes');
+                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
+                        $DOM
+                    .watermark('Minutes')
+                    .focus(function () { $DOM.select() })
+                    .keydown(function (e) {
+                        $DOMAjaxSave.show();
+                        if (e.which == 13) {
+                            $(this).blur();
+                        }
+                    }).blur(function () {
+                        $DOMAjaxSave.hide();
+                    })
+                    .change(function () {
+                        $DOMAjaxSave.hide();
+                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
+                        var data = { PendingTimeoutMinutes: parseInt($DOM.val()) };
+                        if (data.PendingTimeoutMinutes <= 0) {
+                            alert('Pending Timeout must be greater than zero');
+                            $ajaxLoading.hide();
+                            return;
+                        } else {
+                        $.ajax({
+                            url: '@Url.Action(MVC.API.Enrollment.PendingTimeoutMinutes())',
+                            dataType: 'json',
+                            method: 'POST',
+                            data: data,
+                            success: function (d) {
+                                if (d == 'OK') {
+                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                } else {
+                                    $ajaxLoading.hide();
+                                    alert('Unable to update pending timeout: ' + d);
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert('Unable to update pending timeout: ' + textStatus);
+                                $ajaxLoading.hide();
+                            }
+                        });
+                        }
+                    });
+                    });
+                    </script>
+                }
+                else
+                {
+                    @TimeSpan.FromMinutes(Model.PendingTimeoutMinutes)
+                }
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="smallText">
+                    If a device enrollment is not automatically approved it will remain pending until the timeout is reached.
+                    Pending enrollments can be approved manually from the Enrollment Status page.
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="form" style="width: 530px; margin-top: 15px">
+    <h2>Apple Mac Secure Enroll</h2>
+    <table>
+        <tr>
+            <th>
+                Username:
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.TextBoxFor(model => model.MacSshUsername)
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         var $DOM = $('#MacSshUsername');
                         var $DOMAjaxSave = $DOM.next('.ajaxSave');
@@ -56,31 +134,33 @@
                         });
                     });
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(Model.MacSshUsername))
                     {
-                <span class="smallMessage">&lt;None Specified&gt;</span>
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
                     }
                     else
                     {
-                @Model.MacSshUsername
+                        @Model.MacSshUsername
                     }
                 }
             </td>
         </tr>
 
         <tr>
-            <th>Password:
+            <th>
+                Password:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                <input id="MacSshPassword" type="password" />
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    <input id="MacSshPassword" type="password" />
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         var $DOM = $('#MacSshPassword');
                         var $DOMAjaxSave = $DOM.next('.ajaxSave');
@@ -118,32 +198,36 @@
                         });
                     });
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                <text>********</text>
+                    <text>********</text>
                 }
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <span class="smallText"><strong>Instructions:</strong> The above credentials must be
-                    able to connect to the requesting Apple Mac client via <a target="_blank" href="http://en.wikipedia.org/wiki/Secure_Shell">SSH</a>. Enter/Script the following command:</span>
+                <span class="smallText">
+                    <strong>Instructions:</strong> The above credentials must be
+                    able to connect to the requesting Apple Mac client via <a target="_blank" href="http://en.wikipedia.org/wiki/Secure_Shell">SSH</a>. Enter/Script the following command:
+                </span>
                 <div class="code">
                     curl&nbsp;<a target="_blank" href="http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol">http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol</a>
                 </div>
-                <span class="smallText">This url will return a <a target="_blank" href="http://json.org/">JSON</a> response containing basic information about the enrolment.</span><br />
-                <span class="smallMessage">This command makes use of <a target="_blank" href="http://curl.haxx.se/">cURL</a> (bundled with OSX). Other methods can also trigger a Mac Secure Enrol,
+                <span class="smallText">This url will return a <a target="_blank" href="http://json.org/">JSON</a> response containing basic information about the enrollment.</span><br />
+                <span class="smallMessage">
+                    This command makes use of <a target="_blank" href="http://curl.haxx.se/">cURL</a> (bundled with OSX). Other methods can also trigger a Mac Secure Enroll,
                     such as an anchor (<span class="code">&lt;a&gt;</span>) or <span class="code">&lt;script&gt;</span>
-                    tag embedded on the organisation's intranet.</span>
+                    tag embedded on the organisation's intranet.
+                </span>
             </td>
         </tr>
     </table>
 </div>
 @if (canShowStatus && Authorization.Has(Claims.Config.Logging.Show))
 {
-    <h2>Live Enrolment Logging</h2>
+    <h2>Live Enrollment Logging</h2>
     @Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
 {
     IsLive = true,
@@ -160,6 +244,6 @@
     }
     @if (canShowStatus)
     {
-        @Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status())
+        @Html.ActionLinkButton("Enrollment Status", MVC.Config.Enrolment.Status())
     }
 </div>

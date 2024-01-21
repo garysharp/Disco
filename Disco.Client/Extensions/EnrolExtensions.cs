@@ -41,6 +41,9 @@ namespace Disco.Client.Extensions
             if (!string.IsNullOrEmpty(enrolResponse.ErrorMessage))
                 throw new ClientServiceException("Enrolment", enrolResponse.ErrorMessage);
 
+            if (enrolResponse.IsPending)
+                return;
+
             // Offline Domain Join
             bool requireReboot = enrolResponse.ApplyOfflineDomainJoin();
 

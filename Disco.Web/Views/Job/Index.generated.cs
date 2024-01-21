@@ -131,7 +131,7 @@ WriteLiteral(">\r\n            </div>\r\n");
             
             #line 24 "..\..\Views\Job\Index.cshtml"
               
-        var jsonData = new HtmlString(Json.Encode(Model.DailyOpenedClosedStatistics));
+                var jsonData = new HtmlString(Json.Encode(Model.DailyOpenedClosedStatistics));
             
             
             #line default
@@ -174,34 +174,34 @@ WriteLiteral(">\r\n                (function () {\r\n                    var cha
 "top\',\r\n                                    y: 0,\r\n                              " +
 "      floating: true,\r\n                                    borderWidth: 0,\r\n    " +
 "                                itemStyle: {\r\n                                  " +
-"      color: \'#333\',\n                                        fontWeight: \'normal" +
-"\'\r\n                                    }\r\n                                },\r\n  " +
-"                              xAxis: {\r\n                                    type" +
-": \'datetime\',\r\n                                    tickInterval: 7 * 24 * 3600 *" +
-" 1000, // week\r\n                                    tickWidth: 1,\r\n             " +
-"                       gridLineWidth: 1,\r\n                                    da" +
-"teTimeLabelFormats: {\r\n                                        week: \'%e %b\'\r\n  " +
-"                                  }\r\n                                },\r\n       " +
-"                         yAxis: [{\r\n                                    title: {" +
-"\r\n                                        text: null\r\n                          " +
-"          },\r\n                                    labels: {\r\n                   " +
-"                     enabled: false\r\n                                    },\r\n   " +
-"                                 min: 0\r\n                                }, {\r\n " +
-"                                   title: {\r\n                                   " +
-"     text: null\r\n                                    },\r\n                       " +
-"             labels: {\r\n                                        enabled: false\r\n" +
-"                                    },\r\n                                    min:" +
-" 0\r\n                                }],\r\n                                series:" +
-" [{\r\n                                    name: \'Total Open Jobs\',\r\n             " +
-"                       data: dataTotalOpenJobs,\r\n                               " +
-"     yAxis: 1\r\n                                }, {\r\n                           " +
-"         name: \'Closed Jobs\',\r\n                                    data: dataClo" +
-"sedJobs\r\n                                }, {\r\n                                 " +
-"   name: \'Opened Jobs\',\r\n                                    data: dataOpenedJob" +
-"s\r\n                                }],\r\n                                credits:" +
-" {\r\n                                    enabled: false\r\n                        " +
-"        }\r\n                            });\r\n                        });\r\n       " +
-"             }\r\n                    chartData = $.parseJSON(\'");
+"      color: \'#333\',\r\n                                        fontWeight: \'norma" +
+"l\'\r\n                                    }\r\n                                },\r\n " +
+"                               xAxis: {\r\n                                    typ" +
+"e: \'datetime\',\r\n                                    tickInterval: 7 * 24 * 3600 " +
+"* 1000, // week\r\n                                    tickWidth: 1,\r\n            " +
+"                        gridLineWidth: 1,\r\n                                    d" +
+"ateTimeLabelFormats: {\r\n                                        week: \'%e %b\'\r\n " +
+"                                   }\r\n                                },\r\n      " +
+"                          yAxis: [{\r\n                                    title: " +
+"{\r\n                                        text: null\r\n                         " +
+"           },\r\n                                    labels: {\r\n                  " +
+"                      enabled: false\r\n                                    },\r\n  " +
+"                                  min: 0\r\n                                }, {\r\n" +
+"                                    title: {\r\n                                  " +
+"      text: null\r\n                                    },\r\n                      " +
+"              labels: {\r\n                                        enabled: false\r" +
+"\n                                    },\r\n                                    min" +
+": 0\r\n                                }],\r\n                                series" +
+": [{\r\n                                    name: \'Total Open Jobs\',\r\n            " +
+"                        data: dataTotalOpenJobs,\r\n                              " +
+"      yAxis: 1\r\n                                }, {\r\n                          " +
+"          name: \'Closed Jobs\',\r\n                                    data: dataCl" +
+"osedJobs\r\n                                }, {\r\n                                " +
+"    name: \'Opened Jobs\',\r\n                                    data: dataOpenedJo" +
+"bs\r\n                                }],\r\n                                credits" +
+": {\r\n                                    enabled: false\r\n                       " +
+"         }\r\n                            });\r\n                        });\r\n      " +
+"              }\r\n                    chartData = $.parseJSON(\'");
 
             
             #line 126 "..\..\Views\Job\Index.cshtml"
@@ -299,6 +299,53 @@ WriteLiteral("\r\n    </div>\r\n");
 
             
             #line 147 "..\..\Views\Job\Index.cshtml"
+}
+
+            
+            #line default
+            #line hidden
+            
+            #line 148 "..\..\Views\Job\Index.cshtml"
+ if (Model.PendingEnrollments != null && Model.PendingEnrollments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <div");
+
+WriteLiteral(" id=\"pendingEnrollments\"");
+
+WriteLiteral(">\r\n        <i");
+
+WriteLiteral(" class=\"fa fa-exclamation-circle info\"");
+
+WriteLiteral("></i>\r\n        <div>There are device enrollments pending approval.</div>\r\n       " +
+" <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 6766), Tuple.Create("\"", 6815)
+            
+            #line 153 "..\..\Views\Job\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 6773), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
+            
+            #line default
+            #line hidden
+, 6773), false)
+);
+
+WriteLiteral(" class=\"button small alert\"");
+
+WriteLiteral(" target=\"_blank\"");
+
+WriteLiteral(">View Enrollments</a>\r\n    </div>\r\n");
+
+WriteLiteral("    <script>\r\n        $(function () {\r\n            var layout_PageHeading = $(\'#l" +
+"ayout_PageHeading\').height(80);\r\n            $(\'#pendingEnrollments\')\r\n         " +
+"       .detach()\r\n                .appendTo(layout_PageHeading);\r\n        });\r\n " +
+"   </script>\r\n");
+
+            
+            #line 163 "..\..\Views\Job\Index.cshtml"
 }
             
             #line default

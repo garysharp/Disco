@@ -473,6 +473,10 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
 #enrolStatus #sessions .session > h3 span.details {
   font-size: 0.8em;
 }
+#enrolStatus #sessions .session > h3 i {
+  float: right;
+  color: #F0A30A;
+}
 #enrolStatus #sessions .session > p.sessionStart {
   color: #888;
   font-size: 0.8em;
@@ -489,7 +493,6 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
   background-color: #DFE1F8;
 }
 #dialogSession .sessionHeader {
-  width: 400px;
   float: left;
   padding: 0 0 0 134px;
   background-repeat: no-repeat, no-repeat;
@@ -516,7 +519,8 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
 }
 #dialogSession .sessionProgress {
   width: 320px;
-  float: right;
+  position: absolute;
+  right: 1em;
   text-align: right;
 }
 #dialogSession .sessionProgress > p.sessionStart {
@@ -526,6 +530,9 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
 #dialogSession .sessionProgress > p.sessionStatus {
   height: 1.6em;
   overflow: hidden;
+  margin-bottom: 3px;
+}
+#dialogSession .sessionProgress div.reason {
   margin-bottom: 3px;
 }
 #dialogSession .sessionInfoContainer > div {

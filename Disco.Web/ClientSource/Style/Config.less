@@ -479,6 +479,11 @@ div.logEventsViewport {
                 span.details {
                     font-size: .8em;
                 }
+
+                i {
+                    float: right;
+                    color: @ThemeAmber;
+                }
             }
 
             & > p.sessionStart {
@@ -504,7 +509,6 @@ div.logEventsViewport {
 
 #dialogSession {
     .sessionHeader {
-        width: 400px;
         float: left;
         padding: 0 0 0 134px;
         background-repeat: no-repeat, no-repeat;
@@ -535,7 +539,8 @@ div.logEventsViewport {
 
     .sessionProgress {
         width: 320px;
-        float: right;
+        position: absolute;
+        right: 1em;
         text-align: right;
 
         & > p.sessionStart {
@@ -546,6 +551,10 @@ div.logEventsViewport {
         & > p.sessionStatus {
             height: 1.6em;
             overflow: hidden;
+            margin-bottom: 3px;
+        }
+
+        & div.reason {
             margin-bottom: 3px;
         }
     }

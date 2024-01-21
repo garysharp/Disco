@@ -592,14 +592,14 @@ WriteLiteral("></i>");
             #line hidden
             
             #line 87 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                            Write(Html.ActionLinkClass("Enrolment", MVC.Config.Enrolment.Index(), "config"));
+                                            Write(Html.ActionLinkClass("Enrollment", MVC.Config.Enrolment.Index(), "config"));
 
             
             #line default
             #line hidden
             
             #line 87 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                                                                                                                           
+                                                                                                                            
 
             
             #line default
@@ -608,8 +608,8 @@ WriteLiteral("                        <div");
 
 WriteLiteral(" class=\"pageMenuBlurb\"");
 
-WriteLiteral(">\r\n                            Configure Enrolment settings including secure cred" +
-"entials.\r\n                        </div>\r\n");
+WriteLiteral(">\r\n                            Configure Enrollment settings including secure cre" +
+"dentials.\r\n                        </div>\r\n");
 
             
             #line 91 "..\..\Areas\Config\Views\Config\Index.cshtml"
@@ -961,14 +961,14 @@ WriteLiteral(" class=\"fa fa-cloud-download info\"");
 
 WriteLiteral("></i>\r\n        <div>An updated version of Disco is available</div>\r\n        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8211), Tuple.Create("\"", 8247)
+WriteAttribute("href", Tuple.Create(" href=\"", 8213), Tuple.Create("\"", 8249)
             
             #line 155 "..\..\Areas\Config\Views\Config\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 8218), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
+, Tuple.Create(Tuple.Create("", 8220), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
             
             #line default
             #line hidden
-, 8218), false)
+, 8220), false)
 );
 
 WriteLiteral(" class=\"button small alert\"");

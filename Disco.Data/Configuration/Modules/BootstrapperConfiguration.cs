@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Repository;
+using System;
 
 namespace Disco.Data.Configuration.Modules
 {
@@ -6,33 +7,24 @@ namespace Disco.Data.Configuration.Modules
     {
         public BootstrapperConfiguration(DiscoDataContext Database) : base(Database) { }
 
-        public override string Scope
-        {
-            get { return "Bootstrapper"; }
-        }
+        public override string Scope { get; } = "Bootstrapper";
 
         public string MacSshUsername
         {
-            get
-            {
-                return this.Get("root");
-            }
-            set
-            {
-                this.Set(value);
-            }
+            get => Get("root");
+            set => Set(value);
         }
 
         public string MacSshPassword
         {
-            get
-            {
-                return this.GetDeobsfucated(string.Empty);
-            }
-            set
-            {
-                this.SetObsfucated(value);
-            }
+            get => GetDeobsfucated(string.Empty);
+            set => SetObsfucated(value);
+        }
+
+        public TimeSpan PendingTimeout
+        {
+            get => TimeSpan.FromSeconds(Get(30 * 60)); // 30 minutes default
+            set => Set((int)value.TotalSeconds);
         }
     }
 }

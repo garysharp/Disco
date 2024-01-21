@@ -61,7 +61,7 @@ namespace Disco.ClientBootstrapper
                     this.progressBar.Visible = true;
                     if (Progress.HasValue)
                     {
-                        if (Progress.Value > 0)
+                        if (Progress.Value >= 0)
                         {
                             this.progressBar.Value = Math.Min(Progress.Value, 100);
                             this.progressBar.Style = ProgressBarStyle.Continuous;

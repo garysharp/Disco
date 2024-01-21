@@ -1,4 +1,5 @@
 ﻿using Disco.Models.ClientServices.EnrolmentInformation;
+using System;
 
 namespace Disco.Models.ClientServices
 {
@@ -26,5 +27,10 @@ namespace Disco.Models.ClientServices
         public bool RequireReboot { get; set; }
 
         public string ErrorMessage { get; set; }
+
+        public bool IsPending { get; set; }
+        public string PendingAuthorization { get; set; }
+        public string PendingReason { get; set; }
+        public DateTimeOffset PendingTimeout { get; set; }
     }
 }

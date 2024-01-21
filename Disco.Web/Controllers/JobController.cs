@@ -4,6 +4,7 @@ using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Services;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.Enrolment;
 using Disco.Services.Jobs;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.JobQueues;
@@ -45,6 +46,9 @@ namespace Disco.Web.Controllers
             }
             if (Authorization.Has(Claims.Job.ShowDailyChart))
                 m.DailyOpenedClosedStatistics = DailyOpenedClosed.Data(Database, true);
+
+            if (Authorization.Has(Claims.Device.Actions.EnrolDevices))
+                m.PendingEnrollments = WindowsDeviceEnrolment.GetPendingEnrolments();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);

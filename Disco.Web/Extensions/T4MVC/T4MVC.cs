@@ -62,6 +62,7 @@ namespace T4MVC
         public Disco.Web.Areas.API.Controllers.DeviceProfileController DeviceProfile = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceProfileController();
         public Disco.Web.Areas.API.Controllers.DocumentTemplateController DocumentTemplate = new Disco.Web.Areas.API.Controllers.T4MVC_DocumentTemplateController();
         public Disco.Web.Areas.API.Controllers.DocumentTemplatePackageController DocumentTemplatePackage = new Disco.Web.Areas.API.Controllers.T4MVC_DocumentTemplatePackageController();
+        public Disco.Web.Areas.API.Controllers.EnrollmentController Enrollment = new Disco.Web.Areas.API.Controllers.T4MVC_EnrollmentController();
         public Disco.Web.Areas.API.Controllers.ExpressionsController Expressions = new Disco.Web.Areas.API.Controllers.T4MVC_ExpressionsController();
         public Disco.Web.Areas.API.Controllers.JobController Job = new Disco.Web.Areas.API.Controllers.T4MVC_JobController();
         public Disco.Web.Areas.API.Controllers.JobPreferencesController JobPreferences = new Disco.Web.Areas.API.Controllers.T4MVC_JobPreferencesController();

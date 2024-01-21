@@ -14,6 +14,10 @@ namespace Disco.Services.Devices.Enrolment
             SessionProgress,
             SessionDevice,
             SessionDeviceInfo,
+            SessionPending,
+            SessionPendingApproved,
+            SessionPendingRejected,
+            SessionContinuing,
             SessionFinished = 20,
             SessionDiagnosticInformation,
             SessionWarning,
@@ -43,7 +47,7 @@ namespace Disco.Services.Devices.Enrolment
         {
             get
             {
-                return "Device Enrolment";
+                return "Device Enrollment";
             }
         }
         public override int ModuleId
@@ -71,6 +75,43 @@ namespace Disco.Services.Devices.Enrolment
         public static void LogSessionStarting(string SessionId, string HostId, EnrolmentTypes EnrolmentType)
         {
             Log(EventTypeIds.SessionStarting, new object[]
+            {
+                SessionId,
+                HostId,
+                System.Enum.GetName(EnrolmentType.GetType(), EnrolmentType)
+            });
+        }
+        public static void LogSessionPending(string SessionId, string HostId, EnrolmentTypes EnrolmentType, string Reason)
+        {
+            Log(EventTypeIds.SessionPending, new object[]
+            {
+                SessionId,
+                HostId,
+                System.Enum.GetName(EnrolmentType.GetType(), EnrolmentType),
+                Reason
+            });
+        }
+        public static void LogSessionPendingApproved(string SessionId, string Username, string Reason)
+        {
+            Log(EventTypeIds.SessionPendingApproved, new object[]
+            {
+                SessionId,
+                Username,
+                Reason
+            });
+        }
+        public static void LogSessionPendingRejected(string SessionId, string Username, string Reason)
+        {
+            Log(EventTypeIds.SessionPendingRejected, new object[]
+            {
+                SessionId,
+                Username,
+                Reason
+            });
+        }
+        public static void LogSessionContinuing(string SessionId, string HostId, EnrolmentTypes EnrolmentType)
+        {
+            Log(EventTypeIds.SessionContinuing, new object[]
             {
                 SessionId,
                 HostId,
@@ -298,7 +339,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionStarting,
                     ModuleId = _ModuleId,
                     Name = "Session Starting",
-                    Format = "Starting '{2}' Enrolment for {1} (Session# {0})",
+                    Format = "Starting '{2}' Enrollment for {1} (Session# {0})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,
@@ -332,6 +373,50 @@ namespace Disco.Services.Devices.Enrolment
                     ModuleId = _ModuleId,
                     Name = "Session Device Info",
                     Format = null,
+                    Severity = 0,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.SessionPending,
+                    ModuleId = _ModuleId,
+                    Name = "Session Pending",
+                    Format = "Pending '{2}' Enrollment for {1} (Session# {0}; Reason: {3})",
+                    Severity = 0,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.SessionPendingApproved,
+                    ModuleId = _ModuleId,
+                    Name = "Session Pending Approved",
+                    Format = "Pending enrollment approved by {1} (Session# {0}; Reason: {2})",
+                    Severity = 0,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.SessionPendingRejected,
+                    ModuleId = _ModuleId,
+                    Name = "Session Pending Rejected",
+                    Format = "Pending enrollment rejected by {1} (Session# {0}; Reason: {2})",
+                    Severity = 0,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.SessionContinuing,
+                    ModuleId = _ModuleId,
+                    Name = "Session Continuing",
+                    Format = "Continuing '{2}' Enrollment for {1} (Session# {0})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,

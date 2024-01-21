@@ -22,7 +22,7 @@
             <div id="chartHostJobDailyOpenedClosed" style="height: 175px;">
             </div>
             @{
-        var jsonData = new HtmlString(Json.Encode(Model.DailyOpenedClosedStatistics));
+                var jsonData = new HtmlString(Json.Encode(Model.DailyOpenedClosedStatistics));
             }
             <script type="text/javascript">
                 (function () {
@@ -144,4 +144,20 @@
         <h2>Stale Jobs (@Model.StaleJobs.Items.Count())</h2>
         @Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary())
     </div>
+}
+@if (Model.PendingEnrollments != null && Model.PendingEnrollments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
+{
+    <div id="pendingEnrollments">
+        <i class="fa fa-exclamation-circle info"></i>
+        <div>There are device enrollments pending approval.</div>
+        <a href="@Url.Action(MVC.Config.Enrolment.Status())" class="button small alert" target="_blank">View Enrollments</a>
+    </div>
+    <script>
+        $(function () {
+            var layout_PageHeading = $('#layout_PageHeading').height(80);
+            $('#pendingEnrollments')
+                .detach()
+                .appendTo(layout_PageHeading);
+        });
+    </script>
 }

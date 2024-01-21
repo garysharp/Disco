@@ -13,7 +13,8 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new Models.Enrolment.IndexModel()
             {
-                MacSshUsername = Database.DiscoConfiguration.Bootstrapper.MacSshUsername
+                MacSshUsername = Database.DiscoConfiguration.Bootstrapper.MacSshUsername,
+                PendingTimeoutMinutes = (int)Database.DiscoConfiguration.Bootstrapper.PendingTimeout.TotalMinutes,
             };
 
             // UI Extensions

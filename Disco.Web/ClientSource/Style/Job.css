@@ -97,6 +97,32 @@
   height: 50px;
   font-size: 0.6em;
 }
+#layout_PageHeading #pendingEnrollments {
+  position: relative;
+  float: right;
+  border: 1px dashed #ddd;
+  background-color: #fff;
+  font-size: 0.6em;
+  line-height: 1em;
+  padding: 10px 10px 4px 70px;
+  text-align: right;
+  height: 50px;
+}
+#layout_PageHeading #pendingEnrollments i {
+  position: absolute;
+  display: block;
+  height: 64px;
+  width: 64px;
+  vertical-align: middle;
+  margin-left: -75px;
+  top: 8px;
+  font-size: 50px;
+  color: #e51400;
+}
+#layout_PageHeading #pendingEnrollments a.button {
+  font-size: 12px;
+  margin-top: 8px;
+}
 #Jobs_Index_MyJobs {
   margin-bottom: 10px;
 }

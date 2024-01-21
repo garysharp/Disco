@@ -25,6 +25,35 @@
         height: 50px;
         font-size: 0.6em;
     }
+
+    #pendingEnrollments {
+        position: relative;
+        float: right;
+        border: 1px dashed #ddd;
+        background-color: @white;
+        font-size: 0.6em;
+        line-height: 1em;
+        padding: 10px 10px 4px 70px;
+        text-align: right;
+        height: 50px;
+
+        i {
+            position: absolute;
+            display: block;
+            height: 64px;
+            width: 64px;
+            vertical-align: middle;
+            margin-left: -75px;
+            top: 8px;
+            font-size: 50px;
+            color: @ButtonAlertColour;
+        }
+
+        a.button {
+            font-size: @FontSizeDefault;
+            margin-top: 8px;
+        }
+    }
 }
 
 #Jobs_Index_MyJobs {
