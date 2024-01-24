@@ -480,7 +480,7 @@ div.logEventsViewport {
                     font-size: .8em;
                 }
 
-                i {
+                span.pending {
                     float: right;
                     color: @ThemeAmber;
                 }
@@ -552,6 +552,11 @@ div.logEventsViewport {
             height: 1.6em;
             overflow: hidden;
             margin-bottom: 3px;
+        }
+
+        & code {
+            font-size: 2em;
+            color: @ThemeRed;
         }
 
         & div.reason {

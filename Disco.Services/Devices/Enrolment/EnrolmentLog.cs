@@ -81,14 +81,15 @@ namespace Disco.Services.Devices.Enrolment
                 System.Enum.GetName(EnrolmentType.GetType(), EnrolmentType)
             });
         }
-        public static void LogSessionPending(string SessionId, string HostId, EnrolmentTypes EnrolmentType, string Reason)
+        public static void LogSessionPending(string SessionId, string HostId, EnrolmentTypes EnrolmentType, string Reason, string Identifier)
         {
             Log(EventTypeIds.SessionPending, new object[]
             {
                 SessionId,
                 HostId,
                 System.Enum.GetName(EnrolmentType.GetType(), EnrolmentType),
-                Reason
+                Reason,
+                Identifier
             });
         }
         public static void LogSessionPendingApproved(string SessionId, string Username, string Reason)
@@ -383,7 +384,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionPending,
                     ModuleId = _ModuleId,
                     Name = "Session Pending",
-                    Format = "Pending '{2}' Enrollment for {1} (Session# {0}; Reason: {3})",
+                    Format = "Pending '{2}' Enrollment for {1} (Session# {0}; Reason: {3}; Identifier: {4})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,

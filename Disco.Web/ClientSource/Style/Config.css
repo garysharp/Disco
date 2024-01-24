@@ -473,7 +473,7 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
 #enrolStatus #sessions .session > h3 span.details {
   font-size: 0.8em;
 }
-#enrolStatus #sessions .session > h3 i {
+#enrolStatus #sessions .session > h3 span.pending {
   float: right;
   color: #F0A30A;
 }
@@ -531,6 +531,10 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
   height: 1.6em;
   overflow: hidden;
   margin-bottom: 3px;
+}
+#dialogSession .sessionProgress code {
+  font-size: 2em;
+  color: #E51400;
 }
 #dialogSession .sessionProgress div.reason {
   margin-bottom: 3px;

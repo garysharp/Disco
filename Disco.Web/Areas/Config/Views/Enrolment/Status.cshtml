@@ -15,7 +15,8 @@
             <h3>
                 <span data-bind="text: title"></span>
                 <span class="details" data-bind="text: '(' + deviceModelDescription() + ')'"></span>
-                <i class="fa fa-exclamation-circle" data-bind="visible: isPending"></i>
+                <span class="pending" data-bind="visible: isPending"><code data-bind="text: pendingIdentifier"></code> <i class="fa fa-exclamation-circle"></i></span>
+                
             </h3>
             <p class="sessionStart" data-bind="text: startTime"></p>
             <p class="sessionStatus" data-bind="text: progressStatus"></p>
@@ -30,6 +31,7 @@
             <div id="formResolveSessionPending" data-bind="visible: isPending">
                 @using (Html.BeginForm(MVC.API.Enrollment.ResolveSessionPending(), FormMethod.Post))
                 {
+                    <code data-bind="text: pendingIdentifier"></code>
                     @Html.AntiForgeryToken();
                     <input type="hidden" name="sessionId" data-bind="value: id" />
                     <div class="reason">
@@ -152,6 +154,7 @@
             self.id = id;
             self.title = ko.observable(id);
             self.isPending = ko.observable(false);
+            self.pendingIdentifier = ko.observable();
             self.messages = ko.observableArray();
             self.console = ko.observableArray();
             self.serialNumber = ko.observable();
@@ -247,6 +250,7 @@
                             break;
                         case 14: // SessionPending
                             session.isPending(true);
+                            session.pendingIdentifier(log.Arguments[4]);
                             session.messages.unshift(log);
                             session.progressValue(-1);
                             session.progressStatus('Pending enrollment approval');

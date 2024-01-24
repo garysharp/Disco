@@ -14,6 +14,8 @@ namespace Disco.Services.Devices.Enrolment
 {
     public static class WindowsDeviceEnrolment
     {
+        private static readonly string pendingIdentifierAlphabet = "23456789ABCDEFGHJKMNPQRSTWXYZ";
+        private static readonly Random pendingIdentifierRng = new Random();
         private static readonly ConcurrentDictionary<string, EnrolResponse> pendingEnrolments = new ConcurrentDictionary<string, EnrolResponse>();
 
         private static void CleanupPendingEnrolments()
@@ -24,6 +26,28 @@ namespace Disco.Services.Devices.Enrolment
                 .Select(kvp => kvp.Key).ToList();
             foreach (var expiredEnrolment in expiredEnrolments)
                 pendingEnrolments.TryRemove(expiredEnrolment, out _);
+        }
+
+        private static string GeneratePendingIdentifier()
+        {
+            var identifier = default(string);
+            var chars = new char[4];
+            var retryAllowed = 100;
+            while (--retryAllowed > 0)
+            {
+                lock (pendingIdentifierRng)
+                {
+                    for (var i = 0; i < chars.Length; i++)
+                    {
+                        chars[i] = pendingIdentifierAlphabet[pendingIdentifierRng.Next(pendingIdentifierAlphabet.Length)];
+                    }
+                }
+                    identifier = new string(chars);
+
+                if (!GetPendingEnrolments().Any(e => string.Equals(e.PendingIdentifier, identifier, StringComparison.Ordinal)))
+                    break;
+            }
+            return identifier;
         }
 
         public static List<EnrolResponse> GetPendingEnrolments()
@@ -185,8 +209,9 @@ namespace Disco.Services.Devices.Enrolment
                             response.PendingAuthorization = Convert.ToBase64String(authBytes);
                         }
                         response.PendingTimeout = DateTimeOffset.Now.Add(Database.DiscoConfiguration.Bootstrapper.PendingTimeout);
+                        response.PendingIdentifier = GeneratePendingIdentifier();
 
-                        EnrolmentLog.LogSessionPending(sessionId, Request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason);
+                        EnrolmentLog.LogSessionPending(sessionId, Request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason, response.PendingIdentifier);
 
                         if (pendingEnrolments.TryAdd(sessionId, response))
                             return response;

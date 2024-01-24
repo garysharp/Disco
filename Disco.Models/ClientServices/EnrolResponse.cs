@@ -32,5 +32,6 @@ namespace Disco.Models.ClientServices
         public string PendingAuthorization { get; set; }
         public string PendingReason { get; set; }
         public DateTimeOffset PendingTimeout { get; set; }
+        public string PendingIdentifier { get; set; }
     }
 }

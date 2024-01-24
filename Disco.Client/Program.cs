@@ -147,7 +147,7 @@ namespace Disco.Client
                         var secondsConsumed = (DateTimeOffset.Now - startTime).TotalSeconds;
                         var progress = (int)((secondsConsumed / totalSeconds) * 100);
 
-                        Presentation.UpdateStatus("Pending Device Enrollment Approval", $"Waiting for enrollment session to be approved.{Environment.NewLine}Reason: {response.PendingReason}", true, progress);
+                        Presentation.UpdateStatus($"Pending Device Enrollment Approval: {response.PendingIdentifier}", $"Waiting for enrollment session '{response.PendingIdentifier}' to be approved.{Environment.NewLine}Reason: {response.PendingReason}", true, progress);
                         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
                     }
                     else
