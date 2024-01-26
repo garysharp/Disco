@@ -319,20 +319,27 @@ namespace Disco.Data.Configuration
         #endregion
 
         #region UpdateCheck
-        public string DeploymentId
+        public bool IsLicensed
         {
-            get
-            {
-                return Get<string>(null);
-            }
+            get => LicenseKey != null && LicenseExpiresOn != null && LicenseExpiresOn > DateTime.UtcNow && LicenseError == null;
         }
-        public string DeploymentSecret
+        public string LicenseKey
         {
-            get
-            {
-                return Get<string>(null);
-            }
+            get => Get<string>(null);
+            set => Set(value);
         }
+        public DateTime? LicenseExpiresOn
+        {
+            get => Get<DateTime?>(null);
+            set => Set(value);
+        }
+        public string LicenseError
+        {
+            get => Get<string>(null);
+            set => Set(value);
+        }
+        public string DeploymentId => Get<string>(null);
+        public string DeploymentSecret => Get<string>(null);
         public short DeploymentChecksum
         {
             get
@@ -351,22 +358,10 @@ namespace Disco.Data.Configuration
         }
         public UpdateResponseV2 UpdateLastCheckResponse
         {
-            get
-            {
-                return Get<UpdateResponseV2>(null);
-            }
-            set
-            {
-                Set(value);
-            }
+            get => Get<UpdateResponseV2>(null);
+            set => Set(value);
         }
-        public bool UpdateBetaDeployment
-        {
-            get
-            {
-                return Get(false);
-            }
-        }
+        public bool UpdateBetaDeployment => Get(false);
         public Version InstalledDatabaseVersion
         {
             get

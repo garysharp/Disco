@@ -43,6 +43,26 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.System.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult LicenseCheck(string license)
+        {
+            if (string.IsNullOrWhiteSpace(license))
+            {
+                Database.DiscoConfiguration.LicenseKey = null;
+                Database.DiscoConfiguration.LicenseExpiresOn = null;
+                Database.DiscoConfiguration.LicenseError = null;
+                Database.SaveChanges();
+                return RedirectToAction(MVC.Config.SystemConfig.Index());
+            }
+            else
+            {
+                var ts = Disco.Services.Interop.DiscoServices.LicenseValidationTask.ScheduleNow(license);
+                ts.SetFinishedUrl(Url.Action(MVC.Config.SystemConfig.Index()));
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
+            }
+        }
+
+        [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateCheck()
         {
             var ts = Disco.Services.Interop.DiscoServices.UpdateQueryTask.ScheduleNow();

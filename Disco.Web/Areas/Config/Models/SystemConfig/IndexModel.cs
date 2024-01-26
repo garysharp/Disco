@@ -112,6 +112,11 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public bool EmailIsConfigured { get; set; }
         #endregion
 
+        public ScheduledTaskStatus LicenseValidationRunningStatus { get; set; }
+        public string License { get; set; }
+        public DateTime? LicenseExpires { get; set; }
+        public string LicenseError { get; set; }
+
         public ScheduledTaskStatus UpdateRunningStatus { get; set; }
         public DateTime? UpdateNextScheduled { get; set; }
         public UpdateResponseV2 UpdateLatestResponse { get; set; }
@@ -136,6 +141,10 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 EmailUsername = config.EmailUsername,
                 EmailPassword = null,
                 EmailIsConfigured = EmailService.IsConfigured,
+                License = config.LicenseKey,
+                LicenseExpires = config.LicenseExpiresOn,
+                LicenseError = config.LicenseError,
+                LicenseValidationRunningStatus = LicenseValidationTask.RunningStatus,
                 UpdateLatestResponse = config.UpdateLastCheckResponse,
                 UpdateRunningStatus = UpdateQueryTask.RunningStatus,
                 UpdateNextScheduled = UpdateQueryTask.NextScheduled,

@@ -367,6 +367,7 @@
     <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
     <Compile Include="Interop\DiscoServices\DiscoServiceHelpers.cs" />
     <Compile Include="Interop\DiscoServices\Jobs.cs" />
+    <Compile Include="Interop\DiscoServices\LicenseValidationTask.cs" />
     <Compile Include="Interop\DiscoServices\PluginLibrary.cs" />
     <Compile Include="Interop\DiscoServices\PluginLibraryUpdateTask.cs" />
     <Compile Include="Interop\MimeTypes.cs" />

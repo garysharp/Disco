@@ -61,6 +61,12 @@ namespace Disco.Web.Areas.API.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult LicenseCheck()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LicenseCheck);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateOrganisationName()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOrganisationName);
@@ -162,6 +168,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateLastNetworkLogonDates = "UpdateLastNetworkLogonDates";
             public readonly string UpdateAttachmentThumbnails = "UpdateAttachmentThumbnails";
             public readonly string UpdateADDeviceDescriptions = "UpdateADDeviceDescriptions";
+            public readonly string LicenseCheck = "LicenseCheck";
             public readonly string UpdateCheck = "UpdateCheck";
             public readonly string UpdateOrganisationName = "UpdateOrganisationName";
             public readonly string OrganisationLogo = "OrganisationLogo";
@@ -187,6 +194,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateLastNetworkLogonDates = "UpdateLastNetworkLogonDates";
             public const string UpdateAttachmentThumbnails = "UpdateAttachmentThumbnails";
             public const string UpdateADDeviceDescriptions = "UpdateADDeviceDescriptions";
+            public const string LicenseCheck = "LicenseCheck";
             public const string UpdateCheck = "UpdateCheck";
             public const string UpdateOrganisationName = "UpdateOrganisationName";
             public const string OrganisationLogo = "OrganisationLogo";
@@ -207,6 +215,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
 
+        static readonly ActionParamsClass_LicenseCheck s_params_LicenseCheck = new ActionParamsClass_LicenseCheck();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_LicenseCheck LicenseCheckParams { get { return s_params_LicenseCheck; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_LicenseCheck
+        {
+            public readonly string license = "license";
+        }
         static readonly ActionParamsClass_UpdateOrganisationName s_params_UpdateOrganisationName = new ActionParamsClass_UpdateOrganisationName();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_UpdateOrganisationName UpdateOrganisationNameParams { get { return s_params_UpdateOrganisationName; } }
@@ -401,6 +417,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateADDeviceDescriptions);
             UpdateADDeviceDescriptionsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LicenseCheckOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string license);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LicenseCheck(string license)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LicenseCheck);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "license", license);
+            LicenseCheckOverride(callInfo, license);
             return callInfo;
         }
 
