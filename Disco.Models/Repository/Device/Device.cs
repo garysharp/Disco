@@ -53,6 +53,21 @@ namespace Disco.Models.Repository
         public virtual IList<Job> Jobs { get; set; }
         public virtual IList<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
 
+        /// <summary>
+        /// A list of the current device assignments, ordered by the most recent assignment date.
+        /// </summary>
+        [NotMapped]
+        public IList<DeviceUserAssignment> CurrentDeviceUserAssignments
+        {
+            get
+            {
+                return DeviceUserAssignments?
+                    .Where(dua => dua.UnassignedDate is null)
+                    .OrderByDescending(dua => dua.AssignedDate)
+                    .ToList();
+            }
+        }
+
         public override string ToString()
         {
             if (DeviceModel != null)
