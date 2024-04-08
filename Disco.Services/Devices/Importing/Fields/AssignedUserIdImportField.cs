@@ -119,16 +119,23 @@ namespace Disco.Services.Devices.Importing.Fields
                 // Add Assignment
                 if (parsedValue != null)
                 {
+                    var user = Database.Users.FirstOrDefault(u => u.UserId == parsedValue);
                     var assignment = new DeviceUserAssignment()
                     {
                         Device = Device,
                         DeviceSerialNumber = Device.SerialNumber,
-                        AssignedUserId = parsedValue,
+                        AssignedUserId = user.UserId,
+                        AssignedUser = user,
                         AssignedDate = DateTime.Now
                     };
                     Database.DeviceUserAssignments.Add(assignment);
+                    Device.AssignedUser = user;
+                    Device.AssignedUserId = user.UserId;
                 }
-                Device.AssignedUserId = parsedValue;
+                else
+                {
+                    Device.AssignedUserId = null;
+                }
 
                 return true;
             }
