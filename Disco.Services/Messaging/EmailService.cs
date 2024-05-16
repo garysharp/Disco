@@ -2,6 +2,7 @@
 using Disco.Data.Repository;
 using Disco.Models.Services.Messaging;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 
@@ -97,6 +98,11 @@ namespace Disco.Services.Messaging
             {
                 foreach (var recipient in email.BCC)
                     message.Bcc.Add(recipient);
+            }
+            if (email.Attachments.Count > 0)
+            {
+                foreach (var attachment in email.Attachments)
+                    message.Attachments.Add(new Attachment(new MemoryStream(attachment.Data), attachment.Name, attachment.MediaType));
             }
 
             using (var smtpClient = new SmtpClient(smtpServer, smtpPort))

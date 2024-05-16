@@ -25,7 +25,7 @@ namespace Disco.Models.Services.Messaging
         public Email(string to, string subject, string body)
             : this()
         {
-            To.Add(to);
+            To.AddRange(ParseEmailAddresses(to));
             Subject = subject;
             Body = body;
         }

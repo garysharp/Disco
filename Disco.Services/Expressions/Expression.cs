@@ -38,9 +38,10 @@ namespace Disco.Services.Expressions
         public static void InitializeExpressions()
         {
             TypeRegistry.RegisterType("DataExt", typeof(Extensions.DataExt));
-            TypeRegistry.RegisterType("UserExt", typeof(Extensions.UserExt));
             TypeRegistry.RegisterType("DeviceExt", typeof(Extensions.DeviceExt));
+            TypeRegistry.RegisterType("EmailExt", typeof(Extensions.EmailExt));
             TypeRegistry.RegisterType("ImageExt", typeof(Extensions.ImageExt));
+            TypeRegistry.RegisterType("UserExt", typeof(Extensions.UserExt));
         }
 
         public T EvaluateFirst<T>(object ExpressionContext, IDictionary Variables)
@@ -295,6 +296,11 @@ namespace Disco.Services.Expressions
                 {
                     "DeviceExt",
                     typeof(Extensions.DeviceExt).AssemblyQualifiedName
+                },
+
+                {
+                    "EmailExt",
+                    typeof(Extensions.EmailExt).AssemblyQualifiedName
                 },
 
                 {
