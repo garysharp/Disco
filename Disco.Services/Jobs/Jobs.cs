@@ -131,6 +131,16 @@ namespace Disco.Services.Jobs
             ExpressionCache.InvalidateSingleCache("Job_OnCreateExpression");
         }
 
+        public static Expression OnDeviceReadyForReturnExpressionFromCache(DiscoDataContext Database)
+        {
+            return ExpressionCache.GetOrCreateSingleExpressions("Job_OnDeviceReadyForReturnExpression", () => Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnDeviceReadyForReturnExpression, 0));
+        }
+
+        public static void OnDeviceReadyForReturnExpressionInvalidateCache()
+        {
+            ExpressionCache.InvalidateSingleCache("Job_OnDeviceReadyForReturnExpression");
+        }
+
         public static Expression OnCloseExpressionFromCache(DiscoDataContext Database)
         {
             return ExpressionCache.GetOrCreateSingleExpressions("Job_OnCloseExpression", () => Expression.TokenizeSingleDynamic(null, Database.DiscoConfiguration.JobPreferences.OnCloseExpression, 0));

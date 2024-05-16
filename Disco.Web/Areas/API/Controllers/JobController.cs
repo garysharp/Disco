@@ -1604,12 +1604,13 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Job.Properties.DeviceReadyForReturn)]
         public virtual ActionResult DeviceReadyForReturn(int id, bool redirect)
         {
+            Database.Configuration.LazyLoadingEnabled = true;
             var j = Database.Jobs.Find(id);
             if (j != null)
             {
                 if (j.CanDeviceReadyForReturn())
                 {
-                    j.OnDeviceReadyForReturn(CurrentUser);
+                    j.OnDeviceReadyForReturn(Database, Database.Users.Find(CurrentUser.UserId));
 
                     Database.SaveChanges();
                     if (redirect)

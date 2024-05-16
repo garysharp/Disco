@@ -407,6 +407,21 @@ namespace Disco.Services
             return null;
         }
 
+        public static string EvaluateOnDeviceReadyForReturnExpression(this Job job, DiscoDataContext Database)
+        {
+            if (!string.IsNullOrEmpty(Database.DiscoConfiguration.JobPreferences.OnDeviceReadyForReturnExpression))
+            {
+                Expression compiledExpression = Jobs.Jobs.OnDeviceReadyForReturnExpressionFromCache(Database);
+                IDictionary evaluatorVariables = Expression.StandardVariables(null, Database, job.OpenedTechUser, DateTime.Now, null, job);
+                object result = compiledExpression.EvaluateFirst<object>(job, evaluatorVariables);
+                if (result == null)
+                    return null;
+                else
+                    return result.ToString();
+            }
+            return null;
+        }
+
         public static string EvaluateOnCloseExpression(this Job job, DiscoDataContext Database)
         {
             if (!string.IsNullOrEmpty(Database.DiscoConfiguration.JobPreferences.OnCloseExpression))

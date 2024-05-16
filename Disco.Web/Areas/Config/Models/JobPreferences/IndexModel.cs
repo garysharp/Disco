@@ -20,6 +20,8 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
         [DataType(DataType.MultilineText)]
         public string OnCreateExpression { get; set; }
         [DataType(DataType.MultilineText)]
+        public string OnDeviceReadyForReturnExpression { get; set; }
+        [DataType(DataType.MultilineText)]
         public string OnCloseExpression { get; set; }
 
         public List<KeyValuePair<string, string>> DefaultNoticeboardThemeOptions()

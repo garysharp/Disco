@@ -19,7 +19,8 @@ namespace Disco.Web.Areas.Config.Controllers
                 LocationMode = Database.DiscoConfiguration.JobPreferences.LocationMode,
                 LocationList = Database.DiscoConfiguration.JobPreferences.LocationList,
                 OnCreateExpression = Database.DiscoConfiguration.JobPreferences.OnCreateExpression,
-                OnCloseExpression = Database.DiscoConfiguration.JobPreferences.OnCloseExpression
+                OnDeviceReadyForReturnExpression = Database.DiscoConfiguration.JobPreferences.OnDeviceReadyForReturnExpression,
+                OnCloseExpression = Database.DiscoConfiguration.JobPreferences.OnCloseExpression,
             };
 
             // UI Extensions

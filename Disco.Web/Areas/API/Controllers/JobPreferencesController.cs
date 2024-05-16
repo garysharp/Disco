@@ -144,6 +144,30 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateOnDeviceReadyForReturnExpression(string OnDeviceReadyForReturnExpression, bool redirect = false)
+        {
+            string expression = null;
+
+            if (!string.IsNullOrWhiteSpace(OnDeviceReadyForReturnExpression))
+            {
+                expression = OnDeviceReadyForReturnExpression.Trim();
+            }
+
+            if (Database.DiscoConfiguration.JobPreferences.OnDeviceReadyForReturnExpression != expression)
+            {
+                Database.DiscoConfiguration.JobPreferences.OnDeviceReadyForReturnExpression = expression;
+                Database.SaveChanges();
+
+                Jobs.OnDeviceReadyForReturnExpressionInvalidateCache();
+            }
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
         public virtual ActionResult UpdateOnCloseExpression(string OnCloseExpression, bool redirect = false)
         {
             string expression = null;

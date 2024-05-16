@@ -250,7 +250,7 @@ WriteLiteral("></i>This expression will be evaluated whenever a job is created. 
 
 WriteLiteral(" style=\"width: 200px\"");
 
-WriteLiteral(">On Close:</th>\r\n            <td>\r\n");
+WriteLiteral(">On Device Ready For Return:</th>\r\n            <td>\r\n");
 
             
             #line 81 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
@@ -268,14 +268,14 @@ WriteLiteral(">On Close:</th>\r\n            <td>\r\n");
             #line hidden
             
             #line 83 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
-               Write(Html.EditorFor(model => model.OnCloseExpression));
+               Write(Html.EditorFor(model => model.OnDeviceReadyForReturnExpression));
 
             
             #line default
             #line hidden
             
             #line 83 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
-                                                                     
+                                                                                    
                     
             
             #line default
@@ -327,50 +327,60 @@ WriteLiteral("                    <script");
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                            $(function () {
-                                var field = $('#OnCloseExpression');
-                                var fieldRemove = field.next('.ajaxRemove');
-                                var fieldOriginalWidth, fieldOriginalHeight;
+                $(function () {
+                    var field = $('#OnDeviceReadyForReturnExpression');
+                    var fieldRemove = field.next('.ajaxRemove');
+                    var fieldOriginalWidth, fieldOriginalHeight;
 
-                                document.DiscoFunctions.PropertyChangeHelper(
-                                    field,
-                                    'None',
-                                    '");
+                    document.DiscoFunctions.PropertyChangeHelper(
+                        field,
+                        'None',
+                        '");
 
             
             #line 96 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
-                                Write(Url.Action(MVC.API.JobPreferences.UpdateOnCloseExpression()));
+                    Write(Url.Action(MVC.API.JobPreferences.UpdateOnDeviceReadyForReturnExpression()));
 
             
             #line default
             #line hidden
-WriteLiteral("\',\r\n                                    \'OnCloseExpression\'\r\n                    " +
-"            );\r\n\r\n                                field.focus(function () {\r\n   " +
-"                                 fieldOriginalWidth = field.width();\r\n          " +
-"                          fieldOriginalHeight = field.height();\r\n               " +
-"                     field.css(\'overflow\', \'visible\').animate({ width: field.par" +
-"ent().width() - 42, height: 75 }, 200);\r\n                                }).blur" +
-"(function () {\r\n                                    field.css(\'overflow\', \'hidde" +
-"n\').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);\r\n " +
-"                               }).change(function () {\r\n                        " +
-"            if (!!field.val()) {\r\n                                        fieldR" +
-"emove.show();\r\n                                    } else {\r\n                   " +
-"                     fieldRemove.hide();\r\n                                    }\r" +
-"\n                                }).attr(\'placeholder\', \'None\').attr(\'spellcheck" +
-"\', \'false\');\r\n\r\n                                fieldRemove.click(function () {\r" +
-"\n                                    field.val(\'\').change();\r\n                  " +
-"              });\r\n\r\n                                if (!!field.val()) {\r\n     " +
-"                               fieldRemove.show();\r\n                            " +
-"    } else {\r\n                                    fieldRemove.hide();\r\n         " +
-"                       }\r\n                            });\r\n                    <" +
-"/script>\r\n");
+WriteLiteral(@"',
+                        'OnDeviceReadyForReturnExpression'
+                    );
+
+                    field.focus(function () {
+                        fieldOriginalWidth = field.width();
+                        fieldOriginalHeight = field.height();
+                        field.css('overflow', 'visible').animate({ width: field.parent().width() - 42, height: 75 }, 200);
+                    }).blur(function () {
+                        field.css('overflow', 'hidden').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);
+                    }).change(function () {
+                        if (!!field.val()) {
+                            fieldRemove.show();
+                        } else {
+                            fieldRemove.hide();
+                        }
+                    }).attr('placeholder', 'None').attr('spellcheck', 'false');
+
+                    fieldRemove.click(function () {
+                        field.val('').change();
+                    });
+
+                    if (!!field.val()) {
+                        fieldRemove.show();
+                    } else {
+                        fieldRemove.hide();
+                    }
+                });
+                    </script>
+");
 
             
             #line 125 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
                 }
                 else
                 {
-                    if (string.IsNullOrWhiteSpace(Model.OnCloseExpression))
+                    if (string.IsNullOrWhiteSpace(Model.OnDeviceReadyForReturnExpression))
                     {
 
             
@@ -401,7 +411,7 @@ WriteLiteral("                            ");
 
             
             #line 135 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
-                       Write(Model.OnCloseExpression);
+                       Write(Model.OnDeviceReadyForReturnExpression);
 
             
             #line default
@@ -410,6 +420,194 @@ WriteLiteral("\r\n                        </div>\r\n");
 
             
             #line 137 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                    }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                    <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral(@"></i>This expression will be evaluated whenever a device is flagged as Ready For Return. If the expression has any output it will be added to the job log.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th");
+
+WriteLiteral(" style=\"width: 200px\"");
+
+WriteLiteral(">On Close:</th>\r\n            <td>\r\n");
+
+            
+            #line 149 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 149 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 151 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+               Write(Html.EditorFor(model => model.OnCloseExpression));
+
+            
+            #line default
+            #line hidden
+            
+            #line 151 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                                                                     
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 152 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+               Write(AjaxHelpers.AjaxRemove());
+
+            
+            #line default
+            #line hidden
+            
+            #line 152 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                                             
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 153 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 153 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 154 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 154 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                            $(function () {
+                                var field = $('#OnCloseExpression');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '");
+
+            
+            #line 164 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                                Write(Url.Action(MVC.API.JobPreferences.UpdateOnCloseExpression()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                                    \'OnCloseExpression\'\r\n                    " +
+"            );\r\n\r\n                                field.focus(function () {\r\n   " +
+"                                 fieldOriginalWidth = field.width();\r\n          " +
+"                          fieldOriginalHeight = field.height();\r\n               " +
+"                     field.css(\'overflow\', \'visible\').animate({ width: field.par" +
+"ent().width() - 42, height: 75 }, 200);\r\n                                }).blur" +
+"(function () {\r\n                                    field.css(\'overflow\', \'hidde" +
+"n\').animate({ width: fieldOriginalWidth, height: fieldOriginalHeight }, 200);\r\n " +
+"                               }).change(function () {\r\n                        " +
+"            if (!!field.val()) {\r\n                                        fieldR" +
+"emove.show();\r\n                                    } else {\r\n                   " +
+"                     fieldRemove.hide();\r\n                                    }\r" +
+"\n                                }).attr(\'placeholder\', \'None\').attr(\'spellcheck" +
+"\', \'false\');\r\n\r\n                                fieldRemove.click(function () {\r" +
+"\n                                    field.val(\'\').change();\r\n                  " +
+"              });\r\n\r\n                                if (!!field.val()) {\r\n     " +
+"                               fieldRemove.show();\r\n                            " +
+"    } else {\r\n                                    fieldRemove.hide();\r\n         " +
+"                       }\r\n                            });\r\n                    <" +
+"/script>\r\n");
+
+            
+            #line 193 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.OnCloseExpression))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 199 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 203 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
+                       Write(Model.OnCloseExpression);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n");
+
+            
+            #line 205 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
                     }
                 }
 

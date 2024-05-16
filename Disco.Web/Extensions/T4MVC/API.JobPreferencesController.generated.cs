@@ -103,6 +103,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateOnDeviceReadyForReturnExpression()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnDeviceReadyForReturnExpression);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateOnCloseExpression()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnCloseExpression);
@@ -130,6 +136,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateLocationList = "UpdateLocationList";
             public readonly string ImportLocationList = "ImportLocationList";
             public readonly string UpdateOnCreateExpression = "UpdateOnCreateExpression";
+            public readonly string UpdateOnDeviceReadyForReturnExpression = "UpdateOnDeviceReadyForReturnExpression";
             public readonly string UpdateOnCloseExpression = "UpdateOnCloseExpression";
         }
 
@@ -143,6 +150,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateLocationList = "UpdateLocationList";
             public const string ImportLocationList = "ImportLocationList";
             public const string UpdateOnCreateExpression = "UpdateOnCreateExpression";
+            public const string UpdateOnDeviceReadyForReturnExpression = "UpdateOnDeviceReadyForReturnExpression";
             public const string UpdateOnCloseExpression = "UpdateOnCloseExpression";
         }
 
@@ -210,6 +218,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateOnCreateExpression
         {
             public readonly string OnCreateExpression = "OnCreateExpression";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateOnDeviceReadyForReturnExpression s_params_UpdateOnDeviceReadyForReturnExpression = new ActionParamsClass_UpdateOnDeviceReadyForReturnExpression();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateOnDeviceReadyForReturnExpression UpdateOnDeviceReadyForReturnExpressionParams { get { return s_params_UpdateOnDeviceReadyForReturnExpression; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateOnDeviceReadyForReturnExpression
+        {
+            public readonly string OnDeviceReadyForReturnExpression = "OnDeviceReadyForReturnExpression";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateOnCloseExpression s_params_UpdateOnCloseExpression = new ActionParamsClass_UpdateOnCloseExpression();
@@ -330,6 +347,19 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OnCreateExpression", OnCreateExpression);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateOnCreateExpressionOverride(callInfo, OnCreateExpression, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateOnDeviceReadyForReturnExpressionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string OnDeviceReadyForReturnExpression, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateOnDeviceReadyForReturnExpression(string OnDeviceReadyForReturnExpression, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateOnDeviceReadyForReturnExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "OnDeviceReadyForReturnExpression", OnDeviceReadyForReturnExpression);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateOnDeviceReadyForReturnExpressionOverride(callInfo, OnDeviceReadyForReturnExpression, redirect);
             return callInfo;
         }
 

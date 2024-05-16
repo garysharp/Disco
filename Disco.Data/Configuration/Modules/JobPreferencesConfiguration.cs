@@ -75,6 +75,12 @@ namespace Disco.Data.Configuration.Modules
             set { Set(value); }
         }
 
+        public string OnDeviceReadyForReturnExpression
+        {
+            get { return Get<string>(null); }
+            set { Set(value); }
+        }
+
         public string OnCloseExpression
         {
             get { return Get<string>(null); }

@@ -64,12 +64,34 @@ namespace Disco.Services
                 !j.DeviceReadyForReturn.HasValue && !j.DeviceReturnedDate.HasValue;
         }
         public static void OnDeviceReadyForReturn(this Job j, User Technician)
+        public static void OnDeviceReadyForReturn(this Job j, DiscoDataContext Database, User Technician)
         {
             if (!j.CanDeviceReadyForReturn())
                 throw new InvalidOperationException("Device Ready for Return was Denied");
 
             j.DeviceReadyForReturn = DateTime.Now;
             j.DeviceReadyForReturnTechUserId = Technician.UserId;
+
+            // Evaluate OnDeviceReadyForReturnExpression Expression
+            try
+            {
+                var result = j.EvaluateOnDeviceReadyForReturnExpression(Database);
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    var jl = new JobLog()
+                    {
+                        Job = j,
+                        TechUser = Technician,
+                        Timestamp = DateTime.Now,
+                        Comments = result
+                    };
+                    Database.JobLogs.Add(jl);
+                }
+            }
+            catch (Exception ex)
+            {
+                SystemLog.LogException("Job Expression - OnDeviceReadyForReturnExpression", ex);
+            }
         }
         #endregion
 
