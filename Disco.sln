@@ -16,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disco.Services", "Disco.Services\Disco.Services.csproj", "{B80A737F-BD6A-4986-9182-DD7B932BD950}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disco.Web", "Disco.Web\Disco.Web.csproj", "{241F4F43-6ACB-482D-8CBF-8F4E4B4DB0FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15BD9561-A3C7-4608-9F7E-F1A1CFB60055} = {15BD9561-A3C7-4608-9F7E-F1A1CFB60055}
+		{D6B85A86-0FAA-4B04-BC9E-D01A08C03387} = {D6B85A86-0FAA-4B04-BC9E-D01A08C03387}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disco.Client", "Disco.Client\Disco.Client.csproj", "{D6B85A86-0FAA-4B04-BC9E-D01A08C03387}"
 EndProject
