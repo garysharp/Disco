@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -58,6 +55,10 @@ namespace Disco.Models.Repository
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:yyyy/MM/dd hh:mm tt}", HtmlEncode = false)]
         public DateTime? ClaimFormSentDate { get; set; }
         public string ClaimFormSentUserId { get; set; }
+        [StringLength(200)]
+        public string Insurer { get; set; }
+        [StringLength(200)]
+        public string InsurerReference { get; set; }
         
         [Required, ForeignKey("JobId")]
         public virtual Job Job { get; set; }

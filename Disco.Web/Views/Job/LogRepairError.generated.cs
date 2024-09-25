@@ -48,7 +48,7 @@ namespace Disco.Web.Views.Job
   
     Authorization.Require(Claims.Job.Actions.LogRepair);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Repair Error");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Repair Error");
 
             
             #line default

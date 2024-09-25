@@ -1,8 +1,8 @@
-﻿@model Disco.Web.Models.Job.LogWarrantyModel
+﻿@model Disco.Web.Models.Job.LogInsuranceModel
 @{
-    Authorization.Require(Claims.Job.Actions.LogWarranty);
+    Authorization.RequireAny(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, Claims.Job.Actions.LogInsurance);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Warranty Error");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Insurance Claim Error");
 }
 <div class="form" style="width: 650px">
     <h2>Submission Error</h2>
@@ -12,8 +12,8 @@
                 <div>
                     <strong>@Model.Error.Message</strong>
                 </div>
-                <a href="#" id="warrantyJobErrorShow" class="smallMessage">(show more)</a>
-                <div id="warrantyJobErrorMore" style="display: none">
+                <a href="#" id="errorShow" class="smallMessage">(show more)</a>
+                <div id="errorMore" style="display: none">
                     <br />
                     <strong>Error Type: </strong>@Model.Error.GetType().Name
                     <br />
@@ -36,9 +36,9 @@
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        $('#warrantyJobErrorShow').click(function () {
+                        $('#errorShow').click(function () {
                             $(this).hide();
-                            $('#warrantyJobErrorMore').slideDown();
+                            $('#errorMore').slideDown();
                             return false;
                         });
                     });
@@ -47,8 +47,8 @@
         </tr>
     </table>
 </div>
-<div id="warrantyJobForm" class="form" style="width: 650px; margin-top: 15px;">
-    <h2>Warranty Submission Details</h2>
+<div id="insuranceJobForm" class="form" style="width: 650px; margin-top: 15px;">
+    <h2>Insurance Submission Details</h2>
     <table>
         <tr>
             <th>Internal Job Id:
@@ -83,7 +83,7 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 150px">Repair Address:
+            <th style="width: 150px">Address:
             </th>
             <td>
                 <div id="organisationAddressDetails">
@@ -97,13 +97,13 @@
             </td>
         </tr>
         <tr>
-            <th>Warranty Provider:
+            <th>Provider:
             </th>
             <td>
-                @if (Model.WarrantyProvider != null)
+                @if (Model.Provider != null)
                 {
                     <span>
-                        @Model.WarrantyProvider.Name (@Model.WarrantyProvider.Id) @Model.WarrantyProvider.PluginManifest.Version.ToString(3)
+                        @Model.Provider.Name (@Model.Provider.Id) @Model.Provider.PluginManifest.Version.ToString(3)
                     </span>
                 }
                 else
@@ -112,16 +112,9 @@
                 }
             </td>
         </tr>
-        <tr>
-            <th>Fault Description:
-            </th>
-            <td>
-                @Model.FaultDescription.ToMultilineString()
-            </td>
-        </tr>
     </table>
 </div>
 <div class="actionBar">
-    @Html.ActionLinkButton("Try Again", MVC.Job.LogWarranty(Model.JobId, null, null))
+    @Html.ActionLinkButton("Try Again", MVC.Job.LogInsurance(Model.JobId, null, null))
     @Html.ActionLinkButton("Return to Job", MVC.Job.Show(Model.JobId))
 </div>

@@ -179,6 +179,15 @@ namespace Disco.Services.Plugins
             return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK, description);
         }
 
+        public ActionResult BadRequest()
+        {
+            return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+        }
+        public ActionResult BadRequest(string description)
+        {
+            return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest, description);
+        }
+
         #endregion
 
         #region Content
@@ -262,11 +271,17 @@ namespace Disco.Services.Plugins
         }
         public ActionResult RedirectToPluginAction(string PluginAction)
         {
-            if (string.IsNullOrEmpty(PluginAction))
-                throw new ArgumentNullException("PluginAction");
+            return RedirectToPluginAction(PluginAction, null);
+        }
+        public ActionResult RedirectToPluginAction(string pluginAction, object routeValues)
+        {
+            if (string.IsNullOrEmpty(pluginAction))
+                throw new ArgumentNullException(nameof(pluginAction));
 
-            var routeValues = new RouteValueDictionary(new { PluginId = Manifest.Id, PluginAction = PluginAction });
-            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValues, RouteTable.Routes, HostController.Request.RequestContext, false);
+            var routeValueDictionary = new RouteValueDictionary(routeValues);
+            routeValueDictionary.Add("PluginId", Manifest.Id);
+            routeValueDictionary.Add("PluginAction", pluginAction);
+            string pluginActionUrl = UrlHelper.GenerateUrl("Plugin", null, null, routeValueDictionary, RouteTable.Routes, HostController.Request.RequestContext, false);
 
             return new RedirectResult(pluginActionUrl, false);
         }

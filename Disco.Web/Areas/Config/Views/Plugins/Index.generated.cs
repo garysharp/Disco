@@ -30,12 +30,6 @@ namespace Disco.Web.Areas.Config.Views.Plugins
     using Disco.Models.Repository;
     using Disco.Services;
     using Disco.Services.Authorization;
-    
-    #line 2 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-    using Disco.Services.Plugins;
-    
-    #line default
-    #line hidden
     using Disco.Services.Web;
     using Disco.Web;
     using Disco.Web.Extensions;
@@ -50,7 +44,7 @@ namespace Disco.Web.Areas.Config.Views.Plugins
         public override void Execute()
         {
             
-            #line 3 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 2 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
   
     Authorization.Require(Claims.Config.Plugin.Show);
 
@@ -70,13 +64,13 @@ WriteLiteral(" id=\"plugins\"");
 WriteLiteral(">\r\n");
 
             
-            #line 13 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 12 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 12 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
       
         if (Model.PluginManifests.Count == 0)
         { 
@@ -93,11 +87,11 @@ WriteLiteral(" style=\"width: 450px; padding: 100px 0;\"");
 WriteLiteral(">\r\n            <h2>No Plugins are Installed</h2>\r\n        </div>  \r\n");
 
             
-            #line 19 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 18 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
         }
         else
         {
-            var pluginGroups = Model.PluginManifestsByCategory;
+            var pluginGroups = Model.PluginManifestsByCategory.OrderBy(c => c.Key).ToList();
 
 
             int itemsPerColumn = pluginGroups.Count / 3;
@@ -114,13 +108,13 @@ WriteLiteral(" id=\"pageMenu\"");
 WriteLiteral(">\r\n            <tr>\r\n");
 
             
-            #line 30 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 29 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 30 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 29 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                  for (int i = 0; i < 3; i++)
                 {
 
@@ -130,13 +124,13 @@ WriteLiteral(">\r\n            <tr>\r\n");
 WriteLiteral("                    <td>\r\n");
 
             
-            #line 33 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 32 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 32 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                           
                     int itemsForThisColumn = itemsPerColumn + (pluginGroups.Count % 3 > i ? 1 : 0);
                     for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < pluginGroups.Count; i2++)
@@ -154,8 +148,8 @@ WriteLiteral(" class=\"pageMenuArea\"");
 WriteLiteral(">\r\n                                <h2>");
 
             
-            #line 40 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                               Write(Plugins.PluginFeatureCategoryDisplayName(pluginGroup.Item1));
+            #line 39 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                               Write(pluginGroup.Key);
 
             
             #line default
@@ -163,14 +157,14 @@ WriteLiteral(">\r\n                                <h2>");
 WriteLiteral("</h2>\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 40 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 41 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                 foreach (var pluginDefinition in pluginGroup.Item2)
+            #line 40 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                                 foreach (var pluginDefinition in pluginGroup.Value.OrderBy(p => p.Name))
                                 {
                                     if (canConfig)
                                     {
@@ -180,14 +174,14 @@ WriteLiteral("</h2>\r\n");
             #line hidden
 WriteLiteral("                                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1807), Tuple.Create("\"", 1876)
+WriteAttribute("href", Tuple.Create(" href=\"", 1781), Tuple.Create("\"", 1850)
             
-            #line 45 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1814), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))
+            #line 44 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 1788), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))
             
             #line default
             #line hidden
-, 1814), false)
+, 1788), false)
 );
 
 WriteLiteral(">\r\n                                        <i");
@@ -197,7 +191,7 @@ WriteLiteral(" class=\"fa fa-cogs\"");
 WriteLiteral("></i>\r\n                                        <h3>");
 
             
-            #line 47 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 46 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                        Write(pluginDefinition.Name);
 
             
@@ -206,7 +200,7 @@ WriteLiteral("></i>\r\n                                        <h3>");
 WriteLiteral("</h3>\r\n                                    </a>\r\n");
 
             
-            #line 49 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 48 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                     }
                                     else
                                     {
@@ -217,7 +211,7 @@ WriteLiteral("</h3>\r\n                                    </a>\r\n");
 WriteLiteral("                                    <h3>");
 
             
-            #line 52 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 51 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                    Write(pluginDefinition.Name);
 
             
@@ -226,7 +220,7 @@ WriteLiteral("                                    <h3>");
 WriteLiteral("</h3>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 52 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                     }
 
             
@@ -243,7 +237,7 @@ WriteLiteral(" class=\"pluginVersion\"");
 WriteLiteral(">v");
 
             
-            #line 55 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 54 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                  Write(pluginDefinition.VersionFormatted);
 
             
@@ -252,7 +246,7 @@ WriteLiteral(">v");
 WriteLiteral("</span> | ");
 
             
-            #line 55 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 54 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                                               Write(pluginDefinition.Author);
 
             
@@ -260,14 +254,14 @@ WriteLiteral("</span> | ");
             #line hidden
 WriteLiteral(" | <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2500), Tuple.Create("\"", 2528)
+WriteAttribute("href", Tuple.Create(" href=\"", 2474), Tuple.Create("\"", 2502)
             
-            #line 55 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                                                                       , Tuple.Create(Tuple.Create("", 2507), Tuple.Create<System.Object, System.Int32>(pluginDefinition.Url
+            #line 54 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+                                                                       , Tuple.Create(Tuple.Create("", 2481), Tuple.Create<System.Object, System.Int32>(pluginDefinition.Url
             
             #line default
             #line hidden
-, 2507), false)
+, 2481), false)
 );
 
 WriteLiteral(" title=\"More Information\"");
@@ -281,7 +275,7 @@ WriteLiteral(" class=\"fa fa-external-link\"");
 WriteLiteral("></i></a>\r\n                                    </div>\r\n");
 
             
-            #line 57 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 56 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                 }
 
             
@@ -290,7 +284,7 @@ WriteLiteral("></i></a>\r\n                                    </div>\r\n");
 WriteLiteral("                            </div>\r\n");
 
             
-            #line 59 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 58 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                     }
                         
             
@@ -299,7 +293,7 @@ WriteLiteral("                            </div>\r\n");
 WriteLiteral("\r\n                    </td>\r\n");
 
             
-            #line 62 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 61 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                 }
 
             
@@ -308,7 +302,7 @@ WriteLiteral("\r\n                    </td>\r\n");
 WriteLiteral("            </tr>\r\n        </table>\r\n");
 
             
-            #line 65 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 64 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                 if (canUninstall)
                 {
 
@@ -326,7 +320,7 @@ WriteLiteral(">\r\n            <div>\r\n");
 WriteLiteral("                ");
 
             
-            #line 69 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 68 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
            Write(Html.DropDownList("uninstallPlugin", Model.PluginManifests.ToSelectListItems(null, true, "Select a Plugin to Uninstall")));
 
             
@@ -407,7 +401,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "            var uninstallUrl = \'");
 
             
-            #line 96 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 95 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                 Write(Url.Action(MVC.API.Plugin.Uninstall()));
 
             
@@ -460,7 +454,7 @@ WriteLiteral("/\';\r\n                var uninstallPlugin, uninstallPluginData, 
 "}\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 176 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 175 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                 }
                 if (Model.PluginUpdates.Count > 0)
                 {
@@ -479,7 +473,7 @@ WriteLiteral(" class=\"fa fa-cloud-download\"");
 WriteLiteral("></i>\r\n            <div>");
 
             
-            #line 181 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 180 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
              Write(Model.PluginUpdates.Count);
 
             
@@ -488,7 +482,7 @@ WriteLiteral("></i>\r\n            <div>");
 WriteLiteral(" plugin update");
 
             
-            #line 181 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 180 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                        Write(Model.PluginUpdates.Count == 1 ? " is" : "s are");
 
             
@@ -497,13 +491,13 @@ WriteLiteral(" plugin update");
 WriteLiteral(" available</div>\r\n");
 
             
-            #line 182 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 181 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 182 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 181 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
              if (canInstall)
             {
                 
@@ -511,14 +505,14 @@ WriteLiteral(" available</div>\r\n");
             #line default
             #line hidden
             
-            #line 184 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 183 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
            Write(Html.ActionLinkSmallButton("Update Now", MVC.API.Plugin.UpdateAll(), null, "alert"));
 
             
             #line default
             #line hidden
             
-            #line 184 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 183 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                                     
             }
             else
@@ -534,7 +528,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">You do not have sufficient permission to install these updates.</div>\r\n");
 
             
-            #line 189 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 188 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
             }
 
             
@@ -554,7 +548,7 @@ WriteLiteral(@"        <script>
 ");
 
             
-            #line 200 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 199 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                 }
         }
     
@@ -568,13 +562,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 205 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 204 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 205 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 204 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
      if (canUninstall && Model.PluginManifests.Count > 0)
     { 
         
@@ -582,14 +576,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 207 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 206 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
    Write(Html.ActionLinkButton("Uninstall Plugins", MVC.Config.Plugins.Index(), "buttonUninstall"));
 
             
             #line default
             #line hidden
             
-            #line 207 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 206 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                                   
     }
 
@@ -599,7 +593,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 209 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 208 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
      if (canInstall)
     {
         
@@ -607,14 +601,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 211 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 210 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
    Write(Html.ActionLinkButton("Install Plugins", MVC.Config.Plugins.Install()));
 
             
             #line default
             #line hidden
             
-            #line 211 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
+            #line 210 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
                                                                                
     }
 

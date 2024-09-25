@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Disco.Web.Models.Job
@@ -84,7 +85,11 @@ namespace Disco.Web.Models.Job
                     catch (Exception) { }
                 }
 
-                Job = Database.Jobs.Include("Device.DeviceModel").Include("JobMetaWarranty").Include("JobSubTypes").Include("JobAttachments")
+                Job = Database.Jobs
+                    .Include(j => j.Device.DeviceModel)
+                    .Include(j => j.JobMetaNonWarranty)
+                    .Include(j => j.JobSubTypes)
+                    .Include(j => j.JobAttachments)
                     .Where(j => j.Id == JobId)
                     .FirstOrDefault();
 
@@ -113,6 +118,8 @@ namespace Disco.Web.Models.Job
             if (!IsPostBack && !this.OrganisationAddressId.HasValue)
             {
                 OrganisationAddressId = Job.Device.DeviceProfile.DefaultOrganisationAddress;
+                if (!OrganisationAddressId.HasValue && OrganisationAddresses.Count == 1)
+                    OrganisationAddressId = OrganisationAddresses[0].Id;
             }
             if (this.OrganisationAddressId.HasValue)
                 this.OrganisationAddress = this.OrganisationAddresses.FirstOrDefault(oa => oa.Id == this.OrganisationAddressId.Value);

@@ -1,20 +1,19 @@
-﻿@model Disco.Web.Models.Job.LogRepairModel
+﻿@model Disco.Web.Models.Job.LogInsuranceModel
 @{
-    Authorization.Require(Claims.Job.Actions.LogRepair);
+    Authorization.RequireAny(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, Claims.Job.Actions.LogInsurance);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Repair");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Insurance Claim");
 }
-@using (Html.BeginForm(MVC.Job.LogRepair(), FormMethod.Post))
+@using (Html.BeginForm(MVC.Job.LogInsurance(), FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.JobId)
     @Html.HiddenFor(m => m.OrganisationAddressId)
-    @Html.HiddenFor(m => m.RepairProviderId)
-    @Html.HiddenFor(m => m.RepairDescription)
+    @Html.HiddenFor(m => m.ProviderId)
     @Html.HiddenFor(m => m.ProviderPropertiesJson)
     <input type="hidden" name="SubmissionAction" value="Submit" />
-    <div id="repairJobForm" class="form" style="width: 650px">
+    <div id="insuranceJobForm" class="form" style="width: 650px">
         <table>
             <tr>
                 <th>Internal Job Id:
@@ -49,7 +48,7 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px">Repair Address:
+                <th style="width: 150px">Address:
                 </th>
                 <td>
                     <div id="organisationAddressDetails">
@@ -63,17 +62,10 @@
                 </td>
             </tr>
             <tr>
-                <th>Repair Provider:
+                <th>Provider:
                 </th>
                 <td>
-                    @Model.RepairProvider.Name (@Model.RepairProvider.Id) @Model.RepairProvider.PluginManifest.Version.ToString(3)
-                </td>
-            </tr>
-            <tr>
-                <th>Repair Description:
-                </th>
-                <td>
-                    @Model.RepairDescription.ToMultilineString()
+                    @Model.Provider.Name (@Model.Provider.Id) @Model.Provider.PluginManifest.Version.ToString(3)
                 </td>
             </tr>
             <tr>
@@ -95,16 +87,16 @@
                     </div>
                 </td>
             </tr>
-            @if (Model.PublishAttachments.Count > 0)
+            @if (Model.Attachments.Count > 0)
             {
                 <tr>
                     <th>Sending Attachments</th>
                     <td>
                         <div>
                             <div id="publishJobAttachments">
-                                @foreach (var ja in Model.PublishAttachments)
+                                @foreach (var ja in Model.Attachments)
                                 {
-                                    <input type="hidden" name="PublishAttachmentIds" value="@ja.Id" />
+                                    <input type="hidden" name="AttachmentIds" value="@ja.Id" />
                                     <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
                                         <span class="icon" title="@ja.Filename">
                                             <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
@@ -124,7 +116,7 @@
         </table>
     </div>
     <div id="submitDialog" class="dialog" title="Please Wait">
-        <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Lodging Repair Request...</h4>
+        <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Lodging Insurance Claim...</h4>
     </div>
     <script>
         $(function () {
@@ -148,6 +140,6 @@
         });
     </script>
     <div class="actionBar">
-        <input id="submitJob" type="submit" class="button" value="Lodge Repair Request" />
+        <button id="submitJob" type="submit" class="button">Lodge Insurance Claim</button>
     </div>
 }

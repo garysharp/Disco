@@ -128,7 +128,7 @@
             <td>
                 @if (Model.Job.CanLogRepair())
                 { 
-                    @Html.ActionLinkSmallButton("Log Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Repair_Actions_LogRepair_Button")
+                    @Html.ActionLinkSmallButton("Lodge Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Repair_Actions_LogRepair_Button")
                 }
                 else
                 {

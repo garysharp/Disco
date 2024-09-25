@@ -134,6 +134,7 @@ namespace Disco.Services.Plugins
             private readonly PluginControllerDescription controllerDescription;
             private readonly MethodInfo methodInfo;
             private readonly IAuthorizationFilter[] authorizationFilters;
+            private readonly ActionMethodSelectorAttribute methodSelector;
             private readonly PluginParameterDescriptor[] parameterDescriptors;
             public override string UniqueId { get; }
             public override string ActionName { get; }
@@ -146,6 +147,7 @@ namespace Disco.Services.Plugins
                 UniqueId = $"{ControllerDescriptor.UniqueId}_{methodName}";
                 ActionName = methodName;
                 authorizationFilters = DiscoverAuthorizationFilters();
+                methodSelector = DiscoverMethodSelector();
                 parameterDescriptors = DiscoverParameters();
             }
 
@@ -157,6 +159,11 @@ namespace Disco.Services.Plugins
                     authorizer.AuthorizeResource = string.Format("[Plugin]::{0}::{1}", controllerDescription.Manifest.Id, methodInfo.Name);
 
                 return filters.ToArray();
+            }
+
+            private ActionMethodSelectorAttribute DiscoverMethodSelector()
+            {
+                return methodInfo.GetCustomAttributes<ActionMethodSelectorAttribute>(true).FirstOrDefault();
             }
 
             private PluginParameterDescriptor[] DiscoverParameters()
@@ -187,6 +194,9 @@ namespace Disco.Services.Plugins
 
             public ActionResult Execute(PluginWebHandlerController pluginController, ControllerContext controllerContext)
             {
+                if (methodSelector != null && !methodSelector.IsValidForRequest(controllerContext, methodInfo))
+                    return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+
                 var methodParameters = BuildMethodParameters(methodInfo, controllerContext.Controller);
 
                 return (ActionResult)methodInfo.Invoke(pluginController, methodParameters);

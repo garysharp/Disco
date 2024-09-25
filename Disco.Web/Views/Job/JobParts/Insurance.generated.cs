@@ -74,33 +74,34 @@ WriteLiteral(">\r\n");
             
             #line default
             #line hidden
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 230px;\"");
 
-WriteLiteral(">Date of Loss or Damage\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    Date of Loss or Damage\r\n                </th>\r\n           " +
+"     <td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 15 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.LossOrDamageDate));
+            #line 16 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.LossOrDamageDate));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 16 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 17 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -113,51 +114,51 @@ WriteLiteral(@">
                         '");
 
             
-            #line 23 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 24 "..\..\Views\Job\JobParts\Insurance.cshtml"
                      Write(Url.Action(MVC.API.Job.UpdateInsuranceLossOrDamageDate(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                        \'LossOrDamageDate\',\r\n                        null\r\n  " +
-"                      );\r\n                    });\r\n                </script>\r\n  " +
-"          </td>\r\n        </tr>\r\n");
+"                      );\r\n                    });\r\n                    </script>" +
+"\r\n                </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Event Location\r\n            </th>\r\n            <td>" +
-"\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Event Location\r\n     " +
+"           </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 35 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.EventLocation));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 36 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
             #line 37 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.EventLocation));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 38 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 39 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -167,50 +168,51 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "         \'");
 
             
-            #line 43 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 45 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceEventLocation(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'EventLocation\'\r\n                        );\r\n    " +
-"                });\r\n                </script>\r\n            </td>\r\n        </tr>" +
-"\r\n");
+"                });\r\n                    </script>\r\n                </td>\r\n     " +
+"       </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Description\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Description\r\n        " +
+"        </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 54 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.Description));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 55 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 57 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.Description));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 56 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 58 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 59 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -220,135 +222,136 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "    \'");
 
             
-            #line 62 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 65 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceDescription(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'Description\'\r\n                        );\r\n      " +
-"              });\r\n                </script>\r\n            </td>\r\n        </tr>\r\n" +
-"");
+"              });\r\n                    </script>\r\n                </td>\r\n       " +
+"     </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">&nbsp;\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 73 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-            
-            #line 73 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                        Write(Html.LabelFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused));
+            #line 77 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
             
-            #line 74 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 77 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                            Write(Html.LabelFor(m => m.Job.JobMetaInsurance.ThirdPartyCaused));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 75 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 78 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <div");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 79 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <div");
 
 WriteLiteral(" id=\"Job_JobMetaInsurance_ThirdPartyCaused_Details\"");
 
 WriteLiteral(" style=\"padding-left: 25px;\"");
 
-WriteLiteral(">\r\n                    <div>\r\n                        <h5>Third Party Name</h5>\r\n" +
-"");
+WriteLiteral(">\r\n                        <div>\r\n                            <h5>Third Party Nam" +
+"e</h5>\r\n");
 
-WriteLiteral("                        ");
-
-            
-            #line 79 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedName));
+WriteLiteral("                            ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 80 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxSave());
+            #line 83 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedName));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 81 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxLoader());
+            #line 84 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    </div>\r\n                    <div>\r\n                        " +
-"<h5>Why Third Parties Fault</h5>\r\n");
+WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
             #line 85 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedWhy));
+                       Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n                        <div>\r\n                " +
+"            <h5>Why Third Parties Fault</h5>\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 89 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(Html.EditorFor(m => m.Job.JobMetaInsurance.ThirdPartyCausedWhy));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 86 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxSave());
+            #line 90 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 87 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxLoader());
+            #line 91 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    </div>\r\n                </div>\r\n                <script");
+WriteLiteral("\r\n                        </div>\r\n                    </div>\r\n                   " +
+" <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -380,7 +383,7 @@ WriteLiteral(@">
                             '");
 
             
-            #line 115 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 119 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceThirdPartyCaused(Model.Job.Id, null)));
 
             
@@ -395,7 +398,7 @@ WriteLiteral(@"',
                             '");
 
             
-            #line 121 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 125 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceThirdPartyCausedName(Model.Job.Id, null)));
 
             
@@ -410,51 +413,51 @@ WriteLiteral(@"',
                             '");
 
             
-            #line 127 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 131 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceThirdPartyCausedWhy(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'ThirdPartyCausedWhy\'\r\n                        );" +
-"\r\n                    });\r\n                </script>\r\n            </td>\r\n       " +
-" </tr>\r\n");
+"\r\n                    });\r\n                    </script>\r\n                </td>\r" +
+"\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Witnessed by (Name/Address)\r\n            </th>\r\n   " +
-"         <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Witnessed by (Name/Ad" +
+"dress)\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 138 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.WitnessesNamesAddresses));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 139 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 143 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.WitnessesNamesAddresses));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 140 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 144 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 145 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -466,51 +469,51 @@ WriteLiteral(@">
                             '");
 
             
-            #line 146 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 151 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceWitnessesNamesAddresses(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'WitnessesNamesAddresses\'\r\n                      " +
-"  );\r\n                    });\r\n                </script>\r\n            </td>\r\n   " +
-"     </tr>\r\n");
+"  );\r\n                    });\r\n                    </script>\r\n                </" +
+"td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Burglary/Theft - Method of Entry\r\n            </th>" +
-"\r\n            <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Burglary/Theft - Meth" +
+"od of Entry\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 157 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 158 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 163 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 159 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 164 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 165 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -522,43 +525,44 @@ WriteLiteral(@">
                             '");
 
             
-            #line 165 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 171 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceBurglaryTheftMethodOfEntry(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'BurglaryTheftMethodOfEntry\'\r\n                   " +
-"     );\r\n                    });\r\n                </script>\r\n            </td>\r\n" +
-"        </tr>\r\n");
+"     );\r\n                    });\r\n                    </script>\r\n               " +
+" </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Property Last Seen\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    Property Last Seen\r\n                </th>\r\n               " +
+" <td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 176 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PropertyLastSeenDate));
+            #line 183 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PropertyLastSeenDate));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 177 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 184 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -571,157 +575,158 @@ WriteLiteral(@">
                         '");
 
             
-            #line 184 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 191 "..\..\Views\Job\JobParts\Insurance.cshtml"
                      Write(Url.Action(MVC.API.Job.UpdateInsurancePropertyLastSeenDate(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                        \'PropertyLastSeenDate\',\r\n                        null" +
-"\r\n                        );\r\n                    });\r\n                </script>" +
-"\r\n            </td>\r\n        </tr>\r\n");
+"\r\n                        );\r\n                    });\r\n                    </scr" +
+"ipt>\r\n                </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">&nbsp;\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 196 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotified));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-            
-            #line 196 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                      Write(Html.LabelFor(m => m.Job.JobMetaInsurance.PoliceNotified));
+            #line 204 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotified));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
             
-            #line 197 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 204 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                          Write(Html.LabelFor(m => m.Job.JobMetaInsurance.PoliceNotified));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 198 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 205 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <div");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 206 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <div");
 
 WriteLiteral(" id=\"Job_JobMetaInsurance_PoliceNotified_Details\"");
 
 WriteLiteral(" style=\"padding-left: 25px;\"");
 
-WriteLiteral(">\r\n                    <div>\r\n                        <h5>Station</h5>\r\n");
+WriteLiteral(">\r\n                        <div>\r\n                            <h5>Station</h5>\r\n");
 
-WriteLiteral("                        ");
-
-            
-            #line 202 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedStation));
+WriteLiteral("                            ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 203 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxSave());
+            #line 210 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedStation));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 204 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxLoader());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    </div>\r\n                    <div>\r\n                        " +
-"<h5>Date</h5>\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 208 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedDate));
+            #line 211 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 209 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxLoader());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    </div>\r\n                    <div>\r\n                        " +
-"<h5>Crime Report #</h5>\r\n");
-
-WriteLiteral("                        ");
-
-            
-            #line 213 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo));
+            #line 212 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("\r\n                        </div>\r\n                        <div>\r\n                " +
+"            <h5>Date</h5>\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 214 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxSave());
+            #line 216 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedDate));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                        ");
+WriteLiteral("                            ");
 
             
-            #line 215 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(AjaxHelpers.AjaxLoader());
+            #line 217 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    </div>\r\n                </div>\r\n                <script");
+WriteLiteral("\r\n                        </div>\r\n                        <div>\r\n                " +
+"            <h5>Crime Report #</h5>\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 221 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(Html.EditorFor(m => m.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 222 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 223 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n                    </div>\r\n                   " +
+" <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -753,7 +758,7 @@ WriteLiteral(@">
                             '");
 
             
-            #line 243 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 251 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsurancePoliceNotified(Model.Job.Id, null)));
 
             
@@ -768,7 +773,7 @@ WriteLiteral(@"',
                             '");
 
             
-            #line 249 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 257 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsurancePoliceNotifiedStation(Model.Job.Id, null)));
 
             
@@ -784,7 +789,7 @@ WriteLiteral(@"',
                         '");
 
             
-            #line 256 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 264 "..\..\Views\Job\JobParts\Insurance.cshtml"
                      Write(Url.Action(MVC.API.Job.UpdateInsurancePoliceNotifiedDate(Model.Job.Id, null)));
 
             
@@ -801,51 +806,51 @@ WriteLiteral(@"',
                             '");
 
             
-            #line 264 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 272 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsurancePoliceNotifiedCrimeReportNo(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'PoliceNotifiedCrimeReportNo\'\r\n                  " +
-"      );\r\n                    });\r\n                </script>\r\n            </td>\r" +
-"\n        </tr>\r\n");
+"      );\r\n                    });\r\n                    </script>\r\n              " +
+"  </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Action to Recover/Reduce Loss\r\n            </th>\r\n " +
-"           <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Action to Recover/Red" +
+"uce Loss\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 275 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.RecoverReduceAction));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 276 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 284 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.RecoverReduceAction));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 277 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 285 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 286 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -855,51 +860,51 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "            \'");
 
             
-            #line 283 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 292 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceRecoverReduceAction(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'RecoverReduceAction\'\r\n                        );" +
-"\r\n                    });\r\n                </script>\r\n            </td>\r\n       " +
-" </tr>\r\n");
+"\r\n                    });\r\n                    </script>\r\n                </td>\r" +
+"\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Other Interested Parties\r\n            </th>\r\n      " +
-"      <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Other Interested Part" +
+"ies\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 294 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.OtherInterestedParties));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 295 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 304 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.OtherInterestedParties));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 296 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 305 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 306 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -911,43 +916,44 @@ WriteLiteral(@">
                             '");
 
             
-            #line 302 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 312 "..\..\Views\Job\JobParts\Insurance.cshtml"
                         Write(Url.Action(MVC.API.Job.UpdateInsuranceOtherInterestedParties(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'OtherInterestedParties\'\r\n                       " +
-" );\r\n                    });\r\n                </script>\r\n            </td>\r\n    " +
-"    </tr>\r\n");
+" );\r\n                    });\r\n                    </script>\r\n                </t" +
+"d>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Date of Purchase\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    Date of Purchase\r\n                </th>\r\n                <" +
+"td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 313 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(Html.EditorFor(m => m.Job.JobMetaInsurance.DateOfPurchase));
+            #line 324 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(Html.EditorFor(m => m.Job.JobMetaInsurance.DateOfPurchase));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 314 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 325 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <script");
+WriteLiteral("\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -960,7 +966,7 @@ WriteLiteral(@">
                         '");
 
             
-            #line 321 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 332 "..\..\Views\Job\JobParts\Insurance.cshtml"
                      Write(Url.Action(MVC.API.Job.UpdateInsuranceDateOfPurchase(Model.Job.Id, null)));
 
             
@@ -968,10 +974,10 @@ WriteLiteral(@">
             #line hidden
 WriteLiteral("\',\r\n                        \'DateOfPurchase\',\r\n                        null,\r\n   " +
 "                     true\r\n                        );\r\n                    });\r\n" +
-"                </script>\r\n            </td>\r\n        </tr>\r\n");
+"                    </script>\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 330 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 341 "..\..\Views\Job\JobParts\Insurance.cshtml"
         }
         else
         {
@@ -979,655 +985,662 @@ WriteLiteral("\',\r\n                        \'DateOfPurchase\',\r\n            
             
             #line default
             #line hidden
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 230px;\"");
 
-WriteLiteral(">Date of Loss or Damage\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    Date of Loss or Damage\r\n                </th>\r\n           " +
+"     <td>\r\n");
 
-WriteLiteral("                ");
-
-            
-            #line 337 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.LossOrDamageDate, "Unknown", null));
+WriteLiteral("                    ");
 
             
-            #line default
-            #line hidden
-WriteLiteral("\r\n            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th>Event Location\r\n            </th>\r\n            <td>" +
-"\r\n");
-
-            
-            #line 344 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 344 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.EventLocation))
-                {
+            #line 349 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.LossOrDamageDate, "Unknown", null));
 
             
             #line default
             #line hidden
-WriteLiteral("                    <span");
+WriteLiteral("\r\n                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Event Location\r\n     " +
+"           </th>\r\n                <td>\r\n");
+
+            
+            #line 357 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 357 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.EventLocation))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 347 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+            #line 360 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 363 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                   Write(Model.Job.JobMetaInsurance.EventLocation);
+
+            
+            #line default
+            #line hidden
+            
+            #line 363 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                 
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Description\r\n        " +
+"        </th>\r\n                <td>\r\n");
+
+            
+            #line 372 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 350 "..\..\Views\Job\JobParts\Insurance.cshtml"
-               Write(Model.Job.JobMetaInsurance.EventLocation);
+            #line 372 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.Description))
+                    {
 
             
             #line default
             #line hidden
-            
-            #line 350 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                             
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th>Description\r\n            </th>\r\n            <td>\r\n");
-
-            
-            #line 358 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 358 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.Description))
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <span");
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;None&gt;</span>\r\n");
 
             
-            #line 361 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+            #line 375 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 378 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                   Write(Model.Job.JobMetaInsurance.Description);
+
+            
+            #line default
+            #line hidden
+            
+            #line 378 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                               
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">\r\n                    Caused by Third Party\r\n                </th>\r\n            " +
+"    <td>\r\n");
+
+            
+            #line 387 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 364 "..\..\Views\Job\JobParts\Insurance.cshtml"
-               Write(Model.Job.JobMetaInsurance.Description);
+            #line 387 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (Model.Job.JobMetaInsurance.ThirdPartyCaused)
+                    {
 
             
             #line default
             #line hidden
-            
-            #line 364 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                           
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th");
-
-WriteLiteral(" style=\"width: 200px;\"");
-
-WriteLiteral(">Caused by Third Party\r\n            </th>\r\n            <td>\r\n");
-
-            
-            #line 372 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 372 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (Model.Job.JobMetaInsurance.ThirdPartyCaused)
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <div");
+WriteLiteral("                        <div");
 
 WriteLiteral(" id=\"Job_JobMetaInsurance_ThirdPartyCaused_Details\"");
 
 WriteLiteral(" style=\"padding-left: 25px;\"");
 
-WriteLiteral(">\r\n                        <div>\r\n                            <h5>Third Party Nam" +
-"e</h5>\r\n");
+WriteLiteral(">\r\n                            <div>\r\n                                <h5>Third P" +
+"arty Name</h5>\r\n");
 
             
-            #line 377 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            
+            #line 392 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                
             
             #line default
             #line hidden
             
-            #line 377 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                             if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedName))
-                            {
+            #line 392 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedName))
+                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <span");
+WriteLiteral("                                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 
             
-            #line 380 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            }
-                            else
-                            {
-                                
+            #line 395 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                }
+                                else
+                                {
+                                    
             
             #line default
             #line hidden
-            
-            #line 383 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                           Write(Model.Job.JobMetaInsurance.ThirdPartyCausedName);
-
-            
-            #line default
-            #line hidden
-            
-            #line 383 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                                
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        </div>\r\n                        <div>\r\n                  " +
-"          <h5>Why Third Parties Fault</h5>\r\n");
-
-            
-            #line 388 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            
-            
-            #line default
-            #line hidden
-            
-            #line 388 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                             if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy))
-                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
-
-            
-            #line 391 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            }
-                            else
-                            {
-                                
-            
-            #line default
-            #line hidden
-            
-            #line 394 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                           Write(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy);
-
-            
-            #line default
-            #line hidden
-            
-            #line 394 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                               
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        </div>\r\n                    </div>\r\n");
-
             
             #line 398 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+                               Write(Model.Job.JobMetaInsurance.ThirdPartyCausedName);
 
             
             #line default
             #line hidden
-WriteLiteral("                    <span");
+            
+            #line 398 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                    
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </div>\r\n                            <div>\r\n          " +
+"                      <h5>Why Third Parties Fault</h5>\r\n");
+
+            
+            #line 403 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 403 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy))
+                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
+
+            
+            #line 406 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                }
+                                else
+                                {
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 409 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                               Write(Model.Job.JobMetaInsurance.ThirdPartyCausedWhy);
+
+            
+            #line default
+            #line hidden
+            
+            #line 409 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                   
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </div>\r\n                        </div>\r\n");
+
+            
+            #line 413 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Not Caused by Third Party&gt;</span>\r\n");
 
             
-            #line 402 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
+            #line 417 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
+WriteLiteral("                </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Witnessed by (Name/Address)\r\n            </th>\r\n   " +
-"         <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Witnessed by (Name/Ad" +
+"dress)\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 409 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
+            #line 425 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    
             
             #line default
             #line hidden
             
-            #line 409 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.WitnessesNamesAddresses))
-                {
+            #line 425 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.WitnessesNamesAddresses))
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <span");
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 412 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+            #line 428 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 431 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                   Write(Model.Job.JobMetaInsurance.WitnessesNamesAddresses);
+
+            
+            #line default
+            #line hidden
+            
+            #line 431 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                           
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Burglary/Theft - Meth" +
+"od of Entry\r\n                </th>\r\n                <td>\r\n");
+
+            
+            #line 440 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 415 "..\..\Views\Job\JobParts\Insurance.cshtml"
-               Write(Model.Job.JobMetaInsurance.WitnessesNamesAddresses);
+            #line 440 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry))
+                    {
 
             
             #line default
             #line hidden
-            
-            #line 415 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                       
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th>Burglary/Theft - Method of Entry\r\n            </th>" +
-"\r\n            <td>\r\n");
-
-            
-            #line 423 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 423 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry))
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <span");
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 426 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+            #line 443 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 446 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                   Write(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry);
+
+            
+            #line default
+            #line hidden
+            
+            #line 446 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                              
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">\r\n                    Property Last Seen\r\n                </th>\r\n               " +
+" <td>\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 455 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PropertyLastSeenDate, "Unknown", null));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">\r\n                    &nbsp;\r\n                    Police Notified\r\n             " +
+"   </th>\r\n                <td>\r\n");
+
+            
+            #line 464 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 429 "..\..\Views\Job\JobParts\Insurance.cshtml"
-               Write(Model.Job.JobMetaInsurance.BurglaryTheftMethodOfEntry);
+            #line 464 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (Model.Job.JobMetaInsurance.PoliceNotified)
+                    {
 
             
             #line default
             #line hidden
-            
-            #line 429 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                          
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th");
-
-WriteLiteral(" style=\"width: 200px;\"");
-
-WriteLiteral(">Property Last Seen\r\n            </th>\r\n            <td>\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 437 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PropertyLastSeenDate, "Unknown", null));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th");
-
-WriteLiteral(" style=\"width: 200px;\"");
-
-WriteLiteral(">&nbsp;\r\n            Police Notified\r\n            </th>\r\n            <td>\r\n");
-
-            
-            #line 445 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 445 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (Model.Job.JobMetaInsurance.PoliceNotified)
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <div");
+WriteLiteral("                        <div");
 
 WriteLiteral(" id=\"Job_JobMetaInsurance_PoliceNotified_Details\"");
 
 WriteLiteral(" style=\"padding-left: 25px;\"");
 
-WriteLiteral(">\r\n                        <div>\r\n                            <h5>Station</h5>\r\n");
+WriteLiteral(">\r\n                            <div>\r\n                                <h5>Station" +
+"</h5>\r\n");
 
             
-            #line 450 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            
+            #line 469 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                
             
             #line default
             #line hidden
             
-            #line 450 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                             if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedStation))
-                            {
+            #line 469 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedStation))
+                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <span");
+WriteLiteral("                                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
 
             
-            #line 453 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            }
-                            else
-                            {
-                                
+            #line 472 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                }
+                                else
+                                {
+                                    
             
             #line default
             #line hidden
-            
-            #line 456 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                           Write(Model.Job.JobMetaInsurance.PoliceNotifiedStation);
-
-            
-            #line default
-            #line hidden
-            
-            #line 456 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                                 
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        </div>\r\n                        <div>\r\n                  " +
-"          <h5>Date</h5>\r\n");
-
-WriteLiteral("                            ");
-
-            
-            #line 461 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                       Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PoliceNotifiedDate, "Unknown", null));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                        </div>\r\n                        <div>\r\n                " +
-"            <h5>Crime Report #</h5>\r\n");
-
-            
-            #line 465 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            
-            
-            #line default
-            #line hidden
-            
-            #line 465 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                             if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo))
-                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
-
-            
-            #line 468 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                            }
-                            else
-                            {
-                                
-            
-            #line default
-            #line hidden
-            
-            #line 471 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                           Write(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo);
-
-            
-            #line default
-            #line hidden
-            
-            #line 471 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                                       
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        </div>\r\n                    </div>\r\n");
-
             
             #line 475 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+                               Write(Model.Job.JobMetaInsurance.PoliceNotifiedStation);
 
             
             #line default
             #line hidden
-WriteLiteral("                    <span");
+            
+            #line 475 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                     
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </div>\r\n                            <div>\r\n          " +
+"                      <h5>Date</h5>\r\n");
+
+WriteLiteral("                                ");
+
+            
+            #line 480 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.PoliceNotifiedDate, "Unknown", null));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                            </div>\r\n                            <div>\r\n        " +
+"                        <h5>Crime Report #</h5>\r\n");
+
+            
+            #line 484 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 484 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo))
+                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;Unknown&gt;</span>\r\n");
+
+            
+            #line 487 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                }
+                                else
+                                {
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 490 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                               Write(Model.Job.JobMetaInsurance.PoliceNotifiedCrimeReportNo);
+
+            
+            #line default
+            #line hidden
+            
+            #line 490 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                           
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </div>\r\n                        </div>\r\n");
+
+            
+            #line 494 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Not Notified&gt;</span>\r\n");
 
             
-            #line 479 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
+            #line 498 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
+WriteLiteral("                </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th>Action to Recover/Reduce Loss\r\n            </th>\r\n " +
-"           <td>\r\n");
-
-            
-            #line 486 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 486 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.RecoverReduceAction))
-                {
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Action to Recover/Red" +
+"uce Loss\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line default
-            #line hidden
-WriteLiteral("                    <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
-
-            
-            #line 489 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 492 "..\..\Views\Job\JobParts\Insurance.cshtml"
-               Write(Model.Job.JobMetaInsurance.RecoverReduceAction);
-
-            
-            #line default
-            #line hidden
-            
-            #line 492 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                   
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
-
-WriteLiteral("        <tr>\r\n            <th>Other Interested Parties\r\n            </th>\r\n      " +
-"      <td>\r\n");
-
-            
-            #line 500 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                
-            
-            #line default
-            #line hidden
-            
-            #line 500 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.OtherInterestedParties))
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
-
-            
-            #line 503 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                }
-                else
-                {
+            #line 506 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
             #line 506 "..\..\Views\Job\JobParts\Insurance.cshtml"
-               Write(Model.Job.JobMetaInsurance.OtherInterestedParties);
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.RecoverReduceAction))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
+
+            
+            #line 509 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 512 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                   Write(Model.Job.JobMetaInsurance.RecoverReduceAction);
 
             
             #line default
             #line hidden
             
-            #line 506 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                      
-                }
+            #line 512 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                       
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n");
+WriteLiteral("                </td>\r\n            </tr>\r\n");
 
-WriteLiteral("        <tr>\r\n            <th");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Other Interested Part" +
+"ies\r\n                </th>\r\n                <td>\r\n");
+
+            
+            #line 521 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 521 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.OtherInterestedParties))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
+
+            
+            #line 524 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+                    else
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 527 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                   Write(Model.Job.JobMetaInsurance.OtherInterestedParties);
+
+            
+            #line default
+            #line hidden
+            
+            #line 527 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                          
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Date of Purchase\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                    Date of Purchase\r\n                </th>\r\n                <" +
+"td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 514 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.DateOfPurchase, "Unknown", null));
+            #line 536 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.DateOfPurchase, "Unknown", null));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            </td>\r\n        </tr>\r\n");
+WriteLiteral("\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 517 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 539 "..\..\Views\Job\JobParts\Insurance.cshtml"
         }
         if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
         {
@@ -1635,61 +1648,131 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("        <tr>\r\n            <th>Claim Form Sent Date\r\n            </th>\r\n          " +
-"  <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Claim Form Sent Date\r" +
+"\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 524 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
+            #line 547 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <span");
+WriteLiteral("\r\n                    <span");
 
 WriteLiteral(" id=\"Job_JobMetaInsurance_ClaimFormSentUserId\"");
 
 WriteLiteral(">");
 
             
-            #line 525 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
+            #line 548 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                    Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                <script>\r\n                    $(function () {\r\n         " +
-"               var updateUrl = \'");
+WriteLiteral("</span>\r\n                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Insurer\r\n            " +
+"    </th>\r\n                <td>\r\n");
 
             
-            #line 528 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                     Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
+            #line 556 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 556 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.Insurer) && !Model.Job.JobMetaInsurance.ClaimFormSentDate.HasValue)
+                    {
+                        if (Model.Job.CanLogInsurance())
+                        {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 560 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                       Write(Html.ActionLinkButton("Lodge Insurance Claim", MVC.Job.LogInsurance(Model.Job.Id, null, null)));
 
             
             #line default
             #line hidden
-WriteLiteral("\';\r\n                        var jobOpenDate = \'");
-
             
-            #line 529 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                       Write(Model.Job.OpenedDate.ToISO8601());
+            #line 560 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                                                           
+                        }
+                        else
+                        {
 
             
             #line default
             #line hidden
-WriteLiteral(@"';
-
-                        document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Claim Form Sent Date', 'Job_JobMetaInsurance_ClaimFormSentDate', 'Job_JobMetaInsurance_ClaimFormSentUserId', 'InsuranceClaimFormSentDate', 'Not Sent', jobOpenDate, false);
-                    });
-                </script>
-            </td>
-        </tr>
-");
+WriteLiteral("                            <span>Not Logged</span>\r\n");
 
             
-            #line 536 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 565 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                        }
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" id=\"Job_JobMetaInsurance_Insurer\"");
+
+WriteLiteral(">");
+
+            
+            #line 569 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                           Write(Model.Job.JobMetaInsurance.Insurer);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 570 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                        if (!string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.InsurerReference))
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span>(reference: <span");
+
+WriteLiteral(" id=\"Job_JobMetaInsurance_InsurerReference\"");
+
+WriteLiteral(">");
+
+            
+            #line 572 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                          Write(Model.Job.JobMetaInsurance.InsurerReference);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>)</span>\r\n");
+
+            
+            #line 573 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                        }
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+            
+            #line 577 "..\..\Views\Job\JobParts\Insurance.cshtml"
         }
         else
         {
@@ -1697,35 +1780,166 @@ WriteLiteral(@"';
             
             #line default
             #line hidden
-WriteLiteral("        <tr>\r\n            <th>Claim Form Sent Date\r\n            </th>\r\n          " +
-"  <td>\r\n");
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Claim Form Sent Date\r" +
+"\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
-            #line 543 "..\..\Views\Job\JobParts\Insurance.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
+            #line 585 "..\..\Views\Job\JobParts\Insurance.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaInsurance.ClaimFormSentDate, "Not Sent", "Job_JobMetaInsurance_ClaimFormSentDate"));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <span");
+WriteLiteral("\r\n                    <span");
 
 WriteLiteral(" id=\"Job_JobMetaInsurance_ClaimFormSentUserId\"");
 
 WriteLiteral(">");
 
             
-            #line 544 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
+            #line 586 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                    Write(string.IsNullOrEmpty(Model.Job.JobMetaInsurance.ClaimFormSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaInsurance.ClaimFormSentUser.ToString()));
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n            </td>\r\n        </tr>\r\n");
+WriteLiteral("</span>\r\n                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <tr>\r\n                <th>\r\n                    Insurer\r\n            " +
+"    </th>\r\n                <td>\r\n                    <span");
+
+WriteLiteral(" id=\"Job_JobMetaInsurance_Insurer\"");
+
+WriteLiteral(">");
 
             
-            #line 547 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 594 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                       Write(Model.Job.JobMetaInsurance.Insurer);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 595 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 595 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     if (!string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.InsurerReference))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span>(reference: <span");
+
+WriteLiteral(" id=\"Job_JobMetaInsurance_InsurerReference\"");
+
+WriteLiteral(">");
+
+            
+            #line 597 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                                                                                      Write(Model.Job.JobMetaInsurance.InsurerReference);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>)</span>\r\n");
+
+            
+            #line 598 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                </td>\r\n            </tr>\r\n");
+
+            
+            #line 601 "..\..\Views\Job\JobParts\Insurance.cshtml"
+        }
+        if (!string.IsNullOrEmpty(Model.Job.JobMetaInsurance.Insurer))
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <tr");
+
+WriteLiteral(" id=\"jobInsuranceProviderDetailContainer\"");
+
+WriteLiteral(" style=\"display: none\"");
+
+WriteLiteral(">\r\n                <th");
+
+WriteLiteral(" style=\"width: 200px;\"");
+
+WriteLiteral(">\r\n                    Provider Details\r\n                </th>\r\n                <" +
+"td>\r\n                    <div");
+
+WriteLiteral(" id=\"jobInsuranceProviderDetailLoading\"");
+
+WriteLiteral(">\r\n                        <span");
+
+WriteLiteral(" class=\"ajaxLoading\"");
+
+WriteLiteral(" title=\"Loading...\"");
+
+WriteLiteral("></span>Loading...\r\n                    </div>\r\n                    <div");
+
+WriteLiteral(" id=\"jobInsuranceProviderDetailHost\"");
+
+WriteLiteral(" class=\"clearfix\"");
+
+WriteLiteral(" style=\"display: none\"");
+
+WriteLiteral(">\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n");
+
+WriteLiteral("            <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+    $(function () {
+        let providerDetailLoaded = false;
+
+        $('#jobDetailTabs').on('tabsactivate', function (e, ui) {
+            if ($(ui.newPanel).is('#jobDetailTab-NonWarrantyInsurance')) {
+                if (!providerDetailLoaded) {
+                    $('#jobInsuranceProviderDetailContainer').show();
+                    $('#jobRepairProviderDetailLoading span').show();
+                    $('#jobInsuranceProviderDetailHost').load(
+                        '");
+
+            
+            #line 626 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                     Write(Url.Action(MVC.Job.InsuranceProviderJobDetails(Model.Job.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"',
+                        function () {
+                            $('#jobInsuranceProviderDetailLoading').hide();
+                            $(this).slideDown();
+                        }
+                    );
+                    providerDetailLoaded = true;
+                }
+            }
+        });
+    });
+            </script>
+");
+
+            
+            #line 638 "..\..\Views\Job\JobParts\Insurance.cshtml"
         }
     }
 
@@ -1735,28 +1949,28 @@ WriteLiteral("</span>\r\n            </td>\r\n        </tr>\r\n");
 WriteLiteral("    ");
 
             
-            #line 549 "..\..\Views\Job\JobParts\Insurance.cshtml"
-     if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim))
+            #line 640 "..\..\Views\Job\JobParts\Insurance.cshtml"
+     if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim) && Model.Job.JobMetaInsurance == null || string.IsNullOrWhiteSpace(Model.Job.JobMetaInsurance.Insurer))
     {
 
             
             #line default
             #line hidden
-WriteLiteral("        <tr>\r\n            <th>Insurance Claim\r\n            </th>\r\n            <td" +
-">\r\n                <div");
+WriteLiteral("        <tr>\r\n            <th>\r\n                Insurance Claim\r\n            </th" +
+">\r\n            <td>\r\n                <div");
 
 WriteLiteral(" style=\"padding: 8px; text-align: center\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 556 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 648 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 556 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 648 "..\..\Views\Job\JobParts\Insurance.cshtml"
                      if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
                     {
                         
@@ -1764,14 +1978,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 558 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 650 "..\..\Views\Job\JobParts\Insurance.cshtml"
                    Write(Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true)));
 
             
             #line default
             #line hidden
             
-            #line 558 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 650 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                                                                                   
                     }
                     else
@@ -1781,14 +1995,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 562 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 654 "..\..\Views\Job\JobParts\Insurance.cshtml"
                    Write(Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true)));
 
             
             #line default
             #line hidden
             
-            #line 562 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 654 "..\..\Views\Job\JobParts\Insurance.cshtml"
                                                                                                                                               
                     }
 
@@ -1798,7 +2012,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n");
 
             
-            #line 567 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 659 "..\..\Views\Job\JobParts\Insurance.cshtml"
     }
 
             

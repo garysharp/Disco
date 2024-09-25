@@ -833,6 +833,7 @@
     <Compile Include="Models\Device\ExportModel.cs" />
     <Compile Include="Models\Device\ImportHeadersModel.cs" />
     <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="Models\Job\LogInsuranceModel.cs" />
     <Compile Include="Models\Job\LogRepairModel.cs" />
     <Compile Include="Extensions\T4MVC\T4MVC.cs">
       <AutoGen>True</AutoGen>
@@ -860,8 +861,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Views\Job\LogInsurance.generated.cs">
+      <DependentUpon>LogInsurance.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Job\LogRepair.generated.cs">
       <DependentUpon>LogRepair.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\LogInsuranceDisclose.generated.cs">
+      <DependentUpon>LogInsuranceDisclose.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -870,8 +881,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Views\Job\LogInsuranceError.generated.cs">
+      <DependentUpon>LogInsuranceError.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Job\LogRepairError.generated.cs">
       <DependentUpon>LogRepairError.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\InsuranceProviderJobDetails.generated.cs">
+      <DependentUpon>InsuranceProviderJobDetails.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -2043,6 +2064,22 @@
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\modern\theme.min.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.min.js" />
+    <None Include="Views\Job\LogInsurance.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogInsurance.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\LogInsuranceError.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogInsuranceError.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\LogInsuranceDisclose.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>LogInsuranceDisclose.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Job\InsuranceProviderJobDetails.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>InsuranceProviderJobDetails.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Job\RepairProviderJobDetails.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>RepairProviderJobDetails.generated.cs</LastGenOutput>

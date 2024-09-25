@@ -4,6 +4,7 @@ using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Logging;
 using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.InsuranceProvider;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Users;
@@ -63,7 +64,6 @@ namespace Disco.Services
             return (!j.ClosedDate.HasValue) && j.DeviceHeld.HasValue &&
                 !j.DeviceReadyForReturn.HasValue && !j.DeviceReturnedDate.HasValue;
         }
-        public static void OnDeviceReadyForReturn(this Job j, User Technician)
         public static void OnDeviceReadyForReturn(this Job j, DiscoDataContext Database, User Technician)
         {
             if (!j.CanDeviceReadyForReturn())
@@ -182,19 +182,21 @@ namespace Disco.Services
         public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, List<JobAttachment> SendAttachments, PluginFeatureManifest WarrantyProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> WarrantyProviderProperties)
         {
             if (!j.CanLogWarranty())
-                throw new InvalidOperationException("Log Warranty was Denied");
+                throw new InvalidOperationException("Lodge Warranty was Denied");
 
             PublishJobResult publishJobResult = null;
 
-            using (WarrantyProviderFeature WarrantyProvider = WarrantyProviderDefinition.CreateInstance<WarrantyProviderFeature>())
+            using (WarrantyProviderFeature warrantyProvider = WarrantyProviderDefinition.CreateInstance<WarrantyProviderFeature>())
             {
-                if (SendAttachments != null && SendAttachments.Count > 0)
+                var warrantyProvider2 = warrantyProvider as WarrantyProvider2Feature;
+
+                if (warrantyProvider2 == null && SendAttachments != null && SendAttachments.Count > 0)
                 {
                     publishJobResult = DiscoServicesJobs.Publish(
                         Database,
                         j,
                         TechUser,
-                        WarrantyProvider.WarrantyProviderId,
+                        warrantyProvider.WarrantyProviderId,
                         null,
                         FaultDescription,
                         SendAttachments,
@@ -216,10 +218,14 @@ namespace Disco.Services
                 else
                     submitDescription = string.Concat(FaultDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, WarrantyProviderDefinition));
 
-                string providerRef = WarrantyProvider.SubmitJob(Database, j, Address, TechUser, submitDescription, WarrantyProviderProperties);
+                string providerRef;
+                if (warrantyProvider2 != null)
+                    providerRef = warrantyProvider2.SubmitJob(Database, j, Address, TechUser, FaultDescription, SendAttachments, WarrantyProviderProperties);
+                else
+                    providerRef = warrantyProvider.SubmitJob(Database, j, Address, TechUser, submitDescription, WarrantyProviderProperties);
 
                 j.JobMetaWarranty.ExternalLoggedDate = DateTime.Now;
-                j.JobMetaWarranty.ExternalName = WarrantyProvider.WarrantyProviderId;
+                j.JobMetaWarranty.ExternalName = warrantyProvider.WarrantyProviderId;
 
                 if (providerRef != null && providerRef.Length > 100)
                     j.JobMetaWarranty.ExternalReference = providerRef.Substring(0, 100);
@@ -232,7 +238,7 @@ namespace Disco.Services
                     JobId = j.Id,
                     TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
-                    Comments = string.Format("# Warranty Claim Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", WarrantyProvider.Manifest.Name, Address.Name, providerRef, FaultDescription)
+                    Comments = string.Format("# Warranty Claim Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", warrantyProvider.Manifest.Name, Address.Name, providerRef, FaultDescription)
                 };
                 Database.JobLogs.Add(jobLog);
 
@@ -249,7 +255,7 @@ namespace Disco.Services
         public static void OnLogWarranty(this Job j, DiscoDataContext Database, string FaultDescription, string ManualProviderName, string ManualProviderReference, OrganisationAddress Address, User TechUser)
         {
             if (!j.CanLogWarranty())
-                throw new InvalidOperationException("Log Warranty was Denied");
+                throw new InvalidOperationException("Lodge Warranty was Denied");
 
             j.JobMetaWarranty.ExternalLoggedDate = DateTime.Now;
             j.JobMetaWarranty.ExternalName = ManualProviderName;
@@ -369,6 +375,7 @@ namespace Disco.Services
         #endregion
 
         #region Insurance Claim Form Sent
+        [Obsolete("Use Log Insurance instead")]
         public static bool CanInsuranceClaimFormSent(this Job j)
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
@@ -378,6 +385,7 @@ namespace Disco.Services
                 j.JobMetaNonWarranty.IsInsuranceClaim &&
                 !j.JobMetaInsurance.ClaimFormSentDate.HasValue;
         }
+        [Obsolete("Use Log Insurance instead")]
         public static void OnInsuranceClaimFormSent(this Job j)
         {
             if (!j.CanInsuranceClaimFormSent())
@@ -404,19 +412,21 @@ namespace Disco.Services
         public static void OnLogRepair(this Job j, DiscoDataContext Database, string RepairDescription, List<JobAttachment> SendAttachments, PluginFeatureManifest RepairProviderDefinition, OrganisationAddress Address, User TechUser, Dictionary<string, string> RepairProviderProperties)
         {
             if (!j.CanLogRepair())
-                throw new InvalidOperationException("Log Repair was Denied");
+                throw new InvalidOperationException("Lodge Repair was Denied");
 
             PublishJobResult publishJobResult = null;
 
-            using (RepairProviderFeature RepairProvider = RepairProviderDefinition.CreateInstance<RepairProviderFeature>())
+            using (RepairProviderFeature repairProvider = RepairProviderDefinition.CreateInstance<RepairProviderFeature>())
             {
-                if (SendAttachments != null && SendAttachments.Count > 0)
+                var repairProvider2 = repairProvider as RepairProvider2Feature;
+
+                if (repairProvider2 == null && SendAttachments != null && SendAttachments.Count > 0)
                 {
                     publishJobResult = DiscoServicesJobs.Publish(
                         Database,
                         j,
                         TechUser,
-                        RepairProvider.ProviderId,
+                        repairProvider.ProviderId,
                         null,
                         RepairDescription,
                         SendAttachments,
@@ -438,10 +448,14 @@ namespace Disco.Services
                 else
                     submitDescription = string.Concat(RepairDescription, Environment.NewLine, Environment.NewLine, j.GenerateFaultDescriptionFooter(Database, RepairProviderDefinition));
 
-                string providerRef = RepairProvider.SubmitJob(Database, j, Address, TechUser, submitDescription, RepairProviderProperties);
+                string providerRef;
+                if (repairProvider2 != null)
+                    providerRef = repairProvider2.SubmitJob(Database, j, Address, TechUser, submitDescription, SendAttachments, RepairProviderProperties);
+                else
+                    providerRef = repairProvider.SubmitJob(Database, j, Address, TechUser, submitDescription, RepairProviderProperties);
 
                 j.JobMetaNonWarranty.RepairerLoggedDate = DateTime.Now;
-                j.JobMetaNonWarranty.RepairerName = RepairProvider.ProviderId;
+                j.JobMetaNonWarranty.RepairerName = repairProvider.ProviderId;
 
                 if (providerRef != null && providerRef.Length > 100)
                     j.JobMetaNonWarranty.RepairerReference = providerRef.Substring(0, 100);
@@ -454,7 +468,7 @@ namespace Disco.Services
                     JobId = j.Id,
                     TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
-                    Comments = string.Format("# Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", RepairProvider.Manifest.Name, Address.Name, providerRef, RepairDescription)
+                    Comments = string.Format("# Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", repairProvider.Manifest.Name, Address.Name, providerRef, RepairDescription)
                 };
                 Database.JobLogs.Add(jobLog);
 
@@ -471,7 +485,7 @@ namespace Disco.Services
         public static void OnLogRepair(this Job j, DiscoDataContext Database, string FaultDescription, string ManualProviderName, string ManualProviderReference, OrganisationAddress Address, User TechUser)
         {
             if (!j.CanLogRepair())
-                throw new InvalidOperationException("Log Repair was Denied");
+                throw new InvalidOperationException("Lodge Repair was Denied");
 
             j.JobMetaNonWarranty.RepairerLoggedDate = DateTime.Now;
             j.JobMetaNonWarranty.RepairerName = ManualProviderName;
@@ -509,6 +523,72 @@ namespace Disco.Services
                 throw new InvalidOperationException("Repair Complete was Denied");
 
             j.JobMetaNonWarranty.RepairerCompletedDate = DateTime.Now;
+        }
+        #endregion
+
+        #region Log Insurance
+        public static bool CanLogInsurance(this Job j)
+        {
+            if (!UserService.CurrentAuthorization.HasAny(Claims.Job.Actions.LogInsurance, Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent))
+                return false;
+
+            return j.JobTypeId == JobType.JobTypeIds.HNWar &&
+                j.DeviceSerialNumber != null &&
+                j.JobMetaNonWarranty.IsInsuranceClaim &&
+                !j.JobMetaInsurance.ClaimFormSentDate.HasValue;
+        }
+        public static void OnLogInsurance(this Job j, DiscoDataContext database, List<JobAttachment> attachments, PluginFeatureManifest providerDefinition, OrganisationAddress address, User techUser, Dictionary<string, string> providerProperties)
+        {
+            if (!j.CanLogInsurance())
+                throw new InvalidOperationException("Lodge Insurance was Denied");
+
+            using (var provider = providerDefinition.CreateInstance<InsuranceProviderFeature>())
+            {
+                var providerRef = provider.SubmitJob(database, j, address, techUser, attachments, providerProperties);
+
+                j.JobMetaInsurance.Insurer = provider.ProviderId;
+                j.JobMetaInsurance.ClaimFormSentDate = DateTime.Now;
+                j.JobMetaInsurance.ClaimFormSentUserId = techUser.UserId;
+
+                if (providerRef != null && providerRef.Length > 200)
+                    j.JobMetaInsurance.InsurerReference = providerRef.Substring(0, 200);
+                else
+                    j.JobMetaInsurance.InsurerReference = providerRef;
+
+                // Write Log
+                var jobLog = new JobLog()
+                {
+                    JobId = j.Id,
+                    TechUserId = techUser.UserId,
+                    Timestamp = DateTime.Now,
+                    Comments = $"# Insurance Claim Submitted\r\nProvider: **{provider.Manifest.Name}**\r\nAddress: **{address.Name}**\r\nReference: **{providerRef}**",
+                };
+                database.JobLogs.Add(jobLog);
+            }
+        }
+        public static void OnLogInsurance(this Job j, DiscoDataContext database, string manualProviderName, string manualProviderReference, OrganisationAddress address, User techUser)
+        {
+            if (!j.CanLogInsurance())
+                throw new InvalidOperationException("Lodge Insurance was Denied");
+
+            j.JobMetaInsurance.Insurer = manualProviderName;
+            j.JobMetaInsurance.ClaimFormSentDate = DateTime.Now;
+            j.JobMetaInsurance.ClaimFormSentUserId = techUser.UserId;
+
+            if (manualProviderReference != null && manualProviderReference.Length > 200)
+                j.JobMetaInsurance.InsurerReference = manualProviderReference.Substring(0, 200);
+            else
+                j.JobMetaInsurance.InsurerReference = manualProviderReference;
+
+            // Write Log
+            JobLog jobLog = new JobLog()
+            {
+                JobId = j.Id,
+                TechUserId = techUser.UserId,
+                Timestamp = DateTime.Now,
+                Comments = $"# Manual Insurance Request Submitted\r\nProvider: **{manualProviderName}**\r\nAddress: **{address.Name}**\r\nReference: **{manualProviderReference ?? "<none>"}**",
+            };
+            database.JobLogs.Add(jobLog);
         }
         #endregion
 

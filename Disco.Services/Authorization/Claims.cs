@@ -109,6 +109,7 @@ namespace Disco.Services.Authorization
 				{ "Job.Actions.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Delete, (c, v) => c.Job.Actions.Delete = v, "Delete Jobs", "Can delete jobs", false) },
 				{ "Job.Actions.ForceClose", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ForceClose, (c, v) => c.Job.Actions.ForceClose = v, "Force Close Jobs", "Can force close jobs", false) },
 				{ "Job.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.GenerateDocuments, (c, v) => c.Job.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for jobs", false) },
+				{ "Job.Actions.LogInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogInsurance, (c, v) => c.Job.Actions.LogInsurance = v, "Log Insurance", "Can log insurance for non-warranty jobs", false) },
 				{ "Job.Actions.LogRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogRepair, (c, v) => c.Job.Actions.LogRepair = v, "Log Repair", "Can log repair for non-warranty jobs", false) },
 				{ "Job.Actions.LogWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogWarranty, (c, v) => c.Job.Actions.LogWarranty = v, "Log Warranty", "Can log warranty for jobs", false) },
 				{ "Job.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyAttachments, (c, v) => c.Job.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from jobs", false) },
@@ -133,7 +134,7 @@ namespace Disco.Services.Authorization
 				{ "Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, (c, v) => c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent = v, "Insurance Claim Form Sent Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.InsuranceDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InsuranceDetails, (c, v) => c.Job.Properties.NonWarrantyProperties.InsuranceDetails = v, "Insurance Detail Properties", "Can update insurance detail properties", false) },
 				{ "Job.Properties.NonWarrantyProperties.InvoiceReceived", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InvoiceReceived, (c, v) => c.Job.Properties.NonWarrantyProperties.InvoiceReceived = v, "Invoice Received Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.IsInsuranceClaim", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim, (c, v) => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim = v, "Is Insurance Claim  Property", "Can update property", false) },
+				{ "Job.Properties.NonWarrantyProperties.IsInsuranceClaim", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim, (c, v) => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim = v, "Is Insurance Claim Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = v, "Purchase Order Raised Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = v, "Purchase Order Reference Property", "Can update property", false) },
 				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = v, "Purchase Order Sent Property", "Can update property", false) },
@@ -337,6 +338,7 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Job.Actions.Delete", false),
 				            new ClaimNavigatorItem("Job.Actions.ForceClose", false),
 				            new ClaimNavigatorItem("Job.Actions.GenerateDocuments", false),
+				            new ClaimNavigatorItem("Job.Actions.LogInsurance", false),
 				            new ClaimNavigatorItem("Job.Actions.LogRepair", false),
 				            new ClaimNavigatorItem("Job.Actions.LogWarranty", false),
 				            new ClaimNavigatorItem("Job.Actions.RemoveAnyAttachments", false),
@@ -647,6 +649,7 @@ namespace Disco.Services.Authorization
 			c.Job.Actions.Delete = true;
 			c.Job.Actions.ForceClose = true;
 			c.Job.Actions.GenerateDocuments = true;
+			c.Job.Actions.LogInsurance = true;
 			c.Job.Actions.LogRepair = true;
 			c.Job.Actions.LogWarranty = true;
 			c.Job.Actions.RemoveAnyAttachments = true;
@@ -1341,6 +1344,11 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string GenerateDocuments = "Job.Actions.GenerateDocuments";
 
+                /// <summary>Log Insurance
+                /// <para>Can log insurance for non-warranty jobs</para>
+                /// </summary>
+                public const string LogInsurance = "Job.Actions.LogInsurance";
+
                 /// <summary>Log Repair
                 /// <para>Can log repair for non-warranty jobs</para>
                 /// </summary>
@@ -1481,7 +1489,7 @@ namespace Disco.Services.Authorization
                     /// </summary>
                     public const string InvoiceReceived = "Job.Properties.NonWarrantyProperties.InvoiceReceived";
 
-                    /// <summary>Is Insurance Claim  Property
+                    /// <summary>Is Insurance Claim Property
                     /// <para>Can update property</para>
                     /// </summary>
                     public const string IsInsuranceClaim = "Job.Properties.NonWarrantyProperties.IsInsuranceClaim";

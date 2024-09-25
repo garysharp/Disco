@@ -243,16 +243,16 @@ WriteLiteral(">Install</a>\r\n");
             #line hidden
 WriteLiteral("                                                    <a");
 
-WriteLiteral(" class=\"pluginUpdateLink button\"");
+WriteLiteral(" class=\"pluginUpdateLink button alert\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2412), Tuple.Create("\"", 2472)
+WriteAttribute("href", Tuple.Create(" href=\"", 2418), Tuple.Create("\"", 2478)
             
             #line 44 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-              , Tuple.Create(Tuple.Create("", 2419), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id))
+                    , Tuple.Create(Tuple.Create("", 2425), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id))
             
             #line default
             #line hidden
-, 2419), false)
+, 2425), false)
 );
 
 WriteLiteral(">Update</a>\r\n");
@@ -270,14 +270,14 @@ WriteLiteral("                                                    <a");
 
 WriteLiteral(" class=\"button\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 2711), Tuple.Create("\"", 2778)
+WriteAttribute("href", Tuple.Create(" href=\"", 2717), Tuple.Create("\"", 2784)
             
             #line 48 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-, Tuple.Create(Tuple.Create("", 2718), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Configure(plugin.Item1.Id))
+, Tuple.Create(Tuple.Create("", 2724), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Configure(plugin.Item1.Id))
             
             #line default
             #line hidden
-, 2718), false)
+, 2724), false)
 );
 
 WriteLiteral(">Configure</a>\r\n");
@@ -345,14 +345,14 @@ WriteLiteral("</span> | ");
             #line hidden
 WriteLiteral(" | <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3309), Tuple.Create("\"", 3344)
+WriteAttribute("href", Tuple.Create(" href=\"", 3315), Tuple.Create("\"", 3350)
             
             #line 54 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-                                                                                                           , Tuple.Create(Tuple.Create("", 3316), Tuple.Create<System.Object, System.Int32>(plugin.Item1.InformationUrl
+                                                                                                           , Tuple.Create(Tuple.Create("", 3322), Tuple.Create<System.Object, System.Int32>(plugin.Item1.InformationUrl
             
             #line default
             #line hidden
-, 3316), false)
+, 3322), false)
 );
 
 WriteLiteral(" title=\"More Information\"");

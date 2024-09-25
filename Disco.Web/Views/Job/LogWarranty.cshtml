@@ -2,10 +2,11 @@
 @{
     Authorization.Require(Claims.Job.Actions.LogWarranty);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Warranty");
 }
 @using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(m => m.JobId)
     @Html.ValidationMessageFor(m => m.JobId)
@@ -13,28 +14,32 @@
     <div id="warrantyJobForm" class="form" style="width: 650px">
         <table>
             <tr>
-                <th>Internal Job Id:
+                <th>
+                    Internal Job Id:
                 </th>
                 <td>
                     @Model.JobId
                 </td>
             </tr>
             <tr>
-                <th>Device Serial Number:
+                <th>
+                    Device Serial Number:
                 </th>
                 <td>
                     @Model.Job.Device.SerialNumber
                 </td>
             </tr>
             <tr>
-                <th>Device Model:
+                <th>
+                    Device Model:
                 </th>
                 <td>
                     @Model.Job.Device.DeviceModel.Manufacturer @Model.Job.Device.DeviceModel.Model
                 </td>
             </tr>
             <tr>
-                <th>Technician:
+                <th>
+                    Technician:
                 </th>
                 <td>
                     @Model.TechUser.DisplayName
@@ -45,28 +50,30 @@
                 </td>
             </tr>
             <tr>
-                <th style="width: 150px">Repair Address:
+                <th style="width: 150px">
+                    Repair Address:
                 </th>
                 <td>
                     @Html.DropDownListFor(model => model.OrganisationAddressId, Model.OrganisationAddresses.ToSelectListItems(Model.OrganisationAddressId, (Model.OrganisationAddress == null)))<br />
                     @Html.ValidationMessageFor(m => m.OrganisationAddressId)
                     <div id="organisationAddressDetails">
                         @{
-    var oa = Model.OrganisationAddress;
-    if (oa != null)
-    {
-                            <span>@oa.Address</span>
-                            <br />
-                            <span>@oa.Suburb, @oa.Postcode</span>
-                            <br />
-                            <span>@oa.State, @oa.Country</span>
-    }
+                            var oa = Model.OrganisationAddress;
+                            if (oa != null)
+                            {
+                                <span>@oa.Address</span>
+                                <br />
+                                <span>@oa.Suburb, @oa.Postcode</span>
+                                <br />
+                                <span>@oa.State, @oa.Country</span>
+                            }
                         }
                     </div>
                 </td>
             </tr>
             <tr>
-                <th>Warranty Provider:
+                <th>
+                    Warranty Provider:
                 </th>
                 <td>
                     @Html.DropDownListFor(model => model.WarrantyProviderId, Model.WarrantyProviders.ToSelectListItems(Model.WarrantyProviderId, AdditionalItems: new Dictionary<string, string>() { { "MANUAL", "<Manually Submitted Claim>" } }))<br />
@@ -111,40 +118,41 @@
             </tr>
         </table>
     </div>
-            if (!Model.IsManualProvider && Authorization.Has(Claims.Job.ShowAttachments) && Model.Job.JobAttachments.Count > 0)
-            {
-    <div class="form" style="width: 650px; margin-top: 15px;">
-        <h2>Send Attachments</h2>
-        <table>
-            <tr>
-                <td>
-                    <div id="publishJobAttachments">
-                        @foreach (var ja in Model.Job.JobAttachments)
-                        {
-                            <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
-                                <input type="checkbox" class="select" name="PublishAttachmentIds" value="@ja.Id" @(Model.PublishAttachmentIds.Contains(ja.Id) ? "checked" : null) />
-                                <span class="icon" title="@ja.Filename">
-                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
-                                <span class="comments" title="@ja.Comments">
-                                    @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                      { @ja.DocumentTemplate.Description}
-                                      else
-                                      { @ja.Comments }}
-                                </span><span class="author">@ja.TechUser.ToStringFriendly()</span><span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
-                            </a>   
-                        }
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-            }
-            if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
-            { 
-    <div id="warrantyJobProviderProperties">
-        @Html.PartialCompiled(Model.WarrantyProviderSubmitJobViewType, Model.WarrantyProviderSubmitJobModel)
-    </div>
-            }
+    if (!Model.IsManualProvider && Authorization.Has(Claims.Job.ShowAttachments) && Model.Job.JobAttachments.Count > 0)
+    {
+        <div class="form" style="width: 650px; margin-top: 15px;">
+            <h2>Send Attachments</h2>
+            <table>
+                <tr>
+                    <td>
+                        <div id="publishJobAttachments">
+                            @foreach (var ja in Model.Job.JobAttachments)
+                            {
+                                <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
+                                    <input type="checkbox" class="select" name="PublishAttachmentIds" value="@ja.Id" @(Model.PublishAttachmentIds.Contains(ja.Id) ? "checked" : null) />
+                                    <span class="icon" title="@ja.Filename">
+                                        <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" />
+                                    </span>
+                                    <span class="comments" title="@ja.Comments">
+                                        @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
+                                            { @ja.DocumentTemplate.Description}
+                                        else
+                                        { @ja.Comments }}
+                                    </span><span class="author">@ja.TechUser.ToStringFriendly()</span><span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+    if (Model.WarrantyProvider != null && Model.WarrantyProviderSubmitJobViewType != null)
+    {
+        <div id="warrantyJobProviderProperties">
+            @Html.PartialCompiled(Model.WarrantyProviderSubmitJobViewType, Model.WarrantyProviderSubmitJobModel)
+        </div>
+    }
     <div class="actionBar">
         @if (Model.IsManualProvider)
         {
@@ -179,6 +187,8 @@
                 $('<input>').attr({ type: 'hidden', name: 'ManualProviderName', value: $('#ManualProviderName').val() })
             ).append(
                 $('<input>').attr({ type: 'hidden', name: 'ManualProviderReference', value: $('#ManualProviderReference').val() })
+            ).append(
+                $('<input>').attr({ type: 'hidden', name: '__RequestVerificationToken', value: $providerId.closest('form').find('input[name="__RequestVerificationToken"]').val() })
             ).appendTo('body').submit();
         }
 

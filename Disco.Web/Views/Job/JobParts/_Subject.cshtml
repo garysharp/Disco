@@ -882,19 +882,19 @@
             }
             @if (Model.Job.CanLogWarranty())
             {
-                @Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button")
+                @Html.ActionLinkSmallButton("Lodge Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button")
             }
             @if (Model.Job.CanWarrantyCompleted())
             {
                 @Html.ActionLinkSmallButton("Warranty Complete", MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_WarrantyComplete_Button", "alert")
             }
-            @if (Model.Job.CanInsuranceClaimFormSent())
+            @if (Model.Job.CanLogInsurance())
             {
-                @Html.ActionLinkSmallButton("Insurance Claim Sent", MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_InsuranceClaimSent_Button", "alert")
+                @Html.ActionLinkSmallButton("Lodge Insurance", MVC.Job.LogInsurance(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogInsurance_Button", "alert")
             }
             @if (Model.Job.CanLogRepair())
             {
-                @Html.ActionLinkSmallButton("Log Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button")
+                @Html.ActionLinkSmallButton("Lodge Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button")
             }
             @if (Model.Job.CanRepairComplete())
             {

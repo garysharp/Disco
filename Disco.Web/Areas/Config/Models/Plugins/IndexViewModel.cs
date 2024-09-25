@@ -44,15 +44,14 @@ namespace Disco.Web.Areas.Config.Models.Plugins
             }
         }
 
-        public List<Tuple<Type, List<PluginManifest>>> PluginManifestsByCategory
+        public Dictionary<string, List<PluginManifest>> PluginManifestsByCategory
         {
             get
             {
                 if (PluginManifests.Count == 0)
                     return null;
 
-
-                List<Tuple<Type, PluginManifest>> pluginsByCategory = new List<Tuple<Type, PluginManifest>>();
+                var pluginsByCategory = new Dictionary<string, List<PluginManifest>>(StringComparer.Ordinal);
 
                 foreach (var pluginManifest in PluginManifests)
                 {
@@ -68,12 +67,17 @@ namespace Disco.Web.Areas.Config.Models.Plugins
                     else
                         categoryType = primaryFeature.CategoryType;
 
-                    pluginsByCategory.Add(new Tuple<Type, PluginManifest>(categoryType, pluginManifest));
+                    var categoryName = Disco.Services.Plugins.Plugins.PluginFeatureCategoryDisplayName(categoryType);
+
+                    if (!pluginsByCategory.TryGetValue(categoryName, out var categoryPlugins))
+                    {
+                        categoryPlugins = new List<PluginManifest>();
+                        pluginsByCategory.Add(categoryName, categoryPlugins);
+                    }
+                    categoryPlugins.Add(pluginManifest);
                 }
 
-                return pluginsByCategory.GroupBy(p => p.Item1)
-                    .OrderBy(g => g.Key.Name)
-                    .Select(g => new Tuple<Type, List<PluginManifest>>(g.Key, g.Select(pg => pg.Item2).OrderBy(p => p.Name).ToList())).ToList();
+                return pluginsByCategory;
             }
         }
     }

@@ -8,7 +8,7 @@
         [ClaimDetails("Edit Components", "Can edit and remove job components")]
         public bool EditComponents { get; set; }
 
-        [ClaimDetails("Is Insurance Claim  Property", "Can update property")]
+        [ClaimDetails("Is Insurance Claim Property", "Can update property")]
         public bool IsInsuranceClaim { get; set; }
 
         [ClaimDetails("Insurance Claim Form Sent Property", "Can update property")]

@@ -2980,14 +2980,14 @@ WriteLiteral("            ");
             #line hidden
             
             #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button"));
+           Write(Html.ActionLinkSmallButton("Lodge Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button"));
 
             
             #line default
             #line hidden
             
             #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                     
+                                                                                                                                                       
             }
 
             
@@ -3022,7 +3022,7 @@ WriteLiteral("            ");
 
             
             #line 891 "..\..\Views\Job\JobParts\_Subject.cshtml"
-             if (Model.Job.CanInsuranceClaimFormSent())
+             if (Model.Job.CanLogInsurance())
             {
                 
             
@@ -3030,14 +3030,14 @@ WriteLiteral("            ");
             #line hidden
             
             #line 893 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Insurance Claim Sent", MVC.API.Job.UpdateInsuranceClaimFormSentDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_InsuranceClaimSent_Button", "alert"));
+           Write(Html.ActionLinkSmallButton("Lodge Insurance", MVC.Job.LogInsurance(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogInsurance_Button", "alert"));
 
             
             #line default
             #line hidden
             
             #line 893 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                                                       
+                                                                                                                                                                   
             }
 
             
@@ -3055,14 +3055,14 @@ WriteLiteral("            ");
             #line hidden
             
             #line 897 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Log Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button"));
+           Write(Html.ActionLinkSmallButton("Lodge Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button"));
 
             
             #line default
             #line hidden
             
             #line 897 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                               
+                                                                                                                                                 
             }
 
             

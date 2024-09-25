@@ -612,14 +612,14 @@ WriteLiteral(">Actions\r\n                </th>\r\n                <td>\r\n");
             #line hidden
             
             #line 130 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                   Write(Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Warranty_Actions_LogWarranty_Button"));
+                   Write(Html.ActionLinkSmallButton("Lodge Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Warranty_Actions_LogWarranty_Button"));
 
             
             #line default
             #line hidden
             
             #line 130 "..\..\Views\Job\JobParts\Warranty.cshtml"
-                                                                                                                                                                  
+                                                                                                                                                                    
                     }
                     else
                     {

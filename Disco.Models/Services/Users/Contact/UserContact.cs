@@ -19,6 +19,10 @@ namespace Disco.Models.Services.Users.Contact
             User = user;
             ContactType = contactType;
             Source = source;
+
+            if (name != null && name.IndexOf(',') >= 0)
+                name = name.Replace(',', ' ');
+
             Name = name;
         }
 

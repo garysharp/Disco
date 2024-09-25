@@ -530,6 +530,7 @@ namespace Disco.Services.Plugins
         public void LogWarning(string Message)
         {
             LogWarning(Message, null);
+            PluginsLog.LogPluginWarning(this, Message);
         }
         public void LogWarning(string MessageFormat, params object[] Args)
         {
@@ -537,7 +538,7 @@ namespace Disco.Services.Plugins
         }
         public void LogMessage(string Message)
         {
-            LogMessage(Message, null);
+            PluginsLog.LogPluginMessage(this, Message);
         }
         public void LogMessage(string MessageFormat, params object[] Args)
         {

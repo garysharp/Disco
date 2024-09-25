@@ -101,6 +101,18 @@ namespace Disco.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RepairProviderJobDetails);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult LogInsurance()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogInsurance);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult InsuranceProviderJobDetails()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InsuranceProviderJobDetails);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobController Actions { get { return MVC.Job; } }
@@ -139,6 +151,8 @@ namespace Disco.Web.Controllers
             public readonly string WarrantyProviderJobDetails = "WarrantyProviderJobDetails";
             public readonly string LogRepair = "LogRepair";
             public readonly string RepairProviderJobDetails = "RepairProviderJobDetails";
+            public readonly string LogInsurance = "LogInsurance";
+            public readonly string InsuranceProviderJobDetails = "InsuranceProviderJobDetails";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -166,6 +180,8 @@ namespace Disco.Web.Controllers
             public const string WarrantyProviderJobDetails = "WarrantyProviderJobDetails";
             public const string LogRepair = "LogRepair";
             public const string RepairProviderJobDetails = "RepairProviderJobDetails";
+            public const string LogInsurance = "LogInsurance";
+            public const string InsuranceProviderJobDetails = "InsuranceProviderJobDetails";
         }
 
 
@@ -235,6 +251,26 @@ namespace Disco.Web.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_LogInsurance s_params_LogInsurance = new ActionParamsClass_LogInsurance();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_LogInsurance LogInsuranceParams { get { return s_params_LogInsurance; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_LogInsurance
+        {
+            public readonly string id = "id";
+            public readonly string providerId = "providerId";
+            public readonly string organisationAddressId = "organisationAddressId";
+            public readonly string m = "m";
+            public readonly string form = "form";
+        }
+        static readonly ActionParamsClass_InsuranceProviderJobDetails s_params_InsuranceProviderJobDetails = new ActionParamsClass_InsuranceProviderJobDetails();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_InsuranceProviderJobDetails InsuranceProviderJobDetailsParams { get { return s_params_InsuranceProviderJobDetails; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_InsuranceProviderJobDetails
+        {
+            public readonly string id = "id";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -250,7 +286,11 @@ namespace Disco.Web.Controllers
                 public readonly string Create = "Create";
                 public readonly string Create_Redirect = "Create_Redirect";
                 public readonly string Index = "Index";
+                public readonly string InsuranceProviderJobDetails = "InsuranceProviderJobDetails";
                 public readonly string List = "List";
+                public readonly string LogInsurance = "LogInsurance";
+                public readonly string LogInsuranceDisclose = "LogInsuranceDisclose";
+                public readonly string LogInsuranceError = "LogInsuranceError";
                 public readonly string LogRepair = "LogRepair";
                 public readonly string LogRepairDisclose = "LogRepairDisclose";
                 public readonly string LogRepairError = "LogRepairError";
@@ -266,7 +306,11 @@ namespace Disco.Web.Controllers
             public readonly string Create = "~/Views/Job/Create.cshtml";
             public readonly string Create_Redirect = "~/Views/Job/Create_Redirect.cshtml";
             public readonly string Index = "~/Views/Job/Index.cshtml";
+            public readonly string InsuranceProviderJobDetails = "~/Views/Job/InsuranceProviderJobDetails.cshtml";
             public readonly string List = "~/Views/Job/List.cshtml";
+            public readonly string LogInsurance = "~/Views/Job/LogInsurance.cshtml";
+            public readonly string LogInsuranceDisclose = "~/Views/Job/LogInsuranceDisclose.cshtml";
+            public readonly string LogInsuranceError = "~/Views/Job/LogInsuranceError.cshtml";
             public readonly string LogRepair = "~/Views/Job/LogRepair.cshtml";
             public readonly string LogRepairDisclose = "~/Views/Job/LogRepairDisclose.cshtml";
             public readonly string LogRepairError = "~/Views/Job/LogRepairError.cshtml";
@@ -606,6 +650,45 @@ namespace Disco.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RepairProviderJobDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             RepairProviderJobDetailsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogInsuranceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string providerId, int? organisationAddressId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LogInsurance(int id, string providerId, int? organisationAddressId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogInsurance);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "providerId", providerId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "organisationAddressId", organisationAddressId);
+            LogInsuranceOverride(callInfo, id, providerId, organisationAddressId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogInsuranceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.LogInsuranceModel m, System.Web.Mvc.FormCollection form);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LogInsurance(Disco.Web.Models.Job.LogInsuranceModel m, System.Web.Mvc.FormCollection form)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogInsurance);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "m", m);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "form", form);
+            LogInsuranceOverride(callInfo, m, form);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void InsuranceProviderJobDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult InsuranceProviderJobDetails(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InsuranceProviderJobDetails);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            InsuranceProviderJobDetailsOverride(callInfo, id);
             return callInfo;
         }
 

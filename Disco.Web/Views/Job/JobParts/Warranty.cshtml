@@ -127,7 +127,7 @@
                 <td>
                     @if (Model.Job.CanLogWarranty())
                     { 
-                        @Html.ActionLinkSmallButton("Log Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Warranty_Actions_LogWarranty_Button")
+                        @Html.ActionLinkSmallButton("Lodge Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Warranty_Actions_LogWarranty_Button")
                     }
                     else
                     {

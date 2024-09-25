@@ -324,6 +324,7 @@
     <Compile Include="Expressions\ExpressionTypeMemberDescriptor.cs" />
     <Compile Include="Expressions\Extensions\DataExt.cs" />
     <Compile Include="Expressions\Extensions\DeviceExt.cs" />
+    <Compile Include="Expressions\Extensions\EmailExt.cs" />
     <Compile Include="Expressions\Extensions\ImageExt.cs" />
     <Compile Include="Expressions\Extensions\ImageResultImplementations\BaseImageExpressionResult.cs" />
     <Compile Include="Expressions\Extensions\ImageResultImplementations\BitmapImageExpressionResult.cs" />
@@ -412,6 +413,10 @@
     <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderService.cs" />
     <Compile Include="Plugins\Features\DetailsProvider\UserContactFeature.cs" />
     <Compile Include="Plugins\Features\DocumentHandlerProvider\DocumentHandlerProviderFeature.cs" />
+    <Compile Include="Plugins\Features\InsuranceProvider\InsuranceProviderFeature.cs" />
+    <Compile Include="Plugins\Features\InsuranceProvider\InsuranceProviderSubmitJobException.cs" />
+    <Compile Include="Plugins\Features\RepairProvider\RepairProvider2Feature.cs" />
+    <Compile Include="Plugins\Features\WarrantyProvider\WarrantyProvider2Feature.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\ProvisionWirelessProfilesResult.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfile.cs" />
     <Compile Include="Plugins\Features\WirelessProfileProvider\WirelessProfileTransformation.cs" />
@@ -540,6 +545,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

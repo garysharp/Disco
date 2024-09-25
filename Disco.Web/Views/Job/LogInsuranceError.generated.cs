@@ -35,20 +35,20 @@ namespace Disco.Web.Views.Job
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/LogWarrantyError.cshtml")]
-    public partial class LogWarrantyError : Disco.Services.Web.WebViewPage<Disco.Web.Models.Job.LogWarrantyModel>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Job/LogInsuranceError.cshtml")]
+    public partial class LogInsuranceError : Disco.Services.Web.WebViewPage<Disco.Web.Models.Job.LogInsuranceModel>
     {
-        public LogWarrantyError()
+        public LogInsuranceError()
         {
         }
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 2 "..\..\Views\Job\LogInsuranceError.cshtml"
   
-    Authorization.Require(Claims.Job.Actions.LogWarranty);
+    Authorization.RequireAny(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, Claims.Job.Actions.LogInsurance);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Warranty Error");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Insurance Claim Error");
 
             
             #line default
@@ -63,7 +63,7 @@ WriteLiteral(">\r\n    <h2>Submission Error</h2>\r\n    <table>\r\n        <tr>\
 "              <div>\r\n                    <strong>");
 
             
-            #line 13 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 13 "..\..\Views\Job\LogInsuranceError.cshtml"
                        Write(Model.Error.Message);
 
             
@@ -73,20 +73,20 @@ WriteLiteral("</strong>\r\n                </div>\r\n                <a");
 
 WriteLiteral(" href=\"#\"");
 
-WriteLiteral(" id=\"warrantyJobErrorShow\"");
+WriteLiteral(" id=\"errorShow\"");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">(show more)</a>\r\n                <div");
 
-WriteLiteral(" id=\"warrantyJobErrorMore\"");
+WriteLiteral(" id=\"errorMore\"");
 
 WriteLiteral(" style=\"display: none\"");
 
 WriteLiteral(">\r\n                    <br />\r\n                    <strong>Error Type: </strong>");
 
             
-            #line 18 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 18 "..\..\Views\Job\LogInsuranceError.cshtml"
                                             Write(Model.Error.GetType().Name);
 
             
@@ -102,7 +102,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 22 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 22 "..\..\Views\Job\LogInsuranceError.cshtml"
                    Write(Model.Error.StackTrace.ToMultilineString());
 
             
@@ -111,13 +111,13 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </div>\r\n");
 
             
-            #line 24 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 24 "..\..\Views\Job\LogInsuranceError.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 24 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 24 "..\..\Views\Job\LogInsuranceError.cshtml"
                      if (Model.Error.InnerException != null)
                     { 
 
@@ -130,7 +130,7 @@ WriteLiteral("                        <div>\r\n                            <stro
 "n:</strong> ");
 
             
-            #line 28 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 28 "..\..\Views\Job\LogInsuranceError.cshtml"
                                                          Write(Model.Error.InnerException.Message);
 
             
@@ -139,7 +139,7 @@ WriteLiteral("                        <div>\r\n                            <stro
 WriteLiteral("<br />\r\n                            <strong>Error Type:</strong> ");
 
             
-            #line 29 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 29 "..\..\Views\Job\LogInsuranceError.cshtml"
                                                     Write(Model.Error.GetType().Name);
 
             
@@ -155,7 +155,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                ");
 
             
-            #line 32 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 32 "..\..\Views\Job\LogInsuranceError.cshtml"
                            Write(Model.Error.InnerException.StackTrace);
 
             
@@ -164,7 +164,7 @@ WriteLiteral("                                ");
 WriteLiteral("\r\n                            </div>\r\n                        </div>\r\n");
 
             
-            #line 35 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 35 "..\..\Views\Job\LogInsuranceError.cshtml"
                     }
 
             
@@ -176,9 +176,9 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
                     $(function () {
-                        $('#warrantyJobErrorShow').click(function () {
+                        $('#errorShow').click(function () {
                             $(this).hide();
-                            $('#warrantyJobErrorMore').slideDown();
+                            $('#errorMore').slideDown();
                             return false;
                         });
                     });
@@ -189,19 +189,19 @@ WriteLiteral(@">
 </div>
 <div");
 
-WriteLiteral(" id=\"warrantyJobForm\"");
+WriteLiteral(" id=\"insuranceJobForm\"");
 
 WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 650px; margin-top: 15px;\"");
 
-WriteLiteral(">\r\n    <h2>Warranty Submission Details</h2>\r\n    <table>\r\n        <tr>\r\n         " +
-"   <th>Internal Job Id:\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n    <h2>Insurance Submission Details</h2>\r\n    <table>\r\n        <tr>\r\n        " +
+"    <th>Internal Job Id:\r\n            </th>\r\n            <td>\r\n");
 
 WriteLiteral("                ");
 
             
-            #line 57 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 57 "..\..\Views\Job\LogInsuranceError.cshtml"
            Write(Model.JobId);
 
             
@@ -213,7 +213,7 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
 WriteLiteral("                ");
 
             
-            #line 64 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 64 "..\..\Views\Job\LogInsuranceError.cshtml"
            Write(Model.Job.Device.SerialNumber);
 
             
@@ -225,7 +225,7 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
 WriteLiteral("                ");
 
             
-            #line 71 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 71 "..\..\Views\Job\LogInsuranceError.cshtml"
            Write(Model.Job.Device.DeviceModel.Manufacturer);
 
             
@@ -234,7 +234,7 @@ WriteLiteral("                ");
 WriteLiteral(" ");
 
             
-            #line 71 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 71 "..\..\Views\Job\LogInsuranceError.cshtml"
                                                       Write(Model.Job.Device.DeviceModel.Model);
 
             
@@ -246,7 +246,7 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
 WriteLiteral("                ");
 
             
-            #line 78 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 78 "..\..\Views\Job\LogInsuranceError.cshtml"
            Write(Model.TechUser.DisplayName);
 
             
@@ -259,7 +259,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                    Email Address: ");
 
             
-            #line 80 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 80 "..\..\Views\Job\LogInsuranceError.cshtml"
                               Write(Model.TechUser.EmailAddress);
 
             
@@ -268,7 +268,7 @@ WriteLiteral(">\r\n                    Email Address: ");
 WriteLiteral("<br />\r\n                    Phone Number: ");
 
             
-            #line 81 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 81 "..\..\Views\Job\LogInsuranceError.cshtml"
                              Write(Model.TechUser.PhoneNumber);
 
             
@@ -279,7 +279,7 @@ WriteLiteral("\r\n                </div>\r\n            </td>\r\n        </tr>\r
 
 WriteLiteral(" style=\"width: 150px\"");
 
-WriteLiteral(">Repair Address:\r\n            </th>\r\n            <td>\r\n                <div");
+WriteLiteral(">Address:\r\n            </th>\r\n            <td>\r\n                <div");
 
 WriteLiteral(" id=\"organisationAddressDetails\"");
 
@@ -288,7 +288,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                    ");
 
             
-            #line 90 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 90 "..\..\Views\Job\LogInsuranceError.cshtml"
                Write(Model.OrganisationAddress.Name);
 
             
@@ -301,7 +301,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                        <span>");
 
             
-            #line 92 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 92 "..\..\Views\Job\LogInsuranceError.cshtml"
                          Write(Model.OrganisationAddress.Address);
 
             
@@ -310,7 +310,7 @@ WriteLiteral(">\r\n                        <span>");
 WriteLiteral("</span><br />\r\n                        <span>");
 
             
-            #line 93 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 93 "..\..\Views\Job\LogInsuranceError.cshtml"
                          Write(Model.OrganisationAddress.Suburb);
 
             
@@ -319,7 +319,7 @@ WriteLiteral("</span><br />\r\n                        <span>");
 WriteLiteral(", ");
 
             
-            #line 93 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 93 "..\..\Views\Job\LogInsuranceError.cshtml"
                                                             Write(Model.OrganisationAddress.Postcode);
 
             
@@ -328,7 +328,7 @@ WriteLiteral(", ");
 WriteLiteral("</span><br />\r\n                        <span>");
 
             
-            #line 94 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 94 "..\..\Views\Job\LogInsuranceError.cshtml"
                          Write(Model.OrganisationAddress.State);
 
             
@@ -337,25 +337,25 @@ WriteLiteral("</span><br />\r\n                        <span>");
 WriteLiteral(", ");
 
             
-            #line 94 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 94 "..\..\Views\Job\LogInsuranceError.cshtml"
                                                            Write(Model.OrganisationAddress.Country);
 
             
             #line default
             #line hidden
 WriteLiteral("</span>\r\n                    </div>\r\n                </div>\r\n            </td>\r\n " +
-"       </tr>\r\n        <tr>\r\n            <th>Warranty Provider:\r\n            </th" +
-">\r\n            <td>\r\n");
+"       </tr>\r\n        <tr>\r\n            <th>Provider:\r\n            </th>\r\n      " +
+"      <td>\r\n");
 
             
-            #line 103 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 103 "..\..\Views\Job\LogInsuranceError.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\Job\LogWarrantyError.cshtml"
-                 if (Model.WarrantyProvider != null)
+            #line 103 "..\..\Views\Job\LogInsuranceError.cshtml"
+                 if (Model.Provider != null)
                 {
 
             
@@ -366,8 +366,8 @@ WriteLiteral("                    <span>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 106 "..\..\Views\Job\LogWarrantyError.cshtml"
-                   Write(Model.WarrantyProvider.Name);
+            #line 106 "..\..\Views\Job\LogInsuranceError.cshtml"
+                   Write(Model.Provider.Name);
 
             
             #line default
@@ -375,8 +375,8 @@ WriteLiteral("                        ");
 WriteLiteral(" (");
 
             
-            #line 106 "..\..\Views\Job\LogWarrantyError.cshtml"
-                                                 Write(Model.WarrantyProvider.Id);
+            #line 106 "..\..\Views\Job\LogInsuranceError.cshtml"
+                                         Write(Model.Provider.Id);
 
             
             #line default
@@ -384,8 +384,8 @@ WriteLiteral(" (");
 WriteLiteral(") ");
 
             
-            #line 106 "..\..\Views\Job\LogWarrantyError.cshtml"
-                                                                             Write(Model.WarrantyProvider.PluginManifest.Version.ToString(3));
+            #line 106 "..\..\Views\Job\LogInsuranceError.cshtml"
+                                                             Write(Model.Provider.PluginManifest.Version.ToString(3));
 
             
             #line default
@@ -393,7 +393,7 @@ WriteLiteral(") ");
 WriteLiteral("\r\n                    </span>\r\n");
 
             
-            #line 108 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 108 "..\..\Views\Job\LogInsuranceError.cshtml"
                 }
                 else
                 {
@@ -408,25 +408,13 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">None Selected</span>\r\n");
 
             
-            #line 112 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 112 "..\..\Views\Job\LogInsuranceError.cshtml"
                 }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Fault Description" +
-":\r\n            </th>\r\n            <td>\r\n");
-
-WriteLiteral("                ");
-
-            
-            #line 119 "..\..\Views\Job\LogWarrantyError.cshtml"
-           Write(Model.FaultDescription.ToMultilineString());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div");
+WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
@@ -435,8 +423,8 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 125 "..\..\Views\Job\LogWarrantyError.cshtml"
-Write(Html.ActionLinkButton("Try Again", MVC.Job.LogWarranty(Model.JobId, null, null)));
+            #line 118 "..\..\Views\Job\LogInsuranceError.cshtml"
+Write(Html.ActionLinkButton("Try Again", MVC.Job.LogInsurance(Model.JobId, null, null)));
 
             
             #line default
@@ -446,7 +434,7 @@ WriteLiteral("\r\n");
 WriteLiteral("    ");
 
             
-            #line 126 "..\..\Views\Job\LogWarrantyError.cshtml"
+            #line 119 "..\..\Views\Job\LogInsuranceError.cshtml"
 Write(Html.ActionLinkButton("Return to Job", MVC.Job.Show(Model.JobId)));
 
             

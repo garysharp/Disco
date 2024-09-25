@@ -48,7 +48,7 @@ namespace Disco.Web.Views.Job
   
     Authorization.Require(Claims.Job.Actions.LogWarranty);
 
-    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Log Warranty");
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Warranty");
 
             
             #line default
@@ -65,83 +65,97 @@ WriteLiteral("\r\n");
             #line hidden
             
             #line 9 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-Write(Html.ValidationSummary(true));
+Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 9 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                 
+                            
     
             
             #line default
             #line hidden
             
             #line 10 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+Write(Html.ValidationSummary(true));
+
+            
+            #line default
+            #line hidden
+            
+            #line 10 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                                 
+    
+            
+            #line default
+            #line hidden
+            
+            #line 11 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
 Write(Html.HiddenFor(m => m.JobId));
 
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 11 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                  
     
             
             #line default
             #line hidden
             
-            #line 11 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 12 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
 Write(Html.HiddenFor(m => m.OrganisationAddressId));
 
             
             #line default
             #line hidden
             
-            #line 11 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 12 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                  
     
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 13 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
 Write(Html.HiddenFor(m => m.WarrantyProviderId));
 
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 13 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                               
     
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 14 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
 Write(Html.HiddenFor(m => m.FaultDescription));
 
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 14 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                             
     
             
             #line default
             #line hidden
             
-            #line 14 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 15 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
 Write(Html.HiddenFor(m => m.ProviderPropertiesJson));
 
             
             #line default
             #line hidden
             
-            #line 14 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 15 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                   
 
             
@@ -165,37 +179,39 @@ WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 650px\"");
 
-WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>Internal Job Id:\r\n     " +
-"           </th>\r\n                <td>\r\n");
+WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r\n                    I" +
+"nternal Job Id:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 22 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 24 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                Write(Model.JobId);
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">Device Serial Number:\r\n                </th>\r\n                <td>\r\n");
+">\r\n                    Device Serial Number:\r\n                </th>\r\n           " +
+"     <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 29 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 32 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                Write(Model.Job.Device.SerialNumber);
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">Device Model:\r\n                </th>\r\n                <td>\r\n");
+">\r\n                    Device Model:\r\n                </th>\r\n                <td" +
+">\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 36 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 40 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                Write(Model.Job.Device.DeviceModel.Manufacturer);
 
             
@@ -204,19 +220,20 @@ WriteLiteral("                    ");
 WriteLiteral(" ");
 
             
-            #line 36 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 40 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                           Write(Model.Job.Device.DeviceModel.Model);
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">Technician:\r\n                </th>\r\n                <td>\r\n");
+">\r\n                    Technician:\r\n                </th>\r\n                <td>\r" +
+"\n");
 
 WriteLiteral("                    ");
 
             
-            #line 43 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 48 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                Write(Model.TechUser.DisplayName);
 
             
@@ -229,7 +246,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                        Email Address: ");
 
             
-            #line 45 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 50 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                   Write(Model.TechUser.EmailAddress);
 
             
@@ -238,7 +255,7 @@ WriteLiteral(">\r\n                        Email Address: ");
 WriteLiteral("<br />\r\n                        Phone Number: ");
 
             
-            #line 46 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 51 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                  Write(Model.TechUser.PhoneNumber);
 
             
@@ -249,8 +266,8 @@ WriteLiteral("\r\n                    </div>\r\n                </td>\r\n       
 
 WriteLiteral(" style=\"width: 150px\"");
 
-WriteLiteral(">Warranty Address:\r\n                </th>\r\n                <td>\r\n                " +
-"    <div");
+WriteLiteral(">\r\n                    Warranty Address:\r\n                </th>\r\n                " +
+"<td>\r\n                    <div");
 
 WriteLiteral(" id=\"organisationAddressDetails\"");
 
@@ -259,7 +276,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 55 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 61 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                    Write(Model.OrganisationAddress.Name);
 
             
@@ -272,7 +289,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">\r\n                            <span>");
 
             
-            #line 57 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 63 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                              Write(Model.OrganisationAddress.Address);
 
             
@@ -281,7 +298,7 @@ WriteLiteral(">\r\n                            <span>");
 WriteLiteral("</span><br />\r\n                            <span>");
 
             
-            #line 58 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 64 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                              Write(Model.OrganisationAddress.Suburb);
 
             
@@ -290,7 +307,7 @@ WriteLiteral("</span><br />\r\n                            <span>");
 WriteLiteral(", ");
 
             
-            #line 58 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 64 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                 Write(Model.OrganisationAddress.Postcode);
 
             
@@ -299,7 +316,7 @@ WriteLiteral(", ");
 WriteLiteral("</span><br />\r\n                            <span>");
 
             
-            #line 59 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 65 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                              Write(Model.OrganisationAddress.State);
 
             
@@ -308,20 +325,20 @@ WriteLiteral("</span><br />\r\n                            <span>");
 WriteLiteral(", ");
 
             
-            #line 59 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 65 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                Write(Model.OrganisationAddress.Country);
 
             
             #line default
             #line hidden
 WriteLiteral("</span>\r\n                        </div>\r\n                    </div>\r\n            " +
-"    </td>\r\n            </tr>\r\n            <tr>\r\n                <th>Warranty Pro" +
-"vider:\r\n                </th>\r\n                <td>\r\n");
+"    </td>\r\n            </tr>\r\n            <tr>\r\n                <th>\r\n          " +
+"          Warranty Provider:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 68 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 75 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                Write(Model.WarrantyProvider.Name);
 
             
@@ -330,7 +347,7 @@ WriteLiteral("                    ");
 WriteLiteral(" (");
 
             
-            #line 68 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 75 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                              Write(Model.WarrantyProvider.Id);
 
             
@@ -339,71 +356,75 @@ WriteLiteral(" (");
 WriteLiteral(") ");
 
             
-            #line 68 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 75 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                          Write(Model.WarrantyProvider.PluginManifest.Version.ToString(3));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">Fault Description:\r\n                </th>\r\n                <td>\r\n");
+">\r\n                    Fault Description:\r\n                </th>\r\n              " +
+"  <td>\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 75 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 83 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                Write(Model.FaultDescription.ToMultilineString());
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">Disclosed Information\r\n                </th>\r\n                <td>\r\n           " +
-"         <div");
+">\r\n                    Disclosed Information\r\n                </th>\r\n           " +
+"     <td>\r\n                    <div");
 
 WriteLiteral(" id=\"warrantyDisclosedInformation\"");
 
 WriteLiteral(">\r\n                        <table>\r\n");
 
             
-            #line 84 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 93 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 84 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 93 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                              foreach (var dp in Model.DiscloseProperties)
                             {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <tr>\r\n                                    <th>");
+WriteLiteral("                                <tr>\r\n                                    <th>\r\n");
+
+WriteLiteral("                                        ");
 
             
-            #line 87 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 97 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                    Write(dp.Key);
 
             
             #line default
             #line hidden
-WriteLiteral(":\r\n                                    </th>\r\n                                   " +
-" <td>");
+WriteLiteral(":\r\n                                </th>\r\n                                <td>\r\n");
+
+WriteLiteral("                                    ");
 
             
-            #line 89 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                   Write(dp.Value);
+            #line 100 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                               Write(dp.Value);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                    </td>\r\n                                </tr" +
-">   \r\n");
+WriteLiteral("\r\n                            </td>\r\n                        </tr>\r\n");
 
             
-            #line 92 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                            }
+            #line 103 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+
+                    }
 
             
             #line default
@@ -412,13 +433,13 @@ WriteLiteral("                        </table>\r\n                    </div>\r\n
 "d>\r\n            </tr>\r\n");
 
             
-            #line 97 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 109 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 97 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 109 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
              if (Model.PublishAttachments.Count > 0)
             {
 
@@ -434,13 +455,13 @@ WriteLiteral(" id=\"publishJobAttachments\"");
 WriteLiteral(">\r\n");
 
             
-            #line 104 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 116 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 104 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 116 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                  foreach (var ja in Model.PublishAttachments)
                                 {
 
@@ -453,34 +474,34 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"PublishAttachmentIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 4138), Tuple.Create("\"", 4152)
+WriteAttribute("value", Tuple.Create(" value=\"", 4393), Tuple.Create("\"", 4407)
             
-            #line 106 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-            , Tuple.Create(Tuple.Create("", 4146), Tuple.Create<System.Object, System.Int32>(ja.Id
+            #line 118 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            , Tuple.Create(Tuple.Create("", 4401), Tuple.Create<System.Object, System.Int32>(ja.Id
             
             #line default
             #line hidden
-, 4146), false)
+, 4401), false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("                                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4196), Tuple.Create("\"", 4253)
+WriteAttribute("href", Tuple.Create(" href=\"", 4451), Tuple.Create("\"", 4508)
             
-            #line 107 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-, Tuple.Create(Tuple.Create("", 4203), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+            #line 119 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+, Tuple.Create(Tuple.Create("", 4458), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 4203), false)
+, 4458), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 107 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 119 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                                                                Write(ja.Id);
 
             
@@ -491,7 +512,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 107 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 119 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                                                                                       Write(ja.MimeType);
 
             
@@ -503,84 +524,85 @@ WriteLiteral(">\r\n                                        <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4371), Tuple.Create("\"", 4391)
+WriteAttribute("title", Tuple.Create(" title=\"", 4626), Tuple.Create("\"", 4646)
             
-            #line 108 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-, Tuple.Create(Tuple.Create("", 4379), Tuple.Create<System.Object, System.Int32>(ja.Filename
+            #line 120 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+, Tuple.Create(Tuple.Create("", 4634), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 4379), false)
+, 4634), false)
 );
 
 WriteLiteral(">\r\n                                            <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 4470), Tuple.Create("\"", 4529)
+WriteAttribute("src", Tuple.Create(" src=\"", 4725), Tuple.Create("\"", 4784)
             
-            #line 109 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-  , Tuple.Create(Tuple.Create("", 4476), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+            #line 121 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+  , Tuple.Create(Tuple.Create("", 4731), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 4476), false)
+, 4731), false)
 );
 
-WriteLiteral(" /></span>\r\n                                        <span");
+WriteLiteral(" />\r\n                                        </span>\r\n                           " +
+"             <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4604), Tuple.Create("\"", 4624)
+WriteAttribute("title", Tuple.Create(" title=\"", 4901), Tuple.Create("\"", 4921)
             
-            #line 110 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-, Tuple.Create(Tuple.Create("", 4612), Tuple.Create<System.Object, System.Int32>(ja.Comments
+            #line 123 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+, Tuple.Create(Tuple.Create("", 4909), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 4612), false)
+, 4909), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 111 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 124 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                             
             
             #line default
             #line hidden
             
-            #line 111 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 124 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                               if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                              { 
+                                                { 
             
             #line default
             #line hidden
             
-            #line 112 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                           Write(ja.DocumentTemplate.Description);
+            #line 125 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                                             Write(ja.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-            #line 112 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                                                                }
-                                              else
-                                              { 
+            #line 125 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                                                                                  }
+                                            else
+                                            { 
             
             #line default
             #line hidden
             
-            #line 114 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                           Write(ja.Comments);
+            #line 127 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                                         Write(ja.Comments);
 
             
             #line default
             #line hidden
             
-            #line 114 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                                             }
+            #line 127 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                                                           }
             
             #line default
             #line hidden
@@ -591,7 +613,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 115 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 128 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                Write(ja.TechUser.ToStringFriendly());
 
             
@@ -604,7 +626,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 115 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 128 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                                                                                               Write(ja.Timestamp.ToUnixEpoc());
 
             
@@ -612,29 +634,29 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5100), Tuple.Create("\"", 5138)
+WriteAttribute("title", Tuple.Create(" title=\"", 5395), Tuple.Create("\"", 5433)
             
-            #line 115 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                                                                                       , Tuple.Create(Tuple.Create("", 5108), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+            #line 128 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+                                                                                                       , Tuple.Create(Tuple.Create("", 5403), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 5108), false)
+, 5403), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 115 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 128 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                                                                                                                                                                                                   Write(ja.Timestamp.ToFullDateTime());
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                                    </a>   \r\n");
+WriteLiteral("</span>\r\n                                    </a>\r\n");
 
             
-            #line 117 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 130 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
                                 }
 
             
@@ -644,7 +666,7 @@ WriteLiteral("                            </div>\r\n                        </di
 "       </td>\r\n                </tr>\r\n");
 
             
-            #line 122 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 135 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
             }
 
             
@@ -666,7 +688,7 @@ WriteLiteral(" class=\"fa fa-lg fa-cog fa-spin\"");
 
 WriteLiteral(" title=\"Please Wait\"");
 
-WriteLiteral("></i>Submitting Warranty Job...</h4>\r\n    </div>\r\n");
+WriteLiteral("></i>Lodging Warranty Claim...</h4>\r\n    </div>\r\n");
 
 WriteLiteral(@"    <script>
         $(function () {
@@ -703,12 +725,12 @@ WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(" value=\"Submit Warranty Claim\"");
+WriteLiteral(" value=\"Lodge Warranty Claim\"");
 
 WriteLiteral(" />\r\n    </div>\r\n");
 
             
-            #line 152 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
+            #line 165 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
 }
             
             #line default

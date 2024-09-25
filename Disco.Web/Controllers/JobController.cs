@@ -11,6 +11,7 @@ using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Jobs.Statistics;
 using Disco.Services.Logging;
 using Disco.Services.Plugins.Features.DetailsProvider;
+using Disco.Services.Plugins.Features.InsuranceProvider;
 using Disco.Services.Plugins.Features.RepairProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
@@ -553,7 +554,7 @@ namespace Disco.Web.Controllers
 
             return View(m);
         }
-        [HttpPost, DiscoAuthorize(Claims.Job.Actions.LogWarranty)]
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Job.Actions.LogWarranty), ValidateInput(false)]
         public virtual ActionResult LogWarranty(Models.Job.LogWarrantyModel m, FormCollection form)
         {
             m.UpdateModel(Database, true);
@@ -736,7 +737,7 @@ namespace Disco.Web.Controllers
 
             return View(m);
         }
-        [HttpPost, DiscoAuthorize(Claims.Job.Actions.LogRepair)]
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Job.Actions.LogRepair), ValidateInput(false)]
         public virtual ActionResult LogRepair(Models.Job.LogRepairModel m, FormCollection form)
         {
             m.UpdateModel(Database, true);
@@ -759,12 +760,9 @@ namespace Disco.Web.Controllers
 
                         if (updatedModel.RepairProvider != null)
                         {
-                            using (var wp = updatedModel.RepairProvider.CreateInstance<RepairProviderFeature>())
+                            using (var rp = m.RepairProvider.CreateInstance<RepairProviderFeature>())
                             {
-                                using (var rp = m.RepairProvider.CreateInstance<RepairProviderFeature>())
-                                {
-                                    m.RepairProviderSubmitJobBeginResult = rp.SubmitJobBegin(Database, this, updatedModel.Job, updatedModel.OrganisationAddress, updatedModel.TechUser);
-                                }
+                                updatedModel.RepairProviderSubmitJobBeginResult = rp.SubmitJobBegin(Database, this, updatedModel.Job, updatedModel.OrganisationAddress, updatedModel.TechUser);
                             }
                         }
 
@@ -879,6 +877,188 @@ namespace Disco.Web.Controllers
 
                     model.JobDetailsSupported = false;
                     model.JobDetailsNotSupportedMessage = string.Format("Repair Provider '{0}' is not integrated with Disco ICT", job.JobMetaNonWarranty.RepairerName);
+                    return View(model);
+                }
+                else
+                {
+                    model.JobDetailsSupported = false;
+                    model.JobDetailsNotSupportedMessage = "Job not in the correct state";
+                    return View(model);
+                }
+            }
+            else
+            {
+                return HttpNotFound("Invalid Job Id");
+            }
+        }
+        #endregion
+
+        #region Log Insurance
+        [DiscoAuthorizeAny(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, Claims.Job.Actions.LogInsurance)]
+        public virtual ActionResult LogInsurance(int id, string providerId, int? organisationAddressId)
+        {
+            var m = new Models.Job.LogInsuranceModel()
+            {
+                JobId = id,
+                ProviderId = providerId,
+                OrganisationAddressId = organisationAddressId
+            };
+            m.UpdateModel(Database, false);
+
+            if (m.Provider != null)
+            {
+                using (var rp = m.Provider.CreateInstance<InsuranceProviderFeature>())
+                {
+                    m.ProviderSubmitJobBeginResult = rp.SubmitJobBegin(Database, this, m.Job, m.OrganisationAddress, m.TechUser);
+                }
+            }
+
+            return View(m);
+        }
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorizeAny(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, Claims.Job.Actions.LogInsurance), ValidateInput(false)]
+        public virtual ActionResult LogInsurance(Models.Job.LogInsuranceModel m, FormCollection form)
+        {
+            m.UpdateModel(Database, true);
+
+            if (ModelState.IsValid)
+            {
+                switch (m.SubmissionAction)
+                {
+                    case "Update":
+                        var updatedModel = new Models.Job.LogInsuranceModel()
+                        {
+                            JobId = m.JobId,
+                            ProviderId = m.ProviderId,
+                            OrganisationAddressId = m.OrganisationAddressId,
+                            AttachmentIds = m.AttachmentIds,
+                            Attachments = m.Attachments
+                        };
+                        updatedModel.UpdateModel(Database, false);
+
+                        if (updatedModel.Provider != null)
+                        {
+                            using (var ip = updatedModel.Provider.CreateInstance<InsuranceProviderFeature>())
+                            {
+                                updatedModel.ProviderSubmitJobBeginResult = ip.SubmitJobBegin(Database, this, updatedModel.Job, updatedModel.OrganisationAddress, updatedModel.TechUser);
+                            }
+                        }
+
+                        return View(updatedModel);
+                    case "Manual":
+                        if (string.IsNullOrWhiteSpace(m.ManualProviderName))
+                        {
+                            ModelState.AddModelError("ManualProviderName", "The Provider Name is required");
+                            return View(m);
+                        }
+                        try
+                        {
+                            m.Job.OnLogInsurance(Database, m.ManualProviderName, m.ManualProviderReference, m.OrganisationAddress, m.TechUser);
+                            Database.SaveChanges();
+                            return RedirectToAction(MVC.Job.Show(m.JobId));
+                        }
+                        catch (Exception ex)
+                        {
+                            m.Error = ex;
+                            return View(Views.LogInsuranceError, m);
+                            throw;
+                        }
+                    case "Disclose":
+                        using (var p = m.Provider.CreateInstance<InsuranceProviderFeature>())
+                        {
+                            Dictionary<string, string> providerProperties;
+                            try
+                            {
+                                providerProperties = p.SubmitJobParseProperties(Database, form, this, m.Job, m.OrganisationAddress, m.TechUser);
+                            }
+                            catch (Exception ex)
+                            {
+                                m.Error = ex;
+                                return View(Views.LogInsuranceError, m);
+                            }
+                            if (!ModelState.IsValid)
+                                return View(Views.LogInsurance, m);
+
+                            if (providerProperties != null)
+                            {
+                                m.ProviderPropertiesJson = JsonConvert.SerializeObject(providerProperties);
+                            }
+                            m.DiscloseProperties = p.SubmitJobDiscloseInfo(Database, m.Job, m.OrganisationAddress, m.TechUser, providerProperties);
+                            return View(Views.LogInsuranceDisclose, m);
+                        }
+                    case "Submit":
+                        try
+                        {
+                            m.Job.OnLogInsurance(Database, m.Attachments, m.Provider, m.OrganisationAddress, m.TechUser, m.ProviderProperties());
+                            Database.SaveChanges();
+                            return RedirectToAction(MVC.Job.Show(m.JobId));
+                        }
+                        catch (Exception ex)
+                        {
+                            m.Error = ex;
+                            return View(Views.LogInsuranceError, m);
+                            throw;
+                        }
+                    default:
+                        return RedirectToAction(MVC.Job.Show(m.JobId));
+                }
+
+            }
+            else
+            {
+                return View(m);
+            }
+        }
+
+        [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        public virtual ActionResult InsuranceProviderJobDetails(int id)
+        {
+            var model = new Models.Job.ProviderJobDetailsModel();
+
+            Job job = Database.Jobs
+                .Include(j => j.Device.DeviceModel)
+                .Include(j => j.JobMetaNonWarranty)
+                .Include(j => j.JobMetaInsurance)
+                .Include(j => j.JobSubTypes)
+                .Where(j => j.Id == id).FirstOrDefault();
+            if (job != null)
+            {
+                if (job.JobMetaInsurance != null && !string.IsNullOrEmpty(job.JobMetaInsurance.Insurer))
+                {
+                    var providerDef = InsuranceProviderFeature.FindPluginFeature(job.JobMetaInsurance.Insurer);
+
+                    if (providerDef != null)
+                    {
+                        using (var providerInstance = providerDef.CreateInstance<InsuranceProviderFeature>())
+                        {
+                            if (providerInstance.JobDetailsSupported)
+                            {
+                                try
+                                {
+                                    Tuple<Type, dynamic> details = providerInstance.JobDetails(Database, this, job);
+
+                                    model.JobDetailsSupported = true;
+                                    model.ViewType = details.Item1;
+                                    model.ViewModel = details.Item2;
+                                    return View(model);
+                                }
+                                catch (Exception ex)
+                                {
+                                    model.JobDetailsSupported = false;
+                                    model.JobDetailsException = ex;
+                                    return View(model);
+                                }
+                            }
+                            else
+                            {
+                                model.JobDetailsSupported = false;
+                                model.JobDetailsNotSupportedMessage = $"Plugin '{providerInstance.Manifest.Name} ({providerInstance.Manifest.Id})' (Insurance Provider for '{providerInstance.ProviderId}') doesn't support Job Details";
+                                return View(model);
+                            }
+                        }
+                    }
+
+                    model.JobDetailsSupported = false;
+                    model.JobDetailsNotSupportedMessage = $"Repair Provider '{job.JobMetaNonWarranty.RepairerName}' is not integrated with Disco ICT";
                     return View(model);
                 }
                 else

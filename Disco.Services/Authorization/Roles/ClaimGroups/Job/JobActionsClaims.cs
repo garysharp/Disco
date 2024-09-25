@@ -23,10 +23,12 @@
         [ClaimDetails("Remove from Any Queues", "Can remove from any job queues")]
         public bool RemoveAnyQueues { get; set; }
 
-        [ClaimDetails("Log Warranty", "Can log warranty for jobs")]
+        [ClaimDetails("Lodge Warranty", "Can lodge warranty for jobs")]
         public bool LogWarranty { get; set; }
-        [ClaimDetails("Log Repair", "Can log repair for non-warranty jobs")]
+        [ClaimDetails("Lodge Repair", "Can lodge repair for non-warranty jobs")]
         public bool LogRepair { get; set; }
+        [ClaimDetails("Lodge Insurance", "Can lodge insurance for non-warranty jobs")]
+        public bool LogInsurance { get; set; }
 
         [ClaimDetails("Convert HWar Jobs To HNWar", "Can convert warranty jobs to non-warranty jobs")]
         public bool ConvertHWarToHNWar { get; set; }

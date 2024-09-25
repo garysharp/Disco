@@ -237,7 +237,7 @@ namespace Disco.Services.Plugins
             if (_PluginManifests == null)
                 throw new InvalidOperationException("Plugins have not been initialized");
 
-            return _PluginManifests.Values.SelectMany(pm => pm.Features).Where(fm => fm.CategoryType.IsAssignableFrom(FeatureCategoryType)).OrderBy(fm => fm.PluginManifest.Name).ToList();
+            return _PluginManifests.Values.SelectMany(pm => pm.Features).Where(fm => FeatureCategoryType.IsAssignableFrom(fm.CategoryType)).OrderBy(fm => fm.PluginManifest.Name).ToList();
         }
         public static List<PluginFeatureManifest> GetPluginFeatures()
         {

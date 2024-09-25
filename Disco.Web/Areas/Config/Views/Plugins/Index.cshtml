@@ -1,5 +1,4 @@
 ﻿@model Disco.Web.Areas.Config.Models.Plugins.IndexViewModel
-@using Disco.Services.Plugins;
 @{
     Authorization.Require(Claims.Config.Plugin.Show);
 
@@ -19,7 +18,7 @@
         }
         else
         {
-            var pluginGroups = Model.PluginManifestsByCategory;
+            var pluginGroups = Model.PluginManifestsByCategory.OrderBy(c => c.Key).ToList();
 
 
             int itemsPerColumn = pluginGroups.Count / 3;
@@ -37,8 +36,8 @@
                         var pluginGroup = pluginGroups[itemNextId];
                         itemNextId++;
                             <div class="pageMenuArea">
-                                <h2>@Plugins.PluginFeatureCategoryDisplayName(pluginGroup.Item1)</h2>
-                                @foreach (var pluginDefinition in pluginGroup.Item2)
+                                <h2>@pluginGroup.Key</h2>
+                                @foreach (var pluginDefinition in pluginGroup.Value.OrderBy(p => p.Name))
                                 {
                                     if (canConfig)
                                     {

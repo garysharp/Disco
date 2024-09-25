@@ -41,7 +41,7 @@
                                             {
                                                 if (Version.Parse(plugin.Item2.Version) > installedPlugin.Version)
                                                 {
-                                                    <a class="pluginUpdateLink button" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id)))">Update</a>
+                                                    <a class="pluginUpdateLink button alert" href="@(Url.Action(MVC.API.Plugin.Update(plugin.Item1.Id)))">Update</a>
                                                 }
                                                 else
                                                 {

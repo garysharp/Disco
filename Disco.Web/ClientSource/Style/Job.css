@@ -879,18 +879,22 @@
   margin-right: 10px;
   color: #1e6dab;
 }
-#repairJobForm #repairDisclosedInformation table {
+#repairJobForm #disclosedInformation table,
+#insuranceJobForm #disclosedInformation table {
   font-size: 0.9em;
 }
-#repairJobForm #repairDisclosedInformation table tr:not(:last-child) {
+#repairJobForm #disclosedInformation table tr:not(:last-child),
+#insuranceJobForm #disclosedInformation table tr:not(:last-child) {
   border-bottom: 1px dashed #aaa;
 }
-#repairJobForm #repairDisclosedInformation table th {
+#repairJobForm #disclosedInformation table th,
+#insuranceJobForm #disclosedInformation table th {
   padding: 2px;
   font-weight: 600;
   width: 200px;
 }
-#repairJobForm #repairDisclosedInformation table td {
+#repairJobForm #disclosedInformation table td,
+#insuranceJobForm #disclosedInformation table td {
   padding: 2px;
 }
 #repairJobRepairDescription #RepairDescription {
