@@ -358,7 +358,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (d.CanDecommission())
                 {
-                    d.OnDecommission((DecommissionReasons)Reason);
+                    d.OnDecommission((DecommissionReasons)Reason, Database);
 
                     Database.SaveChanges();
                     if (redirect)

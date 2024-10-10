@@ -80,7 +80,7 @@ namespace Disco.Services
 
             return true;
         }
-        public static void OnDecommission(this Device d, DecommissionReasons Reason)
+        public static void OnDecommission(this Device d, DecommissionReasons Reason, DiscoDataContext database)
         {
             if (!d.CanDecommission())
                 throw new InvalidOperationException("Decommission of Device is Denied");
@@ -91,11 +91,20 @@ namespace Disco.Services
             // Disable AD Account
             if (ActiveDirectory.IsValidDomainAccountId(d.DeviceDomainId))
             {
-                var adAccount = d.ActiveDirectoryAccount();
-                if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                // Don't disable if another active device with the same name exists
+                var duplicateNamedDevice = database.Devices
+                    .Where(i => i.DeviceDomainId == d.DeviceDomainId &&
+                                i.SerialNumber != d.SerialNumber &&
+                                i.DecommissionedDate == null)
+                    .Any();
+                if (!duplicateNamedDevice)
                 {
-                    adAccount.DisableAccount();
-                    adAccount.SetDescription(d);
+                    var adAccount = d.ActiveDirectoryAccount();
+                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                    {
+                        adAccount.DisableAccount();
+                        adAccount.SetDescription(d);
+                    }
                 }
             }
         }
