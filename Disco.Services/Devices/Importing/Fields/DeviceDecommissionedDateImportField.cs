@@ -6,6 +6,7 @@ using Disco.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 
@@ -100,33 +101,42 @@ namespace Disco.Services.Devices.Importing.Fields
         {
             if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
             {
-                var adAccount = Device.ActiveDirectoryAccount();
-
-                if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                // Don't disable if another active device with the same name exists
+                var duplicateNamedDevice = Database.Devices
+                    .Where(i => i.DeviceDomainId == Device.DeviceDomainId &&
+                                i.SerialNumber != Device.SerialNumber &&
+                                i.DecommissionedDate == null)
+                    .Any();
+                if (!duplicateNamedDevice)
                 {
-                    if (Device.DecommissionedDate.HasValue)
-                    {
-                        // Disable AD Account
-                        adAccount.DisableAccount();
-                    }
-                    else
-                    {
-                        // Enable AD Account
-                        adAccount.EnableAccount();
-                    }
+                    var adAccount = Device.ActiveDirectoryAccount();
 
-                    if (!DeviceADDescriptionSet)
+                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
                     {
-                        try
+                        if (Device.DecommissionedDate.HasValue)
                         {
-                            adAccount.SetDescription(Device);
+                            // Disable AD Account
+                            adAccount.DisableAccount();
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            SystemLog.LogWarning($"Unable to update AD Machine Account Description for {Device.DeviceDomainId}: {ex.Message}");
-                            throw;
+                            // Enable AD Account
+                            adAccount.EnableAccount();
                         }
-                        DeviceADDescriptionSet = true;
+
+                        if (!DeviceADDescriptionSet)
+                        {
+                            try
+                            {
+                                adAccount.SetDescription(Device);
+                            }
+                            catch (Exception ex)
+                            {
+                                SystemLog.LogWarning($"Unable to update AD Machine Account Description for {Device.DeviceDomainId}: {ex.Message}");
+                                throw;
+                            }
+                            DeviceADDescriptionSet = true;
+                        }
                     }
                 }
             }
