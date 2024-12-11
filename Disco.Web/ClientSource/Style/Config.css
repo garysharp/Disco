@@ -1284,6 +1284,9 @@ h1.Config_DocumentTemplates {
 #Config_AuthRoles_Subjects_Update_Dialog #Config_AuthRoles_Subjects_Update_Dialog_List li .remove:hover {
   opacity: 1;
 }
+#Config_Lodgment {
+  margin-top: 10px;
+}
 #Config_ReportPrefs {
   margin-top: 10px;
 }

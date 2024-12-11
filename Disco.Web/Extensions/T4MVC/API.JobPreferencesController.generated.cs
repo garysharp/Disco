@@ -73,6 +73,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateLodgmentIncludeAllAttachmentsByDefault()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLodgmentIncludeAllAttachmentsByDefault);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateDefaultNoticeboardTheme()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultNoticeboardTheme);
@@ -131,6 +137,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public readonly string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
+            public readonly string UpdateLodgmentIncludeAllAttachmentsByDefault = "UpdateLodgmentIncludeAllAttachmentsByDefault";
             public readonly string UpdateDefaultNoticeboardTheme = "UpdateDefaultNoticeboardTheme";
             public readonly string UpdateLocationMode = "UpdateLocationMode";
             public readonly string UpdateLocationList = "UpdateLocationList";
@@ -145,6 +152,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public const string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
+            public const string UpdateLodgmentIncludeAllAttachmentsByDefault = "UpdateLodgmentIncludeAllAttachmentsByDefault";
             public const string UpdateDefaultNoticeboardTheme = "UpdateDefaultNoticeboardTheme";
             public const string UpdateLocationMode = "UpdateLocationMode";
             public const string UpdateLocationList = "UpdateLocationList";
@@ -171,6 +179,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateStaleJobMinutesThreshold
         {
             public readonly string StaleJobMinutesThreshold = "StaleJobMinutesThreshold";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateLodgmentIncludeAllAttachmentsByDefault s_params_UpdateLodgmentIncludeAllAttachmentsByDefault = new ActionParamsClass_UpdateLodgmentIncludeAllAttachmentsByDefault();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateLodgmentIncludeAllAttachmentsByDefault UpdateLodgmentIncludeAllAttachmentsByDefaultParams { get { return s_params_UpdateLodgmentIncludeAllAttachmentsByDefault; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateLodgmentIncludeAllAttachmentsByDefault
+        {
+            public readonly string includeAllAttachmentsByDefault = "includeAllAttachmentsByDefault";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateDefaultNoticeboardTheme s_params_UpdateDefaultNoticeboardTheme = new ActionParamsClass_UpdateDefaultNoticeboardTheme();
@@ -280,6 +297,19 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "StaleJobMinutesThreshold", StaleJobMinutesThreshold);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateStaleJobMinutesThresholdOverride(callInfo, StaleJobMinutesThreshold, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateLodgmentIncludeAllAttachmentsByDefaultOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool includeAllAttachmentsByDefault, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateLodgmentIncludeAllAttachmentsByDefault(bool includeAllAttachmentsByDefault, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLodgmentIncludeAllAttachmentsByDefault);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "includeAllAttachmentsByDefault", includeAllAttachmentsByDefault);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateLodgmentIncludeAllAttachmentsByDefaultOverride(callInfo, includeAllAttachmentsByDefault, redirect);
             return callInfo;
         }
 

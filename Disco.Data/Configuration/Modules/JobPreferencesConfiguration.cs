@@ -41,6 +41,12 @@ namespace Disco.Data.Configuration.Modules
             }
         }
 
+        public bool LodgmentIncludeAllAttachmentsByDefault
+        {
+            get { return Get(false); }
+            set { Set(value); }
+        }
+
         /// <summary>
         /// Theme used in noticeboards by default.
         /// <see cref="Disco.Services.Extensions.UIHelpers.NoticeboardThemes"/>

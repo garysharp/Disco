@@ -58,6 +58,7 @@ namespace Disco.Web.Areas.Config.Views.JobPreferences
         Html.BundleDeferred("~/ClientScripts/Modules/Disco-AjaxHelperIcons");
     }
     Html.RenderPartial(MVC.Config.JobPreferences.Views.Parts.General);
+    Html.RenderPartial(MVC.Config.JobPreferences.Views.Parts.Lodgment);
     Html.RenderPartial(MVC.Config.JobPreferences.Views.Parts.Reports);
     Html.RenderPartial(MVC.Config.JobPreferences.Views.Parts.Locations);
     Html.RenderPartial(MVC.Config.JobPreferences.Views.Parts.Expressions);

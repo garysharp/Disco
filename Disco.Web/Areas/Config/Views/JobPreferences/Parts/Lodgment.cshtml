@@ -1,0 +1,45 @@
+﻿@model Disco.Web.Areas.Config.Models.JobPreferences.IndexModel
+@{
+    Authorization.Require(Claims.Config.JobPreferences.Show);
+
+    var canConfig = Authorization.Has(Claims.Config.JobPreferences.Configure);
+}
+<div id="Config_Lodgment" class="form" style="width: 530px;">
+    <h2>Job Lodgment</h2>
+    <table>
+        <tr>
+            <th style="width: 200px">
+                &nbsp;
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.CheckBoxFor(model => model.LodgmentIncludeAllAttachmentsByDefault)
+                    <label for="LodgmentIncludeAllAttachmentsByDefault">Include All Attachments by Default</label>
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>If enabled, all attachments will be selected by default when lodging a job.
+                        </p>
+                    </div>
+                    <script type="text/javascript">
+                    $(function () {
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#LodgmentIncludeAllAttachmentsByDefault'),
+                            null,
+                            '@(Url.Action(MVC.API.JobPreferences.UpdateLodgmentIncludeAllAttachmentsByDefault()))',
+                            'includeAllAttachmentsByDefault');
+                    });
+                    </script>
+                }
+                else
+                {
+                    <span>
+                        @(Model.LodgmentIncludeAllAttachmentsByDefault ? "Yes" : "No")
+                    </span>
+                }
+            </td>
+        </tr>
+    </table>
+</div>

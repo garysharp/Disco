@@ -13,6 +13,7 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
     {
         public int LongRunningJobDaysThreshold { get; set; }
         public int StaleJobMinutesThreshold { get; set; }
+        public bool LodgmentIncludeAllAttachmentsByDefault { get; set; }
         public string DefaultNoticeboardTheme { get; set; }
         public LocationModes LocationMode { get; set; }
         public List<string> LocationList { get; set; }

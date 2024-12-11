@@ -36,6 +36,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateLodgmentIncludeAllAttachmentsByDefault(bool includeAllAttachmentsByDefault, bool redirect = false)
+        {
+            Database.DiscoConfiguration.JobPreferences.LodgmentIncludeAllAttachmentsByDefault = includeAllAttachmentsByDefault;
+            Database.SaveChanges();
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
         public virtual ActionResult UpdateDefaultNoticeboardTheme(string DefaultNoticeboardTheme, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.DefaultNoticeboardTheme = DefaultNoticeboardTheme;

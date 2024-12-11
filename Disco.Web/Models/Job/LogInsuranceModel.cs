@@ -113,8 +113,16 @@ namespace Disco.Web.Models.Job
 
             if (AttachmentIds == null)
             {
-                AttachmentIds = new List<int>();
-                Attachments = new List<Disco.Models.Repository.JobAttachment>();
+                if (Database.DiscoConfiguration.JobPreferences.LodgmentIncludeAllAttachmentsByDefault)
+                {
+                    Attachments = Job.JobAttachments.ToList();
+                    AttachmentIds = Attachments.Select(a => a.Id).ToList();
+                }
+                else
+                {
+                    AttachmentIds = new List<int>();
+                    Attachments = new List<Disco.Models.Repository.JobAttachment>();
+                }
             }
             else
             {
