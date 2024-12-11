@@ -46,7 +46,7 @@ namespace Disco.Services.Plugins
             }
 
             Status.Finished("Restarting Disco ICT, please wait...", "/Config/Plugins");
-            Plugins.RestartApp(2500);
+            Plugins.RestartApp(TimeSpan.FromSeconds(1));
         }
 
         public static ScheduledTaskStatus UninstallPlugin(PluginManifest Manifest, bool UninstallData)

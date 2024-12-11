@@ -34,7 +34,7 @@ namespace Disco.Services.Plugins
 
             // Restart
             Status.Finished("Restarting Disco ICT, please wait...", "/");
-            Plugins.RestartApp(2500);
+            Plugins.RestartApp(TimeSpan.FromSeconds(1));
         }
 
         public static ScheduledTaskStatus UpdateDiscoPlugins(bool ReturnExistingStatusIfRunning)

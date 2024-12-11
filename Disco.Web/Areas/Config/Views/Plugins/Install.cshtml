@@ -65,7 +65,7 @@
 
     }
 </div>
-<div id="dialogInstallPlugin" title="Install this Plugin?">
+<div id="dialogInstallPlugin" title="Install this Plugin?" class="dialog">
     <h2 id="dialogInstallPluginName"></h2>
     <h4 id="dialogInstallPluginDetails"></h4>
 
@@ -75,13 +75,18 @@
             <strong>Only Install plugins from a trusted source.</strong>
         </p>
     </div>
+    @using (Html.BeginForm(MVC.API.Plugin.Install(), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+    }
 </div>
 @if (canInstallLocal)
 {
-    <div id="dialogUploadPlugin" title="Install Plugin Package">
+    <div id="dialogUploadPlugin" title="Install Plugin Package" class="dialog">
         <div style="padding-bottom: 10px;">
             @using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                @Html.AntiForgeryToken()
                 <label for="pluginFile">Plugin Package: </label>
                 <input id="pluginFile" name="Plugin" type="file" accept=".discoPlugin" />
             }
@@ -114,8 +119,10 @@
                         return;
                     }
                     $(this).dialog("disable");
-
-                    window.location.href = $selectedPluginUrl;
+                    $(this)
+                        .find('form')
+                        .attr('action', $selectedPluginUrl)
+                        .submit();
                 },
                 Cancel: function () {
                     $selectedPlugin = null;

@@ -11,10 +11,10 @@
 <div id="plugins">
     @{
         if (Model.PluginManifests.Count == 0)
-        { 
-        <div class="form" style="width: 450px; padding: 100px 0;">
-            <h2>No Plugins are Installed</h2>
-        </div>  
+        {
+            <div class="form" style="width: 450px; padding: 100px 0;">
+                <h2>No Plugins are Installed</h2>
+            </div>
         }
         else
         {
@@ -23,186 +23,191 @@
 
             int itemsPerColumn = pluginGroups.Count / 3;
             var itemNextId = 0;
-    
-        <table id="pageMenu">
-            <tr>
-                @for (int i = 0; i < 3; i++)
-                {
-                    <td>
-                        @{
-                    int itemsForThisColumn = itemsPerColumn + (pluginGroups.Count % 3 > i ? 1 : 0);
-                    for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < pluginGroups.Count; i2++)
+
+            <table id="pageMenu">
+                <tr>
+                    @for (int i = 0; i < 3; i++)
                     {
-                        var pluginGroup = pluginGroups[itemNextId];
-                        itemNextId++;
-                            <div class="pageMenuArea">
-                                <h2>@pluginGroup.Key</h2>
-                                @foreach (var pluginDefinition in pluginGroup.Value.OrderBy(p => p.Name))
+                        <td>
+                            @{
+                                int itemsForThisColumn = itemsPerColumn + (pluginGroups.Count % 3 > i ? 1 : 0);
+                                for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < pluginGroups.Count; i2++)
                                 {
-                                    if (canConfig)
-                                    {
-                                    <a href="@Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))">
-                                        <i class="fa fa-cogs"></i>
-                                        <h3>@pluginDefinition.Name</h3>
-                                    </a>
-                                    }
-                                    else
-                                    {
-                                    <h3>@pluginDefinition.Name</h3>
-                                    }
-                                    <div class="pageMenuBlurb">
-                                        <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" title="More Information" target="_blank"><i class="fa fa-external-link"></i></a>
+                                    var pluginGroup = pluginGroups[itemNextId];
+                                    itemNextId++;
+                                    <div class="pageMenuArea">
+                                        <h2>@pluginGroup.Key</h2>
+                                        @foreach (var pluginDefinition in pluginGroup.Value.OrderBy(p => p.Name))
+                                        {
+                                            if (canConfig)
+                                            {
+                                                <a href="@Url.Action(MVC.Config.Plugins.Configure(pluginDefinition.Id))">
+                                                    <i class="fa fa-cogs"></i>
+                                                    <h3>@pluginDefinition.Name</h3>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <h3>@pluginDefinition.Name</h3>
+                                            }
+                                            <div class="pageMenuBlurb">
+                                                <span class="pluginVersion">v@(pluginDefinition.VersionFormatted)</span> | @pluginDefinition.Author | <a href="@pluginDefinition.Url" title="More Information" target="_blank"><i class="fa fa-external-link"></i></a>
+                                            </div>
+                                        }
                                     </div>
                                 }
-                            </div>
-                    }
-                        }
-                    </td>
-                }
-            </tr>
-        </table>
-                if (canUninstall)
-                {
-        <div id="dialogUninstallPlugins" title="Uninstall Plugin">
-            <div>
-                @Html.DropDownList("uninstallPlugin", Model.PluginManifests.ToSelectListItems(null, true, "Select a Plugin to Uninstall"))
-            </div>
-            <div>
-                <input id="uninstallPluginData" type="checkbox" /><label for="uninstallPluginData"> Uninstall Plugin Data</label>
-                <div id="uninstallPluginDataAlert" class="info-box error" style="display: none;">
-                    <p class="fa-p">
-                        <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div id="dialogUninstallPluginConfirm" title="Confirm Plugin Uninstall">
-            <div class="info-box">
-                <p class="fa-p">
-                    <i class="fa fa-info-circle"></i>Are you sure you want to uninstall this plugin?
-                </p>
-                <h4 id="uninstallPluginConfirm"></h4>
-            </div>
-            <div id="uninstallPluginDataConfirm" class="info-box error" style="display: none;">
-                <p class="fa-p">
-                    <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
-                </p>
-            </div>
-        </div>
-        <script>
-            $(function () {
-                // Uninstall
-                var uninstallUrl = '@(Url.Action(MVC.API.Plugin.Uninstall()))/';
-                var uninstallPlugin, uninstallPluginData, $dialogConfirm, uninstallPluginConfirm, uninstallPluginDataConfirm;
-
-                var pluginId, pluginName, pluginUninstallData;
-
-                var $dialog = $('#dialogUninstallPlugins').dialog({
-                    resizable: false,
-                    modal: true,
-                    width: 350,
-                    autoOpen: false,
-                    buttons: {
-                        "Uninstall": function () {
-                            pluginId = uninstallPlugin.val();
-                            pluginName = uninstallPlugin.find('option:selected').text();
-                            pluginUninstallData = uninstallPluginData.is(':checked');
-
-                            if (!pluginId) {
-                                alert('Select a plugin to uninstall');
-                            } else {
-                                uninstallPluginConfirm.text(pluginName + ' [' + pluginId + ']');
-                                if (pluginUninstallData)
-                                    uninstallPluginDataConfirm.show();
-                                else
-                                    uninstallPluginDataConfirm.hide();
-
-                                $dialogConfirm.dialog('open');
-                                $(this).dialog("close");
                             }
-                        },
-                        Cancel: function () {
-                            uninstallPluginData.prop('checked', false);
-                            $('#uninstallPluginDataAlert').hide();
-                            $(this).dialog("close");
+                        </td>
+                    }
+                </tr>
+            </table>
+            if (canUninstall)
+            {
+                <div id="dialogUninstallPlugins" title="Uninstall Plugin" class="dialog">
+                    <div>
+                        @Html.DropDownList("uninstallPlugin", Model.PluginManifests.OrderBy(p => p.Name).ToSelectListItems(null, true, "Select a Plugin to Uninstall"))
+                    </div>
+                    <div>
+                        <input id="uninstallPluginData" type="checkbox" /><label for="uninstallPluginData"> Uninstall Plugin Data</label>
+                        <div id="uninstallPluginDataAlert" class="info-box error" style="display: none;">
+                            <p class="fa-p">
+                                <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div id="dialogUninstallPluginConfirm" title="Confirm Plugin Uninstall" class="dialog">
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Are you sure you want to uninstall this plugin?
+                        </p>
+                        <h4 id="uninstallPluginConfirm"></h4>
+                    </div>
+                    <div id="uninstallPluginDataConfirm" class="info-box error" style="display: none;">
+                        <p class="fa-p">
+                            <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
+                        </p>
+                    </div>
+                    @using (Html.BeginForm(MVC.API.Plugin.Uninstall(), FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" id="dialogUninstallPluginId" />
+                        <input type="hidden" name="uninstallData" id="dialogUninstallPluginData" value="false" />
+                    }
+                </div>
+                <script>
+                    $(function () {
+
+                        let $dialog = null;
+
+                        $('#buttonUninstall').on('click', function () {
+
+                            if (!$dialog) {
+                                const $dialogConfirm = $('#dialogUninstallPluginConfirm').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    width: 350,
+                                    autoOpen: false,
+                                    buttons: {
+                                        "Confirm Uninstall": function () {
+                                            $dialogConfirm.find('form').submit();
+                                            $(this).dialog("disable");
+                                        },
+                                        Cancel: function () {
+                                            $('#uninstallPluginData').prop('checked', false);
+                                            $('#uninstallPluginDataAlert').hide();
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+
+                                $dialog = $('#dialogUninstallPlugins').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    width: 350,
+                                    autoOpen: false,
+                                    buttons: {
+                                        "Uninstall": function () {
+                                            const $uninstallPlugin = $('#uninstallPlugin');
+                                            pluginId = $uninstallPlugin.val();
+                                            pluginName = $uninstallPlugin.find('option:selected').text();
+                                            pluginUninstallData = $('#uninstallPluginData').is(':checked');
+
+                                            if (!pluginId) {
+                                                alert('Select a plugin to uninstall');
+                                            } else {
+                                                $('#uninstallPluginConfirm').text(pluginName + ' [' + pluginId + ']');
+                                                const $uninstallPluginDataConfirm = $('#uninstallPluginDataConfirm');
+                                                if (pluginUninstallData)
+                                                    $uninstallPluginDataConfirm.show();
+                                                else
+                                                    $uninstallPluginDataConfirm.hide();
+
+                                                $('#dialogUninstallPluginId').val(pluginId);
+                                                $('#dialogUninstallPluginData').val(pluginUninstallData ? 'true' : 'false');
+
+                                                $dialogConfirm.dialog('open');
+                                                $(this).dialog("close");
+                                            }
+                                        },
+                                        Cancel: function () {
+                                            $('#uninstallPluginData').prop('checked', false);
+                                            $('#uninstallPluginDataAlert').hide();
+                                            $(this).dialog("close");
+                                        }
+                                    }
+                                });
+
+                                $('#uninstallPluginData').change(function () {
+                                    if ($(this).is(':checked')) {
+                                        $('#uninstallPluginDataAlert').slideDown();
+                                    } else {
+                                        $('#uninstallPluginDataAlert').slideUp();
+                                    }
+                                });
+                            }
+
+                            $dialog.dialog('open');
+                            return false;
+                        });
+                    });
+                </script>
+            }
+            if (Model.PluginUpdates.Count > 0)
+            {
+                <div id="updateAvailableContainer">
+                    <i class="fa fa-cloud-download"></i>
+                    <div>@(Model.PluginUpdates.Count) plugin update@(Model.PluginUpdates.Count == 1 ? " is" : "s are") available</div>
+                    @if (canInstall)
+                    {
+                        using (Html.BeginForm(MVC.API.Plugin.UpdateAll()))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button class="button small alert" type="submit">Update All</button>
                         }
                     }
-                });
-
-                $dialogConfirm = $('#dialogUninstallPluginConfirm').dialog({
-                    resizable: false,
-                    modal: true,
-                    width: 350,
-                    autoOpen: false,
-                    buttons: {
-                        "Confirm Uninstall": function () {
-                            var url = uninstallUrl + pluginId;
-                            if (pluginUninstallData)
-                                url += '?UninstallData=true'
-                            else
-                                url += '?UninstallData=false'
-
-                            window.location.href = url;
-                            $(this).dialog("disable");
-                        },
-                        Cancel: function () {
-                            uninstallPluginData.prop('checked', false);
-                            $('#uninstallPluginDataAlert').hide();
-                            $(this).dialog("close");
-                        }
+                    else
+                    {
+                        <div class="smallMessage">You do not have sufficient permission to install these updates.</div>
                     }
-                });
+                </div>
+                <script>
+                    (function () {
+                        $(function () {
+                            var layout_PageHeading = $('#layout_PageHeading').height(80);
+                            var updateAvailableContainer = $('#updateAvailableContainer');
+                            updateAvailableContainer.appendTo(layout_PageHeading);
+                        });
+                    })();
+                </script>
 
-                uninstallPlugin = $('#uninstallPlugin');
-                uninstallPluginData = $('#uninstallPluginData');
-                uninstallPluginConfirm = $('#uninstallPluginConfirm');
-                uninstallPluginDataConfirm = $('#uninstallPluginDataConfirm');
-
-                $('#buttonUninstall').click(function () {
-                    $dialog.dialog('open');
-                    return false;
-                });
-
-                $('#uninstallPluginData').change(function () {
-                    if ($(this).is(':checked')) {
-                        $('#uninstallPluginDataAlert').slideDown();
-                    } else {
-                        $('#uninstallPluginDataAlert').slideUp();
-                    }
-                });
-            });
-        </script>
-                }
-                if (Model.PluginUpdates.Count > 0)
-                {
-        <div id="updateAvailableContainer">
-            <i class="fa fa-cloud-download"></i>
-            <div>@(Model.PluginUpdates.Count) plugin update@(Model.PluginUpdates.Count == 1 ? " is" : "s are") available</div>
-            @if (canInstall)
-            {
-                @Html.ActionLinkSmallButton("Update Now", MVC.API.Plugin.UpdateAll(), null, "alert")
             }
-            else
-            {
-                <div class="smallMessage">You do not have sufficient permission to install these updates.</div>
-            }
-        </div>
-        <script>
-            (function () {
-                $(function () {
-                    var layout_PageHeading = $('#layout_PageHeading').height(80);
-                    var updateAvailableContainer = $('#updateAvailableContainer');
-                    updateAvailableContainer.appendTo(layout_PageHeading);
-                });
-            })();
-        </script>    
-                }
         }
     }
 </div>
 <div class="actionBar">
     @if (canUninstall && Model.PluginManifests.Count > 0)
-    { 
+    {
         @Html.ActionLinkButton("Uninstall Plugins", MVC.Config.Plugins.Index(), "buttonUninstall")
     }
     @if (canInstall)

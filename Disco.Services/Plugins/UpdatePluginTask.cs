@@ -18,8 +18,9 @@ namespace Disco.Services.Plugins
 
         protected override void ExecuteTask()
         {
-            string pluginId = (string)ExecutionContext.JobDetail.JobDataMap["PluginId"];
-            string packageFilePath = (string)ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
+            var pluginId = (string)ExecutionContext.JobDetail.JobDataMap["PluginId"];
+            var packageFilePath = (string)ExecutionContext.JobDetail.JobDataMap["PackageFilePath"];
+            var immediateRestart = (bool)ExecutionContext.JobDetail.JobDataMap["ImmediateRestart"];
 
             PluginLibraryManifestV2 libraryManifest;
             PluginLibraryIncompatibility libraryIncompatibility;
@@ -89,7 +90,7 @@ namespace Disco.Services.Plugins
             ExecuteTaskInternal(Status, pluginPackagesLocation, updatePlugins);
 
             Status.Finished("Restarting Disco ICT, please wait...", "/Config/Plugins");
-            Plugins.RestartApp(2500);
+            Plugins.RestartApp(immediateRestart ? TimeSpan.Zero : TimeSpan.FromSeconds(1));
         }
 
         public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext Database)
@@ -258,7 +259,7 @@ namespace Disco.Services.Plugins
             }
         }
 
-        private static ScheduledTaskStatus UpdateHelper(string PluginId = null, string PackageFilePath = null)
+        private static ScheduledTaskStatus UpdateHelper(string pluginId, string packageFilePath, bool immediateRestart)
         {
             if (ScheduledTasks.GetTaskStatuses(typeof(UpdatePluginTask)).Where(s => s.IsRunning).Count() > 0)
                 throw new InvalidOperationException("A plugin is already being Updated");
@@ -267,24 +268,28 @@ namespace Disco.Services.Plugins
             if (ScheduledTasks.GetTaskStatuses(typeof(InstallPluginTask)).Where(s => s.IsRunning).Count() > 0)
                 throw new InvalidOperationException("A plugin is being Installed");
 
-            JobDataMap taskData = new JobDataMap() { { "PluginId", PluginId }, { "PackageFilePath", PackageFilePath } };
+            JobDataMap taskData = new JobDataMap() {
+                { "PluginId", pluginId },
+                { "PackageFilePath", packageFilePath },
+                { "ImmediateRestart", immediateRestart },
+            };
 
             var instance = new UpdatePluginTask();
 
             return instance.ScheduleTask(taskData);
         }
 
-        public static ScheduledTaskStatus UpdateLocalPlugin(string PluginId, string PackageFilePath)
+        public static ScheduledTaskStatus UpdateLocalPlugin(string pluginId, string packageFilePath, bool immediateRestart = false)
         {
-            return UpdateHelper(PluginId, PackageFilePath);
+            return UpdateHelper(pluginId, packageFilePath, immediateRestart);
         }
-        public static ScheduledTaskStatus UpdatePlugin(string PluginId)
+        public static ScheduledTaskStatus UpdatePlugin(string pluginId, bool immediateRestart = false)
         {
-            return UpdateHelper(PluginId);
+            return UpdateHelper(pluginId, packageFilePath: null, immediateRestart);
         }
         public static ScheduledTaskStatus UpdateAllPlugins()
         {
-            return UpdateHelper();
+            return UpdateHelper(pluginId: null, packageFilePath: null, immediateRestart: false);
         }
     }
 }

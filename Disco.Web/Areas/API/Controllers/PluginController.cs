@@ -15,12 +15,12 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class PluginController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.Plugin.Install)]
-        public virtual ActionResult UpdateLibraryManifest(bool TryWaitingForCompletion = false)
+        public virtual ActionResult UpdateLibraryManifest(bool tryWaitingForCompletion = false)
         {
             var status = PluginLibraryUpdateTask.ScheduleNow();
 
             // If upload takes <= 2 seconds, return back to Plugin Install (rather than Task Status)
-            if (TryWaitingForCompletion && status.WaitUntilFinished(TimeSpan.FromSeconds(3)) && status.TaskException == null)
+            if (tryWaitingForCompletion && status.WaitUntilFinished(TimeSpan.FromSeconds(3)) && status.TaskException == null)
             {
                 return RedirectToAction(MVC.Config.Plugins.Install());
             }
@@ -31,7 +31,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        [DiscoAuthorize(Claims.Config.Plugin.Install)]
+        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Install), ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAll()
         {
             var status = UpdatePluginTask.UpdateAllPlugins();
@@ -39,63 +39,39 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [DiscoAuthorize(Claims.Config.Plugin.Install)]
-        public virtual ActionResult Update(string PluginId)
+        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Install), ValidateAntiForgeryToken]
+        public virtual ActionResult Update(string pluginId)
         {
-            if (string.IsNullOrEmpty(PluginId))
+            if (string.IsNullOrEmpty(pluginId))
                 throw new ArgumentNullException("PluginId");
 
-            var status = UpdatePluginTask.UpdatePlugin(PluginId);
+            var status = UpdatePluginTask.UpdatePlugin(pluginId);
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [DiscoAuthorizeAll(Claims.Config.Plugin.Install, Claims.Config.Plugin.InstallLocal)]
-        public virtual ActionResult UpdateLocal(string PluginId, HttpPostedFileBase Plugin)
-        {
-            if (string.IsNullOrEmpty(PluginId))
-                throw new ArgumentNullException("PluginId");
-
-            if (Plugin == null || Plugin.ContentLength <= 0 || string.IsNullOrWhiteSpace(Plugin.FileName))
-                throw new ArgumentException("A discoPlugin file must be uploaded", "Plugin");
-
-            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, Path.GetFileName(Plugin.FileName));
-
-            if (!Directory.Exists(Database.DiscoConfiguration.PluginPackagesLocation))
-                Directory.CreateDirectory(Database.DiscoConfiguration.PluginPackagesLocation);
-
-            if (System.IO.File.Exists(tempPluginLocation))
-                System.IO.File.Delete(tempPluginLocation);
-
-            Plugin.SaveAs(tempPluginLocation);
-
-            var status = UpdatePluginTask.UpdateLocalPlugin(PluginId, tempPluginLocation);
-
-            return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
-        }
-
-        [DiscoAuthorize(Claims.Config.Plugin.Uninstall)]
-        public virtual ActionResult Uninstall(string id, bool UninstallData)
+        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Uninstall), ValidateAntiForgeryToken]
+        public virtual ActionResult Uninstall(string id, bool uninstallData)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
 
             PluginManifest manifest = Plugins.GetPlugin(id);
 
-            var status = UninstallPluginTask.UninstallPlugin(manifest, UninstallData);
+            var status = UninstallPluginTask.UninstallPlugin(manifest, uninstallData);
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [DiscoAuthorize(Claims.Config.Plugin.Install)]
-        public virtual ActionResult Install(string PluginId)
+        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Install), ValidateAntiForgeryToken]
+        public virtual ActionResult Install(string pluginId)
         {
-            if (string.IsNullOrEmpty(PluginId))
+            if (string.IsNullOrEmpty(pluginId))
                 throw new ArgumentNullException("PluginId", "A PluginId must be supplied");
 
             var library = PluginLibrary.LoadManifest(Database);
             var libraryIncompatibility = library.LoadIncompatibilityData();
-            var libraryItem = library.Plugins.FirstOrDefault(p => p.Id.Equals(PluginId));
+            var libraryItem = library.Plugins.FirstOrDefault(p => p.Id.Equals(pluginId));
 
             if (libraryItem == null)
                 throw new ArgumentNullException("PluginId", "Plugin not found in library");
@@ -116,13 +92,13 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [DiscoAuthorizeAll(Claims.Config.Plugin.Install, Claims.Config.Plugin.InstallLocal)]
-        public virtual ActionResult InstallLocal(HttpPostedFileBase Plugin)
+        [HttpPost, DiscoAuthorizeAll(Claims.Config.Plugin.Install, Claims.Config.Plugin.InstallLocal), ValidateAntiForgeryToken]
+        public virtual ActionResult InstallLocal(HttpPostedFileBase plugin, bool immediateRestart = false)
         {
-            if (Plugin == null || Plugin.ContentLength <= 0 || string.IsNullOrWhiteSpace(Plugin.FileName))
+            if (plugin == null || plugin.ContentLength <= 0 || string.IsNullOrWhiteSpace(plugin.FileName))
                 throw new ArgumentException("A discoPlugin file must be uploaded", "Plugin");
 
-            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, Path.GetFileName(Plugin.FileName));
+            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, Path.GetFileName(plugin.FileName));
 
             if (!Directory.Exists(Database.DiscoConfiguration.PluginPackagesLocation))
                 Directory.CreateDirectory(Database.DiscoConfiguration.PluginPackagesLocation);
@@ -130,7 +106,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (System.IO.File.Exists(tempPluginLocation))
                 System.IO.File.Delete(tempPluginLocation);
 
-            Plugin.SaveAs(tempPluginLocation);
+            plugin.SaveAs(tempPluginLocation);
 
             // Check for Install/Update
             PluginManifest packageManifest;
@@ -151,7 +127,7 @@ namespace Disco.Web.Areas.API.Controllers
             
             ScheduledTaskStatus status;
             if (Plugins.PluginInstalled(packageManifest.Id))
-                status = UpdatePluginTask.UpdateLocalPlugin(packageManifest.Id, tempPluginLocation);
+                status = UpdatePluginTask.UpdateLocalPlugin(packageManifest.Id, tempPluginLocation, immediateRestart);
             else
                 status = InstallPluginTask.InstallLocalPlugin(tempPluginLocation, true);
 

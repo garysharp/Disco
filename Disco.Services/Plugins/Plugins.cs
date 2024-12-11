@@ -505,7 +505,7 @@ namespace Disco.Services.Plugins
         #region Restart App
         private static object _restartTimerLock = new object();
         private static Timer _restartTimer;
-        internal static void RestartApp(int DelayMilliseconds)
+        internal static void RestartApp(TimeSpan delay)
         {
             lock (_restartTimerLock)
             {
@@ -514,11 +514,15 @@ namespace Disco.Services.Plugins
                     _restartTimer.Dispose();
                 }
 
-                _restartTimer = new Timer((state) =>
-                {
+                if (delay == TimeSpan.Zero)
                     HttpRuntime.UnloadAppDomain();
-                    //AppDomain.Unload(AppDomain.CurrentDomain);
-                }, null, DelayMilliseconds, Timeout.Infinite);
+                else
+                {
+                    _restartTimer = new Timer((state) =>
+                    {
+                        HttpRuntime.UnloadAppDomain();
+                    }, null, (int)delay.TotalMilliseconds, Timeout.Infinite);
+                }
             }
         }
         #endregion

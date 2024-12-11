@@ -400,6 +400,8 @@ WriteLiteral(" id=\"dialogInstallPlugin\"");
 
 WriteLiteral(" title=\"Install this Plugin?\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(">\r\n    <h2");
 
 WriteLiteral(" id=\"dialogInstallPluginName\"");
@@ -422,10 +424,41 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
 
 WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level of network pri" +
 "vileges as the Disco ICT Web App.<br />\r\n            <strong>Only Install plugin" +
-"s from a trusted source.</strong>\r\n        </p>\r\n    </div>\r\n</div>\r\n");
+"s from a trusted source.</strong>\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 79 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 78 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 78 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+     using (Html.BeginForm(MVC.API.Plugin.Install(), FormMethod.Post))
+    {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 80 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+   Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 80 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
+
+            
+            #line 83 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
  if (canInstallLocal)
 {
 
@@ -438,6 +471,8 @@ WriteLiteral(" id=\"dialogUploadPlugin\"");
 
 WriteLiteral(" title=\"Install Plugin Package\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(">\r\n        <div");
 
 WriteLiteral(" style=\"padding-bottom: 10px;\"");
@@ -445,15 +480,29 @@ WriteLiteral(" style=\"padding-bottom: 10px;\"");
 WriteLiteral(">\r\n");
 
             
-            #line 83 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 87 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 83 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 87 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
              using (Html.BeginForm(MVC.API.Plugin.InstallLocal(), FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 89 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 89 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+                                        
 
             
             #line default
@@ -477,7 +526,7 @@ WriteLiteral(" accept=\".discoPlugin\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 87 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 92 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
             }
 
             
@@ -501,7 +550,7 @@ WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level
 "iv>\r\n");
 
             
-            #line 96 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 101 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
 }
 
             
@@ -515,35 +564,36 @@ WriteLiteral("<script>\r\n    $(function () {\r\n        var $selectedPlugin;\r\
 "   \"Install\": function () {\r\n                    if ($selectedPlugin == null || " +
 "!$selectedPluginUrl) {\r\n                        $(this).dialog(\"close\");\r\n      " +
 "                  return;\r\n                    }\r\n                    $(this).di" +
-"alog(\"disable\");\r\n\r\n                    window.location.href = $selectedPluginUr" +
-"l;\r\n                },\r\n                Cancel: function () {\r\n                 " +
-"   $selectedPlugin = null;\r\n                    $(this).dialog(\"close\");\r\n      " +
-"          }\r\n            }\r\n        });\r\n        $(\'#pluginLibraryGroups\').find(" +
-"\'a.pluginInstallLink\').click(function () {\r\n            $this = $(this);\r\n\r\n    " +
-"        $selectedPlugin = $this.closest(\'.pluginItem\');\r\n            $selectedPl" +
-"uginUrl = $this.attr(\'href\');\r\n\r\n            $(\'#dialogInstallPluginName\').text(" +
-"$selectedPlugin.find(\'.pluginName\').text());\r\n            $(\'#dialogInstallPlugi" +
-"nDetails\').text($selectedPlugin.find(\'.pluginId\').text() + \' | \' + $selectedPlug" +
-"in.find(\'.pluginVersion\').text());\r\n\r\n            $dialogInstall.dialog(\'option\'" +
-", \'title\', \'Install this Plugin?\');\r\n            $dialogInstall.dialog(\'open\');\r" +
-"\n\r\n            return false;\r\n        });\r\n        $(\'#pluginLibraryGroups\').fin" +
-"d(\'a.pluginUpdateLink\').click(function () {\r\n            $this = $(this);\r\n\r\n   " +
-"         $selectedPlugin = $this.closest(\'.pluginItem\');\r\n            $selectedP" +
-"luginUrl = $this.attr(\'href\');\r\n\r\n            $(\'#dialogInstallPluginName\').text" +
-"($selectedPlugin.find(\'.pluginName\').text());\r\n            $(\'#dialogInstallPlug" +
-"inDetails\').text($selectedPlugin.find(\'.pluginId\').text() + \' | \' + $selectedPlu" +
-"gin.find(\'.pluginVersion\').text());\r\n\r\n            $dialogInstall.dialog(\'option" +
-"\', \'title\', \'Update this Plugin?\');\r\n            $dialogInstall.dialog(\'open\');\r" +
-"\n\r\n            return false;\r\n        });\r\n\r\n");
+"alog(\"disable\");\r\n                    $(this)\r\n                        .find(\'fo" +
+"rm\')\r\n                        .attr(\'action\', $selectedPluginUrl)\r\n             " +
+"           .submit();\r\n                },\r\n                Cancel: function () {" +
+"\r\n                    $selectedPlugin = null;\r\n                    $(this).dialo" +
+"g(\"close\");\r\n                }\r\n            }\r\n        });\r\n        $(\'#pluginLi" +
+"braryGroups\').find(\'a.pluginInstallLink\').click(function () {\r\n            $this" +
+" = $(this);\r\n\r\n            $selectedPlugin = $this.closest(\'.pluginItem\');\r\n    " +
+"        $selectedPluginUrl = $this.attr(\'href\');\r\n\r\n            $(\'#dialogInstal" +
+"lPluginName\').text($selectedPlugin.find(\'.pluginName\').text());\r\n            $(\'" +
+"#dialogInstallPluginDetails\').text($selectedPlugin.find(\'.pluginId\').text() + \' " +
+"| \' + $selectedPlugin.find(\'.pluginVersion\').text());\r\n\r\n            $dialogInst" +
+"all.dialog(\'option\', \'title\', \'Install this Plugin?\');\r\n            $dialogInsta" +
+"ll.dialog(\'open\');\r\n\r\n            return false;\r\n        });\r\n        $(\'#plugin" +
+"LibraryGroups\').find(\'a.pluginUpdateLink\').click(function () {\r\n            $thi" +
+"s = $(this);\r\n\r\n            $selectedPlugin = $this.closest(\'.pluginItem\');\r\n   " +
+"         $selectedPluginUrl = $this.attr(\'href\');\r\n\r\n            $(\'#dialogInsta" +
+"llPluginName\').text($selectedPlugin.find(\'.pluginName\').text());\r\n            $(" +
+"\'#dialogInstallPluginDetails\').text($selectedPlugin.find(\'.pluginId\').text() + \'" +
+" | \' + $selectedPlugin.find(\'.pluginVersion\').text());\r\n\r\n            $dialogIns" +
+"tall.dialog(\'option\', \'title\', \'Update this Plugin?\');\r\n            $dialogInsta" +
+"ll.dialog(\'open\');\r\n\r\n            return false;\r\n        });\r\n\r\n");
 
             
-            #line 155 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 162 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 155 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 162 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
          if (canInstallLocal)
         {
             
@@ -578,7 +628,7 @@ WriteLiteral(@"
         ");
 
             
-            #line 182 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 189 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                }
 
             
@@ -593,7 +643,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 186 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 193 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
 Write(Html.ActionLinkButton("Update Plugin Library", MVC.API.Plugin.UpdateLibraryManifest()));
 
             
@@ -602,13 +652,13 @@ Write(Html.ActionLinkButton("Update Plugin Library", MVC.API.Plugin.UpdateLibrar
 WriteLiteral("\r\n");
 
             
-            #line 187 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 194 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 187 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 194 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
      if (canInstallLocal)
     {
         
@@ -616,14 +666,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 189 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 196 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
    Write(Html.ActionLinkButton("Install Plugin Package", MVC.API.Plugin.InstallLocal(), "buttonUpload"));
 
             
             #line default
             #line hidden
             
-            #line 189 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
+            #line 196 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
                                                                                                        
     }
 

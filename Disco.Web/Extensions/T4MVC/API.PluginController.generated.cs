@@ -67,12 +67,6 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateLocal()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocal);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Uninstall()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
@@ -108,7 +102,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateLibraryManifest = "UpdateLibraryManifest";
             public readonly string UpdateAll = "UpdateAll";
             public readonly string Update = "Update";
-            public readonly string UpdateLocal = "UpdateLocal";
             public readonly string Uninstall = "Uninstall";
             public readonly string Install = "Install";
             public readonly string InstallLocal = "InstallLocal";
@@ -120,7 +113,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateLibraryManifest = "UpdateLibraryManifest";
             public const string UpdateAll = "UpdateAll";
             public const string Update = "Update";
-            public const string UpdateLocal = "UpdateLocal";
             public const string Uninstall = "Uninstall";
             public const string Install = "Install";
             public const string InstallLocal = "InstallLocal";
@@ -133,7 +125,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_UpdateLibraryManifest
         {
-            public readonly string TryWaitingForCompletion = "TryWaitingForCompletion";
+            public readonly string tryWaitingForCompletion = "tryWaitingForCompletion";
         }
         static readonly ActionParamsClass_Update s_params_Update = new ActionParamsClass_Update();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -141,16 +133,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Update
         {
-            public readonly string PluginId = "PluginId";
-        }
-        static readonly ActionParamsClass_UpdateLocal s_params_UpdateLocal = new ActionParamsClass_UpdateLocal();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateLocal UpdateLocalParams { get { return s_params_UpdateLocal; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateLocal
-        {
-            public readonly string PluginId = "PluginId";
-            public readonly string Plugin = "Plugin";
+            public readonly string pluginId = "pluginId";
         }
         static readonly ActionParamsClass_Uninstall s_params_Uninstall = new ActionParamsClass_Uninstall();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -159,7 +142,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Uninstall
         {
             public readonly string id = "id";
-            public readonly string UninstallData = "UninstallData";
+            public readonly string uninstallData = "uninstallData";
         }
         static readonly ActionParamsClass_Install s_params_Install = new ActionParamsClass_Install();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -167,7 +150,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Install
         {
-            public readonly string PluginId = "PluginId";
+            public readonly string pluginId = "pluginId";
         }
         static readonly ActionParamsClass_InstallLocal s_params_InstallLocal = new ActionParamsClass_InstallLocal();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -175,7 +158,8 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_InstallLocal
         {
-            public readonly string Plugin = "Plugin";
+            public readonly string plugin = "plugin";
+            public readonly string immediateRestart = "immediateRestart";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -197,14 +181,14 @@ namespace Disco.Web.Areas.API.Controllers
         public T4MVC_PluginController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void UpdateLibraryManifestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool TryWaitingForCompletion);
+        partial void UpdateLibraryManifestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool tryWaitingForCompletion);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateLibraryManifest(bool TryWaitingForCompletion)
+        public override System.Web.Mvc.ActionResult UpdateLibraryManifest(bool tryWaitingForCompletion)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLibraryManifest);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "TryWaitingForCompletion", TryWaitingForCompletion);
-            UpdateLibraryManifestOverride(callInfo, TryWaitingForCompletion);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "tryWaitingForCompletion", tryWaitingForCompletion);
+            UpdateLibraryManifestOverride(callInfo, tryWaitingForCompletion);
             return callInfo;
         }
 
@@ -220,64 +204,52 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId);
+        partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string pluginId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Update(string PluginId)
+        public override System.Web.Mvc.ActionResult Update(string pluginId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PluginId", PluginId);
-            UpdateOverride(callInfo, PluginId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "pluginId", pluginId);
+            UpdateOverride(callInfo, pluginId);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateLocalOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId, System.Web.HttpPostedFileBase Plugin);
+        partial void UninstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool uninstallData);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateLocal(string PluginId, System.Web.HttpPostedFileBase Plugin)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocal);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PluginId", PluginId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
-            UpdateLocalOverride(callInfo, PluginId, Plugin);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void UninstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool UninstallData);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Uninstall(string id, bool UninstallData)
+        public override System.Web.Mvc.ActionResult Uninstall(string id, bool uninstallData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Uninstall);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UninstallData", UninstallData);
-            UninstallOverride(callInfo, id, UninstallData);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "uninstallData", uninstallData);
+            UninstallOverride(callInfo, id, uninstallData);
             return callInfo;
         }
 
         [NonAction]
-        partial void InstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string PluginId);
+        partial void InstallOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string pluginId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Install(string PluginId)
+        public override System.Web.Mvc.ActionResult Install(string pluginId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Install);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PluginId", PluginId);
-            InstallOverride(callInfo, PluginId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "pluginId", pluginId);
+            InstallOverride(callInfo, pluginId);
             return callInfo;
         }
 
         [NonAction]
-        partial void InstallLocalOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase Plugin);
+        partial void InstallLocalOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase plugin, bool immediateRestart);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult InstallLocal(System.Web.HttpPostedFileBase Plugin)
+        public override System.Web.Mvc.ActionResult InstallLocal(System.Web.HttpPostedFileBase plugin, bool immediateRestart)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InstallLocal);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Plugin", Plugin);
-            InstallLocalOverride(callInfo, Plugin);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "plugin", plugin);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "immediateRestart", immediateRestart);
+            InstallLocalOverride(callInfo, plugin, immediateRestart);
             return callInfo;
         }
 
