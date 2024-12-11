@@ -125,20 +125,24 @@
         <table>
             <tr>
                 <td>
+                    <p id="publishJobAttachmentsSelect">
+                        Select <a href="#" class="all">All</a> | <a href="#" class="none">None</a>
+                    </p>
                     <div id="publishJobAttachments">
                         @foreach (var ja in Model.Job.JobAttachments)
                         {
                             <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
                                 <input type="checkbox" class="select" name="PublishAttachmentIds" value="@ja.Id" @(Model.PublishAttachmentIds.Contains(ja.Id) ? "checked" : null) />
                                 <span class="icon" title="@ja.Filename">
-                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
+                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" />
+                                </span>
                                 <span class="comments" title="@ja.Comments">
                                     @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                      { @ja.DocumentTemplate.Description}
-                                      else
-                                      { @ja.Comments }}
+                                        { @ja.DocumentTemplate.Description}
+                                    else
+                                    { @ja.Comments }}
                                 </span><span class="author">@ja.TechUser.ToStringFriendly()</span><span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
-                            </a>   
+                            </a>
                         }
                     </div>
                 </td>
@@ -200,5 +204,23 @@
         } else {
             $('#RepairDescription').focus();
         }
+
+        $('#publishJobAttachments').on('click', 'input', function (e) {
+            e.preventDefault();
+            setTimeout(function () {
+                var $i = $(e.currentTarget);
+                $i.prop('checked', !$i.prop('checked'));
+            }, 0);
+            return false;
+        });
+        $('#publishJobAttachmentsSelect').on('click', 'a', function (e) {
+            e.preventDefault();
+            var $i = $(e.currentTarget);
+            var $c = $i.hasClass('all');
+            setTimeout(function () {
+                $('#publishJobAttachments').find('input:not(:disabled)').prop('checked', $c);
+            }, 0);
+            return false;
+        });
     });
 </script>

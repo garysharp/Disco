@@ -499,20 +499,36 @@ WriteLiteral(" class=\"form\"");
 WriteLiteral(" style=\"width: 650px; margin-top: 15px;\"");
 
 WriteLiteral(">\r\n        <h2>Send Attachments</h2>\r\n        <table>\r\n            <tr>\r\n        " +
-"        <td>\r\n                    <div");
+"        <td>\r\n                    <p");
+
+WriteLiteral(" id=\"publishJobAttachmentsSelect\"");
+
+WriteLiteral(">\r\n                        Select <a");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"all\"");
+
+WriteLiteral(">All</a> | <a");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"none\"");
+
+WriteLiteral(">None</a>\r\n                    </p>\r\n                    <div");
 
 WriteLiteral(" id=\"publishJobAttachments\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 112 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 115 "..\..\Views\Job\LogInsurance.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 112 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 115 "..\..\Views\Job\LogInsurance.cshtml"
                          foreach (var ja in Model.Job.JobAttachments)
                         {
 
@@ -521,20 +537,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4839), Tuple.Create("\"", 4896)
+WriteAttribute("href", Tuple.Create(" href=\"", 5023), Tuple.Create("\"", 5080)
             
-            #line 114 "..\..\Views\Job\LogInsurance.cshtml"
-, Tuple.Create(Tuple.Create("", 4846), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+            #line 117 "..\..\Views\Job\LogInsurance.cshtml"
+, Tuple.Create(Tuple.Create("", 5030), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 4846), false)
+, 5030), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 114 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 117 "..\..\Views\Job\LogInsurance.cshtml"
                                                                                                        Write(ja.Id);
 
             
@@ -545,7 +561,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 114 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 117 "..\..\Views\Job\LogInsurance.cshtml"
                                                                                                                               Write(ja.MimeType);
 
             
@@ -561,20 +577,20 @@ WriteLiteral(" class=\"select\"");
 
 WriteLiteral(" name=\"AttachmentIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 5046), Tuple.Create("\"", 5060)
+WriteAttribute("value", Tuple.Create(" value=\"", 5230), Tuple.Create("\"", 5244)
             
-            #line 115 "..\..\Views\Job\LogInsurance.cshtml"
-                  , Tuple.Create(Tuple.Create("", 5054), Tuple.Create<System.Object, System.Int32>(ja.Id
+            #line 118 "..\..\Views\Job\LogInsurance.cshtml"
+                  , Tuple.Create(Tuple.Create("", 5238), Tuple.Create<System.Object, System.Int32>(ja.Id
             
             #line default
             #line hidden
-, 5054), false)
+, 5238), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 115 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 118 "..\..\Views\Job\LogInsurance.cshtml"
                                                                                                       Write(Model.AttachmentIds.Contains(ja.Id) ? "checked" : null);
 
             
@@ -584,84 +600,85 @@ WriteLiteral(" />\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5174), Tuple.Create("\"", 5194)
+WriteAttribute("title", Tuple.Create(" title=\"", 5358), Tuple.Create("\"", 5378)
             
-            #line 116 "..\..\Views\Job\LogInsurance.cshtml"
-, Tuple.Create(Tuple.Create("", 5182), Tuple.Create<System.Object, System.Int32>(ja.Filename
+            #line 119 "..\..\Views\Job\LogInsurance.cshtml"
+, Tuple.Create(Tuple.Create("", 5366), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 5182), false)
+, 5366), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 5265), Tuple.Create("\"", 5324)
+WriteAttribute("src", Tuple.Create(" src=\"", 5449), Tuple.Create("\"", 5508)
             
-            #line 117 "..\..\Views\Job\LogInsurance.cshtml"
-, Tuple.Create(Tuple.Create("", 5271), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+            #line 120 "..\..\Views\Job\LogInsurance.cshtml"
+, Tuple.Create(Tuple.Create("", 5455), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 5271), false)
+, 5455), false)
 );
 
-WriteLiteral(" /></span>\r\n                                <span");
+WriteLiteral(" />\r\n                                </span>\r\n                                <sp" +
+"an");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5391), Tuple.Create("\"", 5411)
+WriteAttribute("title", Tuple.Create(" title=\"", 5609), Tuple.Create("\"", 5629)
             
-            #line 118 "..\..\Views\Job\LogInsurance.cshtml"
-, Tuple.Create(Tuple.Create("", 5399), Tuple.Create<System.Object, System.Int32>(ja.Comments
+            #line 122 "..\..\Views\Job\LogInsurance.cshtml"
+, Tuple.Create(Tuple.Create("", 5617), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 5399), false)
+, 5617), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 119 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 123 "..\..\Views\Job\LogInsurance.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 119 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 123 "..\..\Views\Job\LogInsurance.cshtml"
                                       if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                      { 
+                                        { 
             
             #line default
             #line hidden
             
-            #line 120 "..\..\Views\Job\LogInsurance.cshtml"
-                                   Write(ja.DocumentTemplate.Description);
+            #line 124 "..\..\Views\Job\LogInsurance.cshtml"
+                                     Write(ja.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-            #line 120 "..\..\Views\Job\LogInsurance.cshtml"
-                                                                        }
-                                      else
-                                      { 
+            #line 124 "..\..\Views\Job\LogInsurance.cshtml"
+                                                                          }
+                                    else
+                                    { 
             
             #line default
             #line hidden
             
-            #line 122 "..\..\Views\Job\LogInsurance.cshtml"
-                                   Write(ja.Comments);
+            #line 126 "..\..\Views\Job\LogInsurance.cshtml"
+                                 Write(ja.Comments);
 
             
             #line default
             #line hidden
             
-            #line 122 "..\..\Views\Job\LogInsurance.cshtml"
-                                                     }
+            #line 126 "..\..\Views\Job\LogInsurance.cshtml"
+                                                   }
             
             #line default
             #line hidden
@@ -672,7 +689,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 123 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 127 "..\..\Views\Job\LogInsurance.cshtml"
                                                        Write(ja.TechUser.ToStringFriendly());
 
             
@@ -685,7 +702,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 123 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 127 "..\..\Views\Job\LogInsurance.cshtml"
                                                                                                                                       Write(ja.Timestamp.ToUnixEpoc());
 
             
@@ -693,29 +710,29 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5847), Tuple.Create("\"", 5885)
+WriteAttribute("title", Tuple.Create(" title=\"", 6063), Tuple.Create("\"", 6101)
             
-            #line 123 "..\..\Views\Job\LogInsurance.cshtml"
-                                                                                               , Tuple.Create(Tuple.Create("", 5855), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+            #line 127 "..\..\Views\Job\LogInsurance.cshtml"
+                                                                                               , Tuple.Create(Tuple.Create("", 6071), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 5855), false)
+, 6071), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 123 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 127 "..\..\Views\Job\LogInsurance.cshtml"
                                                                                                                                                                                                           Write(ja.Timestamp.ToFullDateTime());
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                            </a>   \r\n");
+WriteLiteral("</span>\r\n                            </a>\r\n");
 
             
-            #line 125 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 129 "..\..\Views\Job\LogInsurance.cshtml"
                         }
 
             
@@ -725,7 +742,7 @@ WriteLiteral("                    </div>\r\n                </td>\r\n           
 "able>\r\n    </div>\r\n");
 
             
-            #line 131 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 135 "..\..\Views\Job\LogInsurance.cshtml"
             }
             if (Model.Provider != null && Model.ProviderSubmitJobBeginResult != null)
             { 
@@ -742,7 +759,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 135 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 139 "..\..\Views\Job\LogInsurance.cshtml"
    Write(Html.PartialCompiled(Model.ProviderSubmitJobBeginResult.Item1, Model.ProviderSubmitJobBeginResult.Item2));
 
             
@@ -751,7 +768,7 @@ WriteLiteral("        ");
 WriteLiteral("\r\n    </div>\r\n");
 
             
-            #line 137 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 141 "..\..\Views\Job\LogInsurance.cshtml"
             }
 
             
@@ -764,13 +781,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 139 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 143 "..\..\Views\Job\LogInsurance.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 139 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 143 "..\..\Views\Job\LogInsurance.cshtml"
          if (Model.IsManualProvider)
         {
 
@@ -788,7 +805,7 @@ WriteLiteral(" value=\"Save Insurance Claim\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 142 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 146 "..\..\Views\Job\LogInsurance.cshtml"
         }
         else
         {
@@ -807,7 +824,7 @@ WriteLiteral(" value=\"Preview Insurance Claim\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 146 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 150 "..\..\Views\Job\LogInsurance.cshtml"
         }
 
             
@@ -816,7 +833,7 @@ WriteLiteral(" />\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 148 "..\..\Views\Job\LogInsurance.cshtml"
+            #line 152 "..\..\Views\Job\LogInsurance.cshtml"
 }
 
             
@@ -846,8 +863,17 @@ WriteLiteral(">\r\n    $(function () {\r\n        var $providerId = $(\'#Provide
 " $providerId.change(updateDetails);\r\n        $addressId.change(updateDetails);\r\n" +
 "\r\n        var manualProvider = $(\'#ManualProviderName\');\r\n        if (manualProv" +
 "ider.length > 0 && !manualProvider.val()) {\r\n            manualProvider.focus();" +
-"\r\n        } else {\r\n            $(\'#ProviderId\').focus();\r\n        }\r\n    });\r\n<" +
-"/script>\r\n");
+"\r\n        } else {\r\n            $(\'#ProviderId\').focus();\r\n        }\r\n\r\n        " +
+"$(\'#publishJobAttachments\').on(\'click\', \'input\', function (e) {\r\n            e.p" +
+"reventDefault();\r\n            setTimeout(function () {\r\n                var $i =" +
+" $(e.currentTarget);\r\n                $i.prop(\'checked\', !$i.prop(\'checked\'));\r\n" +
+"            }, 0);\r\n            return false;\r\n        });\r\n        $(\'#publishJ" +
+"obAttachmentsSelect\').on(\'click\', \'a\', function (e) {\r\n            e.preventDefa" +
+"ult();\r\n            var $i = $(e.currentTarget);\r\n            var $c = $i.hasCla" +
+"ss(\'all\');\r\n            setTimeout(function () {\r\n                $(\'#publishJob" +
+"Attachments\').find(\'input:not(:disabled)\').prop(\'checked\', $c).trigger(\'change\')" +
+";\r\n            }, 0);\r\n            return false;\r\n        });\r\n    });\r\n</script" +
+">\r\n");
 
         }
     }

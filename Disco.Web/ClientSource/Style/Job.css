@@ -794,8 +794,9 @@
   padding: 2px;
 }
 #warrantyJobFaultDescription #FaultDescription {
-  width: 600px;
-  height: 250px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 150px;
 }
 #publishJobAttachments {
   border: 1px solid #ccc;
@@ -898,8 +899,9 @@
   padding: 2px;
 }
 #repairJobRepairDescription #RepairDescription {
-  width: 600px;
-  height: 250px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 150px;
 }
 #createJob_Container {
   margin: 0 -20px;

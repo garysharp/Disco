@@ -536,20 +536,36 @@ WriteLiteral(" class=\"form\"");
 WriteLiteral(" style=\"width: 650px; margin-top: 15px;\"");
 
 WriteLiteral(">\r\n        <h2>Send Attachments</h2>\r\n        <table>\r\n            <tr>\r\n        " +
-"        <td>\r\n                    <div");
+"        <td>\r\n                    <p");
+
+WriteLiteral(" id=\"publishJobAttachmentsSelect\"");
+
+WriteLiteral(">\r\n                        Select <a");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"all\"");
+
+WriteLiteral(">All</a> | <a");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"none\"");
+
+WriteLiteral(">None</a>\r\n                    </p>\r\n                    <div");
 
 WriteLiteral(" id=\"publishJobAttachments\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 129 "..\..\Views\Job\LogRepair.cshtml"
+            #line 132 "..\..\Views\Job\LogRepair.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 129 "..\..\Views\Job\LogRepair.cshtml"
+            #line 132 "..\..\Views\Job\LogRepair.cshtml"
                          foreach (var ja in Model.Job.JobAttachments)
                         {
 
@@ -558,20 +574,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 5455), Tuple.Create("\"", 5512)
+WriteAttribute("href", Tuple.Create(" href=\"", 5639), Tuple.Create("\"", 5696)
             
-            #line 131 "..\..\Views\Job\LogRepair.cshtml"
-, Tuple.Create(Tuple.Create("", 5462), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+            #line 134 "..\..\Views\Job\LogRepair.cshtml"
+, Tuple.Create(Tuple.Create("", 5646), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 5462), false)
+, 5646), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 131 "..\..\Views\Job\LogRepair.cshtml"
+            #line 134 "..\..\Views\Job\LogRepair.cshtml"
                                                                                                        Write(ja.Id);
 
             
@@ -582,7 +598,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 131 "..\..\Views\Job\LogRepair.cshtml"
+            #line 134 "..\..\Views\Job\LogRepair.cshtml"
                                                                                                                               Write(ja.MimeType);
 
             
@@ -598,20 +614,20 @@ WriteLiteral(" class=\"select\"");
 
 WriteLiteral(" name=\"PublishAttachmentIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 5669), Tuple.Create("\"", 5683)
+WriteAttribute("value", Tuple.Create(" value=\"", 5853), Tuple.Create("\"", 5867)
             
-            #line 132 "..\..\Views\Job\LogRepair.cshtml"
-                         , Tuple.Create(Tuple.Create("", 5677), Tuple.Create<System.Object, System.Int32>(ja.Id
+            #line 135 "..\..\Views\Job\LogRepair.cshtml"
+                         , Tuple.Create(Tuple.Create("", 5861), Tuple.Create<System.Object, System.Int32>(ja.Id
             
             #line default
             #line hidden
-, 5677), false)
+, 5861), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 132 "..\..\Views\Job\LogRepair.cshtml"
+            #line 135 "..\..\Views\Job\LogRepair.cshtml"
                                                                                                              Write(Model.PublishAttachmentIds.Contains(ja.Id) ? "checked" : null);
 
             
@@ -621,84 +637,85 @@ WriteLiteral(" />\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5804), Tuple.Create("\"", 5824)
+WriteAttribute("title", Tuple.Create(" title=\"", 5988), Tuple.Create("\"", 6008)
             
-            #line 133 "..\..\Views\Job\LogRepair.cshtml"
-, Tuple.Create(Tuple.Create("", 5812), Tuple.Create<System.Object, System.Int32>(ja.Filename
+            #line 136 "..\..\Views\Job\LogRepair.cshtml"
+, Tuple.Create(Tuple.Create("", 5996), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 5812), false)
+, 5996), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 5895), Tuple.Create("\"", 5954)
+WriteAttribute("src", Tuple.Create(" src=\"", 6079), Tuple.Create("\"", 6138)
             
-            #line 134 "..\..\Views\Job\LogRepair.cshtml"
-, Tuple.Create(Tuple.Create("", 5901), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+            #line 137 "..\..\Views\Job\LogRepair.cshtml"
+, Tuple.Create(Tuple.Create("", 6085), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 5901), false)
+, 6085), false)
 );
 
-WriteLiteral(" /></span>\r\n                                <span");
+WriteLiteral(" />\r\n                                </span>\r\n                                <sp" +
+"an");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6021), Tuple.Create("\"", 6041)
+WriteAttribute("title", Tuple.Create(" title=\"", 6239), Tuple.Create("\"", 6259)
             
-            #line 135 "..\..\Views\Job\LogRepair.cshtml"
-, Tuple.Create(Tuple.Create("", 6029), Tuple.Create<System.Object, System.Int32>(ja.Comments
+            #line 139 "..\..\Views\Job\LogRepair.cshtml"
+, Tuple.Create(Tuple.Create("", 6247), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 6029), false)
+, 6247), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 136 "..\..\Views\Job\LogRepair.cshtml"
+            #line 140 "..\..\Views\Job\LogRepair.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 136 "..\..\Views\Job\LogRepair.cshtml"
+            #line 140 "..\..\Views\Job\LogRepair.cshtml"
                                       if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                      { 
+                                        { 
             
             #line default
             #line hidden
             
-            #line 137 "..\..\Views\Job\LogRepair.cshtml"
-                                   Write(ja.DocumentTemplate.Description);
+            #line 141 "..\..\Views\Job\LogRepair.cshtml"
+                                     Write(ja.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-            #line 137 "..\..\Views\Job\LogRepair.cshtml"
-                                                                        }
-                                      else
-                                      { 
+            #line 141 "..\..\Views\Job\LogRepair.cshtml"
+                                                                          }
+                                    else
+                                    { 
             
             #line default
             #line hidden
             
-            #line 139 "..\..\Views\Job\LogRepair.cshtml"
-                                   Write(ja.Comments);
+            #line 143 "..\..\Views\Job\LogRepair.cshtml"
+                                 Write(ja.Comments);
 
             
             #line default
             #line hidden
             
-            #line 139 "..\..\Views\Job\LogRepair.cshtml"
-                                                     }
+            #line 143 "..\..\Views\Job\LogRepair.cshtml"
+                                                   }
             
             #line default
             #line hidden
@@ -709,7 +726,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 140 "..\..\Views\Job\LogRepair.cshtml"
+            #line 144 "..\..\Views\Job\LogRepair.cshtml"
                                                        Write(ja.TechUser.ToStringFriendly());
 
             
@@ -722,7 +739,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 140 "..\..\Views\Job\LogRepair.cshtml"
+            #line 144 "..\..\Views\Job\LogRepair.cshtml"
                                                                                                                                       Write(ja.Timestamp.ToUnixEpoc());
 
             
@@ -730,29 +747,29 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6477), Tuple.Create("\"", 6515)
+WriteAttribute("title", Tuple.Create(" title=\"", 6693), Tuple.Create("\"", 6731)
             
-            #line 140 "..\..\Views\Job\LogRepair.cshtml"
-                                                                                               , Tuple.Create(Tuple.Create("", 6485), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+            #line 144 "..\..\Views\Job\LogRepair.cshtml"
+                                                                                               , Tuple.Create(Tuple.Create("", 6701), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 6485), false)
+, 6701), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 140 "..\..\Views\Job\LogRepair.cshtml"
+            #line 144 "..\..\Views\Job\LogRepair.cshtml"
                                                                                                                                                                                                           Write(ja.Timestamp.ToFullDateTime());
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                            </a>   \r\n");
+WriteLiteral("</span>\r\n                            </a>\r\n");
 
             
-            #line 142 "..\..\Views\Job\LogRepair.cshtml"
+            #line 146 "..\..\Views\Job\LogRepair.cshtml"
                         }
 
             
@@ -762,7 +779,7 @@ WriteLiteral("                    </div>\r\n                </td>\r\n           
 "able>\r\n    </div>\r\n");
 
             
-            #line 148 "..\..\Views\Job\LogRepair.cshtml"
+            #line 152 "..\..\Views\Job\LogRepair.cshtml"
             }
             if (Model.RepairProvider != null && Model.RepairProviderSubmitJobBeginResult != null)
             { 
@@ -779,7 +796,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 152 "..\..\Views\Job\LogRepair.cshtml"
+            #line 156 "..\..\Views\Job\LogRepair.cshtml"
    Write(Html.PartialCompiled(Model.RepairProviderSubmitJobBeginResult.Item1, Model.RepairProviderSubmitJobBeginResult.Item2));
 
             
@@ -788,7 +805,7 @@ WriteLiteral("        ");
 WriteLiteral("\r\n    </div>\r\n");
 
             
-            #line 154 "..\..\Views\Job\LogRepair.cshtml"
+            #line 158 "..\..\Views\Job\LogRepair.cshtml"
             }
 
             
@@ -801,13 +818,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 156 "..\..\Views\Job\LogRepair.cshtml"
+            #line 160 "..\..\Views\Job\LogRepair.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 156 "..\..\Views\Job\LogRepair.cshtml"
+            #line 160 "..\..\Views\Job\LogRepair.cshtml"
          if (Model.IsManualProvider)
         {
 
@@ -825,7 +842,7 @@ WriteLiteral(" value=\"Save Repair Request\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 159 "..\..\Views\Job\LogRepair.cshtml"
+            #line 163 "..\..\Views\Job\LogRepair.cshtml"
         }
         else
         {
@@ -844,7 +861,7 @@ WriteLiteral(" value=\"Preview Repair Request\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 163 "..\..\Views\Job\LogRepair.cshtml"
+            #line 167 "..\..\Views\Job\LogRepair.cshtml"
         }
 
             
@@ -853,7 +870,7 @@ WriteLiteral(" />\r\n");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 165 "..\..\Views\Job\LogRepair.cshtml"
+            #line 169 "..\..\Views\Job\LogRepair.cshtml"
 }
 
             
@@ -885,8 +902,16 @@ WriteLiteral(">\r\n    $(function () {\r\n        var $providerId = $(\'#RepairP
 "viderId.change(updateDetails);\r\n        $addressId.change(updateDetails);\r\n\r\n   " +
 "     var manualProvider = $(\'#ManualProviderName\');\r\n        if (manualProvider." +
 "length > 0 && !manualProvider.val()) {\r\n            manualProvider.focus();\r\n   " +
-"     } else {\r\n            $(\'#RepairDescription\').focus();\r\n        }\r\n    });\r" +
-"\n</script>\r\n");
+"     } else {\r\n            $(\'#RepairDescription\').focus();\r\n        }\r\n\r\n      " +
+"  $(\'#publishJobAttachments\').on(\'click\', \'input\', function (e) {\r\n            e" +
+".preventDefault();\r\n            setTimeout(function () {\r\n                var $i" +
+" = $(e.currentTarget);\r\n                $i.prop(\'checked\', !$i.prop(\'checked\'));" +
+"\r\n            }, 0);\r\n            return false;\r\n        });\r\n        $(\'#publis" +
+"hJobAttachmentsSelect\').on(\'click\', \'a\', function (e) {\r\n            e.preventDe" +
+"fault();\r\n            var $i = $(e.currentTarget);\r\n            var $c = $i.hasC" +
+"lass(\'all\');\r\n            setTimeout(function () {\r\n                $(\'#publishJ" +
+"obAttachments\').find(\'input:not(:disabled)\').prop(\'checked\', $c);\r\n            }" +
+", 0);\r\n            return false;\r\n        });\r\n    });\r\n</script>\r\n");
 
         }
     }

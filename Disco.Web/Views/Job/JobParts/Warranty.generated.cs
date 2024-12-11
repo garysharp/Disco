@@ -566,11 +566,11 @@ WriteLiteral(" id=\"jobWarrantyProviderDetailLoading\"");
 
 WriteLiteral(">\r\n                        <span");
 
-WriteLiteral(" class=\"ajaxLoading\"");
+WriteLiteral(" class=\"ajaxLoading showInitially\"");
 
 WriteLiteral(" title=\"Loading...\"");
 
-WriteLiteral("></span>Loading...\r\n                    </div>\r\n                    <div");
+WriteLiteral("></span> Loading...\r\n                    </div>\r\n                    <div");
 
 WriteLiteral(" id=\"jobWarrantyProviderDetailHost\"");
 

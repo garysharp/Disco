@@ -125,6 +125,9 @@
             <table>
                 <tr>
                     <td>
+                        <p id="publishJobAttachmentsSelect">
+                            Select <a href="#" class="all">All</a> | <a href="#" class="none">None</a>
+                        </p>
                         <div id="publishJobAttachments">
                             @foreach (var ja in Model.Job.JobAttachments)
                             {
@@ -207,6 +210,15 @@
             setTimeout(function () {
                 var $i = $(e.currentTarget);
                 $i.prop('checked', !$i.prop('checked'));
+            }, 0);
+            return false;
+        });
+        $('#publishJobAttachmentsSelect').on('click', 'a', function (e) {
+            e.preventDefault();
+            var $i = $(e.currentTarget);
+            var $c = $i.hasClass('all');
+            setTimeout(function () {
+                $('#publishJobAttachments').find('input:not(:disabled)').prop('checked', $c);
             }, 0);
             return false;
         });
