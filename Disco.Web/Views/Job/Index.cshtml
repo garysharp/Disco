@@ -145,6 +145,12 @@
         @Html.Partial(MVC.Shared.Views._JobTable, Model.StaleJobs, new ViewDataDictionary())
     </div>
 }
+@if (Authorization.Has(Claims.Job.Actions.Export))
+{
+    <div class="actionBar">
+        @Html.ActionLinkButton("Export Jobs", MVC.Job.Export())
+    </div>
+}
 @if (Model.PendingEnrollments != null && Model.PendingEnrollments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
 {
     <div id="pendingEnrollments">

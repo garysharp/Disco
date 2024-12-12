@@ -693,6 +693,7 @@ namespace Disco.Web.Areas.API.Controllers
         internal const string ExportSessionCacheKey = "DeviceExportContext_{0}";
 
         [DiscoAuthorize(Claims.Device.Actions.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Export(ExportModel Model)
         {
             if (Model == null || Model.Options == null)
@@ -733,6 +734,9 @@ namespace Disco.Web.Areas.API.Controllers
 
             if (context.Result == null || context.Result.Result == null)
                 throw new ArgumentException("The export session is still running, or failed to complete successfully", "Id");
+
+            if (context.Result.RecordCount == 0)
+                throw new ArgumentException("No records were found to export", nameof(Id));
 
             var fileStream = context.Result.Result;
 

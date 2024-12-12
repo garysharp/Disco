@@ -5514,6 +5514,9 @@ div.form > table > tbody > tr > th.name {
   width: 150px;
   text-align: right;
 }
+div.form > table > tbody > tr > td.none {
+  padding: 0;
+}
 div.form > table table.sub > tbody > tr:not(:first-child) > th,
 div.form > table table.sub > tbody > tr:not(:first-child) > td {
   border-top: 1px dashed #aaa;

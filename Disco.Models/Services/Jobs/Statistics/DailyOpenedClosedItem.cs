@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Disco.Models.Services.Job.Statistics
+namespace Disco.Models.Services.Jobs.Statistics
 {
     public class DailyOpenedClosedItem
     {

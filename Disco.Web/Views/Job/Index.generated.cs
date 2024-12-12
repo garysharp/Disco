@@ -306,6 +306,38 @@ WriteLiteral("\r\n    </div>\r\n");
             #line hidden
             
             #line 148 "..\..\Views\Job\Index.cshtml"
+ if (Authorization.Has(Claims.Job.Actions.Export))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <div");
+
+WriteLiteral(" class=\"actionBar\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 151 "..\..\Views\Job\Index.cshtml"
+   Write(Html.ActionLinkButton("Export Jobs", MVC.Job.Export()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    </div>\r\n");
+
+            
+            #line 153 "..\..\Views\Job\Index.cshtml"
+}
+
+            
+            #line default
+            #line hidden
+            
+            #line 154 "..\..\Views\Job\Index.cshtml"
  if (Model.PendingEnrollments != null && Model.PendingEnrollments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
 {
 
@@ -323,14 +355,14 @@ WriteLiteral(" class=\"fa fa-exclamation-circle info\"");
 WriteLiteral("></i>\r\n        <div>There are device enrollments pending approval.</div>\r\n       " +
 " <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6766), Tuple.Create("\"", 6815)
+WriteAttribute("href", Tuple.Create(" href=\"", 6930), Tuple.Create("\"", 6979)
             
-            #line 153 "..\..\Views\Job\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 6773), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
+            #line 159 "..\..\Views\Job\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 6937), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
             
             #line default
             #line hidden
-, 6773), false)
+, 6937), false)
 );
 
 WriteLiteral(" class=\"button small alert\"");
@@ -345,7 +377,7 @@ WriteLiteral("    <script>\r\n        $(function () {\r\n            var layout_
 "   </script>\r\n");
 
             
-            #line 163 "..\..\Views\Job\Index.cshtml"
+            #line 169 "..\..\Views\Job\Index.cshtml"
 }
             
             #line default

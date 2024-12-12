@@ -113,6 +113,12 @@ namespace Disco.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InsuranceProviderJobDetails);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobController Actions { get { return MVC.Job; } }
@@ -153,6 +159,7 @@ namespace Disco.Web.Controllers
             public readonly string RepairProviderJobDetails = "RepairProviderJobDetails";
             public readonly string LogInsurance = "LogInsurance";
             public readonly string InsuranceProviderJobDetails = "InsuranceProviderJobDetails";
+            public readonly string Export = "Export";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -182,6 +189,7 @@ namespace Disco.Web.Controllers
             public const string RepairProviderJobDetails = "RepairProviderJobDetails";
             public const string LogInsurance = "LogInsurance";
             public const string InsuranceProviderJobDetails = "InsuranceProviderJobDetails";
+            public const string Export = "Export";
         }
 
 
@@ -271,6 +279,14 @@ namespace Disco.Web.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string downloadId = "downloadId";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -285,6 +301,7 @@ namespace Disco.Web.Controllers
                 public readonly string _ViewStart = "_ViewStart";
                 public readonly string Create = "Create";
                 public readonly string Create_Redirect = "Create_Redirect";
+                public readonly string Export = "Export";
                 public readonly string Index = "Index";
                 public readonly string InsuranceProviderJobDetails = "InsuranceProviderJobDetails";
                 public readonly string List = "List";
@@ -305,6 +322,7 @@ namespace Disco.Web.Controllers
             public readonly string _ViewStart = "~/Views/Job/_ViewStart.cshtml";
             public readonly string Create = "~/Views/Job/Create.cshtml";
             public readonly string Create_Redirect = "~/Views/Job/Create_Redirect.cshtml";
+            public readonly string Export = "~/Views/Job/Export.cshtml";
             public readonly string Index = "~/Views/Job/Index.cshtml";
             public readonly string InsuranceProviderJobDetails = "~/Views/Job/InsuranceProviderJobDetails.cshtml";
             public readonly string List = "~/Views/Job/List.cshtml";
@@ -689,6 +707,18 @@ namespace Disco.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InsuranceProviderJobDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             InsuranceProviderJobDetailsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string downloadId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Export(string downloadId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "downloadId", downloadId);
+            ExportOverride(callInfo, downloadId);
             return callInfo;
         }
 

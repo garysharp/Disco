@@ -402,32 +402,32 @@ WriteLiteral(" ");
             
             #line default
             #line hidden
-WriteLiteral("/><label");
+WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 4092), Tuple.Create("\"", 4130)
-, Tuple.Create(Tuple.Create("", 4098), Tuple.Create("Options_", 4098), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 4093), Tuple.Create("\"", 4131)
+, Tuple.Create(Tuple.Create("", 4099), Tuple.Create("Options_", 4099), true)
             
             #line 74 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                                                                                                                               , Tuple.Create(Tuple.Create("", 4106), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4107), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4106), false)
+, 4107), false)
 );
 
 WriteLiteral(">");
 
             
             #line 74 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                                                                                                                                                                                                                                    Write(optionItem.DisplayName);
+                                                                                                                                                                                                                                                                     Write(optionItem.DisplayName);
 
             
             #line default
             #line hidden
-WriteLiteral("</label></li>\r\n");
+WriteLiteral("</label>\r\n                                                    </li>\r\n");
 
             
-            #line 75 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 76 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
                                                 }
 
             
@@ -445,13 +445,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 80 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 81 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 80 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 81 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
                                                  foreach (var optionItem in optionFields.Skip(itemsPerColumn))
                                                 {
 
@@ -460,40 +460,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4665), Tuple.Create("\"", 4696)
+WriteAttribute("title", Tuple.Create(" title=\"", 4720), Tuple.Create("\"", 4751)
             
-            #line 82 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 4673), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+            #line 83 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 4728), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 4673), false)
+, 4728), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 4778), Tuple.Create("\"", 4815)
-, Tuple.Create(Tuple.Create("", 4783), Tuple.Create("Options_", 4783), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 4833), Tuple.Create("\"", 4870)
+, Tuple.Create(Tuple.Create("", 4838), Tuple.Create("Options_", 4838), true)
             
-            #line 83 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 4791), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 84 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+           , Tuple.Create(Tuple.Create("", 4846), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4791), false)
+, 4846), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 4816), Tuple.Create("\"", 4855)
-, Tuple.Create(Tuple.Create("", 4823), Tuple.Create("Options.", 4823), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 4871), Tuple.Create("\"", 4910)
+, Tuple.Create(Tuple.Create("", 4878), Tuple.Create("Options.", 4878), true)
             
-            #line 83 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 4831), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 84 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+                                                   , Tuple.Create(Tuple.Create("", 4886), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4831), false)
+, 4886), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -501,38 +501,38 @@ WriteLiteral(" value=\"true\"");
 WriteLiteral(" ");
 
             
-            #line 83 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 84 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
                                                                                                                                                                       Write(((bool)optionItem.Model) ? "checked " : null);
 
             
             #line default
             #line hidden
-WriteLiteral("/><label");
+WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 4925), Tuple.Create("\"", 4963)
-, Tuple.Create(Tuple.Create("", 4931), Tuple.Create("Options_", 4931), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 4981), Tuple.Create("\"", 5019)
+, Tuple.Create(Tuple.Create("", 4987), Tuple.Create("Options_", 4987), true)
             
-            #line 83 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                                                                                                                               , Tuple.Create(Tuple.Create("", 4939), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 84 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4995), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4939), false)
+, 4995), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 83 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                                                                                                                                                                                                                                    Write(optionItem.DisplayName);
+            #line 84 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+                                                                                                                                                                                                                                                                     Write(optionItem.DisplayName);
 
             
             #line default
             #line hidden
-WriteLiteral("</label></li>\r\n");
+WriteLiteral("</label>\r\n                                                    </li>\r\n");
 
             
-            #line 84 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 86 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
                                                 }
 
             
@@ -544,11 +544,12 @@ WriteLiteral(@"                                            </ul>
                                 </table>
                             </div>
                         </td>
-                    </tr>            
+                    </tr>
 ");
 
             
-            #line 92 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 94 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+
                 }
 
             
@@ -590,7 +591,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 ");\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 159 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 162 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
     }
 
             
@@ -599,7 +600,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 161 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 164 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
  if (Model.ExportSessionId != null)
 {
 
@@ -614,11 +615,38 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Export Device Flags\"");
 
-WriteLiteral(">\r\n        <h4>");
+WriteLiteral(">\r\n");
 
             
-            #line 164 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-       Write(Model.ExportSessionResult.RecordCount);
+            #line 167 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 167 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+         if (Model.ExportSessionResult.RecordCount == 0)
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
+
+            
+            #line 170 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+        }
+        else
+        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <h4>");
+
+            
+            #line 173 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+           Write(Model.ExportSessionResult.RecordCount);
 
             
             #line default
@@ -626,22 +654,24 @@ WriteLiteral(">\r\n        <h4>");
 WriteLiteral(" record");
 
             
-            #line 164 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                     Write(Model.ExportSessionResult.RecordCount != 1 ? "s" : null);
+            #line 173 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+                                                         Write(Model.ExportSessionResult.RecordCount != 1 ? "s" : null);
 
             
             #line default
             #line hidden
-WriteLiteral(" were successfully exported.</h4>\r\n        <a");
+WriteLiteral(" were successfully exported.</h4>\r\n");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8250), Tuple.Create("\"", 8326)
+WriteLiteral("            <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 8524), Tuple.Create("\"", 8600)
             
-            #line 165 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 8257), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceFlag.ExportRetrieve(Model.ExportSessionId))
+            #line 174 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 8531), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceFlag.ExportRetrieve(Model.ExportSessionId))
             
             #line default
             #line hidden
-, 8257), false)
+, 8531), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -650,7 +680,16 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-download fa-lg\"");
 
-WriteLiteral("></i>Download Device Flag Export</a>\r\n    </div>\r\n");
+WriteLiteral("></i>Download Device Flag Export</a>\r\n");
+
+            
+            #line 175 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n");
 
 WriteLiteral(@"    <script>
         $(function () {
@@ -667,7 +706,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 179 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
+            #line 189 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
 }
 
             

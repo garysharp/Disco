@@ -838,6 +838,7 @@
     <Compile Include="Models\Device\ExportModel.cs" />
     <Compile Include="Models\Device\ImportHeadersModel.cs" />
     <Compile Include="Models\InitialConfig\AdministratorsModel.cs" />
+    <Compile Include="Models\Job\ExportModel.cs" />
     <Compile Include="Models\Job\LogInsuranceModel.cs" />
     <Compile Include="Models\Job\LogRepairModel.cs" />
     <Compile Include="Extensions\T4MVC\T4MVC.cs">
@@ -863,6 +864,11 @@
     </Compile>
     <Compile Include="Views\InitialConfig\Administrators.generated.cs">
       <DependentUpon>Administrators.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Job\Export.generated.cs">
+      <DependentUpon>Export.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -1329,10 +1335,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>General.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\JobPreferences\Parts\Lodgment.cshtml">
+    <None Include="Areas\Config\Views\JobPreferences\Parts\Lodgment.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Lodgment.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\JobPreferences\Parts\Locations.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Locations.generated.cs</LastGenOutput>
@@ -2073,6 +2079,10 @@
     <None Include="ClientSource\Scripts\Modules\tinymce\themes\modern\theme.min.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\tinymce.min.js" />
+    <None Include="Views\Job\Export.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Export.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Job\LogInsurance.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>LogInsurance.generated.cs</LastGenOutput>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -99,15 +98,28 @@ namespace Disco.Models.Repository
 
         public static class JobStatusIds
         {
-            public const string AwaitingAccountingPayment = "AwaitingAccountingPayment";
-            public const string AwaitingAccountingCharge = "AwaitingAccountingCharge";
-            public const string AwaitingDeviceReturn = "AwaitingDeviceReturn";
-            public const string AwaitingInsuranceProcessing = "AwaitingInsuranceProcessing";
-            public const string AwaitingRepairs = "AwaitingRepairs";
-            public const string AwaitingUserAction = "AwaitingUserAction";
-            public const string AwaitingWarrantyRepair = "AwaitingWarrantyRepair";
-            public const string Closed = "Closed";
-            public const string Open = "Open";
+            public const string AwaitingAccountingPayment = nameof(AwaitingAccountingPayment);
+            public const string AwaitingAccountingCharge = nameof(AwaitingAccountingCharge);
+            public const string AwaitingDeviceReturn = nameof(AwaitingDeviceReturn);
+            public const string AwaitingInsuranceProcessing = nameof(AwaitingInsuranceProcessing);
+            public const string AwaitingRepairs = nameof(AwaitingRepairs);
+            public const string AwaitingUserAction = nameof(AwaitingUserAction);
+            public const string AwaitingWarrantyRepair = nameof(AwaitingWarrantyRepair);
+            public const string Closed = nameof(Closed);
+            public const string Open = nameof(Open);
+
+            public static readonly Dictionary<string, string> StatusDescriptions = new Dictionary<string, string>
+            {
+                { AwaitingAccountingPayment, "Awaiting Accounting Payment" },
+                { AwaitingAccountingCharge, "Awaiting Accounting Charge" },
+                { AwaitingDeviceReturn, "Awaiting Device Return" },
+                { AwaitingInsuranceProcessing, "Awaiting Insurance Processing" },
+                { AwaitingRepairs, "Awaiting Repairs" },
+                { AwaitingUserAction, "Awaiting User Action" },
+                { AwaitingWarrantyRepair, "Awaiting Warranty Repair" },
+                { Closed, "Closed" },
+                { Open, "Open" }
+            };
         }
 
         [Flags]

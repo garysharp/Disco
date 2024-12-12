@@ -444,6 +444,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (context.Result == null || context.Result.Result == null)
                 throw new ArgumentException("The export session is still running, or failed to complete successfully", nameof(Id));
 
+            if (context.Result.RecordCount == 0)
+                throw new ArgumentException("No records were found to export", nameof(Id));
+
             var fileStream = context.Result.Result;
 
             return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);

@@ -30,7 +30,7 @@ namespace Disco.Web.Views.Job.JobParts
     using Disco.Models.Repository;
     
     #line 2 "..\..\Views\Job\JobParts\_Subject.cshtml"
-    using Disco.Models.Services.Job;
+    using Disco.Models.Services.Jobs;
     
     #line default
     #line hidden
@@ -317,14 +317,14 @@ WriteLiteral(" class=\"status\"");
 
 WriteLiteral(">\r\n                    <h2");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5822), Tuple.Create("\"", 5851)
+WriteAttribute("title", Tuple.Create(" title=\"", 5823), Tuple.Create("\"", 5852)
             
             #line 90 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 5830), Tuple.Create<System.Object, System.Int32>(Model.Job.JobType.Id
+, Tuple.Create(Tuple.Create("", 5831), Tuple.Create<System.Object, System.Int32>(Model.Job.JobType.Id
             
             #line default
             #line hidden
-, 5830), false)
+, 5831), false)
 );
 
 WriteLiteral(">");
@@ -378,14 +378,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6439), Tuple.Create("\"", 6461)
+WriteAttribute("title", Tuple.Create(" title=\"", 6440), Tuple.Create("\"", 6462)
             
             #line 100 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 6447), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
+, Tuple.Create(Tuple.Create("", 6448), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
             
             #line default
             #line hidden
-, 6447), false)
+, 6448), false)
 );
 
 WriteLiteral(">");
@@ -429,14 +429,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6899), Tuple.Create("\"", 6921)
+WriteAttribute("title", Tuple.Create(" title=\"", 6900), Tuple.Create("\"", 6922)
             
             #line 108 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 6907), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
+, Tuple.Create(Tuple.Create("", 6908), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
             
             #line default
             #line hidden
-, 6907), false)
+, 6908), false)
 );
 
 WriteLiteral(">");
@@ -739,14 +739,14 @@ WriteLiteral(" id=\"Job_Show_Device_Model_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 11534), Tuple.Create("\"", 11652)
+WriteAttribute("src", Tuple.Create(" src=\"", 11535), Tuple.Create("\"", 11653)
             
             #line 187 "..\..\Views\Job\JobParts\_Subject.cshtml"
-        , Tuple.Create(Tuple.Create("", 11540), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))
+        , Tuple.Create(Tuple.Create("", 11541), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 11540), false)
+, 11541), false)
 );
 
 WriteLiteral(" />\r\n                            <div");
@@ -890,17 +890,17 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HWar_Details_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 13356), Tuple.Create("\"", 13421)
-, Tuple.Create(Tuple.Create("", 13364), Tuple.Create("Warranty", 13364), true)
-, Tuple.Create(Tuple.Create(" ", 13372), Tuple.Create("Details", 13373), true)
-, Tuple.Create(Tuple.Create(" ", 13380), Tuple.Create("for", 13381), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 13357), Tuple.Create("\"", 13422)
+, Tuple.Create(Tuple.Create("", 13365), Tuple.Create("Warranty", 13365), true)
+, Tuple.Create(Tuple.Create(" ", 13373), Tuple.Create("Details", 13374), true)
+, Tuple.Create(Tuple.Create(" ", 13381), Tuple.Create("for", 13382), true)
             
             #line 204 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                            , Tuple.Create(Tuple.Create(" ", 13384), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
+                                                            , Tuple.Create(Tuple.Create(" ", 13385), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
             
             #line default
             #line hidden
-, 13385), false)
+, 13386), false)
 );
 
 WriteLiteral(">\r\n                                                <div>");
@@ -1025,17 +1025,17 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HNWar_Details_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 15908), Tuple.Create("\"", 15974)
-, Tuple.Create(Tuple.Create("", 15916), Tuple.Create("Insurance", 15916), true)
-, Tuple.Create(Tuple.Create(" ", 15925), Tuple.Create("Details", 15926), true)
-, Tuple.Create(Tuple.Create(" ", 15933), Tuple.Create("for", 15934), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 15909), Tuple.Create("\"", 15975)
+, Tuple.Create(Tuple.Create("", 15917), Tuple.Create("Insurance", 15917), true)
+, Tuple.Create(Tuple.Create(" ", 15926), Tuple.Create("Details", 15927), true)
+, Tuple.Create(Tuple.Create(" ", 15934), Tuple.Create("for", 15935), true)
             
             #line 234 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                              , Tuple.Create(Tuple.Create(" ", 15937), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
+                                                              , Tuple.Create(Tuple.Create(" ", 15938), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
             
             #line default
             #line hidden
-, 15938), false)
+, 15939), false)
 );
 
 WriteLiteral(">\r\n                                                <div>");
@@ -1121,26 +1121,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 18091), Tuple.Create("\"", 18161)
-, Tuple.Create(Tuple.Create("", 18099), Tuple.Create("flag", 18099), true)
-, Tuple.Create(Tuple.Create(" ", 18103), Tuple.Create("fa", 18104), true)
-, Tuple.Create(Tuple.Create(" ", 18106), Tuple.Create("fa-", 18107), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 18092), Tuple.Create("\"", 18162)
+, Tuple.Create(Tuple.Create("", 18100), Tuple.Create("flag", 18100), true)
+, Tuple.Create(Tuple.Create(" ", 18104), Tuple.Create("fa", 18105), true)
+, Tuple.Create(Tuple.Create(" ", 18107), Tuple.Create("fa-", 18108), true)
             
             #line 263 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 18110), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
+, Tuple.Create(Tuple.Create("", 18111), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
             
             #line default
             #line hidden
-, 18110), false)
-, Tuple.Create(Tuple.Create(" ", 18128), Tuple.Create("fa-fw", 18129), true)
-, Tuple.Create(Tuple.Create(" ", 18134), Tuple.Create("d-", 18135), true)
+, 18111), false)
+, Tuple.Create(Tuple.Create(" ", 18129), Tuple.Create("fa-fw", 18130), true)
+, Tuple.Create(Tuple.Create(" ", 18135), Tuple.Create("d-", 18136), true)
             
             #line 263 "..\..\Views\Job\JobParts\_Subject.cshtml"
-        , Tuple.Create(Tuple.Create("", 18137), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+        , Tuple.Create(Tuple.Create("", 18138), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
             
             #line default
             #line hidden
-, 18137), false)
+, 18138), false)
 );
 
 WriteLiteral(">\r\n                                            <span");
@@ -1735,14 +1735,14 @@ WriteLiteral(">\r\n                            <img");
 
 WriteLiteral(" id=\"Job_Show_User_Photo\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 33689), Tuple.Create("\"", 33744)
+WriteAttribute("src", Tuple.Create(" src=\"", 33690), Tuple.Create("\"", 33745)
             
             #line 481 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 33695), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.Photo(Model.Job.UserId))
+, Tuple.Create(Tuple.Create("", 33696), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.Photo(Model.Job.UserId))
             
             #line default
             #line hidden
-, 33695), false)
+, 33696), false)
 );
 
 WriteLiteral(" />\r\n                        </div>\r\n");
@@ -1844,15 +1844,15 @@ WriteLiteral(" title=\"Phone Number\"");
 
 WriteLiteral(">Phone: <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 34522), Tuple.Create("\"", 34560)
-, Tuple.Create(Tuple.Create("", 34529), Tuple.Create("tel:", 34529), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 34523), Tuple.Create("\"", 34561)
+, Tuple.Create(Tuple.Create("", 34530), Tuple.Create("tel:", 34530), true)
             
             #line 494 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                     , Tuple.Create(Tuple.Create("", 34533), Tuple.Create<System.Object, System.Int32>(Model.Job.User.PhoneNumber
+                     , Tuple.Create(Tuple.Create("", 34534), Tuple.Create<System.Object, System.Int32>(Model.Job.User.PhoneNumber
             
             #line default
             #line hidden
-, 34533), false)
+, 34534), false)
 );
 
 WriteLiteral(">");
@@ -1882,15 +1882,15 @@ WriteLiteral(" title=\"Email Address\"");
 
 WriteLiteral(">Email: <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 34773), Tuple.Create("\"", 34817)
-, Tuple.Create(Tuple.Create("", 34780), Tuple.Create("mailto:", 34780), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 34774), Tuple.Create("\"", 34818)
+, Tuple.Create(Tuple.Create("", 34781), Tuple.Create("mailto:", 34781), true)
             
             #line 496 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                       , Tuple.Create(Tuple.Create("", 34787), Tuple.Create<System.Object, System.Int32>(Model.Job.User.EmailAddress
+                       , Tuple.Create(Tuple.Create("", 34788), Tuple.Create<System.Object, System.Int32>(Model.Job.User.EmailAddress
             
             #line default
             #line hidden
-, 34787), false)
+, 34788), false)
 );
 
 WriteLiteral(">");
@@ -1944,26 +1944,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 35292), Tuple.Create("\"", 35362)
-, Tuple.Create(Tuple.Create("", 35300), Tuple.Create("flag", 35300), true)
-, Tuple.Create(Tuple.Create(" ", 35304), Tuple.Create("fa", 35305), true)
-, Tuple.Create(Tuple.Create(" ", 35307), Tuple.Create("fa-", 35308), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 35293), Tuple.Create("\"", 35363)
+, Tuple.Create(Tuple.Create("", 35301), Tuple.Create("flag", 35301), true)
+, Tuple.Create(Tuple.Create(" ", 35305), Tuple.Create("fa", 35306), true)
+, Tuple.Create(Tuple.Create(" ", 35308), Tuple.Create("fa-", 35309), true)
             
             #line 503 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 35311), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
+, Tuple.Create(Tuple.Create("", 35312), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
             
             #line default
             #line hidden
-, 35311), false)
-, Tuple.Create(Tuple.Create(" ", 35329), Tuple.Create("fa-fw", 35330), true)
-, Tuple.Create(Tuple.Create(" ", 35335), Tuple.Create("d-", 35336), true)
+, 35312), false)
+, Tuple.Create(Tuple.Create(" ", 35330), Tuple.Create("fa-fw", 35331), true)
+, Tuple.Create(Tuple.Create(" ", 35336), Tuple.Create("d-", 35337), true)
             
             #line 503 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 35338), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+, Tuple.Create(Tuple.Create("", 35339), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
             
             #line default
             #line hidden
-, 35338), false)
+, 35339), false)
 );
 
 WriteLiteral(">\r\n                                    <span");
@@ -2722,14 +2722,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"JobId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 50881), Tuple.Create("\"", 50902)
+WriteAttribute("value", Tuple.Create(" value=\"", 50882), Tuple.Create("\"", 50903)
             
             #line 780 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                , Tuple.Create(Tuple.Create("", 50889), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
+                                , Tuple.Create(Tuple.Create("", 50890), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
             
             #line default
             #line hidden
-, 50889), false)
+, 50890), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -2793,26 +2793,26 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 51371), Tuple.Create("\"", 51438)
-, Tuple.Create(Tuple.Create("", 51379), Tuple.Create("fa", 51379), true)
-, Tuple.Create(Tuple.Create(" ", 51381), Tuple.Create("fa-", 51382), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 51372), Tuple.Create("\"", 51439)
+, Tuple.Create(Tuple.Create("", 51380), Tuple.Create("fa", 51380), true)
+, Tuple.Create(Tuple.Create(" ", 51382), Tuple.Create("fa-", 51383), true)
             
             #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 51385), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
+, Tuple.Create(Tuple.Create("", 51386), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
             
             #line default
             #line hidden
-, 51385), false)
-, Tuple.Create(Tuple.Create(" ", 51401), Tuple.Create("fa-fw", 51402), true)
-, Tuple.Create(Tuple.Create(" ", 51407), Tuple.Create("fa-lg", 51408), true)
-, Tuple.Create(Tuple.Create(" ", 51413), Tuple.Create("d-", 51414), true)
+, 51386), false)
+, Tuple.Create(Tuple.Create(" ", 51402), Tuple.Create("fa-fw", 51403), true)
+, Tuple.Create(Tuple.Create(" ", 51408), Tuple.Create("fa-lg", 51409), true)
+, Tuple.Create(Tuple.Create(" ", 51414), Tuple.Create("d-", 51415), true)
             
             #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
-   , Tuple.Create(Tuple.Create("", 51416), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
+   , Tuple.Create(Tuple.Create("", 51417), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
             
             #line default
             #line hidden
-, 51416), false)
+, 51417), false)
 );
 
 WriteLiteral("></i>");
@@ -2853,27 +2853,27 @@ WriteLiteral("                                ");
             #line hidden
 WriteLiteral(" <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 51835), Tuple.Create("\"", 51883)
-, Tuple.Create(Tuple.Create("", 51843), Tuple.Create("fa", 51843), true)
-, Tuple.Create(Tuple.Create(" ", 51845), Tuple.Create("d-priority-", 51846), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 51836), Tuple.Create("\"", 51884)
+, Tuple.Create(Tuple.Create("", 51844), Tuple.Create("fa", 51844), true)
+, Tuple.Create(Tuple.Create(" ", 51846), Tuple.Create("d-priority-", 51847), true)
             
             #line 792 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                             , Tuple.Create(Tuple.Create("", 51857), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
+                                                                             , Tuple.Create(Tuple.Create("", 51858), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
             
             #line default
             #line hidden
-, 51857), false)
+, 51858), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 51884), Tuple.Create("\"", 51917)
+WriteAttribute("title", Tuple.Create(" title=\"", 51885), Tuple.Create("\"", 51918)
             
             #line 792 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                , Tuple.Create(Tuple.Create("", 51892), Tuple.Create<System.Object, System.Int32>(priorityValue
+                                                                                                                , Tuple.Create(Tuple.Create("", 51893), Tuple.Create<System.Object, System.Int32>(priorityValue
             
             #line default
             #line hidden
-, 51892), false)
-, Tuple.Create(Tuple.Create(" ", 51908), Tuple.Create("Priority", 51909), true)
+, 51893), false)
+, Tuple.Create(Tuple.Create(" ", 51909), Tuple.Create("Priority", 51910), true)
 );
 
 WriteLiteral("></i>\r\n                            </div>\r\n                            <div>\r\n   " +

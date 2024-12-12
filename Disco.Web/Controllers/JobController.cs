@@ -1,10 +1,12 @@
 ﻿using Disco.Models.Repository;
-using Disco.Models.Services.Job;
+using Disco.Models.Services.Jobs;
+using Disco.Models.Services.Jobs.Exporting;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Enrolment;
+using Disco.Services.Exporting;
 using Disco.Services.Jobs;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.JobQueues;
@@ -22,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
@@ -1073,6 +1076,45 @@ namespace Disco.Web.Controllers
                 return HttpNotFound("Invalid Job Id");
             }
         }
+        #endregion
+
+        #region Export
+
+        [DiscoAuthorizeAny(Claims.Job.Actions.Export), HttpGet]
+        public virtual ActionResult Export(string downloadId)
+        {
+            var m = new Models.Job.ExportModel()
+            {
+                Options = Database.DiscoConfiguration.JobPreferences.LastExportOptions,
+                JobQueues = JobQueueService.GetQueues().Select(q => q.JobQueue).ToList(),
+                JobTypes = Database.JobTypes.Include(t => t.JobSubTypes).ToList(),
+                JobStatuses = Job.JobStatusIds.StatusDescriptions.ToList(),
+            };
+
+            if (Database.DiscoConfiguration.JobPreferences.LastExportDate.GetValueOrDefault() < DateTime.Today.AddDays(-1))
+            {
+                m.Options.FilterStartDate = new DateTime(DateTime.Today.Year, 1, 1);
+                m.Options.FilterEndDate = null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(downloadId))
+            {
+                string key = string.Format(Areas.API.Controllers.JobController.ExportSessionCacheKey, downloadId);
+                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<JobExportOptions>;
+
+                if (context != null)
+                {
+                    m.ExportSessionResult = context.Result;
+                    m.ExportSessionId = downloadId;
+                }
+            }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<JobExportModel>(this.ControllerContext, m);
+
+            return View(m);
+        }
+
         #endregion
 
     }

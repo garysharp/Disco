@@ -1,4 +1,4 @@
-﻿using Disco.Models.Services.Job;
+﻿using Disco.Models.Services.Jobs;
 using Disco.Services.Authorization;
 using Disco.Services.Jobs;
 using Disco.Services.Web;

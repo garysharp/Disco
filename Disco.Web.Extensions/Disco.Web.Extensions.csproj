@@ -111,6 +111,7 @@
     <Compile Include="MvcExtensions\PartialCompiled\PartialCompiledHtmlExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MvcExtensions\XmlResult.cs" />
+    <Compile Include="RazorExtensions\DropDownListExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Disco.BI\Disco.BI.csproj">

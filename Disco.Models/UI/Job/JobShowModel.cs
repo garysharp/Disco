@@ -1,5 +1,5 @@
 ﻿using Disco.Models.Services.Documents;
-using Disco.Models.Services.Job;
+using Disco.Models.Services.Jobs;
 using Disco.Models.Services.Jobs.JobLists;
 using System;
 using System.Collections.Generic;

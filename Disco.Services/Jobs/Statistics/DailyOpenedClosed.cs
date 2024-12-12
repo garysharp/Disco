@@ -1,7 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Data.Repository.Monitor;
 using Disco.Models.Repository;
-using Disco.Models.Services.Job.Statistics;
+using Disco.Models.Services.Jobs.Statistics;
 using Disco.Services.Tasks;
 using Quartz;
 using System;

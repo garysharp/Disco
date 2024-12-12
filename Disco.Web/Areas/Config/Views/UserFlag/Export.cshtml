@@ -71,7 +71,8 @@
                                                 @foreach (var optionItem in optionFields.Take(itemsPerColumn))
                                                 {
                                                     <li title="@optionItem.Description">
-                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null)/><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label></li>
+                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
+                                                    </li>
                                                 }
                                             </ul>
                                         </td>
@@ -80,7 +81,8 @@
                                                 @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
                                                 {
                                                     <li title="@optionItem.Description">
-                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null)/><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label></li>
+                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
+                                                    </li>
                                                 }
                                             </ul>
                                         </td>
@@ -88,7 +90,8 @@
                                 </table>
                             </div>
                         </td>
-                    </tr>            
+                    </tr>
+
                 }
             </table>
         </div>
@@ -161,8 +164,15 @@
 @if (Model.ExportSessionId != null)
 {
     <div id="UserFlag_Export_Download_Dialog" class="dialog" title="Export User Flags">
-        <h4>@Model.ExportSessionResult.RecordCount record@(Model.ExportSessionResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
-        <a href="@Url.Action(MVC.API.UserFlag.ExportRetrieve(Model.ExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download User Flag Export</a>
+        @if (Model.ExportSessionResult.RecordCount == 0)
+        {
+            <h4>No records matched the filter criteria</h4>
+        }
+        else
+        {
+            <h4>@Model.ExportSessionResult.RecordCount record@(Model.ExportSessionResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
+            <a href="@Url.Action(MVC.API.UserFlag.ExportRetrieve(Model.ExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download User Flag Export</a>
+        }
     </div>
     <script>
         $(function () {

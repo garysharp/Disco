@@ -1,4 +1,4 @@
-﻿using Disco.Models.Services.Job;
+﻿using Disco.Models.Services.Jobs;
 using System.Collections.Generic;
 
 namespace Disco.Models.UI.Config.JobPreferences

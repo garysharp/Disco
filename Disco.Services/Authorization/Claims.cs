@@ -107,11 +107,12 @@ namespace Disco.Services.Authorization
 				{ "Job.Actions.ConvertHWarToHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ConvertHWarToHNWar, (c, v) => c.Job.Actions.ConvertHWarToHNWar = v, "Convert HWar Jobs To HNWar", "Can convert warranty jobs to non-warranty jobs", false) },
 				{ "Job.Actions.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Create, (c, v) => c.Job.Actions.Create = v, "Create Jobs", "Can create jobs", false) },
 				{ "Job.Actions.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Delete, (c, v) => c.Job.Actions.Delete = v, "Delete Jobs", "Can delete jobs", false) },
+				{ "Job.Actions.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Export, (c, v) => c.Job.Actions.Export = v, "Export Jobs", "Can export jobs in a bulk format", false) },
 				{ "Job.Actions.ForceClose", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ForceClose, (c, v) => c.Job.Actions.ForceClose = v, "Force Close Jobs", "Can force close jobs", false) },
 				{ "Job.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.GenerateDocuments, (c, v) => c.Job.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for jobs", false) },
-				{ "Job.Actions.LogInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogInsurance, (c, v) => c.Job.Actions.LogInsurance = v, "Log Insurance", "Can log insurance for non-warranty jobs", false) },
-				{ "Job.Actions.LogRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogRepair, (c, v) => c.Job.Actions.LogRepair = v, "Log Repair", "Can log repair for non-warranty jobs", false) },
-				{ "Job.Actions.LogWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogWarranty, (c, v) => c.Job.Actions.LogWarranty = v, "Log Warranty", "Can log warranty for jobs", false) },
+				{ "Job.Actions.LogInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogInsurance, (c, v) => c.Job.Actions.LogInsurance = v, "Lodge Insurance", "Can lodge insurance for non-warranty jobs", false) },
+				{ "Job.Actions.LogRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogRepair, (c, v) => c.Job.Actions.LogRepair = v, "Lodge Repair", "Can lodge repair for non-warranty jobs", false) },
+				{ "Job.Actions.LogWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogWarranty, (c, v) => c.Job.Actions.LogWarranty = v, "Lodge Warranty", "Can lodge warranty for jobs", false) },
 				{ "Job.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyAttachments, (c, v) => c.Job.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from jobs", false) },
 				{ "Job.Actions.RemoveAnyLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyLogs, (c, v) => c.Job.Actions.RemoveAnyLogs = v, "Remove Any Logs", "Can remove any job logs", false) },
 				{ "Job.Actions.RemoveAnyQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyQueues, (c, v) => c.Job.Actions.RemoveAnyQueues = v, "Remove from Any Queues", "Can remove from any job queues", false) },
@@ -336,6 +337,7 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Job.Actions.ConvertHWarToHNWar", false),
 				            new ClaimNavigatorItem("Job.Actions.Create", false),
 				            new ClaimNavigatorItem("Job.Actions.Delete", false),
+				            new ClaimNavigatorItem("Job.Actions.Export", false),
 				            new ClaimNavigatorItem("Job.Actions.ForceClose", false),
 				            new ClaimNavigatorItem("Job.Actions.GenerateDocuments", false),
 				            new ClaimNavigatorItem("Job.Actions.LogInsurance", false),
@@ -647,6 +649,7 @@ namespace Disco.Services.Authorization
 			c.Job.Actions.ConvertHWarToHNWar = true;
 			c.Job.Actions.Create = true;
 			c.Job.Actions.Delete = true;
+			c.Job.Actions.Export = true;
 			c.Job.Actions.ForceClose = true;
 			c.Job.Actions.GenerateDocuments = true;
 			c.Job.Actions.LogInsurance = true;
@@ -1334,6 +1337,11 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string Delete = "Job.Actions.Delete";
 
+                /// <summary>Export Jobs
+                /// <para>Can export jobs in a bulk format</para>
+                /// </summary>
+                public const string Export = "Job.Actions.Export";
+
                 /// <summary>Force Close Jobs
                 /// <para>Can force close jobs</para>
                 /// </summary>
@@ -1344,18 +1352,18 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string GenerateDocuments = "Job.Actions.GenerateDocuments";
 
-                /// <summary>Log Insurance
-                /// <para>Can log insurance for non-warranty jobs</para>
+                /// <summary>Lodge Insurance
+                /// <para>Can lodge insurance for non-warranty jobs</para>
                 /// </summary>
                 public const string LogInsurance = "Job.Actions.LogInsurance";
 
-                /// <summary>Log Repair
-                /// <para>Can log repair for non-warranty jobs</para>
+                /// <summary>Lodge Repair
+                /// <para>Can lodge repair for non-warranty jobs</para>
                 /// </summary>
                 public const string LogRepair = "Job.Actions.LogRepair";
 
-                /// <summary>Log Warranty
-                /// <para>Can log warranty for jobs</para>
+                /// <summary>Lodge Warranty
+                /// <para>Can lodge warranty for jobs</para>
                 /// </summary>
                 public const string LogWarranty = "Job.Actions.LogWarranty";
 

@@ -381,6 +381,8 @@
     <Compile Include="Interop\VicEduDept\VicSmart.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQuery.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQueryTask.cs" />
+    <Compile Include="Jobs\Exporting\JobExport.cs" />
+    <Compile Include="Jobs\Exporting\JobExportTask.cs" />
     <Compile Include="Jobs\JobActionExtensions.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
     <Compile Include="Jobs\JobFlagExtensions.cs" />

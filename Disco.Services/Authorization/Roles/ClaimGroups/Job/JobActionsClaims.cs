@@ -52,5 +52,7 @@
 
         [ClaimDetails("Update Sub Types", "Can update sub types for jobs")]
         public bool UpdateSubTypes { get; set; }
+        [ClaimDetails("Export Jobs", "Can export jobs in a bulk format")]
+        public bool Export { get; set; }
     }
 }

@@ -1,0 +1,287 @@
+﻿@using Disco.Web.Models.Job;
+@model ExportModel
+@{
+    Authorization.RequireAny(Claims.Job.Actions.Export);
+
+    ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Export Jobs");
+
+    var optionsMetadata = ModelMetadata.FromLambdaExpression(m => m.Options, ViewData);
+    var optionGroups = optionsMetadata.Properties.Where(p => p.ShortDisplayName != null && p.ModelType == typeof(bool))
+        .GroupBy(m => m.ShortDisplayName);
+}
+<div id="Jobs_Export">
+    @using (Html.BeginForm(MVC.API.Job.Export()))
+    {
+        @Html.AntiForgeryToken()
+        <div id="Jobs_Export_Type" class="form" style="width: 570px">
+            <h2>Export Filter</h2>
+            <table>
+                <tr>
+                    <th style="width: 150px">
+                        Start Date:
+                    </th>
+                    <td>
+                        @Html.EditorFor(m => m.Options.FilterStartDate)
+                        @Html.ValidationMessageFor(m => m.Options.FilterStartDate)
+                    </td>
+                </tr>
+                <tr>
+                    <th>End Date:</th>
+                    <td>
+                        @Html.EditorFor(m => m.Options.FilterEndDate)
+                        @Html.ValidationMessageFor(m => m.Options.FilterEndDate)
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status:</th>
+                    <td>
+                        @Html.DropDownListFor(m => m.Options.FilterJobStatusId, m => m.JobStatuses, i => i.Key, i => i.Value, "-- All Jobs --")
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="none">
+                        <table class="sub">
+                            <tr>
+                                <th style="width: 150px; text-align: right;">Type:</th>
+                                <td>
+                                    @Html.DropDownListFor(m => m.Options.FilterJobTypeId, m => m.JobTypes, i => i.Id, i => i.Description, "-- All Jobs --")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" id="Jobs_Export_SubTypes">
+                                    @foreach (var jobType in Model.JobTypes)
+                                    {
+                                        var subTypes = jobType.JobSubTypes.OrderBy(s => s.Description).ToList();
+                                        var itemsPerColumn = (int)Math.Ceiling((double)subTypes.Count / 2);
+                                        <div id="Jobs_Export_SubTypes_@(jobType.Id)" class="Jobs_Export_SubType_Target" data-typeid="@jobType.Id">
+                                            @if (jobType.JobSubTypes.Count > 2)
+                                            {
+                                                <span class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
+                                            }
+                                            <table class="none">
+                                                <tr>
+                                                    <td style="width: 50%">
+                                                        <ul class="none">
+                                                            @foreach (var subType in subTypes.Take(itemsPerColumn))
+                                                            {
+                                                                <li>
+                                                                    <input type="checkbox" id="Jobs_Export_SubTypes_@(jobType.Id)_@(subType.Id)" name="Options.FilterJobSubTypeIds" value="@subType.Id" @((Model.Options.FilterJobTypeId == jobType.Id && Model.Options.FilterJobSubTypeIds.Contains(subType.Id)) ? "checked " : null) /><label for="Jobs_Export_SubTypes_@(jobType.Id)_@(subType.Id)">@subType.Description</label>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </td>
+                                                    <td style="width: 50%">
+                                                        <ul class="none">
+                                                            @foreach (var subType in subTypes.Skip(itemsPerColumn))
+                                                            {
+                                                                <li>
+                                                                    <input type="checkbox" id="Jobs_Export_SubTypes_@(jobType.Id)_@(subType.Id)" name="Options.FilterJobSubTypeIds" value="@subType.Id" @((Model.Options.FilterJobTypeId == jobType.Id && Model.Options.FilterJobSubTypeIds.Contains(subType.Id)) ? "checked " : null) /><label for="Jobs_Export_SubTypes_@(jobType.Id)_@(subType.Id)">@subType.Description</label>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Job Queue:</th>
+                    <td>
+                        @Html.DropDownListFor(m => m.Options.FilterJobQueueId, m => m.JobQueues, i => i.Id.ToString(), i => i.Name, "-- All Jobs --")
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.Options.Format)</th>
+                    <td>
+                        @Html.DropDownListFor(m => m.Options.Format, m => Enum.GetNames(typeof(Disco.Models.Exporting.ExportFormat)), i => i, i => i)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="Jobs_Export_Fields" class="form" style="width: 570px; margin-top: 15px;">
+            <h2>Export Fields <a id="Jobs_Export_Fields_Defaults" href="#">(Defaults)</a></h2>
+            <table>
+                @foreach (var optionGroup in optionGroups)
+                {
+                    var optionFields = optionGroup.ToList();
+                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
+                    <tr>
+                        <th style="width: 120px;">
+                            @optionGroup.Key
+                            @if (optionFields.Count > 2)
+                            {
+                                <span style="display: block;" class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
+                            }
+                        </th>
+                        <td>
+                            <div class="Jobs_Export_Fields_Group">
+                                <table class="none">
+                                    <tr>
+                                        <td style="width: 50%">
+                                            <ul class="none">
+                                                @foreach (var optionItem in optionFields.Take(itemsPerColumn))
+                                                {
+                                                    <li title="@optionItem.Description">
+                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </td>
+                                        <td style="width: 50%">
+                                            <ul class="none">
+                                                @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
+                                                {
+                                                    <li title="@optionItem.Description">
+                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </table>
+        </div>
+        <script>
+            $(function () {
+                const $FilterStartDate = $('#Options_FilterStartDate');
+                const $FilterEndDate = $('#Options_FilterEndDate');
+                const $FilterJobTypeId = $('#Options_FilterJobTypeId');
+
+                $FilterStartDate.attr('type', 'date');
+                $FilterEndDate.attr('type', 'date');
+
+                var exportDefaultFields = ['JobId', 'JobStatus', 'JobType', 'JobSubTypes', 'JobOpenedDate', 'DeviceSerialNumber', 'DeviceModelDescription', 'DeviceProfileName', 'UserId', 'UserDisplayName'];
+                var $exportFields = $('#Jobs_Export_Fields');
+                var $form = $FilterStartDate.closest('form');
+
+                function exportTypeChange() {
+                    $exportTypeTargetContainers.hide();
+                    $exportTypeTargetContainers.find('select').prop('disabled', true);
+
+                    switch ($exportType.val()) {
+                        case 'Batch':
+                            $('#Devices_Export_Type_Target_Batch').show().find('select').prop('disabled', false);
+                            break;
+                        case 'Profile':
+                            $('#Devices_Export_Type_Target_Profile').show().find('select').prop('disabled', false);
+                            break;
+                        case 'Model':
+                            $('#Devices_Export_Type_Target_Model').show().find('select').prop('disabled', false);
+                            break;
+                    }
+                }
+                $FilterJobTypeId
+                    .on('change', function (e) {
+                        $('#Jobs_Export_SubTypes').hide()
+                            .find('.Jobs_Export_SubType_Target').hide()
+                            .find('input').prop('disabled', true);
+
+                        const type = $(e.currentTarget).val();
+                        if (type) {
+                            $('#Jobs_Export_SubTypes').show()
+                            $('#Jobs_Export_SubTypes_' + type).show()
+                                .find('input').prop('disabled', false);
+                        }
+                    }).trigger('change');
+                $('#Jobs_Export_SubTypes').on('click', 'a.selectAll,a.selectNone', function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    $this.closest('div').find('input').prop('checked', $this.is('.selectAll'));
+                    return false;
+                });
+
+                $exportFields.on('click', 'a.selectAll,a.selectNone', function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
+                    return false;
+                });
+
+                $('#Jobs_Export_Fields_Defaults').click(function (e) {
+                    e.preventDefault();
+
+                    $exportFields.find('input').prop('checked', false);
+
+                    $.each(exportDefaultFields, function (index, value) {
+                        $('#Options_' + value).prop('checked', true);
+                    });
+
+                    return false;
+                });
+
+                $.validator.unobtrusive.parse($form);
+                $form.data("validator").settings.submitHandler = function () {
+                    var exportFieldCount = $exportFields.find('input:checked').length;
+
+                    if (exportFieldCount > 0) {
+
+                        const $exportingDialog = $('#Devices_Export_Exporting').dialog({
+                            width: 400,
+                            height: 164,
+                            resizable: false,
+                            modal: true,
+                            autoOpen: true
+                        });
+
+                        $form[0].submit();
+                    }
+                    else
+                        alert('Select at least one field to export.');
+                };
+
+                $('#Devices_Export_Download_Dialog').dialog({
+                    width: 400,
+                    height: 164,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+                $('#Jobs_Export_Button').click(function () {
+                    $form.submit();
+                });
+            });
+        </script>
+    }
+</div>
+@if (Model.ExportSessionId != null)
+{
+    <div id="Jobs_Export_Download_Dialog" class="dialog" title="Export Jobs">
+        @if (Model.ExportSessionResult.RecordCount == 0)
+        {
+            <h4>No records matched the filter criteria</h4>
+        }
+        else
+        {
+            <h4>@Model.ExportSessionResult.RecordCount record@(Model.ExportSessionResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
+            <a href="@Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download Job Export</a>
+        }
+    </div>
+    <script>
+        $(function () {
+            $('#Jobs_Export_Download_Dialog')
+                .dialog({
+                    width: 400,
+                    height: 164,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+        });
+    </script>
+}
+<div id="Jobs_Export_Exporting" class="dialog" title="Exporting Jobs...">
+    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting jobs...</h4>
+</div>
+<div class="actionBar">
+    <button id="Jobs_Export_Button" type="button" class="button">Export Jobs</button>
+</div>

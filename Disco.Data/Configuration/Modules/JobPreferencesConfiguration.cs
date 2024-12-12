@@ -1,5 +1,7 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Services.Job;
+using Disco.Models.Services.Devices.Exporting;
+using Disco.Models.Services.Jobs;
+using Disco.Models.Services.Jobs.Exporting;
 using System;
 using System.Collections.Generic;
 
@@ -91,6 +93,21 @@ namespace Disco.Data.Configuration.Modules
         {
             get { return Get<string>(null); }
             set { Set(value); }
+        }
+
+        public JobExportOptions LastExportOptions
+        {
+            get { return this.Get(JobExportOptions.DefaultOptions()); }
+            set {
+                this.Set(value);
+                this.LastExportDate = DateTime.Now;
+            }
+        }
+
+        public DateTime? LastExportDate
+        {
+            get { return this.Get<DateTime?>(null); }
+            set { this.Set(value); }
         }
     }
 }

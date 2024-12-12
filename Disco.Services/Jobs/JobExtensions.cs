@@ -81,116 +81,121 @@ namespace Disco.Services
             return i;
         }
 
-        public static string JobStatusDescription(string StatusId, Job j = null)
-        {
-            switch (StatusId)
-            {
-                case Job.JobStatusIds.Open:
-                    return "Open";
-                case Job.JobStatusIds.Closed:
-                    return "Closed";
-                case Job.JobStatusIds.AwaitingWarrantyRepair:
-                    if (j == null)
-                        return "Awaiting Warranty Repair";
-                    else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Warranty Repair ({0})", j.JobMetaWarranty.ExternalName);
-                        else
-                            return string.Format("Awaiting Warranty Repair - Not Held ({0})", j.JobMetaWarranty.ExternalName);
-                case Job.JobStatusIds.AwaitingRepairs:
-                    if (j == null)
-                        return "Awaiting Repairs";
-                    else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Repairs ({0})", j.JobMetaNonWarranty.RepairerName);
-                        else
-                            return string.Format("Awaiting Repairs - Not Held ({0})", j.JobMetaNonWarranty.RepairerName);
-                case Job.JobStatusIds.AwaitingDeviceReturn:
-                    return "Awaiting Device Return";
-                case Job.JobStatusIds.AwaitingUserAction:
-                    return "Awaiting User Action";
-                case Job.JobStatusIds.AwaitingAccountingPayment:
-                    return "Awaiting Accounting Payment";
-                case Job.JobStatusIds.AwaitingAccountingCharge:
-                    return "Awaiting Accounting Charge";
-                case Job.JobStatusIds.AwaitingInsuranceProcessing:
-                    return "Awaiting Insurance Processing";
-                default:
-                    return "Unknown";
-            }
-        }
+        public static string JobStatusDescription(string StatusId, Job j)
+            => JobStatusDescription(StatusId, j?.DeviceHeld, j?.JobMetaWarranty?.ExternalName, j?.JobMetaNonWarranty?.RepairerName);
+        
+        public static string JobStatusDescription(string StatusId, JobTableStatusItemModel j)
+            => JobStatusDescription(StatusId, j?.DeviceHeld, j?.JobMetaWarranty_ExternalName, j?.JobMetaNonWarranty_RepairerName);
 
-        public static string JobStatusDescription(string StatusId, JobTableStatusItemModel j = null)
+        public static string JobStatusDescription(string statusId, DateTime? deviceHeld = null, string warrantyExternalName = null, string nonWarrantyRepairerName = null)
         {
-            switch (StatusId)
+            if (!Job.JobStatusIds.StatusDescriptions.TryGetValue(statusId, out var statusDescription))
+                return "Unknown";
+
+            switch (statusId)
             {
-                case Job.JobStatusIds.Open:
-                    return "Open";
-                case Job.JobStatusIds.Closed:
-                    return "Closed";
                 case Job.JobStatusIds.AwaitingWarrantyRepair:
-                    if (j == null)
-                        return "Awaiting Warranty Repair";
+                    var warrantyName = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(warrantyExternalName))
+                        warrantyName = $" ({warrantyExternalName})";
+
+                    if (deviceHeld.HasValue)
+                        return statusDescription + warrantyName;
                     else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Warranty Repair ({0})", j.JobMetaWarranty_ExternalName);
-                        else
-                            return string.Format("Awaiting Warranty Repair - Not Held ({0})", j.JobMetaWarranty_ExternalName);
+                        return $"{statusDescription} - Not Held{warrantyExternalName}";
                 case Job.JobStatusIds.AwaitingRepairs:
-                    if (j == null)
-                        return "Awaiting Repairs";
+                    var repairerName = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(nonWarrantyRepairerName))
+                        repairerName = $" ({nonWarrantyRepairerName})";
+
+                    if (deviceHeld.HasValue)
+                        return statusDescription + repairerName;
                     else
-                        if (j.DeviceHeld.HasValue)
-                            return string.Format("Awaiting Repairs ({0})", j.JobMetaNonWarranty_RepairerName);
-                        else
-                            return string.Format("Awaiting Repairs - Not Held ({0})", j.JobMetaNonWarranty_RepairerName);
-                case Job.JobStatusIds.AwaitingDeviceReturn:
-                    return "Awaiting Device Return";
-                case Job.JobStatusIds.AwaitingUserAction:
-                    return "Awaiting User Action";
-                case Job.JobStatusIds.AwaitingAccountingPayment:
-                    return "Awaiting Accounting Payment";
-                case Job.JobStatusIds.AwaitingAccountingCharge:
-                    return "Awaiting Accounting Charge";
-                case Job.JobStatusIds.AwaitingInsuranceProcessing:
-                    return "Awaiting Insurance Processing";
+                        return $"{statusDescription} - Not Held{repairerName}";
                 default:
-                    return "Unknown";
+                    return statusDescription;
             }
         }
 
         public static string CalculateStatusId(this Job j)
         {
-            return j.ToJobTableStatusItemModel().CalculateStatusId();
+            return CalculateStatusId(
+                j.ClosedDate,
+                j.JobTypeId,
+                j.JobMetaWarranty?.ExternalLoggedDate,
+                j.JobMetaWarranty?.ExternalCompletedDate,
+                j.JobMetaNonWarranty?.RepairerLoggedDate,
+                j.JobMetaNonWarranty?.RepairerCompletedDate,
+                j.JobMetaNonWarranty?.AccountingChargeRequiredDate,
+                j.JobMetaNonWarranty?.AccountingChargeAddedDate,
+                j.JobMetaNonWarranty?.AccountingChargePaidDate,
+                j.JobMetaNonWarranty?.IsInsuranceClaim,
+                j.JobMetaInsurance?.ClaimFormSentDate,
+                j.WaitingForUserAction,
+                j.DeviceReadyForReturn,
+                j.DeviceReturnedDate);
         }
 
         public static string CalculateStatusId(this JobTableStatusItemModel j)
         {
-            if (j.ClosedDate.HasValue)
+            return CalculateStatusId(
+                j.ClosedDate,
+                j.JobTypeId,
+                j.JobMetaWarranty_ExternalLoggedDate,
+                j.JobMetaWarranty_ExternalCompletedDate,
+                j.JobMetaNonWarranty_RepairerLoggedDate,
+                j.JobMetaNonWarranty_RepairerCompletedDate,
+                j.JobMetaNonWarranty_AccountingChargeRequiredDate,
+                j.JobMetaNonWarranty_AccountingChargeAddedDate,
+                j.JobMetaNonWarranty_AccountingChargePaidDate,
+                j.JobMetaNonWarranty_IsInsuranceClaim,
+                j.JobMetaInsurance_ClaimFormSentDate,
+                j.WaitingForUserAction,
+                j.DeviceReadyForReturn,
+                j.DeviceReturnedDate);
+        }
+
+        public static string CalculateStatusId(
+            DateTime? closedDate,
+            string jobTypeId,
+            DateTime? warrantyExternallyLoggedDate,
+            DateTime? warrantyExternallyCompletedDate,
+            DateTime? nonWarrantyRepairerLoggedDate,
+            DateTime? nonWarrantyRepairerCompletedDate,
+            DateTime? nonWarrantyAccountingChargeRequiredDate,
+            DateTime? nonWarrantyAccountintChargeAddedDate,
+            DateTime? nonWarrantyAccountintChargePaidDate,
+            bool? nonWarrantyIsInsuranceClaim,
+            DateTime? insuranceClaimFormSentDate,
+            DateTime? waitingForUserActionDate,
+            DateTime? deviceReadyForReturnDate,
+            DateTime? deviceReturnedDate)
+        {
+            if (closedDate.HasValue)
                 return Job.JobStatusIds.Closed;
 
-            if (j.JobTypeId == JobType.JobTypeIds.HWar)
+            if (jobTypeId == JobType.JobTypeIds.HWar)
             {
-                if (j.JobMetaWarranty_ExternalLoggedDate.HasValue && !j.JobMetaWarranty_ExternalCompletedDate.HasValue)
+                if (warrantyExternallyLoggedDate.HasValue && !warrantyExternallyCompletedDate.HasValue)
                     return Job.JobStatusIds.AwaitingWarrantyRepair; // Job Logged - but not marked as completed
             }
 
-            if (j.JobTypeId == JobType.JobTypeIds.HNWar)
+            if (jobTypeId == JobType.JobTypeIds.HNWar)
             {
-                if (j.JobMetaNonWarranty_RepairerLoggedDate.HasValue && !j.JobMetaNonWarranty_RepairerCompletedDate.HasValue)
+                if (nonWarrantyRepairerLoggedDate.HasValue && !nonWarrantyRepairerCompletedDate.HasValue)
                     return Job.JobStatusIds.AwaitingRepairs; // Repairs logged - but not complete
-                if (j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue && !j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue)
+                if (nonWarrantyAccountintChargeAddedDate.HasValue && !nonWarrantyAccountintChargePaidDate.HasValue)
                     return Job.JobStatusIds.AwaitingAccountingPayment; // Accounting Charge Added, but not paid
-                if (j.JobMetaNonWarranty_AccountingChargeRequiredDate.HasValue && (!j.JobMetaNonWarranty_AccountingChargePaidDate.HasValue || !j.JobMetaNonWarranty_AccountingChargeAddedDate.HasValue))
+                if (nonWarrantyAccountingChargeRequiredDate.HasValue && (!nonWarrantyAccountintChargePaidDate.HasValue || !nonWarrantyAccountintChargeAddedDate.HasValue))
                     return Job.JobStatusIds.AwaitingAccountingCharge; // Accounting Charge Required, but not added or paid
-                if (j.JobMetaNonWarranty_RepairerLoggedDate.HasValue && j.JobMetaNonWarranty_IsInsuranceClaim.Value && !j.JobMetaInsurance_ClaimFormSentDate.HasValue)
+                if (nonWarrantyRepairerLoggedDate.HasValue && nonWarrantyIsInsuranceClaim.GetValueOrDefault() && !insuranceClaimFormSentDate.HasValue)
                     return Job.JobStatusIds.AwaitingInsuranceProcessing; // Is insurance claim, but no Claim Form Sent
             }
 
-            if (j.WaitingForUserAction.HasValue)
+            if (waitingForUserActionDate.HasValue)
                 return Job.JobStatusIds.AwaitingUserAction; // Awaiting for User
 
-            if (j.DeviceReadyForReturn.HasValue && !j.DeviceReturnedDate.HasValue)
+            if (deviceReadyForReturnDate.HasValue && !deviceReturnedDate.HasValue)
                 return Job.JobStatusIds.AwaitingDeviceReturn; // Device not returned to User
 
             return Job.JobStatusIds.Open;

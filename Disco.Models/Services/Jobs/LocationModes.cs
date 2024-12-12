@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Disco.Models.Services.Job
+namespace Disco.Models.Services.Jobs
 {
     public enum LocationModes
     {

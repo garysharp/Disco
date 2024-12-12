@@ -80,6 +80,8 @@
     <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
     <Compile Include="Services\Documents\OnImportUserFlagRule.cs" />
     <Compile Include="Exporting\IExportOptions.cs" />
+    <Compile Include="Services\Jobs\Exporting\JobExportOptions.cs" />
+    <Compile Include="Services\Jobs\Exporting\JobExportRecord.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />
     <Compile Include="ClientServices\Register.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="UI\Device\DeviceImportReviewModel.cs" />
     <Compile Include="UI\Device\DeviceIndexModel.cs" />
     <Compile Include="UI\Device\DeviceShowModel.cs" />
+    <Compile Include="UI\Job\JobExportModel.cs" />
     <Compile Include="UI\Job\JobCreateModel.cs" />
     <Compile Include="UI\Job\JobIndexModel.cs" />
     <Compile Include="UI\Job\JobListModel.cs" />

@@ -449,6 +449,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ExportRetrieve()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public JobController Actions { get { return MVC.API.Job; } }
@@ -532,6 +544,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string GeneratePdf = "GeneratePdf";
             public readonly string GeneratePdfPackage = "GeneratePdfPackage";
             public readonly string DeviceHeldLocations = "DeviceHeldLocations";
+            public readonly string Export = "Export";
+            public readonly string ExportRetrieve = "ExportRetrieve";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -604,6 +618,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string GeneratePdf = "GeneratePdf";
             public const string GeneratePdfPackage = "GeneratePdfPackage";
             public const string DeviceHeldLocations = "DeviceHeldLocations";
+            public const string Export = "Export";
+            public const string ExportRetrieve = "ExportRetrieve";
         }
 
 
@@ -1230,6 +1246,22 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string DocumentTemplatePackageId = "DocumentTemplatePackageId";
+        }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string Model = "Model";
+        }
+        static readonly ActionParamsClass_ExportRetrieve s_params_ExportRetrieve = new ActionParamsClass_ExportRetrieve();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ExportRetrieve ExportRetrieveParams { get { return s_params_ExportRetrieve; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ExportRetrieve
+        {
+            public readonly string id = "id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2153,6 +2185,30 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceHeldLocations);
             DeviceHeldLocationsOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.ExportModel Model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Export(Disco.Web.Models.Job.ExportModel Model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
+            ExportOverride(callInfo, Model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ExportRetrieve(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ExportRetrieveOverride(callInfo, id);
             return callInfo;
         }
 
