@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.BI.Extensions;
 
 namespace Disco.Web.Areas.API.Models.Job
 {

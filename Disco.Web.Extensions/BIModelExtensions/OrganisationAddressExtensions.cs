@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Disco.Models.BI.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
-using Disco.Models.BI.Config;
 
 namespace Disco.Web.Extensions
 {

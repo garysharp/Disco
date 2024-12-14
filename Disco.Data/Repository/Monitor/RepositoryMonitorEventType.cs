@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Data.Repository.Monitor
+﻿namespace Disco.Data.Repository.Monitor
 {
     public enum RepositoryMonitorEventType
     {

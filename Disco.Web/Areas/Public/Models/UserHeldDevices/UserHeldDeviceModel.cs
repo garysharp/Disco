@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Disco.Web.Areas.Public.Models.UserHeldDevices
+﻿namespace Disco.Web.Areas.Public.Models.UserHeldDevices
 {
     public class UserHeldDeviceModel
     {

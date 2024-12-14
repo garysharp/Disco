@@ -85,7 +85,6 @@
 //
 
 using System;
-using System.IO;
 
 // flymake: csc.exe /t:module BZip2InputStream.cs BZip2OutputStream.cs Rand.cs BCRC32.cs @@FILE@@
 

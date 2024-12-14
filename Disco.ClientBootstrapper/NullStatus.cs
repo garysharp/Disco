@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Disco.ClientBootstrapper
+﻿namespace Disco.ClientBootstrapper
 {
     class NullStatus : IStatus
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Disco.Services.Logging.Models;
+﻿using Disco.Services.Logging.Models;
 
 namespace Disco.Web.Areas.API.Models.Logs
 {

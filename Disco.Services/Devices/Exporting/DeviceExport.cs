@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 
 namespace Disco.Services.Devices.Exporting

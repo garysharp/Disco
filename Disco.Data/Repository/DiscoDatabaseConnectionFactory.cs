@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.Entity.Infrastructure;
 using Microsoft.Win32;
 using System.Data.Common;
 using System.Security;
-using System.Security.Permissions;
 
 namespace Disco.Data.Repository
 {

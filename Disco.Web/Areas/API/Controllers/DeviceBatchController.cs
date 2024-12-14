@@ -1,7 +1,6 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Devices;
 using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;

@@ -3,7 +3,6 @@ using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Web;
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.Net;
 using System.Web.Http;
 using System.Web.Mvc;

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Disco.Services.Logging;
-using System.Web.WebPages.Html;
 
 namespace Disco.Web.Areas.API.Models.Logs
 {

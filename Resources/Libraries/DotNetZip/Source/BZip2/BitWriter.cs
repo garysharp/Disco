@@ -80,7 +80,6 @@
 //
 
 
-using System;
 using System.IO;
 
 namespace Ionic.BZip2

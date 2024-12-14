@@ -6,7 +6,6 @@ using Disco.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 

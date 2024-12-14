@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Disco.Client.Interop.Native
+﻿namespace Disco.Client.Interop.Native
 {
     public enum NetworkConnectionStatuses : ushort
     {

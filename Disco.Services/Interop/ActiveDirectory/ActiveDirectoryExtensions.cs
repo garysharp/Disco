@@ -1,14 +1,11 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services.Interop.ActiveDirectory;
-using DocumentFormat.OpenXml.Vml.Office;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
-using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
-using ZXing;
 
 namespace Disco.Services
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Models.Services.Searching
+﻿namespace Disco.Models.Services.Searching
 {
     public interface ISearchResultItem
     {

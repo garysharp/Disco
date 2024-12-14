@@ -4,7 +4,6 @@ using Disco.Models.Services.Users.Contact;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using System.Collections.Generic;
 using System.Linq;
-using ZXing;
 
 namespace Disco.Services.Users.Contact
 {

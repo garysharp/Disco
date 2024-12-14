@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Security;
-using System.Security.Permissions;
-using System.Security.Principal;
-using System.Web;
 
 namespace Disco.Web.Models.InitialConfig
 {

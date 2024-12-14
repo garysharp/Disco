@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Disco.Models.UI.Config.Logging
+﻿namespace Disco.Models.UI.Config.Logging
 {
     public interface ConfigLoggingIndexModel : BaseUIModel
     {

@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Xml;
 
 namespace Disco.ClientBootstrapper.Interop.WIMInterop
 {

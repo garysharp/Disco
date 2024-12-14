@@ -1,9 +1,5 @@
 ﻿using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.Services.Searching;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Disco.Web.Areas.API.Models.DocumentTemplate
 {

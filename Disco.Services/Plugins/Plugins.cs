@@ -3,7 +3,6 @@ using Disco.Models.Services.Interop.DiscoServices;
 using Disco.Services.Interop.DiscoServices;
 using System;
 using System.Collections.Generic;
-using System.Configuration.Assemblies;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;

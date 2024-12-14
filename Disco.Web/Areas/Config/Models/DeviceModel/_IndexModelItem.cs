@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
-using Disco.Models.UI.Config.DeviceModel;
+﻿using Disco.Models.UI.Config.DeviceModel;
 
 namespace Disco.Web.Areas.Config.Models.DeviceModel
 {

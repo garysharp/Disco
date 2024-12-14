@@ -88,8 +88,7 @@
 
 
 
-using System;
-using Interop=System.Runtime.InteropServices;
+using Interop = System.Runtime.InteropServices;
 
 namespace Ionic.Zlib
 {

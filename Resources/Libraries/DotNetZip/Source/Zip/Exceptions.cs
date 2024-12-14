@@ -25,8 +25,6 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 #if !NETCF
 using System.Runtime.Serialization;
 #endif
