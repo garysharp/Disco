@@ -11,56 +11,6 @@ namespace Disco.Services.Logging
     public static class Utilities
     {
 
-        public const string LogEventCSVHeader = "Timestamp,ModuleId,ModuleName,ModuleDescription,EventTypeId,EventTypeName,Severity,Message";
-        public static void ToCsvLine(this Models.LogLiveEvent e, TextWriter writer)
-        {
-            writer.Write(e.Timestamp.ToString("yyy-MM-dd HH:mm:ss"));
-            writer.Write(",");
-            writer.Write(e.ModuleId);
-            writer.Write(",\"");
-            writer.Write(e.ModuleName);
-            writer.Write("\",\"");
-            writer.Write(e.ModuleDescription);
-            writer.Write("\",");
-            writer.Write(e.EventTypeId);
-            writer.Write(",\"");
-            writer.Write(e.EventTypeName);
-            writer.Write("\",");
-            writer.Write(e.EventTypeSeverity);
-            writer.Write(",\"");
-            writer.Write(e.FormattedMessage.Replace("\"", "'"));
-            writer.Write("\"");
-            if (e.Arguments != null)
-            {
-                foreach (var arg in e.Arguments)
-                {
-                    writer.Write(",\"");
-                    if (arg == null)
-                        writer.Write("null");
-                    else
-                        writer.Write(arg.ToString().Replace("\"", "'"));
-                    writer.Write("\"");
-                }
-            }
-            writer.WriteLine();
-        }
-        public static MemoryStream ToCsv(this List<Models.LogLiveEvent> e)
-        {
-            var ms = new MemoryStream();
-            StreamWriter sw = new StreamWriter(ms);
-            sw.WriteLine(LogEventCSVHeader);
-            if (e != null)
-            {
-                foreach (var le in e)
-                {
-                    le.ToCsvLine(sw);
-                }
-            }
-            sw.Flush();
-            ms.Position = 0;
-            return ms;
-        }
-
         public static List<SelectListItem> ToSelectListItems(this List<Models.LogEventType> items)
         {
             return items.Select(et => new SelectListItem() { Value = et.Id.ToString(), Text = et.Name }).ToList();

@@ -60,7 +60,18 @@ WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"enrolStatus\"");
 
-WriteLiteral(">\r\n    <div");
+WriteLiteral(">\r\n");
+
+WriteLiteral("    ");
+
+            
+            #line 10 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+WriteLiteral(";\r\n    <div");
 
 WriteLiteral(" id=\"noSessions\"");
 
@@ -105,7 +116,7 @@ WriteLiteral("></code> <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-circle\"");
 
-WriteLiteral("></i></span>\r\n                \r\n            </h3>\r\n            <p");
+WriteLiteral("></i></span>\r\n\r\n            </h3>\r\n            <p");
 
 WriteLiteral(" class=\"sessionStart\"");
 
@@ -160,13 +171,13 @@ WriteLiteral(" data-bind=\"visible: isPending\"");
 WriteLiteral(">\r\n");
 
             
-            #line 32 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 32 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                  using (Html.BeginForm(MVC.API.Enrollment.ResolveSessionPending(), FormMethod.Post))
                 {
 
@@ -180,20 +191,20 @@ WriteLiteral(" data-bind=\"text: pendingIdentifier\"");
 WriteLiteral("></code>\r\n");
 
             
-            #line 35 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                             ;
 
             
@@ -246,7 +257,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Reject</button>\r\n                    </div>\r\n");
 
             
-            #line 44 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                 }
 
             
@@ -426,7 +437,7 @@ WriteLiteral(@">
         var deviceBaseUrl = '");
 
             
-            #line 124 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 125 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -435,7 +446,7 @@ WriteLiteral(@">
 WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 
             
-            #line 125 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 126 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                Write(Url.Action(MVC.API.DeviceModel.Image()));
 
             
@@ -444,7 +455,7 @@ WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 
             
-            #line 126 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 127 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                               Write(Links.ClientSource.Style.Images.Status.warning32_png);
 
             
@@ -453,7 +464,7 @@ WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 WriteLiteral(")\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 127 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 128 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -576,7 +587,7 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "       url: \'");
 
             
-            #line 318 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 319 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -604,13 +615,14 @@ WriteLiteral(@"',
                 Start: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
                 End: null,
                 ModuleId: 50,
-                Take: 2000
+                Take: 2000,
+                '__RequestVerificationToken': host.find('input[name=""__RequestVerificationToken""]').val()
             };
             $.ajax({
                 url: '");
 
             
-            #line 343 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 345 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -649,7 +661,7 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 373 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 375 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                              Write(Disco.Services.Devices.Enrolment.EnrolmentLog.Current.LiveLogGroupName);
 
             

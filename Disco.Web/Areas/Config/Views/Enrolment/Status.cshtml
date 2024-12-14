@@ -7,6 +7,7 @@
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Isotope");
 }
 <div id="enrolStatus">
+    @Html.AntiForgeryToken();
     <div id="noSessions" data-bind="visible: noSessions">
         <h2>No enrollment sessions today</h2>
     </div>
@@ -16,7 +17,7 @@
                 <span data-bind="text: title"></span>
                 <span class="details" data-bind="text: '(' + deviceModelDescription() + ')'"></span>
                 <span class="pending" data-bind="visible: isPending"><code data-bind="text: pendingIdentifier"></code> <i class="fa fa-exclamation-circle"></i></span>
-                
+
             </h3>
             <p class="sessionStart" data-bind="text: startTime"></p>
             <p class="sessionStatus" data-bind="text: progressStatus"></p>
@@ -337,7 +338,8 @@
                 Start: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
                 End: null,
                 ModuleId: 50,
-                Take: 2000
+                Take: 2000,
+                '__RequestVerificationToken': host.find('input[name="__RequestVerificationToken"]').val()
             };
             $.ajax({
                 url: '@(Url.Action(MVC.API.Logging.RetrieveEvents()))',

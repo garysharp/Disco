@@ -70,7 +70,18 @@ WriteAttribute("id", Tuple.Create(" id=\"", 309), Tuple.Create("\"", 335)
 
 WriteLiteral(" class=\"logEventsViewport\"");
 
-WriteLiteral(">\r\n    <table");
+WriteLiteral(">\r\n");
+
+WriteLiteral("    ");
+
+            
+            #line 10 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    <table");
 
 WriteLiteral(" class=\"logEventsViewport\"");
 
@@ -95,21 +106,21 @@ WriteLiteral(">Message\r\n                </th>\r\n            </tr>\r\n        
 
 WriteLiteral(" class=\"logEventsViewportContainer\"");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 810), Tuple.Create("\"", 1020)
+WriteAttribute("style", Tuple.Create(" style=\"", 840), Tuple.Create("\"", 1050)
             
-            #line 24 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
-, Tuple.Create(Tuple.Create("", 818), Tuple.Create<System.Object, System.Int32>(Model.ViewPortWidth.HasValue ? string.Format("width:{0}px;", Model.ViewPortWidth.Value) : null
-            
-            #line default
-            #line hidden
-, 818), false)
-            
-            #line 24 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
-                                                                      , Tuple.Create(Tuple.Create("", 915), Tuple.Create<System.Object, System.Int32>(Model.ViewPortHeight.HasValue ? string.Format("height:{0}px;", Model.ViewPortHeight.Value - 18) : null
+            #line 25 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+, Tuple.Create(Tuple.Create("", 848), Tuple.Create<System.Object, System.Int32>(Model.ViewPortWidth.HasValue ? string.Format("width:{0}px;", Model.ViewPortWidth.Value) : null
             
             #line default
             #line hidden
-, 915), false)
+, 848), false)
+            
+            #line 25 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+                                                                      , Tuple.Create(Tuple.Create("", 945), Tuple.Create<System.Object, System.Int32>(Model.ViewPortHeight.HasValue ? string.Format("height:{0}px;", Model.ViewPortHeight.Value - 18) : null
+            
+            #line default
+            #line hidden
+, 945), false)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -165,13 +176,13 @@ WriteLiteral("></td>\r\n                </tr>\r\n            </tbody>\r\n       
 "\r\n");
 
             
-            #line 40 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 41 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 40 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 41 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
       
         var eventTypesFilterJson = (Model.EventTypesFilter != null) ? Newtonsoft.Json.JsonConvert.SerializeObject(Model.EventTypesFilter.Select(et => et.Id).ToArray()) : "null";
     
@@ -182,11 +193,11 @@ WriteLiteral("\r\n    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n        $(function () {\r\n            var logEventsHost = $(\'LogEvents_");
+WriteLiteral(">\r\n        $(function () {\r\n            var logEventsHost = $(\'#LogEvents_");
 
             
-            #line 45 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
-                                         Write(uniqueId);
+            #line 46 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+                                          Write(uniqueId);
 
             
             #line default
@@ -194,7 +205,7 @@ WriteLiteral(">\r\n        $(function () {\r\n            var logEventsHost = $(
 WriteLiteral("\');\r\n            var logModuleId = \'");
 
             
-            #line 46 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 47 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                            Write(Model.ModuleFilter != null ? Model.ModuleFilter.ModuleId.ToString() : null);
 
             
@@ -203,7 +214,7 @@ WriteLiteral("\');\r\n            var logModuleId = \'");
 WriteLiteral("\';\r\n            var logModuleLiveGroupName = \'");
 
             
-            #line 47 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 48 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                       Write(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.Services.Logging.LogNotificationsHub.AllLoggingNotification);
 
             
@@ -212,7 +223,7 @@ WriteLiteral("\';\r\n            var logModuleLiveGroupName = \'");
 WriteLiteral("\';\r\n            var logEventTypeFiltered = ");
 
             
-            #line 48 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 49 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                    Write(eventTypesFilterJson);
 
             
@@ -221,7 +232,7 @@ WriteLiteral("\';\r\n            var logEventTypeFiltered = ");
 WriteLiteral("; \r\n            var logStartFiler = ");
 
             
-            #line 49 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 50 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                             Write(AjaxHelpers.JsonDate(Model.StartFilter));
 
             
@@ -230,7 +241,7 @@ WriteLiteral("; \r\n            var logStartFiler = ");
 WriteLiteral(";\r\n            var logEndFiler = ");
 
             
-            #line 50 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 51 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                           Write(AjaxHelpers.JsonDate(Model.EndFilter));
 
             
@@ -239,7 +250,7 @@ WriteLiteral(";\r\n            var logEndFiler = ");
 WriteLiteral(";\r\n            var logTakeFiler = \'");
 
             
-            #line 51 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 52 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                             Write(Model.TakeFilter);
 
             
@@ -249,7 +260,7 @@ WriteLiteral("\';\r\n            var logHub = null;\r\n            var liveEvent
 "");
 
             
-            #line 53 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 54 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                          Write(Model.JavascriptLiveEventFunctionName);
 
             
@@ -258,7 +269,7 @@ WriteLiteral("\';\r\n            var logHub = null;\r\n            var liveEvent
 WriteLiteral("\';\r\n            var useLive = (\'True\'===\'");
 
             
-            #line 54 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 55 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                                  Write(Model.IsLive);
 
             
@@ -293,7 +304,8 @@ WriteLiteral(@"');
                     Start: formatDate(logStartFiler),
                     End: logEndFiler,
                     ModuleId: logModuleId,
-                    Take: logTakeFiler
+                    Take: logTakeFiler,
+                    '__RequestVerificationToken': logEventsHost.find('input[name=""__RequestVerificationToken""]').val()
                 };
                 if (logEventTypeFiltered)
                     loadData[""EventTypeIds""] = logEventTypeFiltered;
@@ -301,7 +313,7 @@ WriteLiteral(@"');
                     url: '");
 
             
-            #line 88 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
+            #line 90 "..\..\Areas\Config\Views\Shared\LogEvents.cshtml"
                       Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             

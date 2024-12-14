@@ -1,9 +1,10 @@
 ﻿using System;
+using Disco.Models.Exporting;
 using Newtonsoft.Json;
 
 namespace Disco.Services.Logging.Models
 {
-    public class LogLiveEvent
+    public class LogLiveEvent : IExportRecord
     {
         public int ModuleId { get; set; }
         public string ModuleName { get; set; }

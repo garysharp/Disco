@@ -1,4 +1,5 @@
-﻿using Disco.Services.Authorization;
+﻿using Disco.Models.Exporting;
+using Disco.Services.Authorization;
 using Disco.Services.Logging;
 using Disco.Services.Tasks;
 using Disco.Services.Web;
@@ -19,7 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
             return Json(m, JsonRequestBehavior.AllowGet);
         }
 
-        [DiscoAuthorize(Claims.Config.Logging.Show)]
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Logging.Show)]
         public virtual ActionResult RetrieveEvents(string Format, DateTime? Start = null, DateTime? End = null, int? ModuleId = null, List<int> EventTypeIds = null, int? Take = null)
         {
              var logRetriever = new ReadLogContext()
@@ -32,22 +33,20 @@ namespace Disco.Web.Areas.API.Controllers
             };
             var results = logRetriever.Query(Database);
 
+            var exportFormat = ExportFormat.Xlsx;
+
             switch (Format.ToLower())
             {
                 case "json":
-                    {
                         return Json(results, JsonRequestBehavior.AllowGet);
-                    }
                 case "csv":
-                    {
-                        return File(results.ToCsv(), "text/csv", "DiscoLogs.csv");
-                    }
-                default:
-                    {
-                        throw new ArgumentException("Unknown Format", "Format");
-                    }
+                    exportFormat = ExportFormat.Csv;
+                    break;
             }
 
+            var export = LogExport.GenerateExport(exportFormat, results);
+
+            return File(export.Result, export.MimeType, export.Filename);
         }
 
         public virtual ActionResult ScheduledTaskStatus(string id)

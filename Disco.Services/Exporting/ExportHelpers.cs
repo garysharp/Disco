@@ -15,9 +15,6 @@ namespace Disco.Services
     {
         public static ExportResult WriteExport<T>(IExportOptions options, IScheduledTaskStatus status, List<ExportFieldMetadata<T>> metadata, List<T> records) where T : IExportRecord
         {
-            if (records.Count == 0)
-                return new ExportResult();
-
             var filenameWithoutExtension = $"{options.FilenamePrefix}-{status.StartedTimestamp.Value:yyyyMMdd-HHmmss}";
             MemoryStream stream;
             string filename;

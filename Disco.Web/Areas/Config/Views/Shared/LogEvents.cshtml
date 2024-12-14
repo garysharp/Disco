@@ -7,6 +7,7 @@
     var uniqueId = Guid.NewGuid().ToString("N");
 }
 <div id="LogEvents_@(uniqueId)" class="logEventsViewport">
+    @Html.AntiForgeryToken()
     <table class="logEventsViewport">
         <thead>
             <tr>
@@ -42,7 +43,7 @@
     }
     <script type="text/javascript">
         $(function () {
-            var logEventsHost = $('LogEvents_@(uniqueId)');
+            var logEventsHost = $('#LogEvents_@(uniqueId)');
             var logModuleId = '@(Model.ModuleFilter != null ? Model.ModuleFilter.ModuleId.ToString() : null)';
             var logModuleLiveGroupName = '@(Model.ModuleFilter != null ? Model.ModuleFilter.LiveLogGroupName : Disco.Services.Logging.LogNotificationsHub.AllLoggingNotification)';
             var logEventTypeFiltered = @(eventTypesFilterJson); 
@@ -80,7 +81,8 @@
                     Start: formatDate(logStartFiler),
                     End: logEndFiler,
                     ModuleId: logModuleId,
-                    Take: logTakeFiler
+                    Take: logTakeFiler,
+                    '__RequestVerificationToken': logEventsHost.find('input[name="__RequestVerificationToken"]').val()
                 };
                 if (logEventTypeFiltered)
                     loadData["EventTypeIds"] = logEventTypeFiltered;

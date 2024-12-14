@@ -55,7 +55,6 @@ namespace Disco.Web.Areas.Config.Views.Logging
     Authorization.Require(Claims.Config.Logging.Show);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Logging");
-    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
 
             
             #line default
@@ -63,9 +62,23 @@ namespace Disco.Web.Areas.Config.Views.Logging
 WriteLiteral("\r\n");
 
             
-            #line 9 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 8 "..\..\Areas\Config\Views\Logging\Index.cshtml"
  using (Html.BeginForm(MVC.API.Logging.RetrieveEvents()))
-{ 
+{
+    
+            
+            #line default
+            #line hidden
+            
+            #line 10 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 10 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+                            
 
             
             #line default
@@ -77,16 +90,40 @@ WriteLiteral(" class=\"form\"");
 WriteLiteral(" style=\"width: 520px;\"");
 
 WriteLiteral(">\r\n        <h2>Export Logs</h2>\r\n        <table>\r\n            <tr>\r\n             " +
-"   <th");
+"   <th>Format</th>\r\n                <td>\r\n                    <select");
+
+WriteLiteral(" name=\"Format\"");
+
+WriteLiteral(">\r\n                        <option");
+
+WriteLiteral(" value=\"xlsx\"");
+
+WriteLiteral(" selected>Xlsx</option>\r\n                        <option");
+
+WriteLiteral(" value=\"csv\"");
+
+WriteLiteral(">CSV</option>\r\n                    </select>\r\n                </td>\r\n            " +
+"</tr>\r\n            <tr>\r\n                <th");
 
 WriteLiteral(" style=\"width: 105px;\"");
 
-WriteLiteral(">Start Filter\r\n                </th>\r\n                <td>\r\n                    <" +
-"input");
+WriteLiteral(">\r\n                    Start Filter\r\n                </th>\r\n                <td>\r" +
+"\n                    <input");
 
 WriteLiteral(" id=\"filterStart\"");
 
-WriteLiteral(" type=\"text\"");
+WriteLiteral(" type=\"datetime-local\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 956), Tuple.Create("\"", 1010)
+            
+            #line 28 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 964), Tuple.Create<System.Object, System.Int32>(DateTime.Today.ToString("yyyy-MM-dd")
+            
+            #line default
+            #line hidden
+, 964), false)
+, Tuple.Create(Tuple.Create("", 1004), Tuple.Create("T00:00", 1004), true)
+);
 
 WriteLiteral(" name=\"Start\"");
 
@@ -95,12 +132,12 @@ WriteLiteral(" />\r\n                    <span");
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">* Optional</span>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n " +
-"               <th>End Filter\r\n                </th>\r\n                <td>\r\n    " +
-"                <input");
+"               <th>\r\n                    End Filter\r\n                </th>\r\n    " +
+"            <td>\r\n                    <input");
 
 WriteLiteral(" id=\"filterEnd\"");
 
-WriteLiteral(" type=\"text\"");
+WriteLiteral(" type=\"datetime-local\"");
 
 WriteLiteral(" name=\"End\"");
 
@@ -109,8 +146,8 @@ WriteLiteral(" />\r\n                    <span");
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">* Optional</span>\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n " +
-"               <th>Limit Filter\r\n                </th>\r\n                <td>\r\n  " +
-"                  <select");
+"               <th>\r\n                    Limit Filter\r\n                </th>\r\n  " +
+"              <td>\r\n                    <select");
 
 WriteLiteral(" name=\"Take\"");
 
@@ -141,8 +178,9 @@ WriteLiteral(">50 Events</option>\r\n                        <option");
 WriteLiteral(" value=\"10\"");
 
 WriteLiteral(">10 Events</option>\r\n                    </select>\r\n                </td>\r\n      " +
-"      </tr>\r\n            <tr>\r\n                <th>Module Filter\r\n              " +
-"  </th>\r\n                <td>\r\n                    <select");
+"      </tr>\r\n            <tr>\r\n                <th>\r\n                    Module " +
+"Filter\r\n                </th>\r\n                <td>\r\n                    <select" +
+"");
 
 WriteLiteral(" id=\"moduleId\"");
 
@@ -157,13 +195,13 @@ WriteLiteral(" selected=\"selected\"");
 WriteLiteral(">- All Modules -</option>\r\n");
 
             
-            #line 50 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 63 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 63 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                          foreach (var lm in Model.LogModules.Keys.OrderBy(lm => lm.ModuleDescription))
                         {
 
@@ -172,29 +210,30 @@ WriteLiteral(">- All Modules -</option>\r\n");
             #line hidden
 WriteLiteral("                            <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 2082), Tuple.Create("\"", 2102)
+WriteAttribute("value", Tuple.Create(" value=\"", 2518), Tuple.Create("\"", 2538)
             
-            #line 52 "..\..\Areas\Config\Views\Logging\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 2090), Tuple.Create<System.Object, System.Int32>(lm.ModuleId
+            #line 65 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 2526), Tuple.Create<System.Object, System.Int32>(lm.ModuleId
             
             #line default
             #line hidden
-, 2090), false)
+, 2526), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 52 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 65 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                                                     Write(lm.ModuleDescription);
 
             
             #line default
             #line hidden
-WriteLiteral("</option>    \r\n");
+WriteLiteral("</option>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 66 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+
                         }
 
             
@@ -207,13 +246,13 @@ WriteLiteral(" id=\"trLogModuleEventTypes\"");
 
 WriteLiteral(" style=\"display: none\"");
 
-WriteLiteral(">\r\n                <th>Event Type Filter <span");
+WriteLiteral(">\r\n                <th>\r\n                    Event Type Filter <span");
 
 WriteLiteral(" style=\"display: block;\"");
 
 WriteLiteral(" class=\"checkboxBulkSelectContainer\"");
 
-WriteLiteral(">Select: <a");
+WriteLiteral(">\r\n                        Select: <a");
 
 WriteLiteral(" id=\"eventTypesSelectAll\"");
 
@@ -223,18 +262,20 @@ WriteLiteral(">ALL</a> | <a");
 
 WriteLiteral(" id=\"eventTypesSelectNone\"");
 
-WriteLiteral("\r\n                    href=\"#\"");
+WriteLiteral("\r\n                                                                               " +
+"   href=\"#\"");
 
-WriteLiteral(">NONE</a></span>\r\n                </th>\r\n                <td>\r\n");
+WriteLiteral(">NONE</a>\r\n                    </span>\r\n                </th>\r\n                <t" +
+"d>\r\n");
 
             
-            #line 62 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 79 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 62 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 79 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                       int uniqueIdSeed = 0;
                     
             
@@ -243,13 +284,13 @@ WriteLiteral(">NONE</a></span>\r\n                </th>\r\n                <td>\
 WriteLiteral("\r\n");
 
             
-            #line 64 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 81 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 64 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 81 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                      foreach (var lm in Model.LogModules)
                     {
 
@@ -261,7 +302,7 @@ WriteLiteral("                        <div");
 WriteLiteral(" data-logmoduleid=\"");
 
             
-            #line 66 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 83 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                                           Write(lm.Key.ModuleId);
 
             
@@ -276,7 +317,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 67 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 84 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                        Write(CommonHelpers.CheckBoxList("EventTypeIds", lm.Value.ToSelectListItems(), 2, false, uniqueIdSeed));
 
             
@@ -285,85 +326,69 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </div>\r\n");
 
             
-            #line 69 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 86 "..\..\Areas\Config\Views\Logging\Index.cshtml"
                         uniqueIdSeed += lm.Value.Count;
                     }
 
             
             #line default
             #line hidden
-WriteLiteral("                </td>\r\n            </tr>\r\n            <tr>\r\n                <th><" +
-"/th>\r\n                <td>\r\n");
+WriteLiteral("                </td>\r\n            </tr>\r\n        </table>\r\n        <p");
 
-WriteLiteral("                    ");
+WriteLiteral(" class=\"actions\"");
 
-            
-            #line 76 "..\..\Areas\Config\Views\Logging\Index.cshtml"
-               Write(Html.Hidden("Format", "CSV"));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    <input");
+WriteLiteral(">\r\n            <input");
 
 WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(" value=\"Download CSV\"");
+WriteLiteral(" value=\"Export\"");
 
-WriteLiteral(" />\r\n                </td>\r\n            </tr>\r\n        </table>\r\n        <script");
+WriteLiteral(" />\r\n        </p>\r\n        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n            $(function () {\r\n                var filterStart = $(\'#filterStart" +
-"\').watermark(\'Start\').datetimepicker({\r\n                    ampm: true,\r\n       " +
-"             stepMinute: 1,\r\n                    changeYear: true,\r\n            " +
-"        changeMonth: true,\r\n                    dateFormat: \'yy/mm/dd\'\r\n        " +
-"        });\r\n                var filterEnd = $(\'#filterEnd\').watermark(\'End\').da" +
-"tetimepicker({\r\n                    ampm: true,\r\n                    stepMinute:" +
-" 1,\r\n                    changeYear: true,\r\n                    changeMonth: tru" +
-"e,\r\n                    dateFormat: \'yy/mm/dd\'\r\n                });\r\n           " +
-"     var moduleId = $(\'#moduleId\');\r\n                var trLogModuleEventTypes =" +
-" $(\'#trLogModuleEventTypes\');\r\n                var logModuleEventTypes = trLogMo" +
-"duleEventTypes.find(\'.logModuleEventTypes\').hide();\r\n                var logModu" +
-"leEventTypeCheckboxes = logModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n\r\n " +
-"               moduleId.change(function () {\r\n                    // Unselect Al" +
-"l\r\n                    logModuleEventTypes.slideUp();\r\n                    logMo" +
-"duleEventTypeCheckboxes.filter(\':checked\').prop(\'checked\', false);\r\n            " +
-"        var selectedModule = moduleId.val();\r\n                    if (selectedMo" +
-"dule) {\r\n                        trLogModuleEventTypes.show();\r\n                " +
-"        var selectedModuleEventTypes = logModuleEventTypes.filter(\'[data-logmodu" +
-"leid=\"\' + selectedModule + \'\"]\');\r\n                        if (selectedModuleEve" +
-"ntTypes.length > 0) {\r\n                            var selectedModuleEventTypeCh" +
-"eckboxes = selectedModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n           " +
-"                 selectedModuleEventTypeCheckboxes.prop(\'checked\', true);\r\n     " +
-"                       trLogModuleEventTypes.show();\r\n                          " +
-"  selectedModuleEventTypes.slideDown();\r\n                        } else {\r\n     " +
-"                       trLogModuleEventTypes.hide();\r\n                        }\r" +
-"\n                    } else {\r\n                        trLogModuleEventTypes.hid" +
-"e();\r\n                    }\r\n                });\r\n\r\n                $(\'#eventTyp" +
-"esSelectAll\').click(function () {\r\n                    var selectedModule = modu" +
-"leId.val();\r\n                    if (selectedModule) {\r\n                        " +
-"var selectedModuleEventTypes = logModuleEventTypes.filter(\'[data-logmoduleid=\"\' " +
-"+ selectedModule + \'\"]\');\r\n                        if (selectedModuleEventTypes." +
-"length > 0) {\r\n                            var selectedModuleEventTypeCheckboxes" +
-" = selectedModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n                   " +
-"         selectedModuleEventTypeCheckboxes.prop(\'checked\', true);\r\n             " +
-"           }\r\n                    }\r\n                    return false;\r\n        " +
-"        });\r\n                $(\'#eventTypesSelectNone\').click(function () {\r\n   " +
+WriteLiteral(">\r\n            $(function () {\r\n                var moduleId = $(\'#moduleId\');\r\n " +
+"               var trLogModuleEventTypes = $(\'#trLogModuleEventTypes\');\r\n       " +
+"         var logModuleEventTypes = trLogModuleEventTypes.find(\'.logModuleEventTy" +
+"pes\').hide();\r\n                var logModuleEventTypeCheckboxes = logModuleEvent" +
+"Types.find(\'input[type=\"checkbox\"]\');\r\n\r\n                moduleId.change(functio" +
+"n () {\r\n                    // Unselect All\r\n                    logModuleEventT" +
+"ypes.slideUp();\r\n                    logModuleEventTypeCheckboxes.filter(\':check" +
+"ed\').prop(\'checked\', false);\r\n                    var selectedModule = moduleId." +
+"val();\r\n                    if (selectedModule) {\r\n                        trLog" +
+"ModuleEventTypes.show();\r\n                        var selectedModuleEventTypes =" +
+" logModuleEventTypes.filter(\'[data-logmoduleid=\"\' + selectedModule + \'\"]\');\r\n   " +
+"                     if (selectedModuleEventTypes.length > 0) {\r\n               " +
+"             var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.fi" +
+"nd(\'input[type=\"checkbox\"]\');\r\n                            selectedModuleEventTy" +
+"peCheckboxes.prop(\'checked\', true);\r\n                            trLogModuleEven" +
+"tTypes.show();\r\n                            selectedModuleEventTypes.slideDown()" +
+";\r\n                        } else {\r\n                            trLogModuleEven" +
+"tTypes.hide();\r\n                        }\r\n                    } else {\r\n       " +
+"                 trLogModuleEventTypes.hide();\r\n                    }\r\n         " +
+"       });\r\n\r\n                $(\'#eventTypesSelectAll\').click(function () {\r\n   " +
 "                 var selectedModule = moduleId.val();\r\n                    if (s" +
 "electedModule) {\r\n                        var selectedModuleEventTypes = logModu" +
 "leEventTypes.filter(\'[data-logmoduleid=\"\' + selectedModule + \'\"]\');\r\n           " +
 "             if (selectedModuleEventTypes.length > 0) {\r\n                       " +
 "     var selectedModuleEventTypeCheckboxes = selectedModuleEventTypes.find(\'inpu" +
 "t[type=\"checkbox\"]\');\r\n                            selectedModuleEventTypeCheckb" +
-"oxes.prop(\'checked\', false);\r\n                        }\r\n                    }\r\n" +
-"                    return false;\r\n                });\r\n\r\n            });\r\n     " +
-"   </script>\r\n    </div>\r\n");
+"oxes.prop(\'checked\', true);\r\n                        }\r\n                    }\r\n " +
+"                   return false;\r\n                });\r\n                $(\'#event" +
+"TypesSelectNone\').click(function () {\r\n                    var selectedModule = " +
+"moduleId.val();\r\n                    if (selectedModule) {\r\n                    " +
+"    var selectedModuleEventTypes = logModuleEventTypes.filter(\'[data-logmoduleid" +
+"=\"\' + selectedModule + \'\"]\');\r\n                        if (selectedModuleEventTy" +
+"pes.length > 0) {\r\n                            var selectedModuleEventTypeCheckb" +
+"oxes = selectedModuleEventTypes.find(\'input[type=\"checkbox\"]\');\r\n               " +
+"             selectedModuleEventTypeCheckboxes.prop(\'checked\', false);\r\n        " +
+"                }\r\n                    }\r\n                    return false;\r\n   " +
+"             });\r\n\r\n            });\r\n        </script>\r\n    </div>\r\n");
 
             
-            #line 149 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 148 "..\..\Areas\Config\Views\Logging\Index.cshtml"
 }
 
             
@@ -372,7 +397,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var filterStar
 WriteLiteral("<h2>Live Logging</h2>\r\n");
 
             
-            #line 151 "..\..\Areas\Config\Views\Logging\Index.cshtml"
+            #line 150 "..\..\Areas\Config\Views\Logging\Index.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
 {
     IsLive = true,

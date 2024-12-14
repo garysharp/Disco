@@ -4,31 +4,43 @@
     Authorization.Require(Claims.Config.Logging.Show);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Logging");
-    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-TimePicker");
 }
 @using (Html.BeginForm(MVC.API.Logging.RetrieveEvents()))
-{ 
+{
+    @Html.AntiForgeryToken()
     <div class="form" style="width: 520px;">
         <h2>Export Logs</h2>
         <table>
             <tr>
-                <th style="width: 105px;">Start Filter
+                <th>Format</th>
+                <td>
+                    <select name="Format">
+                        <option value="xlsx" selected>Xlsx</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 105px;">
+                    Start Filter
                 </th>
                 <td>
-                    <input id="filterStart" type="text" name="Start" />
+                    <input id="filterStart" type="datetime-local" value="@(DateTime.Today.ToString("yyyy-MM-dd"))T00:00" name="Start" />
                     <span class="smallMessage">* Optional</span>
                 </td>
             </tr>
             <tr>
-                <th>End Filter
+                <th>
+                    End Filter
                 </th>
                 <td>
-                    <input id="filterEnd" type="text" name="End" />
+                    <input id="filterEnd" type="datetime-local" name="End" />
                     <span class="smallMessage">* Optional</span>
                 </td>
             </tr>
             <tr>
-                <th>Limit Filter
+                <th>
+                    Limit Filter
                 </th>
                 <td>
                     <select name="Take">
@@ -42,21 +54,26 @@
                 </td>
             </tr>
             <tr>
-                <th>Module Filter
+                <th>
+                    Module Filter
                 </th>
                 <td>
                     <select id="moduleId" name="ModuleId">
                         <option value="" selected="selected">- All Modules -</option>
                         @foreach (var lm in Model.LogModules.Keys.OrderBy(lm => lm.ModuleDescription))
                         {
-                            <option value="@lm.ModuleId">@lm.ModuleDescription</option>    
+                            <option value="@lm.ModuleId">@lm.ModuleDescription</option>
+
                         }
                     </select>
                 </td>
             </tr>
             <tr id="trLogModuleEventTypes" style="display: none">
-                <th>Event Type Filter <span style="display: block;" class="checkboxBulkSelectContainer">Select: <a id="eventTypesSelectAll" href="#">ALL</a> | <a id="eventTypesSelectNone"
-                    href="#">NONE</a></span>
+                <th>
+                    Event Type Filter <span style="display: block;" class="checkboxBulkSelectContainer">
+                        Select: <a id="eventTypesSelectAll" href="#">ALL</a> | <a id="eventTypesSelectNone"
+                                                                                  href="#">NONE</a>
+                    </span>
                 </th>
                 <td>
                     @{int uniqueIdSeed = 0;
@@ -70,30 +87,12 @@
                     }
                 </td>
             </tr>
-            <tr>
-                <th></th>
-                <td>
-                    @Html.Hidden("Format", "CSV")
-                    <input type="submit" class="button" value="Download CSV" />
-                </td>
-            </tr>
         </table>
+        <p class="actions">
+            <input type="submit" class="button" value="Export" />
+        </p>
         <script type="text/javascript">
             $(function () {
-                var filterStart = $('#filterStart').watermark('Start').datetimepicker({
-                    ampm: true,
-                    stepMinute: 1,
-                    changeYear: true,
-                    changeMonth: true,
-                    dateFormat: 'yy/mm/dd'
-                });
-                var filterEnd = $('#filterEnd').watermark('End').datetimepicker({
-                    ampm: true,
-                    stepMinute: 1,
-                    changeYear: true,
-                    changeMonth: true,
-                    dateFormat: 'yy/mm/dd'
-                });
                 var moduleId = $('#moduleId');
                 var trLogModuleEventTypes = $('#trLogModuleEventTypes');
                 var logModuleEventTypes = trLogModuleEventTypes.find('.logModuleEventTypes').hide();

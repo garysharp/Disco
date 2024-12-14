@@ -402,6 +402,7 @@
     <Compile Include="Jobs\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
+    <Compile Include="Logging\LogExport.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />
     <Compile Include="Logging\Models\LogEvent.cs" />
     <Compile Include="Logging\Models\LogEventType.cs" />
