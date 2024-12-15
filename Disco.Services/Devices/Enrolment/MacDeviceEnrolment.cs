@@ -6,6 +6,8 @@ using PListNet;
 using PListNet.Nodes;
 using Renci.SshNet;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -201,15 +203,20 @@ namespace Disco.Services.Devices.Enrolment
                     throw new EnrolmentSafeException(@"The serial number cannot contain '/' or '\' characters.");
 
                 EnrolmentLog.LogSessionProgress(sessionId, 10, "Querying Database");
-                Device RepoDevice = Database.Devices.Include("AssignedUser").Include("DeviceProfile").Include("DeviceProfile").Where(d => d.SerialNumber == Request.DeviceSerialNumber).FirstOrDefault();
+                Device device = Database.Devices
+                    .Include(d => d.AssignedUser)
+                    .Include(d => d.DeviceProfile)
+                    .Include(d => d.DeviceModel)
+                    .Include(d => d.DeviceDetails)
+                    .Where(d => d.SerialNumber == Request.DeviceSerialNumber).FirstOrDefault();
                 if (!Trusted)
                 {
-                    if (RepoDevice == null)
-                        throw new EnrolmentSafeException(string.Format("Unknown Device Serial Number (SN: '{0}')", Request.DeviceSerialNumber));
-                    if (!RepoDevice.AllowUnauthenticatedEnrol)
-                        throw new EnrolmentSafeException(string.Format("Device isn't allowed an Unauthenticated Enrolment (SN: '{0}')", Request.DeviceSerialNumber));
+                    if (device == null)
+                        throw new EnrolmentSafeException($"Unknown Device Serial Number (SN: '{Request.DeviceSerialNumber}')");
+                    if (!device.AllowUnauthenticatedEnrol)
+                        throw new EnrolmentSafeException($"Device isn't allowed an Unauthenticated Enrolment (SN: '{Request.DeviceSerialNumber}')");
                 }
-                if (RepoDevice == null)
+                if (device == null)
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 50, "New Device, Building Disco Instance");
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.DeviceSerialNumber);
@@ -222,7 +229,7 @@ namespace Disco.Services.Devices.Enrolment
                     else
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
 
-                    RepoDevice = new Device
+                    device = new Device
                     {
                         SerialNumber = Request.DeviceSerialNumber,
                         DeviceDomainId = Request.DeviceComputerName,
@@ -230,9 +237,10 @@ namespace Disco.Services.Devices.Enrolment
                         DeviceModel = deviceModel,
                         AllowUnauthenticatedEnrol = false,
                         CreatedDate = DateTime.Now,
-                        EnrolledDate = DateTime.Now
+                        EnrolledDate = DateTime.Now,
+                        DeviceDetails = new List<DeviceDetail>(),
                     };
-                    Database.Devices.Add(RepoDevice);
+                    Database.Devices.Add(device);
                 }
                 else
                 {
@@ -246,30 +254,36 @@ namespace Disco.Services.Devices.Enrolment
                     else
                         EnrolmentLog.LogSessionDevice(sessionId, Request.DeviceSerialNumber, deviceModel.Id);
 
-                    RepoDevice.DeviceModel = deviceModel;
+                    device.DeviceModel = deviceModel;
 
-                    RepoDevice.DeviceDomainId = Request.DeviceComputerName;
-                    if (!RepoDevice.EnrolledDate.HasValue)
+                    device.DeviceDomainId = Request.DeviceComputerName;
+                    if (!device.EnrolledDate.HasValue)
                     {
-                        RepoDevice.EnrolledDate = DateTime.Now;
+                        device.EnrolledDate = DateTime.Now;
                     }
                 }
-                RepoDevice.LastEnrolDate = DateTime.Now;
-                RepoDevice.AllowUnauthenticatedEnrol = false;
+
+                if (!string.IsNullOrEmpty(Request.DeviceLanMacAddress))
+                    device.DeviceDetails.LanMacAddress(device, Request.DeviceLanMacAddress);
+                if (!string.IsNullOrEmpty(Request.DeviceWlanMacAddress))
+                    device.DeviceDetails.WLanMacAddress(device, Request.DeviceWlanMacAddress);
+
+                device.LastEnrolDate = DateTime.Now;
+                device.AllowUnauthenticatedEnrol = false;
                 // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
                 //DeviceProfileConfiguration RepoDeviceProfileContext = RepoDevice.DeviceProfile.Configuration(Context);
                 EnrolmentLog.LogSessionProgress(sessionId, 90, "Building Response");
                 //if (RepoDeviceProfileContext.DistributionType == DeviceProfileConfiguration.DeviceProfileDistributionTypes.OneToOne && RepoDevice.AssignedUser != null)
-                if (RepoDevice.DeviceProfile.DistributionType == DeviceProfile.DistributionTypes.OneToOne && RepoDevice.AssignedUser != null)
+                if (device.DeviceProfile.DistributionType == DeviceProfile.DistributionTypes.OneToOne && device.AssignedUser != null)
                 {
-                    ADUserAccount AssignedUserInfo = ActiveDirectory.RetrieveADUserAccount(RepoDevice.AssignedUser.UserId);
-                    EnrolmentLog.LogSessionTaskAssigningUser(sessionId, RepoDevice.SerialNumber, AssignedUserInfo.DisplayName, AssignedUserInfo.SamAccountName, AssignedUserInfo.Domain.NetBiosName, AssignedUserInfo.SecurityIdentifier.ToString());
+                    ADUserAccount AssignedUserInfo = ActiveDirectory.RetrieveADUserAccount(device.AssignedUser.UserId);
+                    EnrolmentLog.LogSessionTaskAssigningUser(sessionId, device.SerialNumber, AssignedUserInfo.DisplayName, AssignedUserInfo.SamAccountName, AssignedUserInfo.Domain.NetBiosName, AssignedUserInfo.SecurityIdentifier.ToString());
                     response.DeviceAssignedUserUsername = AssignedUserInfo.SamAccountName;
                     response.DeviceAssignedUserDomain = AssignedUserInfo.Domain.NetBiosName;
                     response.DeviceAssignedUserName = AssignedUserInfo.DisplayName;
                     response.DeviceAssignedUserSID = AssignedUserInfo.SecurityIdentifier.ToString();
                 }
-                response.DeviceComputerName = RepoDevice.DeviceDomainId;
+                response.DeviceComputerName = device.DeviceDomainId;
                 EnrolmentLog.LogSessionProgress(sessionId, 100, "Completed Successfully");
             }
             catch (EnrolmentSafeException ex)
