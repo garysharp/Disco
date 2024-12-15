@@ -12,13 +12,15 @@
     <h2>Details</h2>
     <table>
         <tr>
-            <th style="width: 160px">Name:
+            <th style="width: 160px">
+                Name:
             </th>
-            <td>@if (Authorization.Has(Claims.Config.Organisation.ConfigureName))
+            <td>
+                @if (Authorization.Has(Claims.Config.Organisation.ConfigureName))
                 {
-                @Html.EditorFor(m => m.OrganisationName)
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.EditorFor(m => m.OrganisationName)
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         var field = $('#OrganisationName');
                         document.DiscoFunctions.PropertyChangeHelper(
@@ -28,16 +30,17 @@
                         'OrganisationName'
                         );
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                <h3>@Model.OrganisationName</h3>
+                    <h3>@Model.OrganisationName</h3>
                 }
             </td>
         </tr>
         <tr>
-            <th style="width: 160px">Logo:
+            <th style="width: 160px">
+                Logo:
                 @if (Authorization.Has(Claims.Config.Organisation.ConfigureLogo))
                 {
                     <br />
@@ -52,13 +55,15 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 160px">Multi-Site Mode:
+            <th style="width: 160px">
+                Multi-Site Mode:
             </th>
-            <td>@if (Authorization.Has(Claims.Config.Organisation.ConfigureMultiSiteMode))
+            <td>
+                @if (Authorization.Has(Claims.Config.Organisation.ConfigureMultiSiteMode))
                 {
-                @Html.EditorFor(m => m.MultiSiteMode) @Html.LabelFor(m => m.MultiSiteMode)
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.EditorFor(m => m.MultiSiteMode) @Html.LabelFor(m => m.MultiSiteMode)
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         var field = $('#MultiSiteMode');
                         document.DiscoFunctions.PropertyChangeHelper(
@@ -68,11 +73,11 @@
                         'MultiSiteMode'
                         );
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                <input name="MultiSiteMode" class="check-box" id="MultiSiteMode" type="checkbox" @(Model.MultiSiteMode ? new HtmlString("checked=\"checked\" ") : new HtmlString(string.Empty))disabled="disabled">  @Html.LabelFor(m => m.MultiSiteMode)
+                    <input name="MultiSiteMode" class="check-box" id="MultiSiteMode" type="checkbox" @(Model.MultiSiteMode ? new HtmlString("checked=\"checked\" ") : new HtmlString(string.Empty)) disabled="disabled"> @Html.LabelFor(m => m.MultiSiteMode)
                 }
                 @if (Model.OrganisationAddresses.Count > 1)
                 {
@@ -85,22 +90,25 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 160px">Addresses:
+            <th style="width: 160px">
+                Addresses:
                 @if (canConfigAddresses)
                 {
                     <br />
                     <br />
-                    <a href="#" id="createAddress" class="button">Create</a>
+                    <button id="createAddress" class="button">Create</button>
                 }
             </th>
             <td>
                 @if (Model.OrganisationAddresses.Count > 0)
-                { 
+                {
                     <table id="organisationAddresses">
                         <tr>
-                            <th>Name
+                            <th>
+                                Name
                             </th>
-                            <th>Address
+                            <th>
+                                Address
                             </th>
                             <th></th>
                         </tr>
@@ -108,19 +116,30 @@
                         {
                             <tr data-addressid="@item.Id">
                                 <td>
-                                    <span class="name">@Html.DisplayFor(modelItem => item.Name)</span> (<span class="shortName">@Html.DisplayFor(modelItem => item.ShortName)</span>)
+                                    <span>@Html.DisplayFor(modelItem => item.Name)</span> (<span>@Html.DisplayFor(modelItem => item.ShortName)</span>)
                                 </td>
                                 <td>
-                                    <span class="address">@Html.DisplayFor(modelItem => item.Address)</span><br />
-                                    <span class="suburb">@Html.DisplayFor(modelItem => item.Suburb)</span> <span class="postcode">@Html.DisplayFor(modelItem => item.Postcode)</span><br />
-                                    <span class="state">@Html.DisplayFor(modelItem => item.State)</span> <span class="country">@Html.DisplayFor(modelItem => item.Country)</span><br />
-                                    <span class="smallMessage">Phone:</span> <span class="phoneNumber">@Html.DisplayFor(modelItem => item.PhoneNumber)</span><br />
-                                    <span class="smallMessage">Fax:</span> <span class="faxNumber">@Html.DisplayFor(modelItem => item.FaxNumber)</span>
+                                    <span>@Html.DisplayFor(modelItem => item.Address)</span>
+                                    <br /><span>@Html.DisplayFor(modelItem => item.Suburb)</span> <span>@Html.DisplayFor(modelItem => item.Postcode)</span>
+                                    <br /><span>@Html.DisplayFor(modelItem => item.State)</span> <span>@Html.DisplayFor(modelItem => item.Country)</span>
+                                    @if (!string.IsNullOrWhiteSpace(item.PhoneNumber))
+                                    {
+                                        <br /><span class="smallMessage">Phone:</span> <span>@Html.DisplayFor(modelItem => item.PhoneNumber)</span>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(item.FaxNumber))
+                                    {
+                                        <br /><span class="smallMessage">Fax:</span> <span>@Html.DisplayFor(modelItem => item.FaxNumber)</span>
+                                    }
+                                    @if (!string.IsNullOrWhiteSpace(item.EmailAddress))
+                                    {
+                                        <br /><span>@Html.DisplayFor(modelItem => item.EmailAddress)</span>
+                                    }
                                 </td>
                                 <td>
                                     @if (canConfigAddresses)
                                     {
                                         <i class="fa fa-edit information edit" title="Edit Address"></i> <i class="fa fa-times-circle warning delete" title="Delete Address"></i>
+                                        <script class="addressJson" type="application/json">@Html.Raw(Json.Encode(item))</script>
                                     }
                                 </td>
                             </tr>
@@ -128,7 +147,7 @@
                     </table>
                 }
                 else
-                { 
+                {
                     <span class="smallMessage">No Addresses Stored</span>
                 }
             </td>
@@ -137,17 +156,16 @@
 </div>
 @if (Authorization.Has(Claims.Config.Organisation.ConfigureLogo))
 {
-    <div id="dialogUpdateOrganisationLogo" title="Update Organisation Logo">
+    <div id="dialogUpdateOrganisationLogo" title="Update Organisation Logo" class="dialog">
         @using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             <h3>Update Organisation Logo</h3>
             <div style="margin-top: 10px; padding-bottom: 5px;">
                 <input id="updateOrganisationLogoResetLogo" type="radio" name="ResetLogo" value="true"
-                    checked="checked" /><label for="updateOrganisationLogoResetLogo">Remove Logo</label>
+                       checked="checked" /><label for="updateOrganisationLogoResetLogo">Remove Logo</label>
             </div>
             <div style="margin-top: 5px; border-top: 1px dashed #aaa; padding-top: 5px;">
-                <input id="updateOrganisationLogoUploadLogo" type="radio" name="ResetLogo" value="false" /><label
-                    for="updateOrganisationLogoUploadLogo">Upload Logo</label>
+                <input id="updateOrganisationLogoUploadLogo" type="radio" name="ResetLogo" value="false" /><label for="updateOrganisationLogoUploadLogo">Upload Logo</label>
                 <div id="updateOrganisationLogoUploadLogoContainer" style="display: none; padding: 4px 0 0 14px;">
                     <input id="updateOrganisationLogoUploadLogoImage" type="file" name="Image" />
                     <span id="updateOrganisationLogoUploadLogoImageRequired" class="field-validation-valid field-validation-error">* Required</span>
@@ -203,202 +221,197 @@
 }
 @if (canConfigAddresses)
 {
-    <div id="dialogConfirmRemove" title="Delete this Address?">
+    <div id="dialogConfirmRemove" title="Delete this Address?" class="dialog">
         <p>
             <i class="fa fa-exclamation-triangle fa-lg warning"></i>
-            This item will be permanently deleted and cannot be recovered.
+            This item will be permanently deleted.
         </p>
         <p>
             <strong>Are you sure?</strong>
         </p>
+        @using (Html.BeginForm(MVC.API.System.DeleteOrganisationAddress()))
+        {
+            @Html.AntiForgeryToken()
+            <input name="Id" value="" type="hidden" />
+            <input name="redirect" value="true" type="hidden" />
+        }
     </div>
-    <div id="dialogEdit" title="Edit/Create Address">
-        <table>
-            <tr>
-                <td>Short&nbsp;Name
-                </td>
-                <td>
-                    <input id="editShortName" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Name
-                </td>
-                <td>
-                    <input id="editName" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Address
-                </td>
-                <td>
-                    <input id="editAddress" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Suburb
-                </td>
-                <td>
-                    <input id="editSuburb" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Postcode
-                </td>
-                <td>
-                    <input id="editPostcode" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>State
-                </td>
-                <td>
-                    <input id="editState" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Country
-                </td>
-                <td>
-                    <input id="editCountry" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Phone Number
-                </td>
-                <td>
-                    <input id="editPhoneNumber" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>Fax Number
-                </td>
-                <td>
-                    <input id="editFaxNumber" type="text" />
-                </td>
-            </tr>
-        </table>
+    <div id="dialogEdit" title="Edit/Create Address" class="dialog">
+        @using (Html.BeginForm(MVC.API.System.UpdateOrganisationAddress()))
+        {
+            @Html.AntiForgeryToken()
+            <input name="redirect" value="true" type="hidden" />
+            <input name="Id" value="" type="hidden" data-bind />
+            <table>
+                <tr>
+                    <td>
+                        <label for="editShortName">Short&nbsp;Name&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editShortName" name="ShortName" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editName">Name&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editName" name="Name" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editAddress">Address&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editAddress" name="Address" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editSuburb">Suburb&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editSuburb" name="Suburb" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editPostcode">Postcode&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editPostcode" name="Postcode" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editState">State&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editState" name="State" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editCountry">Country&nbsp;*</label>
+                    </td>
+                    <td>
+                        <input id="editCountry" name="Country" type="text" required data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editPhoneNumber">Phone Number</label>
+                    </td>
+                    <td>
+                        <input id="editPhoneNumber" name="PhoneNumber" type="text" data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editFaxNumber">Fax Number</label>
+                    </td>
+                    <td>
+                        <input id="editFaxNumber" name="FaxNumber" type="text" data-bind />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="editEmailAddress">Email Address</label>
+                    </td>
+                    <td>
+                        <input id="editEmailAddress" name="EmailAddress" type="text" data-bind />
+                    </td>
+                </tr>
+            </table>
+        }
     </div>
     <script type="text/javascript">
         $(function () {
-            $("#dialogConfirmRemove").dialog({
-                resizable: false,
-                modal: true,
-                autoOpen: false,
-                buttons: {
-                    "Delete": function () {
-                        return null;
-                    },
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
+            let $addressEditDialog = null;
+            let $addressRemoveDialog = null;
+
             $('#organisationAddresses').find('i.delete').click(function () {
-                var componentRow = $(this).closest('tr');
-                var id = componentRow.attr('data-addressid');
+                const id = $(this).closest('tr').attr('data-addressid');
                 if (id) {
-                    var dialog = $("#dialogConfirmRemove");
-                    var buttons = dialog.dialog("option", "buttons");
-                    buttons['Delete'] = function () { $(this).dialog("disable"); window.location.href = '@(Url.Action(MVC.API.System.DeleteOrganisationAddress()))' + '?redirect=true&id=' + id; };
-                    var buttons = dialog.dialog("option", "buttons", buttons);
-                    dialog.dialog('open');
+                    if ($addressRemoveDialog === null) {
+                        $addressRemoveDialog = $("#dialogConfirmRemove").dialog({
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Delete": function () {
+                                    const $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    $this.find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+                    const $dialog = $addressRemoveDialog;
+                    $dialog.find('input[name="Id"]').val(id);
+                    $dialog.dialog('open');
                 }
             });
 
-            var editAddress = function (element) {
-                var id = '', shortName = '', name = '', address = '', suburb = '', postcode = '', state = '', country = '', phoneNumber = '', faxNumber = '';
-                var dialog = $('#dialogEdit');
-                if (element) {
-                    id = element.attr('data-addressid');
-                    shortName = element.find('.shortName').text();
-                    name = element.find('.name').text();
-                    address = element.find('.address').text();
-                    suburb = element.find('.suburb').text();
-                    postcode = element.find('.postcode').text();
-                    state = element.find('.state').text();
-                    country = element.find('.country').text();
-                    phoneNumber = element.find('.phoneNumber').text();
-                    faxNumber = element.find('.faxNumber').text();
-                    dialog.attr('data-addressid', id);
-                    dialog.dialog('option', 'title', 'Edit Address: ' + name);
-                } else {
-                    dialog.attr('data-addressid', null);
-                    dialog.dialog('option', 'title', 'Create Address');
+            function editAddress(e) {
+                if ($addressEditDialog === null) {
+                    $addressEditDialog = $("#dialogEdit").dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        width: 350,
+                        buttons: {
+                            "Save": function () {
+                                const $form = $addressEditDialog.find('form');
+                                if ($form[0].reportValidity()) {
+                                    const $this = $(this);
+                                    $this.dialog("disable");
+                                    $this.dialog("option", "buttons", null);
+                                    $form.trigger('submit');
+                                }
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                    $addressEditDialog.find('form').removeAttr('novalidate');
                 }
+                const $dialog = $addressEditDialog;
 
-                $('#editShortName').val(shortName);
-                $('#editName').val(name);
-                $('#editAddress').val(address);
-                $('#editSuburb').val(suburb);
-                $('#editPostcode').val(postcode);
-                $('#editState').val(state);
-                $('#editCountry').val(country);
-                $('#editPhoneNumber').val(phoneNumber);
-                $('#editFaxNumber').val(faxNumber);
-                dialog.dialog('open');
+                if (e && e.currentTarget) {
+                    const address = JSON.parse($(e.currentTarget).closest('tr').find('script.addressJson').html());
+
+                    $dialog.dialog('option', 'title', 'Edit Address: ' + address.Name);
+
+                    $dialog.find('input[data-bind]').each(function () {
+                        const $this = $(this);
+                        const name = $this.attr('name');
+                        if (address[name]) {
+                            $this.val(address[name]);
+                        } else {
+                            $this.val('');
+                        }
+                    });
+                } else {
+                    $dialog.dialog('option', 'title', 'Create Address');
+                    $dialog.find('input[data-bind]').val('');
+                }
+                $dialog.dialog('open');
+                $dialog.find('input[type="text"]').first().focus();
             }
 
-            $('#organisationAddresses').find('i.edit').click(function () {
-                var componentRow = $(this).closest('tr');
-                editAddress(componentRow);
-            });
-
-            $('#createAddress').click(function () {
+            $('#organisationAddresses').on('click', 'i.edit', editAddress)
+            $('#createAddress').on('click', function (e) {
+                e.preventDefault();
                 editAddress();
                 return false;
             });
-
-            var submitAddress = function () {
-                var dialog = $('#dialogEdit');
-                var data = {
-                    Id: dialog.attr('data-addressid'),
-                    ShortName: $('#editShortName').val(),
-                    Name: $('#editName').val(),
-                    Address: $('#editAddress').val(),
-                    Suburb: $('#editSuburb').val(),
-                    Postcode: $('#editPostcode').val(),
-                    State: $('#editState').val(),
-                    Country: $('#editCountry').val(),
-                    PhoneNumber: $('#editPhoneNumber').val(),
-                    FaxNumber: $('#editFaxNumber').val()
-                };
-
-                $.ajax({
-                    url: '@(Url.Action(MVC.API.System.UpdateOrganisationAddress()))',
-                dataType: 'json',
-                data: data,
-                type: 'post',
-                success: function (d) {
-                    if (d == 'OK') {
-                        window.location.href = '@(Url.Action(MVC.Config.Organisation.Index()))';
-                    } else {
-                        alert('Unable to update address:\n' + d);
-                        dialog.dialog('enable');
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to update address:\n' + textStatus);
-                    dialog.dialog('enable');
-                }
-            });
-
-        };
-            $("#dialogEdit").dialog({
-                resizable: false,
-                modal: true,
-                autoOpen: false,
-                width: 350,
-                buttons: {
-                    "Save": function () {
-                        submitAddress();
-                    },
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-
         });
     </script>
 }

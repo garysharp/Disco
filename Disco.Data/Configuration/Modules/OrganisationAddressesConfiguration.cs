@@ -58,19 +58,5 @@ namespace Disco.Data.Configuration.Modules
             }
         }
 
-        internal static void MigrateDatabase(DiscoDataContext Database)
-        {
-            // Migrate all organisation addresses to JSON
-            if (Database.ConfigurationItems.Count(i => i.Scope == scope && !i.Value.StartsWith("{")) > 0)
-            {
-                var items = Database.ConfigurationItems.Where(i => i.Scope == scope && !i.Value.StartsWith("{")).ToList();
-                items.ForEach(i =>
-                {
-                    i.Value = JsonConvert.SerializeObject(OrganisationAddress.FromConfigurationEntry(int.Parse(i.Key), i.Value));
-                });
-                Database.SaveChanges();
-            }
-        }
-
     }
 }

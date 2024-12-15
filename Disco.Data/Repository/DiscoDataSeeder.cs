@@ -20,8 +20,6 @@ namespace Disco.Data.Repository
             Database.SaveChanges();
 
             // Migration Maintenance
-            Database.MigrateConfiguration();
-
             Database.MigratePreDomainObjects();
         }
 
@@ -311,14 +309,6 @@ namespace Disco.Data.Repository
             }
         }
         // End Added: 2013-02-07 G#
-
-        public static void MigrateConfiguration(this DiscoDataContext Database)
-        {
-            // Organisation Addresses - Force all to JSON serializing
-            Configuration.Modules.OrganisationAddressesConfiguration.MigrateDatabase(Database);
-
-            Database.SaveChanges();
-        }
 
         #region Migrate Users SQL
         private const string MigratePreDomainUsers_Sql = @"INSERT INTO [Users] SELECT @IdNew, u.DisplayName, u.Surname, u.GivenName, u.PhoneNumber, u.EmailAddress FROM [Users] u WHERE [Id]=@IdExisting;

@@ -149,7 +149,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Organisation Addresses
-        [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
         public virtual ActionResult UpdateOrganisationAddress(Disco.Models.BI.Config.OrganisationAddress organisationAddress, bool redirect = false)
         {
             if (organisationAddress == null)
@@ -185,15 +185,15 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(em.ToString(), JsonRequestBehavior.AllowGet);
             }
         }
-        [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
-        public virtual ActionResult DeleteOrganisationAddress(int Id, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
+        public virtual ActionResult DeleteOrganisationAddress(int id, bool redirect = false)
         {
             // Remove References in Device Profiles
             Database.DeviceProfiles
-                .Where(dp => dp.DefaultOrganisationAddress == Id).ToList()
+                .Where(dp => dp.DefaultOrganisationAddress == id).ToList()
                 .ForEach(dp => dp.DefaultOrganisationAddress = null);
 
-            Database.DiscoConfiguration.OrganisationAddresses.RemoveAddress(Id);
+            Database.DiscoConfiguration.OrganisationAddresses.RemoveAddress(id);
             Database.SaveChanges();
 
             if (redirect)
