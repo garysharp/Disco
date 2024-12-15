@@ -71,6 +71,8 @@ namespace Disco.Services.Documents
 
                 var stream = context.GenerateDelegate(context.DocumentTemplate, database, context.CreatorUser, context.Timestamp, context.InsertBlankPages, context.DataObjectsIds, Status);
 
+                database.SaveChanges();
+
                 using (var cacheStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                     stream.CopyTo(cacheStream);
 
