@@ -179,7 +179,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string Domain = "Domain";
-            public readonly string Comments = "Comments";
+            public readonly string comments = "comments";
         }
         static readonly ActionParamsClass_Attachment s_params_Attachment = new ActionParamsClass_Attachment();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -278,16 +278,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string Comments);
+        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string comments);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Domain, string Comments)
+        public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Domain, string comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
-            AttachmentUploadOverride(callInfo, id, Domain, Comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
+            AttachmentUploadOverride(callInfo, id, Domain, comments);
             return callInfo;
         }
 

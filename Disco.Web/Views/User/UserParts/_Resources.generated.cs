@@ -250,14 +250,14 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                     Write(ua.Comments);
+                                      Write(ua.Comments ?? ua.Filename);
 
             
             #line default
             #line hidden
             
             #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                       }
+                                                                        }
             
             #line default
             #line hidden
@@ -310,14 +310,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2671), Tuple.Create("\"", 2709)
+WriteAttribute("title", Tuple.Create(" title=\"", 2688), Tuple.Create("\"", 2726)
             
             #line 42 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                               , Tuple.Create(Tuple.Create("", 2679), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
+                                                                                               , Tuple.Create(Tuple.Create("", 2696), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 2679), false)
+, 2696), false)
 );
 
 WriteLiteral(">");

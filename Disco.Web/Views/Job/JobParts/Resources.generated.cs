@@ -489,14 +489,14 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 72 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                 Write(ja.Comments);
+                                  Write(ja.Comments ?? ja.Filename);
 
             
             #line default
             #line hidden
             
             #line 72 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                   }
+                                                                    }
             
             #line default
             #line hidden
@@ -549,14 +549,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4634), Tuple.Create("\"", 4672)
+WriteAttribute("title", Tuple.Create(" title=\"", 4651), Tuple.Create("\"", 4689)
             
             #line 74 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 4642), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                           , Tuple.Create(Tuple.Create("", 4659), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 4642), false)
+, 4659), false)
 );
 
 WriteLiteral(">");

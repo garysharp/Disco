@@ -648,11 +648,17 @@ namespace Links
                     public const string UrlPath = "~/ClientSource/Style/Images/AttachmentTypes";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
+                    public static readonly string archive_png = Url("archive.png");
+                    public static readonly string audio_png = Url("audio.png");
+                    public static readonly string binary_png = Url("binary.png");
                     public static readonly string document_png = Url("document.png");
                     public static readonly string expressionBrowserIcons_png = Url("expressionBrowserIcons.png");
                     public static readonly string image_png = Url("image.png");
                     public static readonly string pdf_png = Url("pdf.png");
+                    public static readonly string spreadsheet_png = Url("spreadsheet.png");
+                    public static readonly string txt_png = Url("txt.png");
                     public static readonly string unknown_png = Url("unknown.png");
+                    public static readonly string video_png = Url("video.png");
                 }
             
                 public static readonly string BackgroundDocument_png = Url("BackgroundDocument.png");

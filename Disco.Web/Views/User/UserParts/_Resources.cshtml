@@ -37,7 +37,7 @@
                                         @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
                                             { @ua.DocumentTemplate.Description}
                                         else
-                                        { @ua.Comments }}
+                                        { @(ua.Comments ?? ua.Filename) }}
                                     </span><span class="author">@ua.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                                     {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
                                 </a>

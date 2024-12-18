@@ -1,7 +1,6 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Devices.Importing;
-using System.Data.Entity;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Exporting;
@@ -9,17 +8,18 @@ using Disco.Services.Devices.Importing;
 using Disco.Services.Exporting;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Logging;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using Disco.Web.Extensions;
 using Disco.Web.Models.Device;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
-using Disco.Services.Logging;
 
 namespace Disco.Web.Areas.API.Controllers
 {
@@ -498,14 +498,8 @@ namespace Disco.Web.Areas.API.Controllers
             var da = Database.DeviceAttachments.Find(id);
             if (da != null)
             {
-                var thumbPath = da.RepositoryThumbnailFilename(Database);
-                if (System.IO.File.Exists(thumbPath))
-                {
-                    if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-                        return File(thumbPath, "image/png");
-                    else
-                        return File(thumbPath, "image/jpeg");
-                }
+                if (da.WaitForThumbnailGeneration(Database, out var thumbPath, out var mimeType))
+                    return File(thumbPath, mimeType);
                 else
                     return File(ClientSource.Style.Images.AttachmentTypes.MimeTypeIcons.Icon(da.MimeType), "image/png");
             }

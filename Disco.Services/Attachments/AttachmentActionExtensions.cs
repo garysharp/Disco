@@ -4,8 +4,10 @@ using Disco.Services.Authorization;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Users;
 using System;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 
 namespace Disco.Services
 {
@@ -215,12 +217,37 @@ namespace Disco.Services
             return ua;
         }
 
+        public static bool WaitForThumbnailGeneration(this IAttachment attachment, DiscoDataContext database, out string thumbnailPath, out string mimeType)
+        {
+            thumbnailPath = attachment.RepositoryThumbnailFilename(database);
+            if (thumbnailPath.EndsWith(".png"))
+                mimeType = "image/png";
+            else
+                mimeType = "image/jpeg";
+
+            if (File.Exists(thumbnailPath))
+                return true;
+
+            // recently created attachments may not have a thumbnail yet
+            var timestamp = attachment.Timestamp;
+            if (timestamp > DateTime.Now.AddSeconds(-5) && attachment.SupportsThumbnailGeneration(out _, out _))
+            {
+                while (!File.Exists(thumbnailPath) && timestamp > DateTime.Now.AddSeconds(-5))
+                    Thread.Sleep(250);
+
+                if (File.Exists(thumbnailPath))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static string GenerateThumbnail(this IAttachment attachment, DiscoDataContext Database, Stream AttachmentStream)
         {
             string thumbnailFilePath = attachment.RepositoryThumbnailFilename(Database);
 
             Image thumbnail;
-            if (GenerateThumbnail(AttachmentStream, attachment.MimeType, out thumbnail))
+            if (attachment.GenerateThumbnail(AttachmentStream, out thumbnail))
             {
                 thumbnail.SaveJpg(90, thumbnailFilePath);
             }
@@ -235,7 +262,7 @@ namespace Disco.Services
             using (var attachmentStream = File.OpenRead(attachment.RepositoryFilename(Database)))
             {
                 Image thumbnail;
-                if (GenerateThumbnail(attachmentStream, attachment.MimeType, out thumbnail))
+                if (attachment.GenerateThumbnail(attachmentStream, out thumbnail))
                 {
                     thumbnail.SaveJpg(90, thumbnailFilePath);
                 }
@@ -244,61 +271,101 @@ namespace Disco.Services
             return thumbnailFilePath;
         }
 
-        public static bool GenerateThumbnail(Stream Source, string SourceMimeType, out Image Thumbnail)
+
+        private const string pdfMimeType = "application/pdf";
+        private const string pdfExtension = "pdf";
+        private static readonly string[] imageMimeTypes = new string[] { "image/jpeg", "image/png", "image/gif", "image/bmp" };
+        private static readonly string[] imageExtensions = new string[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
+        public static (bool supported, bool isImage, bool isPdf) SupportsThumbnailGeneration(string mimeType, string fileName)
         {
-            if (Source != null)
+            if (!string.IsNullOrEmpty(mimeType))
             {
-                // GDI+ (jpg, png, gif, bmp)
-                if (SourceMimeType.Equals("image/jpeg", StringComparison.OrdinalIgnoreCase) || SourceMimeType.Contains("jpg") ||
-                    SourceMimeType.Equals("image/png", StringComparison.OrdinalIgnoreCase) || SourceMimeType.Contains("png") ||
-                    SourceMimeType.Equals("image/gif", StringComparison.OrdinalIgnoreCase) || SourceMimeType.Contains("gif") ||
-                    SourceMimeType.Equals("image/bmp", StringComparison.OrdinalIgnoreCase) || SourceMimeType.Contains("bmp"))
+                if (pdfMimeType.Equals(mimeType, StringComparison.OrdinalIgnoreCase))
+                    return (true, false, true);
+                foreach (var imageMimeType in imageMimeTypes)
+                    if (mimeType.Equals(imageMimeType, StringComparison.OrdinalIgnoreCase))
+                        return (true, true, false);
+            }
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                if (fileName.EndsWith(pdfExtension, StringComparison.OrdinalIgnoreCase))
+                    return (true, false, true);
+                foreach (var imageExtension in imageExtensions)
+                    if (fileName.EndsWith(imageExtension, StringComparison.OrdinalIgnoreCase))
+                        return (true, true, false);
+            }
+
+            return (false, false, false);
+        }
+
+        public static bool SupportsThumbnailGeneration(this IAttachment attachment, out bool isImage, out bool isPdf)
+        {
+            var result = SupportsThumbnailGeneration(attachment.MimeType, attachment.Filename);
+
+            isImage = result.isImage;
+            isPdf = result.isPdf;
+
+            return result.supported;
+        }
+
+        public static bool GenerateThumbnail(this IAttachment attachment, Stream source, out Image thumbnail)
+        {
+            if (source != null)
+            {
+                var (supported, isImage, isPdf) = SupportsThumbnailGeneration(attachment.MimeType, attachment.Filename);
+
+                if (supported)
                 {
-                    try
+                    // GDI+ (jpg, png, gif, bmp)
+                    if (isImage)
                     {
-                        using (Image sourceImage = Image.FromStream(Source))
+                        try
                         {
-                            Thumbnail = sourceImage.ResizeImage(48, 48, Brushes.Black);
-                            using (Image mimeTypeIcon = Properties.Resources.MimeType_img16)
+                            using (Image sourceImage = Image.FromStream(source))
                             {
-                                Thumbnail.EmbedIconOverlay(mimeTypeIcon);
-                            }
-                            return true;
-                        }
-                    }
-                    catch (Exception) { }
-
-                }
-
-                // PDF
-                if (SourceMimeType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase) || SourceMimeType.Contains("pdf"))
-                {
-                    try
-                    {
-                        using (var pdfiumDocument = PdfiumViewer.PdfDocument.Load(Source))
-                        {
-
-                            if (pdfiumDocument.PageCount > 0)
-                            {
-                                var pageSize = pdfiumDocument.PageSizes[0];
-                                var size = ImagingExtensions.CalculateResize((int)pageSize.Width, (int)pageSize.Height, 48, 48);
-
-                                using (var sourceImage = pdfiumDocument.Render(0, (int)size.Width, (int)size.Height, 72, 72, true))
+                                thumbnail = sourceImage.ResizeImage(48, 48, Brushes.Black);
+                                using (Image mimeTypeIcon = Properties.Resources.MimeType_img16)
                                 {
-                                    Thumbnail = sourceImage.ResizeImage(48, 48, Brushes.White);
-                                    using (Image mimeTypeIcon = Properties.Resources.MimeType_pdf16)
+                                    thumbnail.EmbedIconOverlay(mimeTypeIcon);
+                                }
+                                return true;
+                            }
+                        }
+                        catch (Exception) { }
+
+                    }
+
+                    // PDF
+                    if (isPdf)
+                    {
+                        try
+                        {
+                            using (var pdfiumDocument = PdfiumViewer.PdfDocument.Load(source))
+                            {
+
+                                if (pdfiumDocument.PageCount > 0)
+                                {
+                                    var pageSize = pdfiumDocument.PageSizes[0];
+                                    var size = ImagingExtensions.CalculateResize((int)pageSize.Width, (int)pageSize.Height, 48, 48);
+
+                                    using (var sourceImage = pdfiumDocument.Render(0, (int)size.Width, (int)size.Height, 72, 72, true))
                                     {
-                                        Thumbnail.EmbedIconOverlay(mimeTypeIcon);
+                                        thumbnail = sourceImage.ResizeImage(48, 48, Brushes.White);
+                                        using (Image mimeTypeIcon = Properties.Resources.MimeType_pdf16)
+                                        {
+                                            thumbnail.EmbedIconOverlay(mimeTypeIcon);
+                                        }
+                                        return true;
                                     }
-                                    return true;
                                 }
                             }
                         }
+                        catch (Exception) { }
                     }
-                    catch (Exception) { }
                 }
             }
-            Thumbnail = null;
+            thumbnail = null;
             return false;
         }
     }

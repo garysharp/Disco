@@ -1175,7 +1175,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_AttachmentUpload
         {
             public readonly string id = "id";
-            public readonly string Comments = "Comments";
+            public readonly string comments = "comments";
         }
         static readonly ActionParamsClass_Attachment s_params_Attachment = new ActionParamsClass_Attachment();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1253,7 +1253,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Export
         {
-            public readonly string Model = "Model";
+            public readonly string model = "model";
         }
         static readonly ActionParamsClass_ExportRetrieve s_params_ExportRetrieve = new ActionParamsClass_ExportRetrieve();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2052,15 +2052,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comments);
+        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string comments);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AttachmentUpload(int id, string Comments)
+        public override System.Web.Mvc.ActionResult AttachmentUpload(int id, string comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
-            AttachmentUploadOverride(callInfo, id, Comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
+            AttachmentUploadOverride(callInfo, id, comments);
             return callInfo;
         }
 
@@ -2189,14 +2189,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.ExportModel Model);
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.ExportModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Export(Disco.Web.Models.Job.ExportModel Model)
+        public override System.Web.Mvc.ActionResult Export(Disco.Web.Models.Job.ExportModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
-            ExportOverride(callInfo, Model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ExportOverride(callInfo, model);
             return callInfo;
         }
 

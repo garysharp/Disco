@@ -260,7 +260,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_DeleteOrganisationAddress
         {
-            public readonly string Id = "Id";
+            public readonly string id = "id";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateMultiSiteMode s_params_UpdateMultiSiteMode = new ActionParamsClass_UpdateMultiSiteMode();
@@ -498,15 +498,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void DeleteOrganisationAddressOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int Id, bool redirect);
+        partial void DeleteOrganisationAddressOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult DeleteOrganisationAddress(int Id, bool redirect)
+        public override System.Web.Mvc.ActionResult DeleteOrganisationAddress(int id, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeleteOrganisationAddress);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            DeleteOrganisationAddressOverride(callInfo, Id, redirect);
+            DeleteOrganisationAddressOverride(callInfo, id, redirect);
             return callInfo;
         }
 

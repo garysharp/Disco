@@ -6,6 +6,7 @@ using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -42,14 +43,8 @@ namespace Disco.Web.Areas.API.Controllers
             var ua = Database.UserAttachments.Find(id);
             if (ua != null)
             {
-                var thumbPath = ua.RepositoryThumbnailFilename(Database);
-                if (System.IO.File.Exists(thumbPath))
-                {
-                    if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-                        return File(thumbPath, "image/png");
-                    else
-                        return File(thumbPath, "image/jpeg");
-                }
+                if (ua.WaitForThumbnailGeneration(Database, out var thumbPath, out var mimeType))
+                    return File(thumbPath, mimeType);
                 else
                     return File(ClientSource.Style.Images.AttachmentTypes.MimeTypeIcons.Icon(ua.MimeType), "image/png");
             }

@@ -16,7 +16,6 @@ using Disco.Web.Models.Job;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
@@ -1904,15 +1903,8 @@ namespace Disco.Web.Areas.API.Controllers
             var ja = Database.JobAttachments.Find(id);
             if (ja != null)
             {
-                var thumbPath = ja.RepositoryThumbnailFilename(Database);
-                var thumbFileInfo = new FileInfo(thumbPath);
-                if (thumbFileInfo.Exists && thumbFileInfo.Length > 0)
-                {
-                    if (thumbPath.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
-                        return File(thumbPath, "image/png");
-                    else
-                        return File(thumbPath, "image/jpeg");
-                }
+                if (ja.WaitForThumbnailGeneration(Database, out var thumbPath, out var mimeType))
+                    return File(thumbPath, mimeType);
                 else
                     return File(ClientSource.Style.Images.AttachmentTypes.MimeTypeIcons.Icon(ja.MimeType), "image/png");
             }

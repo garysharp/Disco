@@ -1634,6 +1634,12 @@
       <DependentUpon>tinymce.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\archive.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\audio.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\binary.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\spreadsheet.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\txt.png" />
+    <Content Include="ClientSource\Style\Images\AttachmentTypes\video.png" />
     <Content Include="ClientSource\Style\Images\UnknownPhoto.png" />
     <Content Include="ClientSource\Style\Shadowbox.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
