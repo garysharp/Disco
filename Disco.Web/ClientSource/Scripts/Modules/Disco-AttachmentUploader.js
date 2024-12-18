@@ -1,12 +1,13 @@
 (function (window, document, $) {
     "use strict";
 
-    var attachmentUploader = function (uploadUrl, dropTarget, uploadProgressContainer) {
+    var attachmentUploader = function ($host) {
         var self = this;
 
-        self.uploadUrl = uploadUrl;
-        self.dropTarget = dropTarget;
-        self.uploadProgressContainer = uploadProgressContainer;
+        self.$host = $host;
+        self.uploadUrl = $host.attr('data-uploadurl');
+        self.dropTarget = $host.find('.Disco-AttachmentUpload-DropTarget');
+        self.uploadProgressContainer = $host.find('.Disco-AttachmentUpload-Progress');
 
         // #region File Selection Support
         self._uploadFilesInput = null;
@@ -168,7 +169,7 @@
                     title: 'Upload File',
                     'class': 'dialog Disco-AttachmentUpload-CommentDialog'
                 });
-            dialog.html('<table><tr><th>File Name:</th><td class="filename"></td></tr><tr><th>Comments:</th><td><input class="comments" type="text"></input></td></tr><tr><td class="thumbnail" colspan="2"><img /></td></tr></table>');
+            dialog.html('<table><tr><th>File Name:</th><td class="filename"></td></tr><tr><th>Comments:</th><td><input class="comments" type="text" placeholder="optional" /></td></tr><tr><td class="thumbnail" colspan="2"><img /></td></tr></table>');
 
             if (!!thumbnailHandler) {
                 var td = dialog.find('td.thumbnail');
@@ -181,10 +182,8 @@
             var comments = dialog.find('input.comments')
                 .keypress(function (e) {
                     if (e.which === 13) {
-                        if (!!comments.val()) {
-                            result = true;
-                            dialog.dialog("close");
-                        }
+                        result = true;
+                        dialog.dialog("close");
                     }
                 });
 
@@ -195,15 +194,11 @@
                 autoOpen: true,
                 buttons: {
                     "Upload": function () {
-                        if (!!comments.val()) {
-                            result = true;
-                            dialog.dialog("close");
-                            window.setTimeout(function () {
-                                comments.focus();
-                            }, 1);
-                        } else {
-                            alert('Please provide a comment for this attachment.');
-                        }
+                        result = true;
+                        dialog.dialog("close");
+                        window.setTimeout(function () {
+                            comments.focus();
+                        }, 1);
                     },
                     Cancel: function () {
                         dialog.dialog("close");
@@ -262,29 +257,33 @@
             processNextFile();
         };
 
-        self._uploadFile = function (fileData, fileName, comments) {
-            var formData = new FormData();
-            var xhr = new XMLHttpRequest();
-            var progress = $('<div>')
+        self._uploadFile = async function (fileData, fileName, comments) {
+            const formData = new FormData();
+
+            const progress = $('<div>')
                 .append($('<i>').addClass('fa fa-cog fa-spin'))
                 .append($('<span>').text('Uploading: ' + fileName))
                 .appendTo(self.uploadProgressContainer);
 
-            formData.append('Comments', comments);
-            formData.append('File', fileData, fileName);
+            formData.append('__RequestVerificationToken', self.$host.find('input[name="__RequestVerificationToken"]').val());
+            formData.append('comments', comments);
+            formData.append('file', fileData, fileName);
 
-            xhr.open("POST", self.uploadUrl, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4) {
-                    if (xhr.status !== 200) {
-                        alert('Error Uploading [' + fileName + ']: ' + xhr.statusText);
-                    }
-                    progress.slideUp(400, function () {
-                        progress.remove();
-                    });
-                }
-            };
-            xhr.send(formData);
+            const result = await fetch(self.uploadUrl, {
+                method: 'POST',
+                body: formData
+            });
+
+            progress.slideUp(400, function () {
+                progress.remove();
+            });
+
+            if (!result.ok) {
+                alert('Error Uploading [' + fileName + ']: ' + result.statusText);
+
+                const errorText = await result.text();
+                console.error('Failed to upload file [' + fileName + ']: ' + errorText); 
+            }
         };
         // #endregion
 

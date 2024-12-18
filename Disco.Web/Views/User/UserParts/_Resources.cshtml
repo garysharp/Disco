@@ -19,7 +19,8 @@
     <table id="userShowResources">
         <tr>
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))">
+                    @Html.AntiForgeryToken()
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -28,17 +29,18 @@
                         {
                             foreach (var ua in Model.User.UserAttachments)
                             {
-                            <a href="@Url.Action(MVC.API.User.AttachmentDownload(ua.Id))" data-attachmentid="@ua.Id" data-mimetype="@ua.MimeType">
-                                <span class="icon" title="@ua.Filename">
-                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id)))" /></span>
-                                <span class="comments" title="@ua.Comments">
-                                    @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
-                                      { @ua.DocumentTemplate.Description}
-                                      else
-                                      { @ua.Comments }}
-                                </span><span class="author">@ua.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
-                                                                                                  {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
-                            </a>   
+                                <a href="@Url.Action(MVC.API.User.AttachmentDownload(ua.Id))" data-attachmentid="@ua.Id" data-mimetype="@ua.MimeType">
+                                    <span class="icon" title="@ua.Filename">
+                                        <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id)))" />
+                                    </span>
+                                    <span class="comments" title="@ua.Comments">
+                                        @{if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
+                                            { @ua.DocumentTemplate.Description}
+                                        else
+                                        { @ua.Comments }}
+                                    </span><span class="author">@ua.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
+                                    {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ua.Timestamp.ToUnixEpoc())" title="@ua.Timestamp.ToFullDateTime()">@ua.Timestamp.ToFullDateTime()</span>
+                                </a>
                             }
                         }
                     </div>
@@ -232,10 +234,7 @@
                         @if (canAddAttachments)
                         {<text>
                             //#region Add Attachments
-                            var attachmentUploader = new document.Disco.AttachmentUploader(
-                                '@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))',
-                            $Attachments.find('.Disco-AttachmentUpload-DropTarget'),
-                            $Attachments.find('.Disco-AttachmentUpload-Progress'));
+                            var attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
 
                             var $attachmentInput = $Attachments.find('.attachmentInput');
                             if (window.location.protocol != 'https:') {

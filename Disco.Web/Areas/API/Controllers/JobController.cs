@@ -1919,8 +1919,8 @@ namespace Disco.Web.Areas.API.Controllers
             return HttpNotFound("Invalid Attachment Number");
         }
 
-        [DiscoAuthorize(Claims.Job.Actions.AddAttachments)]
-        public virtual ActionResult AttachmentUpload(int id, string Comments)
+        [DiscoAuthorize(Claims.Job.Actions.AddAttachments), ValidateAntiForgeryToken]
+        public virtual ActionResult AttachmentUpload(int id, string comments)
         {
             var j = Database.Jobs.Find(id);
             if (j != null)
@@ -1934,6 +1934,9 @@ namespace Disco.Web.Areas.API.Controllers
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = MimeTypes.ResolveMimeType(file.FileName);
 
+                        if (string.IsNullOrWhiteSpace(comments))
+                            comments = null;
+
                         var ja = new JobAttachment()
                         {
                             JobId = j.Id,
@@ -1941,7 +1944,7 @@ namespace Disco.Web.Areas.API.Controllers
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
-                            Comments = Comments
+                            Comments = comments
                         };
                         Database.JobAttachments.Add(ja);
                         Database.SaveChanges();
@@ -1961,10 +1964,12 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Job.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var ja = Database.JobAttachments.Include("DocumentTemplate").Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ja = Database.JobAttachments
+                .Include(a => a.DocumentTemplate)
+                .Include(a => a.TechUser)
+                .Where(m => m.Id == id).FirstOrDefault();
             if (ja != null)
             {
-
                 var m = new Models.Attachment.AttachmentModel()
                 {
                     Attachment = Models.Attachment._AttachmentModel.FromAttachment(ja),

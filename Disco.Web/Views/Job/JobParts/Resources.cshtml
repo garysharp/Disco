@@ -53,7 +53,8 @@
         @if (canShowAttachments)
         {
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))">
+                    @Html.AntiForgeryToken()
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -62,15 +63,16 @@
                         {
                             <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
                                 <span class="icon" title="@ja.Filename">
-                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" /></span>
+                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id)))" />
+                                </span>
                                 <span class="comments" title="@ja.Comments">
                                     @{if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
-                                      { @ja.DocumentTemplate.Description}
-                                      else
-                                      { @ja.Comments }}
+                                        { @ja.DocumentTemplate.Description}
+                                    else
+                                    { @ja.Comments }}
                                 </span><span class="author">@ja.TechUser.ToStringFriendly()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
-                                                                                                  {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
-                            </a>   
+                                {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(ja.Timestamp.ToUnixEpoc())" title="@ja.Timestamp.ToFullDateTime()">@ja.Timestamp.ToFullDateTime()</span>
+                            </a>
                         }
                     </div>
                     @if (canAddAttachments)
@@ -317,10 +319,7 @@
             @if (canAddAttachments)
             {<text>
             //#region Add Attachments
-            var attachmentUploader = new document.Disco.AttachmentUploader(
-                '@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))',
-                $Attachments.find('.Disco-AttachmentUpload-DropTarget'),
-                $Attachments.find('.Disco-AttachmentUpload-Progress'));
+            var attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
 
             var $attachmentInput = $Attachments.find('.attachmentInput');
             if (window.location.protocol != 'https:') {

@@ -20,7 +20,7 @@ namespace Disco.Web.Areas.API.Models.Attachment
                 if (DocumentTemplateId != null && DocumentTemplateDescription != null)
                     return DocumentTemplateDescription;
                 else
-                    return Comments;
+                    return Comments ?? Filename;
             }
         }
         public string Filename { get; set; }

@@ -512,8 +512,8 @@ namespace Disco.Web.Areas.API.Controllers
             return HttpNotFound("Invalid Attachment Number");
         }
 
-        [DiscoAuthorize(Claims.Device.Actions.AddAttachments)]
-        public virtual ActionResult AttachmentUpload(string id, string Comments)
+        [DiscoAuthorize(Claims.Device.Actions.AddAttachments), ValidateAntiForgeryToken]
+        public virtual ActionResult AttachmentUpload(string id, string comments)
         {
             var d = Database.Devices.Find(id);
             if (d != null)
@@ -527,6 +527,9 @@ namespace Disco.Web.Areas.API.Controllers
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = MimeTypes.ResolveMimeType(file.FileName);
 
+                        if (string.IsNullOrWhiteSpace(comments))
+                            comments = null;
+
                         var da = new DeviceAttachment()
                         {
                             DeviceSerialNumber = d.SerialNumber,
@@ -534,7 +537,7 @@ namespace Disco.Web.Areas.API.Controllers
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
-                            Comments = Comments
+                            Comments = comments
                         };
                         Database.DeviceAttachments.Add(da);
                         Database.SaveChanges();
@@ -554,10 +557,12 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Device.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var da = Database.DeviceAttachments.Include("DocumentTemplate").Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var da = Database.DeviceAttachments
+                .Include(a => a.DocumentTemplate)
+                .Include(a => a.TechUser)
+                .Where(m => m.Id == id).FirstOrDefault();
             if (da != null)
             {
-
                 var m = new Models.Attachment.AttachmentModel()
                 {
                     Attachment = Models.Attachment._AttachmentModel.FromAttachment(da),

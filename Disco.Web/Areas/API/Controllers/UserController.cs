@@ -56,8 +56,8 @@ namespace Disco.Web.Areas.API.Controllers
             return HttpNotFound("Invalid Attachment Number");
         }
 
-        [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
-        public virtual ActionResult AttachmentUpload(string id, string Domain, string Comments)
+        [DiscoAuthorize(Claims.User.Actions.AddAttachments), ValidateAntiForgeryToken]
+        public virtual ActionResult AttachmentUpload(string id, string Domain, string comments)
         {
             id = ActiveDirectory.ParseDomainAccountId(id, Domain);
 
@@ -73,6 +73,9 @@ namespace Disco.Web.Areas.API.Controllers
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = MimeTypes.ResolveMimeType(file.FileName);
 
+                        if (string.IsNullOrWhiteSpace(comments))
+                            comments = null;
+
                         var ua = new Disco.Models.Repository.UserAttachment()
                         {
                             UserId = u.UserId,
@@ -80,7 +83,7 @@ namespace Disco.Web.Areas.API.Controllers
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
-                            Comments = Comments
+                            Comments = comments
                         };
                         Database.UserAttachments.Add(ua);
                         Database.SaveChanges();
@@ -100,7 +103,10 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.User.ShowAttachments)]
         public virtual ActionResult Attachment(int id)
         {
-            var ua = Database.UserAttachments.Include("DocumentTemplate").Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var ua = Database.UserAttachments
+                .Include(a => a.DocumentTemplate)
+                .Include(a => a.TechUser)
+                .Where(m => m.Id == id).FirstOrDefault();
             if (ua != null)
             {
 

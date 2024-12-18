@@ -127,30 +127,20 @@ namespace Disco.BI.Extensions
         public static void Delete(this DocumentTemplate dt, DiscoDataContext Database)
         {
             // Find & Rename all references
-            foreach (DeviceAttachment a in Database.DeviceAttachments.Where(a => a.DocumentTemplateId == dt.Id))
+            void updateAttachment(IAttachment a)
             {
-                a.Comments = string.Format("{0} - {1}", dt.Description, a.Comments);
-                if (a.Comments.Length > 500)
-                    a.Comments = a.Comments.Substring(0, 500);
+                var comments = $"{dt.Description} - {a.Comments}";
+                if (comments.Length > 500)
+                    comments = comments.Substring(0, 500);
+                a.Comments = comments;
                 a.DocumentTemplateId = null;
-                a.DocumentTemplate = null;
             }
-            foreach (JobAttachment a in Database.JobAttachments.Where(a => a.DocumentTemplateId == dt.Id))
-            {
-                a.Comments = string.Format("{0} - {1}", dt.Description, a.Comments);
-                if (a.Comments.Length > 500)
-                    a.Comments = a.Comments.Substring(0, 500);
-                a.DocumentTemplateId = null;
-                a.DocumentTemplate = null;
-            }
+            foreach (var a in Database.DeviceAttachments.Where(a => a.DocumentTemplateId == dt.Id))
+                updateAttachment(a);
+            foreach (var a in Database.JobAttachments.Where(a => a.DocumentTemplateId == dt.Id))
+                updateAttachment(a);
             foreach (UserAttachment a in Database.UserAttachments.Where(a => a.DocumentTemplateId == dt.Id))
-            {
-                a.Comments = string.Format("{0} - {1}", dt.Description, a.Comments);
-                if (a.Comments.Length > 500)
-                    a.Comments = a.Comments.Substring(0, 500);
-                a.DocumentTemplateId = null;
-                a.DocumentTemplate = null;
-            }
+                updateAttachment(a);
 
             // Remove Linked Group
             ActiveDirectory.Context.ManagedGroups.Remove(DocumentTemplateDevicesManagedGroup.GetKey(dt));
@@ -161,8 +151,8 @@ namespace Disco.BI.Extensions
 
             // Delete Template
             string templateRepositoryFilename = dt.RepositoryFilename(Database);
-            if (System.IO.File.Exists(templateRepositoryFilename))
-                System.IO.File.Delete(templateRepositoryFilename);
+            if (File.Exists(templateRepositoryFilename))
+                File.Delete(templateRepositoryFilename);
 
             // Remove from Cache
             dt.FilterExpressionInvalidateCache();

@@ -16,7 +16,7 @@ namespace Disco.Models.Repository
         [Required, StringLength(500)]
         public string MimeType { get; set; }
         public DateTime Timestamp { get; set; }
-        [Required, StringLength(500)]
+        [StringLength(500)]
         public string Comments { get; set; }
 
         public string DocumentTemplateId { get; set; }
