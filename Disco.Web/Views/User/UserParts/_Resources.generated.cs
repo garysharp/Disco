@@ -135,7 +135,7 @@ WriteLiteral(">\r\n");
             #line 28 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (Model.User.UserAttachments != null)
                         {
-                            foreach (var ua in Model.User.UserAttachments)
+                            foreach (var ua in Model.User.UserAttachments.OrderByDescending(a => a.Id))
                             {
 
             
@@ -143,14 +143,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1523), Tuple.Create("\"", 1581)
+WriteAttribute("href", Tuple.Create(" href=\"", 1552), Tuple.Create("\"", 1610)
             
             #line 32 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1530), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentDownload(ua.Id))
+, Tuple.Create(Tuple.Create("", 1559), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentDownload(ua.Id))
             
             #line default
             #line hidden
-, 1530), false)
+, 1559), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -179,28 +179,28 @@ WriteLiteral(">\r\n                                    <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1695), Tuple.Create("\"", 1715)
+WriteAttribute("title", Tuple.Create(" title=\"", 1724), Tuple.Create("\"", 1744)
             
             #line 33 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1703), Tuple.Create<System.Object, System.Int32>(ua.Filename
+, Tuple.Create(Tuple.Create("", 1732), Tuple.Create<System.Object, System.Int32>(ua.Filename
             
             #line default
             #line hidden
-, 1703), false)
+, 1732), false)
 );
 
 WriteLiteral(">\r\n                                        <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 1790), Tuple.Create("\"", 1850)
+WriteAttribute("src", Tuple.Create(" src=\"", 1819), Tuple.Create("\"", 1879)
             
             #line 34 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1796), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id))
+, Tuple.Create(Tuple.Create("", 1825), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id))
             
             #line default
             #line hidden
-, 1796), false)
+, 1825), false)
 );
 
 WriteLiteral(" />\r\n                                    </span>\r\n                               " +
@@ -208,14 +208,14 @@ WriteLiteral(" />\r\n                                    </span>\r\n            
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1959), Tuple.Create("\"", 1979)
+WriteAttribute("title", Tuple.Create(" title=\"", 1988), Tuple.Create("\"", 2008)
             
             #line 36 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1967), Tuple.Create<System.Object, System.Int32>(ua.Comments
+, Tuple.Create(Tuple.Create("", 1996), Tuple.Create<System.Object, System.Int32>(ua.Comments
             
             #line default
             #line hidden
-, 1967), false)
+, 1996), false)
 );
 
 WriteLiteral(">\r\n");
@@ -310,14 +310,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2688), Tuple.Create("\"", 2726)
+WriteAttribute("title", Tuple.Create(" title=\"", 2717), Tuple.Create("\"", 2755)
             
             #line 42 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                               , Tuple.Create(Tuple.Create("", 2696), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
+                                                                                               , Tuple.Create(Tuple.Create("", 2725), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 2696), false)
+, 2725), false)
 );
 
 WriteLiteral(">");
@@ -569,7 +569,7 @@ WriteLiteral(@"/' + a.Id);
                                     e.find('.remove').click(removeAttachment);
                                 if (!quick)
                                     e.hide();
-                                $attachmentOutput.append(e);
+                                $attachmentOutput.prepend(e);
                                 onUpdate();
                                 if (!quick)
                                     e.show('slow');

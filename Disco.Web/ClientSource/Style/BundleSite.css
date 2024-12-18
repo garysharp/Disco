@@ -5631,7 +5631,7 @@ div.Disco-AttachmentUpload-DropTarget.dragHighlight.dragHover h2 {
 div.Disco-AttachmentUpload-Progress {
   position: absolute;
   right: 0px;
-  bottom: 48px;
+  bottom: 51px;
 }
 div.Disco-AttachmentUpload-Progress > div {
   background-color: #fafafa;

@@ -374,7 +374,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 62 "..\..\Views\Job\JobParts\Resources.cshtml"
-                         foreach (var ja in Model.Job.JobAttachments)
+                         foreach (var ja in Model.Job.JobAttachments.OrderByDescending(a => a.Id))
                         {
 
             
@@ -382,14 +382,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3528), Tuple.Create("\"", 3585)
+WriteAttribute("href", Tuple.Create(" href=\"", 3557), Tuple.Create("\"", 3614)
             
             #line 64 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3535), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 3564), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 3535), false)
+, 3564), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -418,28 +418,28 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3695), Tuple.Create("\"", 3715)
+WriteAttribute("title", Tuple.Create(" title=\"", 3724), Tuple.Create("\"", 3744)
             
             #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3703), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 3732), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 3703), false)
+, 3732), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 3786), Tuple.Create("\"", 3845)
+WriteAttribute("src", Tuple.Create(" src=\"", 3815), Tuple.Create("\"", 3874)
             
             #line 66 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3792), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 3821), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 3792), false)
+, 3821), false)
 );
 
 WriteLiteral(" />\r\n                                </span>\r\n                                <sp" +
@@ -447,14 +447,14 @@ WriteLiteral(" />\r\n                                </span>\r\n                
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3946), Tuple.Create("\"", 3966)
+WriteAttribute("title", Tuple.Create(" title=\"", 3975), Tuple.Create("\"", 3995)
             
             #line 68 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3954), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 3983), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 3954), false)
+, 3983), false)
 );
 
 WriteLiteral(">\r\n");
@@ -549,14 +549,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4651), Tuple.Create("\"", 4689)
+WriteAttribute("title", Tuple.Create(" title=\"", 4680), Tuple.Create("\"", 4718)
             
             #line 74 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 4659), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                           , Tuple.Create(Tuple.Create("", 4688), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 4659), false)
+, 4688), false)
 );
 
 WriteLiteral(">");
@@ -1271,7 +1271,7 @@ WriteLiteral(@"/' + a.Id);
                         e.find('.remove').click(removeLocalAttachment);
                     if (!quick)
                         e.hide();
-                    $attachmentOutput.append(e);
+                    $attachmentOutput.prepend(e);
                     document.DiscoFunctions.liveAfterUpdate();
                     if (!quick)
                         e.show('slow');

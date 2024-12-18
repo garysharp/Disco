@@ -312,13 +312,12 @@
   width: 375px;
 }
 #jobShowResources #Comments {
-  height: 300px;
   padding: 0;
   border: 1px solid #ccc;
   background-color: #fff;
 }
 #jobShowResources #Comments div.commentOutput {
-  height: 249px;
+  height: 320px;
   overflow: auto;
   background-color: #fafafa;
   color: #000;
@@ -430,7 +429,6 @@
 }
 #jobShowResources #Attachments {
   position: relative;
-  height: 300px;
   border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
@@ -438,7 +436,7 @@
 }
 #jobShowResources #Attachments div.attachmentOutput {
   position: relative;
-  height: 249px;
+  height: 320px;
   overflow: auto;
 }
 #jobShowResources #Attachments div.attachmentOutput > a {

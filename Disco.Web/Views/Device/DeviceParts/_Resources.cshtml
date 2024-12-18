@@ -27,7 +27,7 @@
                     <div class="attachmentOutput">
                         @if (Model.Device.DeviceAttachments != null)
                         {
-                            foreach (var da in Model.Device.DeviceAttachments)
+                            foreach (var da in Model.Device.DeviceAttachments.OrderByDescending(a => a.Id))
                             {
                             <a href="@Url.Action(MVC.API.Device.AttachmentDownload(da.Id))" data-attachmentid="@da.Id" data-mimetype="@da.MimeType">
                                 <span class="icon" title="@da.Filename">
@@ -159,7 +159,7 @@
                                     e.find('.remove').click(removeAttachment);
                                 if (!quick)
                                     e.hide();
-                                $attachmentOutput.append(e);
+                                $attachmentOutput.prepend(e);
                                 onUpdate();
                                 if (!quick)
                                     e.show('slow');

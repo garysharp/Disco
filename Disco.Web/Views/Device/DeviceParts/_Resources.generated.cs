@@ -135,7 +135,7 @@ WriteLiteral(">\r\n");
             #line 28 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (Model.Device.DeviceAttachments != null)
                         {
-                            foreach (var da in Model.Device.DeviceAttachments)
+                            foreach (var da in Model.Device.DeviceAttachments.OrderByDescending(a => a.Id))
                             {
 
             
@@ -143,14 +143,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1553), Tuple.Create("\"", 1613)
+WriteAttribute("href", Tuple.Create(" href=\"", 1582), Tuple.Create("\"", 1642)
             
             #line 32 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1560), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
+, Tuple.Create(Tuple.Create("", 1589), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
             
             #line default
             #line hidden
-, 1560), false)
+, 1589), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -179,42 +179,42 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1723), Tuple.Create("\"", 1743)
+WriteAttribute("title", Tuple.Create(" title=\"", 1752), Tuple.Create("\"", 1772)
             
             #line 33 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1731), Tuple.Create<System.Object, System.Int32>(da.Filename
+, Tuple.Create(Tuple.Create("", 1760), Tuple.Create<System.Object, System.Int32>(da.Filename
             
             #line default
             #line hidden
-, 1731), false)
+, 1760), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 1814), Tuple.Create("\"", 1876)
+WriteAttribute("src", Tuple.Create(" src=\"", 1843), Tuple.Create("\"", 1905)
             
             #line 34 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1820), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
+, Tuple.Create(Tuple.Create("", 1849), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
             
             #line default
             #line hidden
-, 1820), false)
+, 1849), false)
 );
 
 WriteLiteral(" /></span>\r\n                                <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1943), Tuple.Create("\"", 1980)
+WriteAttribute("title", Tuple.Create(" title=\"", 1972), Tuple.Create("\"", 2009)
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1951), Tuple.Create<System.Object, System.Int32>(da.Comments ?? da.Filename
+, Tuple.Create(Tuple.Create("", 1980), Tuple.Create<System.Object, System.Int32>(da.Comments ?? da.Filename
             
             #line default
             #line hidden
-, 1951), false)
+, 1980), false)
 );
 
 WriteLiteral(">\r\n");
@@ -298,14 +298,14 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2671), Tuple.Create("\"", 2709)
+WriteAttribute("title", Tuple.Create(" title=\"", 2700), Tuple.Create("\"", 2738)
             
             #line 41 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                       , Tuple.Create(Tuple.Create("", 2679), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
+                                                                                                       , Tuple.Create(Tuple.Create("", 2708), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 2679), false)
+, 2708), false)
 );
 
 WriteLiteral(" data-livestamp=\"");
@@ -571,7 +571,7 @@ WriteLiteral(@"/' + a.Id);
                                     e.find('.remove').click(removeAttachment);
                                 if (!quick)
                                     e.hide();
-                                $attachmentOutput.append(e);
+                                $attachmentOutput.prepend(e);
                                 onUpdate();
                                 if (!quick)
                                     e.show('slow');

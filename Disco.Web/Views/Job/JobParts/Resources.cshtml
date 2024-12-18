@@ -59,7 +59,7 @@
                         <h2>Drop Attachments Here</h2>
                     </div>
                     <div class="attachmentOutput">
-                        @foreach (var ja in Model.Job.JobAttachments)
+                        @foreach (var ja in Model.Job.JobAttachments.OrderByDescending(a => a.Id))
                         {
                             <a href="@Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))" data-attachmentid="@ja.Id" data-mimetype="@ja.MimeType">
                                 <span class="icon" title="@ja.Filename">
@@ -462,7 +462,7 @@
                         e.find('.remove').click(removeLocalAttachment);
                     if (!quick)
                         e.hide();
-                    $attachmentOutput.append(e);
+                    $attachmentOutput.prepend(e);
                     document.DiscoFunctions.liveAfterUpdate();
                     if (!quick)
                         e.show('slow');
