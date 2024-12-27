@@ -51,6 +51,7 @@ namespace T4MVC
     public class APIClass
     {
         public readonly string Name = "API";
+        public Disco.Web.Areas.API.Controllers.ActivationController Activation = new Disco.Web.Areas.API.Controllers.T4MVC_ActivationController();
         public Disco.Web.Areas.API.Controllers.AuthorizationRoleController AuthorizationRole = new Disco.Web.Areas.API.Controllers.T4MVC_AuthorizationRoleController();
         public Disco.Web.Areas.API.Controllers.BootstrapperController Bootstrapper = new Disco.Web.Areas.API.Controllers.T4MVC_BootstrapperController();
         public Disco.Web.Areas.API.Controllers.DeviceBatchController DeviceBatch = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceBatchController();

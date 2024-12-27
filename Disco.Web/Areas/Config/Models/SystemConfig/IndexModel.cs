@@ -117,6 +117,10 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public DateTime? LicenseExpires { get; set; }
         public string LicenseError { get; set; }
 
+        public bool IsActivated { get; set; }
+        public DateTime? ActivatedOn { get; set; }
+        public string ActivatedBy { get; set; }
+
         public ScheduledTaskStatus UpdateRunningStatus { get; set; }
         public DateTime? UpdateNextScheduled { get; set; }
         public UpdateResponseV2 UpdateLatestResponse { get; set; }
@@ -145,6 +149,9 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 LicenseExpires = config.LicenseExpiresOn,
                 LicenseError = config.LicenseError,
                 LicenseValidationRunningStatus = LicenseValidationTask.RunningStatus,
+                IsActivated = config.IsActivated,
+                ActivatedBy = config.ActivatedBy,
+                ActivatedOn = config.ActivatedOn,
                 UpdateLatestResponse = config.UpdateLastCheckResponse,
                 UpdateRunningStatus = UpdateQueryTask.RunningStatus,
                 UpdateNextScheduled = UpdateQueryTask.NextScheduled,

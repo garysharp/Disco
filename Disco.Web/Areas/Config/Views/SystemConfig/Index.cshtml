@@ -70,82 +70,104 @@
     </table>
 </div>
 <div class="form" style="width: 450px; margin-top: 15px;">
-    <h2>License</h2>
+    <h2>Activation &amp; License</h2>
     <table>
-        @{
-            <tr>
-                <th style="width: 135px">
-                    License:
-                </th>
-                <td>
-                    @using (Html.BeginForm(MVC.API.System.LicenseCheck(), FormMethod.Post))
+        <tr>
+            <th style="width: 135px">
+                Activation:
+            </th>
+            <td>
+                @if (Model.IsActivated)
+                {
+                    @CommonHelpers.FriendlyDate(Model.ActivatedOn) <span>by @Model.ActivatedBy</span>
+                }
+                else
+                {
+                    using (Html.BeginForm(MVC.Config.SystemConfig.Activate(), FormMethod.Post))
                     {
                         @Html.AntiForgeryToken();
-                        <input id="license" type="text" name="license" value="@Model.License" />
-                        <button type="submit" class="button small">Activate</button>
+                        <button type="submit" class="button small">Activate Now</button>
                     }
-                    <script type="text/javascript">
-                        $(function () {
-                            const $element = $('#license');
-                            const original = $element.val();
-                            $element.on('keyup', function (e) {
-                                const $button = $element.next('button');
-                                const value = $element.val();
-                                if (!original) {
-                                    $element.prop('required', true);
-                                    $button.text('Activate');
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>Activating Disco ICT with Online Services unlocks additional functionality.
+                        </p>
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">
+                License:
+            </th>
+            <td>
+                @using (Html.BeginForm(MVC.API.System.LicenseCheck(), FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken();
+                    <input id="license" type="text" name="license" value="@Model.License" />
+                    <button type="submit" class="button small">Activate</button>
+                }
+                <script type="text/javascript">
+                    $(function () {
+                        const $element = $('#license');
+                        const original = $element.val();
+                        $element.on('keyup', function (e) {
+                            const $button = $element.next('button');
+                            const value = $element.val();
+                            if (!original) {
+                                $element.prop('required', true);
+                                $button.text('Activate');
+                            } else {
+                                if (original === value) {
+                                    $button.text('Validate');
                                 } else {
-                                    if (original === value) {
-                                        $button.text('Validate');
+                                    if (!value) {
+                                        $button.text('Clear');
                                     } else {
-                                        if (!value) {
-                                            $button.text('Clear');
-                                        } else {
-                                            $button.text('Activate');
-                                        }
+                                        $button.text('Activate');
                                     }
                                 }
-                            }).trigger('keyup');
-                        });
-                    </script>
+                            }
+                        }).trigger('keyup');
+                    });
+                </script>
+            </td>
+        </tr>
+        @if (Model.License != null)
+        {
+            <tr>
+                <th style="width: 135px">
+                    Status:
+                </th>
+                <td>
+                    @if (Model.LicenseError != null)
+                    {
+                        <div class="error"><i class="fa fa-exclamation-circle fa-lg"></i> @Model.LicenseError</div>
+                    }
+                    else
+                    {
+                        <span>Expires @CommonHelpers.FriendlyDate(Model.LicenseExpires)</span>
+                    }
                 </td>
             </tr>
-            if (Model.License != null)
-            {
-                <tr>
-                    <th style="width: 135px">
-                        Status:
-                    </th>
-                    <td>
-                        @if (Model.LicenseError != null)
-                        {
-                            <div class="error"><i class="fa fa-exclamation-circle fa-lg"></i> @Model.LicenseError</div>
-                        }
-                        else
-                        {
-                            <span>Expires @CommonHelpers.FriendlyDate(Model.LicenseExpires)</span>
-                        }
-                    </td>
-                </tr>
-            }
-            else
-            {
-                <tr>
-                    <td colspan="2">
-                        <strong>Official support is available</strong>
-                        <ul>
-                            <li>Initial implementation assistance.</li>
-                            <li>Commitment to maintaining Disco ICT functionality and associated plugins.</li>
-                            <li>Direct support.</li>
-                            <li>Access to additional functionality.</li>
-                            <li>Ability to suggest additional functionality, with a voice in feature prioritisation.</li>
-                        </ul>
-                        <div style="text-align: right; margin-top: 4px;">
-                            <a href="https://discoict.com.au/support.aspx" target="_blank" class="button small">Request More Information</a>
-                        </div>
-                    </td>
-                </tr>
-            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2">
+                    <strong>Official support is available</strong>
+                    <ul>
+                        <li>Initial implementation assistance.</li>
+                        <li>Commitment to maintaining Disco ICT functionality and associated plugins.</li>
+                        <li>Direct support.</li>
+                        <li>Access to additional functionality.</li>
+                        <li>Ability to suggest additional functionality, with a voice in feature prioritisation.</li>
+                    </ul>
+                    <div style="text-align: right; margin-top: 4px;">
+                        <a href="https://discoict.com.au/support.aspx" target="_blank" class="button small">Request More Information</a>
+                    </div>
+                </td>
+            </tr>
         }
     </table>
 </div>

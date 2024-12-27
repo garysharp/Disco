@@ -205,6 +205,7 @@
       <DependentUpon>CommonHelpers.cshtml</DependentUpon>
     </Compile>
     <Compile Include="App_Start\OwinStartupConfig.cs" />
+    <Compile Include="Areas\API\Controllers\ActivationController.cs" />
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\API\Controllers\DocumentTemplatePackageController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagAssignmentController.cs" />
@@ -217,6 +218,8 @@
     <Compile Include="Areas\API\Controllers\JobQueueJobController.cs" />
     <Compile Include="Areas\API\Controllers\PluginController.cs" />
     <Compile Include="Areas\API\Controllers\SearchController.cs" />
+    <Compile Include="Areas\API\Models\Activation\BeginModel.cs" />
+    <Compile Include="Areas\API\Models\Activation\CallbackModel.cs" />
     <Compile Include="Areas\API\Models\DeviceModel\TestComputerNameTemplateModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\AddOnImportUserFlagRuleModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\BulkGenerateUserModel.cs" />
@@ -224,6 +227,11 @@
     <Compile Include="Areas\API\Models\Job\DeviceHeldLocationModel.cs" />
     <Compile Include="Areas\API\Models\Shared\SubjectDescriptorModel.cs" />
     <Compile Include="Areas\API\Models\System\DomainOrganisationalUnitsModel.cs" />
+    <Compile Include="Areas\API\Views\_ViewStart.generated.cs">
+      <DependentUpon>_ViewStart.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Areas\Config\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\Config\Controllers\DeviceFlagController.cs" />
     <Compile Include="Areas\Config\Controllers\UserFlagController.cs" />
@@ -242,6 +250,7 @@
     <Compile Include="Areas\Config\Models\DeviceFlag\ExportModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceFlag\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceFlag\ShowModel.cs" />
+    <Compile Include="Areas\Config\Models\SystemConfig\ActivateModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\ExportModel.cs" />
     <Compile Include="Areas\Config\Models\UserFlag\IndexModel.cs" />
@@ -376,6 +385,21 @@
       <DependentUpon>Show.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\SystemConfig\Activate.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Activate.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\API\Views\Activation\Begin.generated.cs">
+      <DependentUpon>Begin.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\API\Views\Activation\_ActivateCallback.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_ActivateCallback.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\UserFlag\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
@@ -674,6 +698,9 @@
       <DependentUpon>Licence.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Extensions\T4MVC\API.ActivationController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\API.DeviceFlagAssignmentController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -1299,6 +1326,11 @@
     <Content Include="ClientBin\Disco.ClientBootstrapper.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Areas\API\Views\_ViewStart.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\API\Views\Web.config" />
     <None Include="Areas\Config\Views\AuthorizationRole\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
@@ -1394,6 +1426,18 @@
     <None Include="Areas\Config\Views\DeviceFlag\Show.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\SystemConfig\Activate.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Activate.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\API\Views\Activation\Begin.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Begin.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\API\Views\Activation\_ActivateCallback.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_ActivateCallback.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\UserFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>

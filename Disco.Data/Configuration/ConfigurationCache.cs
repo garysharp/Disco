@@ -242,8 +242,33 @@ namespace Disco.Data.Configuration
                         }
                         else if (itemType.BaseType != null && itemType.BaseType == typeof(Enum))
                         {
-                            // Enum
+                            // enum
                             itemValue = Enum.Parse(typeof(T), item.Item1.Value);
+                        }
+                        else if (itemType.IsGenericType &&
+                            itemType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                            IsConvertableFromString(Nullable.GetUnderlyingType(itemType)))
+                        {
+                            // nullable
+                            itemValue = (T)Convert.ChangeType(item.Item1.Value, Nullable.GetUnderlyingType(itemType));
+                        }
+                        else if (itemType == typeof(Guid))
+                        {
+                            // guid
+                            itemValue = new Guid(item.Item1.Value);
+                        }
+                        else if (itemType == typeof(Guid?))
+                        {
+                            // guid
+                            if (string.IsNullOrEmpty(item.Item1.Value))
+                                itemValue = null;
+                            else
+                                itemValue = new Guid(item.Item1.Value);
+                        }
+                        else if (itemType == typeof(byte[]))
+                        {
+                            // byte[]
+                            itemValue = Convert.FromBase64String(item.Item1.Value);
                         }
                         else
                         {
@@ -269,7 +294,7 @@ namespace Disco.Data.Configuration
                 }
                 else if (valueType == typeof(object))
                 {
-                    throw new ArgumentException(string.Format("Cannot serialize the configuration item [{0}].[{1}] which defines a type of [System.Object]", Scope, Key), "Value");
+                    throw new ArgumentException($"Cannot serialize the configuration item [{Scope}].[{Key}] which has the type [System.Object]", "Value");
                 }
                 else if (IsConvertableFromString(valueType))
                 {
@@ -278,8 +303,24 @@ namespace Disco.Data.Configuration
                 }
                 else if (valueType.BaseType != null && valueType.BaseType == typeof(Enum))
                 {
-                    // Enum
+                    // enum
                     stringValue = Value.ToString();
+                }
+                else if (valueType.IsGenericType &&
+                    valueType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
+                    IsConvertableFromString(Nullable.GetUnderlyingType(valueType)))
+                {
+                    // nullable
+                    stringValue = Value.ToString();
+                }
+                else if (valueType == typeof(Guid) || valueType == typeof(Guid?))
+                {
+                    stringValue = Value.ToString();
+                }
+                else if (Value is byte[] valueBytes)
+                {
+                    // byte[]
+                    stringValue = Convert.ToBase64String(valueBytes);
                 }
                 else
                 {
@@ -290,7 +331,7 @@ namespace Disco.Data.Configuration
                 CacheSetItem(Database, Scope, Key, stringValue, Value);
             }
         }
-        
+
         #endregion
 
         #region Cache Helpers

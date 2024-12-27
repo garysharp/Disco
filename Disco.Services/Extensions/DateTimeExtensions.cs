@@ -123,7 +123,7 @@ namespace Disco
         {
             var epoc = new DateTime(unixEpocOffset, DateTimeKind.Utc);
             var offset = d.ToUniversalTime() - epoc;
-            return offset.Ticks / 10000;
+            return offset.Ticks / TimeSpan.TicksPerMillisecond;
         }
         public static long? ToUnixEpoc(this DateTime? d)
         {
@@ -131,6 +131,11 @@ namespace Disco
                 return d.Value.ToUnixEpoc();
             else
                 return null;
+        }
+        public static DateTime FromUnixEpoc(this long d)
+        {
+            var epoc = new DateTime(unixEpocOffset, DateTimeKind.Utc);
+            return epoc.AddMilliseconds(d);
         }
 
         public static string ToISO8601(this DateTime d)

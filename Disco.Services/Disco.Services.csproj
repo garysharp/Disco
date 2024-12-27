@@ -374,9 +374,12 @@
     <Compile Include="Interop\ActiveDirectory\ADUserAccountControlFlags.cs" />
     <Compile Include="Interop\ActiveDirectory\Description.cs" />
     <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
+    <Compile Include="Interop\DiscoServices\ActivationCleanupTask.cs" />
+    <Compile Include="Interop\DiscoServices\ActivationService.cs" />
     <Compile Include="Interop\DiscoServices\DiscoServiceHelpers.cs" />
     <Compile Include="Interop\DiscoServices\Jobs.cs" />
     <Compile Include="Interop\DiscoServices\LicenseValidationTask.cs" />
+    <Compile Include="Interop\DiscoServices\OnlineServicesAuthentication.cs" />
     <Compile Include="Interop\DiscoServices\PluginLibrary.cs" />
     <Compile Include="Interop\DiscoServices\PluginLibraryUpdateTask.cs" />
     <Compile Include="Interop\IIS\PreserveIisBindingsTask.cs" />
@@ -536,6 +539,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Claims.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Interop\DiscoServices\Activation.key">
+      <LogicalName>DiscoIct.OnlineServices.Activation.key</LogicalName>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -561,10 +567,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
-    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
-    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+			if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+			xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+			if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+			xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"
+		</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">

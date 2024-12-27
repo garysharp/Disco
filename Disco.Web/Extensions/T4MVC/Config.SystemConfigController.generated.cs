@@ -76,12 +76,14 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Activate = "Activate";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Activate = "Activate";
         }
 
 
@@ -95,8 +97,10 @@ namespace Disco.Web.Areas.Config.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Activate = "Activate";
                 public readonly string Index = "Index";
             }
+            public readonly string Activate = "~/Areas/Config/Views/SystemConfig/Activate.cshtml";
             public readonly string Index = "~/Areas/Config/Views/SystemConfig/Index.cshtml";
         }
     }
@@ -114,6 +118,17 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ActivateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Activate()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Activate);
+            ActivateOverride(callInfo);
             return callInfo;
         }
 

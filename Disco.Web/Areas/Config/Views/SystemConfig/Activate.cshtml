@@ -1,0 +1,55 @@
+﻿@model Disco.Web.Areas.Config.Models.SystemConfig.ActivateModel
+@{
+    Authorization.Require(Claims.DiscoAdminAccount);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "System", MVC.Config.SystemConfig.Index(), "Activate");
+}
+
+<div style="min-height: 300px;">
+    <div class="form" style="width: 500px;">
+        <h2><i class="fa fa-lg fa-cog fa-spin"></i> Testing Connectivity to Disco ICT Online Services</h2>
+    </div>
+</div>
+
+<iframe name="callbackFrame" class="hidden">
+</iframe>
+
+<form id="callbackSubmit" action="@Model.CallbackUrl" method="post" target="callbackFrame">
+    <input type="hidden" name="callbackUrl" value="@(new Uri(Request.Url, Url.Action(MVC.API.Activation.TestCallback())))" />
+    <input type="hidden" name="deploymentId" value="@Model.DeploymentId" />
+    <input type="hidden" name="correlationId" value="@Model.CorrelationId" />
+    <input type="hidden" name="userId" value="@Model.UserId" />
+</form>
+
+@using (Html.BeginForm(MVC.API.Activation.Begin(), FormMethod.Post, new { id = "activationBegin"}))
+{
+    @Html.AntiForgeryToken()
+}
+
+<a id="callbackFailedUrl" href="@Url.Action(MVC.Config.SystemConfig.Index())" class="hidden"></a>
+
+<script>
+    $(function () {
+        const callbackForm = $('#callbackSubmit');
+        const callbackFailedUrl = $('#callbackFailedUrl').attr('href');
+        const timeout = window.setTimeout(function () {
+            alert('A timeout occurred while communicating with Online Services. Please try a different device/browser or try again later.');
+            window.location.href = callbackFailedUrl;
+        }, 1000 * 35);
+        window.activateCallbackResponse = function (deploymentId, correlationId, userId) {
+            window.clearTimeout(timeout);
+
+            const originalDeploymentId = callbackForm.find('input[name="deploymentId"]').val();
+            const originalCorrelationId = callbackForm.find('input[name="correlationId"]').val();
+            const originalUserId = callbackForm.find('input[name="userId"]').val();
+
+            if (deploymentId !== originalDeploymentId || correlationId !== originalCorrelationId || userId !== originalUserId) {
+                alert('Invalid response when communicating with Online Services. Please try a different device/browser or try again later.');
+                window.location.href = callbackFailedUrl;
+            }
+
+            $('#activationBegin').trigger('submit');
+        };
+        callbackForm.trigger('submit');
+    });
+</script>

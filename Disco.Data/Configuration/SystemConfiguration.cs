@@ -319,6 +319,29 @@ namespace Disco.Data.Configuration
         #endregion
 
         #region UpdateCheck
+        public bool IsActivated => ActivationId.HasValue;
+
+        public DateTime? ActivatedOn
+        {
+            get => Get((DateTime?)null);
+            set => Set(value);
+        }
+        public string ActivatedBy
+        {
+            get => Get((string)null);
+            set => Set(value);
+        }
+        public Guid? ActivationId
+        {
+            get => Get((Guid?)null);
+            set => Set(value);
+        }
+        public byte[] ActivationKey
+        {
+            get => Get((byte[])null);
+            set => Set(value);
+        }
+
         public bool IsLicensed
         {
             get => LicenseKey != null && LicenseExpiresOn != null && LicenseExpiresOn > DateTime.UtcNow && LicenseError == null;

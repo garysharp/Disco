@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disco.Web.Areas.Config.Views
+namespace Disco.Web.Areas.API.Views
 {
     using System;
     using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace Disco.Web.Areas.Config.Views
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/_ViewStart.cshtml")]
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/API/Views/_ViewStart.cshtml")]
     public partial class _ViewStart : System.Web.Mvc.ViewStartPage
     {
         public _ViewStart()
@@ -44,10 +44,9 @@ namespace Disco.Web.Areas.Config.Views
         public override void Execute()
         {
             
-            #line 1 "..\..\Areas\Config\Views\_ViewStart.cshtml"
+            #line 1 "..\..\Areas\API\Views\_ViewStart.cshtml"
   
     Layout = MVC.Shared.Views._Layout;
-    Html.BundleDeferred("~/Style/Config");
     ViewContext.ViewData["MenuArea"] = MVC.Config.Name;
 
             

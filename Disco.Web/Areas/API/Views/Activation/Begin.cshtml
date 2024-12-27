@@ -1,0 +1,21 @@
+﻿@model Disco.Web.Areas.API.Models.Activation.BeginModel
+@{
+    Authorization.Require(Claims.DiscoAdminAccount);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "System", MVC.Config.SystemConfig.Index(), "Activate");
+}
+
+<div style="min-height: 300px;">
+    <div class="form" style="width: 500px;">
+        <h2><i class="fa fa-lg fa-cog fa-spin"></i> Redirecting to Disco ICT Online Services</h2>
+    </div>
+</div>
+
+<form id="activateRedirect" action="@Model.RedirectUrl" method="post">
+    <input type="hidden" name="ActivationId" value="@Model.ActivationId" />
+    <input type="hidden" name="ChallengeResponse" value="@Model.ChallengeResponse" />
+    <input type="hidden" name="ChallengeResponseIv" value="@Model.ChallengeResponseIv" />
+</form>
+<script>
+    $('#activateRedirect').trigger('submit');
+</script>
