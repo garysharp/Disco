@@ -143,7 +143,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         #region Machine Accounts
-        public ADMachineAccount RetrieveADMachineAccount(string Id, System.Guid? UUIDNetbootGUID, System.Guid? MacAddressNetbootGUID, string[] AdditionalProperties = null)
+        public ADMachineAccount RetrieveADMachineAccount(string Id, Guid? UUIDNetbootGUID, Guid? MacAddressNetbootGUID, string[] AdditionalProperties = null)
         {
             if (string.IsNullOrWhiteSpace(Id))
                 throw new ArgumentNullException("Id");
@@ -186,7 +186,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             return RetrieveADMachineAccount(Id, null, null, AdditionalProperties);
         }
-        public ADMachineAccount RetrieveADMachineAccount(string Id, System.Guid? NetbootGUID, string[] AdditionalProperties = null)
+        public ADMachineAccount RetrieveADMachineAccount(string Id, Guid? NetbootGUID, string[] AdditionalProperties = null)
         {
             return RetrieveADMachineAccount(Id, NetbootGUID, null, AdditionalProperties);
         }
@@ -256,23 +256,31 @@ namespace Disco.Services.Interop.ActiveDirectory
             else
             {
                 var objectCategory = result.Value<string>("objectCategory");
-                objectCategory = objectCategory.Substring(0, objectCategory.IndexOf(',')).ToLower();
-                switch (objectCategory)
-                {
-                    case "cn=person":
-                        return result.AsADUserAccount(Quick, AdditionalProperties);
-                    case "cn=computer":
-                        return result.AsADMachineAccount(AdditionalProperties);
-                    case "cn=group":
-                        return result.AsADGroup(AdditionalProperties);
-                    default:
-                        throw new InvalidOperationException("Unexpected objectCategory");
-                }
+
+                if (objectCategory == null || objectCategory.Length == 0)
+                    throw new InvalidOperationException("objectCategory is null or empty");
+
+                if (objectCategory.StartsWith("CN=Person,", StringComparison.OrdinalIgnoreCase))
+                    return result.AsADUserAccount(Quick, AdditionalProperties);
+                else if (objectCategory.StartsWith("CN=Computer,", StringComparison.OrdinalIgnoreCase))
+                    return result.AsADMachineAccount(AdditionalProperties);
+                else if (objectCategory.StartsWith("CN=Group,", StringComparison.OrdinalIgnoreCase))
+                    return result.AsADGroup(AdditionalProperties);
+                else if (objectCategory.StartsWith("CN=Foreign-Security-Principal,", StringComparison.OrdinalIgnoreCase))
+                    return null;
+                else
+                    throw new InvalidOperationException("Unexpected objectCategory");
             }
         }
 
         public IADObject RetrieveADObjectByDistinguishedName(string distinguishedName, bool quick, string[] additionalProperties = null)
         {
+            // ignore foreign security principals
+            var containerIndex = distinguishedName.IndexOf(',') + 1;
+            var container = distinguishedName.Substring(containerIndex, distinguishedName.IndexOf(',', containerIndex) - containerIndex);
+            if (string.Equals("CN=ForeignSecurityPrincipals", container, StringComparison.OrdinalIgnoreCase))
+                return null;
+
             using (var entry = RetrieveDirectoryEntry(distinguishedName, additionalProperties))
             {
                 if (entry == null)
@@ -319,7 +327,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             var slashIndex = Id.IndexOf('\\');
 
             if (!Domain.NetBiosName.Equals(Id.Substring(0, slashIndex), StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Id [{0}] is invalid for this domain [{1}]", Id, Domain.Name), "Id");
+                throw new ArgumentException($"The Id [{Id}] is invalid for this domain [{Domain.Name}]", "Id");
 
             var ldapFilter = string.Format(LdapFilterTemplate, Id.Substring(slashIndex + 1));
 
@@ -340,10 +348,10 @@ namespace Disco.Services.Interop.ActiveDirectory
         public string OfflineDomainJoinProvision(string ComputerSamAccountName, string OrganisationalUnit, ref ADMachineAccount MachineAccount, out string DiagnosticInformation)
         {
             if (MachineAccount != null && MachineAccount.IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", MachineAccount.DistinguishedName));
+                throw new InvalidOperationException($"This account {MachineAccount.DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (!IsWritable)
-                throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.", Name));
+                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.");
 
             StringBuilder diagnosticInfo = new StringBuilder();
             string DJoinResult = null;
@@ -355,7 +363,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             // NetBIOS Limit (16 characters; "{ComputerName}$"; 15 characters allowed)
             if (string.IsNullOrWhiteSpace(ComputerSamAccountName) || ComputerSamAccountName.Length > 15)
-                throw new System.ArgumentException("Invalid Computer Name; > 0 and <= 15", "ComputerName");
+                throw new ArgumentException("Invalid Computer Name; > 0 and <= 15", "ComputerName");
 
             // Ensure Specified OU Exists
             if (!string.IsNullOrEmpty(OrganisationalUnit))
@@ -417,12 +425,15 @@ namespace Disco.Services.Interop.ActiveDirectory
                 System.IO.File.Delete(tempFileName);
             }
             if (string.IsNullOrWhiteSpace(DJoinResult))
-                throw new System.InvalidOperationException(string.Format("Domain Join Unsuccessful{0}Error: {1}{0}Output: {2}", System.Environment.NewLine, stdError, stdOutput));
+                throw new InvalidOperationException(
+$@"Domain Join Unsuccessful
+Error: {stdError}
+Output: {stdOutput}");
 
             DiagnosticInformation = diagnosticInfo.ToString();
 
             // Reload Machine Account
-            MachineAccount = RetrieveADMachineAccount(string.Format(@"{0}\{1}", Domain.NetBiosName, ComputerSamAccountName), (MachineAccount == null ? null : MachineAccount.LoadedProperties.Keys.ToArray()));
+            MachineAccount = RetrieveADMachineAccount($@"{Domain.NetBiosName}\{ComputerSamAccountName}", (MachineAccount == null ? null : MachineAccount.LoadedProperties.Keys.ToArray()));
 
             return DJoinResult;
         }

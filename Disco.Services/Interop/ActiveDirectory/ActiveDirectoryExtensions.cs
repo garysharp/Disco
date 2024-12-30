@@ -98,20 +98,21 @@ namespace Disco.Services
 
         public static IADObject AsADObject(this ADDirectoryEntry directoryEntry, bool quick, string[] additionalProperties)
         {
-            var properties = directoryEntry.Entry.Properties;
-            var objectCategory = properties.Value<string>("objectCategory");
-            objectCategory = objectCategory.Substring(0, objectCategory.IndexOf(',')).ToLower();
-            switch (objectCategory)
-            {
-                case "cn=person":
-                    return ADUserAccount.FromDirectoryEntry(directoryEntry, quick, additionalProperties);
-                case "cn=computer":
-                    return ADMachineAccount.FromDirectoryEntry(directoryEntry, additionalProperties);
-                case "cn=group":
-                    return ADGroup.FromDirectoryEntry(directoryEntry, additionalProperties);
-                default:
-                    throw new InvalidOperationException("Unexpected objectCategory");
-            }
+            var objectCategory = directoryEntry.Entry.Properties.Value<string>("objectCategory");
+
+            if (objectCategory == null || objectCategory.Length == 0)
+                throw new InvalidOperationException("objectCategory is null or empty");
+
+            if (objectCategory.StartsWith("CN=Person,", StringComparison.OrdinalIgnoreCase))
+                return ADUserAccount.FromDirectoryEntry(directoryEntry, quick, additionalProperties);
+            else if (objectCategory.StartsWith("CN=Computer,", StringComparison.OrdinalIgnoreCase))
+                return ADMachineAccount.FromDirectoryEntry(directoryEntry, additionalProperties);
+            else if (objectCategory.StartsWith("CN=Group,", StringComparison.OrdinalIgnoreCase))
+                return ADGroup.FromDirectoryEntry(directoryEntry, additionalProperties);
+            else if (objectCategory.StartsWith("CN=Foreign-Security-Principal,", StringComparison.OrdinalIgnoreCase))
+                return null;
+            else
+                throw new InvalidOperationException("Unexpected objectCategory");
         }
 
         #endregion
