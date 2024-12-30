@@ -58,7 +58,7 @@ namespace Disco.Services.Interop.DiscoServices
 
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri(ActivationService.baseUrl);
+                    httpClient.BaseAddress = ActivationService.BaseUrl;
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     var timeStamp = DateTime.UtcNow.ToUnixEpoc();
@@ -105,7 +105,7 @@ namespace Disco.Services.Interop.DiscoServices
                                 throw new InvalidOperationException($"Failed to authenticate ({authResponse.ErrorMessage})");
 
                             token = authResponse.Token;
-                            tokenExpires = DateTimeExtensions.FromUnixEpoc(authResponse.Expiry.Value).AddMinutes(-5);
+                            tokenExpires = DateTime.Now.AddSeconds(authResponse.ExpiresInSeconds.Value);
 
                             return token;
                         }
@@ -160,7 +160,7 @@ namespace Disco.Services.Interop.DiscoServices
         {
             public bool Success { get; set; }
             public string Token { get; set; }
-            public long? Expiry { get; set; }
+            public int? ExpiresInSeconds { get; set; }
             public string ErrorMessage { get; set; }
         }
     }
