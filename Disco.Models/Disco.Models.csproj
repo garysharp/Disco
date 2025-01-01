@@ -82,6 +82,7 @@
     <Compile Include="Exporting\IExportOptions.cs" />
     <Compile Include="Services\Interop\DiscoServices\Activation\CallbackModel.cs" />
     <Compile Include="Services\Interop\DiscoServices\Activation\ChallengeModel.cs" />
+    <Compile Include="Services\Interop\DiscoServices\IConnectNotification.cs" />
     <Compile Include="Services\Jobs\Exporting\JobExportOptions.cs" />
     <Compile Include="Services\Jobs\Exporting\JobExportRecord.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />

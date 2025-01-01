@@ -50,12 +50,11 @@ namespace Disco.Services.Logging
                         var appDomain = AppDomain.CurrentDomain;
                         var servicesAssemblyName = typeof(LogContext).Assembly.GetName().Name;
 
-                        var logModuleTypes = (from a in appDomain.GetAssemblies()
-                                              where !a.GlobalAssemblyCache && !a.IsDynamic &&
-                                                (a.GetName().Name == servicesAssemblyName || a.GetReferencedAssemblies().Any(ra => ra.Name == servicesAssemblyName))
-                                              from type in a.GetTypes()
-                                              where typeof(LogBase).IsAssignableFrom(type) && !type.IsAbstract
-                                              select type);
+                        var logModuleTypes  = appDomain.GetAssemblies()
+                            .Where(a => !a.GlobalAssemblyCache && !a.IsDynamic &&
+                                (a.GetName().Name == servicesAssemblyName || a.GetReferencedAssemblies().Any(ra => ra.Name == servicesAssemblyName)))
+                            .SelectMany(a => a.GetTypes())
+                            .Where(t => typeof(LogBase).IsAssignableFrom(t) && !t.IsAbstract);
                         foreach (var logModuleType in logModuleTypes)
                         {
                             var instance = (LogBase)Activator.CreateInstance(logModuleType);

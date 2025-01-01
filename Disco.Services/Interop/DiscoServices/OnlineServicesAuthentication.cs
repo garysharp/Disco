@@ -132,6 +132,8 @@ namespace Disco.Services.Interop.DiscoServices
                     key = config.ActivationKey;
                     token = null;
                     tokenExpires = null;
+
+                    ThreadPool.QueueUserWorkItem(async _ => await OnlineServicesConnect.StartAsync());
                 }
                 else
                 {

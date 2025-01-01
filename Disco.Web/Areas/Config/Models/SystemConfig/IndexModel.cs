@@ -120,6 +120,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public bool IsActivated { get; set; }
         public DateTime? ActivatedOn { get; set; }
         public string ActivatedBy { get; set; }
+        public string OnlineServicesState { get; set; }
 
         public ScheduledTaskStatus UpdateRunningStatus { get; set; }
         public DateTime? UpdateNextScheduled { get; set; }
@@ -152,6 +153,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 IsActivated = config.IsActivated,
                 ActivatedBy = config.ActivatedBy,
                 ActivatedOn = config.ActivatedOn,
+                OnlineServicesState = OnlineServicesConnect.State,
                 UpdateLatestResponse = config.UpdateLastCheckResponse,
                 UpdateRunningStatus = UpdateQueryTask.RunningStatus,
                 UpdateNextScheduled = UpdateQueryTask.NextScheduled,

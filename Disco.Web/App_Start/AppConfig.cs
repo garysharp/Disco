@@ -3,6 +3,7 @@ using Disco.Services;
 using Disco.Services.Interop.DiscoServices;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace Disco.Web
 {
@@ -86,6 +87,10 @@ namespace Disco.Web
 
             DiscoApplication.DocumentDropBoxMonitor.Start();
             DiscoApplication.DocumentDropBoxMonitor.ScheduleCurrentFiles(10000); // 10 Second Delay
+
+            // Connect to Online Services
+            if (Database.DiscoConfiguration.IsActivated)
+                ThreadPool.QueueUserWorkItem(async _ => await OnlineServicesConnect.StartAsync());
         }
 
         public static void InitializeUpdateEnvironment(DiscoDataContext Database, Version PreviousVersion)
@@ -110,6 +115,8 @@ namespace Disco.Web
 
         public static void DisposeEnvironment()
         {
+            ThreadPool.QueueUserWorkItem(async _ => await OnlineServicesConnect.StopAsync());
+
             if (DiscoApplication.DocumentDropBoxMonitor != null)
                 DiscoApplication.DocumentDropBoxMonitor.Dispose();
 

@@ -80,6 +80,26 @@
                 @if (Model.IsActivated)
                 {
                     @CommonHelpers.FriendlyDate(Model.ActivatedOn) <span>by @Model.ActivatedBy</span>
+
+                    switch (Model.OnlineServicesState)
+                    {
+                        case "Disconnected":
+                            <div class="info-box error">
+                                <p class="fa-p"><i class="fa fa-globe"></i> Disconnected from Online Services</p>
+                            </div>
+                            break;
+                        case "Connected":
+                            <div class="info-box success">
+                                <p class="fa-p"><i class="fa fa-globe"></i> Connected to Online Services</p>
+                            </div>
+                            break;
+                        case "Connecting":
+                        case "Reconnecting":
+                            <div class="info-box warning">
+                                <p class="fa-p"><i class="fa fa-globe"></i> @Model.OnlineServicesState to Online Services</p>
+                            </div>
+                            break;
+                    }
                 }
                 else
                 {

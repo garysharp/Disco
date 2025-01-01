@@ -17,13 +17,12 @@ namespace Disco.BI.Extensions
 {
     public static class DocumentTemplateExtensions
     {
-        private static Tuple<Dictionary<string, Expression>, List<DocumentField>> CreateExpressions(DocumentTemplate dt, DiscoDataContext database)
+        public static Tuple<Dictionary<string, Expression>, List<DocumentField>> CreateExpressions(string templateFileName, DiscoDataContext database)
         {
             Dictionary<string, Expression> expressions = new Dictionary<string, Expression>();
             List<DocumentField> fields = new List<DocumentField>();
 
-            string templateFilename = dt.RepositoryFilename(database);
-            PdfReader pdfReader = new PdfReader(templateFilename);
+            PdfReader pdfReader = new PdfReader(templateFileName);
             int pdfFieldOrdinal = 0;
             foreach (string pdfFieldKey in pdfReader.AcroFields.Fields.Keys)
             {
@@ -59,6 +58,12 @@ namespace Disco.BI.Extensions
             pdfReader.Close();
 
             return Tuple.Create(expressions, fields);
+        }
+
+        private static Tuple<Dictionary<string, Expression>, List<DocumentField>> CreateExpressions(DocumentTemplate dt, DiscoDataContext database)
+        {
+            string templateFileName = dt.RepositoryFilename(database);
+            return CreateExpressions(templateFileName, database);
         }
 
         public static Dictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext Database)

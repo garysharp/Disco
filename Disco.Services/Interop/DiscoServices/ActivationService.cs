@@ -19,7 +19,7 @@ namespace Disco.Services.Interop.DiscoServices
     public class ActivationService
     {
         private static readonly byte[] onlineServicesActivationKey;
-        internal const string baseUrl = "https://activate.discoict.com.au";
+        internal static readonly Uri BaseUrl = new Uri("https://activate.discoict.com.au");
         private readonly DiscoDataContext database;
 
         static ActivationService()
@@ -40,8 +40,8 @@ namespace Disco.Services.Interop.DiscoServices
         public string GetDataStoreLocation => Path.Combine(database.DiscoConfiguration.DataStoreLocation, "Activations");
         public bool RequiresCleanup => Directory.Exists(GetDataStoreLocation);
 
-        public string GetCallbackUrl()
-            => $"{baseUrl}/api/callback";
+        public Uri GetCallbackUrl()
+            => new Uri(BaseUrl, "/api/callback");
 
         /// <summary>
         /// Begin the activation process
@@ -64,7 +64,7 @@ namespace Disco.Services.Interop.DiscoServices
             ChallengeResponse challenge;
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri(baseUrl);
+                httpClient.BaseAddress = BaseUrl;
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var body = new ChallengeRequest()
@@ -124,7 +124,7 @@ namespace Disco.Services.Interop.DiscoServices
                 TimeStamp = challenge.TimeStamp,
                 ChallengeResponse = challengeResponse,
                 ChallengeResponseIv = challengeResponseIv,
-                RedirectUrl = $"{baseUrl}/",
+                RedirectUrl = new Uri(BaseUrl, "/").ToString(),
             };
 
             // store activation
@@ -174,7 +174,7 @@ namespace Disco.Services.Interop.DiscoServices
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = new Uri(baseUrl);
+                httpClient.BaseAddress = BaseUrl;
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var body = new CompleteRequest()
