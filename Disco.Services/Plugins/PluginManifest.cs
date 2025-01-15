@@ -148,12 +148,28 @@ namespace Disco.Services.Plugins
                 "MarkdownSharp",
                 "Microsoft.AspNet.SignalR.Core",
                 "Microsoft.AspNet.SignalR.SystemWeb",
+                "Microsoft.AspNetCore.Connections.Abstractions",
+                "Microsoft.AspNetCore.Http.Connections.Client",
+                "Microsoft.AspNetCore.Http.Connections.Common",
+                "Microsoft.AspNetCore.SignalR.Client.Core",
+                "Microsoft.AspNetCore.SignalR.Client",
+                "Microsoft.AspNetCore.SignalR.Common",
+                "Microsoft.AspNetCore.SignalR.Protocols.Json",
+                "Microsoft.Bcl.AsyncInterfaces",
+                "Microsoft.Bcl.TimeProvider",
+                "Microsoft.Extensions.DependencyInjection.Abstractions",
+                "Microsoft.Extensions.DependencyInjection",
+                "Microsoft.Extensions.Features",
+                "Microsoft.Extensions.Logging.Abstractions",
+                "Microsoft.Extensions.Logging",
+                "Microsoft.Extensions.Options",
+                "Microsoft.Extensions.Primitives",
                 "Microsoft.Owin",
                 "Microsoft.Owin.Host.SystemWeb",
                 "Microsoft.Owin.Security",
                 "Microsoft.Web.Infrastructure",
-                "Newtonsoft.Json",
                 "Newtonsoft.Json.Bson",
+                "Newtonsoft.Json",
                 "Owin",
                 "PdfiumViewer",
                 "PdfSharp",
@@ -162,15 +178,29 @@ namespace Disco.Services.Plugins
                 "RazorGenerator.Mvc",
                 "Renci.SshNet",
                 "Spring.Core",
+                "System.Buffers",
                 "System.Data.SqlServerCe",
                 "System.Data.SqlServerCe.Entity",
+                "System.Diagnostics.DiagnosticSource",
+                "System.IO.Pipelines",
+                "System.Memory",
+                "System.Net.Http",
                 "System.Net.Http.Extensions",
                 "System.Net.Http.Formatting",
                 "System.Net.Http.Primitives",
+                "System.Net.ServerSentEvents",
+                "System.Numerics.Vectors",
                 "System.Reactive.Core",
                 "System.Reactive.Interfaces",
                 "System.Reactive.Linq",
                 "System.Reactive.PlatformServices",
+                "System.Runtime.CompilerServices.Unsafe",
+                "System.Runtime.InteropServices.RuntimeInformation",
+                "System.Text.Encodings.Web",
+                "System.Text.Json",
+                "System.Threading.Channels",
+                "System.Threading.Tasks.Extensions",
+                "System.ValueTuple",
                 "System.Web.Helpers",
                 "System.Web.Http",
                 "System.Web.Http.WebHost",
@@ -181,7 +211,7 @@ namespace Disco.Services.Plugins
                 "System.Web.WebPages.Razor",
                 "T4MVCExtensions",
                 "WebActivatorEx",
-                "ZXingNet"
+                "ZXingNet",
             };
         });
         public static IReadOnlyCollection<string> PluginExcludedAssemblies
@@ -490,7 +520,7 @@ namespace Disco.Services.Plugins
                 var fileDateCheck = System.IO.File.GetLastWriteTime(resourcePath);
                 if (fileDateCheck == resourceHash.Item2)
 #endif
-                return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+                    return new Tuple<string, string>(resourcePath, resourceHash.Item1);
             }
 
             if (!File.Exists(resourcePath))
