@@ -296,6 +296,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShowPackage.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Config\Views\Expressions\Browser.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Browser.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Config\Views\JobPreferences\Index.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -443,7 +448,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\API\APIAreaRegistration.cs" />
     <Compile Include="Areas\API\Controllers\BootstrapperController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceBatchController.cs" />
@@ -501,7 +505,7 @@
     <Compile Include="Areas\Config\Models\DeviceProfile\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceProfile\_IndexModelItem.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreateModel.cs" />
-    <Compile Include="Areas\Config\Models\DocumentTemplate\ExpressionBrowserModel.cs" />
+    <Compile Include="Areas\Config\Models\Expressions\BrowserModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\UndetectedPagesModel.cs" />
@@ -591,11 +595,6 @@
     </Compile>
     <Compile Include="Areas\Config\Views\DocumentTemplate\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Areas\Config\Views\DocumentTemplate\ExpressionBrowser2.generated.cs">
-      <DependentUpon>ExpressionBrowser.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -2337,9 +2336,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
     </None>
-    <None Include="Areas\Config\Views\DocumentTemplate\ExpressionBrowser.cshtml">
+    <None Include="Areas\Config\Views\Expressions\Browser.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ExpressionBrowser2.generated.cs</LastGenOutput>
+      <LastGenOutput>Browser.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml">
       <Generator>RazorGenerator</Generator>

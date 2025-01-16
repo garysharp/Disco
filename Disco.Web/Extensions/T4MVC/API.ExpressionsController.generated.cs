@@ -65,6 +65,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ValidateExpression);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult TypeDescriptor()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TypeDescriptor);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ExpressionsController Actions { get { return MVC.API.Expressions; } }
@@ -82,12 +88,14 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionNamesClass
         {
             public readonly string ValidateExpression = "ValidateExpression";
+            public readonly string TypeDescriptor = "TypeDescriptor";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string ValidateExpression = "ValidateExpression";
+            public const string TypeDescriptor = "TypeDescriptor";
         }
 
 
@@ -98,6 +106,15 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ValidateExpression
         {
             public readonly string Expression = "Expression";
+        }
+        static readonly ActionParamsClass_TypeDescriptor s_params_TypeDescriptor = new ActionParamsClass_TypeDescriptor();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_TypeDescriptor TypeDescriptorParams { get { return s_params_TypeDescriptor; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_TypeDescriptor
+        {
+            public readonly string type = "type";
+            public readonly string staticMembersOnly = "staticMembersOnly";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -127,6 +144,19 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ValidateExpression);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Expression", Expression);
             ValidateExpressionOverride(callInfo, Expression);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void TypeDescriptorOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string type, bool staticMembersOnly);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult TypeDescriptor(string type, bool staticMembersOnly)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TypeDescriptor);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "type", type);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "staticMembersOnly", staticMembersOnly);
+            TypeDescriptorOverride(callInfo, type, staticMembersOnly);
             return callInfo;
         }
 

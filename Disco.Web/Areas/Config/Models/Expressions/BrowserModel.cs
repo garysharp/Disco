@@ -1,9 +1,9 @@
-﻿using Disco.Models.UI.Config.DocumentTemplate;
+﻿using Disco.Models.UI.Config.Expressions;
 using System.Collections.Generic;
 
-namespace Disco.Web.Areas.Config.Models.DocumentTemplate
+namespace Disco.Web.Areas.Config.Models.Expressions
 {
-    public class ExpressionBrowserModel : ConfigDocumentTemplateExpressionBrowserModel
+    public class BrowserModel : ConfigExpressionsBrowserModel
     {
         public string DeviceType { get; set; }
         public string UserType { get; set; }
@@ -11,5 +11,6 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 
         public Dictionary<string, string> Variables { get; set; }
         public Dictionary<string, string> ExtensionLibraries { get; set; }
+        public Dictionary<string, string> PluginExtensionLibraries { get; set; }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Disco.Models.UI.Config.DocumentTemplate
+namespace Disco.Models.UI.Config.Expressions
 {
-    public interface ConfigDocumentTemplateExpressionBrowserModel : BaseUIModel
+    public interface ConfigExpressionsBrowserModel : BaseUIModel
     {
         string DeviceType { get; set; }
         string UserType { get; set; }
@@ -10,5 +10,6 @@ namespace Disco.Models.UI.Config.DocumentTemplate
 
         Dictionary<string, string> Variables { get; set; }
         Dictionary<string, string> ExtensionLibraries { get; set; }
+        Dictionary<string, string> PluginExtensionLibraries { get; set; }
     }
 }

@@ -531,6 +531,8 @@
     <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderService.cs" />
     <Compile Include="Plugins\Features\DetailsProvider\UserContactFeature.cs" />
     <Compile Include="Plugins\Features\DocumentHandlerProvider\DocumentHandlerProviderFeature.cs" />
+    <Compile Include="Plugins\Features\ExpressionExtensionProvider\ExpressionExtensionProviderFeature.cs" />
+    <Compile Include="Plugins\Features\ExpressionExtensionProvider\ExpressionExtensionRegistration.cs" />
     <Compile Include="Plugins\Features\InsuranceProvider\InsuranceProviderFeature.cs" />
     <Compile Include="Plugins\Features\InsuranceProvider\InsuranceProviderSubmitJobException.cs" />
     <Compile Include="Plugins\Features\RepairProvider\RepairProvider2Feature.cs" />

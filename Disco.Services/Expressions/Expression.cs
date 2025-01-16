@@ -73,11 +73,6 @@ namespace Disco.Services.Expressions
             return result;
         }
 
-        internal static IExpression Parse(string source)
-        {
-            throw new NotImplementedException();
-        }
-
         public Tuple<string, bool, object> Evaluate(object ExpressionContext, IDictionary Variables)
         {
             if (Count == 0)

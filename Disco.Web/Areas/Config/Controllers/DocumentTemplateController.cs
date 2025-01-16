@@ -7,6 +7,7 @@ using Disco.Services.Authorization;
 using Disco.Services.Documents;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
+using Disco.Services.Plugins.Features.ExpressionExtensionProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.DocumentTemplate;
@@ -24,7 +25,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             if (string.IsNullOrEmpty(id))
             {
-                var m = new Models.DocumentTemplate.IndexModel()
+                var m = new IndexModel()
                 {
                     DocumentTemplates = Database.DocumentTemplates
                         .Select(dt => new
@@ -47,7 +48,7 @@ namespace Disco.Web.Areas.Config.Controllers
             else
             {
                 // Normal Document Template
-                var m = new Models.DocumentTemplate.ShowModel()
+                var m = new ShowModel()
                 {
                     DocumentTemplate = Database.DocumentTemplates.Include("JobSubTypes").FirstOrDefault(at => at.Id == id)
                 };
@@ -78,7 +79,7 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult ShowPackage(string id)
         {
             // Document Template Package
-            var m = new Models.DocumentTemplate.ShowPackageModel()
+            var m = new ShowPackageModel()
             {
                 Package = DocumentTemplatePackages.GetPackage(id)
             };
@@ -104,7 +105,7 @@ namespace Disco.Web.Areas.Config.Controllers
         [DiscoAuthorize(Claims.Config.DocumentTemplate.ShowStatus)]
         public virtual ActionResult ImportStatus()
         {
-            var m = new Models.DocumentTemplate.ImportStatusModel();
+            var m = new ImportStatusModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDocumentTemplateImportStatusModel>(this.ControllerContext, m);
@@ -115,7 +116,7 @@ namespace Disco.Web.Areas.Config.Controllers
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
         public virtual ActionResult UndetectedPages()
         {
-            var m = new Models.DocumentTemplate.UndetectedPagesModel()
+            var m = new UndetectedPagesModel()
             {
                 DocumentTemplates = Database.DocumentTemplates.ToList()
             };
@@ -129,7 +130,7 @@ namespace Disco.Web.Areas.Config.Controllers
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult Create()
         {
-            var m = new Models.DocumentTemplate.CreateModel();
+            var m = new CreateModel();
             m.UpdateModel(Database);
 
             // UI Extensions
@@ -139,7 +140,7 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure), HttpPost]
-        public virtual ActionResult Create(Models.DocumentTemplate.CreateModel model)
+        public virtual ActionResult Create(CreateModel model)
         {
             model.UpdateModel(Database);
 
@@ -179,7 +180,7 @@ namespace Disco.Web.Areas.Config.Controllers
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure)]
         public virtual ActionResult CreatePackage()
         {
-            var m = new Models.DocumentTemplate.CreatePackageModel();
+            var m = new CreatePackageModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreatePackageModel>(this.ControllerContext, m);
@@ -188,7 +189,7 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure), HttpPost]
-        public virtual ActionResult CreatePackage(Models.DocumentTemplate.CreatePackageModel model)
+        public virtual ActionResult CreatePackage(CreatePackageModel model)
         {
             if (ModelState.IsValid)
             {
@@ -292,37 +293,10 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(MVC.Config.DocumentTemplate.Views.BulkGenerate, model);
         }
 
-        [DiscoAuthorize(Claims.Config.Show)]
-        public virtual ActionResult ExpressionBrowser(string type, bool StaticDeclaredMembersOnly = false)
+        public virtual ActionResult ExpressionBrowser()
         {
-            if (string.IsNullOrWhiteSpace(type))
-            {
-                var m = new Models.DocumentTemplate.ExpressionBrowserModel()
-                {
-                    DeviceType = typeof(Disco.Models.Repository.Device).AssemblyQualifiedName,
-                    JobType = typeof(Disco.Models.Repository.Job).AssemblyQualifiedName,
-                    UserType = typeof(Disco.Models.Repository.User).AssemblyQualifiedName,
-                    Variables = Expression.StandardVariableTypes(),
-                    ExtensionLibraries = Expression.ExtensionLibraryTypes()
-                };
-
-                // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateExpressionBrowserModel>(this.ControllerContext, m);
-
-                return View(m);
-            }
-            else
-            {
-                var t = Type.GetType(type);
-                if (t != null)
-                {
-                    return Json(ExpressionTypeDescriptor.Build(t, StaticDeclaredMembersOnly), JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json("Invalid Type Specified", JsonRequestBehavior.AllowGet);
-                }
-            }
+            // for backwards compatibility
+            return RedirectToAction(MVC.Config.Expressions.Browser());
         }
 
     }

@@ -5,9 +5,9 @@ namespace Disco.Services.Expressions
 {
     public class EvaluateExpressionPart : IExpressionPart
     {
-        private Spring.Expressions.IExpression _Expression;
-        private RecognitionException _ExpressionParseException;
-        private EvaluateExpressionParseException _EvaluateParseException;
+        private Spring.Expressions.IExpression expression;
+        private RecognitionException expressionParseException;
+        private EvaluateExpressionParseException evaluateParseException;
 
         public string RawSource { get; set; }
         public string Source { get; set; }
@@ -18,18 +18,18 @@ namespace Disco.Services.Expressions
         {
             get
             {
-                if (_ExpressionParseException == null)
+                if (expressionParseException == null)
                     return null;
                 else
-                    if (_EvaluateParseException == null)
-                        _EvaluateParseException = EvaluateExpressionParseException.FromRecognitionException(_ExpressionParseException, Source);
-                return _EvaluateParseException;
+                    if (evaluateParseException == null)
+                        evaluateParseException = EvaluateExpressionParseException.FromRecognitionException(expressionParseException, Source);
+                return evaluateParseException;
             }
         }
 
         public bool ParseError
         {
-            get { return (_ExpressionParseException != null); }
+            get { return (expressionParseException != null); }
         }
         public string ParseErrorMessage
         {
@@ -61,21 +61,21 @@ namespace Disco.Services.Expressions
             }
             try
             {
-                _Expression = Spring.Expressions.Expression.Parse(this.Source);
+                expression = Spring.Expressions.Expression.Parse(this.Source);
 
             }
             catch (RecognitionException ex)
             {
-                _ExpressionParseException = ex;
+                expressionParseException = ex;
             }
         }
         object IExpressionPart.Evaluate(object ExpressionContext, IDictionary Variables)
         {
-            if (_ExpressionParseException == null)
+            if (expressionParseException == null)
             {
-                return _Expression.GetValue(ExpressionContext, Variables);
+                return expression.GetValue(ExpressionContext, Variables);
             }
-            throw _ExpressionParseException;
+            throw expressionParseException;
         }
 
     }

@@ -11,7 +11,7 @@ namespace Disco.Services.Expressions
         public string Name { get; set; }
         public List<ExpressionTypeMemberDescriptor> Members { get; set; }
 
-        public static ExpressionTypeDescriptor Build(Type t, bool StaticDeclaredMembersOnly = true)
+        public static ExpressionTypeDescriptor Build(Type t, bool staticMembersOnly = true)
         {
             ExpressionTypeDescriptor i = new ExpressionTypeDescriptor
             {
@@ -21,7 +21,7 @@ namespace Disco.Services.Expressions
             i.Members = new List<ExpressionTypeMemberDescriptor>();
 
             MemberInfo[] members;
-            if (StaticDeclaredMembersOnly)
+            if (staticMembersOnly)
                 members = t.GetMembers(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
             else
                 members = t.GetMembers(BindingFlags.Public | BindingFlags.Instance);
@@ -46,10 +46,7 @@ namespace Disco.Services.Expressions
                     }
                 }
             }
-            i.Members = (
-                from mi in i.Members
-                orderby mi.Name
-                select mi).ToList();
+            i.Members = i.Members.OrderBy(m => m.Name).ToList();
             return i;
         }
     }

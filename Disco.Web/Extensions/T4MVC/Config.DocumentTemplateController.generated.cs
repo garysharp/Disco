@@ -77,12 +77,6 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult ExpressionBrowser()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExpressionBrowser);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DocumentTemplateController Actions { get { return MVC.Config.DocumentTemplate; } }
@@ -165,15 +159,6 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string id = "id";
         }
-        static readonly ActionParamsClass_ExpressionBrowser s_params_ExpressionBrowser = new ActionParamsClass_ExpressionBrowser();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_ExpressionBrowser ExpressionBrowserParams { get { return s_params_ExpressionBrowser; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_ExpressionBrowser
-        {
-            public readonly string type = "type";
-            public readonly string StaticDeclaredMembersOnly = "StaticDeclaredMembersOnly";
-        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -188,7 +173,6 @@ namespace Disco.Web.Areas.Config.Controllers
                 public readonly string BulkGenerate = "BulkGenerate";
                 public readonly string Create = "Create";
                 public readonly string CreatePackage = "CreatePackage";
-                public readonly string ExpressionBrowser = "ExpressionBrowser";
                 public readonly string ImportStatus = "ImportStatus";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
@@ -199,7 +183,6 @@ namespace Disco.Web.Areas.Config.Controllers
             public readonly string BulkGenerate = "~/Areas/Config/Views/DocumentTemplate/BulkGenerate.cshtml";
             public readonly string Create = "~/Areas/Config/Views/DocumentTemplate/Create.cshtml";
             public readonly string CreatePackage = "~/Areas/Config/Views/DocumentTemplate/CreatePackage.cshtml";
-            public readonly string ExpressionBrowser = "~/Areas/Config/Views/DocumentTemplate/ExpressionBrowser.cshtml";
             public readonly string ImportStatus = "~/Areas/Config/Views/DocumentTemplate/ImportStatus.cshtml";
             public readonly string Index = "~/Areas/Config/Views/DocumentTemplate/Index.cshtml";
             public readonly string Show = "~/Areas/Config/Views/DocumentTemplate/Show.cshtml";
@@ -320,15 +303,13 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [NonAction]
-        partial void ExpressionBrowserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string type, bool StaticDeclaredMembersOnly);
+        partial void ExpressionBrowserOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ExpressionBrowser(string type, bool StaticDeclaredMembersOnly)
+        public override System.Web.Mvc.ActionResult ExpressionBrowser()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExpressionBrowser);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "type", type);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "StaticDeclaredMembersOnly", StaticDeclaredMembersOnly);
-            ExpressionBrowserOverride(callInfo, type, StaticDeclaredMembersOnly);
+            ExpressionBrowserOverride(callInfo);
             return callInfo;
         }
 

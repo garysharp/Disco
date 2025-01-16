@@ -1,0 +1,160 @@
+﻿@model Disco.Web.Areas.Config.Models.Expressions.BrowserModel
+@{
+    Authorization.Require(Claims.Config.Show);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Expression Browser");
+    Html.BundleDeferred("~/Style/jQueryUI/dynatree");
+    Html.BundleDeferred("~/ClientScripts/Modules/jQueryUI-DynaTree");
+}
+<div id="Config_Expressions_Browser">
+    Expressions within Disco ICT are based on the <a href="http://www.springframework.net/" target="_blank">Spring.NET Framework</a>. Please refer to the <a href="http://www.springframework.net/doc-latest/reference/html/expressions.html" target="_blank">Expression Evaluation</a> documentation.
+    <h2 id="DeviceScope">
+        Device Scope
+    </h2>
+    <div id="deviceScopeTree" class="expressionTree">
+    </div>
+    <h2 id="JobScope">
+        Job Scope
+    </h2>
+    <div id="jobScopeTree" class="expressionTree">
+    </div>
+    <h2 id="UserScope">
+        User Scope
+    </h2>
+    <div id="userScopeTree" class="expressionTree">
+    </div>
+    <h2 id="Variables">
+        Variables
+    </h2>
+    <div id="variableScopeTree" class="expressionTree">
+    </div>
+    <h2 id="ExtensionLibraries">
+        Extension Libraries
+    </h2>
+    <div id="extScopeTree" class="expressionTree">
+    </div>
+    @if (Model.PluginExtensionLibraries.Any())
+    {
+        <h2 id="PluginExtensionLibraries">
+            Plugin Extension Libraries
+        </h2>
+        <div id="pluginExtScopeTree" class="expressionTree">
+        </div>
+    }
+</div>
+<script id="expressionBrowserModel" type="application/json">
+@Html.Raw(Json.Encode(Model))
+</script>
+@using (Html.BeginForm(MVC.API.Expressions.TypeDescriptor(), FormMethod.Post, new { id = "expressionBrowserForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+<script type="text/javascript">
+    $(function () {
+        if (!document.DiscoFunctions) {
+            document.DiscoFunctions = {};
+        }
+
+        const typeLib = {};
+        const model = JSON.parse($('#expressionBrowserModel').html());
+
+        function lazyLoadNode(node) {
+            if (node.data.expressionType) {
+                node.setLazyNodeStatus(DTNodeStatus_Loading);
+                loadType(node, node.data.expressionType, node.data.staticMembersOnly);
+            } else {
+                if (node.data.memberDescriptor) {
+                    loadMember(node);
+                } else {
+                    node.setLazyNodeStatus(DTNodeStatus_Ok);
+                }
+            }
+        }
+        function loadMember(memberNode) {
+            const previousUpdateMode = memberNode.tree.enableUpdate(false);
+            const memberDescriptor = memberNode.data.memberDescriptor;
+            // Return Type
+            memberNode.addChild({ title: 'Returns: ' + memberDescriptor.ReturnType, tooltip: memberDescriptor.ReturnExpressionType, isFolder: true, expressionType: memberDescriptor.ReturnExpressionType, isLazy: true, addClass: 'object' });
+            // Parameters
+            const parametersNode = memberNode.addChild({ title: 'Parameters', isFolder: true, addClass: 'parameter' });
+            for (let i = 0; i < memberDescriptor.Parameters.length; i++) {
+                const p = memberDescriptor.Parameters[i];
+                parametersNode.addChild({ title: p.Name + ' [' + p.ReturnType + ']', tooltip: p.ReturnExpressionType, addClass: 'object' });
+            }
+            memberNode.setLazyNodeStatus(DTNodeStatus_Ok);
+            memberNode.tree.enableUpdate(previousUpdateMode);
+        }
+        function typeLoaded(parentNode, typeDescriptor) {
+            const previousUpdateMode = parentNode.tree.enableUpdate(false);
+            for (let i = 0; i < typeDescriptor.Members.length; i++) {
+                const memberDescriptor = typeDescriptor.Members[i];
+                parentNode.addChild({ title: memberDescriptor.Name, tooltip: memberDescriptor.ReturnType, isFolder: true, addClass: memberDescriptor.Kind, memberDescriptor: memberDescriptor, isLazy: true });
+            }
+            parentNode.setLazyNodeStatus(DTNodeStatus_Ok);
+            parentNode.tree.enableUpdate(previousUpdateMode);
+        }
+
+        async function loadType(parentNode, type, staticMembersOnly) {
+            let typeDef = typeLib[type];
+            if (!typeDef) {
+                $form = $('#expressionBrowserForm');
+                const url = $form.attr('action');
+                const body = new FormData($form[0]);
+                body.append('type', type);
+                if (staticMembersOnly) {
+                    body.append('staticMembersOnly', staticMembersOnly);
+                }
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: body
+                });
+
+                if (!response.ok) {
+                    console.error('Failed to load type', response);
+                    return;
+                }
+
+                typeDef = await response.json();
+
+                typeLib[type] = typeDef;
+            }
+            typeLoaded(parentNode, typeDef);
+        }
+
+        const deviceScopeTree = $('#deviceScopeTree');
+        deviceScopeTree.dynatree({ onLazyRead: lazyLoadNode });
+        loadType(deviceScopeTree.dynatree('getRoot'), model.DeviceType);
+
+        const jobScopeTree = $('#jobScopeTree');
+        jobScopeTree.dynatree({ onLazyRead: lazyLoadNode });
+        loadType(jobScopeTree.dynatree('getRoot'), model.JobType);
+
+        const userScopeTree = $('#userScopeTree');
+        userScopeTree.dynatree({ onLazyRead: lazyLoadNode });
+        loadType(userScopeTree.dynatree('getRoot'), model.UserType);
+
+        const variableScopeTree = $('#variableScopeTree');
+        variableScopeTree.dynatree({ onLazyRead: lazyLoadNode });
+        Object.keys(model.Variables).forEach(name => {
+            const type = model.Variables[name];
+            variableScopeTree.dynatree('getRoot').addChild({ title: name, tooltip: type, isFolder: true, addClass: 'object', expressionType: type, isLazy: true });
+        })
+
+        const extScopeTree = $('#extScopeTree');
+        extScopeTree.dynatree({ onLazyRead: lazyLoadNode });
+        Object.keys(model.ExtensionLibraries).forEach(name => {
+            const type = model.ExtensionLibraries[name];
+            extScopeTree.dynatree('getRoot').addChild({ title: name, tooltip: type, isFolder: true, addClass: 'object', expressionType: type, staticMembersOnly: true, isLazy: true });
+        })
+
+        const pluginExtScopeTree = $('#pluginExtScopeTree');
+        if (pluginExtScopeTree.length) {
+            pluginExtScopeTree.dynatree({ onLazyRead: lazyLoadNode });
+            Object.keys(model.PluginExtensionLibraries).forEach(name => {
+                const type = model.PluginExtensionLibraries[name];
+                pluginExtScopeTree.dynatree('getRoot').addChild({ title: name, tooltip: type, isFolder: true, addClass: 'object', expressionType: type, staticMembersOnly: true, isLazy: true });
+            })
+        }
+    });
+</script>
