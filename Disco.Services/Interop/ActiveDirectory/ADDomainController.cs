@@ -314,7 +314,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ADOrganisationalUnit ouParent;
                 if (indexedOrganisationalUnits.TryGetValue(ouChildren.Key, out ouParent))
                 {
-                    ouParent.Children = ouChildren.Value;
+                    ouParent.Children = ouChildren.Value.OrderBy(o => o.Name).ToList();
                 }
             }
 
