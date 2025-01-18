@@ -177,15 +177,17 @@
             <td id="Job_Show_Device">
                 <div>
                     <h2 id="Job_Show_Device_SerialNumber" title="Serial Number">
-                        @if (Authorization.Has(Claims.Device.Show))
-                        {@Html.ActionLink(Model.Job.DeviceSerialNumber, MVC.Device.Show(Model.Job.DeviceSerialNumber))}
-                    else
-                    {@Model.Job.DeviceSerialNumber}
+                        <span data-clipboard>
+                            @if (Authorization.Has(Claims.Device.Show))
+                            {@Html.ActionLink(Model.Job.DeviceSerialNumber, MVC.Device.Show(Model.Job.DeviceSerialNumber))}
+                        else
+                        {@Model.Job.DeviceSerialNumber}
+                        </span>
                     </h2>
                     <div class="clearfix">
                         <div id="Job_Show_Device_Details">
                             <img id="Job_Show_Device_Model_Image" alt="Model Image" src="@Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))" />
-                            <div id="Job_Show_Device_ComputerName" title="Computer Name">@Model.Job.Device.ComputerName</div>
+                            <div id="Job_Show_Device_ComputerName" title="Computer Name"><span data-clipboard>@Model.Job.Device.ComputerName</span></div>
                             <div id="Job_Show_Device_Model" title="Model">@Html.ActionLink(Model.Job.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Job.Device.DeviceModelId))</div>
                             @if (Model.Job.Device.DeviceBatch != null)
                             {
@@ -482,18 +484,20 @@
                         </div>
                     }
                     <h2 id="Job_Show_User_DisplayName" title="Display Name">
-                        @if (Authorization.Has(Claims.User.Show))
-                        {@Html.ActionLink(Model.Job.User.DisplayName, MVC.User.Show(Model.Job.UserId))}
-                    else
-                    {@Model.Job.User.DisplayName}
+                        <span data-clipboard>
+                            @if (Authorization.Has(Claims.User.Show))
+                            {@Html.ActionLink(Model.Job.User.DisplayName, MVC.User.Show(Model.Job.UserId))}
+                        else
+                        {@Model.Job.User.DisplayName}
+                        </span>
                     </h2>
-                    <div id="Job_Show_User_Id" title="Id">@Model.Job.User.FriendlyId()</div>
+                    <div id="Job_Show_User_Id" title="Id"><span data-clipboard>@Model.Job.User.FriendlyId()</span></div>
                     @if (Authorization.Has(Claims.User.ShowDetails))
                     {
                         if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
-                        {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: <a href="tel:@Model.Job.User.PhoneNumber">@Model.Job.User.PhoneNumber</a></div>}
+                        {<div id="Job_Show_User_PhoneNumber" title="Phone Number">Phone: <a href="tel:@Model.Job.User.PhoneNumber" data-clipboard>@Model.Job.User.PhoneNumber</a></div>}
                     if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
-                    {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)">@Model.Job.User.EmailAddress</a></div>}
+                    {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)" data-clipboard="@Model.Job.User.DisplayName &lt;@Model.Job.User.EmailAddress&gt;">@Model.Job.User.EmailAddress</a></div>}
             }
                     @if (Authorization.Has(Claims.User.ShowFlagAssignments))
                     {

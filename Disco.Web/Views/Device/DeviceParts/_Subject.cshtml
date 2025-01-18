@@ -22,7 +22,7 @@
                                 }
                                 else
                                 {
-                                    <h4 id="Device_Show_Details_Asset_Name" title="Computer Name">@Model.Device.ComputerName</h4>
+                                    <h4 id="Device_Show_Details_Asset_Name" title="Computer Name"><span data-clipboard>@Model.Device.ComputerName</span></h4>
                                 }
                             </td>
                         </tr>
@@ -37,7 +37,7 @@
                                 }
                                 else
                                 {
-                                    <h4 id="Device_Show_Details_Asset_Domain" title="Computer Domain">@Model.Device.ComputerDomainName</h4>
+                                    <h4 id="Device_Show_Details_Asset_Domain" title="Computer Domain"><span data-clipboard>@Model.Device.ComputerDomainName</span></h4>
                                 }
                             </td>
                         </tr>
@@ -50,7 +50,7 @@
                                 }
                                 else
                                 {
-                                    <span class="small discreet">@(Model.Device.AssetNumber ?? "Unknown")</span>
+                                    <span class="small discreet" data-clipboard>@(Model.Device.AssetNumber ?? "Unknown")</span>
                                 }
                             </td>
                         </tr>
@@ -63,7 +63,7 @@
                                 }
                                 else
                                 {
-                                    <span class="small discreet">@(Model.Device.Location ?? "Unknown")</span>
+                                    <span class="small discreet" data-clipboard>@(Model.Device.Location ?? "Unknown")</span>
                                 }
                             </td>
                         </tr>
@@ -207,25 +207,27 @@
                                             </div>
                                         }
                                         <div id="Device_Show_User_DisplayName" title="Display Name">
-                                            @if (Authorization.Has(Claims.User.Show))
-                                            {
-                                                @Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.UserId))
-                                            }
-                                            else
-                                            {
-                                                @assignedUser.DisplayName
-                                            }
+                                            <span data-clipboard>
+                                                @if (Authorization.Has(Claims.User.Show))
+                                                {
+                                                    @Html.ActionLink(assignedUser.DisplayName, MVC.User.Show(assignedUser.UserId))
+                                                }
+                                                else
+                                                {
+                                                    @assignedUser.DisplayName
+                                                }
+                                            </span>
                                         </div>
-                                        <div id="Device_Show_User_Id" title="Id">@assignedUser.FriendlyId()</div>
+                                        <div id="Device_Show_User_Id" title="Id"><span data-clipboard>@assignedUser.FriendlyId()</span></div>
                                         @if (Authorization.Has(Claims.User.ShowDetails))
                                         {
                                             if (!string.IsNullOrWhiteSpace(assignedUser.PhoneNumber))
                                             {
-                                                <div id="Device_Show_User_PhoneNumber" title="Phone Number"><a href="tel:@assignedUser.PhoneNumber">@assignedUser.PhoneNumber</a></div>
+                                                <div id="Device_Show_User_PhoneNumber" title="Phone Number"><a href="tel:@assignedUser.PhoneNumber"  data-clipboard>@assignedUser.PhoneNumber</a></div>
                                             }
                                             if (!string.IsNullOrWhiteSpace(assignedUser.EmailAddress))
                                             {
-                                                <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)">@assignedUser.EmailAddress</a></div>
+                                                <div id="Device_Show_User_EmailAddress" title="Email Address"><a href="mailto:@(Model.Device.AssignedUser.EmailAddress)"  data-clipboard="@assignedUser.DisplayName &lt;@assignedUser.EmailAddress&gt;">@assignedUser.EmailAddress</a></div>
                                             }
                                         }
                                         @if (Authorization.Has(Claims.User.ShowFlagAssignments))

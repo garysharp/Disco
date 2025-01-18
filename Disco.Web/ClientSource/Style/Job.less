@@ -983,9 +983,9 @@
         border-bottom: 1px dashed #ccc;
     }
 
-        .createJob_Component:last-child {
-            border-bottom: none;
-        }
+    .createJob_Component:last-child {
+        border-bottom: none;
+    }
 
 
     #createJob_Type {
@@ -1006,34 +1006,34 @@
         }
     }
 
-        #createJob_Type li, #createJob_SubTypes li {
-            margin: 2px 0;
-            padding: 0 0 0 4px;
+    #createJob_Type li, #createJob_SubTypes li {
+        margin: 2px 0;
+        padding: 0 0 0 4px;
+
+        i {
+            display: none;
+            cursor: default;
+            font-weight: normal;
+        }
+
+        &:hover i {
+            display: inline-block;
+        }
+
+        &.highlight {
+            background-color: @HighlightColour;
+            font-weight: 600;
+            color: @black;
 
             i {
-                display: none;
-                cursor: default;
-                font-weight: normal;
-            }
-
-            &:hover i {
                 display: inline-block;
             }
-
-            &.highlight {
-                background-color: @HighlightColour;
-                font-weight: 600;
-                color: @black;
-
-                i {
-                    display: inline-block;
-                }
-            }
         }
+    }
 
-        #createJob_SubTypes.isQuickLog li i {
-            display: none;
-        }
+    #createJob_SubTypes.isQuickLog li i {
+        display: none;
+    }
 
 
     #createJob_CommentsContainer {

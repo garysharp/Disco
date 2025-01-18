@@ -17,12 +17,6 @@ namespace Disco.Web.Views.Shared
     using System.Linq;
     using System.Net;
     using System.Text;
-    
-    #line 2 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
-    using System.Text.RegularExpressions;
-    
-    #line default
-    #line hidden
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
@@ -34,6 +28,12 @@ namespace Disco.Web.Views.Shared
     using System.Web.WebPages;
     using Disco;
     using Disco.Models.Repository;
+    
+    #line 2 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+    using Disco.Models.Services.Users.Contact;
+    
+    #line default
+    #line hidden
     using Disco.Services;
     using Disco.Services.Authorization;
     using Disco.Services.Web;
@@ -52,49 +52,42 @@ namespace Disco.Web.Views.Shared
             
             #line 3 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
   
-    var emailMatch = Regex.Match(Model.Value, @"^(?<name>.+)\s?<(?<address>.+@.+)>$");
-    if (!emailMatch.Success)
+    UserContactEmail email;
+    if (UserContactEmail.TryParse(null, null, Model.Value, out email))
     {
-        emailMatch = Regex.Match(Model.Value, @"^(?<address>.+@.+)$");
-    }
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("        <a");
 
+WriteAttribute("href", Tuple.Create(" href=\"", 230), Tuple.Create("\"", 263)
+, Tuple.Create(Tuple.Create("", 237), Tuple.Create("mailto:", 237), true)
             
-            #line 10 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
- if (emailMatch.Success)
-{
-    var emailAddress = emailMatch.Groups["address"].Value;
-    var emailName = emailAddress;
-    if (emailMatch.Groups["name"].Success)
-    {
-        emailName = emailMatch.Groups["name"].Value;
-    }
-
+            #line 7 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+, Tuple.Create(Tuple.Create("", 244), Tuple.Create<System.Object, System.Int32>(email.EmailAddress
             
             #line default
             #line hidden
-WriteLiteral("    <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 556), Tuple.Create("\"", 583)
-, Tuple.Create(Tuple.Create("", 563), Tuple.Create("mailto:", 563), true)
-            
-            #line 18 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
-, Tuple.Create(Tuple.Create("", 570), Tuple.Create<System.Object, System.Int32>(emailAddress
-            
-            #line default
-            #line hidden
-, 570), false)
+, 244), false)
 );
+
+WriteLiteral(" data-clipboard=\"");
+
+            
+            #line 7 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                                        Write(email.ToString());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
 
 WriteLiteral(">");
 
             
-            #line 18 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
-                              Write(emailName);
+            #line 7 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                                                            Write(string.IsNullOrWhiteSpace(email.Name) ? email.EmailAddress : email.Name);
 
             
             #line default
@@ -102,19 +95,113 @@ WriteLiteral(">");
 WriteLiteral("</a>\r\n");
 
             
-            #line 19 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
-}
-else
-{
+            #line 8 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+    }
+    else
+    {
+        UserContactAustralianPhone phone;
+        if (UserContactAustralianPhone.TryParse(null, null, Model.Value, out phone))
+        {
 
             
             #line default
             #line hidden
-WriteLiteral("    <span>");
+WriteLiteral("            <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 558), Tuple.Create("\"", 587)
+, Tuple.Create(Tuple.Create("", 565), Tuple.Create("tel:", 565), true)
+            
+            #line 14 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+, Tuple.Create(Tuple.Create("", 569), Tuple.Create<System.Object, System.Int32>(phone.PhoneNumber
+            
+            #line default
+            #line hidden
+, 569), false)
+);
+
+WriteLiteral(" data-clipboard=\"");
+
+            
+            #line 14 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                                        Write(phone.ToString());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">");
+
+            
+            #line 14 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                                                            Write(string.IsNullOrWhiteSpace(phone.Name) ? phone.PhoneNumber : phone.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</a>\r\n");
+
+            
+            #line 15 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+        }
+        else
+        {
+            UserContactAustralianPhone mobile;
+            if (UserContactAustralianPhone.TryParse(null, null, Model.Value, out mobile))
+            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 911), Tuple.Create("\"", 941)
+, Tuple.Create(Tuple.Create("", 918), Tuple.Create("tel:", 918), true)
+            
+            #line 21 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+, Tuple.Create(Tuple.Create("", 922), Tuple.Create<System.Object, System.Int32>(mobile.PhoneNumber
+            
+            #line default
+            #line hidden
+, 922), false)
+);
+
+WriteLiteral(" data-clipboard=\"");
+
+            
+            #line 21 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                                             Write(mobile.ToString());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">");
+
+            
+            #line 21 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                                                                  Write(string.IsNullOrWhiteSpace(mobile.Name) ? mobile.PhoneNumber : mobile.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</a>\r\n");
 
             
             #line 22 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
-     Write(Model.Value);
+            }
+            else
+            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <span data-clipboard>");
+
+            
+            #line 25 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+                                Write(Model.Value);
 
             
             #line default
@@ -122,11 +209,16 @@ WriteLiteral("    <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 23 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
-}
+            #line 26 "..\..\Views\Shared\_CustomDetailValueRender.cshtml"
+            }
+        }
+    }
+
             
             #line default
             #line hidden
+WriteLiteral("\r\n");
+
         }
     }
 }

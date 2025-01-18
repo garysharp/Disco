@@ -6014,3 +6014,16 @@ ul.list-group li:not(:first-child) {
 .whitespace-pre-wrap {
   white-space: pre-wrap;
 }
+i.clipboard-link {
+  cursor: pointer;
+  position: absolute;
+  padding-left: 4px;
+  right: calc(-1.28571429em - 4px);
+  top: calc(100% - 14px);
+  z-index: 100;
+  color: #D1D1D1;
+  background-color: #fff;
+}
+i.clipboard-link:hover {
+  color: #333;
+}

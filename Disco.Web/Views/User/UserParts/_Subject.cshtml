@@ -23,20 +23,20 @@
                                     <span>Username (Id):</span>
                                 </td>
                                 <td>
-                                    <h4 id="User_Show_Details_Identity_Id" title="Username">@Model.User.UserId</h4>
+                                    <h4 id="User_Show_Details_Identity_Id" title="Username" data-clipboard>@Model.User.UserId</h4>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Display Name:</td>
-                                <td><span id="User_Show_Details_Identity_DisplayName" title="Display Name">@Model.User.DisplayName</span></td>
+                                <td><span id="User_Show_Details_Identity_DisplayName" title="Display Name" data-clipboard>@Model.User.DisplayName</span></td>
                             </tr>
                             <tr>
                                 <td>Given Name:</td>
-                                <td><span id="User_Show_Details_Identity_GivenName" title="Given Name">@Model.User.GivenName</span></td>
+                                <td><span id="User_Show_Details_Identity_GivenName" title="Given Name" data-clipboard>@Model.User.GivenName</span></td>
                             </tr>
                             <tr>
                                 <td>Surname:</td>
-                                <td><span id="User_Show_Details_Identity_Surname" title="Surname">@Model.User.Surname</span></td>
+                                <td><span id="User_Show_Details_Identity_Surname" title="Surname" data-clipboard>@Model.User.Surname</span></td>
                             </tr>
                         </table>
                     </div>
@@ -49,7 +49,7 @@
                                     <td>
                                         @if (!string.IsNullOrEmpty(Model.User.EmailAddress))
                                         {
-                                            <span id="User_Show_Details_Attributes_Email" title="Email Address [Update in Active Directory]"><a href="mailto:@Model.User.EmailAddress">@Model.User.EmailAddress</a></span>
+                                            <span id="User_Show_Details_Attributes_Email" title="Email Address [Update in Active Directory]"><a href="mailto:@Model.User.EmailAddress" data-clipboard="@Model.User.DisplayName &lt;@Model.User.EmailAddress&gt;">@Model.User.EmailAddress</a></span>
                                         }
                                         else
                                         {
@@ -62,7 +62,7 @@
                                     <td>
                                         @if (!string.IsNullOrEmpty(Model.User.PhoneNumber))
                                         {
-                                            <span id="User_Show_Details_Attributes_Phone" title="Phone Number [Update in Active Directory]"><a href="tel:@Model.User.PhoneNumber">@Model.User.PhoneNumber</a></span>
+                                            <span id="User_Show_Details_Attributes_Phone" title="Phone Number [Update in Active Directory]"><a href="tel:@Model.User.PhoneNumber" data-clipboard>@Model.User.PhoneNumber</a></span>
                                         }
                                         else
                                         {
@@ -358,7 +358,7 @@
                                                             Serial Number:
                                                         </td>
                                                         <td>
-                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber">
+                                                            <span class="User_Show_AssignedDevices_CurrentAssignment_SerialNumber" data-clipboard>
                                                                 @if (Authorization.Has(Claims.Device.Show))
                                                                 {
                                                                     @Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber))
@@ -370,7 +370,7 @@
                                                             </span>
                                                             @if (!string.IsNullOrWhiteSpace(assignment.Device.ComputerName))
                                                             {
-                                                                <text>(<span class="User_Show_AssignedDevices_CurrentAssignment_ComputerName">@assignment.Device.ComputerName</span>)</text>
+                                                                <text>(<span class="User_Show_AssignedDevices_CurrentAssignment_ComputerName" data-clipboard>@assignment.Device.ComputerName</span>)</text>
                                                             }
                                                         </td>
                                                     </tr>
@@ -379,7 +379,7 @@
                                                         <tr>
                                                             <td>Asset:</td>
                                                             <td>
-                                                                <span class="User_Show_AssignedDevices_CurrentAssignment_Asset">@assignment.Device.AssetNumber</span>
+                                                                <span class="User_Show_AssignedDevices_CurrentAssignment_Asset" data-clipboard>@assignment.Device.AssetNumber</span>
                                                             </td>
                                                         </tr>
                                                     }

@@ -1,23 +1,29 @@
 ﻿@model System.Collections.Generic.KeyValuePair<string, string>
-@using System.Text.RegularExpressions
+@using Disco.Models.Services.Users.Contact
 @{
-    var emailMatch = Regex.Match(Model.Value, @"^(?<name>.+)\s?<(?<address>.+@.+)>$");
-    if (!emailMatch.Success)
+    UserContactEmail email;
+    if (UserContactEmail.TryParse(null, null, Model.Value, out email))
     {
-        emailMatch = Regex.Match(Model.Value, @"^(?<address>.+@.+)$");
+        <a href="mailto:@email.EmailAddress" data-clipboard="@email.ToString()">@(string.IsNullOrWhiteSpace(email.Name) ? email.EmailAddress : email.Name)</a>
     }
-}
-@if (emailMatch.Success)
-{
-    var emailAddress = emailMatch.Groups["address"].Value;
-    var emailName = emailAddress;
-    if (emailMatch.Groups["name"].Success)
+    else
     {
-        emailName = emailMatch.Groups["name"].Value;
+        UserContactAustralianPhone phone;
+        if (UserContactAustralianPhone.TryParse(null, null, Model.Value, out phone))
+        {
+            <a href="tel:@phone.PhoneNumber" data-clipboard="@phone.ToString()">@(string.IsNullOrWhiteSpace(phone.Name) ? phone.PhoneNumber : phone.Name)</a>
+        }
+        else
+        {
+            UserContactAustralianPhone mobile;
+            if (UserContactAustralianPhone.TryParse(null, null, Model.Value, out mobile))
+            {
+                <a href="tel:@mobile.PhoneNumber" data-clipboard="@mobile.ToString()">@(string.IsNullOrWhiteSpace(mobile.Name) ? mobile.PhoneNumber : mobile.Name)</a>
+            }
+            else
+            {
+                <span data-clipboard>@Model.Value</span>
+            }
+        }
     }
-    <a href="mailto:@emailAddress">@emailName</a>
-}
-else
-{
-    <span>@Model.Value</span>
 }

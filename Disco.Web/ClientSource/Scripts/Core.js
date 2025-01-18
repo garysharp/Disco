@@ -58540,7 +58540,7 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                             .append(template)
                             .appendTo(ul);
                     };
-                    
+
                 }
                 quickSearchInited = true;
             }
@@ -58665,5 +58665,41 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
         $(window).resize(function () {
             $('.ui-dialog-content').filter(':visible').dialog('option', 'position', 'center');
         });
+
+        if (navigator.clipboard) {
+            window.setTimeout(() => {
+                $('[data-clipboard]')
+                    .on('mouseenter', e => {
+                        const $this = $(e.currentTarget);
+                        const previousPosition = $this.css('position');
+                        $this.css('position', 'relative');
+                        const link = $('<i class="clipboard-link fa fa-clipboard fa-fw">');
+                        link.appendTo($this)
+                        link.on('click', e => {
+                            e.preventDefault();
+                            let value = $this.attr('data-clipboard');
+                            if (!value) {
+                                value = $this.text().trim();
+                            }
+                            navigator.clipboard.writeText(value).then(() => {
+                                link.removeClass('fa-clipboard').addClass('fa-check');
+                            })
+                            return false;
+                        });
+                        $this.data('clipboard', {
+                            previousPosition: previousPosition,
+                            link: link
+                        })
+                    }).on('mouseleave', e => {
+                        const $this = $(e.currentTarget);
+                        const data = $this.data('clipboard');
+                        if (data) {
+                            data.link.remove();
+                            $this.css('position', data.previousPosition);
+                            $this.removeData('clipboard');
+                        }
+                    });
+            }, 100);
+        }
     });
 })(jQuery, window, document, Modernizr);
