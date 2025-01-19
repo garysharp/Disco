@@ -612,14 +612,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 121 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-   Write(Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser()));
+   Write(Html.ActionLinkButton("Expression Browser", MVC.Config.Expressions.Browser()));
 
             
             #line default
             #line hidden
             
             #line 121 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-                                                                                                     
+                                                                                      
     }
 
             

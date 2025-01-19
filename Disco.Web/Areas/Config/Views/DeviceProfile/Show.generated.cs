@@ -1409,7 +1409,7 @@ WriteLiteral(@">
 
             
             #line 371 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                         Write(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()));
+                                                         Write(Url.Action(MVC.Config.Expressions.Browser()));
 
             
             #line default
@@ -2541,14 +2541,14 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 48839), Tuple.Create("\"", 48889)
+WriteAttribute("href", Tuple.Create(" href=\"", 48824), Tuple.Create("\"", 48874)
             
             #line 853 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 48846), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+, Tuple.Create(Tuple.Create("", 48831), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 48846), false)
+, 48831), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install certificate provider plugins.\r\n    " +
@@ -2763,14 +2763,14 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 52093), Tuple.Create("\"", 52143)
+WriteAttribute("href", Tuple.Create(" href=\"", 52078), Tuple.Create("\"", 52128)
             
             #line 916 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 52100), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+, Tuple.Create(Tuple.Create("", 52085), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 52100), false)
+, 52085), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install wireless profile provider plugins.\r" +

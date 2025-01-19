@@ -141,7 +141,7 @@
                         <h4>@Model.DocumentTemplate.Scope Scope</h4>
                         <div class="info-box">
                             <p class="fa-p">
-                                <i class="fa fa-info-circle"></i>This template is generated from @(Model.DocumentTemplate.Scope)s. Any expressions within the Template&nbsp;PDF will be evaluated within the <a href="@(Url.Action(MVC.Config.DocumentTemplate.ExpressionBrowser()))#@(Model.DocumentTemplate.Scope)Scope">@(Model.DocumentTemplate.Scope) Scope</a>.
+                                <i class="fa fa-info-circle"></i>This template is generated from @(Model.DocumentTemplate.Scope)s. Any expressions within the Template&nbsp;PDF will be evaluated within the <a href="@(Url.Action(MVC.Config.Expressions.Browser()))#@(Model.DocumentTemplate.Scope)Scope">@(Model.DocumentTemplate.Scope) Scope</a>.
                             </p>
                         </div>
                         <div>
@@ -996,7 +996,7 @@
                 @Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions)
             </div>
         </div>
-        <div id="dialogConfirmDelete" title="Delete this Document Template?">
+        <div id="dialogConfirmDelete" title="Delete this Document Template?" class="dialog">
             <p>
                 <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted and cannot be recovered.<br />
                 <em>
@@ -1050,7 +1050,7 @@
             }
             @if (Authorization.Has(Claims.Config.Show))
             {
-                @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+                @Html.ActionLinkButton("Expression Browser", MVC.Config.Expressions.Browser())
             }
             @if (canBulkGenerate)
             {

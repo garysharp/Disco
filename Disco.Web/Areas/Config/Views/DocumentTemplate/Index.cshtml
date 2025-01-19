@@ -118,7 +118,7 @@ else
     }
     @if (Authorization.Has(Claims.Config.Show))
     {
-        @Html.ActionLinkButton("Expression Browser", MVC.Config.DocumentTemplate.ExpressionBrowser())
+        @Html.ActionLinkButton("Expression Browser", MVC.Config.Expressions.Browser())
     }
     @if (Model.DocumentTemplates.Count > 2 && Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
     {

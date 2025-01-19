@@ -55,21 +55,6 @@ namespace Disco.Web.Areas.Config
                 new { controller = "DeviceProfile", action = "Index", id = UrlParameter.Optional }
             );
             context.MapRoute(
-                "Config_AttachmentType_Create",
-                "Config/AttachmentType/Create",
-                new { controller = "AttachmentType", action = "Create" }
-            );
-            context.MapRoute(
-                "Config_AttachmentType_ExpressionBrowser_Type",
-                "Config/AttachmentType/ExpressionBrowser/{type}",
-                new { controller = "AttachmentType", action = "ExpressionBrowser", type = UrlParameter.Optional }
-            );
-            context.MapRoute(
-                "Config_AttachmentType",
-                "Config/AttachmentType/{id}",
-                new { controller = "AttachmentType", action = "Index", id = UrlParameter.Optional }
-            );
-            context.MapRoute(
                 "Config_DocumentTemplate_Create",
                 "Config/DocumentTemplate/Create",
                 new { controller = "DocumentTemplate", action = "Create" }
