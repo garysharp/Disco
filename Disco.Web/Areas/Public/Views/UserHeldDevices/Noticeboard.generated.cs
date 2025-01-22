@@ -344,100 +344,109 @@ WriteLiteral("\', null, function (data) {\r\n\r\n                    var inProce
 "= getQueryStringParameters();\r\n\r\n                if (queryStringParameters !== n" +
 "ull) {\r\n                    var filters = [];\r\n\r\n                    $.each(quer" +
 "yStringParameters, function (key, value) {\r\n                        switch (key." +
-"toLowerCase()) {\r\n                            case \'theme\': // THEME\r\n          " +
-"                      setTheme(value);\r\n                                fixedThe" +
-"me = value;\r\n                                break;\r\n                           " +
-" case \'deviceaddressinclude\': // FILTER: Device Address Include\r\n               " +
-"                 var deviceAddresses = value.split(\",\").map(function (v) { retur" +
-"n v.toLowerCase(); });\r\n                                if (deviceAddresses.leng" +
-"th > 0) {\r\n                                    filters.push(function (heldDevice" +
-"Item) {\r\n                                        // false if DeviceAddressShortN" +
-"ame is null\r\n                                        if (!heldDeviceItem.DeviceA" +
-"ddressShortName)\r\n                                            return false;\r\n\r\n " +
-"                                       // true if DeviceAddressShortName is incl" +
-"uded\r\n                                        return $.inArray(heldDeviceItem.De" +
-"viceAddressShortName.toLowerCase(), deviceAddresses) >= 0;\r\n                    " +
-"                });\r\n                                }\r\n                        " +
-"        break;\r\n                            case \'deviceaddressexclude\': // FILT" +
-"ER: Device Address Exclude\r\n                                var deviceAddresses " +
-"= value.split(\",\").map(function (v) { return v.toLowerCase(); });\r\n             " +
-"                   if (deviceAddresses.length > 0) {\r\n                          " +
-"          filters.push(function (heldDeviceItem) {\r\n                            " +
-"            // true if DeviceAddressShortName is null\r\n                         " +
-"               if (!heldDeviceItem.DeviceAddressShortName)\r\n                    " +
-"                        return true;\r\n\r\n                                        " +
-"// true if DeviceAddressShortName is excluded\r\n                                 " +
-"       return $.inArray(heldDeviceItem.DeviceAddressShortName.toLowerCase(), dev" +
-"iceAddresses) < 0;\r\n                                    });\r\n                   " +
-"             }\r\n                                break;\r\n                        " +
-"    case \'deviceprofileinclude\': // FILTER: Device Profile Include\r\n            " +
-"                    var deviceProfiles = value.split(\",\").map(function (v) { ret" +
-"urn parseInt(v); });\r\n                                if (deviceProfiles.length " +
-"> 0) {\r\n                                    filters.push(function (heldDeviceIte" +
-"m) {\r\n                                        // true if DeviceProfileId is incl" +
-"uded\r\n                                        return $.inArray(heldDeviceItem.De" +
-"viceProfileId, deviceProfiles) >= 0;\r\n                                    });\r\n " +
-"                               }\r\n                                break;\r\n      " +
-"                      case \'deviceprofileexclude\': // FILTER: Device Profile Exc" +
-"lude\r\n                                var deviceProfiles = value.split(\",\").map(" +
-"function (v) { return parseInt(v); });\r\n                                if (devi" +
-"ceProfiles.length > 0) {\r\n                                    filters.push(funct" +
-"ion (heldDeviceItem) {\r\n                                        // true if Devic" +
-"eProfileId is excluded\r\n                                        return $.inArray" +
-"(heldDeviceItem.DeviceProfileId, deviceProfiles) < 0;\r\n                         " +
-"           });\r\n                                }\r\n                             " +
-"   break;\r\n                        }\r\n                    });\r\n\r\n               " +
-"     if (filters.length > 0)\r\n                        itemFilters = filters;\r\n  " +
-"                  else\r\n                        itemFilters = null;\r\n           " +
-"     }\r\n            }\r\n\r\n            function connectionError() {\r\n             " +
-"   try {\r\n                    $(\'body\').addClass(\'status-error\');\r\n             " +
-"       $.connection.hub.stop();\r\n                } catch (e) {\r\n                " +
-"    // Ignore\r\n                }\r\n\r\n                window.setTimeout(function (" +
-") {\r\n                    window.location.reload(true);\r\n                }, 10000" +
-");\r\n            }\r\n\r\n            // Helpers\r\n            function rotateArray(ko" +
-"Array, element) {\r\n                var items = koArray();\r\n\r\n                if " +
-"(items.length <= 1)\r\n                    return 0;\r\n\r\n                if (elemen" +
-"t.height() < (element.parent().height() - 30)) {\r\n\r\n                    if (find" +
-"UnsortedArrayTopIndex(items) !== 0)\r\n                        koArray.sort(sortFu" +
-"nction);\r\n\r\n                    // Don\'t rotate if small & sorted correctly\r\n   " +
-"                 return;\r\n                }\r\n\r\n                // Move Last Item" +
-" to Top\r\n                var item = koArray.pop();\r\n                koArray.unsh" +
-"ift(item);\r\n            }\r\n            function removeItemFromArray(koArray, Use" +
-"rId) {\r\n                var items = koArray();\r\n                for (var i = 0; " +
-"i < items.length; i++) {\r\n                    if (items[i].UserId == UserId) {\r\n" +
-"                        koArray.splice(i, 1);\r\n                        items = k" +
-"oArray();\r\n                        i--;\r\n                    }\r\n                " +
-"}\r\n            }\r\n            function findUnsortedArrayTopIndex(items) {\r\n     " +
-"           // Only one Item\r\n                if (items.length <= 1)\r\n           " +
-"         return 0;\r\n\r\n                for (var i = 1; i < items.length; i++) {\r\n" +
-"                    var s = sortFunction(items[i - 1], items[i]);\r\n             " +
-"       if (s > 0)\r\n                        return i;\r\n                }\r\n\r\n     " +
-"           return 0;\r\n            }\r\n            function findSortedInsertIndex(" +
-"koArray, heldDeviceItem) {\r\n                var items = koArray();\r\n            " +
-"    var startIndex = findUnsortedArrayTopIndex(items);\r\n                for (var" +
-" i = startIndex; i < items.length; i++) {\r\n                    var s = sortFunct" +
-"ion(heldDeviceItem, items[i]);\r\n                    if (s <= 0)\r\n               " +
-"         return i;\r\n                }\r\n                if (startIndex !== 0) {\r\n" +
-"                    for (var i = 0; i < startIndex; i++) {\r\n                    " +
-"    var s = sortFunction(heldDeviceItem, items[i]);\r\n                        if " +
-"(s <= 0)\r\n                            return i;\r\n                    }\r\n        " +
-"            return startIndex;\r\n                } else {\r\n                    re" +
-"turn -1;\r\n                }\r\n            }\r\n            function sortFunction(l," +
-" r) {\r\n                return l.UserIdFriendly.toLowerCase() == r.UserIdFriendly" +
-".toLowerCase() ? 0 : (l.UserIdFriendly.toLowerCase() < r.UserIdFriendly.toLowerC" +
-"ase() ? -1 : 1)\r\n            }\r\n            function isInProcess(i) {\r\n         " +
-"       return !i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n    " +
-"        function isReadyForReturn(i) {\r\n                return i.ReadyForReturn " +
-"&& !i.WaitingForUserAction;\r\n            }\r\n            function isWaitingForUse" +
-"rAction(i) {\r\n                return i.WaitingForUserAction;\r\n            }\r\n   " +
-"         function getQueryStringParameters() {\r\n\r\n                if (window.loc" +
-"ation.search.length === 0)\r\n                    return null;\r\n\r\n                " +
-"var params = {};\r\n                window.location.search.substr(1).split(\"&\").fo" +
-"rEach(function (pair) {\r\n                    if (pair === \"\") return;\r\n         " +
-"           var parts = pair.split(\"=\");\r\n                    params[parts[0]] = " +
-"parts[1] && decodeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                }" +
-");\r\n                return params;\r\n            }\r\n\r\n            init();\r\n      " +
-"  });\r\n    </script>\r\n</body>\r\n</html>\r\n");
+"toLowerCase()) {\r\n                            case \'components\':\r\n              " +
+"                  const showComponents = value.split(\",\");\r\n                    " +
+"            if (showComponents.length > 0) {\r\n                                  " +
+"  const components = [\'inProcess\', \'readyForReturn\', \'waitingForUserAction\'];\r\n " +
+"                                   components.forEach(function (component) {\r\n  " +
+"                                      if (!showComponents.includes(component)) {" +
+"\r\n                                            $(\'body\').addClass(\'hide-\' + compo" +
+"nent);\r\n                                        }\r\n                             " +
+"       });\r\n                                }\r\n                                b" +
+"reak;\r\n                            case \'theme\': // THEME\r\n                     " +
+"           setTheme(value);\r\n                                fixedTheme = value;" +
+"\r\n                                break;\r\n                            case \'devi" +
+"ceaddressinclude\': // FILTER: Device Address Include\r\n                          " +
+"      var deviceAddresses = value.split(\",\").map(function (v) { return v.toLower" +
+"Case(); });\r\n                                if (deviceAddresses.length > 0) {\r\n" +
+"                                    filters.push(function (heldDeviceItem) {\r\n  " +
+"                                      // false if DeviceAddressShortName is null" +
+"\r\n                                        if (!heldDeviceItem.DeviceAddressShort" +
+"Name)\r\n                                            return false;\r\n\r\n            " +
+"                            // true if DeviceAddressShortName is included\r\n     " +
+"                                   return $.inArray(heldDeviceItem.DeviceAddress" +
+"ShortName.toLowerCase(), deviceAddresses) >= 0;\r\n                               " +
+"     });\r\n                                }\r\n                                bre" +
+"ak;\r\n                            case \'deviceaddressexclude\': // FILTER: Device " +
+"Address Exclude\r\n                                var deviceAddresses = value.spl" +
+"it(\",\").map(function (v) { return v.toLowerCase(); });\r\n                        " +
+"        if (deviceAddresses.length > 0) {\r\n                                    f" +
+"ilters.push(function (heldDeviceItem) {\r\n                                       " +
+" // true if DeviceAddressShortName is null\r\n                                    " +
+"    if (!heldDeviceItem.DeviceAddressShortName)\r\n                               " +
+"             return true;\r\n\r\n                                        // true if " +
+"DeviceAddressShortName is excluded\r\n                                        retu" +
+"rn $.inArray(heldDeviceItem.DeviceAddressShortName.toLowerCase(), deviceAddresse" +
+"s) < 0;\r\n                                    });\r\n                              " +
+"  }\r\n                                break;\r\n                            case \'d" +
+"eviceprofileinclude\': // FILTER: Device Profile Include\r\n                       " +
+"         var deviceProfiles = value.split(\",\").map(function (v) { return parseIn" +
+"t(v); });\r\n                                if (deviceProfiles.length > 0) {\r\n   " +
+"                                 filters.push(function (heldDeviceItem) {\r\n     " +
+"                                   // true if DeviceProfileId is included\r\n     " +
+"                                   return $.inArray(heldDeviceItem.DeviceProfile" +
+"Id, deviceProfiles) >= 0;\r\n                                    });\r\n            " +
+"                    }\r\n                                break;\r\n                 " +
+"           case \'deviceprofileexclude\': // FILTER: Device Profile Exclude\r\n     " +
+"                           var deviceProfiles = value.split(\",\").map(function (v" +
+") { return parseInt(v); });\r\n                                if (deviceProfiles." +
+"length > 0) {\r\n                                    filters.push(function (heldDe" +
+"viceItem) {\r\n                                        // true if DeviceProfileId " +
+"is excluded\r\n                                        return $.inArray(heldDevice" +
+"Item.DeviceProfileId, deviceProfiles) < 0;\r\n                                    " +
+"});\r\n                                }\r\n                                break;\r\n" +
+"                        }\r\n                    });\r\n\r\n                    if (fi" +
+"lters.length > 0)\r\n                        itemFilters = filters;\r\n             " +
+"       else\r\n                        itemFilters = null;\r\n                }\r\n   " +
+"         }\r\n\r\n            function connectionError() {\r\n                try {\r\n " +
+"                   $(\'body\').addClass(\'status-error\');\r\n                    $.co" +
+"nnection.hub.stop();\r\n                } catch (e) {\r\n                    // Igno" +
+"re\r\n                }\r\n\r\n                window.setTimeout(function () {\r\n      " +
+"              window.location.reload(true);\r\n                }, 10000);\r\n       " +
+"     }\r\n\r\n            // Helpers\r\n            function rotateArray(koArray, elem" +
+"ent) {\r\n                var items = koArray();\r\n\r\n                if (items.leng" +
+"th <= 1)\r\n                    return 0;\r\n\r\n                if (element.height() " +
+"< (element.parent().height() - 30)) {\r\n\r\n                    if (findUnsortedArr" +
+"ayTopIndex(items) !== 0)\r\n                        koArray.sort(sortFunction);\r\n\r" +
+"\n                    // Don\'t rotate if small & sorted correctly\r\n              " +
+"      return;\r\n                }\r\n\r\n                // Move Last Item to Top\r\n  " +
+"              var item = koArray.pop();\r\n                koArray.unshift(item);\r" +
+"\n            }\r\n            function removeItemFromArray(koArray, UserId) {\r\n   " +
+"             var items = koArray();\r\n                for (var i = 0; i < items.l" +
+"ength; i++) {\r\n                    if (items[i].UserId == UserId) {\r\n           " +
+"             koArray.splice(i, 1);\r\n                        items = koArray();\r\n" +
+"                        i--;\r\n                    }\r\n                }\r\n        " +
+"    }\r\n            function findUnsortedArrayTopIndex(items) {\r\n                " +
+"// Only one Item\r\n                if (items.length <= 1)\r\n                    re" +
+"turn 0;\r\n\r\n                for (var i = 1; i < items.length; i++) {\r\n           " +
+"         var s = sortFunction(items[i - 1], items[i]);\r\n                    if (" +
+"s > 0)\r\n                        return i;\r\n                }\r\n\r\n                " +
+"return 0;\r\n            }\r\n            function findSortedInsertIndex(koArray, he" +
+"ldDeviceItem) {\r\n                var items = koArray();\r\n                var sta" +
+"rtIndex = findUnsortedArrayTopIndex(items);\r\n                for (var i = startI" +
+"ndex; i < items.length; i++) {\r\n                    var s = sortFunction(heldDev" +
+"iceItem, items[i]);\r\n                    if (s <= 0)\r\n                        re" +
+"turn i;\r\n                }\r\n                if (startIndex !== 0) {\r\n           " +
+"         for (var i = 0; i < startIndex; i++) {\r\n                        var s =" +
+" sortFunction(heldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n " +
+"                           return i;\r\n                    }\r\n                   " +
+" return startIndex;\r\n                } else {\r\n                    return -1;\r\n " +
+"               }\r\n            }\r\n            function sortFunction(l, r) {\r\n    " +
+"            return l.UserIdFriendly.toLowerCase() == r.UserIdFriendly.toLowerCas" +
+"e() ? 0 : (l.UserIdFriendly.toLowerCase() < r.UserIdFriendly.toLowerCase() ? -1 " +
+": 1)\r\n            }\r\n            function isInProcess(i) {\r\n                retu" +
+"rn !i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n            fun" +
+"ction isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.Waiti" +
+"ngForUserAction;\r\n            }\r\n            function isWaitingForUserAction(i) " +
+"{\r\n                return i.WaitingForUserAction;\r\n            }\r\n            fu" +
+"nction getQueryStringParameters() {\r\n\r\n                if (window.location.searc" +
+"h.length === 0)\r\n                    return null;\r\n\r\n                var params " +
+"= {};\r\n                window.location.search.substr(1).split(\"&\").forEach(funct" +
+"ion (pair) {\r\n                    if (pair === \"\") return;\r\n                    " +
+"var parts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] &&" +
+" decodeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n       " +
+"         return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    " +
+"</script>\r\n</body>\r\n</html>\r\n");
 
         }
     }

@@ -1664,17 +1664,17 @@ h1.Config_DocumentTemplates {
 }
 
 #Config_ReportPrefs_Builder {
-    .report {
+    & > form > div {
         margin-bottom: 10px;
+    }
 
+    .report {
         ul {
             margin-left: 10px;
         }
     }
 
     .theme {
-        margin-bottom: 10px;
-
         & > select {
             margin-left: 10px;
         }
@@ -1702,6 +1702,11 @@ h1.Config_DocumentTemplates {
                 }
             }
         }
+    }
+
+    #Config_ReportPrefs_Builder_Components {
+        display: flex;
+        justify-content: space-around;
     }
 }
 

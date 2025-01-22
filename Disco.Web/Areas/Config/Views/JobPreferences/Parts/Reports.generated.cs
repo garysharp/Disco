@@ -65,59 +65,66 @@ WriteLiteral(">\r\n    <h2>Report Preferences</h2>\r\n    <table>\r\n        <tr
 
 WriteLiteral(" style=\"width: 200px\"");
 
-WriteLiteral(">Noticeboard Default Theme:\r\n            </th>\r\n            <td>");
+WriteLiteral(">\r\n                Noticeboard Default Theme:\r\n            </th>\r\n            <td" +
+">\r\n");
 
             
-            #line 13 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                  if (canConfig)
                 {
-                
-            
-            #line default
-            #line hidden
-            
-            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-           Write(Html.DropDownListFor(model => model.DefaultNoticeboardTheme, Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value })));
-
-            
-            #line default
-            #line hidden
-            
-            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                                                                                         
-                
-            
-            #line default
-            #line hidden
-            
-            #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-           Write(AjaxHelpers.AjaxSave());
-
-            
-            #line default
-            #line hidden
-            
-            #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                       
-                
+                    
             
             #line default
             #line hidden
             
             #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+               Write(Html.DropDownListFor(model => model.DefaultNoticeboardTheme, Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value })));
 
             
             #line default
             #line hidden
             
             #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                         
+                                                                                                                                                                                             
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+            
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -131,7 +138,7 @@ WriteLiteral(@">
                             '");
 
             
-            #line 25 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 27 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                          Write(Url.Action(MVC.API.JobPreferences.UpdateDefaultNoticeboardTheme()));
 
             
@@ -144,28 +151,28 @@ WriteLiteral(@"',
                             $('#Config_ReportPrefs_Preview').attr('class', 'theme-' + $(this).val());
                         });
                     });
-                </script>
+                    </script>
 ");
 
             
-            #line 33 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 35 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                 }
                 else
                 {
-                
+                    
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-           Write(Model.DefaultNoticeboardThemeOptions().First(o => o.Key == Model.DefaultNoticeboardTheme).Value);
+            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+               Write(Model.DefaultNoticeboardThemeOptions().First(o => o.Key == Model.DefaultNoticeboardTheme).Value);
 
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                
+            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                    
                 }
 
             
@@ -175,15 +182,15 @@ WriteLiteral("                <div");
 
 WriteLiteral(" id=\"Config_ReportPrefs_Preview\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1694), Tuple.Create("\"", 1740)
-, Tuple.Create(Tuple.Create("", 1702), Tuple.Create("theme-", 1702), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1754), Tuple.Create("\"", 1800)
+, Tuple.Create(Tuple.Create("", 1762), Tuple.Create("theme-", 1762), true)
             
-            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-, Tuple.Create(Tuple.Create("", 1708), Tuple.Create<System.Object, System.Int32>(Model.DefaultNoticeboardTheme
+            #line 40 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+, Tuple.Create(Tuple.Create("", 1768), Tuple.Create<System.Object, System.Int32>(Model.DefaultNoticeboardTheme
             
             #line default
             #line hidden
-, 1708), false)
+, 1768), false)
 );
 
 WriteLiteral(">\r\n                    <div");
@@ -274,13 +281,13 @@ WriteLiteral(" id=\"Config_ReportPrefs_Builder_NTHDU\"");
 
 WriteLiteral(" name=\"Report\"");
 
-WriteLiteral(" class=\"themeable\"");
+WriteLiteral(" class=\"themeable componentable\"");
 
 WriteLiteral(" data-url=\"");
 
             
-            #line 64 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                                    Write(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Noticeboard()));
+            #line 66 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                                                  Write(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Noticeboard()));
 
             
             #line default
@@ -306,7 +313,7 @@ WriteLiteral(" name=\"Report\"");
 WriteLiteral(" data-url=\"");
 
             
-            #line 67 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 69 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                  Write(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Index()));
 
             
@@ -328,13 +335,13 @@ WriteLiteral(" id=\"Config_ReportPrefs_Builder_NTHD\"");
 
 WriteLiteral(" name=\"Report\"");
 
-WriteLiteral(" class=\"themeable\"");
+WriteLiteral(" class=\"themeable componentable\"");
 
 WriteLiteral(" data-url=\"");
 
             
-            #line 70 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                                   Write(Url.ActionAbsolute(MVC.Public.HeldDevices.Noticeboard()));
+            #line 72 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                                                 Write(Url.ActionAbsolute(MVC.Public.HeldDevices.Noticeboard()));
 
             
             #line default
@@ -358,7 +365,7 @@ WriteLiteral(" name=\"Report\"");
 WriteLiteral(" data-url=\"");
 
             
-            #line 73 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 75 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                 Write(Url.ActionAbsolute(MVC.Public.HeldDevices.Index()));
 
             
@@ -374,6 +381,35 @@ WriteLiteral(">Technician Held Devices (Report)</label>\r\n                     
 "\n                            </ul>\r\n                        </div>\r\n            " +
 "            <div");
 
+WriteLiteral(" class=\"components\"");
+
+WriteLiteral(">\r\n                            <h3>Show Components</h3>\r\n                        " +
+"    <div");
+
+WriteLiteral(" id=\"Config_ReportPrefs_Builder_Components\"");
+
+WriteLiteral(">\r\n                                <label><input");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" value=\"inProcess\"");
+
+WriteLiteral(" checked /> In Process</label>\r\n                                <label><input");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" value=\"readyForReturn\"");
+
+WriteLiteral(" checked /> Ready For Return</label>\r\n                                <label><inp" +
+"ut");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" value=\"waitingForUserAction\"");
+
+WriteLiteral(" checked /> Waiting For User Action</label>\r\n                            </div>\r\n" +
+"                        </div>\r\n                        <div");
+
 WriteLiteral(" class=\"theme\"");
 
 WriteLiteral(">\r\n                            <h3>Noticeboard Theme</h3>\r\n");
@@ -381,7 +417,7 @@ WriteLiteral(">\r\n                            <h3>Noticeboard Theme</h3>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 79 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 89 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                        Write(Html.DropDownList("Config_ReportPrefs_Builder_Theme", new SelectListItem[] { new SelectListItem() { Value = "", Text = "<Default>", Selected = true } }.Concat(Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value }))));
 
             
@@ -459,13 +495,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 95 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 105 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 95 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 105 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                          foreach (var deviceProfile in Model.DeviceProfiles.Value)
                                         {
 
@@ -475,55 +511,55 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                            <li>\r\n                               " +
 "                 <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 6584), Tuple.Create("\"", 6638)
-, Tuple.Create(Tuple.Create("", 6589), Tuple.Create("Config_ReportPrefs_Builder_DP_", 6589), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 7290), Tuple.Create("\"", 7344)
+, Tuple.Create(Tuple.Create("", 7295), Tuple.Create("Config_ReportPrefs_Builder_DP_", 7295), true)
             
-            #line 98 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-          , Tuple.Create(Tuple.Create("", 6619), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+          , Tuple.Create(Tuple.Create("", 7325), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 6619), false)
+, 7325), false)
 );
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 6655), Tuple.Create("\"", 6680)
+WriteAttribute("value", Tuple.Create(" value=\"", 7361), Tuple.Create("\"", 7386)
             
-            #line 98 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                     , Tuple.Create(Tuple.Create("", 6663), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                     , Tuple.Create(Tuple.Create("", 7369), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 6663), false)
+, 7369), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 6690), Tuple.Create("\"", 6745)
-, Tuple.Create(Tuple.Create("", 6696), Tuple.Create("Config_ReportPrefs_Builder_DP_", 6696), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 7396), Tuple.Create("\"", 7451)
+, Tuple.Create(Tuple.Create("", 7402), Tuple.Create("Config_ReportPrefs_Builder_DP_", 7402), true)
             
-            #line 98 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                     , Tuple.Create(Tuple.Create("", 6726), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                     , Tuple.Create(Tuple.Create("", 7432), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 6726), false)
+, 7432), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 98 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                                                     Write(deviceProfile.Description);
 
             
             #line default
             #line hidden
-WriteLiteral("</label></li>\r\n");
+WriteLiteral("</label>\r\n                                            </li>\r\n");
 
             
-            #line 99 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 110 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         }
 
             
@@ -541,13 +577,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 104 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 115 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 104 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 115 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                          foreach (var address in Model.OrganisationAddresses.Value)
                                         {
 
@@ -557,46 +593,46 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                            <li>\r\n                               " +
 "                 <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 7299), Tuple.Create("\"", 7347)
-, Tuple.Create(Tuple.Create("", 7304), Tuple.Create("Config_ReportPrefs_Builder_OA_", 7304), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 8051), Tuple.Create("\"", 8099)
+, Tuple.Create(Tuple.Create("", 8056), Tuple.Create("Config_ReportPrefs_Builder_OA_", 8056), true)
             
-            #line 107 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-          , Tuple.Create(Tuple.Create("", 7334), Tuple.Create<System.Object, System.Int32>(address.Id
+            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+          , Tuple.Create(Tuple.Create("", 8086), Tuple.Create<System.Object, System.Int32>(address.Id
             
             #line default
             #line hidden
-, 7334), false)
+, 8086), false)
 );
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 7364), Tuple.Create("\"", 7390)
+WriteAttribute("value", Tuple.Create(" value=\"", 8116), Tuple.Create("\"", 8142)
             
-            #line 107 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                               , Tuple.Create(Tuple.Create("", 7372), Tuple.Create<System.Object, System.Int32>(address.ShortName
+            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                               , Tuple.Create(Tuple.Create("", 8124), Tuple.Create<System.Object, System.Int32>(address.ShortName
             
             #line default
             #line hidden
-, 7372), false)
+, 8124), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 7400), Tuple.Create("\"", 7449)
-, Tuple.Create(Tuple.Create("", 7406), Tuple.Create("Config_ReportPrefs_Builder_OA_", 7406), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 8152), Tuple.Create("\"", 8201)
+, Tuple.Create(Tuple.Create("", 8158), Tuple.Create("Config_ReportPrefs_Builder_OA_", 8158), true)
             
-            #line 107 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                , Tuple.Create(Tuple.Create("", 7436), Tuple.Create<System.Object, System.Int32>(address.Id
+            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                , Tuple.Create(Tuple.Create("", 8188), Tuple.Create<System.Object, System.Int32>(address.Id
             
             #line default
             #line hidden
-, 7436), false)
+, 8188), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 107 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                                          Write(address.Name);
 
             
@@ -605,16 +641,16 @@ WriteLiteral(">");
 WriteLiteral(" (");
 
             
-            #line 107 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                                                         Write(address.ShortName);
 
             
             #line default
             #line hidden
-WriteLiteral(")</label></li>\r\n");
+WriteLiteral(")</label>\r\n                                            </li>\r\n");
 
             
-            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 120 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         }
 
             
@@ -650,76 +686,94 @@ WriteLiteral("></i>\r\n                    </div>\r\n                </div>\r\n 
 ";\r\n\r\n                        function updateUrl() {\r\n                           " +
 " var theme = null;\r\n                            var filter = null;\r\n            " +
 "                var filterMethod = null;\r\n                            var filter" +
-"Value = null;\r\n\r\n                            var report = dialog.find(\'.report i" +
-"nput:checked\');\r\n                            if (report.length > 0) {\r\n         " +
-"                       url = report.attr(\'data-url\');\r\n\r\n                       " +
-"         if (report.hasClass(\'themeable\')) {\r\n                                  " +
-"  theme = dialog.find(\'.theme > select\').val();\r\n                               " +
-" }\r\n\r\n                                filter = dialog.find(\'.filter > select\').v" +
-"al();\r\n\r\n                                if (!!filter) {\r\n                      " +
-"              filterMethod = dialog.find(\'.filter .method input:checked\').val();" +
-"\r\n\r\n                                    filterValue = dialog\r\n                  " +
-"                      .find(\'.filter .filter-\' + filter)\r\n                      " +
-"                  .find(\'input:checked\')\r\n                                      " +
-"  .map(function (index, element) { return $(element).val(); })\r\n                " +
-"                        .toArray().join(\',\');\r\n                                }" +
-"\r\n\r\n                                if (!!theme || !!filter) {\r\n                " +
-"                    url += \'?\';\r\n\r\n                                    if (!!the" +
-"me)\r\n                                        url += \'theme=\' + theme;\r\n\r\n       " +
-"                             if (!!theme && !!filter)\r\n                         " +
-"               url += \'&\';\r\n\r\n                                    if (!!filter)\r" +
-"\n                                        url += filter + filterMethod + \'=\' + fi" +
-"lterValue;\r\n                                }\r\n                            }\r\n\r\n" +
-"                            $(\'#Config_ReportPrefs_Builder_Buttonpane\').find(\'te" +
-"xtarea\').val(url);\r\n                            $(\'#Config_ReportPrefs_Builder_B" +
-"uttonpane\').find(\'.fa-external-link\').closest(\'a\').attr(\'href\', url);\r\n         " +
-"               }\r\n\r\n                        $(\'#Config_ReportPrefs_Builder_Butto" +
-"n\').click(function () {\r\n\r\n                            if (!dialog) {\r\n         " +
-"                       dialog = $(\'#Config_ReportPrefs_Builder\').dialog({\r\n     " +
-"                               resizable: false,\r\n                              " +
-"      modal: true,\r\n                                    autoOpen: false,\r\n      " +
-"                              width: 550,\r\n                                    m" +
-"axHeight: 520,\r\n                                    buttons: {\r\n                " +
-"                        Close: function () {\r\n                                  " +
-"          dialog.dialog(\'close\');\r\n                                        }\r\n  " +
-"                                  }\r\n                                });\r\n\r\n    " +
-"                            dialog.find(\'.report\').on(\'change\', \'input\', functio" +
-"n () {\r\n                                    var $this = $(this);\r\n              " +
-"                      var $theme = dialog.find(\'.theme\');\r\n\r\n                   " +
-"                 if ($this.hasClass(\'themeable\'))\r\n                             " +
-"           $theme.slideDown();\r\n                                    else\r\n      " +
-"                                  $theme.slideUp();\r\n\r\n                         " +
-"           updateUrl();\r\n                                });\r\n\r\n                " +
-"                dialog.find(\'#Config_ReportPrefs_Builder_Theme\').change(updateUr" +
-"l);\r\n\r\n                                dialog.find(\'#Config_ReportPrefs_Builder_" +
-"Filter\').change(function () {\r\n                                    var $this = $" +
-"(this);\r\n                                    var $filter = dialog.find(\'.options" +
-"\');\r\n\r\n                                    if (!$this.val())\r\n                  " +
-"                      $filter.slideUp();\r\n                                    el" +
-"se {\r\n                                        $filter.find(\'.filter-option\').hid" +
-"e();\r\n                                        $filter.show();\r\n                 " +
-"                       $filter.find(\'.filter-\' + $this.val()).slideDown();\r\n    " +
-"                                }\r\n\r\n                                    updateU" +
-"rl();\r\n                                });\r\n\r\n                                di" +
-"alog.find(\'.filter .options\').on(\'click\', \'input\', updateUrl);\r\n\r\n              " +
-"                  var $buttonpane = dialog.closest(\'.ui-dialog\').children(\'.ui-d" +
-"ialog-buttonpane\');\r\n                                $buttonpane.attr(\'id\', \'Con" +
-"fig_ReportPrefs_Builder_Buttonpane\').append(dialog.children(\'.output\'));\r\n\r\n    " +
-"                            $buttonpane.find(\'textarea\').focus(function () {\r\n  " +
-"                                  $(this).select();\r\n                           " +
-"     });\r\n\r\n\r\n                                var $clipboard = $buttonpane.find(" +
-"\'.fa-clipboard\');\r\n                                \r\n                           " +
-"     if (!!window.clipboardData) {\r\n                                    $clipboa" +
-"rd.click(function () {\r\n                                        window.clipboard" +
-"Data.setData(\'Text\', url);\r\n                                        alert(\'Link " +
-"copied to Clipboard\');\r\n                                        return false;\r\n " +
-"                                   });\r\n                                } else {" +
-"\r\n                                    $clipboard.hide();\r\n                      " +
-"          }\r\n\r\n                            }\r\n\r\n                            dial" +
-"og.dialog(\'open\');\r\n\r\n                            updateUrl();\r\n\r\n              " +
-"              return false;\r\n                        });\r\n\r\n                    " +
-"});\r\n                </script>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n" +
-"</div>\r\n");
+"Value = null;\r\n                            let components = null;\r\n\r\n           " +
+"                 var report = dialog.find(\'.report input:checked\');\r\n           " +
+"                 if (report.length > 0) {\r\n                                url =" +
+" report.attr(\'data-url\');\r\n\r\n                                if (report.hasClass" +
+"(\'componentable\')) {\r\n                                    const checkedComponent" +
+"s = dialog.find(\'#Config_ReportPrefs_Builder_Components input:checked\');\r\n      " +
+"                              if (checkedComponents.length > 0 && checkedCompone" +
+"nts.length < 3) {\r\n                                        components = checkedC" +
+"omponents.map(function () {\r\n                                            return " +
+"this.value;\r\n                                        }).get().join(\',\');\r\n      " +
+"                              }\r\n                                }\r\n\r\n          " +
+"                      if (report.hasClass(\'themeable\')) {\r\n                     " +
+"               theme = dialog.find(\'.theme > select\').val();\r\n                  " +
+"              }\r\n\r\n                                filter = dialog.find(\'.filter" +
+" > select\').val();\r\n\r\n                                if (!!filter) {\r\n         " +
+"                           filterMethod = dialog.find(\'.filter .method input:che" +
+"cked\').val();\r\n\r\n                                    filterValue = dialog\r\n     " +
+"                                   .find(\'.filter .filter-\' + filter)\r\n         " +
+"                               .find(\'input:checked\')\r\n                         " +
+"               .map(function (index, element) { return $(element).val(); })\r\n   " +
+"                                     .toArray().join(\',\');\r\n                    " +
+"            }\r\n\r\n                                if (!!components || !!theme || " +
+"!!filter) {\r\n                                    url += \'?\';\r\n\r\n                " +
+"                    if (!!components)\r\n                                        u" +
+"rl += \'components=\' + components;\r\n\r\n                                    if (!!t" +
+"heme) {\r\n                                        if (!url.endsWith(\'?\'))\r\n      " +
+"                                      url += \'&\';\r\n                             " +
+"           url += \'theme=\' + theme;\r\n                                    }\r\n\r\n  " +
+"                                  if (!!filter) {\r\n                             " +
+"           if (!url.endsWith(\'?\'))\r\n                                            " +
+"url += \'&\';\r\n                                        url += filter + filterMetho" +
+"d + \'=\' + filterValue;\r\n                                    }\r\n                 " +
+"               }\r\n                            }\r\n\r\n                            $" +
+"(\'#Config_ReportPrefs_Builder_Buttonpane\').find(\'textarea\').val(url);\r\n         " +
+"                   $(\'#Config_ReportPrefs_Builder_Buttonpane\').find(\'.fa-externa" +
+"l-link\').closest(\'a\').attr(\'href\', url);\r\n                        }\r\n\r\n         " +
+"               $(\'#Config_ReportPrefs_Builder_Button\').click(function () {\r\n\r\n  " +
+"                          if (!dialog) {\r\n                                dialog" +
+" = $(\'#Config_ReportPrefs_Builder\').dialog({\r\n                                  " +
+"  resizable: false,\r\n                                    modal: true,\r\n         " +
+"                           autoOpen: false,\r\n                                   " +
+" width: 550,\r\n                                    maxHeight: 520,\r\n             " +
+"                       buttons: {\r\n                                        Close" +
+": function () {\r\n                                            dialog.dialog(\'clos" +
+"e\');\r\n                                        }\r\n                               " +
+"     }\r\n                                });\r\n\r\n                                d" +
+"ialog.find(\'.report\').on(\'change\', \'input\', function () {\r\n                     " +
+"               const $this = $(this);\r\n                                    const" +
+" $components = dialog.find(\'.components\');\r\n                                    " +
+"const $theme = dialog.find(\'.theme\');\r\n\r\n                                    if " +
+"($this.hasClass(\'componentable\'))\r\n                                        $comp" +
+"onents.slideDown();\r\n                                    else\r\n                 " +
+"                       $components.slideUp();\r\n\r\n                               " +
+"     if ($this.hasClass(\'themeable\'))\r\n                                        $" +
+"theme.slideDown();\r\n                                    else\r\n                  " +
+"                      $theme.slideUp();\r\n\r\n                                    u" +
+"pdateUrl();\r\n                                });\r\n\r\n                            " +
+"    dialog.find(\'#Config_ReportPrefs_Builder_Components\').on(\'change\', \'input\', " +
+"updateUrl);\r\n\r\n                                dialog.find(\'#Config_ReportPrefs_" +
+"Builder_Theme\').change(updateUrl);\r\n\r\n                                dialog.fin" +
+"d(\'#Config_ReportPrefs_Builder_Filter\').change(function () {\r\n                  " +
+"                  var $this = $(this);\r\n                                    var " +
+"$filter = dialog.find(\'.options\');\r\n\r\n                                    if (!$" +
+"this.val())\r\n                                        $filter.slideUp();\r\n       " +
+"                             else {\r\n                                        $fi" +
+"lter.find(\'.filter-option\').hide();\r\n                                        $fi" +
+"lter.show();\r\n                                        $filter.find(\'.filter-\' + " +
+"$this.val()).slideDown();\r\n                                    }\r\n\r\n            " +
+"                        updateUrl();\r\n                                });\r\n\r\n   " +
+"                             dialog.find(\'.filter .options\').on(\'click\', \'input\'" +
+", updateUrl);\r\n\r\n                                var $buttonpane = dialog.closes" +
+"t(\'.ui-dialog\').children(\'.ui-dialog-buttonpane\');\r\n                            " +
+"    $buttonpane.attr(\'id\', \'Config_ReportPrefs_Builder_Buttonpane\').append(dialo" +
+"g.children(\'.output\'));\r\n\r\n                                $buttonpane.find(\'tex" +
+"tarea\').focus(function () {\r\n                                    $(this).select(" +
+");\r\n                                });\r\n\r\n\r\n                                var" +
+" $clipboard = $buttonpane.find(\'.fa-clipboard\');\r\n\r\n                            " +
+"    if (!!window.clipboardData) {\r\n                                    $clipboar" +
+"d.click(function () {\r\n                                        window.clipboardD" +
+"ata.setData(\'Text\', url);\r\n                                        alert(\'Link c" +
+"opied to Clipboard\');\r\n                                        return false;\r\n  " +
+"                                  });\r\n                                } else {\r" +
+"\n                                    $clipboard.hide();\r\n                       " +
+"         }\r\n\r\n                            }\r\n\r\n                            dialo" +
+"g.dialog(\'open\');\r\n\r\n                            updateUrl();\r\n\r\n               " +
+"             return false;\r\n                        });\r\n\r\n                    }" +
+");\r\n                </script>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n<" +
+"/div>\r\n");
 
         }
     }

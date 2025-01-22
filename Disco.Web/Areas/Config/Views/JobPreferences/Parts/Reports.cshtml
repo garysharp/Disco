@@ -8,14 +8,16 @@
     <h2>Report Preferences</h2>
     <table>
         <tr>
-            <th style="width: 200px">Noticeboard Default Theme:
+            <th style="width: 200px">
+                Noticeboard Default Theme:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.DropDownListFor(model => model.DefaultNoticeboardTheme, Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value }))
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.DropDownListFor(model => model.DefaultNoticeboardTheme, Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value }))
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         $element = $('#DefaultNoticeboardTheme');
 
@@ -29,11 +31,11 @@
                             $('#Config_ReportPrefs_Preview').attr('class', 'theme-' + $(this).val());
                         });
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                @Model.DefaultNoticeboardThemeOptions().First(o => o.Key == Model.DefaultNoticeboardTheme).Value
+                    @Model.DefaultNoticeboardThemeOptions().First(o => o.Key == Model.DefaultNoticeboardTheme).Value
                 }
                 <div id="Config_ReportPrefs_Preview" class="theme-@(Model.DefaultNoticeboardTheme)">
                     <div class="heading">Noticeboard Heading</div>
@@ -61,18 +63,26 @@
                             <h3>Report</h3>
                             <ul class="none">
                                 <li>
-                                    <input type="radio" id="Config_ReportPrefs_Builder_NTHDU" name="Report" class="themeable" data-url="@(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Noticeboard()))" checked="checked" /><label for="Config_ReportPrefs_Builder_NTHDU">Technician Held Devices for Users (Noticeboard)</label>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_NTHDU" name="Report" class="themeable componentable" data-url="@(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Noticeboard()))" checked="checked" /><label for="Config_ReportPrefs_Builder_NTHDU">Technician Held Devices for Users (Noticeboard)</label>
                                 </li>
                                 <li>
                                     <input type="radio" id="Config_ReportPrefs_Builder_THDU" name="Report" data-url="@(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Index()))" /><label for="Config_ReportPrefs_Builder_THDU">Technician Held Devices for Users (Report)</label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="Config_ReportPrefs_Builder_NTHD" name="Report" class="themeable" data-url="@(Url.ActionAbsolute(MVC.Public.HeldDevices.Noticeboard()))" /><label for="Config_ReportPrefs_Builder_NTHD">Technician Held Devices (Noticeboard)</label>
+                                    <input type="radio" id="Config_ReportPrefs_Builder_NTHD" name="Report" class="themeable componentable" data-url="@(Url.ActionAbsolute(MVC.Public.HeldDevices.Noticeboard()))" /><label for="Config_ReportPrefs_Builder_NTHD">Technician Held Devices (Noticeboard)</label>
                                 </li>
                                 <li>
                                     <input type="radio" id="Config_ReportPrefs_Builder_THD" name="Report" data-url="@(Url.ActionAbsolute(MVC.Public.HeldDevices.Index()))" /><label for="Config_ReportPrefs_Builder_THD">Technician Held Devices (Report)</label>
                                 </li>
                             </ul>
+                        </div>
+                        <div class="components">
+                            <h3>Show Components</h3>
+                            <div id="Config_ReportPrefs_Builder_Components">
+                                <label><input type="checkbox" value="inProcess" checked /> In Process</label>
+                                <label><input type="checkbox" value="readyForReturn" checked /> Ready For Return</label>
+                                <label><input type="checkbox" value="waitingForUserAction" checked /> Waiting For User Action</label>
+                            </div>
                         </div>
                         <div class="theme">
                             <h3>Noticeboard Theme</h3>
@@ -95,7 +105,8 @@
                                         @foreach (var deviceProfile in Model.DeviceProfiles.Value)
                                         {
                                             <li>
-                                                <input id="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)" type="checkbox" value="@deviceProfile.Id" /><label for="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)">@deviceProfile.Description</label></li>
+                                                <input id="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)" type="checkbox" value="@deviceProfile.Id" /><label for="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)">@deviceProfile.Description</label>
+                                            </li>
                                         }
                                     </ul>
                                 </div>
@@ -104,7 +115,8 @@
                                         @foreach (var address in Model.OrganisationAddresses.Value)
                                         {
                                             <li>
-                                                <input id="Config_ReportPrefs_Builder_OA_@(address.Id)" type="checkbox" value="@address.ShortName" /><label for="Config_ReportPrefs_Builder_OA_@(address.Id)">@address.Name (@address.ShortName)</label></li>
+                                                <input id="Config_ReportPrefs_Builder_OA_@(address.Id)" type="checkbox" value="@address.ShortName" /><label for="Config_ReportPrefs_Builder_OA_@(address.Id)">@address.Name (@address.ShortName)</label>
+                                            </li>
                                         }
                                     </ul>
                                 </div>
@@ -126,10 +138,20 @@
                             var filter = null;
                             var filterMethod = null;
                             var filterValue = null;
+                            let components = null;
 
                             var report = dialog.find('.report input:checked');
                             if (report.length > 0) {
                                 url = report.attr('data-url');
+
+                                if (report.hasClass('componentable')) {
+                                    const checkedComponents = dialog.find('#Config_ReportPrefs_Builder_Components input:checked');
+                                    if (checkedComponents.length > 0 && checkedComponents.length < 3) {
+                                        components = checkedComponents.map(function () {
+                                            return this.value;
+                                        }).get().join(',');
+                                    }
+                                }
 
                                 if (report.hasClass('themeable')) {
                                     theme = dialog.find('.theme > select').val();
@@ -147,17 +169,23 @@
                                         .toArray().join(',');
                                 }
 
-                                if (!!theme || !!filter) {
+                                if (!!components || !!theme || !!filter) {
                                     url += '?';
 
-                                    if (!!theme)
+                                    if (!!components)
+                                        url += 'components=' + components;
+
+                                    if (!!theme) {
+                                        if (!url.endsWith('?'))
+                                            url += '&';
                                         url += 'theme=' + theme;
+                                    }
 
-                                    if (!!theme && !!filter)
-                                        url += '&';
-
-                                    if (!!filter)
+                                    if (!!filter) {
+                                        if (!url.endsWith('?'))
+                                            url += '&';
                                         url += filter + filterMethod + '=' + filterValue;
+                                    }
                                 }
                             }
 
@@ -182,8 +210,14 @@
                                 });
 
                                 dialog.find('.report').on('change', 'input', function () {
-                                    var $this = $(this);
-                                    var $theme = dialog.find('.theme');
+                                    const $this = $(this);
+                                    const $components = dialog.find('.components');
+                                    const $theme = dialog.find('.theme');
+
+                                    if ($this.hasClass('componentable'))
+                                        $components.slideDown();
+                                    else
+                                        $components.slideUp();
 
                                     if ($this.hasClass('themeable'))
                                         $theme.slideDown();
@@ -192,6 +226,8 @@
 
                                     updateUrl();
                                 });
+
+                                dialog.find('#Config_ReportPrefs_Builder_Components').on('change', 'input', updateUrl);
 
                                 dialog.find('#Config_ReportPrefs_Builder_Theme').change(updateUrl);
 
@@ -221,7 +257,7 @@
 
 
                                 var $clipboard = $buttonpane.find('.fa-clipboard');
-                                
+
                                 if (!!window.clipboardData) {
                                     $clipboard.click(function () {
                                         window.clipboardData.setData('Text', url);

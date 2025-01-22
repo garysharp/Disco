@@ -1438,14 +1438,11 @@ h1.Config_DocumentTemplates {
   background-color: #f0e277;
   color: #000000;
 }
-#Config_ReportPrefs_Builder .report {
+#Config_ReportPrefs_Builder > form > div {
   margin-bottom: 10px;
 }
 #Config_ReportPrefs_Builder .report ul {
   margin-left: 10px;
-}
-#Config_ReportPrefs_Builder .theme {
-  margin-bottom: 10px;
 }
 #Config_ReportPrefs_Builder .theme > select {
   margin-left: 10px;
@@ -1467,6 +1464,10 @@ h1.Config_DocumentTemplates {
 }
 #Config_ReportPrefs_Builder .filter div.options .method label {
   margin-right: 14px;
+}
+#Config_ReportPrefs_Builder #Config_ReportPrefs_Builder_Components {
+  display: flex;
+  justify-content: space-around;
 }
 #Config_ReportPrefs_Builder_Buttonpane {
   padding-right: 0.3em;

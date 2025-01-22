@@ -284,6 +284,17 @@
 
                     $.each(queryStringParameters, function (key, value) {
                         switch (key.toLowerCase()) {
+                            case 'components':
+                                const showComponents = value.split(",");
+                                if (showComponents.length > 0) {
+                                    const components = ['inProcess', 'readyForReturn', 'waitingForUserAction'];
+                                    components.forEach(function (component) {
+                                        if (!showComponents.includes(component)) {
+                                            $('body').addClass('hide-' + component);
+                                        }
+                                    });
+                                }
+                                break;
                             case 'theme': // THEME
                                 setTheme(value);
                                 fixedTheme = value;
