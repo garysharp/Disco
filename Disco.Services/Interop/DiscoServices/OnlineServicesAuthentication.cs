@@ -133,7 +133,7 @@ namespace Disco.Services.Interop.DiscoServices
                     token = null;
                     tokenExpires = null;
 
-                    ThreadPool.QueueUserWorkItem(async _ => await OnlineServicesConnect.StartAsync());
+                    OnlineServicesConnect.QueueStart();
                 }
                 else
                 {

@@ -90,7 +90,7 @@ namespace Disco.Web
 
             // Connect to Online Services
             if (Database.DiscoConfiguration.IsActivated)
-                ThreadPool.QueueUserWorkItem(async _ => await OnlineServicesConnect.StartAsync());
+                OnlineServicesConnect.QueueStart();
         }
 
         public static void InitializeUpdateEnvironment(DiscoDataContext Database, Version PreviousVersion)

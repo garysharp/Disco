@@ -120,7 +120,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public bool IsActivated { get; set; }
         public DateTime? ActivatedOn { get; set; }
         public string ActivatedBy { get; set; }
-        public string OnlineServicesState { get; set; }
+        public OnlineServicesConnect.ConnectionState OnlineServicesState { get; set; }
 
         public ScheduledTaskStatus UpdateRunningStatus { get; set; }
         public DateTime? UpdateNextScheduled { get; set; }

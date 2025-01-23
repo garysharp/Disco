@@ -70,6 +70,14 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
         }
 
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.System.Show)]
+        public virtual ActionResult OnlineServicesConnectStart()
+        {
+            OnlineServicesConnect.QueueStart();
+
+            return RedirectToAction(MVC.Config.SystemConfig.Index());
+        }
+
         #region Organisation
 
         #region Organisation Name

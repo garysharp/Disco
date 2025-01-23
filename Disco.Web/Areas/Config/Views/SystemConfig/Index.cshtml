@@ -1,4 +1,5 @@
 ﻿@model Disco.Web.Areas.Config.Models.SystemConfig.IndexModel
+@using Disco.Services.Interop.DiscoServices
 @{
     Authorization.Require(Claims.Config.System.Show);
 
@@ -83,18 +84,23 @@
 
                     switch (Model.OnlineServicesState)
                     {
-                        case "Disconnected":
+                        case OnlineServicesConnect.ConnectionState.Disconnected:
                             <div class="info-box error">
                                 <p class="fa-p"><i class="fa fa-globe"></i> Disconnected from Online Services</p>
+                                @using (Html.BeginForm(MVC.API.System.OnlineServicesConnectStart()))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="button small">Connect</button>
+                                }
                             </div>
                             break;
-                        case "Connected":
+                        case OnlineServicesConnect.ConnectionState.Connected:
                             <div class="info-box success">
                                 <p class="fa-p"><i class="fa fa-globe"></i> Connected to Online Services</p>
                             </div>
                             break;
-                        case "Connecting":
-                        case "Reconnecting":
+                        case OnlineServicesConnect.ConnectionState.Connecting:
+                        case OnlineServicesConnect.ConnectionState.Reconnecting:
                             <div class="info-box warning">
                                 <p class="fa-p"><i class="fa fa-globe"></i> @Model.OnlineServicesState to Online Services</p>
                             </div>

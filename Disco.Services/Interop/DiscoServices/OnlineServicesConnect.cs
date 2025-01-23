@@ -2,6 +2,7 @@
 using Disco.Services.Logging;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Disco.Services.Interop.DiscoServices
@@ -11,7 +12,23 @@ namespace Disco.Services.Interop.DiscoServices
 
         private static readonly HubConnection connection;
 
-        public static string State => connection.State.ToString();
+        public static ConnectionState State
+        {
+            get
+            {
+                switch (connection.State)
+                {
+                    case HubConnectionState.Connected:
+                        return ConnectionState.Connected;
+                    case HubConnectionState.Connecting:
+                        return ConnectionState.Connecting;
+                    case HubConnectionState.Reconnecting:
+                        return ConnectionState.Reconnecting;
+                    default:
+                        return ConnectionState.Disconnected;
+                }
+            }
+        }
 
         static OnlineServicesConnect()
         {
@@ -23,18 +40,41 @@ namespace Disco.Services.Interop.DiscoServices
                 .WithAutomaticReconnect()
                 .WithStatefulReconnect()
                 .Build();
+
+            connection.Closed += ex =>
+            {
+                SystemLog.LogException("Online Services: Connection Closed", ex);
+                return Task.CompletedTask;
+            };
+            connection.Reconnected += connectionId =>
+            {
+                SystemLog.LogInformation("Online Services: Connection Reconnected");
+                return Task.CompletedTask;
+            };
+            connection.Reconnecting += ex =>
+            {
+                SystemLog.LogInformation("Online Services: Connection Reconnecting");
+                return Task.CompletedTask;
+            };
         }
 
         public static async Task StartAsync()
         {
             try
             {
-                await connection.StartAsync();
+                if (connection.State == HubConnectionState.Disconnected)
+                    await connection.StartAsync();
             }
             catch (Exception ex)
             {
                 SystemLog.LogException("Online Services", ex);
             }
+        }
+
+        public static void QueueStart()
+        {
+            if (connection.State == HubConnectionState.Disconnected)
+                ThreadPool.QueueUserWorkItem(async _ => await StartAsync());
         }
 
         public static async Task StopAsync()
@@ -88,5 +128,12 @@ namespace Disco.Services.Interop.DiscoServices
             public string Content { get; set; }
         }
 
+        public enum ConnectionState
+        {
+            Disconnected,
+            Connected,
+            Connecting,
+            Reconnecting
+        }
     }
 }
