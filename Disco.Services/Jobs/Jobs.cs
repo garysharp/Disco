@@ -1,7 +1,9 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
+using Disco.Models.UI.Job;
 using Disco.Services.Expressions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,6 @@ namespace Disco.Services.Jobs
 {
     public static class Jobs
     {
-
         public static Job Create(DiscoDataContext Database, Device device, User user, JobType type, List<JobSubType> subTypes, User initialTech, bool addAutoQueues = true)
         {
             Job j = new Job()
@@ -149,6 +150,48 @@ namespace Disco.Services.Jobs
         public static void OnCloseExpressionInvalidateCache()
         {
             ExpressionCache.InvalidateSingleCache("Job_OnCloseExpression");
+        }
+
+        public static Expression InitialCommentsTemplateFromCache(DiscoDataContext database)
+        {
+            return ExpressionCache.GetOrCreateSingleExpressions("Job_InitialCommentsTemplate", () => Expression.Tokenize(null, database.DiscoConfiguration.JobPreferences.InitialCommentsTemplate ?? string.Empty, 0, false, false));
+        }
+
+        public static void InitialCommentsTemplateInvalidateCache()
+        {
+            ExpressionCache.InvalidateSingleCache("Job_InitialCommentsTemplate");
+        }
+
+        public static string GenerateInitialComments(DiscoDataContext database, JobCreateModel createModel, User techUser, out bool isTypeDynamic)
+        {
+            var type = createModel.JobTypes.First(t => t.Id == createModel.Type);
+            var subTypes = default(List<string>);
+            if (createModel.SubTypes != null && createModel.SubTypes.Count > 0)
+                subTypes = type.JobSubTypes.Where(s => createModel.SubTypes.Contains(s.Id)).Select(s => s.Description).ToList();
+            else
+                subTypes = new List<string>();
+
+            return GenerateInitialComments(database, createModel.Device, createModel.User, type.Description, subTypes, techUser, out isTypeDynamic);
+        }
+
+        public static string GenerateInitialComments(DiscoDataContext database, Device device, User user, string jobTypeDescription, List<string> jobSubTypeDescriptions, User techUser, out bool isTypeDynamic)
+        {
+            var expression = InitialCommentsTemplateFromCache(database);
+
+            IDictionary evaluatorVariables = Expression.StandardVariables(null, database, user, DateTime.Now, null, (IAttachmentTarget)user ?? device);
+
+            evaluatorVariables["TechUser"] = techUser;
+            // User is part of the StandardVariables
+            evaluatorVariables["Device"] = device;
+            evaluatorVariables["JobType"] = jobTypeDescription;
+            evaluatorVariables["JobSubTypes"] = jobSubTypeDescriptions;
+
+            var result = expression.Evaluate(techUser, evaluatorVariables);
+
+            isTypeDynamic = expression.Source.IndexOf("#JobType", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                expression.Source.IndexOf("#JobSubTypes", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            return result.Item1;
         }
 
     }

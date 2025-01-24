@@ -13,6 +13,15 @@ namespace Disco.Data.Configuration.Modules
         public override string Scope { get { return "JobPreferences"; } }
 
         /// <summary>
+        /// Initial comments template for new jobs
+        /// </summary>
+        public string InitialCommentsTemplate
+        {
+            get { return Get<string>(null); }
+            set { Set(value); }
+        }
+
+        /// <summary>
         /// Number of days a job is open before it is considered 'Long Running'
         /// </summary>
         public int LongRunningJobDaysThreshold

@@ -6,6 +6,7 @@ using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Exporting;
 using Disco.Services.Interop;
+using Disco.Services.Jobs;
 using Disco.Services.Jobs.Exporting;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.Statistics;
@@ -1809,6 +1810,15 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Job Comments
+
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Job.Actions.Create)]
+        public virtual ActionResult InitialComments(CreateModel m)
+        {
+            m.UpdateModel(Database, Authorization);
+
+            return Json(Jobs.GenerateInitialComments(Database, m, CurrentUser, out _));
+        }
+
         [DiscoAuthorize(Claims.Job.ShowLogs)]
         public virtual ActionResult Comments(int id)
         {

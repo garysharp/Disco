@@ -15,9 +15,7 @@
     @RenderSection("head", false)
 </head>
 <body class="layoutDialog">
-    <section id="layout_Page">
-        @RenderBody()
-    </section>
+    @RenderBody()
     @{ Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); }
 </body>
 </html>

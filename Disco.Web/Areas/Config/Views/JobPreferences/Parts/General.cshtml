@@ -4,18 +4,93 @@
 
     var canConfig = Authorization.Has(Claims.Config.JobPreferences.Configure);
 }
-<div class="form" style="width: 530px;">
+<div id="Config_JobPref_General" class="form" style="width: 530px;">
     <h2>General Preferences</h2>
     <table>
         <tr>
-            <th style="width: 200px">Long Running Threshold:
-            </th>
-            <td>@if (canConfig)
+            <td colspan="2">
+                <div>Initial Comments Template:</div>
+                @if (canConfig)
                 {
-                @Html.DropDownListFor(model => model.LongRunningJobDaysThreshold, Model.LongRunningJobDaysThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.EditorFor(model => model.InitialCommentsTemplate)
+                    @AjaxHelpers.AjaxRemove()
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
+                            $(function () {
+                                var field = $('#InitialCommentsTemplate');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '@Url.Action(MVC.API.JobPreferences.UpdateInitialCommentsTemplate())',
+                                    'initialCommentsTemplate'
+                                );
+
+                                field.change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None');
+
+                                fieldRemove.click(function () {
+                                    field.val('').trigger('change');
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                    </script>
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.InitialCommentsTemplate))
+                    {
+                        <span class="smallMessage">&lt;None Specified&gt;</span>
+                    }
+                    else
+                    {
+                        <div class="code">
+                            @Model.InitialCommentsTemplate
+                        </div>
+                    }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>This template is added to the Comments box shown when creating a job. Expressions can be included. Add expressions inside curly braces, for example:
+                        <div class="code">Justification for {#JobType}: </div>
+                    </p>
+                    <p>
+                        The following additional variables are available:
+                        <ul>
+                            <li><code>#TechUser</code>: The user creating the job</li>
+                            <li><code>#User</code>: The user linked to the job (or <code>null</code> if no user is associated)</li>
+                            <li><code>#Device</code>: The user linked to the job (or <code>null</code> if no user is associated)</li>
+                            <li><code>#JobType</code>: The selected job type (for example 'Hardware - Warranty')</li>
+                            <li><code>#JobSubTypes</code>: A list of selected job sub-types (for example ['Motherboard', 'Screen'])</li>
+                        </ul>
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 140px">
+                Long Running Threshold:
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.DropDownListFor(model => model.LongRunningJobDaysThreshold, Model.LongRunningJobDaysThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#LongRunningJobDaysThreshold'),
@@ -23,27 +98,30 @@
                             '@(Url.Action(MVC.API.JobPreferences.UpdateLongRunningJobDaysThreshold()))',
                             'LongRunningJobDaysThreshold');
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                @Model.LongRunningJobDaysThresholdOptions().First(o => o.Key == Model.LongRunningJobDaysThreshold).Value
+                    @Model.LongRunningJobDaysThresholdOptions().First(o => o.Key == Model.LongRunningJobDaysThreshold).Value
                 }
                 <div class="smallMessage">
                     Jobs which have been open for longer than the threshold are considered 'long-running' and will appear in the <code>Long Running Jobs</code> list.
                 </div>
-                @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { @Html.ActionLinkSmallButton("Show Long Running Jobs", MVC.Job.LongRunning()) }
+                @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
+                {@Html.ActionLinkSmallButton("Show Long Running Jobs", MVC.Job.LongRunning())}
             </td>
         </tr>
         <tr>
-            <th style="width: 200px">Stale Threshold:
+            <th>
+                Stale Threshold:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.DropDownListFor(model => model.StaleJobMinutesThreshold, Model.StaleJobMinutesThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.DropDownListFor(model => model.StaleJobMinutesThreshold, Model.StaleJobMinutesThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#StaleJobMinutesThreshold'),
@@ -51,16 +129,51 @@
                             '@(Url.Action(MVC.API.JobPreferences.UpdateStaleJobMinutesThreshold()))',
                             'StaleJobMinutesThreshold');
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                @Model.StaleJobMinutesThresholdOptions().First(o => o.Key == Model.StaleJobMinutesThreshold).Value
+                    @Model.StaleJobMinutesThresholdOptions().First(o => o.Key == Model.StaleJobMinutesThreshold).Value
                 }
                 <div class="smallMessage">
                     Jobs which have no recoded action for longer than the threshold are considered 'stale' and will appear in the <code>Stale Jobs</code> list.
                 </div>
-                @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { @Html.ActionLinkSmallButton("Show Stale Jobs", MVC.Job.Stale()) }
+                @if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
+                {@Html.ActionLinkSmallButton("Show Stale Jobs", MVC.Job.Stale())}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Lodgment:
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    @Html.CheckBoxFor(model => model.LodgmentIncludeAllAttachmentsByDefault)
+                    <label for="LodgmentIncludeAllAttachmentsByDefault">Include All Attachments by Default</label>
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>If enabled, all attachments will be selected by default when lodging a job.
+                        </p>
+                    </div>
+                    <script type="text/javascript">
+            $(function () {
+                document.DiscoFunctions.PropertyChangeHelper(
+                    $('#LodgmentIncludeAllAttachmentsByDefault'),
+                    null,
+                    '@(Url.Action(MVC.API.JobPreferences.UpdateLodgmentIncludeAllAttachmentsByDefault()))',
+                    'includeAllAttachmentsByDefault');
+            });
+                    </script>
+                }
+                else
+                {
+                    <span>
+                        @(Model.LodgmentIncludeAllAttachmentsByDefault ? "Yes" : "No")
+                    </span>
+                }
             </td>
         </tr>
     </table>

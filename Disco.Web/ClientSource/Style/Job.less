@@ -970,23 +970,18 @@
 }
 
 #createJob_Container {
-    margin: 0 -20px;
+    margin: 0 10px;
 
     img.modelImage {
         width: 64px;
         height: 64px;
     }
 
-    .createJob_Component {
+    .createJob_Component:not(:first-child) {
         margin: 0 10px;
         padding: 5px 0;
-        border-bottom: 1px dashed #ccc;
+        border-top: 1px dashed #ccc;
     }
-
-    .createJob_Component:last-child {
-        border-bottom: none;
-    }
-
 
     #createJob_Type {
         border: 1px solid #ccc;
@@ -1040,6 +1035,7 @@
         #Comments {
             width: 100%;
             min-width: 500px;
+            field-sizing: content;
         }
     }
 

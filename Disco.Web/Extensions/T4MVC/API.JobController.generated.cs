@@ -361,6 +361,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult InitialComments()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InitialComments);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Comments()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comments);
@@ -527,6 +533,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Reopen = "Reopen";
             public readonly string Delete = "Delete";
             public readonly string ConvertHWarToHNWar = "ConvertHWarToHNWar";
+            public readonly string InitialComments = "InitialComments";
             public readonly string Comments = "Comments";
             public readonly string Comment = "Comment";
             public readonly string CommentPost = "CommentPost";
@@ -601,6 +608,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Reopen = "Reopen";
             public const string Delete = "Delete";
             public const string ConvertHWarToHNWar = "ConvertHWarToHNWar";
+            public const string InitialComments = "InitialComments";
             public const string Comments = "Comments";
             public const string Comment = "Comment";
             public const string CommentPost = "CommentPost";
@@ -1118,6 +1126,14 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_InitialComments s_params_InitialComments = new ActionParamsClass_InitialComments();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_InitialComments InitialCommentsParams { get { return s_params_InitialComments; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_InitialComments
+        {
+            public readonly string m = "m";
         }
         static readonly ActionParamsClass_Comments s_params_Comments = new ActionParamsClass_Comments();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1975,6 +1991,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             ConvertHWarToHNWarOverride(callInfo, id, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void InitialCommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.CreateModel m);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult InitialComments(Disco.Web.Models.Job.CreateModel m)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.InitialComments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "m", m);
+            InitialCommentsOverride(callInfo, m);
             return callInfo;
         }
 

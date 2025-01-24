@@ -316,11 +316,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>General.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Config\Views\JobPreferences\Parts\Lodgment.generated.cs">
-      <DependentUpon>Lodgment.cshtml</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Areas\Config\Views\JobPreferences\Parts\Locations.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1365,10 +1360,6 @@
     <None Include="Areas\Config\Views\JobPreferences\Parts\General.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>General.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Areas\Config\Views\JobPreferences\Parts\Lodgment.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Lodgment.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\JobPreferences\Parts\Locations.cshtml">
       <Generator>RazorGenerator</Generator>

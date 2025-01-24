@@ -114,31 +114,27 @@ WriteLiteral("\r\n</head>\r\n<body");
 
 WriteLiteral(" class=\"layoutDialog\"");
 
-WriteLiteral(">\r\n    <section");
-
-WriteLiteral(" id=\"layout_Page\"");
-
 WriteLiteral(">\r\n");
 
-WriteLiteral("        ");
+WriteLiteral("    ");
 
             
-            #line 19 "..\..\Views\Shared\_DialogLayout.cshtml"
-   Write(RenderBody());
+            #line 18 "..\..\Views\Shared\_DialogLayout.cshtml"
+Write(RenderBody());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </section>\r\n");
+WriteLiteral("\r\n");
 
             
-            #line 21 "..\..\Views\Shared\_DialogLayout.cshtml"
+            #line 19 "..\..\Views\Shared\_DialogLayout.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 21 "..\..\Views\Shared\_DialogLayout.cshtml"
+            #line 19 "..\..\Views\Shared\_DialogLayout.cshtml"
        Disco.Services.Plugins.Features.UIExtension.UIExtensions.ExecuteExtensionResult(this); 
             
             #line default

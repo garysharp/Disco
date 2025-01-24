@@ -110,13 +110,11 @@ namespace Disco.Web.Areas.Config.Controllers
                     public readonly string Expressions = "Expressions";
                     public readonly string General = "General";
                     public readonly string Locations = "Locations";
-                    public readonly string Lodgment = "Lodgment";
                     public readonly string Reports = "Reports";
                 }
                 public readonly string Expressions = "~/Areas/Config/Views/JobPreferences/Parts/Expressions.cshtml";
                 public readonly string General = "~/Areas/Config/Views/JobPreferences/Parts/General.cshtml";
                 public readonly string Locations = "~/Areas/Config/Views/JobPreferences/Parts/Locations.cshtml";
-                public readonly string Lodgment = "~/Areas/Config/Views/JobPreferences/Parts/Lodgment.cshtml";
                 public readonly string Reports = "~/Areas/Config/Views/JobPreferences/Parts/Reports.cshtml";
             }
         }

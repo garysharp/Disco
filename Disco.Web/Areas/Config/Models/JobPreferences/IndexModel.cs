@@ -11,6 +11,8 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
 {
     public class IndexModel : ConfigJobPreferencesIndexModel
     {
+        [DataType(DataType.MultilineText)]
+        public string InitialCommentsTemplate { get; set; }
         public int LongRunningJobDaysThreshold { get; set; }
         public int StaleJobMinutesThreshold { get; set; }
         public bool LodgmentIncludeAllAttachmentsByDefault { get; set; }

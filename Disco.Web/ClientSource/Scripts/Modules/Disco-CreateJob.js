@@ -15,7 +15,7 @@
             document.DiscoFunctions = {};
         }
         document.DiscoFunctions.CreateOpenJobDialog = function (url) {
-            createJobDialog = $('<div>').attr('id', 'createJobDialog').css({ paddingTop: '0' }).appendTo(document.body);
+            createJobDialog = $('<div>').attr('id', 'createJobDialog').css({ padding: '0', overflow: 'hidden', backgroundColor: '#fff' }).appendTo(document.body);
 
             createJobDialog.dialog({
                 resizable: false,

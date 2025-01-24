@@ -76,41 +76,55 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 11 "..\..\Views\Job\Create.cshtml"
-   Write(Html.HiddenFor(m => m.DeviceSerialNumber));
+   Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 11 "..\..\Views\Job\Create.cshtml"
+                                
+        
+            
+            #line default
+            #line hidden
+            
+            #line 12 "..\..\Views\Job\Create.cshtml"
+   Write(Html.HiddenFor(m => m.DeviceSerialNumber));
+
+            
+            #line default
+            #line hidden
+            
+            #line 12 "..\..\Views\Job\Create.cshtml"
                                                   
         
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\Job\Create.cshtml"
+            #line 13 "..\..\Views\Job\Create.cshtml"
    Write(Html.HiddenFor(m => m.UserId));
 
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\Job\Create.cshtml"
+            #line 13 "..\..\Views\Job\Create.cshtml"
                                       
         
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\Job\Create.cshtml"
+            #line 14 "..\..\Views\Job\Create.cshtml"
    Write(Html.HiddenFor(m => m.SourceUrl));
 
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\Job\Create.cshtml"
+            #line 14 "..\..\Views\Job\Create.cshtml"
                                          
     
         
@@ -118,28 +132,28 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\Job\Create.cshtml"
+            #line 16 "..\..\Views\Job\Create.cshtml"
    Write(Html.Partial(MVC.Job.Views._CreateSubject, Model));
 
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\Job\Create.cshtml"
+            #line 16 "..\..\Views\Job\Create.cshtml"
                                                           
         
             
             #line default
             #line hidden
             
-            #line 16 "..\..\Views\Job\Create.cshtml"
+            #line 17 "..\..\Views\Job\Create.cshtml"
    Write(Html.ValidationSummary(true));
 
             
             #line default
             #line hidden
             
-            #line 16 "..\..\Views\Job\Create.cshtml"
+            #line 17 "..\..\Views\Job\Create.cshtml"
                                      
         
 
@@ -147,6 +161,8 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
 WriteLiteral("        <div");
+
+WriteLiteral(" id=\"createJob_Types\"");
 
 WriteLiteral(" class=\"createJob_Component\"");
 
@@ -159,7 +175,7 @@ WriteLiteral(">\r\n                <h3>Type</h3>\r\n");
 WriteLiteral("                ");
 
             
-            #line 21 "..\..\Views\Job\Create.cshtml"
+            #line 22 "..\..\Views\Job\Create.cshtml"
            Write(Html.ValidationMessageFor(m => m.Type));
 
             
@@ -170,7 +186,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                ");
 
             
-            #line 22 "..\..\Views\Job\Create.cshtml"
+            #line 23 "..\..\Views\Job\Create.cshtml"
            Write(CommonHelpers.RadioButtonList("Type", Model.JobTypes.ToSelectListItems(Model.Type), 3));
 
             
@@ -181,7 +197,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                ");
 
             
-            #line 23 "..\..\Views\Job\Create.cshtml"
+            #line 24 "..\..\Views\Job\Create.cshtml"
            Write(Html.ValidationMessageFor(m => m.SubTypes));
 
             
@@ -194,13 +210,13 @@ WriteLiteral(" id=\"createJob_SubTypes\"");
 WriteLiteral(">\r\n");
 
             
-            #line 26 "..\..\Views\Job\Create.cshtml"
+            #line 27 "..\..\Views\Job\Create.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 26 "..\..\Views\Job\Create.cshtml"
+            #line 27 "..\..\Views\Job\Create.cshtml"
                  foreach (var jt in Model.JobTypes)
                 {
 
@@ -209,15 +225,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 1078), Tuple.Create("\"", 1109)
-, Tuple.Create(Tuple.Create("", 1083), Tuple.Create("createJob_SubType_", 1083), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 1133), Tuple.Create("\"", 1164)
+, Tuple.Create(Tuple.Create("", 1138), Tuple.Create("createJob_SubType_", 1138), true)
             
-            #line 28 "..\..\Views\Job\Create.cshtml"
-, Tuple.Create(Tuple.Create("", 1101), Tuple.Create<System.Object, System.Int32>(jt.Id
+            #line 29 "..\..\Views\Job\Create.cshtml"
+, Tuple.Create(Tuple.Create("", 1156), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 1101), false)
+, 1156), false)
 );
 
 WriteLiteral(" class=\"createJob_SubType\"");
@@ -231,16 +247,16 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 30 "..\..\Views\Job\Create.cshtml"
+            #line 31 "..\..\Views\Job\Create.cshtml"
                        Write(CommonHelpers.CheckBoxList("SubTypes", jt.JobSubTypes.ToSelectListItems(Model.SubTypes, true), 3, true, null, false));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        </div>\r\n                    </div>   \r\n");
+WriteLiteral("\r\n                        </div>\r\n                    </div>\r\n");
 
             
-            #line 33 "..\..\Views\Job\Create.cshtml"
+            #line 34 "..\..\Views\Job\Create.cshtml"
                 }
 
             
@@ -249,7 +265,7 @@ WriteLiteral("\r\n                        </div>\r\n                    </div>  
 WriteLiteral("            </div>\r\n        </div>\r\n");
 
             
-            #line 36 "..\..\Views\Job\Create.cshtml"
+            #line 37 "..\..\Views\Job\Create.cshtml"
         if (Authorization.Has(Claims.Job.Properties.DeviceHeld)){
 
             
@@ -266,7 +282,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 38 "..\..\Views\Job\Create.cshtml"
+            #line 39 "..\..\Views\Job\Create.cshtml"
        Write(Html.ValidationMessageFor(m => m.DeviceHeld));
 
             
@@ -277,7 +293,7 @@ WriteLiteral("\r\n");
 WriteLiteral("            ");
 
             
-            #line 39 "..\..\Views\Job\Create.cshtml"
+            #line 40 "..\..\Views\Job\Create.cshtml"
        Write(Html.HiddenFor(m => m.DeviceHeld));
 
             
@@ -318,21 +334,21 @@ WriteLiteral(">Not Held</label>\r\n                    </td>\r\n                
 "</table>\r\n        </div>\r\n");
 
             
-            #line 54 "..\..\Views\Job\Create.cshtml"
+            #line 55 "..\..\Views\Job\Create.cshtml"
         }else{
             
             
             #line default
             #line hidden
             
-            #line 55 "..\..\Views\Job\Create.cshtml"
+            #line 56 "..\..\Views\Job\Create.cshtml"
        Write(Html.Hidden("DeviceHeld", false));
 
             
             #line default
             #line hidden
             
-            #line 55 "..\..\Views\Job\Create.cshtml"
+            #line 56 "..\..\Views\Job\Create.cshtml"
                                              
         }
 
@@ -345,6 +361,17 @@ WriteLiteral(" id=\"createJob_CommentsContainer\"");
 
 WriteLiteral(" class=\"createJob_Component\"");
 
+WriteLiteral(" data-dynamic=\"");
+
+            
+            #line 58 "..\..\Views\Job\Create.cshtml"
+                                                                                    Write(Model.RegenerateCommentsOnTypeChange ? Url.Action(MVC.API.Job.InitialComments()) : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n            <table>\r\n                <tr>\r\n                    <td>\r\n         " +
 "               <h3>Comments</h3>\r\n                    </td>\r\n                   " +
 " <td>\r\n");
@@ -352,7 +379,7 @@ WriteLiteral(">\r\n            <table>\r\n                <tr>\r\n              
 WriteLiteral("                        ");
 
             
-            #line 64 "..\..\Views\Job\Create.cshtml"
+            #line 65 "..\..\Views\Job\Create.cshtml"
                    Write(Html.EditorFor(m => m.Comments));
 
             
@@ -362,7 +389,7 @@ WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n        
 " </div>\r\n");
 
             
-            #line 69 "..\..\Views\Job\Create.cshtml"
+            #line 70 "..\..\Views\Job\Create.cshtml"
         if (Authorization.Has(Claims.Job.Actions.Close)){
 
             
@@ -501,7 +528,7 @@ WriteLiteral(" />\r\n                    Minutes\r\n                </span>\r\n"
 WriteLiteral("                ");
 
             
-            #line 86 "..\..\Views\Job\Create.cshtml"
+            #line 87 "..\..\Views\Job\Create.cshtml"
            Write(Html.ValidationMessageFor(m => m.QuickLogTaskTimeMinutes));
 
             
@@ -510,7 +537,7 @@ WriteLiteral("                ");
 WriteLiteral("\r\n            </div>\r\n        </div>\r\n");
 
             
-            #line 89 "..\..\Views\Job\Create.cshtml"
+            #line 90 "..\..\Views\Job\Create.cshtml"
         }
     }
 
@@ -554,30 +581,44 @@ WriteLiteral(">\r\n        $(function () {\r\n            var discoDialogMethods
 "eJob_SubType_\' + jobType).show();\r\n                } else {\r\n                   " +
 " $(\'#createJob_SubTypes\').find(\'.createJob_SubType:visible\').slideUp();\r\n       " +
 "             var jobType = $checkedItem.val();\r\n                    $(\'#createJo" +
-"b_SubType_\' + jobType).slideDown();\r\n                }\r\n            }\r\n\r\n\r\n     " +
-"       var additionalValidation = function (form) {\r\n                var isValid" +
-" = true;\r\n\r\n                // Validate Type\r\n                var typeValue = $j" +
-"obTypes.filter(\':checked\').val();\r\n                if (typeValue) {\r\n           " +
-"         $typeValidationMessage.removeClass(\'field-validation-error\').addClass(\'" +
-"field-validation-valid\');\r\n                    // Validate SubTypes\r\n           " +
-"         if ($(\'#createJob_SubType_\' + typeValue).find(\'input:checked\').length >" +
-" 0) {\r\n                        $subTypesValidationMessage.removeClass(\'field-val" +
-"idation-error\').addClass(\'field-validation-valid\');\r\n                    } else " +
-"{\r\n                        $subTypesValidationMessage.text(\'At least one Job Sub" +
-" Type is required\').removeClass(\'field-validation-valid\').addClass(\'field-valida" +
-"tion-error\');\r\n                        isValid = false;\r\n                    }\r\n" +
-"                } else {\r\n                    $typeValidationMessage.text(\'A Job" +
-" Type is required\').removeClass(\'field-validation-valid\').addClass(\'field-valida" +
-"tion-error\');\r\n                    isValid = false;\r\n                }\r\n\r\n");
+"b_SubType_\' + jobType).slideDown();\r\n                }\r\n            }\r\n\r\n       " +
+"     const initialCommentsUrl = $(\'#createJob_CommentsContainer\').attr(\'data-dyn" +
+"amic\');\r\n            if (!!initialCommentsUrl) {\r\n                let commentsDi" +
+"rty = false;\r\n                $(\'#Comments\').on(\'change\', function () {\r\n       " +
+"             commentsDirty = true;\r\n                });\r\n                $(\'#cre" +
+"ateJob_Types\').on(\'change\', \'input\', async function () {\r\n                    if" +
+" (commentsDirty) {\r\n                        return;\r\n                    }\r\n    " +
+"                const body = new FormData(createJobForm.get(0));\r\n              " +
+"      const response = await fetch(initialCommentsUrl, {\r\n                      " +
+"  method: \'POST\',\r\n                        body: body\r\n                    });\r\n" +
+"                    if (response.ok) {\r\n                        const comments =" +
+" await response.json();\r\n                        $(\'#Comments\').val(comments);\r\n" +
+"                    } else {\r\n                        console.error(\'Failed to f" +
+"etch updated initial comments\');\r\n                    }\r\n                })\r\n   " +
+"         }\r\n\r\n            var additionalValidation = function (form) {\r\n        " +
+"        var isValid = true;\r\n\r\n                // Validate Type\r\n               " +
+" var typeValue = $jobTypes.filter(\':checked\').val();\r\n                if (typeVa" +
+"lue) {\r\n                    $typeValidationMessage.removeClass(\'field-validation" +
+"-error\').addClass(\'field-validation-valid\');\r\n                    // Validate Su" +
+"bTypes\r\n                    if ($(\'#createJob_SubType_\' + typeValue).find(\'input" +
+":checked\').length > 0) {\r\n                        $subTypesValidationMessage.rem" +
+"oveClass(\'field-validation-error\').addClass(\'field-validation-valid\');\r\n        " +
+"            } else {\r\n                        $subTypesValidationMessage.text(\'A" +
+"t least one Job Sub Type is required\').removeClass(\'field-validation-valid\').add" +
+"Class(\'field-validation-error\');\r\n                        isValid = false;\r\n    " +
+"                }\r\n                } else {\r\n                    $typeValidation" +
+"Message.text(\'A Job Type is required\').removeClass(\'field-validation-valid\').add" +
+"Class(\'field-validation-error\');\r\n                    isValid = false;\r\n        " +
+"        }\r\n\r\n");
 
             
-            #line 175 "..\..\Views\Job\Create.cshtml"
+            #line 199 "..\..\Views\Job\Create.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 175 "..\..\Views\Job\Create.cshtml"
+            #line 199 "..\..\Views\Job\Create.cshtml"
                  if (Authorization.Has(Claims.Job.Actions.Close)){
 
             
@@ -612,7 +653,7 @@ WriteLiteral(@"
 WriteLiteral("\r\n");
 
             
-            #line 199 "..\..\Views\Job\Create.cshtml"
+            #line 223 "..\..\Views\Job\Create.cshtml"
                 }
 
             
@@ -636,13 +677,13 @@ WriteLiteral(@"
 ");
 
             
-            #line 215 "..\..\Views\Job\Create.cshtml"
+            #line 239 "..\..\Views\Job\Create.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 215 "..\..\Views\Job\Create.cshtml"
+            #line 239 "..\..\Views\Job\Create.cshtml"
              if (Authorization.Has(Claims.Job.Properties.DeviceHeld)){
             
             #line default
@@ -669,7 +710,7 @@ WriteLiteral("\r\n            if ($(\'#DeviceSerialNumber\').val()) {\r\n       
 "            }\r\n            ");
 
             
-            #line 246 "..\..\Views\Job\Create.cshtml"
+            #line 270 "..\..\Views\Job\Create.cshtml"
                    }
 
             
@@ -678,13 +719,13 @@ WriteLiteral("\r\n            if ($(\'#DeviceSerialNumber\').val()) {\r\n       
 WriteLiteral("            //#endregion\r\n\r\n");
 
             
-            #line 249 "..\..\Views\Job\Create.cshtml"
+            #line 273 "..\..\Views\Job\Create.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 249 "..\..\Views\Job\Create.cshtml"
+            #line 273 "..\..\Views\Job\Create.cshtml"
              if (Authorization.Has(Claims.Job.Actions.Close)){
 
             
@@ -733,7 +774,7 @@ WriteLiteral("\r\n            //#region QuickLog\r\n            var $quickLog = 
 WriteLiteral("\r\n");
 
             
-            #line 317 "..\..\Views\Job\Create.cshtml"
+            #line 341 "..\..\Views\Job\Create.cshtml"
             }
 
             

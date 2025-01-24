@@ -20,8 +20,9 @@ namespace Disco.Web.Models.Job
         [Required]
         public List<string> SubTypes { get; set; }
 
-        [DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
+        [DataType(DataType.MultilineText)]
         public string Comments { get; set; }
+        public bool RegenerateCommentsOnTypeChange { get; set; }
 
         [Required(ErrorMessage = "Please specify whether the device is held or not")]
         public bool? DeviceHeld { get; set; }

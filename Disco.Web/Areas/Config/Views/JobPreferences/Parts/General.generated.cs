@@ -55,67 +55,284 @@ namespace Disco.Web.Areas.Config.Views.JobPreferences.Parts
             #line hidden
 WriteLiteral("\r\n<div");
 
+WriteLiteral(" id=\"Config_JobPref_General\"");
+
 WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 530px;\"");
 
-WriteLiteral(">\r\n    <h2>General Preferences</h2>\r\n    <table>\r\n        <tr>\r\n            <th");
+WriteLiteral(">\r\n    <h2>General Preferences</h2>\r\n    <table>\r\n        <tr>\r\n            <td");
 
-WriteLiteral(" style=\"width: 200px\"");
+WriteLiteral(" colspan=\"2\"");
 
-WriteLiteral(">Long Running Threshold:\r\n            </th>\r\n            <td>");
+WriteLiteral(">\r\n                <div>Initial Comments Template:</div>\r\n");
 
+            
+            #line 13 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                
+            
+            #line default
+            #line hidden
             
             #line 13 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                  if (canConfig)
                 {
-                
+                    
             
             #line default
             #line hidden
             
             #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(Html.DropDownListFor(model => model.LongRunningJobDaysThreshold, Model.LongRunningJobDaysThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
+               Write(Html.EditorFor(model => model.InitialCommentsTemplate));
 
             
             #line default
             #line hidden
             
             #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                                                                                                                                                            
-                
+                                                                           
+                    
             
             #line default
             #line hidden
             
             #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+               Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
             #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                       
+                                             
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                            $(function () {
+                                var field = $('#InitialCommentsTemplate');
+                                var fieldRemove = field.next('.ajaxRemove');
+                                var fieldOriginalWidth, fieldOriginalHeight;
+
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    field,
+                                    'None',
+                                    '");
+
+            
+            #line 28 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                Write(Url.Action(MVC.API.JobPreferences.UpdateInitialCommentsTemplate()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"',
+                                    'initialCommentsTemplate'
+                                );
+
+                                field.change(function () {
+                                    if (!!field.val()) {
+                                        fieldRemove.show();
+                                    } else {
+                                        fieldRemove.hide();
+                                    }
+                                }).attr('placeholder', 'None');
+
+                                fieldRemove.click(function () {
+                                    field.val('').trigger('change');
+                                });
+
+                                if (!!field.val()) {
+                                    fieldRemove.show();
+                                } else {
+                                    fieldRemove.hide();
+                                }
+                            });
+                    </script>
+");
+
+            
+            #line 51 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(Model.InitialCommentsTemplate))
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 57 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 61 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                       Write(Model.InitialCommentsTemplate);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n");
+
+            
+            #line 63 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                    }
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                    <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral("></i>This template is added to the Comments box shown when creating a job. Expres" +
+"sions can be included. Add expressions inside curly braces, for example:\r\n      " +
+"                  <div");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(@">Justification for {#JobType}: </div>
+                    </p>
+                    <p>
+                        The following additional variables are available:
+                        <ul>
+                            <li><code>#TechUser</code>: The user creating the job</li>
+                            <li><code>#User</code>: The user linked to the job (or <code>null</code> if no user is associated)</li>
+                            <li><code>#Device</code>: The user linked to the job (or <code>null</code> if no user is associated)</li>
+                            <li><code>#JobType</code>: The selected job type (for example 'Hardware - Warranty')</li>
+                            <li><code>#JobSubTypes</code>: A list of selected job sub-types (for example ['Motherboard', 'Screen'])</li>
+                        </ul>
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th");
+
+WriteLiteral(" style=\"width: 140px\"");
+
+WriteLiteral(">\r\n                Long Running Threshold:\r\n            </th>\r\n            <td>\r\n" +
+"");
+
+            
+            #line 88 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 88 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 90 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(Html.DropDownListFor(model => model.LongRunningJobDaysThreshold, Model.LongRunningJobDaysThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
 
             
             #line default
             #line hidden
             
-            #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                         
+            #line 90 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                                                                                                                                                
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 91 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+            
+            #line 91 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 92 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 92 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -124,34 +341,34 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "Threshold\'),\r\n                            null,\r\n                            \'");
 
             
-            #line 23 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 98 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                          Write(Url.Action(MVC.API.JobPreferences.UpdateLongRunningJobDaysThreshold()));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'LongRunningJobDaysThreshold\');\r\n                " +
-"    });\r\n                </script>\r\n");
+"    });\r\n                    </script>\r\n");
 
             
-            #line 27 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 102 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                 }
                 else
                 {
-                
+                    
             
             #line default
             #line hidden
             
-            #line 30 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(Model.LongRunningJobDaysThresholdOptions().First(o => o.Key == Model.LongRunningJobDaysThreshold).Value);
+            #line 105 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(Model.LongRunningJobDaysThresholdOptions().First(o => o.Key == Model.LongRunningJobDaysThreshold).Value);
 
             
             #line default
             #line hidden
             
-            #line 30 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                                                                        
+            #line 105 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                                                            
                 }
 
             
@@ -166,88 +383,92 @@ WriteLiteral(">\r\n                    Jobs which have been open for longer than
 "> list.\r\n                </div>\r\n");
 
             
-            #line 35 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 110 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                 if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { 
+            #line 110 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                 if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
+                {
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                       Write(Html.ActionLinkSmallButton("Show Long Running Jobs", MVC.Job.LongRunning()));
+            #line 111 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            Write(Html.ActionLinkSmallButton("Show Long Running Jobs", MVC.Job.LongRunning()));
 
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                                                                                                         }
+            #line 111 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                             }
 
             
             #line default
             #line hidden
-WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th");
-
-WriteLiteral(" style=\"width: 200px\"");
-
-WriteLiteral(">Stale Threshold:\r\n            </th>\r\n            <td>");
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Stale Threshold:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                  if (canConfig)
                 {
-                
+                    
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(Html.DropDownListFor(model => model.StaleJobMinutesThreshold, Model.StaleJobMinutesThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
+            #line 121 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(Html.DropDownListFor(model => model.StaleJobMinutesThreshold, Model.StaleJobMinutesThresholdOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
 
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                                                                                                                                                      
-                
+            #line 121 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                                                                                                                                          
+                    
             
             #line default
             #line hidden
             
-            #line 44 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(AjaxHelpers.AjaxSave());
+            #line 122 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 44 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                       
-                
+            #line 122 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                           
+                    
             
             #line default
             #line hidden
             
-            #line 45 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 123 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 45 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                         
+            #line 123 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                             
 
             
             #line default
             #line hidden
-WriteLiteral("                <script");
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -256,34 +477,34 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "eshold\'),\r\n                            null,\r\n                            \'");
 
             
-            #line 51 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 129 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                          Write(Url.Action(MVC.API.JobPreferences.UpdateStaleJobMinutesThreshold()));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'StaleJobMinutesThreshold\');\r\n                   " +
-" });\r\n                </script>\r\n");
+" });\r\n                    </script>\r\n");
 
             
-            #line 55 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 133 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                 }
                 else
                 {
-                
+                    
             
             #line default
             #line hidden
             
-            #line 58 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-           Write(Model.StaleJobMinutesThresholdOptions().First(o => o.Key == Model.StaleJobMinutesThreshold).Value);
+            #line 136 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(Model.StaleJobMinutesThresholdOptions().First(o => o.Key == Model.StaleJobMinutesThreshold).Value);
 
             
             #line default
             #line hidden
             
-            #line 58 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                                                                  
+            #line 136 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                                                      
                 }
 
             
@@ -298,27 +519,161 @@ WriteLiteral(">\r\n                    Jobs which have no recoded action for lon
 ".\r\n                </div>\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            #line 141 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                 if (Authorization.Has(Claims.Job.Lists.LongRunningJobs)) { 
+            #line 141 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                 if (Authorization.Has(Claims.Job.Lists.LongRunningJobs))
+                {
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                       Write(Html.ActionLinkSmallButton("Show Stale Jobs", MVC.Job.Stale()));
+            #line 142 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+            Write(Html.ActionLinkSmallButton("Show Stale Jobs", MVC.Job.Stale()));
 
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
-                                                                                                                                            }
+            #line 142 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Lodgment:\r\n            </th>\r\n            <td>\r\n");
+
+            
+            #line 150 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 150 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 152 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(Html.CheckBoxFor(model => model.LodgmentIncludeAllAttachmentsByDefault));
+
+            
+            #line default
+            #line hidden
+            
+            #line 152 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                                                                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <label");
+
+WriteLiteral(" for=\"LodgmentIncludeAllAttachmentsByDefault\"");
+
+WriteLiteral(">Include All Attachments by Default</label>\r\n");
+
+            
+            #line 154 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 154 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 154 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 155 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 155 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                        <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                            <i");
+
+WriteLiteral(" class=\"fa fa-info-circle\"");
+
+WriteLiteral("></i>If enabled, all attachments will be selected by default when lodging a job.\r" +
+"\n                        </p>\r\n                    </div>\r\n");
+
+WriteLiteral("                    <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(">\r\n            $(function () {\r\n                document.DiscoFunctions.PropertyC" +
+"hangeHelper(\r\n                    $(\'#LodgmentIncludeAllAttachmentsByDefault\'),\r" +
+"\n                    null,\r\n                    \'");
+
+            
+            #line 166 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                 Write(Url.Action(MVC.API.JobPreferences.UpdateLodgmentIncludeAllAttachmentsByDefault()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                    \'includeAllAttachmentsByDefault\');\r\n            });\r\n    " +
+"                </script>\r\n");
+
+            
+            #line 170 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                }
+                else
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <span>\r\n");
+
+WriteLiteral("                        ");
+
+            
+            #line 174 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                    Write(Model.LodgmentIncludeAllAttachmentsByDefault ? "Yes" : "No");
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    </span>\r\n");
+
+            
+            #line 176 "..\..\Areas\Config\Views\JobPreferences\Parts\General.cshtml"
+                }
 
             
             #line default

@@ -12,6 +12,30 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class JobPreferencesController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        public virtual ActionResult UpdateInitialCommentsTemplate(string initialCommentsTemplate, bool redirect = false)
+        {
+            string expression = null;
+
+            if (!string.IsNullOrWhiteSpace(initialCommentsTemplate))
+            {
+                expression = initialCommentsTemplate.Trim();
+            }
+
+            if (Database.DiscoConfiguration.JobPreferences.InitialCommentsTemplate != expression)
+            {
+                Database.DiscoConfiguration.JobPreferences.InitialCommentsTemplate = expression;
+                Database.SaveChanges();
+
+                Jobs.InitialCommentsTemplateInvalidateCache();
+            }
+
+            if (redirect)
+                return RedirectToAction(MVC.Config.JobPreferences.Index());
+            else
+                return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
         public virtual ActionResult UpdateLongRunningJobDaysThreshold(int LongRunningJobDaysThreshold, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold = LongRunningJobDaysThreshold;

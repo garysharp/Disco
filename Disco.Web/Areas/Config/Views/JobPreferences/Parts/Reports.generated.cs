@@ -63,19 +63,19 @@ WriteLiteral(" style=\"width: 530px;\"");
 
 WriteLiteral(">\r\n    <h2>Report Preferences</h2>\r\n    <table>\r\n        <tr>\r\n            <th");
 
-WriteLiteral(" style=\"width: 200px\"");
+WriteLiteral(" style=\"width: 140px\"");
 
-WriteLiteral(">\r\n                Noticeboard Default Theme:\r\n            </th>\r\n            <td" +
-">\r\n");
+WriteLiteral(">\r\n                Noticeboard<br />\r\n                Default Theme:\r\n           " +
+" </th>\r\n            <td>\r\n");
 
             
-            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                  if (canConfig)
                 {
                     
@@ -83,42 +83,42 @@ WriteLiteral(">\r\n                Noticeboard Default Theme:\r\n            </t
             #line default
             #line hidden
             
-            #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                Write(Html.DropDownListFor(model => model.DefaultNoticeboardTheme, Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value })));
 
             
             #line default
             #line hidden
             
-            #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                              
                     
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                            
                     
             
             #line default
             #line hidden
             
-            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 20 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 20 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                              
 
             
@@ -138,7 +138,7 @@ WriteLiteral(@">
                             '");
 
             
-            #line 27 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 28 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                          Write(Url.Action(MVC.API.JobPreferences.UpdateDefaultNoticeboardTheme()));
 
             
@@ -155,7 +155,7 @@ WriteLiteral(@"',
 ");
 
             
-            #line 35 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 36 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                 }
                 else
                 {
@@ -164,14 +164,14 @@ WriteLiteral(@"',
             #line default
             #line hidden
             
-            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 39 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                Write(Model.DefaultNoticeboardThemeOptions().First(o => o.Key == Model.DefaultNoticeboardTheme).Value);
 
             
             #line default
             #line hidden
             
-            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 39 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                     
                 }
 
@@ -182,15 +182,15 @@ WriteLiteral("                <div");
 
 WriteLiteral(" id=\"Config_ReportPrefs_Preview\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1754), Tuple.Create("\"", 1800)
-, Tuple.Create(Tuple.Create("", 1762), Tuple.Create("theme-", 1762), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1777), Tuple.Create("\"", 1823)
+, Tuple.Create(Tuple.Create("", 1785), Tuple.Create("theme-", 1785), true)
             
-            #line 40 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-, Tuple.Create(Tuple.Create("", 1768), Tuple.Create<System.Object, System.Int32>(Model.DefaultNoticeboardTheme
+            #line 41 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+, Tuple.Create(Tuple.Create("", 1791), Tuple.Create<System.Object, System.Int32>(Model.DefaultNoticeboardTheme
             
             #line default
             #line hidden
-, 1768), false)
+, 1791), false)
 );
 
 WriteLiteral(">\r\n                    <div");
@@ -286,7 +286,7 @@ WriteLiteral(" class=\"themeable componentable\"");
 WriteLiteral(" data-url=\"");
 
             
-            #line 66 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 67 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                   Write(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Noticeboard()));
 
             
@@ -313,7 +313,7 @@ WriteLiteral(" name=\"Report\"");
 WriteLiteral(" data-url=\"");
 
             
-            #line 69 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 70 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                  Write(Url.ActionAbsolute(MVC.Public.UserHeldDevices.Index()));
 
             
@@ -340,7 +340,7 @@ WriteLiteral(" class=\"themeable componentable\"");
 WriteLiteral(" data-url=\"");
 
             
-            #line 72 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 73 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                  Write(Url.ActionAbsolute(MVC.Public.HeldDevices.Noticeboard()));
 
             
@@ -365,7 +365,7 @@ WriteLiteral(" name=\"Report\"");
 WriteLiteral(" data-url=\"");
 
             
-            #line 75 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 76 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                 Write(Url.ActionAbsolute(MVC.Public.HeldDevices.Index()));
 
             
@@ -417,7 +417,7 @@ WriteLiteral(">\r\n                            <h3>Noticeboard Theme</h3>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 89 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 90 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                        Write(Html.DropDownList("Config_ReportPrefs_Builder_Theme", new SelectListItem[] { new SelectListItem() { Value = "", Text = "<Default>", Selected = true } }.Concat(Model.DefaultNoticeboardThemeOptions().Select(o => new SelectListItem() { Value = o.Key, Text = o.Value }))));
 
             
@@ -495,13 +495,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 105 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 106 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 105 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 106 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                          foreach (var deviceProfile in Model.DeviceProfiles.Value)
                                         {
 
@@ -511,46 +511,46 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                            <li>\r\n                               " +
 "                 <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 7290), Tuple.Create("\"", 7344)
-, Tuple.Create(Tuple.Create("", 7295), Tuple.Create("Config_ReportPrefs_Builder_DP_", 7295), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 7313), Tuple.Create("\"", 7367)
+, Tuple.Create(Tuple.Create("", 7318), Tuple.Create("Config_ReportPrefs_Builder_DP_", 7318), true)
             
-            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-          , Tuple.Create(Tuple.Create("", 7325), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 109 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+          , Tuple.Create(Tuple.Create("", 7348), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 7325), false)
+, 7348), false)
 );
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 7361), Tuple.Create("\"", 7386)
+WriteAttribute("value", Tuple.Create(" value=\"", 7384), Tuple.Create("\"", 7409)
             
-            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                     , Tuple.Create(Tuple.Create("", 7369), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 109 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                     , Tuple.Create(Tuple.Create("", 7392), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 7369), false)
+, 7392), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 7396), Tuple.Create("\"", 7451)
-, Tuple.Create(Tuple.Create("", 7402), Tuple.Create("Config_ReportPrefs_Builder_DP_", 7402), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 7419), Tuple.Create("\"", 7474)
+, Tuple.Create(Tuple.Create("", 7425), Tuple.Create("Config_ReportPrefs_Builder_DP_", 7425), true)
             
-            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                     , Tuple.Create(Tuple.Create("", 7432), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 109 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                     , Tuple.Create(Tuple.Create("", 7455), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 7432), false)
+, 7455), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 108 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 109 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                                                     Write(deviceProfile.Description);
 
             
@@ -559,7 +559,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                            </li>\r\n");
 
             
-            #line 110 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 111 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         }
 
             
@@ -577,13 +577,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 115 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 116 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 115 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 116 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                          foreach (var address in Model.OrganisationAddresses.Value)
                                         {
 
@@ -593,46 +593,46 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                            <li>\r\n                               " +
 "                 <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 8051), Tuple.Create("\"", 8099)
-, Tuple.Create(Tuple.Create("", 8056), Tuple.Create("Config_ReportPrefs_Builder_OA_", 8056), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 8074), Tuple.Create("\"", 8122)
+, Tuple.Create(Tuple.Create("", 8079), Tuple.Create("Config_ReportPrefs_Builder_OA_", 8079), true)
             
-            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-          , Tuple.Create(Tuple.Create("", 8086), Tuple.Create<System.Object, System.Int32>(address.Id
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+          , Tuple.Create(Tuple.Create("", 8109), Tuple.Create<System.Object, System.Int32>(address.Id
             
             #line default
             #line hidden
-, 8086), false)
+, 8109), false)
 );
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 8116), Tuple.Create("\"", 8142)
+WriteAttribute("value", Tuple.Create(" value=\"", 8139), Tuple.Create("\"", 8165)
             
-            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                               , Tuple.Create(Tuple.Create("", 8124), Tuple.Create<System.Object, System.Int32>(address.ShortName
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                               , Tuple.Create(Tuple.Create("", 8147), Tuple.Create<System.Object, System.Int32>(address.ShortName
             
             #line default
             #line hidden
-, 8124), false)
+, 8147), false)
 );
 
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 8152), Tuple.Create("\"", 8201)
-, Tuple.Create(Tuple.Create("", 8158), Tuple.Create("Config_ReportPrefs_Builder_OA_", 8158), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 8175), Tuple.Create("\"", 8224)
+, Tuple.Create(Tuple.Create("", 8181), Tuple.Create("Config_ReportPrefs_Builder_OA_", 8181), true)
             
-            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
-                                                                                                                , Tuple.Create(Tuple.Create("", 8188), Tuple.Create<System.Object, System.Int32>(address.Id
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+                                                                                                                , Tuple.Create(Tuple.Create("", 8211), Tuple.Create<System.Object, System.Int32>(address.Id
             
             #line default
             #line hidden
-, 8188), false)
+, 8211), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                                          Write(address.Name);
 
             
@@ -641,7 +641,7 @@ WriteLiteral(">");
 WriteLiteral(" (");
 
             
-            #line 118 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 119 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                                                                                                                                                                                                         Write(address.ShortName);
 
             
@@ -650,7 +650,7 @@ WriteLiteral(" (");
 WriteLiteral(")</label>\r\n                                            </li>\r\n");
 
             
-            #line 120 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
+            #line 121 "..\..\Areas\Config\Views\JobPreferences\Parts\Reports.cshtml"
                                         }
 
             

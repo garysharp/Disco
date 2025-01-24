@@ -411,12 +411,15 @@ namespace Disco.Web.Controllers
             };
             m.UpdateModel(Database, Authorization);
 
+            m.Comments = Jobs.GenerateInitialComments(Database, m, CurrentUser, out var isTypeDynamic);
+            m.RegenerateCommentsOnTypeChange = isTypeDynamic;
+
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobCreateModel>(this.ControllerContext, m);
 
             return View(m);
         }
-        [HttpPost, DiscoAuthorize(Claims.Job.Actions.Create)]
+        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Job.Actions.Create)]
         public virtual ActionResult Create(Models.Job.CreateModel m)
         {
             m.UpdateModel(Database, Authorization);

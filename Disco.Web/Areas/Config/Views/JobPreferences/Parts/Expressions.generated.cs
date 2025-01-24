@@ -63,7 +63,7 @@ WriteLiteral(" style=\"width: 530px;\"");
 
 WriteLiteral(">\r\n    <h2>Expressions</h2>\r\n    <table>\r\n        <tr>\r\n            <th");
 
-WriteLiteral(" style=\"width: 200px\"");
+WriteLiteral(" style=\"width: 140px\"");
 
 WriteLiteral(">On Create:</th>\r\n            <td>\r\n");
 
@@ -243,14 +243,15 @@ WriteLiteral(">\r\n                        <i");
 
 WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
 
-WriteLiteral("></i>This expression will be evaluated whenever a job is created. If the expressi" +
-"on has any output it will be added to the job log.\r\n                    </p>\r\n  " +
-"              </div>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n          " +
-"  <th");
-
-WriteLiteral(" style=\"width: 200px\"");
-
-WriteLiteral(">On Device Ready For Return:</th>\r\n            <td>\r\n");
+WriteLiteral(@"></i>This expression will be evaluated whenever a job is created. If the expression has any output it will be added to the job log.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>On Device Ready For Return:</th>
+            <td>
+");
 
             
             #line 81 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"
@@ -444,11 +445,9 @@ WriteLiteral(@"></i>This expression will be evaluated whenever a device is flagg
             </td>
         </tr>
         <tr>
-            <th");
-
-WriteLiteral(" style=\"width: 200px\"");
-
-WriteLiteral(">On Close:</th>\r\n            <td>\r\n");
+            <th>On Close:</th>
+            <td>
+");
 
             
             #line 149 "..\..\Areas\Config\Views\JobPreferences\Parts\Expressions.cshtml"

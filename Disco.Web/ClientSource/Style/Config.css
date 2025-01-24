@@ -1554,6 +1554,13 @@ h1.Config_DocumentTemplates {
   height: 200px;
   margin: 0 auto;
 }
+#Config_JobPref_General #InitialCommentsTemplate {
+  margin-top: 4px;
+  min-width: calc(100% - 43px);
+  min-height: 40px;
+  height: auto;
+  field-sizing: content;
+}
 #Config_JobPref_Expressions {
   margin-top: 10px;
 }

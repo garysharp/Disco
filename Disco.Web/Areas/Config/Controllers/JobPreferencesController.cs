@@ -13,6 +13,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new Models.JobPreferences.IndexModel()
             {
+                InitialCommentsTemplate = Database.DiscoConfiguration.JobPreferences.InitialCommentsTemplate,
                 LongRunningJobDaysThreshold = Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold,
                 StaleJobMinutesThreshold = Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold,
                 LodgmentIncludeAllAttachmentsByDefault = Database.DiscoConfiguration.JobPreferences.LodgmentIncludeAllAttachmentsByDefault,

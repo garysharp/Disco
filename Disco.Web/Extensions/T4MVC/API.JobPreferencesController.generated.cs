@@ -61,6 +61,12 @@ namespace Disco.Web.Areas.API.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateInitialCommentsTemplate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInitialCommentsTemplate);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateLongRunningJobDaysThreshold()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLongRunningJobDaysThreshold);
@@ -135,6 +141,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string UpdateInitialCommentsTemplate = "UpdateInitialCommentsTemplate";
             public readonly string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public readonly string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
             public readonly string UpdateLodgmentIncludeAllAttachmentsByDefault = "UpdateLodgmentIncludeAllAttachmentsByDefault";
@@ -150,6 +157,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string UpdateInitialCommentsTemplate = "UpdateInitialCommentsTemplate";
             public const string UpdateLongRunningJobDaysThreshold = "UpdateLongRunningJobDaysThreshold";
             public const string UpdateStaleJobMinutesThreshold = "UpdateStaleJobMinutesThreshold";
             public const string UpdateLodgmentIncludeAllAttachmentsByDefault = "UpdateLodgmentIncludeAllAttachmentsByDefault";
@@ -163,6 +171,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
 
+        static readonly ActionParamsClass_UpdateInitialCommentsTemplate s_params_UpdateInitialCommentsTemplate = new ActionParamsClass_UpdateInitialCommentsTemplate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateInitialCommentsTemplate UpdateInitialCommentsTemplateParams { get { return s_params_UpdateInitialCommentsTemplate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateInitialCommentsTemplate
+        {
+            public readonly string initialCommentsTemplate = "initialCommentsTemplate";
+            public readonly string redirect = "redirect";
+        }
         static readonly ActionParamsClass_UpdateLongRunningJobDaysThreshold s_params_UpdateLongRunningJobDaysThreshold = new ActionParamsClass_UpdateLongRunningJobDaysThreshold();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_UpdateLongRunningJobDaysThreshold UpdateLongRunningJobDaysThresholdParams { get { return s_params_UpdateLongRunningJobDaysThreshold; } }
@@ -273,6 +290,19 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class T4MVC_JobPreferencesController : Disco.Web.Areas.API.Controllers.JobPreferencesController
     {
         public T4MVC_JobPreferencesController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void UpdateInitialCommentsTemplateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string initialCommentsTemplate, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateInitialCommentsTemplate(string initialCommentsTemplate, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInitialCommentsTemplate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "initialCommentsTemplate", initialCommentsTemplate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateInitialCommentsTemplateOverride(callInfo, initialCommentsTemplate, redirect);
+            return callInfo;
+        }
 
         [NonAction]
         partial void UpdateLongRunningJobDaysThresholdOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int LongRunningJobDaysThreshold, bool redirect);

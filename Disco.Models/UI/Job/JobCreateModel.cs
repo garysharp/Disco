@@ -11,6 +11,7 @@ namespace Disco.Models.UI.Job
         List<string> SubTypes { get; set; }
 
         string Comments { get; set; }
+        bool RegenerateCommentsOnTypeChange { get; set; }
 
         bool? DeviceHeld { get; set; }
 

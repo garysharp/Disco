@@ -8,6 +8,7 @@
 <div id="createJob_Container">
     @using (Html.BeginForm(MVC.Job.Create(), FormMethod.Post))
     {
+        @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.DeviceSerialNumber)
         @Html.HiddenFor(m => m.UserId)
         @Html.HiddenFor(m => m.SourceUrl)
@@ -15,7 +16,7 @@
         @Html.Partial(MVC.Job.Views._CreateSubject, Model)
         @Html.ValidationSummary(true)
         
-        <div class="createJob_Component">
+        <div id="createJob_Types" class="createJob_Component">
             <div id="createJob_Type">
                 <h3>Type</h3>
                 @Html.ValidationMessageFor(m => m.Type)
@@ -29,7 +30,7 @@
                         <div class="createJob_SubTypes">
                             @CommonHelpers.CheckBoxList("SubTypes", jt.JobSubTypes.ToSelectListItems(Model.SubTypes, true), 3, true, null, false)
                         </div>
-                    </div>   
+                    </div>
                 }
             </div>
         </div>
@@ -54,7 +55,7 @@
         }else{
             @Html.Hidden("DeviceHeld", false)
         }
-        <div id="createJob_CommentsContainer" class="createJob_Component">
+        <div id="createJob_CommentsContainer" class="createJob_Component" data-dynamic="@(Model.RegenerateCommentsOnTypeChange ? Url.Action(MVC.API.Job.InitialComments()) : null)">
             <table>
                 <tr>
                     <td>
@@ -152,6 +153,29 @@
                 }
             }
 
+            const initialCommentsUrl = $('#createJob_CommentsContainer').attr('data-dynamic');
+            if (!!initialCommentsUrl) {
+                let commentsDirty = false;
+                $('#Comments').on('change', function () {
+                    commentsDirty = true;
+                });
+                $('#createJob_Types').on('change', 'input', async function () {
+                    if (commentsDirty) {
+                        return;
+                    }
+                    const body = new FormData(createJobForm.get(0));
+                    const response = await fetch(initialCommentsUrl, {
+                        method: 'POST',
+                        body: body
+                    });
+                    if (response.ok) {
+                        const comments = await response.json();
+                        $('#Comments').val(comments);
+                    } else {
+                        console.error('Failed to fetch updated initial comments');
+                    }
+                })
+            }
 
             var additionalValidation = function (form) {
                 var isValid = true;

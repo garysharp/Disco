@@ -63,7 +63,7 @@ WriteLiteral(" style=\"width: 530px;\"");
 
 WriteLiteral(">\r\n    <h2>Job Locations</h2>\r\n    <table>\r\n        <tr>\r\n            <th");
 
-WriteLiteral(" style=\"width: 200px\"");
+WriteLiteral(" style=\"width: 140px\"");
 
 WriteLiteral(">Mode:\r\n            </th>\r\n            <td>");
 
