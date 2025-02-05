@@ -11,6 +11,8 @@ namespace Disco.Models.ClientServices.EnrolmentInformation
         public string Model { get; set; }
         public string ModelType { get; set; }
 
+        public string MdmHardwareData { get; set; }
+
         public List<Bios> Bios { get; set; }
         public List<BaseBoard> BasebBoard { get; set; }
         public List<ComputerSystem> ComputerSystem { get; set; }

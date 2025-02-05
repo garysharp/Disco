@@ -456,6 +456,7 @@ namespace Disco.Services.Devices.Exporting
             }
             metadata.Add(nameof(DeviceExportOptions.DetailBatteries), batteriesFields);
             metadata.Add(nameof(DeviceExportOptions.DetailKeyboard), new List<Metadata>() { new Metadata(nameof(DeviceExportOptions.DetailKeyboard), typeof(string), r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault(), csvStringEncoded) });
+            metadata.Add(nameof(DeviceExportOptions.DetailMdmHardwareData), new List<Metadata>() { new Metadata(nameof(DeviceExportOptions.DetailMdmHardwareData), typeof(string), r => r.DeviceDetails.MdmHardwareData(), csvStringEncoded) });
 
             return metadata;
         }

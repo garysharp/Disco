@@ -358,5 +358,18 @@ namespace Disco.Services
             device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyBatteries, json);
         }
 
+        public static string MdmHardwareData(this IEnumerable<DeviceDetail> details)
+        {
+            return details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyMdmHardwareData);
+        }
+
+        /// <summary>
+        /// Sets the Mobile Device Management Hardware Data
+        /// </summary>
+        public static void MdmHardwareData(this IEnumerable<DeviceDetail> details, Device device, string mdmHardwareData)
+        {
+            device.SetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyMdmHardwareData, mdmHardwareData);
+        }
+
     }
 }

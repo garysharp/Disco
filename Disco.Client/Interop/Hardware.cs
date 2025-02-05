@@ -46,6 +46,7 @@ namespace Disco.Client.Interop
             audit.ApplyPhysicalMemoryInformation();
             audit.ApplyDiskDriveInformation();
             audit.ApplyBatteryInformation();
+            audit.ApplyMobileDeviceManagementInformation();
 
             audit.NetworkAdapters = Network.GetNetworkAdapters();
 
@@ -558,6 +559,18 @@ namespace Disco.Client.Interop
             {
                 throw new Exception("Disco ICT Client was unable to retrieve ComputerSystemProduct information from WMI", ex);
             }
+        }
+
+        private static void ApplyMobileDeviceManagementInformation(this DeviceHardware deviceHardware)
+        {
+            try
+            {
+                using (var wmiObject = new ManagementObject(@"\\.\ROOT\CIMV2\mdm\dmmap:MDM_DevDetail_Ext01.InstanceID=""Ext"",ParentID=""./DevDetail"""))
+                {
+                    deviceHardware.MdmHardwareData = (string)wmiObject.GetPropertyValue("DeviceHardwareData");
+                }
+            }
+            catch (Exception) { }
         }
 
         private static string Description(this PCSystemTypes type)

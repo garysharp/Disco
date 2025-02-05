@@ -311,6 +311,10 @@
   background-color: #fff;
   background: repeating-linear-gradient(45deg, #f4f4f4, #f4f4f4 10px, #fff 10px, #fff 20px);
 }
+#DeviceDetailTab-DetailsContainer .device_detail_mdm_hardware_data code {
+  display: block;
+  word-break: break-all;
+}
 #deviceShowResources #AttachmentsContainer {
   padding: 0;
 }

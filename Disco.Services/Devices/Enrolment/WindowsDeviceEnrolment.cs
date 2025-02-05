@@ -317,6 +317,8 @@ namespace Disco.Services.Devices.Enrolment
                     device.DeviceDetails.NetworkAdapters(device, Request.Hardware.NetworkAdapters);
                 if (Request.Hardware.Batteries?.Count > 0)
                     device.DeviceDetails.Batteries(device, Request.Hardware.Batteries);
+                if (!string.IsNullOrWhiteSpace(Request.Hardware.MdmHardwareData))
+                    device.DeviceDetails.MdmHardwareData(device, Request.Hardware.MdmHardwareData);
 
                 if (adMachineAccount == null)
                 {

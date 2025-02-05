@@ -19,6 +19,7 @@
     var baseBoard = Model.Device.DeviceDetails.BaseBoard();
     var computerSystem = Model.Device.DeviceDetails.ComputerSystem();
     var batteries = Model.Device.DeviceDetails.Batteries();
+    var mdmHardwareData = Model.Device.DeviceDetails.MdmHardwareData();
 }
 <div id="DeviceDetailTab-Details" class="DevicePart">
     <div id="DeviceDetailTab-DetailsContainer">
@@ -43,14 +44,14 @@
                                     @foreach (var b in bios)
                                     {
                                         <tr>
-                                            <td>@b.Manufacturer</td>
-                                            <td>@b.SerialNumber</td>
-                                            <td>@b.SMBIOSBIOSVersion @(b.SMBIOSMajorVersion.GetValueOrDefault(0)).@b.SMBIOSMinorVersion</td>
-                                            <td>@(b.SystemBiosMajorVersion).@b.SystemBiosMinorVersion</td>
+                                            <td><span data-clipboard>@b.Manufacturer</span></td>
+                                            <td><span data-clipboard>@b.SerialNumber</span></td>
+                                            <td><span data-clipboard>@b.SMBIOSBIOSVersion @(b.SMBIOSMajorVersion.GetValueOrDefault(0)).@b.SMBIOSMinorVersion</span></td>
+                                            <td><span data-clipboard>@(b.SystemBiosMajorVersion).@b.SystemBiosMinorVersion</span></td>
                                             <td>
                                                 @if (b.ReleaseDate.HasValue)
                                                 {
-                                                    @b.ReleaseDate.Value.ToString("yyyy-MM-dd")
+                                                    <span data-clipboard>@b.ReleaseDate.Value.ToString("yyyy-MM-dd")</span>
                                                 }
                                             </td>
                                         </tr>
@@ -82,19 +83,19 @@
                                     @foreach (var b in baseBoard)
                                     {
                                         <tr>
-                                            <td>@b.Manufacturer</td>
-                                            <td>@b.Model</td>
-                                            <td>@b.Product</td>
-                                            <td>@b.PartNumber</td>
-                                            <td>@b.SKU</td>
-                                            <td>@b.SerialNumber</td>
+                                            <td><span data-clipboard>@b.Manufacturer</span></td>
+                                            <td><span data-clipboard>@b.Model</span></td>
+                                            <td><span data-clipboard>@b.Product</span></td>
+                                            <td><span data-clipboard>@b.PartNumber</span></td>
+                                            <td><span data-clipboard>@b.SKU</span></td>
+                                            <td><span data-clipboard>@b.SerialNumber</span></td>
                                             <td>
                                                 @if (b.ConfigOptions != null)
                                                 {
-                                                    <text>@string.Join("; ", b.ConfigOptions)</text>
+                                                    <span data-clipboard>@string.Join("; ", b.ConfigOptions)</span>
                                                 }
                                             </td>
-                                            <td>@b.Version</td>
+                                            <td><span data-clipboard>@b.Version</span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -125,28 +126,28 @@
                                     @foreach (var c in computerSystem)
                                     {
                                         <tr>
-                                            <td>@c.Description</td>
-                                            <td>@c.PCSystemType</td>
-                                            <td>@c.SystemType</td>
-                                            <td>@c.PrimaryOwnerName @c.PrimaryOwnerContact</td>
-                                            <td>@c.ChassisSKUNumber</td>
-                                            <td>@c.SystemSKUNumber</td>
+                                            <td><span data-clipboard>@c.Description</span></td>
+                                            <td><span data-clipboard>@c.PCSystemType</span></td>
+                                            <td><span data-clipboard>@c.SystemType</span></td>
+                                            <td><span data-clipboard>@c.PrimaryOwnerName @c.PrimaryOwnerContact</span></td>
+                                            <td><span data-clipboard>@c.ChassisSKUNumber</span></td>
+                                            <td><span data-clipboard>@c.SystemSKUNumber</span></td>
                                             <td>
                                                 @if (c.OEMStringArray != null)
                                                 {
-                                                    <text>@string.Join("; ", c.OEMStringArray)</text>
+                                                    <span data-clipboard>@string.Join("; ", c.OEMStringArray)</span>
                                                 }
                                             </td>
                                             <td>
                                                 @if (c.CurrentTimeZone.HasValue)
                                                 {
-                                                    @((c.CurrentTimeZone.Value / 60).ToString(@"00\:"))@(Math.Abs(c.CurrentTimeZone.Value % 60).ToString("00"))
+                                                    <span data-clipboard>@((c.CurrentTimeZone.Value / 60).ToString(@"00\:"))@(Math.Abs(c.CurrentTimeZone.Value % 60).ToString("00"))</span>
                                                 }
                                             </td>
                                             <td>
                                                 @if (c.Roles != null)
                                                 {
-                                                    <text>@string.Join("; ", c.Roles)</text>
+                                                    <span data-clipboard>@string.Join("; ", c.Roles)</span>
                                                 }
                                             </td>
                                         </tr>
@@ -176,12 +177,12 @@
                                     @foreach (var processor in processors)
                                     {
                                         <tr>
-                                            <td>@processor.Name</td>
-                                            <td>@processor.Description</td>
-                                            <td>@processor.Architecture</td>
-                                            <td>@processor.MaxClockSpeedFriendly()</td>
-                                            <td>@processor.NumberOfCores.GetValueOrDefault(0).ToString("N0")</td>
-                                            <td>@processor.NumberOfLogicalProcessors.GetValueOrDefault(0).ToString("N0")</td>
+                                            <td><span data-clipboard>@processor.Name</span></td>
+                                            <td><span data-clipboard>@processor.Description</span></td>
+                                            <td><span data-clipboard>@processor.Architecture</span></td>
+                                            <td><span data-clipboard>@processor.MaxClockSpeedFriendly()</span></td>
+                                            <td><span data-clipboard>@processor.NumberOfCores.GetValueOrDefault(0).ToString("N0")</span></td>
+                                            <td><span data-clipboard>@processor.NumberOfLogicalProcessors.GetValueOrDefault(0).ToString("N0")</span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -209,12 +210,12 @@
                                     @foreach (var memory in physicalMemory)
                                     {
                                         <tr>
-                                            <td>@memory.DeviceLocator</td>
-                                            <td>@memory.Manufacturer</td>
-                                            <td>@memory.PartNumber</td>
-                                            <td>@memory.SerialNumber</td>
-                                            <td>@memory.CapacityFriendly()</td>
-                                            <td>@memory.ConfiguredClockSpeed</td>
+                                            <td><span data-clipboard>@memory.DeviceLocator</span></td>
+                                            <td><span data-clipboard>@memory.Manufacturer</span></td>
+                                            <td><span data-clipboard>@memory.PartNumber</span></td>
+                                            <td><span data-clipboard>@memory.SerialNumber</span></td>
+                                            <td><span data-clipboard>@memory.CapacityFriendly()</span></td>
+                                            <td><span data-clipboard>@memory.ConfiguredClockSpeed</span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -242,13 +243,13 @@
                                     {
                                         <tr>
                                             <td>
-                                                @(adapter.NetConnectionID ?? "N/A") @if (adapter.IsWlanAdapter)
+                                                <span data-clipboard>@(adapter.NetConnectionID ?? "N/A")</span> @if (adapter.IsWlanAdapter)
                                                 {<i class="fa fa-wifi"></i>}
                                             </td>
-                                            <td>@adapter.Manufacturer</td>
-                                            <td>@adapter.ProductName</td>
-                                            <td>@adapter.SpeedFriendly()</td>
-                                            <td>@adapter.MACAddress</td>
+                                            <td><span data-clipboard>@adapter.Manufacturer</span></td>
+                                            <td><span data-clipboard>@adapter.ProductName</span></td>
+                                            <td><span data-clipboard>@adapter.SpeedFriendly()</span></td>
+                                            <td><span data-clipboard>@adapter.MACAddress</span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -262,14 +263,14 @@
                     {
                         <tr class="device_detail_lan_mac_address">
                             <th>LAN MAC Address</th>
-                            <td class="pad code">@(lanMacAddress)</td>
+                            <td class="pad code"><span data-clipboard>@lanMacAddress</span></td>
                         </tr>
                     }
                     if (wlanMacAddress != null)
                     {
                         <tr class="device_detail_wlan_mac_address">
                             <th>WLAN MAC Address</th>
-                            <td class="pad code">@(wlanMacAddress)</td>
+                            <td class="pad code"><span data-clipboard>@wlanMacAddress</span></td>
                         </tr>
                     }
                 }
@@ -294,13 +295,13 @@
                                     @foreach (var disk in diskDrives)
                                     {
                                         <tr>
-                                            <td>@disk.Manufacturer</td>
-                                            <td>@disk.Model</td>
-                                            <td>@disk.SerialNumber</td>
-                                            <td>@disk.FirmwareRevision</td>
-                                            <td>@disk.MediaType</td>
-                                            <td>@disk.InterfaceType</td>
-                                            <td>@disk.SizeFriendly()</td>
+                                            <td><span data-clipboard>@disk.Manufacturer</span></td>
+                                            <td><span data-clipboard>@disk.Model</span></td>
+                                            <td><span data-clipboard>@disk.SerialNumber</span></td>
+                                            <td><span data-clipboard>@disk.FirmwareRevision</span></td>
+                                            <td><span data-clipboard>@disk.MediaType</span></td>
+                                            <td><span data-clipboard>@disk.InterfaceType</span></td>
+                                            <td><span data-clipboard>@disk.SizeFriendly()</span></td>
                                         </tr>
                                         if (disk.Partitions != null)
                                         {
@@ -369,7 +370,35 @@
                         </td>
                     </tr>
                 }
-
+                @if (!string.IsNullOrEmpty(mdmHardwareData))
+                {
+                    <tr class="device_detail_mdm_hardware_data">
+                        <th>MDM Hardware Data</th>
+                        <td class="pad">
+                            <div>
+                                <button class="button small" data-action="copy">Copy</button>
+                                <button class="button small" data-action="show">Show</button>
+                            </div>
+                            <code class="hidden" data-clipboard>@mdmHardwareData</code>
+                            <script>
+                                $(function () {
+                                    const $container = $('tr.device_detail_mdm_hardware_data');
+                                    if (!navigator.clipboard) {
+                                        $container.find('button[data-action="copy"]').remove();
+                                    } else {
+                                        $container.find('button[data-action="copy"]').on('click', function () {
+                                            navigator.clipboard.writeText($container.find('code').text());
+                                        });
+                                    }
+                                    $container.find('button[data-action="show"]').on('click', function () {
+                                        $container.find('code').removeClass('hidden');
+                                        $(this).remove();
+                                    });
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                }
                 <tr class="device_detail_ac_adapter">
                     <th>AC Adapter</th>
                     <td class="pad">

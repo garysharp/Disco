@@ -65,6 +65,7 @@ namespace Disco.Web.Views.Device.DeviceParts
     var baseBoard = Model.Device.DeviceDetails.BaseBoard();
     var computerSystem = Model.Device.DeviceDetails.ComputerSystem();
     var batteries = Model.Device.DeviceDetails.Batteries();
+    var mdmHardwareData = Model.Device.DeviceDetails.MdmHardwareData();
 
             
             #line default
@@ -86,13 +87,13 @@ WriteLiteral(" class=\"tableData\"");
 WriteLiteral(">\r\n            <tbody>\r\n");
 
             
-            #line 27 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 28 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 27 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 28 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (bios != null)
                 {
 
@@ -122,13 +123,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 43 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 44 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 44 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var b in bios)
                                     {
 
@@ -136,29 +137,31 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>");
-
-            
-            #line 46 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.Manufacturer);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"         <td><span data-clipboard>");
 
             
             #line 47 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.SerialNumber);
+                                                                Write(b.Manufacturer);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 48 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.SMBIOSBIOSVersion);
+                                                                Write(b.SerialNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
+
+            
+            #line 49 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(b.SMBIOSBIOSVersion);
 
             
             #line default
@@ -166,26 +169,8 @@ WriteLiteral("</td>\r\n                                            <td>");
 WriteLiteral(" ");
 
             
-            #line 48 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                 Write(b.SMBIOSMajorVersion.GetValueOrDefault(0));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(".");
-
-            
-            #line 48 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                                             Write(b.SMBIOSMinorVersion);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
-
-            
             #line 49 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                            Write(b.SystemBiosMajorVersion);
+                                                                                      Write(b.SMBIOSMajorVersion.GetValueOrDefault(0));
 
             
             #line default
@@ -194,37 +179,59 @@ WriteLiteral(".");
 
             
             #line 49 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                       Write(b.SystemBiosMinorVersion);
+                                                                                                                                  Write(b.SMBIOSMinorVersion);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 51 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 50 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                 Write(b.SystemBiosMajorVersion);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(".");
+
+            
+            #line 50 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                            Write(b.SystemBiosMinorVersion);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                            <td>\r\n");
+
+            
+            #line 52 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 51 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 52 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (b.ReleaseDate.HasValue)
                                                 {
-                                                    
-            
-            #line default
-            #line hidden
-            
-            #line 53 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                               Write(b.ReleaseDate.Value.ToString("yyyy-MM-dd"));
 
             
             #line default
             #line hidden
+WriteLiteral("                                                    <span data-clipboard>");
+
             
-            #line 53 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                               
+            #line 54 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                    Write(b.ReleaseDate.Value.ToString("yyyy-MM-dd"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 55 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -234,7 +241,7 @@ WriteLiteral("                                            </td>\r\n             
 "          </tr>\r\n");
 
             
-            #line 57 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 58 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -244,7 +251,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 62 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 63 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
@@ -253,7 +260,7 @@ WriteLiteral("                                </tbody>\r\n                      
 WriteLiteral("                ");
 
             
-            #line 63 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 64 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (baseBoard != null)
                 {
 
@@ -286,13 +293,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 82 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 83 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 83 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var b in baseBoard)
                                     {
 
@@ -300,108 +307,113 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>");
-
-            
-            #line 85 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.Manufacturer);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"         <td><span data-clipboard>");
 
             
             #line 86 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.Model);
+                                                                Write(b.Manufacturer);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 87 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.Product);
+                                                                Write(b.Model);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 88 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.PartNumber);
+                                                                Write(b.Product);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 89 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.SKU);
+                                                                Write(b.PartNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 90 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.SerialNumber);
+                                                                Write(b.SKU);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 92 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 91 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(b.SerialNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                            <td>\r\n");
+
+            
+            #line 93 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 92 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 93 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (b.ConfigOptions != null)
                                                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                    ");
+WriteLiteral("                                                    <span data-clipboard>");
 
             
-            #line 94 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                     Write(string.Join("; ", b.ConfigOptions));
+            #line 95 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                    Write(string.Join("; ", b.ConfigOptions));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("</span>\r\n");
 
             
-            #line 95 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 96 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
             #line default
             #line hidden
 WriteLiteral("                                            </td>\r\n                              " +
-"              <td>");
+"              <td><span data-clipboard>");
 
             
-            #line 97 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(b.Version);
+            #line 98 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(b.Version);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                                        </tr>\r\n");
 
             
-            #line 99 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 100 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -411,7 +423,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 104 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 105 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
@@ -420,7 +432,7 @@ WriteLiteral("                                </tbody>\r\n                      
 WriteLiteral("                ");
 
             
-            #line 105 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 106 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (computerSystem != null)
                 {
 
@@ -454,13 +466,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 125 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 126 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 125 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 126 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var c in computerSystem)
                                     {
 
@@ -468,38 +480,41 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>");
-
-            
-            #line 128 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(c.Description);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"         <td><span data-clipboard>");
 
             
             #line 129 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(c.PCSystemType);
+                                                                Write(c.Description);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 130 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(c.SystemType);
+                                                                Write(c.PCSystemType);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 131 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(c.PrimaryOwnerName);
+                                                                Write(c.SystemType);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
+
+            
+            #line 132 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(c.PrimaryOwnerName);
 
             
             #line default
@@ -507,59 +522,61 @@ WriteLiteral("</td>\r\n                                            <td>");
 WriteLiteral(" ");
 
             
-            #line 131 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                               Write(c.PrimaryOwnerContact);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
-
-            
             #line 132 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(c.ChassisSKUNumber);
+                                                                                    Write(c.PrimaryOwnerContact);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 133 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(c.SystemSKUNumber);
+                                                                Write(c.ChassisSKUNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 135 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 134 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(c.SystemSKUNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                            <td>\r\n");
+
+            
+            #line 136 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 135 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 136 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (c.OEMStringArray != null)
                                                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                    ");
-
-            
-            #line 137 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                     Write(string.Join("; ", c.OEMStringArray));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("                                                    <span data-clipboard>");
 
             
             #line 138 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                    Write(string.Join("; ", c.OEMStringArray));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 139 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -569,42 +586,39 @@ WriteLiteral("                                            </td>\r\n             
 "              <td>\r\n");
 
             
-            #line 141 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 142 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 141 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 142 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (c.CurrentTimeZone.HasValue)
                                                 {
-                                                    
+
             
             #line default
             #line hidden
+WriteLiteral("                                                    <span data-clipboard>");
+
             
-            #line 143 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                Write((c.CurrentTimeZone.Value / 60).ToString(@"00\:"));
+            #line 144 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                     Write((c.CurrentTimeZone.Value / 60).ToString(@"00\:"));
 
             
             #line default
             #line hidden
             
-            #line 143 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                                       
-            
-            #line default
-            #line hidden
-            
-            #line 143 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                                   Write(Math.Abs(c.CurrentTimeZone.Value % 60).ToString("00"));
+            #line 144 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                                        Write(Math.Abs(c.CurrentTimeZone.Value % 60).ToString("00"));
 
             
             #line default
             #line hidden
+WriteLiteral("</span>\r\n");
+
             
-            #line 143 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                                                                                               
+            #line 145 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -614,32 +628,32 @@ WriteLiteral("                                            </td>\r\n             
 "              <td>\r\n");
 
             
-            #line 147 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 148 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 147 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 148 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                  if (c.Roles != null)
                                                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                    ");
+WriteLiteral("                                                    <span data-clipboard>");
 
             
-            #line 149 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                     Write(string.Join("; ", c.Roles));
+            #line 150 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                    Write(string.Join("; ", c.Roles));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("</span>\r\n");
 
             
-            #line 150 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 151 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                 }
 
             
@@ -649,7 +663,7 @@ WriteLiteral("                                            </td>\r\n             
 "          </tr>\r\n");
 
             
-            #line 153 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 154 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -659,7 +673,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 158 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 159 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
@@ -668,7 +682,7 @@ WriteLiteral("                                </tbody>\r\n                      
 WriteLiteral("                ");
 
             
-            #line 159 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 160 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (processors != null)
                 {
 
@@ -699,13 +713,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 176 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 177 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 176 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 177 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var processor in processors)
                                     {
 
@@ -713,64 +727,69 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>");
-
-            
-            #line 179 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(processor.Name);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"         <td><span data-clipboard>");
 
             
             #line 180 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(processor.Description);
+                                                                Write(processor.Name);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 181 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(processor.Architecture);
+                                                                Write(processor.Description);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 182 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(processor.MaxClockSpeedFriendly());
+                                                                Write(processor.Architecture);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 183 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(processor.NumberOfCores.GetValueOrDefault(0).ToString("N0"));
+                                                                Write(processor.MaxClockSpeedFriendly());
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 184 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(processor.NumberOfLogicalProcessors.GetValueOrDefault(0).ToString("N0"));
+                                                                Write(processor.NumberOfCores.GetValueOrDefault(0).ToString("N0"));
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 186 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 185 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(processor.NumberOfLogicalProcessors.GetValueOrDefault(0).ToString("N0"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                        </tr>\r\n");
+
+            
+            #line 187 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -780,7 +799,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 191 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 192 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
@@ -789,7 +808,7 @@ WriteLiteral("                                </tbody>\r\n                      
 WriteLiteral("                ");
 
             
-            #line 192 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 193 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (physicalMemory != null)
                 {
 
@@ -820,13 +839,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 209 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 210 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 209 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 210 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var memory in physicalMemory)
                                     {
 
@@ -834,64 +853,69 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>");
-
-            
-            #line 212 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(memory.DeviceLocator);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"         <td><span data-clipboard>");
 
             
             #line 213 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(memory.Manufacturer);
+                                                                Write(memory.DeviceLocator);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 214 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(memory.PartNumber);
+                                                                Write(memory.Manufacturer);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 215 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(memory.SerialNumber);
+                                                                Write(memory.PartNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 216 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(memory.CapacityFriendly());
+                                                                Write(memory.SerialNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 217 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(memory.ConfiguredClockSpeed);
+                                                                Write(memory.CapacityFriendly());
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 219 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 218 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(memory.ConfiguredClockSpeed);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                        </tr>\r\n");
+
+            
+            #line 220 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -901,7 +925,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 224 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 225 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
@@ -910,7 +934,7 @@ WriteLiteral("                                </tbody>\r\n                      
 WriteLiteral("                ");
 
             
-            #line 225 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 226 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (networkAdapters != null)
                 {
 
@@ -940,13 +964,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 241 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 242 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 241 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 242 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var adapter in networkAdapters)
                                     {
 
@@ -954,22 +978,21 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>\r\n");
-
-WriteLiteral("                                                ");
+"         <td>\r\n                                                <span data-clipbo" +
+"ard>");
 
             
-            #line 245 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                            Write(adapter.NetConnectionID ?? "N/A");
+            #line 246 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                 Write(adapter.NetConnectionID ?? "N/A");
 
             
             #line default
             #line hidden
-WriteLiteral(" ");
+WriteLiteral("</span> ");
 
             
-            #line 245 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                                     if (adapter.IsWlanAdapter)
+            #line 246 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                                                                 if (adapter.IsWlanAdapter)
                                                 {
             
             #line default
@@ -981,53 +1004,56 @@ WriteLiteral(" class=\"fa fa-wifi\"");
 WriteLiteral("></i>");
 
             
-            #line 246 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 247 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                            }
 
             
             #line default
             #line hidden
 WriteLiteral("                                            </td>\r\n                              " +
-"              <td>");
-
-            
-            #line 248 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(adapter.Manufacturer);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"              <td><span data-clipboard>");
 
             
             #line 249 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(adapter.ProductName);
+                                                                Write(adapter.Manufacturer);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 250 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(adapter.SpeedFriendly());
+                                                                Write(adapter.ProductName);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 251 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(adapter.MACAddress);
+                                                                Write(adapter.SpeedFriendly());
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 253 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 252 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(adapter.MACAddress);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                        </tr>\r\n");
+
+            
+            #line 254 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -1037,7 +1063,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 258 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 259 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
                 else
                 {
@@ -1056,19 +1082,19 @@ WriteLiteral(">\r\n                            <th>LAN MAC Address</th>\r\n     
 
 WriteLiteral(" class=\"pad code\"");
 
-WriteLiteral(">");
+WriteLiteral("><span data-clipboard>");
 
             
-            #line 265 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                             Write(lanMacAddress);
+            #line 266 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                 Write(lanMacAddress);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                        </tr>\r\n");
 
             
-            #line 267 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 268 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                     }
                     if (wlanMacAddress != null)
                     {
@@ -1085,19 +1111,19 @@ WriteLiteral(">\r\n                            <th>WLAN MAC Address</th>\r\n    
 
 WriteLiteral(" class=\"pad code\"");
 
-WriteLiteral(">");
+WriteLiteral("><span data-clipboard>");
 
             
-            #line 272 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                             Write(wlanMacAddress);
+            #line 273 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                 Write(wlanMacAddress);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                        </tr>\r\n");
 
             
-            #line 274 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 275 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                     }
                 }
 
@@ -1107,7 +1133,7 @@ WriteLiteral("</td>\r\n                        </tr>\r\n");
 WriteLiteral("                ");
 
             
-            #line 276 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 277 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (diskDrives != null)
                 {
 
@@ -1139,13 +1165,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 294 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 295 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 294 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 295 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var disk in diskDrives)
                                     {
 
@@ -1153,73 +1179,79 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("                                        <tr>\r\n                                   " +
-"         <td>");
-
-            
-            #line 297 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.Manufacturer);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+"         <td><span data-clipboard>");
 
             
             #line 298 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.Model);
+                                                                Write(disk.Manufacturer);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 299 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.SerialNumber);
+                                                                Write(disk.Model);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 300 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.FirmwareRevision);
+                                                                Write(disk.SerialNumber);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 301 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.MediaType);
+                                                                Write(disk.FirmwareRevision);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 302 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.InterfaceType);
+                                                                Write(disk.MediaType);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                            <td>");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
             #line 303 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                           Write(disk.SizeFriendly());
+                                                                Write(disk.InterfaceType);
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n                                        </tr>\r\n");
+WriteLiteral("</span></td>\r\n                                            <td><span data-clipboar" +
+"d>");
 
             
-            #line 305 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 304 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                Write(disk.SizeFriendly());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span></td>\r\n                                        </tr>\r\n");
+
+            
+            #line 306 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                         if (disk.Partitions != null)
                                         {
                                             // calculate stretched offsets
@@ -1242,13 +1274,13 @@ WriteLiteral(" class=\"partition\"");
 WriteLiteral(">\r\n");
 
             
-            #line 314 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 315 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                         
             
             #line default
             #line hidden
             
-            #line 314 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 315 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                          foreach (var partition in disk.Partitions)
                                                         {
                                                             var logicalDisk = partition.LogicalDisk;
@@ -1291,55 +1323,55 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                            <span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 19916), Tuple.Create("\"", 19952)
+WriteAttribute("title", Tuple.Create(" title=\"", 21290), Tuple.Create("\"", 21326)
             
-            #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-, Tuple.Create(Tuple.Create("", 19924), Tuple.Create<System.Object, System.Int32>(partitionTitle
-            
-            #line default
-            #line hidden
-, 19924), false)
-, Tuple.Create(Tuple.Create(" ", 19941), Tuple.Create("&#xA", 19942), true)
-            
-            #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-               , Tuple.Create(Tuple.Create("", 19946), Tuple.Create<System.Object, System.Int32>(tag
+            #line 351 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+, Tuple.Create(Tuple.Create("", 21298), Tuple.Create<System.Object, System.Int32>(partitionTitle
             
             #line default
             #line hidden
-, 19946), false)
+, 21298), false)
+, Tuple.Create(Tuple.Create(" ", 21315), Tuple.Create("&#xA", 21316), true)
+            
+            #line 351 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+               , Tuple.Create(Tuple.Create("", 21320), Tuple.Create<System.Object, System.Int32>(tag
+            
+            #line default
+            #line hidden
+, 21320), false)
 );
 
-WriteAttribute("style", Tuple.Create(" style=\"", 19953), Tuple.Create("\"", 20015)
-, Tuple.Create(Tuple.Create("", 19961), Tuple.Create("left:", 19961), true)
+WriteAttribute("style", Tuple.Create(" style=\"", 21327), Tuple.Create("\"", 21389)
+, Tuple.Create(Tuple.Create("", 21335), Tuple.Create("left:", 21335), true)
             
-            #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                   , Tuple.Create(Tuple.Create(" ", 19966), Tuple.Create<System.Object, System.Int32>(offsetPercentage
-            
-            #line default
-            #line hidden
-, 19967), false)
-, Tuple.Create(Tuple.Create("", 19986), Tuple.Create("%;", 19986), true)
-, Tuple.Create(Tuple.Create(" ", 19988), Tuple.Create("width:", 19989), true)
-            
-            #line 350 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                                , Tuple.Create(Tuple.Create(" ", 19995), Tuple.Create<System.Object, System.Int32>(widthPercentage
+            #line 351 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                   , Tuple.Create(Tuple.Create(" ", 21340), Tuple.Create<System.Object, System.Int32>(offsetPercentage
             
             #line default
             #line hidden
-, 19996), false)
-, Tuple.Create(Tuple.Create("", 20014), Tuple.Create("%", 20014), true)
+, 21341), false)
+, Tuple.Create(Tuple.Create("", 21360), Tuple.Create("%;", 21360), true)
+, Tuple.Create(Tuple.Create(" ", 21362), Tuple.Create("width:", 21363), true)
+            
+            #line 351 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                                , Tuple.Create(Tuple.Create(" ", 21369), Tuple.Create<System.Object, System.Int32>(widthPercentage
+            
+            #line default
+            #line hidden
+, 21370), false)
+, Tuple.Create(Tuple.Create("", 21388), Tuple.Create("%", 21388), true)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 351 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 352 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                 
             
             #line default
             #line hidden
             
-            #line 351 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 352 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                  if (freeSpacePercentage > 0.5)
                                                                 {
 
@@ -1350,31 +1382,31 @@ WriteLiteral("                                                                  
 
 WriteLiteral(" class=\"freespace\"");
 
-WriteAttribute("style", Tuple.Create(" style=\"", 20274), Tuple.Create("\"", 20349)
-, Tuple.Create(Tuple.Create("", 20282), Tuple.Create("left:", 20282), true)
+WriteAttribute("style", Tuple.Create(" style=\"", 21648), Tuple.Create("\"", 21723)
+, Tuple.Create(Tuple.Create("", 21656), Tuple.Create("left:", 21656), true)
             
-            #line 353 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                        , Tuple.Create(Tuple.Create(" ", 20287), Tuple.Create<System.Object, System.Int32>(100 - freeSpacePercentage
-            
-            #line default
-            #line hidden
-, 20288), false)
-, Tuple.Create(Tuple.Create("", 20316), Tuple.Create("%;", 20316), true)
-, Tuple.Create(Tuple.Create(" ", 20318), Tuple.Create("width:", 20319), true)
-            
-            #line 353 "..\..\Views\Device\DeviceParts\_Details.cshtml"
-                                                              , Tuple.Create(Tuple.Create(" ", 20325), Tuple.Create<System.Object, System.Int32>(freeSpacePercentage
+            #line 354 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                        , Tuple.Create(Tuple.Create(" ", 21661), Tuple.Create<System.Object, System.Int32>(100 - freeSpacePercentage
             
             #line default
             #line hidden
-, 20326), false)
-, Tuple.Create(Tuple.Create("", 20348), Tuple.Create("%", 20348), true)
+, 21662), false)
+, Tuple.Create(Tuple.Create("", 21690), Tuple.Create("%;", 21690), true)
+, Tuple.Create(Tuple.Create(" ", 21692), Tuple.Create("width:", 21693), true)
+            
+            #line 354 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                              , Tuple.Create(Tuple.Create(" ", 21699), Tuple.Create<System.Object, System.Int32>(freeSpacePercentage
+            
+            #line default
+            #line hidden
+, 21700), false)
+, Tuple.Create(Tuple.Create("", 21722), Tuple.Create("%", 21722), true)
 );
 
 WriteLiteral("></span>\r\n");
 
             
-            #line 354 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 355 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                 }
 
             
@@ -1387,7 +1419,7 @@ WriteLiteral(" class=\"details\"");
 WriteLiteral(">\r\n                                                                    <strong>");
 
             
-            #line 356 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 357 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                        Write(partitionTitle);
 
             
@@ -1399,7 +1431,7 @@ WriteLiteral("</strong>\r\n                                                     
 WriteLiteral("                                                                    ");
 
             
-            #line 358 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 359 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                Write(tag);
 
             
@@ -1409,7 +1441,7 @@ WriteLiteral("\r\n                                                              
 "                                                      </span>\r\n");
 
             
-            #line 361 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 362 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                         }
 
             
@@ -1420,7 +1452,7 @@ WriteLiteral("                                                    </div>\r\n    
 "tr>\r\n");
 
             
-            #line 365 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 366 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                         }
                                     }
 
@@ -1431,13 +1463,86 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 371 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 372 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                <tr");
+WriteLiteral("                ");
+
+            
+            #line 373 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                 if (!string.IsNullOrEmpty(mdmHardwareData))
+                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <tr");
+
+WriteLiteral(" class=\"device_detail_mdm_hardware_data\"");
+
+WriteLiteral(">\r\n                        <th>MDM Hardware Data</th>\r\n                        <t" +
+"d");
+
+WriteLiteral(" class=\"pad\"");
+
+WriteLiteral(">\r\n                            <div>\r\n                                <button");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(" data-action=\"copy\"");
+
+WriteLiteral(">Copy</button>\r\n                                <button");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(" data-action=\"show\"");
+
+WriteLiteral(">Show</button>\r\n                            </div>\r\n                            <" +
+"code");
+
+WriteLiteral(" class=\"hidden\"");
+
+WriteLiteral(" data-clipboard>");
+
+            
+            #line 382 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                                                           Write(mdmHardwareData);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"</code>
+                            <script>
+                                $(function () {
+                                    const $container = $('tr.device_detail_mdm_hardware_data');
+                                    if (!navigator.clipboard) {
+                                        $container.find('button[data-action=""copy""]').remove();
+                                    } else {
+                                        $container.find('button[data-action=""copy""]').on('click', function () {
+                                            navigator.clipboard.writeText($container.find('code').text());
+                                        });
+                                    }
+                                    $container.find('button[data-action=""show""]').on('click', function () {
+                                        $container.find('code').removeClass('hidden');
+                                        $(this).remove();
+                                    });
+                                });
+                            </script>
+                        </td>
+                    </tr>
+");
+
+            
+            #line 401 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <tr");
 
 WriteLiteral(" class=\"device_detail_ac_adapter\"");
 
@@ -1448,13 +1553,13 @@ WriteLiteral(" class=\"pad\"");
 WriteLiteral(">\r\n");
 
             
-            #line 376 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 405 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 376 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 405 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                          if (canConfig)
                         {
                             
@@ -1462,40 +1567,40 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 407 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                        Write(Html.TextBox("DeviceDetail_ACAdapter", Model.Device.DeviceDetails.ACAdapter()));
 
             
             #line default
             #line hidden
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 407 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                             
             
             #line default
             #line hidden
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 407 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 407 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                     
             
             #line default
             #line hidden
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 407 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 378 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 407 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                                              
 
             
@@ -1506,7 +1611,7 @@ WriteLiteral("                            <script>\r\n                          
 "(\'#DeviceDetail_ACAdapter\'), \'Unknown\', \'");
 
             
-            #line 381 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 410 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                   Write(Url.Action(MVC.API.Device.UpdateDetailACAdapter(Model.Device.SerialNumber, null)));
 
             
@@ -1516,7 +1621,7 @@ WriteLiteral("\', \'DetailACAdapter\');\r\n                            });\r\n  
 "    </script>\r\n");
 
             
-            #line 384 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 413 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         }
                         else
                         {
@@ -1525,14 +1630,14 @@ WriteLiteral("\', \'DetailACAdapter\');\r\n                            });\r\n  
             #line default
             #line hidden
             
-            #line 387 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 416 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         Write(Model.Device.DeviceDetails.ACAdapter() ?? "Unknown");
 
             
             #line default
             #line hidden
             
-            #line 387 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 416 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                   
                         }
 
@@ -1550,13 +1655,13 @@ WriteLiteral(" class=\"pad\"");
 WriteLiteral(">\r\n");
 
             
-            #line 394 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 423 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 394 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 423 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                          if (canConfig)
                         {
                             
@@ -1564,40 +1669,40 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 425 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                        Write(Html.TextBox("DeviceDetail_Battery", Model.Device.DeviceDetails.Battery()));
 
             
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 425 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                         
             
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 425 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                    Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 425 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                 
             
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 425 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                            Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 396 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 425 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                                          
 
             
@@ -1608,7 +1713,7 @@ WriteLiteral("                            <script>\r\n                          
 "(\'#DeviceDetail_Battery\'), \'Unknown\', \'");
 
             
-            #line 399 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 428 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                 Write(Url.Action(MVC.API.Device.UpdateDetailBattery(Model.Device.SerialNumber, null)));
 
             
@@ -1618,7 +1723,7 @@ WriteLiteral("\', \'DetailBattery\');\r\n                            });\r\n    
 "  </script>\r\n");
 
             
-            #line 402 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 431 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         }
                         else
                         {
@@ -1627,14 +1732,14 @@ WriteLiteral("\', \'DetailBattery\');\r\n                            });\r\n    
             #line default
             #line hidden
             
-            #line 405 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 434 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         Write(Model.Device.DeviceDetails.Battery() ?? "Unknown");
 
             
             #line default
             #line hidden
             
-            #line 405 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 434 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                 
                         }
 
@@ -1644,13 +1749,13 @@ WriteLiteral("\', \'DetailBattery\');\r\n                            });\r\n    
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 409 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 438 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 409 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 438 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (batteries != null)
                 {
 
@@ -1682,13 +1787,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 427 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 456 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 427 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 456 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                      foreach (var battery in batteries)
                                     {
 
@@ -1699,7 +1804,7 @@ WriteLiteral("                                        <tr>\r\n                  
 "         <td>");
 
             
-            #line 430 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 459 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.Name);
 
             
@@ -1708,7 +1813,7 @@ WriteLiteral("                                        <tr>\r\n                  
 WriteLiteral("</td>\r\n                                            <td>");
 
             
-            #line 431 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 460 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.Description);
 
             
@@ -1717,7 +1822,7 @@ WriteLiteral("</td>\r\n                                            <td>");
 WriteLiteral("</td>\r\n                                            <td>");
 
             
-            #line 432 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 461 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.Availability);
 
             
@@ -1726,7 +1831,7 @@ WriteLiteral("</td>\r\n                                            <td>");
 WriteLiteral("</td>\r\n                                            <td>");
 
             
-            #line 433 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 462 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.Chemistry);
 
             
@@ -1735,7 +1840,7 @@ WriteLiteral("</td>\r\n                                            <td>");
 WriteLiteral("</td>\r\n                                            <td>");
 
             
-            #line 434 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 463 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.DesignVoltage.GetValueOrDefault(0).ToString("N0"));
 
             
@@ -1744,7 +1849,7 @@ WriteLiteral("</td>\r\n                                            <td>");
 WriteLiteral(" mV</td>\r\n                                            <td>");
 
             
-            #line 435 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 464 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.DesignCapacity.GetValueOrDefault(0).ToString("N0"));
 
             
@@ -1753,7 +1858,7 @@ WriteLiteral(" mV</td>\r\n                                            <td>");
 WriteLiteral(" mWh</td>\r\n                                            <td>");
 
             
-            #line 436 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 465 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                            Write(battery.FullChargeCapacity.GetValueOrDefault(0).ToString("N0"));
 
             
@@ -1762,7 +1867,7 @@ WriteLiteral(" mWh</td>\r\n                                            <td>");
 WriteLiteral(" mWh</td>\r\n                                        </tr>\r\n");
 
             
-            #line 438 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 467 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                     }
 
             
@@ -1772,7 +1877,7 @@ WriteLiteral("                                </tbody>\r\n                      
 "                       </td>\r\n                    </tr>\r\n");
 
             
-            #line 443 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 472 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             
@@ -1789,13 +1894,13 @@ WriteLiteral(" class=\"pad\"");
 WriteLiteral(">\r\n");
 
             
-            #line 447 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 476 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 447 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 476 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                          if (canConfig)
                         {
                             
@@ -1803,40 +1908,40 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 449 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 478 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                        Write(Html.TextBox("DeviceDetail_Keyboard", Model.Device.DeviceDetails.Keyboard()));
 
             
             #line default
             #line hidden
             
-            #line 449 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 478 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                           
             
             #line default
             #line hidden
             
-            #line 449 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 478 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                      Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 449 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 478 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                   
             
             #line default
             #line hidden
             
-            #line 449 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 478 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                              Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 449 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 478 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                                                            
 
             
@@ -1847,7 +1952,7 @@ WriteLiteral("                            <script>\r\n                          
 "(\'#DeviceDetail_Keyboard\'), \'Unknown\', \'");
 
             
-            #line 452 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 481 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                                                  Write(Url.Action(MVC.API.Device.UpdateDetailKeyboard(Model.Device.SerialNumber, null)));
 
             
@@ -1857,7 +1962,7 @@ WriteLiteral("\', \'DetailKeyboard\');\r\n                            });\r\n   
 "   </script>\r\n");
 
             
-            #line 455 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 484 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         }
                         else
                         {
@@ -1866,14 +1971,14 @@ WriteLiteral("\', \'DetailKeyboard\');\r\n                            });\r\n   
             #line default
             #line hidden
             
-            #line 458 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 487 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                         Write(Model.Device.DeviceDetails.Keyboard() ?? "Unknown");
 
             
             #line default
             #line hidden
             
-            #line 458 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 487 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                                                  
                         }
 
@@ -1883,13 +1988,13 @@ WriteLiteral("\', \'DetailKeyboard\');\r\n                            });\r\n   
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 462 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 491 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 462 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 491 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                  if (Model.Device.LastEnrolDate.HasValue)
                 {
 
@@ -1907,7 +2012,7 @@ WriteLiteral(" colspan=\"2\"");
 WriteLiteral("><em>Details collected ");
 
             
-            #line 465 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 494 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                                                          Write(CommonHelpers.FriendlyDate(Model.Device.LastEnrolDate));
 
             
@@ -1916,7 +2021,7 @@ WriteLiteral("><em>Details collected ");
 WriteLiteral(" at time of last enrolment</em></td>\r\n                    </tr>\r\n");
 
             
-            #line 467 "..\..\Views\Device\DeviceParts\_Details.cshtml"
+            #line 496 "..\..\Views\Device\DeviceParts\_Details.cshtml"
                 }
 
             

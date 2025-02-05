@@ -20,6 +20,7 @@ namespace Disco.Models.Repository
         public const string HardwareKeyBaseBoard = "BaseBoard";
         public const string HardwareKeyComputerSystem = "ComputerSystem";
         public const string HardwareKeyBatteries = "Batteries";
+        public const string HardwareKeyMdmHardwareData = "MdmHardwareData";
 
         [Column(Order = 0), Key]
         public string DeviceSerialNumber { get; set; }

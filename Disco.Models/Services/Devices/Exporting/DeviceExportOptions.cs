@@ -127,6 +127,8 @@ namespace Disco.Models.Services.Devices.Exporting
         public bool DetailLanAdapters { get; set; }
         [Display(ShortName = "Details", Name = "Wireless LAN Adapters", Description = "The Wireless LAN Adapters associated with the device")]
         public bool DetailWLanAdapters { get; set; }
+        [Display(ShortName = "Details", Name = "MDM Hardware Data", Description = "The Mobile Device Management Hardware Data associated with the device")]
+        public bool DetailMdmHardwareData { get; set; }
         [Display(ShortName = "Details", Name = "AC Adapter", Description = "The AC Adapter associated with the device")]
         public bool DetailACAdapter { get; set; }
         [Display(ShortName = "Details", Name = "Battery", Description = "The manually entered battery associated with the device")]

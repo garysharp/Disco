@@ -5883,7 +5883,7 @@ div.columnHost .column50 {
   width: 50%;
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 .success {
   color: #60A917;
@@ -6021,7 +6021,7 @@ i.clipboard-link {
   right: calc(-1.28571429em - 4px);
   top: calc(100% - 14px);
   z-index: 100;
-  color: #D1D1D1;
+  color: #d8d8d8;
   background-color: #fff;
 }
 i.clipboard-link:hover {
