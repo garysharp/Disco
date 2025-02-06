@@ -1,19 +1,20 @@
 ﻿using Disco.Models.Services.Exporting;
 using Disco.Services.Tasks;
+using System;
 
 namespace Disco.Services.Exporting
 {
-    public class ExportTaskContext<T> where T : IExportOptions
+    public class ExportTaskContext
     {
-        public T Options { get; private set; }
+        public IExportContext ExportContext { get; }
+        public ScheduledTaskStatus TaskStatus { get; internal set; }
+        public ExportResult Result { get; internal set; }
 
-        public ScheduledTaskStatus TaskStatus { get; set; }
+        public Guid Id => ExportContext.Id;
 
-        public ExportResult Result { get; set; }
-
-        public ExportTaskContext(T Options)
+        public ExportTaskContext(IExportContext context)
         {
-            this.Options = Options;
+            ExportContext = context;
         }
     }
 }

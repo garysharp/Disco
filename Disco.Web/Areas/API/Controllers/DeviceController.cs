@@ -1,9 +1,8 @@
 ﻿using Disco.Models.Repository;
-using Disco.Models.Services.Devices.Exporting;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Devices.Exporting;
+using Disco.Services.Devices;
 using Disco.Services.Devices.Importing;
 using Disco.Services.Exporting;
 using Disco.Services.Interop;
@@ -685,7 +684,6 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Exporting
-        internal const string ExportSessionCacheKey = "DeviceExportContext_{0}";
 
         [DiscoAuthorize(Claims.Device.Actions.Export)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -699,39 +697,29 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = DeviceExportTask.ScheduleNow(Model.Options);
-
-            // Store Export Context in Web Cache
-            string key = string.Format(ExportSessionCacheKey, exportContext.TaskStatus.SessionId);
-            HttpRuntime.Cache.Insert(key, exportContext, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
-
-            // Set Task Finished Url
-            var finishedActionResult = MVC.Device.Export(exportContext.TaskStatus.SessionId, null, null);
-            exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult));
+            var exportContext = new DeviceExportContext(Model.Options);
+            var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Device.Export(id, null, null)));
 
             // Try waiting for completion
-            if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
-                return RedirectToAction(finishedActionResult);
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+                return RedirectToAction(MVC.Device.Export(taskContext.Id, null, null));
             else
-                return RedirectToAction(MVC.Config.Logging.TaskStatus(exportContext.TaskStatus.SessionId));
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
         }
         [DiscoAuthorize(Claims.Device.Actions.Export)]
-        public virtual ActionResult ExportRetrieve(string Id)
+        public virtual ActionResult ExportRetrieve(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
+            if (id == Guid.Empty)
+                throw new ArgumentNullException(nameof(id));
 
-            string key = string.Format(ExportSessionCacheKey, Id);
-            var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<DeviceExportOptions>;
-
-            if (context == null)
-                throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", "Id");
+            if (!ExportTask.TryFromCache(id, out var context))
+                throw new ArgumentException("The export id specified is invalid, or the export data expired (60 minutes)", nameof(id));
 
             if (context.Result == null || context.Result.Result == null)
-                throw new ArgumentException("The export session is still running, or failed to complete successfully", "Id");
+                throw new ArgumentException("The export session is still running, or failed to complete successfully", nameof(id));
 
             if (context.Result.RecordCount == 0)
-                throw new ArgumentException("No records were found to export", nameof(Id));
+                throw new ArgumentException("No records were found to export", nameof(id));
 
             var fileStream = context.Result.Result;
 

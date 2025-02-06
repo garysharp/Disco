@@ -124,7 +124,7 @@ namespace Disco.Web.Areas.Config.Controllers
         #region Export
 
         [DiscoAuthorizeAny(Claims.Config.UserFlag.Export), HttpGet]
-        public virtual ActionResult Export(string DownloadId, int? UserFlagId, bool? CurrentOnly)
+        public virtual ActionResult Export(Guid? exportId, int? userFlagId, bool? currentOnly)
         {
             var m = new ExportModel()
             {
@@ -132,26 +132,20 @@ namespace Disco.Web.Areas.Config.Controllers
                 UserFlags = UserFlagService.GetUserFlags(),
             };
 
-            if (!string.IsNullOrWhiteSpace(DownloadId))
+            if (ExportTask.TryFromCache(exportId, out var context))
             {
-                string key = string.Format(API.Controllers.UserFlagController.ExportSessionCacheKey, DownloadId);
-                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<UserFlagExportOptions>;
-
-                if (context != null)
-                {
-                    m.ExportSessionResult = context.Result;
-                    m.ExportSessionId = DownloadId;
-                }
+                m.ExportId = exportId;
+                m.ExportResult = context.Result;
             }
 
-            if (UserFlagId.HasValue && CurrentOnly.HasValue)
+            if (userFlagId.HasValue && currentOnly.HasValue)
             {
-                m.Options.UserFlagIds = new List<int>() { UserFlagId.Value };
-                m.Options.CurrentOnly = CurrentOnly.Value;
+                m.Options.UserFlagIds = new List<int>() { userFlagId.Value };
+                m.Options.CurrentOnly = currentOnly.Value;
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigUserFlagExportModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigUserFlagExportModel>(ControllerContext, m);
 
             return View(m);
         }

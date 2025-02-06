@@ -4,7 +4,7 @@ using Disco.Models.Repository;
 using System;
 using System.Collections.Generic;
 
-namespace Disco.Models.Services.Devices.Exporting
+namespace Disco.Models.Services.Devices
 {
     public class DeviceExportRecord : IExportRecord
     {

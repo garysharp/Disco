@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Users.UserFlags;
 using Disco.Models.UI;
+using System;
 using System.Collections.Generic;
 
 namespace Disco.Models.Areas.Config.UI.UserFlag
@@ -9,8 +10,8 @@ namespace Disco.Models.Areas.Config.UI.UserFlag
     {
         UserFlagExportOptions Options { get; set; }
 
-        string ExportSessionId { get; set; }
-        ExportResult ExportSessionResult { get; set; }
+        Guid? ExportId { get; set; }
+        ExportResult ExportResult { get; set; }
 
         List<Repository.UserFlag> UserFlags { get; set; }
     }

@@ -3022,14 +3022,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 1015 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-   Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Profile, Model.DeviceProfile.Id)));
+   Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Profile, Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
             #line 1015 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                                                                                                                                    
+                                                                                                                                                          
     }
 
             

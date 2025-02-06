@@ -161,17 +161,17 @@
         </script>
     }
 </div>
-@if (Model.ExportSessionId != null)
+@if (Model.ExportId.HasValue)
 {
     <div id="UserFlag_Export_Download_Dialog" class="dialog" title="Export User Flags">
-        @if (Model.ExportSessionResult.RecordCount == 0)
+        @if (Model.ExportResult.RecordCount == 0)
         {
             <h4>No records matched the filter criteria</h4>
         }
         else
         {
-            <h4>@Model.ExportSessionResult.RecordCount record@(Model.ExportSessionResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
-            <a href="@Url.Action(MVC.API.UserFlag.ExportRetrieve(Model.ExportSessionId))" class="button"><i class="fa fa-download fa-lg"></i>Download User Flag Export</a>
+            <h4>@Model.ExportResult.RecordCount record@(Model.ExportResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
+            <a href="@Url.Action(MVC.API.UserFlag.ExportRetrieve(Model.ExportId.Value))" class="button"><i class="fa fa-download fa-lg"></i>Download User Flag Export</a>
         }
     </div>
     <script>

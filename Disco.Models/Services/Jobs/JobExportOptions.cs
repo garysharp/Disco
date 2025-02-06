@@ -4,10 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Disco.Models.Services.Jobs.Exporting
+namespace Disco.Models.Services.Jobs
 {
     public class JobExportOptions : IExportOptions
     {
+        public int Version { get; set; } = 1;
+        public ExportFormat Format { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, HtmlEncode = false)]
         public DateTime FilterStartDate { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, HtmlEncode = false)]
@@ -16,11 +19,6 @@ namespace Disco.Models.Services.Jobs.Exporting
         public string FilterJobTypeId { get; set; }
         public List<string> FilterJobSubTypeIds { get; set; }
         public int? FilterJobQueueId { get; set; }
-
-        public ExportFormat Format { get; set; }
-        public string FilenamePrefix { get; } = "DiscoJobExport";
-        public string ExcelWorksheetName { get; } = "JobExport";
-        public string ExcelTableName { get; } = "Jobs";
 
         // Job
         [Display(ShortName = "Job", Name = "Identifier", Description = "The identifier of the job")]

@@ -3,7 +3,7 @@ using Disco.Models.Repository;
 using System;
 using System.Collections.Generic;
 
-namespace Disco.Models.Services.Jobs.Exporting
+namespace Disco.Models.Services.Jobs
 {
     public class JobExportRecord : IExportRecord
     {

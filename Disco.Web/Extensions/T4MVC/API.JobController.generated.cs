@@ -2229,10 +2229,10 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ExportRetrieve(string id)
+        public override System.Web.Mvc.ActionResult ExportRetrieve(System.Guid id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);

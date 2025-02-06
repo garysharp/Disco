@@ -1,6 +1,7 @@
-﻿using Disco.Models.Services.Devices.Exporting;
+﻿using Disco.Models.Services.Devices;
 using Disco.Models.Services.Exporting;
 using Disco.Models.UI.Device;
+using System;
 using System.Collections.Generic;
 
 namespace Disco.Web.Models.Device
@@ -9,8 +10,8 @@ namespace Disco.Web.Models.Device
     {
         public DeviceExportOptions Options { get; set; }
 
-        public string ExportSessionId { get; set; }
-        public ExportResult ExportSessionResult { get; set; }
+        public Guid? ExportId { get; set; }
+        public ExportResult ExportResult { get; set; }
 
         public IEnumerable<KeyValuePair<int, string>> DeviceBatches { get; set; }
         public IEnumerable<KeyValuePair<int, string>> DeviceModels { get; set; }

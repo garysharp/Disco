@@ -122,7 +122,7 @@ namespace Disco.Web.Areas.Config.Controllers
         #region Export
 
         [DiscoAuthorizeAny(Claims.Config.DeviceFlag.Export), HttpGet]
-        public virtual ActionResult Export(string DownloadId, int? DeviceFlagId, bool? CurrentOnly)
+        public virtual ActionResult Export(Guid? exportId, int? deviceFlagId, bool? currentOnly)
         {
             var m = new ExportModel()
             {
@@ -130,26 +130,20 @@ namespace Disco.Web.Areas.Config.Controllers
                 DeviceFlags = DeviceFlagService.GetDeviceFlags(),
             };
 
-            if (!string.IsNullOrWhiteSpace(DownloadId))
+            if (ExportTask.TryFromCache(exportId, out var context))
             {
-                string key = string.Format(API.Controllers.DeviceFlagController.ExportSessionCacheKey, DownloadId);
-                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<DeviceFlagExportOptions>;
-
-                if (context != null)
-                {
-                    m.ExportSessionResult = context.Result;
-                    m.ExportSessionId = DownloadId;
-                }
+                m.ExportId = context.Id;
+                m.ExportResult = context.Result;
             }
 
-            if (DeviceFlagId.HasValue && CurrentOnly.HasValue)
+            if (deviceFlagId.HasValue && currentOnly.HasValue)
             {
-                m.Options.DeviceFlagIds = new List<int>() { DeviceFlagId.Value };
-                m.Options.CurrentOnly = CurrentOnly.Value;
+                m.Options.DeviceFlagIds = new List<int>() { deviceFlagId.Value };
+                m.Options.CurrentOnly = currentOnly.Value;
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceFlagExportModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceFlagExportModel>(ControllerContext, m);
 
             return View(m);
         }

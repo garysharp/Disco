@@ -1,6 +1,5 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Services.Jobs;
-using Disco.Models.Services.Jobs.Exporting;
 using System;
 using System.Collections.Generic;
 
@@ -10,15 +9,15 @@ namespace Disco.Data.Configuration.Modules
     {
         public JobPreferencesConfiguration(DiscoDataContext Database) : base(Database) { }
 
-        public override string Scope { get { return "JobPreferences"; } }
+        public override string Scope { get; } = "JobPreferences";
 
         /// <summary>
         /// Initial comments template for new jobs
         /// </summary>
         public string InitialCommentsTemplate
         {
-            get { return Get<string>(null); }
-            set { Set(value); }
+            get => Get<string>(null);
+            set => Set(value);
         }
 
         /// <summary>
@@ -26,11 +25,11 @@ namespace Disco.Data.Configuration.Modules
         /// </summary>
         public int LongRunningJobDaysThreshold
         {
-            get { return Get<int>(7); }
+            get => Get(7);
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("value", "The Long Running Job Days Threshold cannot be less than zero");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The Long Running Job Days Threshold cannot be less than zero");
 
                 Set(value);
             }
@@ -41,11 +40,11 @@ namespace Disco.Data.Configuration.Modules
         /// </summary>
         public int StaleJobMinutesThreshold
         {
-            get { return Get<int>(60 * 24 * 2); } // Default to 48 Hours (2 days)
+            get => Get(60 * 24 * 2);  // Default to 48 Hours (2 days)
             set
             {
                 if (value < 0)
-                    throw new ArgumentOutOfRangeException("value", "The Stale Job Minutes Threshold cannot be less than zero");
+                    throw new ArgumentOutOfRangeException(nameof(value), "The Stale Job Minutes Threshold cannot be less than zero");
 
                 Set(value);
             }
@@ -53,8 +52,8 @@ namespace Disco.Data.Configuration.Modules
 
         public bool LodgmentIncludeAllAttachmentsByDefault
         {
-            get { return Get(false); }
-            set { Set(value); }
+            get => Get(false);
+            set => Set(value);
         }
 
         /// <summary>
@@ -63,11 +62,11 @@ namespace Disco.Data.Configuration.Modules
         /// </summary>
         public string DefaultNoticeboardTheme
         {
-            get { return Get("default"); }
+            get => Get("default");
             set
             {
                 if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentNullException("DefaultNoticeboardTheme");
+                    throw new ArgumentNullException(nameof(DefaultNoticeboardTheme));
 
                 Set(value);
             }
@@ -75,47 +74,48 @@ namespace Disco.Data.Configuration.Modules
 
         public LocationModes LocationMode
         {
-            get { return Get(LocationModes.Unrestricted); }
-            set { Set(value); }
+            get => Get(LocationModes.Unrestricted);
+            set => Set(value);
         }
 
         public List<string> LocationList
         {
-            get { return Get(new List<string>()); }
-            set { Set(value); }
+            get => Get(new List<string>());
+            set => Set(value);
         }
 
         public string OnCreateExpression
         {
-            get { return Get<string>(null); }
-            set { Set(value); }
+            get => Get<string>(null);
+            set => Set(value);
         }
 
         public string OnDeviceReadyForReturnExpression
         {
-            get { return Get<string>(null); }
-            set { Set(value); }
+            get => Get<string>(null);
+            set => Set(value);
         }
 
         public string OnCloseExpression
         {
-            get { return Get<string>(null); }
-            set { Set(value); }
+            get => Get<string>(null);
+            set => Set(value);
         }
 
         public JobExportOptions LastExportOptions
         {
-            get { return this.Get(JobExportOptions.DefaultOptions()); }
-            set {
-                this.Set(value);
-                this.LastExportDate = DateTime.Now;
+            get => Get(JobExportOptions.DefaultOptions());
+            set
+            {
+                Set(value);
+                LastExportDate = DateTime.Now;
             }
         }
 
         public DateTime? LastExportDate
         {
-            get { return this.Get<DateTime?>(null); }
-            set { this.Set(value); }
+            get => Get<DateTime?>(null);
+            set => Set(value);
         }
     }
 }

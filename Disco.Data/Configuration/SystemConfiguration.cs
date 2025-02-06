@@ -83,7 +83,7 @@ namespace Disco.Data.Configuration
 
         #endregion
 
-        public override string Scope { get { return "System"; } }
+        public override string Scope { get; } = "System";
 
         public string DataStoreLocation
         {

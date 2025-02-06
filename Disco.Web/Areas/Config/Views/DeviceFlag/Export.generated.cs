@@ -601,7 +601,7 @@ WriteLiteral("</div>\r\n");
 
             
             #line 164 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
- if (Model.ExportSessionId != null)
+ if (Model.ExportId.HasValue)
 {
 
             
@@ -625,7 +625,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 167 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-         if (Model.ExportSessionResult.RecordCount == 0)
+         if (Model.ExportResult.RecordCount == 0)
         {
 
             
@@ -646,7 +646,7 @@ WriteLiteral("            <h4>");
 
             
             #line 173 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-           Write(Model.ExportSessionResult.RecordCount);
+           Write(Model.ExportResult.RecordCount);
 
             
             #line default
@@ -655,7 +655,7 @@ WriteLiteral(" record");
 
             
             #line 173 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-                                                         Write(Model.ExportSessionResult.RecordCount != 1 ? "s" : null);
+                                                  Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
             #line default
@@ -664,14 +664,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8524), Tuple.Create("\"", 8600)
+WriteAttribute("href", Tuple.Create(" href=\"", 8497), Tuple.Create("\"", 8572)
             
             #line 174 "..\..\Areas\Config\Views\DeviceFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 8531), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceFlag.ExportRetrieve(Model.ExportSessionId))
+, Tuple.Create(Tuple.Create("", 8504), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceFlag.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 8531), false)
+, 8504), false)
 );
 
 WriteLiteral(" class=\"button\"");

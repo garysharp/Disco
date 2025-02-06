@@ -2778,14 +2778,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 1020 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-   Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.Exporting.DeviceExportTypes.Batch, Model.DeviceBatch.Id)));
+   Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Batch, Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
             
             #line 1020 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                                                                                                                                                
+                                                                                                                                                      
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
         {

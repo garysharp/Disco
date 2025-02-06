@@ -1,13 +1,11 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Jobs;
-using Disco.Models.Services.Jobs.Exporting;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Exporting;
 using Disco.Services.Interop;
 using Disco.Services.Jobs;
-using Disco.Services.Jobs.Exporting;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.Statistics;
 using Disco.Services.Users;
@@ -2168,7 +2166,6 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Exporting
-        internal const string ExportSessionCacheKey = "JobExportContext_{0}";
 
         [DiscoAuthorize(Claims.Job.Actions.Export)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -2182,34 +2179,24 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = JobExportTask.ScheduleNow(model.Options);
-
-            // Store Export Context in Web Cache
-            string key = string.Format(ExportSessionCacheKey, exportContext.TaskStatus.SessionId);
-            HttpRuntime.Cache.Insert(key, exportContext, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
-
-            // Set Task Finished Url
-            var finishedActionResult = MVC.Job.Export(exportContext.TaskStatus.SessionId);
-            exportContext.TaskStatus.SetFinishedUrl(Url.Action(finishedActionResult));
+            var exportContext = new JobExportContext(model.Options);
+            var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Job.Export(id)));
 
             // Try waiting for completion
-            if (exportContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
-                return RedirectToAction(finishedActionResult);
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+                return RedirectToAction(MVC.Job.Export(taskContext.Id));
             else
-                return RedirectToAction(MVC.Config.Logging.TaskStatus(exportContext.TaskStatus.SessionId));
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
         }
 
         [DiscoAuthorize(Claims.Job.Actions.Export)]
-        public virtual ActionResult ExportRetrieve(string id)
+        public virtual ActionResult ExportRetrieve(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentNullException("Id");
+            if (id == Guid.Empty)
+                throw new ArgumentNullException(nameof(id));
 
-            string key = string.Format(ExportSessionCacheKey, id);
-            var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<JobExportOptions>;
-
-            if (context == null)
-                throw new ArgumentException("The Id specified is invalid, or the export data expired (60 minutes)", nameof(id));
+            if (!ExportTask.TryFromCache(id, out var context))
+                throw new ArgumentException("The export id specified is invalid, or the export data expired (60 minutes)", nameof(id));
 
             if (context.Result == null || context.Result.Result == null)
                 throw new ArgumentException("The export session is still running, or failed to complete successfully", nameof(id));

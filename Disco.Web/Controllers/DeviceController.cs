@@ -1,5 +1,5 @@
 ﻿using Disco.Models.Repository;
-using Disco.Models.Services.Devices.Exporting;
+using Disco.Models.Services.Devices;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 
@@ -114,7 +113,7 @@ namespace Disco.Web.Controllers
         #region Export
 
         [DiscoAuthorizeAny(Claims.Device.Actions.Export), HttpGet]
-        public virtual ActionResult Export(string DownloadId, DeviceExportTypes? ExportType, int? ExportTypeTargetId)
+        public virtual ActionResult Export(Guid? exportId, DeviceExportTypes? exportType, int? exportTypeTargetId)
         {
             var m = new Models.Device.ExportModel()
             {
@@ -124,22 +123,16 @@ namespace Disco.Web.Controllers
                 DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new { Key = dp.Id, Value = dp.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value))
             };
 
-            if (!string.IsNullOrWhiteSpace(DownloadId))
+            if (ExportTask.TryFromCache(exportId.Value, out var context))
             {
-                string key = string.Format(Areas.API.Controllers.DeviceController.ExportSessionCacheKey, DownloadId);
-                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<DeviceExportOptions>;
-
-                if (context != null)
-                {
-                    m.ExportSessionResult = context.Result;
-                    m.ExportSessionId = DownloadId;
-                }
+                m.ExportId = context.Id;
+                m.ExportResult = context.Result;
             }
 
-            if (ExportType.HasValue && ExportTypeTargetId.HasValue)
+            if (exportType.HasValue && exportTypeTargetId.HasValue)
             {
-                m.Options.ExportType = ExportType.Value;
-                m.Options.ExportTypeTargetId = ExportTypeTargetId.Value;
+                m.Options.ExportType = exportType.Value;
+                m.Options.ExportTypeTargetId = exportTypeTargetId.Value;
             }
 
             // UI Extensions

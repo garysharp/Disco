@@ -960,7 +960,7 @@ WriteLiteral("</div>\r\n");
 
             
             #line 256 "..\..\Views\Job\Export.cshtml"
- if (Model.ExportSessionId != null)
+ if (Model.ExportId.HasValue)
 {
 
             
@@ -984,7 +984,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 259 "..\..\Views\Job\Export.cshtml"
-         if (Model.ExportSessionResult.RecordCount == 0)
+         if (Model.ExportResult.RecordCount == 0)
         {
 
             
@@ -1005,7 +1005,7 @@ WriteLiteral("            <h4>");
 
             
             #line 265 "..\..\Views\Job\Export.cshtml"
-           Write(Model.ExportSessionResult.RecordCount);
+           Write(Model.ExportResult.RecordCount);
 
             
             #line default
@@ -1014,7 +1014,7 @@ WriteLiteral(" record");
 
             
             #line 265 "..\..\Views\Job\Export.cshtml"
-                                                         Write(Model.ExportSessionResult.RecordCount != 1 ? "s" : null);
+                                                  Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
             #line default
@@ -1023,14 +1023,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 14444), Tuple.Create("\"", 14513)
+WriteAttribute("href", Tuple.Create(" href=\"", 14417), Tuple.Create("\"", 14485)
             
             #line 266 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 14451), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportSessionId))
+, Tuple.Create(Tuple.Create("", 14424), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 14451), false)
+, 14424), false)
 );
 
 WriteLiteral(" class=\"button\"");

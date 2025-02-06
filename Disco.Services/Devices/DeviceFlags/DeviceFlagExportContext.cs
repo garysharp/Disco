@@ -2,9 +2,11 @@
 using Disco.Models.Exporting;
 using Disco.Models.Services.Devices.DeviceFlag;
 using Disco.Models.Services.Exporting;
+using Disco.Services.Exporting;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,57 +17,67 @@ namespace Disco.Services.Devices.DeviceFlags
 {
     using Metadata = ExportFieldMetadata<DeviceFlagExportRecord>;
 
-    public class DeviceFlagExport
+    public class DeviceFlagExportContext : IExportContext<DeviceFlagExportOptions, DeviceFlagExportRecord>
     {
-        private readonly DiscoDataContext database;
-        private readonly DeviceFlagExportOptions options;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool TimestampSuffix { get; set; }
+        public DeviceFlagExportOptions Options { get; set; }
 
-        public DeviceFlagExport(DiscoDataContext database, DeviceFlagExportOptions options)
+        public string SuggestedFilenamePrefix { get; } = "DeviceFlagExport";
+        public string ExcelWorksheetName { get; } = "DeviceFlagExport";
+        public string ExcelTableName { get; } = "DeviceFlags";
+
+        [JsonConstructor]
+        private DeviceFlagExportContext()
         {
-            this.database = database;
-            this.options = options;
         }
 
-        public ExportResult Generate(IScheduledTaskStatus status)
+        public DeviceFlagExportContext(string name, string description, bool timestampSuffix, DeviceFlagExportOptions options)
         {
-            var records = BuildRecords(status);
-
-            var metadata = BuildMetadata(records, status);
-
-            if (metadata.Count == 0)
-                throw new ArgumentException("At least one export field must be specified", nameof(options));
-
-            status.UpdateStatus(90, $"Formatting {records.Count} records for export");
-            return ExportHelpers.WriteExport(options, status, metadata, records);
+            Id = Guid.NewGuid();
+            Name = name;
+            Description = description;
+            TimestampSuffix = timestampSuffix;
+            Options = options;
         }
 
-        private List<DeviceFlagExportRecord> BuildRecords(IScheduledTaskStatus status)
+        public DeviceFlagExportContext(DeviceFlagExportOptions options)
+            : this("Device Flag Export", null, true, options)
+        {
+        }
+
+        public ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status)
+            => Exporter.Export(database, this, status);
+
+        public List<DeviceFlagExportRecord> BuildRecords(DiscoDataContext database, IScheduledTaskStatus status)
         {
             var query = database.DeviceFlagAssignments
                 .Include(a => a.DeviceFlag);
 
-            if (options.HasDeviceOptions())
+            if (Options.HasDeviceOptions())
                 query = query.Include(a => a.Device);
-            if (options.HasDeviceModelOptions())
+            if (Options.HasDeviceModelOptions())
                 query = query.Include(a => a.Device.DeviceModel);
-            if (options.HasDeviceBatchOptions())
+            if (Options.HasDeviceBatchOptions())
                 query = query.Include(a => a.Device.DeviceBatch);
-            if (options.HasDeviceProfileOptions())
+            if (Options.HasDeviceProfileOptions())
                 query = query.Include(a => a.Device.DeviceProfile);
-            if (options.HasAssignedUserOptions())
+            if (Options.HasAssignedUserOptions())
                 query = query.Include(a => a.Device.AssignedUser);
-            if (options.AssignedUserDetailCustom)
+            if (Options.AssignedUserDetailCustom)
                 query = query.Include(a => a.Device.AssignedUser.UserDetails);
 
-            query = query.Where(a => options.DeviceFlagIds.Contains(a.DeviceFlagId));
+            query = query.Where(a => Options.DeviceFlagIds.Contains(a.DeviceFlagId));
 
-            if (options.CurrentOnly)
+            if (Options.CurrentOnly)
             {
                 query = query.Where(a => !a.RemovedDate.HasValue);
             }
 
             // Update Users
-            if (options.HasAssignedUserOptions())
+            if (Options.HasAssignedUserOptions())
             {
                 status.UpdateStatus(5, "Refreshing user details from Active Directory");
                 var userIds = query.Where(d => d.Device.AssignedUserId != null).Select(d => d.Device.AssignedUserId).Distinct().ToList();
@@ -86,7 +98,7 @@ namespace Disco.Services.Devices.DeviceFlags
                 Assignment = a
             }).ToList();
 
-            if (options.AssignedUserDetailCustom)
+            if (Options.AssignedUserDetailCustom)
             {
                 status.UpdateStatus(50, "Extracting custom user detail records");
 
@@ -108,12 +120,10 @@ namespace Disco.Services.Devices.DeviceFlags
             return records;
         }
 
-        private List<Metadata> BuildMetadata(List<DeviceFlagExportRecord> records, IScheduledTaskStatus status)
+        public List<Metadata> BuildMetadata(DiscoDataContext database, List<DeviceFlagExportRecord> records, IScheduledTaskStatus status)
         {
-            status.UpdateStatus(80, "Building metadata");
-
             IEnumerable<string> userDetailCustomKeys = null;
-            if (options.AssignedUserDetailCustom)
+            if (Options.AssignedUserDetailCustom)
                 userDetailCustomKeys = records.Where(r => r.AssignedUserCustomDetails != null).SelectMany(r => r.AssignedUserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
             var accessors = BuildAccessors(userDetailCustomKeys);
@@ -125,7 +135,7 @@ namespace Disco.Services.Devices.DeviceFlags
                     property = p,
                     details = (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()
                 })
-                .Where(p => p.details != null && p.property.Name != nameof(options.CurrentOnly) && (bool)p.property.GetValue(options))
+            .Where(p => p.details != null && p.property.Name != nameof(Options.CurrentOnly) && (bool)p.property.GetValue(Options))
                 .SelectMany(p =>
                 {
                     var fieldMetadata = accessors[p.property.Name];
@@ -224,6 +234,5 @@ namespace Disco.Services.Devices.DeviceFlags
 
             return metadata;
         }
-
     }
 }

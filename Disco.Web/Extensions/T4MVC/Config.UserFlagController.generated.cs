@@ -123,9 +123,9 @@ namespace Disco.Web.Areas.Config.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Export
         {
-            public readonly string DownloadId = "DownloadId";
-            public readonly string UserFlagId = "UserFlagId";
-            public readonly string CurrentOnly = "CurrentOnly";
+            public readonly string exportId = "exportId";
+            public readonly string userFlagId = "userFlagId";
+            public readonly string currentOnly = "currentOnly";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -190,16 +190,16 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [NonAction]
-        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DownloadId, int? UserFlagId, bool? CurrentOnly);
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid? exportId, int? userFlagId, bool? currentOnly);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Export(string DownloadId, int? UserFlagId, bool? CurrentOnly)
+        public override System.Web.Mvc.ActionResult Export(System.Guid? exportId, int? userFlagId, bool? currentOnly)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DownloadId", DownloadId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UserFlagId", UserFlagId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CurrentOnly", CurrentOnly);
-            ExportOverride(callInfo, DownloadId, UserFlagId, CurrentOnly);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exportId", exportId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userFlagId", userFlagId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "currentOnly", currentOnly);
+            ExportOverride(callInfo, exportId, userFlagId, currentOnly);
             return callInfo;
         }
 

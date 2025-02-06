@@ -2,8 +2,11 @@
 using Disco.Models.Exporting;
 using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Users.UserFlags;
+using Disco.Services.Exporting;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,48 +17,56 @@ namespace Disco.Services.Users.UserFlags
 {
     using Metadata = ExportFieldMetadata<UserFlagExportRecord>;
 
-    public class UserFlagExport
+    public class UserFlagExportContext : IExportContext<UserFlagExportOptions, UserFlagExportRecord>
     {
-        private readonly DiscoDataContext database;
-        private readonly UserFlagExportOptions options;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool TimestampSuffix { get; set; }
+        public UserFlagExportOptions Options { get; set; }
 
-        public UserFlagExport(DiscoDataContext database, UserFlagExportOptions options)
+        public string SuggestedFilenamePrefix { get; } = "UserFlagExport";
+        public string ExcelWorksheetName { get; } = "UserFlagExport";
+        public string ExcelTableName { get; } = "UserFlags";
+
+        [JsonConstructor]
+        private UserFlagExportContext()
         {
-            this.database = database;
-            this.options = options;
         }
 
-        public ExportResult Generate(IScheduledTaskStatus status)
+        public UserFlagExportContext(string name, string description, bool timestampSuffix, UserFlagExportOptions options)
         {
-            var records = BuildRecords(status);
-
-            var metadata = BuildMetadata(records, status);
-
-            if (metadata.Count == 0)
-                throw new ArgumentException("At least one export field must be specified", nameof(options));
-
-            status.UpdateStatus(90, $"Formatting {records.Count} records for export");
-            return ExportHelpers.WriteExport(options, status, metadata, records);
+            Id = Guid.NewGuid();
+            Name = name;
+            Description = description;
+            TimestampSuffix = timestampSuffix;
+            Options = options;
         }
 
-        private List<UserFlagExportRecord> BuildRecords(IScheduledTaskStatus status)
+        public UserFlagExportContext(UserFlagExportOptions options)
+            : this("User Flag Export", null, true, options)
+        {
+        }
+
+        public ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status)
+            => Exporter.Export(database, this, status);
+
+        public List<UserFlagExportRecord> BuildRecords(DiscoDataContext database, IScheduledTaskStatus status)
         {
             var query = database.UserFlagAssignments
                 .Include(a => a.User.UserDetails)
                 .Include(a => a.UserFlag)
-                .Where(a => options.UserFlagIds.Contains(a.UserFlagId));
+                .Where(a => Options.UserFlagIds.Contains(a.UserFlagId));
 
-            if (options.CurrentOnly)
-            {
+            if (Options.CurrentOnly)
                 query = query.Where(a => !a.RemovedDate.HasValue);
-            }
 
             // Update Users
-            if (options.UserDisplayName ||
-                options.UserSurname ||
-                options.UserGivenName ||
-                options.UserPhoneNumber ||
-                options.UserEmailAddress)
+            if (Options.UserDisplayName ||
+                Options.UserSurname ||
+                Options.UserGivenName ||
+                Options.UserPhoneNumber ||
+                Options.UserEmailAddress)
             {
                 status.UpdateStatus(5, "Refreshing user details from Active Directory");
                 var userIds = query.Select(d => d.UserId).Distinct().ToList();
@@ -72,11 +83,11 @@ namespace Disco.Services.Users.UserFlags
             status.UpdateStatus(15, "Extracting records from the database");
 
             var records = query.Select(a => new UserFlagExportRecord()
-                {
-                    Assignment = a
-                }).ToList();
+            {
+                Assignment = a
+            }).ToList();
 
-            if (options.UserDetailCustom)
+            if (Options.UserDetailCustom)
             {
                 status.UpdateStatus(50, "Extracting custom user detail records");
 
@@ -93,12 +104,12 @@ namespace Disco.Services.Users.UserFlags
             return records;
         }
 
-        private List<Metadata> BuildMetadata(List<UserFlagExportRecord> records, IScheduledTaskStatus status)
+        public List<Metadata> BuildMetadata(DiscoDataContext database, List<UserFlagExportRecord> records, IScheduledTaskStatus status)
         {
             status.UpdateStatus(80, "Building metadata");
 
             IEnumerable<string> userDetailCustomKeys = null;
-            if (options.UserDetailCustom)
+            if (Options.UserDetailCustom)
                 userDetailCustomKeys = records.Where(r => r.UserCustomDetails != null).SelectMany(r => r.UserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
             var accessors = BuildAccessors(userDetailCustomKeys);
@@ -110,9 +121,9 @@ namespace Disco.Services.Users.UserFlags
                     property = p,
                     details = (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()
                 })
-                .Where(p => p.details != null && p.property.Name != nameof(options.CurrentOnly) && (bool)p.property.GetValue(options))
-                .SelectMany(p =>
-                {
+            .Where(p => p.details != null && p.property.Name != nameof(Options.CurrentOnly) && (bool)p.property.GetValue(Options))
+            .SelectMany(p =>
+            {
                     var fieldMetadata = accessors[p.property.Name];
                     fieldMetadata.ForEach(f =>
                     {
@@ -171,6 +182,5 @@ namespace Disco.Services.Users.UserFlags
 
             return metadata;
         }
-
     }
 }

@@ -285,7 +285,7 @@ namespace Disco.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Export
         {
-            public readonly string downloadId = "downloadId";
+            public readonly string exportId = "exportId";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -711,14 +711,14 @@ namespace Disco.Web.Controllers
         }
 
         [NonAction]
-        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string downloadId);
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid? exportId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Export(string downloadId)
+        public override System.Web.Mvc.ActionResult Export(System.Guid? exportId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "downloadId", downloadId);
-            ExportOverride(callInfo, downloadId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exportId", exportId);
+            ExportOverride(callInfo, exportId);
             return callInfo;
         }
 

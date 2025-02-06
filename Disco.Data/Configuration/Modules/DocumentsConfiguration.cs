@@ -8,7 +8,7 @@ namespace Disco.Data.Configuration.Modules
     {
         public DocumentsConfiguration(DiscoDataContext Database) : base(Database) { }
 
-        public override string Scope { get { return "Documents"; } }
+        public override string Scope { get; } = "Documents";
 
         public List<DocumentTemplatePackage> Packages
         {

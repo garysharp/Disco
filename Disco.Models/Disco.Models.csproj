@@ -83,8 +83,8 @@
     <Compile Include="Services\Interop\DiscoServices\Activation\CallbackModel.cs" />
     <Compile Include="Services\Interop\DiscoServices\Activation\ChallengeModel.cs" />
     <Compile Include="Services\Interop\DiscoServices\IConnectNotification.cs" />
-    <Compile Include="Services\Jobs\Exporting\JobExportOptions.cs" />
-    <Compile Include="Services\Jobs\Exporting\JobExportRecord.cs" />
+    <Compile Include="Services\Jobs\JobExportOptions.cs" />
+    <Compile Include="Services\Jobs\JobExportRecord.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\Certificate.cs" />
     <Compile Include="ClientServices\Register.cs" />
@@ -137,10 +137,10 @@
     <Compile Include="Repository\User\UserAttachment.cs" />
     <Compile Include="Repository\User\UserDetail.cs" />
     <Compile Include="Repository\User\AuthorizationRole.cs" />
-    <Compile Include="Services\Devices\Exporting\DeviceExportRecord.cs" />
+    <Compile Include="Services\Devices\DeviceExportRecord.cs" />
     <Compile Include="Exporting\ExportResult.cs" />
-    <Compile Include="Services\Devices\Exporting\DeviceExportTypes.cs" />
-    <Compile Include="Services\Devices\Exporting\DeviceExportOptions.cs" />
+    <Compile Include="Services\Devices\DeviceExportTypes.cs" />
+    <Compile Include="Services\Devices\DeviceExportOptions.cs" />
     <Compile Include="Services\Devices\Importing\DeviceImportFieldTypes.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportRecord.cs" />
     <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
@@ -159,6 +159,7 @@
     <Compile Include="Services\Jobs\JobLists\JobTableStatusQueueItemModel.cs" />
     <Compile Include="Services\Jobs\JobQueues\IJobQueueToken.cs" />
     <Compile Include="Services\Jobs\Noticeboards\IHeldDeviceItem.cs" />
+    <Compile Include="Services\Logging\LogExportOptions.cs" />
     <Compile Include="Services\Messaging\Email.cs" />
     <Compile Include="Services\Messaging\EmailAttachment.cs" />
     <Compile Include="Services\Users\Contact\UserContact.cs" />

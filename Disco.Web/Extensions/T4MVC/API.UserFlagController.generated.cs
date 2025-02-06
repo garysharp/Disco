@@ -349,7 +349,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ExportRetrieve
         {
-            public readonly string Id = "Id";
+            public readonly string id = "id";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -567,14 +567,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ExportRetrieve(string Id)
+        public override System.Web.Mvc.ActionResult ExportRetrieve(System.Guid id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            ExportRetrieveOverride(callInfo, Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ExportRetrieveOverride(callInfo, id);
             return callInfo;
         }
 

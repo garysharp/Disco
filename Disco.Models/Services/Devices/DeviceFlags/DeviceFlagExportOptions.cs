@@ -7,10 +7,8 @@ namespace Disco.Models.Services.Devices.DeviceFlag
 {
     public class DeviceFlagExportOptions : IExportOptions
     {
+        public int Version { get; set; } = 1;
         public ExportFormat Format { get; set; }
-        public string FilenamePrefix { get; } = "DiscoDeviceFlagExport";
-        public string ExcelWorksheetName { get; } = "DeviceFlagExport";
-        public string ExcelTableName { get; } = "DeviceFlags";
 
         [Required]
         public List<int> DeviceFlagIds { get; set; } = new List<int>();

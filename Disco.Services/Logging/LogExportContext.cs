@@ -1,7 +1,11 @@
-﻿using Disco.Models.Exporting;
+﻿using Disco.Data.Repository;
+using Disco.Models.Exporting;
 using Disco.Models.Services.Exporting;
+using Disco.Models.Services.Logging;
+using Disco.Services.Exporting;
 using Disco.Services.Logging.Models;
 using Disco.Services.Tasks;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +14,56 @@ namespace Disco.Services.Logging
 {
     using Metadata = ExportFieldMetadata<LogLiveEvent>;
 
-    public static class LogExport
+    public class LogExportContext : IExportContext<LogExportOptions, LogLiveEvent>
     {
-        public static ExportResult GenerateExport(ExportFormat format, List<LogLiveEvent> records)
-        {
-            var options = new LogExportOptions(format);
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool TimestampSuffix { get; set; }
+        public LogExportOptions Options { get; set; }
 
+        public string SuggestedFilenamePrefix { get; } = "DiscoIctLogs";
+        public string ExcelWorksheetName { get; } = "Disco ICT Logs";
+        public string ExcelTableName { get; } = "DiscoIctLogs";
+
+        [JsonConstructor]
+        private LogExportContext()
+        {
+        }
+
+        public LogExportContext(string name, string description, bool timestampSuffix, LogExportOptions options)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Description = description;
+            TimestampSuffix = timestampSuffix;
+            Options = options;
+        }
+
+        public LogExportContext(LogExportOptions options)
+            : this("Log Export", null, true, options)
+        {
+        }
+
+        public ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status)
+            => Exporter.Export(database, this, status);
+
+        public List<LogLiveEvent> BuildRecords(DiscoDataContext database, IScheduledTaskStatus status)
+        {
+            var logRetriever = new ReadLogContext()
+            {
+                Start = Options.StartDate,
+                End = Options.EndDate,
+                Module = Options.ModuleId,
+                EventTypes = Options.EventTypeIds,
+                Take = Options.Take,
+            };
+
+            return logRetriever.Query(database);
+        }
+
+        public List<Metadata> BuildMetadata(DiscoDataContext database, List<LogLiveEvent> records, IScheduledTaskStatus status)
+        {
             const string DateFormat = "yyyy-MM-dd";
             const string DateTimeFormat = DateFormat + " HH:mm:ss";
             Func<object, string> csvStringEncoded = (o) => o == null ? null : $"\"{((string)o).Replace("\"", "\"\"")}\"";
@@ -48,20 +96,7 @@ namespace Disco.Services.Logging
                 }
             }
 
-            return ExportHelpers.WriteExport(options, ScheduledTaskMockStatus.Create("Export Disco ICT Logs"), metadata, records);
-        }
-    }
-
-    public class LogExportOptions : IExportOptions
-    {
-        public ExportFormat Format { get; set; }
-        public string FilenamePrefix { get; } = "DiscoIctLogs";
-        public string ExcelWorksheetName { get; set; } = "Disco ICT Logs";
-        public string ExcelTableName { get; set; } = "DiscoIctLogs";
-
-        public LogExportOptions(ExportFormat format)
-        {
-            Format = format;
+            return metadata;
         }
     }
 }

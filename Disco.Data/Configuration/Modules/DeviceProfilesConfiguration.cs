@@ -7,7 +7,7 @@ namespace Disco.Data.Configuration.Modules
     {
         public DeviceProfilesConfiguration(DiscoDataContext Database) : base(Database) { }
 
-        public override string Scope { get { return "DeviceProfiles"; } }
+        public override string Scope { get; } = "DeviceProfiles";
 
         public int DefaultDeviceProfileId
         {

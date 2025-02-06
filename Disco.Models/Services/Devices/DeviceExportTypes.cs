@@ -1,4 +1,4 @@
-﻿namespace Disco.Models.Services.Devices.Exporting
+﻿namespace Disco.Models.Services.Devices
 {
     public enum DeviceExportTypes
     {

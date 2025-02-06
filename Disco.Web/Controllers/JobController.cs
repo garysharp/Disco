@@ -1,6 +1,5 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Jobs;
-using Disco.Models.Services.Jobs.Exporting;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Job;
 using Disco.Services;
@@ -24,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
@@ -1084,7 +1082,7 @@ namespace Disco.Web.Controllers
         #region Export
 
         [DiscoAuthorizeAny(Claims.Job.Actions.Export), HttpGet]
-        public virtual ActionResult Export(string downloadId)
+        public virtual ActionResult Export(Guid? exportId)
         {
             var m = new Models.Job.ExportModel()
             {
@@ -1100,20 +1098,14 @@ namespace Disco.Web.Controllers
                 m.Options.FilterEndDate = null;
             }
 
-            if (!string.IsNullOrWhiteSpace(downloadId))
+            if (ExportTask.TryFromCache(exportId, out var context))
             {
-                string key = string.Format(Areas.API.Controllers.JobController.ExportSessionCacheKey, downloadId);
-                var context = HttpRuntime.Cache.Get(key) as ExportTaskContext<JobExportOptions>;
-
-                if (context != null)
-                {
-                    m.ExportSessionResult = context.Result;
-                    m.ExportSessionId = downloadId;
-                }
+                m.ExportId = context.Id;
+                m.ExportResult = context.Result;
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobExportModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobExportModel>(ControllerContext, m);
 
             return View(m);
         }

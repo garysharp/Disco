@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Disco.Data.Repository;
 using Disco.Models.Exporting;
 using Disco.Models.Services.Exporting;
 using Disco.Services.Tasks;
@@ -9,43 +10,66 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Disco.Services
+namespace Disco.Services.Exporting
 {
-    internal class ExportHelpers
+    public static class Exporter
     {
-        public static ExportResult WriteExport<T>(IExportOptions options, IScheduledTaskStatus status, List<ExportFieldMetadata<T>> metadata, List<T> records) where T : IExportRecord
+        public static ExportResult Export<T, R>(DiscoDataContext database, IExportContext<T, R> context, IScheduledTaskStatus status)
+            where T : IExportOptions, new()
+            where R : IExportRecord
         {
-            var filenameWithoutExtension = $"{options.FilenamePrefix}-{status.StartedTimestamp.Value:yyyyMMdd-HHmmss}";
             MemoryStream stream;
-            string filename;
             string mimeType;
 
-            switch (options.Format)
+            status.UpdateStatus(1, $"Exporting {context.Name}", "Gathering data");
+
+            var records = context.BuildRecords(database, status);
+
+            status.UpdateStatus(70, "Building metadata");
+
+            var metadata = context.BuildMetadata(database, records, status);
+
+            if (metadata.Count == 0)
+                throw new ArgumentException("At least one export field must be specified", nameof(context.Options));
+
+            var filenameBuilder = new StringBuilder();
+            filenameBuilder.Append(context.SuggestedFilenamePrefix);
+            if (context.TimestampSuffix)
+            {
+                filenameBuilder.Append('-');
+                filenameBuilder.Append(status.StartedTimestamp.Value.ToString("yyyyMMdd-HHmmss"));
+            }
+
+            status.UpdateStatus(80, $"Rendering {records.Count} records for export");
+
+            switch (context.Options.Format)
             {
                 case ExportFormat.Csv:
-                    stream = WriteCSV(filenameWithoutExtension, metadata, records, out filename, out mimeType);
+                    filenameBuilder.Append(".csv");
+                    mimeType = "text/csv";
+                    stream = WriteCSV(metadata, records);
                     break;
                 case ExportFormat.Xlsx:
-                    stream = WriteXlsx(filenameWithoutExtension, options.ExcelWorksheetName, options.ExcelTableName, metadata, records, out filename, out mimeType);
+                    filenameBuilder.Append(".xlsx");
+                    mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    stream = WriteXlsx(context.ExcelWorksheetName, context.ExcelTableName, metadata, records);
                     break;
                 default:
-                    throw new NotSupportedException($"Unsupported export format: {options.Format}");
+                    throw new NotSupportedException($"Unsupported export format: {context.Options.Format}");
             }
 
             return new ExportResult()
             {
                 Result = stream,
                 RecordCount = records.Count,
-                Filename = filename,
+                Filename = filenameBuilder.ToString(),
                 MimeType = mimeType,
             };
         }
 
-        private static MemoryStream WriteCSV<T>(string filenameWithoutExtension, List<ExportFieldMetadata<T>> metadata, List<T> records, out string filename, out string mimeType) where T : IExportRecord
+        private static MemoryStream WriteCSV<T>(List<ExportFieldMetadata<T>> metadata, List<T> records) where T : IExportRecord
         {
             var stream = new MemoryStream();
-            mimeType = "text/csv";
-            filename = $"{filenameWithoutExtension}.csv";
 
             using (StreamWriter writer = new StreamWriter(stream, Encoding.Default, 0x400, true))
             {
@@ -74,11 +98,9 @@ namespace Disco.Services
             return stream;
         }
 
-        private static MemoryStream WriteXlsx<T>(string filenameWithoutExtension, string worksheetName, string tableName, List<ExportFieldMetadata<T>> metadata, List<T> records, out string filename, out string mimeType) where T : IExportRecord
+        private static MemoryStream WriteXlsx<T>(string worksheetName, string tableName, List<ExportFieldMetadata<T>> metadata, List<T> records) where T : IExportRecord
         {
             var stream = new MemoryStream();
-            mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            filename = $"{filenameWithoutExtension}.xlsx";
 
             // Create DataTable
             var dataTable = new DataTable();

@@ -2,41 +2,131 @@
 using Disco.Models.Exporting;
 using Disco.Models.Repository;
 using Disco.Models.Services.Exporting;
-using Disco.Models.Services.Jobs.Exporting;
+using Disco.Models.Services.Jobs;
+using Disco.Services.Exporting;
 using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data;
 using System.Linq;
 
-namespace Disco.Services.Jobs.Exporting
+namespace Disco.Services.Jobs
 {
     using Metadata = ExportFieldMetadata<JobExportRecord>;
 
-    public static class JobExport
+    public class JobExportContext : IExportContext<JobExportOptions, JobExportRecord>
     {
-        public static ExportResult GenerateExport(DiscoDataContext database, Func<IQueryable<Job>, IQueryable<Job>> filter, JobExportOptions options, IScheduledTaskStatus taskStatus)
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public bool TimestampSuffix { get; set; }
+        public JobExportOptions Options { get; set; }
+
+        public string SuggestedFilenamePrefix { get; } = "JobExport";
+        public string ExcelWorksheetName { get; } = "JobExport";
+        public string ExcelTableName { get; } = "Jobs";
+
+        [JsonConstructor]
+        private JobExportContext()
+        {
+        }
+
+        public JobExportContext(string name, string description, bool timestampSuffix, JobExportOptions options)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Description = description;
+            TimestampSuffix = timestampSuffix;
+            Options = options;
+        }
+
+        public JobExportContext(JobExportOptions options)
+            : this("Job Export", null, true, options)
+        {
+        }
+
+        public ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status)
+            => Exporter.Export(database, this, status);
+
+        private IQueryable<Job> BuildFilteredRecords(DiscoDataContext database)
+        {
+            var o = Options;
+
+            var q = database.Jobs.Where(j => j.OpenedDate >= o.FilterStartDate);
+            if (o.FilterEndDate.HasValue)
+                q = q.Where(j => j.OpenedDate <= o.FilterEndDate);
+
+            if (o.FilterJobTypeId != null)
+                q = q.Where(j => j.JobTypeId == o.FilterJobTypeId);
+
+            if (o.FilterJobSubTypeIds?.Any() ?? false)
+                q = q.Where(j => j.JobSubTypes.Any(st => o.FilterJobSubTypeIds.Contains(st.Id)));
+
+            if (o.FilterJobQueueId.HasValue)
+                q = q.Where(j => j.JobQueues.Any(jq => !jq.RemovedDate.HasValue && jq.JobQueueId == o.FilterJobQueueId));
+
+            if (o.FilterJobStatusId != null)
+            {
+                if (o.FilterJobStatusId != Job.JobStatusIds.Closed)
+                    q = q.Where(j => j.ClosedDate == null);
+
+                switch (o.FilterJobStatusId)
+                {
+                    case Job.JobStatusIds.Open:
+                        // already filtered
+                        break;
+                    case Job.JobStatusIds.AwaitingAccountingPayment:
+                        q = q.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.AccountingChargeAddedDate != null && j.JobMetaNonWarranty.AccountingChargePaidDate == null);
+                        break;
+                    case Job.JobStatusIds.AwaitingAccountingCharge:
+                        q = q.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.AccountingChargeRequiredDate == null && (j.JobMetaNonWarranty.AccountingChargePaidDate != null || j.JobMetaNonWarranty.AccountingChargeAddedDate != null));
+                        break;
+                    case Job.JobStatusIds.AwaitingDeviceReturn:
+                        q = q.Where(j => j.DeviceReadyForReturn != null && j.DeviceReturnedDate == null);
+                        break;
+                    case Job.JobStatusIds.AwaitingInsuranceProcessing:
+                        q = q.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.IsInsuranceClaim && j.JobMetaInsurance.ClaimFormSentDate == null);
+                        break;
+                    case Job.JobStatusIds.AwaitingRepairs:
+                        q = q.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.RepairerLoggedDate != null && j.JobMetaNonWarranty.RepairerCompletedDate == null);
+                        break;
+                    case Job.JobStatusIds.AwaitingUserAction:
+                        q = q.Where(j => j.WaitingForUserAction != null);
+                        break;
+                    case Job.JobStatusIds.AwaitingWarrantyRepair:
+                        q = q.Where(j => j.JobTypeId == JobType.JobTypeIds.HWar && j.JobMetaWarranty.ExternalLoggedDate != null && j.JobMetaWarranty.ExternalCompletedDate == null);
+                        break;
+                    case Job.JobStatusIds.Closed:
+                        q = q.Where(j => j.ClosedDate != null);
+                        break;
+                    default:
+                        throw new ArgumentException($"Unknown Job Status Id: {o.FilterJobStatusId}", nameof(o.FilterJobStatusId));
+                }
+            }
+
+            return q;
+        }
+
+        public List<JobExportRecord> BuildRecords(DiscoDataContext database, IScheduledTaskStatus status)
         {
             database.Configuration.LazyLoadingEnabled = false;
             database.Configuration.ProxyCreationEnabled = false;
 
-            var jobQuery = (IQueryable<Job>)database.Jobs;
-            if (filter != null)
-                jobQuery = filter(jobQuery);
+            var query = BuildFilteredRecords(database);
 
             // Update Users
-            if (options.UserDisplayName ||
-                options.UserSurname ||
-                options.UserGivenName ||
-                options.UserPhoneNumber ||
-                options.UserEmailAddress)
+            if (Options.UserDisplayName ||
+                Options.UserSurname ||
+                Options.UserGivenName ||
+                Options.UserPhoneNumber ||
+                Options.UserEmailAddress)
             {
-                taskStatus.UpdateStatus(5, "Refreshing user details from Active Directory");
-                var userIds = jobQuery.Where(d => d.UserId != null).Select(d => d.UserId).Distinct().ToList();
+                status.UpdateStatus(5, "Refreshing user details from Active Directory");
+                var userIds = query.Where(d => d.UserId != null).Select(d => d.UserId).Distinct().ToList();
                 foreach (var userId in userIds)
                 {
                     try
@@ -48,9 +138,9 @@ namespace Disco.Services.Jobs.Exporting
             }
 
             // Update Last Network Logon Date
-            if (options.DeviceLastNetworkLogon)
+            if (Options.DeviceLastNetworkLogon)
             {
-                taskStatus.UpdateStatus(15, "Refreshing device last network logon dates from Active Directory");
+                status.UpdateStatus(15, "Refreshing device last network logon dates from Active Directory");
                 try
                 {
                     Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.UpdateLastNetworkLogonDates(database, ScheduledTaskMockStatus.Create("UpdateLastNetworkLogonDates"));
@@ -59,119 +149,9 @@ namespace Disco.Services.Jobs.Exporting
                 catch (Exception) { } // Ignore Errors
             }
 
-            taskStatus.UpdateStatus(25, "Extracting records from the database");
+            status.UpdateStatus(25, "Extracting records from the database");
 
-            var records = BuildRecords(jobQuery).ToList();
-
-            records.ForEach(r =>
-            {
-                if (options.JobStatus)
-                {
-                    r.JobStatus = JobExtensions.CalculateStatusId(
-                        r.Job.ClosedDate,
-                        r.Job.JobTypeId,
-                        r.JobMetaWarranty?.ExternalLoggedDate,
-                        r.JobMetaWarranty?.ExternalCompletedDate,
-                        r.JobMetaNonWarranty?.RepairerLoggedDate,
-                        r.JobMetaNonWarranty?.RepairerCompletedDate,
-                        r.JobMetaNonWarranty?.AccountingChargeRequiredDate,
-                        r.JobMetaNonWarranty?.AccountingChargeAddedDate,
-                        r.JobMetaNonWarranty?.AccountingChargePaidDate,
-                        r.JobMetaNonWarranty?.IsInsuranceClaim,
-                        r.JobMetaInsurance?.ClaimFormSentDate,
-                        r.Job.WaitingForUserAction,
-                        r.Job.DeviceReadyForReturn,
-                        r.Job.DeviceReturnedDate);
-                }
-
-                if (options.UserDetailCustom && r.User != null)
-                {
-                    var detailsService = new DetailsProviderService(database);
-                    r.UserCustomDetails = detailsService.GetDetails(r.User);
-                }
-            });
-
-            taskStatus.UpdateStatus(70, "Building metadata");
-            var metadata = options.BuildMetadata(records);
-
-            if (metadata.Count == 0)
-                throw new ArgumentException("At least one export field must be specified", "Options");
-
-            taskStatus.UpdateStatus(80, $"Formatting {records.Count} records for export");
-
-            return ExportHelpers.WriteExport(options, taskStatus, metadata, records);
-        }
-
-        public static ExportResult GenerateExport(DiscoDataContext database, JobExportOptions options, IScheduledTaskStatus taskStatus)
-        {
-            Func<IQueryable<Job>, IQueryable<Job>> filter = q =>
-            {
-                var r = q.Where(j => j.OpenedDate >= options.FilterStartDate);
-                if (options.FilterEndDate.HasValue)
-                    r = r.Where(j => j.OpenedDate <= options.FilterEndDate);
-
-                if (options.FilterJobTypeId != null)
-                    r = r.Where(j => j.JobTypeId == options.FilterJobTypeId);
-
-                if (options.FilterJobSubTypeIds?.Any() ?? false)
-                    r = r.Where(j => j.JobSubTypes.Any(st => options.FilterJobSubTypeIds.Contains(st.Id)));
-
-                if (options.FilterJobQueueId.HasValue)
-                    r = r.Where(j => j.JobQueues.Any(jq => !jq.RemovedDate.HasValue && jq.JobQueueId == options.FilterJobQueueId));
-
-                if (options.FilterJobStatusId != null)
-                {
-                    if (options.FilterJobStatusId != Job.JobStatusIds.Closed)
-                        r = r.Where(j => j.ClosedDate == null);
-
-                    switch (options.FilterJobStatusId)
-                    {
-                        case Job.JobStatusIds.Open:
-                            // already filtered
-                            break;
-                        case Job.JobStatusIds.AwaitingAccountingPayment:
-                            r = r.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.AccountingChargeAddedDate != null && j.JobMetaNonWarranty.AccountingChargePaidDate == null);
-                            break;
-                        case Job.JobStatusIds.AwaitingAccountingCharge:
-                            r = r.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.AccountingChargeRequiredDate == null && (j.JobMetaNonWarranty.AccountingChargePaidDate != null || j.JobMetaNonWarranty.AccountingChargeAddedDate != null));
-                            break;
-                        case Job.JobStatusIds.AwaitingDeviceReturn:
-                            r = r.Where(j => j.DeviceReadyForReturn != null && j.DeviceReturnedDate == null);
-                            break;
-                        case Job.JobStatusIds.AwaitingInsuranceProcessing:
-                            r = r.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.IsInsuranceClaim && j.JobMetaInsurance.ClaimFormSentDate == null);
-                            break;
-                        case Job.JobStatusIds.AwaitingRepairs:
-                            r = r.Where(j => j.JobTypeId == JobType.JobTypeIds.HNWar && j.JobMetaNonWarranty.RepairerLoggedDate != null && j.JobMetaNonWarranty.RepairerCompletedDate == null);
-                            break;
-                        case Job.JobStatusIds.AwaitingUserAction:
-                            r = r.Where(j => j.WaitingForUserAction != null);
-                            break;
-                        case Job.JobStatusIds.AwaitingWarrantyRepair:
-                            r = r.Where(j => j.JobTypeId == JobType.JobTypeIds.HWar && j.JobMetaWarranty.ExternalLoggedDate != null && j.JobMetaWarranty.ExternalCompletedDate == null);
-                            break;
-                        case Job.JobStatusIds.Closed:
-                            r = r.Where(j => j.ClosedDate != null);
-                            break;
-                        default:
-                            throw new ArgumentException($"Unknown Job Status Id: {options.FilterJobStatusId}", nameof(options.FilterJobStatusId));
-                    }
-                }
-
-                return r;
-            };
-
-            return GenerateExport(database, filter, options, taskStatus);
-        }
-
-        public static ExportResult GenerateExport(DiscoDataContext database, JobExportOptions options)
-        {
-            return GenerateExport(database, options, ScheduledTaskMockStatus.Create("Job Export"));
-        }
-
-        private static IEnumerable<JobExportRecord> BuildRecords(IQueryable<Job> jobs)
-        {
-            return jobs.Select(j => new JobExportRecord()
+            var records = query.Select(j => new JobExportRecord()
             {
                 Job = j,
                 JobTypeDescription = j.JobType.Description,
@@ -214,13 +194,43 @@ namespace Disco.Services.Jobs.Exporting
                 DeviceProfileId = j.Device.DeviceProfileId,
                 DeviceProfileName = j.Device.DeviceProfile.Name,
                 DeviceProfileShortName = j.Device.DeviceProfile.ShortName,
+            }).ToList();
+
+            records.ForEach(r =>
+            {
+                if (Options.JobStatus)
+                {
+                    r.JobStatus = JobExtensions.CalculateStatusId(
+                        r.Job.ClosedDate,
+                        r.Job.JobTypeId,
+                        r.JobMetaWarranty?.ExternalLoggedDate,
+                        r.JobMetaWarranty?.ExternalCompletedDate,
+                        r.JobMetaNonWarranty?.RepairerLoggedDate,
+                        r.JobMetaNonWarranty?.RepairerCompletedDate,
+                        r.JobMetaNonWarranty?.AccountingChargeRequiredDate,
+                        r.JobMetaNonWarranty?.AccountingChargeAddedDate,
+                        r.JobMetaNonWarranty?.AccountingChargePaidDate,
+                        r.JobMetaNonWarranty?.IsInsuranceClaim,
+                        r.JobMetaInsurance?.ClaimFormSentDate,
+                        r.Job.WaitingForUserAction,
+                    r.Job.DeviceReadyForReturn,
+                        r.Job.DeviceReturnedDate);
+                }
+
+                if (Options.UserDetailCustom && r.User != null)
+                {
+                    var detailsService = new DetailsProviderService(database);
+                    r.UserCustomDetails = detailsService.GetDetails(r.User);
+                }
             });
+
+            return records;
         }
 
-        private static List<Metadata> BuildMetadata(this JobExportOptions options, List<JobExportRecord> records)
+        public List<Metadata> BuildMetadata(DiscoDataContext database, List<JobExportRecord> records, IScheduledTaskStatus status)
         {
             IEnumerable<string> userDetailCustomKeys = null;
-            if (options.UserDetailCustom)
+            if (Options.UserDetailCustom)
                 userDetailCustomKeys = records.Where(r => r.UserCustomDetails != null).SelectMany(r => r.UserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
             var allAccessors = BuildRecordAccessors(userDetailCustomKeys);
@@ -232,7 +242,7 @@ namespace Disco.Services.Jobs.Exporting
                     property = p,
                     details = (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()
                 })
-                .Where(p => p.details != null && (bool)p.property.GetValue(options))
+                .Where(p => p.details != null && (bool)p.property.GetValue(Options))
                 .SelectMany(p =>
                 {
                     var fieldMetadata = allAccessors[p.property.Name];
@@ -397,6 +407,5 @@ namespace Disco.Services.Jobs.Exporting
 
             return metadata;
         }
-
     }
 }

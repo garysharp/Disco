@@ -7,10 +7,8 @@ namespace Disco.Models.Services.Users.UserFlags
 {
     public class UserFlagExportOptions : IExportOptions
     {
+        public int Version { get; set; } = 1;
         public ExportFormat Format { get; set; }
-        public string FilenamePrefix { get; } = "DiscoUserFlagExport";
-        public string ExcelWorksheetName { get; } = "UserFlagExport";
-        public string ExcelTableName { get; } = "UserFlags";
 
         [Required]
         public List<int> UserFlagIds { get; set; } = new List<int>();

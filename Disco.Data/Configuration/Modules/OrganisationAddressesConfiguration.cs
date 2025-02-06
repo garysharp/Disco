@@ -1,6 +1,5 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.BI.Config;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,11 +7,9 @@ namespace Disco.Data.Configuration.Modules
 {
     public class OrganisationAddressesConfiguration : ConfigurationBase
     {
-        private const string scope = "OrganisationAddresses";
-
         public OrganisationAddressesConfiguration(DiscoDataContext Database) : base(Database) { }
 
-        public override string Scope { get { return scope; } }
+        public override string Scope { get; } = "OrganisationAddresses";
 
         public OrganisationAddress GetAddress(int Id)
         {

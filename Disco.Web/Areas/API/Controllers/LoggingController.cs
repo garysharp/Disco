@@ -1,4 +1,5 @@
 ﻿using Disco.Models.Exporting;
+using Disco.Models.Services.Logging;
 using Disco.Services.Authorization;
 using Disco.Services.Logging;
 using Disco.Services.Tasks;
@@ -23,30 +24,40 @@ namespace Disco.Web.Areas.API.Controllers
         [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Logging.Show)]
         public virtual ActionResult RetrieveEvents(string Format, DateTime? Start = null, DateTime? End = null, int? ModuleId = null, List<int> EventTypeIds = null, int? Take = null)
         {
-             var logRetriever = new ReadLogContext()
+            if (string.Equals(Format, "json", StringComparison.OrdinalIgnoreCase))
             {
-                Start = Start,
-                End = End,
-                Module = ModuleId,
-                EventTypes = EventTypeIds,
-                Take = Take
-            };
-            var results = logRetriever.Query(Database);
-
-            var exportFormat = ExportFormat.Xlsx;
-
-            switch (Format.ToLower())
-            {
-                case "json":
-                        return Json(results, JsonRequestBehavior.AllowGet);
-                case "csv":
-                    exportFormat = ExportFormat.Csv;
-                    break;
+                var logRetriever = new ReadLogContext()
+                {
+                    Start = Start,
+                    End = End,
+                    Module = ModuleId,
+                    EventTypes = EventTypeIds,
+                    Take = Take,
+                };
+                var results = logRetriever.Query(Database);
+                return Json(results, JsonRequestBehavior.AllowGet);
             }
+            else
+            {
+                var exportFormat = ExportFormat.Xlsx;
+                if (string.Equals(Format, "csv", StringComparison.OrdinalIgnoreCase))
+                    exportFormat = ExportFormat.Csv;
 
-            var export = LogExport.GenerateExport(exportFormat, results);
+                var options = new LogExportOptions()
+                {
+                    Format = exportFormat,
+                    StartDate = Start,
+                    EndDate = End,
+                    ModuleId = ModuleId,
+                    EventTypeIds = EventTypeIds,
+                    Take = Take,
+                };
+                var exportContext = new LogExportContext(options);
 
-            return File(export.Result, export.MimeType, export.Filename);
+                var export = exportContext.Export(Database, ScheduledTaskMockStatus.Create("Log Export"));
+
+                return File(export.Result, export.MimeType, export.Filename);
+            }
         }
 
         public virtual ActionResult ScheduledTaskStatus(string id)

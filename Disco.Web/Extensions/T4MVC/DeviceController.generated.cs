@@ -141,9 +141,9 @@ namespace Disco.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Export
         {
-            public readonly string DownloadId = "DownloadId";
-            public readonly string ExportType = "ExportType";
-            public readonly string ExportTypeTargetId = "ExportTypeTargetId";
+            public readonly string exportId = "exportId";
+            public readonly string exportType = "exportType";
+            public readonly string exportTypeTargetId = "exportTypeTargetId";
         }
         static readonly ActionParamsClass_Import s_params_Import = new ActionParamsClass_Import();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -274,16 +274,16 @@ namespace Disco.Web.Controllers
         }
 
         [NonAction]
-        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DownloadId, Disco.Models.Services.Devices.Exporting.DeviceExportTypes? ExportType, int? ExportTypeTargetId);
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid? exportId, Disco.Models.Services.Devices.DeviceExportTypes? exportType, int? exportTypeTargetId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Export(string DownloadId, Disco.Models.Services.Devices.Exporting.DeviceExportTypes? ExportType, int? ExportTypeTargetId)
+        public override System.Web.Mvc.ActionResult Export(System.Guid? exportId, Disco.Models.Services.Devices.DeviceExportTypes? exportType, int? exportTypeTargetId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DownloadId", DownloadId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ExportType", ExportType);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ExportTypeTargetId", ExportTypeTargetId);
-            ExportOverride(callInfo, DownloadId, ExportType, ExportTypeTargetId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exportId", exportId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exportType", exportType);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exportTypeTargetId", exportTypeTargetId);
+            ExportOverride(callInfo, exportId, exportType, exportTypeTargetId);
             return callInfo;
         }
 
