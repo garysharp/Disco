@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Disco.Services.Exporting
 {
-    public interface IExportContext
+    public interface IExport
     {
         Guid Id { get; set; }
         string Name { get; set; }
@@ -17,8 +17,8 @@ namespace Disco.Services.Exporting
         ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status);
     }
 
-    public interface IExportContext<T, R>
-        : IExportContext
+    public interface IExport<T, R>
+        : IExport
         where T : IExportOptions, new()
         where R : IExportRecord
     {
@@ -34,6 +34,6 @@ namespace Disco.Services.Exporting
         T Options { get; set; }
 
         List<R> BuildRecords(DiscoDataContext database, IScheduledTaskStatus status);
-        List<ExportFieldMetadata<R>> BuildMetadata(DiscoDataContext database, List<R> records, IScheduledTaskStatus status);
+        ExportMetadata<R> BuildMetadata(DiscoDataContext database, List<R> records, IScheduledTaskStatus status);
     }
 }

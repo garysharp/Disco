@@ -6,13 +6,13 @@ namespace Disco.Services.Exporting
 {
     public class ExportTaskContext
     {
-        public IExportContext ExportContext { get; }
+        public IExport ExportContext { get; }
         public ScheduledTaskStatus TaskStatus { get; internal set; }
         public ExportResult Result { get; internal set; }
 
         public Guid Id => ExportContext.Id;
 
-        public ExportTaskContext(IExportContext context)
+        public ExportTaskContext(IExport context)
         {
             ExportContext = context;
         }

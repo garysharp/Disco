@@ -412,7 +412,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentNullException(nameof(Model));
 
             // Start Export
-            var exportContext = new DeviceFlagExportContext(Model.Options);
+            var exportContext = new DeviceFlagExport(Model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.DeviceFlag.Export(id, null, null)));
 
             // Try waiting for completion

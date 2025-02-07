@@ -123,7 +123,7 @@ namespace Disco.Web.Controllers
                 DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new { Key = dp.Id, Value = dp.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value))
             };
 
-            if (ExportTask.TryFromCache(exportId.Value, out var context))
+            if (ExportTask.TryFromCache(exportId, out var context))
             {
                 m.ExportId = context.Id;
                 m.ExportResult = context.Result;

@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BI\Config\OrganisationAddress.cs" />
-    <Compile Include="Exporting\ExportFieldMetadata.cs" />
+    <Compile Include="Exporting\ExportMetadataField.cs" />
     <Compile Include="Exporting\ExportFormat.cs" />
+    <Compile Include="Exporting\ExportMetadata.cs" />
     <Compile Include="Exporting\IExportRecord.cs" />
     <Compile Include="Repository\Device\Flag\DeviceFlag.cs" />
     <Compile Include="Repository\Device\Flag\DeviceFlagAssignment.cs" />

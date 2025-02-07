@@ -9,15 +9,15 @@ namespace Disco.Services.Exporting
 {
     public class ExportTask : ScheduledTask
     {
-        private IExportContext context;
+        private IExport context;
         public override string TaskName { get => context?.Name ?? "Exporting"; }
         public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public static ExportTaskContext ScheduleNow(IExportContext exportContext)
+        public static ExportTaskContext ScheduleNow(IExport export)
         {
             // Build Context
-            var taskContext = new ExportTaskContext(exportContext);
+            var taskContext = new ExportTaskContext(export);
 
             // Build Data Map
             var task = new ExportTask();
@@ -31,7 +31,7 @@ namespace Disco.Services.Exporting
 
         private static string GetCacheKey(Guid exportId) => $"ExportTask_{exportId}";
 
-        public static ExportTaskContext ScheduleNowCacheResult(IExportContext exportContext, Func<Guid, string> returnUrlBuilder)
+        public static ExportTaskContext ScheduleNowCacheResult(IExport exportContext, Func<Guid, string> returnUrlBuilder)
         {
             var taskContext = ScheduleNow(exportContext);
 

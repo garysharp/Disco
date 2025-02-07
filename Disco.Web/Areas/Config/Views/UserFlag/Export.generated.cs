@@ -730,15 +730,15 @@ WriteLiteral("></i>Exporting user flags...</h4>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
-WriteLiteral(">\r\n    <a");
+WriteLiteral(">\r\n    <button");
+
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" id=\"UserFlag_Export_Button\"");
 
-WriteLiteral(" href=\"#\"");
-
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Export User Flags</a>\r\n</div>\r\n");
+WriteLiteral(">Export User Flags</button>\r\n</div>\r\n");
 
         }
     }

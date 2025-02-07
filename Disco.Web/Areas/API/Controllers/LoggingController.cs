@@ -52,7 +52,7 @@ namespace Disco.Web.Areas.API.Controllers
                     EventTypeIds = EventTypeIds,
                     Take = Take,
                 };
-                var exportContext = new LogExportContext(options);
+                var exportContext = new LogExport(options);
 
                 var export = exportContext.Export(Database, ScheduledTaskMockStatus.Create("Log Export"));
 

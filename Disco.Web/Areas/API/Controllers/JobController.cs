@@ -2179,7 +2179,7 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = new JobExportContext(model.Options);
+            var exportContext = new JobExport(model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Job.Export(id)));
 
             // Try waiting for completion

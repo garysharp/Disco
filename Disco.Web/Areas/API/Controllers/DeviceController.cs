@@ -697,7 +697,7 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = new DeviceExportContext(Model.Options);
+            var exportContext = new DeviceExport(Model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Device.Export(id, null, null)));
 
             // Try waiting for completion

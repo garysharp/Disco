@@ -347,7 +347,7 @@
     <Compile Include="Devices\DeviceDataStoreExtensions.cs" />
     <Compile Include="Devices\DeviceDetailExtensions.cs" />
     <Compile Include="Devices\DeviceExtensions.cs" />
-    <Compile Include="Devices\DeviceFlags\DeviceFlagExportContext.cs" />
+    <Compile Include="Devices\DeviceFlags\DeviceFlagExport.cs" />
     <Compile Include="Devices\DeviceModelExtensions.cs" />
     <Compile Include="Devices\DeviceProfileExtensions.cs" />
     <Compile Include="Devices\DeviceBatchUpdatesHub.cs" />
@@ -358,7 +358,7 @@
     <Compile Include="Devices\Enrolment\EnrolmentTypes.cs" />
     <Compile Include="Devices\Enrolment\LogMacAddressImportingTask.cs" />
     <Compile Include="Devices\Enrolment\MacDeviceEnrolment.cs" />
-    <Compile Include="Devices\DeviceExportContext.cs" />
+    <Compile Include="Devices\DeviceExport.cs" />
     <Compile Include="Devices\DeviceFlags\Cache.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagExtensions.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagsBulkAssignTask.cs" />
@@ -424,7 +424,7 @@
     <Compile Include="Documents\ManagedGroups\DocumentTemplateManagedGroups.cs" />
     <Compile Include="Documents\ManagedGroups\DocumentTemplateUsersManagedGroup.cs" />
     <Compile Include="Documents\QRCodeBinaryEncoder.cs" />
-    <Compile Include="Exporting\IExportContext.cs" />
+    <Compile Include="Exporting\IExport.cs" />
     <Compile Include="Expressions\EvaluateExpressionParseException.cs" />
     <Compile Include="Expressions\EvaluateExpressionPart.cs" />
     <Compile Include="Expressions\Expression.cs" />
@@ -491,7 +491,7 @@
     <Compile Include="Interop\VicEduDept\VicSmart.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQuery.cs" />
     <Compile Include="Interop\DiscoServices\UpdateQueryTask.cs" />
-    <Compile Include="Jobs\JobExportContext.cs" />
+    <Compile Include="Jobs\JobExport.cs" />
     <Compile Include="Jobs\JobActionExtensions.cs" />
     <Compile Include="Jobs\JobExtensions.cs" />
     <Compile Include="Jobs\JobFlagExtensions.cs" />
@@ -511,7 +511,7 @@
     <Compile Include="Jobs\Statistics\DailyOpenedClosed.cs" />
     <Compile Include="Logging\LogBase.cs" />
     <Compile Include="Logging\LogContext.cs" />
-    <Compile Include="Logging\LogExportContext.cs" />
+    <Compile Include="Logging\LogExport.cs" />
     <Compile Include="Logging\LogReInitalizeJob.cs" />
     <Compile Include="Logging\Models\LogEvent.cs" />
     <Compile Include="Logging\Models\LogEventType.cs" />
@@ -599,7 +599,7 @@
     <Compile Include="Users\Contact\UserContactService.cs" />
     <Compile Include="Users\UserExtensions.cs" />
     <Compile Include="Users\UserFlags\Cache.cs" />
-    <Compile Include="Users\UserFlags\UserFlagExportContext.cs" />
+    <Compile Include="Users\UserFlags\UserFlagExport.cs" />
     <Compile Include="Users\UserFlags\UserFlagExtensions.cs" />
     <Compile Include="Users\UserFlags\UserFlagUserDevicesManagedGroup.cs" />
     <Compile Include="Users\UserFlags\UserFlagUsersManagedGroup.cs" />

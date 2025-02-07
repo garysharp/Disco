@@ -417,7 +417,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentNullException(nameof(Model));
 
             // Start Export
-            var exportContext = new UserFlagExportContext(Model.Options);
+            var exportContext = new UserFlagExport(Model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.UserFlag.Export(id, null, null)));
 
             // Try waiting for completion

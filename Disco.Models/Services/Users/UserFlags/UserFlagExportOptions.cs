@@ -56,6 +56,8 @@ namespace Disco.Models.Services.Users.UserFlags
         public bool UserEmailAddress { get; set; }
         [Display(ShortName = "User", Name = "Custom Details", Description = "The custom details provided by plugins for the user assigned to the user flag")]
         public bool UserDetailCustom { get; set; }
+        public bool HasAssignedUserDetails()
+            => UserDisplayName || UserSurname || UserGivenName || UserPhoneNumber || UserEmailAddress || UserDetailCustom;
 
         public static UserFlagExportOptions DefaultOptions()
         {

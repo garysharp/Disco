@@ -5,16 +5,18 @@ using Disco.Models.Services.Exporting;
 using Disco.Services.Tasks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Disco.Services.Exporting
 {
     public static class Exporter
     {
-        public static ExportResult Export<T, R>(DiscoDataContext database, IExportContext<T, R> context, IScheduledTaskStatus status)
+        public static ExportResult Export<T, R>(IExport<T, R> context, DiscoDataContext database, IScheduledTaskStatus status)
             where T : IExportOptions, new()
             where R : IExportRecord
         {
@@ -67,7 +69,7 @@ namespace Disco.Services.Exporting
             };
         }
 
-        private static MemoryStream WriteCSV<T>(List<ExportFieldMetadata<T>> metadata, List<T> records) where T : IExportRecord
+        private static MemoryStream WriteCSV<T>(List<ExportMetadataField<T>> metadata, List<T> records) where T : IExportRecord
         {
             var stream = new MemoryStream();
 
@@ -98,7 +100,7 @@ namespace Disco.Services.Exporting
             return stream;
         }
 
-        private static MemoryStream WriteXlsx<T>(string worksheetName, string tableName, List<ExportFieldMetadata<T>> metadata, List<T> records) where T : IExportRecord
+        private static MemoryStream WriteXlsx<T>(string worksheetName, string tableName, List<ExportMetadataField<T>> metadata, List<T> records) where T : IExportRecord
         {
             var stream = new MemoryStream();
 
@@ -127,5 +129,99 @@ namespace Disco.Services.Exporting
             stream.Position = 0;
             return stream;
         }
+
+        public static void Add<T, O, V>(this ExportMetadata<T> metadata, O options, Expression<Func<O, bool>> optionAccessor, Func<T, V> valueAccessor, Func<object, string> csvValueEncoder = null, string columnName = null)
+            where T : IExportRecord
+            where O : IExportOptions
+        {
+            // is field enabled?
+            if (!optionAccessor.Compile().Invoke(options))
+                return;
+
+            if (columnName is null)
+            {
+                var member = ((MemberExpression)optionAccessor.Body).Member;
+                var attribute = (DisplayAttribute)member.GetCustomAttributes(typeof(DisplayAttribute), false).Single();
+
+                if (metadata.IgnoreShortNames.Contains(attribute.ShortName))
+                    columnName = attribute.Name;
+                else
+                    columnName = $"{attribute.ShortName} {attribute.Name}";
+            }
+
+            metadata.Add(columnName, valueAccessor, csvValueEncoder);
+        }
+
+        public static void Add<T, V>(this ExportMetadata<T> metadata, string columnName, Func<T, V> valueAccessor, Func<object, string> csvValueEncoder = null)
+            where T : IExportRecord
+        {
+            var valueType = typeof(V);
+            if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                valueType = valueType.GetGenericArguments()[0];
+
+            if (csvValueEncoder is null)
+                csvValueEncoder = CsvEncoders.GetEncoder<V>();
+
+            var field = new ExportMetadataField<T>(columnName, valueType, (T i) => valueAccessor(i), csvValueEncoder);
+            metadata.Add(field);
+        }
+
+        public static class CsvEncoders
+        {
+            private static Dictionary<Type, Func<object, string>> encoders = new Dictionary<Type, Func<object, string>>()
+            {
+                { typeof(string), StringEncoder },
+                { typeof(object), ObjectToStringEncoder },
+                { typeof(byte), ToStringEncoder },
+                { typeof(byte?), ToStringEncoder },
+                { typeof(decimal), ToStringEncoder },
+                { typeof(decimal?), ToStringEncoder },
+                { typeof(double), ToStringEncoder },
+                { typeof(double?), ToStringEncoder },
+                { typeof(float), ToStringEncoder },
+                { typeof(float?), ToStringEncoder },
+                { typeof(int), ToStringEncoder },
+                { typeof(int?), ToStringEncoder },
+                { typeof(uint), ToStringEncoder },
+                { typeof(uint?), ToStringEncoder },
+                { typeof(long), ToStringEncoder },
+                { typeof(long?), ToStringEncoder },
+                { typeof(ulong), ToStringEncoder },
+                { typeof(ulong?), ToStringEncoder },
+                { typeof(short), ToStringEncoder },
+                { typeof(short?), ToStringEncoder },
+                { typeof(ushort), ToStringEncoder },
+                { typeof(ushort?), ToStringEncoder },
+                { typeof(bool), ToStringEncoder },
+                { typeof(bool?), ToStringEncoder },
+                { typeof(DateTime), DateTimeEncoder },
+                { typeof(DateTime?), NullableDateTimeEncoder },
+            };
+
+            public static readonly string DateFormat = "yyyy-MM-dd";
+            public static readonly string DateTimeFormat = DateFormat + " HH:mm:ss";
+
+            public static Func<object, string> StringEncoder = (o) => o == null ? null : $"\"{((string)o).Replace("\"", "\"\"")}\"";
+            public static Func<object, string> ObjectToStringEncoder = (o) => o == null ? null : o is string s ? StringEncoder(s) : o.ToString();
+            public static Func<object, string> ToStringEncoder = (o) => o == null ? null : o.ToString();
+            public static Func<object, string> CurrencyEncoder = (o) => ((decimal)o).ToString("C");
+            public static Func<object, string> NullableCurrencyEncoder = (o) => ((decimal?)o).HasValue ? ((decimal?)o).Value.ToString("C") : null;
+            public static Func<object, string> DateEncoder = (o) => ((DateTime)o).ToString(DateFormat);
+            public static Func<object, string> NullableDateEncoder = (o) => ((DateTime?)o).HasValue ? DateEncoder(o) : null;
+            public static Func<object, string> DateTimeEncoder = (o) => ((DateTime)o).ToString(DateTimeFormat);
+            public static Func<object, string> NullableDateTimeEncoder = (o) => ((DateTime?)o).HasValue ? DateTimeEncoder(o) : null;
+
+            public static Func<object, string> GetEncoder<T>()
+                => GetEncoder(typeof(T));
+
+            public static Func<object, string> GetEncoder(Type type)
+            {
+                if (encoders.TryGetValue(type, out var encoder))
+                    return encoder;
+                else
+                    throw new NotSupportedException($"No encoder for type {type}");
+            }
+        }
+
     }
 }
