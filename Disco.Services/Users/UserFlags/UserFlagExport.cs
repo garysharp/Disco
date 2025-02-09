@@ -13,36 +13,31 @@ using System.Linq;
 
 namespace Disco.Services.Users.UserFlags
 {
-    public class UserFlagExport : IExport<UserFlagExportOptions, UserFlagExportRecord>
+    public sealed class UserFlagExport : IExport<UserFlagExportOptions, UserFlagExportRecord>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; } = "User Flag Export";
         public string Description { get; set; }
-        public bool TimestampSuffix { get; set; }
         public UserFlagExportOptions Options { get; set; }
 
-        public string SuggestedFilenamePrefix { get; } = "UserFlagExport";
+        public string FilenamePrefix { get; } = "UserFlagExport";
         public string ExcelWorksheetName { get; } = "UserFlagExport";
         public string ExcelTableName { get; } = "UserFlags";
 
-        [JsonConstructor]
-        private UserFlagExport()
-        {
-        }
-
-        public UserFlagExport(string name, string description, bool timestampSuffix, UserFlagExportOptions options)
+        public UserFlagExport(UserFlagExportOptions options)
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Description = description;
-            TimestampSuffix = timestampSuffix;
             Options = options;
         }
 
-        public UserFlagExport(UserFlagExportOptions options)
-            : this("User Flag Export", null, true, options)
+        [JsonConstructor]
+        public UserFlagExport()
+            : this(UserFlagExportOptions.DefaultOptions())
         {
         }
+
+        public static UserFlagExport Create()
+            => new UserFlagExport(new UserFlagExportOptions());
 
         public ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status)
             => Exporter.Export(this, database, status);

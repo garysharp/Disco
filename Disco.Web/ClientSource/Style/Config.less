@@ -2460,3 +2460,40 @@ h1.Config_DocumentTemplates {
 
 .dialog-bulk-generate {
 }
+
+#Config_Export_Create_OnDemand {
+    #Config_Export_Create_OnDemand_List {
+        height: 120px;
+        overflow-y: auto;
+        background-color: @white;
+        border: 1px solid @TableDataDarkBorderColour;
+        margin-bottom: 10px;
+
+        li {
+            cursor: pointer;
+            margin: 2px 4px;
+
+            &:hover {
+                background-color: @TableDataBorderColour;
+
+                .remove {
+                    opacity: .8;
+                }
+            }
+
+            .remove {
+                margin-top: 2px;
+                padding-right: 6px;
+                float: right;
+                cursor: pointer;
+                opacity: 0;
+                color: @StatusRemove;
+                font-size: 1.3em;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

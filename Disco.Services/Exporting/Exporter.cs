@@ -16,35 +16,32 @@ namespace Disco.Services.Exporting
 {
     public static class Exporter
     {
-        public static ExportResult Export<T, R>(IExport<T, R> context, DiscoDataContext database, IScheduledTaskStatus status)
+        public static ExportResult Export<T, R>(IExport<T, R> export, DiscoDataContext database, IScheduledTaskStatus status)
             where T : IExportOptions, new()
             where R : IExportRecord
         {
             MemoryStream stream;
             string mimeType;
 
-            status.UpdateStatus(1, $"Exporting {context.Name}", "Gathering data");
+            status.UpdateStatus(1, $"Exporting {export.Name}", "Gathering data");
 
-            var records = context.BuildRecords(database, status);
+            var records = export.BuildRecords(database, status);
 
             status.UpdateStatus(70, "Building metadata");
 
-            var metadata = context.BuildMetadata(database, records, status);
+            var metadata = export.BuildMetadata(database, records, status);
 
             if (metadata.Count == 0)
-                throw new ArgumentException("At least one export field must be specified", nameof(context.Options));
+                throw new ArgumentException("At least one export field must be specified", nameof(export.Options));
 
             var filenameBuilder = new StringBuilder();
-            filenameBuilder.Append(context.SuggestedFilenamePrefix);
-            if (context.TimestampSuffix)
-            {
-                filenameBuilder.Append('-');
-                filenameBuilder.Append(status.StartedTimestamp.Value.ToString("yyyyMMdd-HHmmss"));
-            }
+            filenameBuilder.Append(export.FilenamePrefix);
+            filenameBuilder.Append('-');
+            filenameBuilder.Append(status.StartedTimestamp.Value.ToString("yyyyMMdd-HHmmss"));
 
             status.UpdateStatus(80, $"Rendering {records.Count} records for export");
 
-            switch (context.Options.Format)
+            switch (export.Options.Format)
             {
                 case ExportFormat.Csv:
                     filenameBuilder.Append(".csv");
@@ -54,10 +51,10 @@ namespace Disco.Services.Exporting
                 case ExportFormat.Xlsx:
                     filenameBuilder.Append(".xlsx");
                     mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    stream = WriteXlsx(context.ExcelWorksheetName, context.ExcelTableName, metadata, records);
+                    stream = WriteXlsx(export.ExcelWorksheetName, export.ExcelTableName, metadata, records);
                     break;
                 default:
-                    throw new NotSupportedException($"Unsupported export format: {context.Options.Format}");
+                    throw new NotSupportedException($"Unsupported export format: {export.Options.Format}");
             }
 
             return new ExportResult()
@@ -99,7 +96,6 @@ namespace Disco.Services.Exporting
             stream.Position = 0;
             return stream;
         }
-
         private static MemoryStream WriteXlsx<T>(string worksheetName, string tableName, List<ExportMetadataField<T>> metadata, List<T> records) where T : IExportRecord
         {
             var stream = new MemoryStream();
@@ -151,7 +147,6 @@ namespace Disco.Services.Exporting
 
             metadata.Add(columnName, valueAccessor, csvValueEncoder);
         }
-
         public static void Add<T, V>(this ExportMetadata<T> metadata, string columnName, Func<T, V> valueAccessor, Func<object, string> csvValueEncoder = null)
             where T : IExportRecord
         {

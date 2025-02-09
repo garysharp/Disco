@@ -425,6 +425,8 @@
     <Compile Include="Documents\ManagedGroups\DocumentTemplateUsersManagedGroup.cs" />
     <Compile Include="Documents\QRCodeBinaryEncoder.cs" />
     <Compile Include="Exporting\IExport.cs" />
+    <Compile Include="Exporting\SavedExports.cs" />
+    <Compile Include="Exporting\SavedExportTask.cs" />
     <Compile Include="Expressions\EvaluateExpressionParseException.cs" />
     <Compile Include="Expressions\EvaluateExpressionPart.cs" />
     <Compile Include="Expressions\Expression.cs" />
@@ -531,6 +533,7 @@
     <Compile Include="Plugins\Features\DetailsProvider\DetailsProviderService.cs" />
     <Compile Include="Plugins\Features\DetailsProvider\UserContactFeature.cs" />
     <Compile Include="Plugins\Features\DocumentHandlerProvider\DocumentHandlerProviderFeature.cs" />
+    <Compile Include="Plugins\Features\ExportProvider\ExportProviderFeature.cs" />
     <Compile Include="Plugins\Features\ExpressionExtensionProvider\ExpressionExtensionProviderFeature.cs" />
     <Compile Include="Plugins\Features\ExpressionExtensionProvider\ExpressionExtensionRegistration.cs" />
     <Compile Include="Plugins\Features\InsuranceProvider\InsuranceProviderFeature.cs" />

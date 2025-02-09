@@ -38,6 +38,9 @@ namespace Disco.Services.Authorization.Roles.ClaimGroups.Configuration
         [ClaimDetails("Show Configuration", "Can show the configuration menu")]
         public bool Show { get; set; }
 
+        [ClaimDetails("Managed Saved Exports", "Can manage saved exports")]
+        public bool ManageSavedExports { get; set; }
+
         public DeviceCertificateClaims DeviceCertificate { get; set; }
 
         public EnrolmentClaims Enrolment { get; set; }

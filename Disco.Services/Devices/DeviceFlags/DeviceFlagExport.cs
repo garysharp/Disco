@@ -17,31 +17,22 @@ namespace Disco.Services.Devices.DeviceFlags
     public class DeviceFlagExport : IExport<DeviceFlagExportOptions, DeviceFlagExportRecord>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool TimestampSuffix { get; set; }
+        public string Name { get; } = "Device Flag Export";
         public DeviceFlagExportOptions Options { get; set; }
 
-        public string SuggestedFilenamePrefix { get; } = "DeviceFlagExport";
+        public string FilenamePrefix { get; } = "DeviceFlagExport";
         public string ExcelWorksheetName { get; } = "DeviceFlagExport";
         public string ExcelTableName { get; } = "DeviceFlags";
 
-        [JsonConstructor]
-        private DeviceFlagExport()
-        {
-        }
-
-        public DeviceFlagExport(string name, string description, bool timestampSuffix, DeviceFlagExportOptions options)
+        public DeviceFlagExport(DeviceFlagExportOptions options)
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Description = description;
-            TimestampSuffix = timestampSuffix;
             Options = options;
         }
 
-        public DeviceFlagExport(DeviceFlagExportOptions options)
-            : this("Device Flag Export", null, true, options)
+        [JsonConstructor]
+        public DeviceFlagExport()
+            : this(DeviceFlagExportOptions.DefaultOptions())
         {
         }
 

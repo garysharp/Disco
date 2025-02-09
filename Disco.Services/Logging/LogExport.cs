@@ -15,12 +15,10 @@ namespace Disco.Services.Logging
     public class LogExport : IExport<LogExportOptions, LogLiveEvent>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool TimestampSuffix { get; set; }
+        public string Name { get; } = "Log Export";
         public LogExportOptions Options { get; set; }
 
-        public string SuggestedFilenamePrefix { get; } = "DiscoIctLogs";
+        public string FilenamePrefix { get; } = "DiscoIctLogs";
         public string ExcelWorksheetName { get; } = "Disco ICT Logs";
         public string ExcelTableName { get; } = "DiscoIctLogs";
 
@@ -29,18 +27,10 @@ namespace Disco.Services.Logging
         {
         }
 
-        public LogExport(string name, string description, bool timestampSuffix, LogExportOptions options)
+        public LogExport(LogExportOptions options)
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Description = description;
-            TimestampSuffix = timestampSuffix;
             Options = options;
-        }
-
-        public LogExport(LogExportOptions options)
-            : this("Log Export", null, true, options)
-        {
         }
 
         public ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status)

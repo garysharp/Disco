@@ -221,6 +221,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SaveExport()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceController Actions { get { return MVC.API.Device; } }
@@ -264,6 +270,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImportApply = "ImportApply";
             public readonly string Export = "Export";
             public readonly string ExportRetrieve = "ExportRetrieve";
+            public readonly string SaveExport = "SaveExport";
             public readonly string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
         }
 
@@ -297,6 +304,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImportApply = "ImportApply";
             public const string Export = "Export";
             public const string ExportRetrieve = "ExportRetrieve";
+            public const string SaveExport = "SaveExport";
             public const string MigrateDeviceMacAddressesFromLog = "MigrateDeviceMacAddressesFromLog";
         }
 
@@ -547,6 +555,14 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ExportRetrieve
         {
             public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_SaveExport s_params_SaveExport = new ActionParamsClass_SaveExport();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SaveExport SaveExportParams { get { return s_params_SaveExport; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SaveExport
+        {
+            public readonly string Model = "Model";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -919,6 +935,18 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ExportRetrieveOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SaveExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Device.ExportModel Model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SaveExport(Disco.Web.Models.Device.ExportModel Model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
+            SaveExportOverride(callInfo, Model);
             return callInfo;
         }
 

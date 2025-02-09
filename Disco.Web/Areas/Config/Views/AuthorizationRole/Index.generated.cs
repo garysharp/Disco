@@ -181,7 +181,7 @@ WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteLiteral(" title=\"Disco Administrators\"");
+WriteLiteral(" title=\"Disco ICT Administrators\"");
 
 WriteLiteral(">\r\n    <div");
 
@@ -218,14 +218,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1805), Tuple.Create("\"", 1845)
+WriteAttribute("class", Tuple.Create(" class=\"", 1809), Tuple.Create("\"", 1849)
             
             #line 49 "..\..\Areas\Config\Views\AuthorizationRole\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1813), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+, Tuple.Create(Tuple.Create("", 1817), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 1813), false)
+, 1817), false)
 );
 
 WriteLiteral(" data-subjectid=\"");
@@ -339,14 +339,14 @@ WriteLiteral(">Add</a>\r\n    </div>\r\n    <form");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_Form\"");
 
-WriteAttribute("action", Tuple.Create(" action=\"", 2876), Tuple.Create("\"", 2965)
+WriteAttribute("action", Tuple.Create(" action=\"", 2880), Tuple.Create("\"", 2969)
             
             #line 64 "..\..\Areas\Config\Views\AuthorizationRole\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 2885), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateAdministratorSubjects(null, true))
+, Tuple.Create(Tuple.Create("", 2889), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateAdministratorSubjects(null, true))
             
             #line default
             #line hidden
-, 2885), false)
+, 2889), false)
 );
 
 WriteLiteral(" method=\"post\"");

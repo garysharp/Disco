@@ -11,8 +11,8 @@ namespace Disco.Services.Exporting
     public interface IExport
     {
         Guid Id { get; set; }
-        string Name { get; set; }
-        string Description { get; set; }
+        [JsonIgnore]
+        string Name { get; }
 
         ExportResult Export(DiscoDataContext database, IScheduledTaskStatus status);
     }
@@ -22,10 +22,8 @@ namespace Disco.Services.Exporting
         where T : IExportOptions, new()
         where R : IExportRecord
     {
-        bool TimestampSuffix { get; set; }
-
         [JsonIgnore]
-        string SuggestedFilenamePrefix { get; }
+        string FilenamePrefix { get; }
         [JsonIgnore]
         string ExcelWorksheetName { get; }
         [JsonIgnore]

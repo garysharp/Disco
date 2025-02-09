@@ -81,6 +81,7 @@ namespace Disco.Services.Authorization
 				{ "Config.UserFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Delete, (c, v) => c.Config.UserFlag.Delete = v, "Delete User Flags", "Can delete user flags", false) },
 				{ "Config.UserFlag.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Export, (c, v) => c.Config.UserFlag.Export = v, "Export User Flag Assignments", "Can export user flag assignments", false) },
 				{ "Config.UserFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Show, (c, v) => c.Config.UserFlag.Show = v, "Show User Flags", "Can show user flags", false) },
+				{ "Config.ManageSavedExports", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.ManageSavedExports, (c, v) => c.Config.ManageSavedExports = v, "Managed Saved Exports", "Can manage saved exports", false) },
 				{ "Config.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Show, (c, v) => c.Config.Show = v, "Show Configuration", "Can show the configuration menu", false) },
 				{ "Job.Lists.AllOpen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AllOpen, (c, v) => c.Job.Lists.AllOpen = v, "All Open List", "Can show list", false) },
 				{ "Job.Lists.AwaitingFinanceAgreementBreach", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceAgreementBreach, (c, v) => c.Job.Lists.AwaitingFinanceAgreementBreach = v, "Awaiting Finance Agreement Breach List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
@@ -325,6 +326,7 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.UserFlag.Export", false),
 				            new ClaimNavigatorItem("Config.UserFlag.Show", false)
 				        }),
+				        new ClaimNavigatorItem("Config.ManageSavedExports", false),
 				        new ClaimNavigatorItem("Config.Show", false)
 				    }),
 				    new ClaimNavigatorItem("Job", "Job", "Permissions related to Jobs", false, new List<IClaimNavigatorItem>() {
@@ -623,6 +625,7 @@ namespace Disco.Services.Authorization
 			c.Config.UserFlag.Delete = true;
 			c.Config.UserFlag.Export = true;
 			c.Config.UserFlag.Show = true;
+			c.Config.ManageSavedExports = true;
 			c.Config.Show = true;
 			c.Job.Lists.AllOpen = true;
 			c.Job.Lists.AwaitingFinanceAgreementBreach = true;
@@ -1186,6 +1189,11 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string Show = "Config.UserFlag.Show";
             }
+
+            /// <summary>Managed Saved Exports
+            /// <para>Can manage saved exports</para>
+            /// </summary>
+            public const string ManageSavedExports = "Config.ManageSavedExports";
 
             /// <summary>Show Configuration
             /// <para>Can show the configuration menu</para>

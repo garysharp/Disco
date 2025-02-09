@@ -2038,3 +2038,32 @@ h1.Config_DocumentTemplates {
   cursor: not-allowed;
   background-color: #f4f4f4;
 }
+#Config_Export_Create_OnDemand #Config_Export_Create_OnDemand_List {
+  height: 120px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #d8d8d8;
+  margin-bottom: 10px;
+}
+#Config_Export_Create_OnDemand #Config_Export_Create_OnDemand_List li {
+  cursor: pointer;
+  margin: 2px 4px;
+}
+#Config_Export_Create_OnDemand #Config_Export_Create_OnDemand_List li:hover {
+  background-color: #f4f4f4;
+}
+#Config_Export_Create_OnDemand #Config_Export_Create_OnDemand_List li:hover .remove {
+  opacity: 0.8;
+}
+#Config_Export_Create_OnDemand #Config_Export_Create_OnDemand_List li .remove {
+  margin-top: 2px;
+  padding-right: 6px;
+  float: right;
+  cursor: pointer;
+  opacity: 0;
+  color: #e51400;
+  font-size: 1.3em;
+}
+#Config_Export_Create_OnDemand #Config_Export_Create_OnDemand_List li .remove:hover {
+  opacity: 1;
+}

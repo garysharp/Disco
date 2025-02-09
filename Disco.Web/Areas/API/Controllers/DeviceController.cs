@@ -725,6 +725,15 @@ namespace Disco.Web.Areas.API.Controllers
 
             return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
         }
+        [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Device.Actions.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult SaveExport(ExportModel Model)
+        {
+            var export = new DeviceExport(Model.Options);
+            var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
+
+            return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));
+        }
 
         #endregion
 

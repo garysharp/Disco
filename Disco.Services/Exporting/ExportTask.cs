@@ -11,8 +11,8 @@ namespace Disco.Services.Exporting
     {
         private IExport context;
         public override string TaskName { get => context?.Name ?? "Exporting"; }
-        public override bool SingleInstanceTask { get { return false; } }
-        public override bool CancelInitiallySupported { get { return false; } }
+        public override bool SingleInstanceTask { get; } = false;
+        public override bool CancelInitiallySupported { get; } = false;
 
         public static ExportTaskContext ScheduleNow(IExport export)
         {

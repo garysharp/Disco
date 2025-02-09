@@ -2,7 +2,9 @@
 using Disco.Models.Exporting;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices;
+using Disco.Models.Services.Devices.DeviceFlag;
 using Disco.Models.Services.Exporting;
+using Disco.Services.Devices.DeviceFlags;
 using Disco.Services.Exporting;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
@@ -19,31 +21,22 @@ namespace Disco.Services.Devices
     public class DeviceExport : IExport<DeviceExportOptions, DeviceExportRecord>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool TimestampSuffix { get; set; }
+        public string Name { get; } = "Device Export";
         public DeviceExportOptions Options { get; set; }
 
-        public string SuggestedFilenamePrefix { get; } = "DeviceExport";
+        public string FilenamePrefix { get; } = "DeviceExport";
         public string ExcelWorksheetName { get; } = "DeviceExport";
         public string ExcelTableName { get; } = "Devices";
 
-        [JsonConstructor]
-        private DeviceExport()
-        {
-        }
-
-        public DeviceExport(string name, string description, bool timestampSuffix, DeviceExportOptions options)
+        public DeviceExport(DeviceExportOptions options)
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Description = description;
-            TimestampSuffix = timestampSuffix;
             Options = options;
         }
 
-        public DeviceExport(DeviceExportOptions options)
-            : this("Device Export", null, true, options)
+        [JsonConstructor]
+        public DeviceExport()
+            : this(DeviceExportOptions.DefaultOptions())
         {
         }
 

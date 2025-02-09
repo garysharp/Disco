@@ -18,31 +18,23 @@ namespace Disco.Services.Jobs
     public class JobExport : IExport<JobExportOptions, JobExportRecord>
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public bool TimestampSuffix { get; set; }
+        public string Name { get; } = "Job Export";
         public JobExportOptions Options { get; set; }
 
-        public string SuggestedFilenamePrefix { get; } = "JobExport";
+        public string FilenamePrefix { get; } = "JobExport";
         public string ExcelWorksheetName { get; } = "JobExport";
         public string ExcelTableName { get; } = "Jobs";
 
-        [JsonConstructor]
-        private JobExport()
-        {
-        }
-
-        public JobExport(string name, string description, bool timestampSuffix, JobExportOptions options)
+        public JobExport(JobExportOptions options)
         {
             Id = Guid.NewGuid();
-            Name = name;
-            Description = description;
-            TimestampSuffix = timestampSuffix;
             Options = options;
         }
 
-        public JobExport(JobExportOptions options)
-            : this("Job Export", null, true, options)
+
+        [JsonConstructor]
+        public JobExport()
+            : this(JobExportOptions.DefaultOptions())
         {
         }
 

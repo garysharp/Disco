@@ -77,7 +77,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 13 "..\..\Views\Device\Export.cshtml"
-     using (Html.BeginForm(MVC.API.Device.Export()))
+     using (Html.BeginForm(MVC.API.Device.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.Device.SaveExport()) }))
     {
         
             
@@ -323,40 +323,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3918), Tuple.Create("\"", 3949)
+WriteAttribute("title", Tuple.Create(" title=\"", 4003), Tuple.Create("\"", 4034)
             
             #line 67 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 3926), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+, Tuple.Create(Tuple.Create("", 4011), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 3926), false)
+, 4011), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 4031), Tuple.Create("\"", 4068)
-, Tuple.Create(Tuple.Create("", 4036), Tuple.Create("Options_", 4036), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 4116), Tuple.Create("\"", 4153)
+, Tuple.Create(Tuple.Create("", 4121), Tuple.Create("Options_", 4121), true)
             
             #line 68 "..\..\Views\Device\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 4044), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+           , Tuple.Create(Tuple.Create("", 4129), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4044), false)
+, 4129), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 4069), Tuple.Create("\"", 4108)
-, Tuple.Create(Tuple.Create("", 4076), Tuple.Create("Options.", 4076), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 4154), Tuple.Create("\"", 4193)
+, Tuple.Create(Tuple.Create("", 4161), Tuple.Create("Options.", 4161), true)
             
             #line 68 "..\..\Views\Device\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 4084), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                   , Tuple.Create(Tuple.Create("", 4169), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4084), false)
+, 4169), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -372,15 +372,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 4179), Tuple.Create("\"", 4217)
-, Tuple.Create(Tuple.Create("", 4185), Tuple.Create("Options_", 4185), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 4264), Tuple.Create("\"", 4302)
+, Tuple.Create(Tuple.Create("", 4270), Tuple.Create("Options_", 4270), true)
             
             #line 68 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4193), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4278), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4193), false)
+, 4278), false)
 );
 
 WriteLiteral(">");
@@ -428,40 +428,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4806), Tuple.Create("\"", 4837)
+WriteAttribute("title", Tuple.Create(" title=\"", 4891), Tuple.Create("\"", 4922)
             
             #line 77 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 4814), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+, Tuple.Create(Tuple.Create("", 4899), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 4814), false)
+, 4899), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 4919), Tuple.Create("\"", 4956)
-, Tuple.Create(Tuple.Create("", 4924), Tuple.Create("Options_", 4924), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 5004), Tuple.Create("\"", 5041)
+, Tuple.Create(Tuple.Create("", 5009), Tuple.Create("Options_", 5009), true)
             
             #line 78 "..\..\Views\Device\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 4932), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+           , Tuple.Create(Tuple.Create("", 5017), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4932), false)
+, 5017), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 4957), Tuple.Create("\"", 4996)
-, Tuple.Create(Tuple.Create("", 4964), Tuple.Create("Options.", 4964), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 5042), Tuple.Create("\"", 5081)
+, Tuple.Create(Tuple.Create("", 5049), Tuple.Create("Options.", 5049), true)
             
             #line 78 "..\..\Views\Device\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 4972), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                   , Tuple.Create(Tuple.Create("", 5057), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4972), false)
+, 5057), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -477,15 +477,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 5067), Tuple.Create("\"", 5105)
-, Tuple.Create(Tuple.Create("", 5073), Tuple.Create("Options_", 5073), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 5152), Tuple.Create("\"", 5190)
+, Tuple.Create(Tuple.Create("", 5158), Tuple.Create("Options_", 5158), true)
             
             #line 78 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 5081), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 5166), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 5081), false)
+, 5166), false)
 );
 
 WriteLiteral(">");
@@ -570,10 +570,12 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "          resizable: false,\r\n                    modal: true,\r\n                 " +
 "   autoOpen: true\r\n                });\r\n                $(\'#Devices_Export_Butto" +
 "n\').click(function () {\r\n                    $form.submit();\r\n                })" +
-";\r\n            });\r\n        </script>\r\n");
+";\r\n                $(\'#Devices_Export_Save_Button\').click(function () {\r\n       " +
+"             $form.attr(\'action\', $form.data(\'saveaction\'));\r\n                  " +
+"  $form.submit();\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 176 "..\..\Views\Device\Export.cshtml"
+            #line 180 "..\..\Views\Device\Export.cshtml"
     }
 
             
@@ -582,7 +584,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 178 "..\..\Views\Device\Export.cshtml"
+            #line 182 "..\..\Views\Device\Export.cshtml"
  if (Model.ExportId.HasValue)
 {
 
@@ -600,13 +602,13 @@ WriteLiteral(" title=\"Export Devices\"");
 WriteLiteral(">\r\n");
 
             
-            #line 181 "..\..\Views\Device\Export.cshtml"
+            #line 185 "..\..\Views\Device\Export.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 181 "..\..\Views\Device\Export.cshtml"
+            #line 185 "..\..\Views\Device\Export.cshtml"
          if (Model.ExportResult.RecordCount == 0)
         {
 
@@ -616,7 +618,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 
             
-            #line 184 "..\..\Views\Device\Export.cshtml"
+            #line 188 "..\..\Views\Device\Export.cshtml"
         }
         else
         {
@@ -627,7 +629,7 @@ WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 WriteLiteral("            <h4>");
 
             
-            #line 187 "..\..\Views\Device\Export.cshtml"
+            #line 191 "..\..\Views\Device\Export.cshtml"
            Write(Model.ExportResult.RecordCount);
 
             
@@ -636,7 +638,7 @@ WriteLiteral("            <h4>");
 WriteLiteral(" record");
 
             
-            #line 187 "..\..\Views\Device\Export.cshtml"
+            #line 191 "..\..\Views\Device\Export.cshtml"
                                                   Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
@@ -646,14 +648,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 9673), Tuple.Create("\"", 9744)
+WriteAttribute("href", Tuple.Create(" href=\"", 9955), Tuple.Create("\"", 10026)
             
-            #line 188 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 9680), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportId.Value))
+            #line 192 "..\..\Views\Device\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 9962), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 9680), false)
+, 9962), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -665,7 +667,7 @@ WriteLiteral(" class=\"fa fa-download fa-lg\"");
 WriteLiteral("></i>Download Device Export</a>\r\n");
 
             
-            #line 189 "..\..\Views\Device\Export.cshtml"
+            #line 193 "..\..\Views\Device\Export.cshtml"
         }
 
             
@@ -688,7 +690,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 203 "..\..\Views\Device\Export.cshtml"
+            #line 207 "..\..\Views\Device\Export.cshtml"
 }
 
             
@@ -712,15 +714,69 @@ WriteLiteral("></i>Exporting devices...</h4>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
-WriteLiteral(">\r\n    <a");
+WriteLiteral(">\r\n");
 
-WriteLiteral(" id=\"Devices_Export_Button\"");
+            
+            #line 212 "..\..\Views\Device\Export.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 212 "..\..\Views\Device\Export.cshtml"
+     if (Authorization.Has(Claims.Config.ManageSavedExports))
+    {
 
-WriteLiteral(" href=\"#\"");
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" id=\"Devices_Export_Save_Button\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Export Devices</a>\r\n</div>\r\n");
+WriteLiteral(">Save Export</button>\r\n");
+
+            
+            #line 215 "..\..\Views\Device\Export.cshtml"
+    }
+    else
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(" disabled");
+
+WriteLiteral(" title=\"Requires Manage Saved Exports Permission\"");
+
+WriteLiteral(">Save Export</button>\r\n");
+
+            
+            #line 219 "..\..\Views\Device\Export.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" id=\"Devices_Export_Button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Export Now</button>\r\n</div>\r\n");
 
         }
     }

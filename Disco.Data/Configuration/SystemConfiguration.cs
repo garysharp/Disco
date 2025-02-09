@@ -1,6 +1,8 @@
 ﻿using Disco.Data.Repository;
+using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Interop.DiscoServices;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Disco.Data.Configuration
@@ -401,6 +403,12 @@ namespace Disco.Data.Configuration
             }
         }
         #endregion
+
+        public List<SavedExport> SavedExports
+        {
+            get => Get(new List<SavedExport>());
+            set => Set(value);
+        }
 
     }
 }
