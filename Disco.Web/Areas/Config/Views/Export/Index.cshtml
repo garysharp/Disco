@@ -1,0 +1,99 @@
+﻿@model Disco.Web.Areas.Config.Models.Export.IndexModel
+@{
+    Authorization.Require(Claims.Config.ManageSavedExports);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Saved Exports");
+}
+
+@if (Model.SavedExports.Any())
+{
+    <table class="tableData">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Created</th>
+            <th>Schedule</th>
+            <th>&nbsp;</th>
+        </tr>
+        @foreach (var export in Model.SavedExports.OrderBy(e => e.Name))
+        {
+            string exportTypeName;
+            Disco.Models.Repository.User createdUser;
+            Model.ExportTypeNames.TryGetValue(export.Type, out exportTypeName);
+            Model.CreatedUsers.TryGetValue(export.CreatedBy, out createdUser);
+            <tr>
+                <td>
+                    <a href="@Url.Action(MVC.Config.Export.Show(export.Id))">@export.Name</a>
+                </td>
+                <td>@exportTypeName</td>
+                <td>
+                    @if (createdUser != null)
+                    {
+                        @CommonHelpers.FriendlyDateAndUser(export.CreatedOn, createdUser)
+                    }
+                    else
+                    {
+                        @CommonHelpers.FriendlyDateAndUser(export.CreatedOn, export.CreatedBy)
+                    }
+                </td>
+                <td>
+                    @if (export.Schedule == null)
+                    {
+                        <text>&nbsp;</text>
+                    }
+                    else
+                    {
+                        var schedule = export.Schedule;
+                        <div>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Sunday) ? null : "subtleText")">S</span>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Monday) ? null : "subtleText")">M</span>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Tuesday) ? null : "subtleText")">T</span>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Wednesday) ? null : "subtleText")">W</span>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Thursday) ? null : "subtleText")">T</span>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Friday) ? null : "subtleText")">F</span>
+                            <span class="@(schedule.IncludesDay(DayOfWeek.Saturday) ? null : "subtleText")">S</span>
+                            <span class="smallText">at</span>
+                            <span>@schedule.StartHourFriendly()</span>
+                            @if (schedule.EndHour.HasValue)
+                            {
+                                <span class="smallText">-</span>
+                                <span>@schedule.EndHourFriendly()</span>
+                            }
+                        </div>
+                    }
+                </td>
+                <td>
+                    @if (export.Schedule != null)
+                    {
+                        <a href="@Url.Action(MVC.Config.Export.RunScheduled(export.Id))">Schedule Now</a>
+                    }
+                    <a href="@Url.Action(MVC.Config.Export.Run(export.Id))">Export Now</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <div class="form" style="width: 450px; padding: 100px 0;">
+        <h2>No saved exports are configured</h2>
+        <div>
+            @if (Authorization.Has(Claims.Device.Actions.Export))
+            {
+                <a href="@Url.Action(MVC.Device.Export())" class="button small">Device Export</a>
+            }
+            @if (Authorization.Has(Claims.Job.Actions.Export))
+            {
+                <a href="@Url.Action(MVC.Job.Export())" class="button small">Job Export</a>
+            }
+            @if (Authorization.Has(Claims.Config.UserFlag.Export))
+            {
+                <a href="@Url.Action(MVC.Config.UserFlag.Export())" class="button small">User Flag Export</a>
+            }
+            @if (Authorization.Has(Claims.Config.DeviceFlag.Export))
+            {
+                <a href="@Url.Action(MVC.Config.DeviceFlag.Export())" class="button small">Device Flag Export</a>
+            }
+        </div>
+    </div>
+}

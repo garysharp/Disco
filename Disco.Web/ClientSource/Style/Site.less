@@ -1546,6 +1546,10 @@ div.columnHost {
     font-size: 0.9em;
 }
 
+.subtleText {
+    color: @SubtleColour;
+}
+
 .smallMessage {
     font-style: italic;
     color: #666;
@@ -1694,5 +1698,15 @@ i.clipboard-link {
 
     &:hover {
         color: @HeaderBackgroundColour;
+    }
+}
+
+i.clipboard-button {
+    cursor: pointer;
+    padding-left: 4px;
+    color: @ButtonColour;
+
+    &:hover {
+        color: @ButtonHoverColour;
     }
 }

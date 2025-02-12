@@ -1,0 +1,26 @@
+﻿@model Disco.Web.Areas.Config.Models.Export.ShowModel
+@{
+    Authorization.Require(Claims.Config.ManageSavedExports);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Exports", MVC.Config.Export.Index(), "Saved " + Model.ExportTypeName + ": " + Model.Name);
+}
+
+@if (Model.WasSaved)
+{
+    <div class="info-box">
+        <p class="fa-p">
+            <i class="fa fa-fw fa-info-circle"></i> The saved export was updated.
+        </p>
+    </div>
+}
+
+@if (Model.WasExported)
+{
+    <div class="info-box">
+        <p class="fa-p">
+            <i class="fa fa-fw fa-info-circle"></i> The scheduled export was run.
+        </p>
+    </div>
+}
+
+@Html.Partial(MVC.Config.Export.Views._Edit, (Disco.Web.Areas.Config.Models.Export.EditModel)Model)

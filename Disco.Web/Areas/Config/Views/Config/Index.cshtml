@@ -128,7 +128,7 @@
                         }
                     </div>
                 }
-                @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show))
+                @if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show, Claims.Config.ManageSavedExports))
                 {
                     <div class="pageMenuArea noSeperator">
                         <h2>Features</h2>
@@ -137,7 +137,14 @@
                             <i class="fa fa-cog"></i>@Html.ActionLinkClass("Document Templates", MVC.Config.DocumentTemplate.Index(), "config")
                             <div class="pageMenuBlurb">
                                 Create, Update and Bulk Generate documents based on PDF Templates for Jobs, Devices
-                    and Users.
+                                and Users.
+                            </div>
+                        }
+                        @if (Authorization.Has(Claims.Config.ManageSavedExports))
+                        {
+                            <i class="fa fa-cog"></i>@Html.ActionLinkClass("Saved Exports", MVC.Config.Export.Index(), "config")
+                            <div class="pageMenuBlurb">
+                                Update and run saved exports.
                             </div>
                         }
                     </div>

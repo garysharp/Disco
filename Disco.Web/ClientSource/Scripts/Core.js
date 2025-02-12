@@ -58668,7 +58668,7 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
 
         if (navigator.clipboard) {
             window.setTimeout(() => {
-                $('[data-clipboard]')
+                $('[data-clipboard]:not(input)')
                     .on('mouseenter', e => {
                         const $this = $(e.currentTarget);
                         const previousPosition = $this.css('position');
@@ -58699,6 +58699,22 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                             $this.removeData('clipboard');
                         }
                     });
+                $('input[data-clipboard]')
+                    .each((i, el) => {
+                        const $this = $(el);
+                        const link = $('<i class="clipboard-button fa fa-clipboard fa-fw">');
+                        link.insertAfter($this);
+                        link.on('click', e => {
+                            e.preventDefault();
+                            const value = $this.val();
+                            navigator.clipboard.writeText(value).then(() => {
+                                link.removeClass('fa-clipboard').addClass('fa-check');
+                                window.setTimeout(() => {
+                                    link.removeClass('fa-check').addClass('fa-clipboard');
+                                }, 1000);
+                            });
+                        });
+                    })
             }, 100);
         }
     });

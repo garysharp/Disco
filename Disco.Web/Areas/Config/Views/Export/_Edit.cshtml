@@ -1,0 +1,287 @@
+﻿@model Disco.Web.Areas.Config.Models.Export.EditModel
+@using (Html.BeginForm(MVC.API.Export.Update(), FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    @Html.HiddenFor(m => m.Id)
+
+    <div id="Config_Export_Edit_Details" class="form" style="width: 530px;">
+        <h2>Saved @Model.ExportTypeName</h2>
+        <table>
+            <tr>
+                <th style="width: 140px">Name:</th>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Description:<br />
+                    <em class="small">Optional</em>
+                </th>
+                <td>
+                    @Html.EditorFor(model => model.Description)
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="Config_Export_Edit_Schedule" class="form" style="width: 530px; margin-top: 10px;">
+        <h2>Schedule</h2>
+        <table>
+            <tr>
+                <th style="width: 140px">&nbsp;</th>
+                <td>
+                    <label>
+                        @Html.EditorFor(m => m.ScheduleEnabled)
+                        Enable Scheduled Export
+                    </label>
+                </td>
+            </tr>
+            <tr class="@(Model.ScheduleEnabled ? null : "hidden")">
+                <th>
+                    Days:
+                </th>
+                <td>
+                    <ul class="none">
+                        <li><label>@Html.EditorFor(m => m.ScheduleMonday) Monday</label></li>
+                        <li><label>@Html.EditorFor(m => m.ScheduleTuesday) Tuesday</label></li>
+                        <li><label>@Html.EditorFor(m => m.ScheduleWednesday) Wednesday</label></li>
+                        <li><label>@Html.EditorFor(m => m.ScheduleThursday) Thursday</label></li>
+                        <li><label>@Html.EditorFor(m => m.ScheduleFriday) Friday</label></li>
+                        <li><label>@Html.EditorFor(m => m.ScheduleSaturday) Saturday</label></li>
+                        <li><label>@Html.EditorFor(m => m.ScheduleSunday) Sunday</label></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr class="@(Model.ScheduleEnabled ? null : "hidden")">
+                <th>
+                    Start Time:
+                </th>
+                <td>
+                    <select name="ScheduleStartHour">
+                        @{
+                            <option value="0" @(Model.ScheduleStartHour == 0 ? "selected" : null)>12:00 AM</option>
+                            for (int i = 1; i < 12; i++)
+                            {
+                                <option value="@i" @(Model.ScheduleStartHour == i ? "selected" : null)>@i:00 AM</option>
+                            }
+                            <option value="12" @(Model.ScheduleStartHour == 12 ? "selected" : null)>12:00 PM</option>
+                            for (int i = 13; i < 24; i++)
+                            {
+                                <option value="@i" @(Model.ScheduleStartHour == i ? "selected" : null)>@(i % 12):00 PM</option>
+                            }
+                        }
+                    </select>
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-fw fa-info-circle"></i> By default, Disco ICT shuts down at 1:30am and does not resume again until its needed. If a scheduled export was missed during this time, it will be run as soon as Disco ICT is resumed.
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr class="@(Model.ScheduleEnabled ? null : "hidden")">
+                <th>
+                    Repeat Hourly Until:
+                </th>
+                <td>
+                    <select name="ScheduleEndHour">
+                        <option value="" @(Model.ScheduleEndHour.HasValue ? null : "selected")>Run once</option>
+                        @{
+                            for (int i = 1; i < 12; i++)
+                            {
+                                <option value="@i" @(Model.ScheduleEndHour == i ? "selected" : null)>@i:00 AM</option>
+                            }
+                            <option value="12" @(Model.ScheduleEndHour == 12 ? "selected" : null)>12:00 PM</option>
+                            for (int i = 12; i < 24; i++)
+                            {
+                                <option value="@i" @(Model.ScheduleEndHour == i ? "selected" : null)>@(i % 12):00 PM</option>
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr class="@(Model.ScheduleEnabled ? null : "hidden")">
+                <th>
+                    File System Location:
+                </th>
+                <td>
+                    @Html.EditorFor(m => m.FilePath)
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-fw fa-info-circle"></i> This is the full file path on the Disco ICT server (<code>@Environment.MachineName</code>). The location may be a network path. The Disco ICT Service Account (<code>@Environment.UserDomainName\@Environment.UserName</code>) must have write access to the location.
+                        </p>
+                    </div>
+                    <label>
+                        @Html.EditorFor(m => m.TimestampSuffix) Add time stamp suffix to file name
+                    </label>
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-fw fa-info-circle"></i> This will create a new file each time the export runs.
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="Config_Export_Edit_OnDemand" class="form" style="width: 530px; margin-top: 10px;">
+        <h2>On Demand Export</h2>
+        <table>
+            <tr>
+                <th style="width: 140px">
+                    Additional Users/Groups:
+                </th>
+                <td>
+                    <ul id="Config_Export_Edit_OnDemand_List" class="none">
+                        @if (Model.OnDemandSubjects != null)
+                        {
+                            foreach (var sg in Model.OnDemandSubjects)
+                            {
+                                <li>
+                                    <input type="hidden" name="OnDemandPrincipals" value="@sg.Id" />
+                                    <i class="fa fa-user@(sg.IsGroup ? "s" : null) fa-lg"></i>
+                                    @sg.Name [@sg.Id]
+                                    <i class="fa fa-times-circle remove"></i>
+                                </li>
+                            }
+                        }
+                    </ul>
+                    <div>
+                        <input type="text" id="Config_Export_Edit_OnDemand_Input" placeholder="Search users and groups" data-url="@(Url.Action(MVC.API.System.SearchSubjects()))" data-subjecturl="@Url.Action(MVC.API.System.Subject())" />
+                        <button type="button" id="Config_Export_Edit_OnDemand_Add" class="button small">Add</button>
+                    </div>
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-fw fa-info-circle"></i> Users with the Manage Saved Exports permission (including Disco ICT Administrators) can perform an on-demand export at any time.
+                            Users or Group Members can be added to this list.
+                            @if (!Model.IsEnabled)
+                            {
+                                <text>These will also be able to perform an on-demand export using the link available after saving.</text>
+                            }
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            @if (Model.IsEnabled)
+            {
+                var link = new Uri(Request.Url, Url.Action(MVC.Config.Export.Run(Model.Id)));
+                <tr>
+                    <th>Link</th>
+                    <td>
+                        <input type="text" value="@link" style="width: 90%;" readonly data-clipboard />
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="actionBar">
+        @if (Model.IsEnabled)
+        {
+            if (Model.ScheduleEnabled)
+            {
+                <a href="@Url.Action(MVC.Config.Export.RunScheduled(Model.Id))" class="button">Schedule Now</a>
+            }
+
+            <a href="@Url.Action(MVC.Config.Export.Run(Model.Id))" class="button">Export Now</a>
+
+            <button id="Config_Export_Edit_DeleteButton" type="button" class="button alert">Delete</button>
+        }
+
+        <button type="submit" class="button">Save</button>
+    </div>
+}
+@if (Model.IsEnabled)
+{
+    <div id="Config_Export_Edit_DeleteDialog" title="Delete Saved @Model.ExportTypeName: @Model.Name" class="dialog">
+        <div class="info-box">
+            <p class="fa-p">
+                <i class="fa fa-exclamation-triangle"></i>Are you sure you want to delete the Saved @Model.ExportTypeName: @Model.Name?
+            </p>
+        </div>
+        @using (Html.BeginForm(MVC.API.Export.Delete(), FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.Id" />
+        }
+    </div>
+}
+<script>
+    $(function () {
+        $('#ScheduleEnabled').on('change', function () {
+            const enabled = $(this).is(':checked');
+            $('#Config_Export_Edit_Schedule tr:not(:first)').toggleClass('hidden', !enabled);
+        });
+
+        const onDemandInput = $('#Config_Export_Edit_OnDemand_Input');
+
+        onDemandInput
+            .autocomplete({
+                source: onDemandInput.attr('data-url'),
+                minLength: 2,
+                focus: function (e, ui) {
+                    onDemandInput.val(ui.item.Id);
+                    return false;
+                },
+                select: function (e, ui) {
+                    onDemandInput.val(ui.item.Id).blur();
+                    return false;
+                }
+            }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                return $("<li></li>")
+                    .data("item.autocomplete", item)
+                    .append("<a><strong>" + item.Name + "</strong><br>" + item.Id + " (" + item.Type + ")</a>")
+                    .appendTo(ul);
+            };
+        $('#Config_Export_Edit_OnDemand_Add').on('click', async function () {
+            const id = onDemandInput.val();
+            const body = new FormData();
+            body.append('Id', id);
+            const response = await fetch(onDemandInput.attr('data-subjecturl'), {
+                method: 'POST',
+                body: body
+            });
+            if (!response.ok) {
+                alert('Error: ' + response.statusText);
+                return;
+            }
+            const data = await response.json();
+
+            if (!data.IsGroup && !data.IsUserAccount) {
+                alert('Error: Only users and groups can be added.');
+                return;
+            }
+
+            const $li = $('<li><input type="hidden" name="OnDemandPrincipals" /><i class="fa fa-lg"></i> <span></span><i class="fa fa-times-circle remove"></i></li>');
+            $li.find('input').val(data.Id);
+            $li.find('i.fa-lg').addClass(data.Type === 'user' ? 'fa-user' : 'fa-users');
+            $li.find('span').text(data.Name + ' [' + data.Id + ']');
+            $li.appendTo('#Config_Export_Edit_OnDemand_List');
+        });
+        $('#Config_Export_Edit_OnDemand_List').on('click', '.remove', function () {
+            $(this).closest('li').remove();
+        })
+
+        let $deleteDialog = null;
+        $('#Config_Export_Edit_DeleteButton').on('click', function () {
+            if (!$deleteDialog) {
+                $deleteDialog = $('#Config_Export_Edit_DeleteDialog').dialog({
+                    resizable: false,
+                    modal: true,
+                    width: 350,
+                    autoOpen: false,
+                    buttons: {
+                        'Cancel': function () {
+                            $(this).dialog("close");
+                        },
+                        'Delete': function () {
+                            $deleteDialog.find('form').submit();
+                            $(this).dialog("disable");
+                        }
+                    }
+                });
+            }
+            $deleteDialog.dialog('open');
+        })
+    })
+</script>

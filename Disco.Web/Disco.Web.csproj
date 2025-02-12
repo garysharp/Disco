@@ -128,6 +128,9 @@
       <HintPath>..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -210,6 +213,7 @@
     <Compile Include="Areas\API\Controllers\DocumentTemplatePackageController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagAssignmentController.cs" />
     <Compile Include="Areas\API\Controllers\EnrollmentController.cs" />
+    <Compile Include="Areas\API\Controllers\ExportController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagAssignmentController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagController.cs" />
@@ -245,7 +249,9 @@
     <Compile Include="Areas\Config\Models\DocumentTemplate\BulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreatePackageModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ShowPackageModel.cs" />
-    <Compile Include="Areas\Config\Models\Export\CreateModel.cs" />
+    <Compile Include="Areas\Config\Models\Export\EditModel.cs" />
+    <Compile Include="Areas\Config\Models\Export\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\Export\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\DeviceGroupDocumentTemplateBulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\Shared\LinkedGroupModel.cs" />
     <Compile Include="Areas\Config\Models\DeviceFlag\CreateModel.cs" />
@@ -297,6 +303,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ShowPackage.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Export\_Edit.generated.cs">
+      <DependentUpon>_Edit.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Export\Show.generated.cs">
+      <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\Export\Index.generated.cs">
+      <DependentUpon>Index.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Areas\Config\Views\Export\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
@@ -713,6 +734,9 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\API.EnrollmentController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\T4MVC\API.ExportController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\Config.DeviceFlagController.generated.cs">
@@ -1359,10 +1383,22 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CreatePackage.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\Export\Create.cshtml">
+    <None Include="Areas\Config\Views\Export\Create.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
-    </Content>
+    </None>
+    <None Include="Areas\Config\Views\Export\Index.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Index.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Export\Show.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Show.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\Export\_Edit.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Edit.generated.cs</LastGenOutput>
+    </None>
     <None Include="Areas\Config\Views\JobPreferences\Index.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Index.generated.cs</LastGenOutput>

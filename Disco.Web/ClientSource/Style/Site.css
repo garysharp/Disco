@@ -1471,6 +1471,9 @@ div.columnHost .column50 {
 .smallText {
   font-size: 0.9em;
 }
+.subtleText {
+  color: #ededed;
+}
 .smallMessage {
   font-style: italic;
   color: #666;
@@ -1594,4 +1597,12 @@ i.clipboard-link {
 }
 i.clipboard-link:hover {
   color: #333;
+}
+i.clipboard-button {
+  cursor: pointer;
+  padding-left: 4px;
+  color: #1e6dab;
+}
+i.clipboard-button:hover {
+  color: #9e9e9e;
 }

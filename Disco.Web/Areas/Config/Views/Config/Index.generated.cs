@@ -855,7 +855,7 @@ WriteLiteral("                ");
 
             
             #line 131 "..\..\Areas\Config\Views\Config\Index.cshtml"
-                 if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show))
+                 if (Authorization.HasAny(Claims.Config.DocumentTemplate.Show, Claims.Config.ManageSavedExports))
                 {
 
             
@@ -912,8 +912,8 @@ WriteLiteral("                            <div");
 WriteLiteral(" class=\"pageMenuBlurb\"");
 
 WriteLiteral(">\r\n                                Create, Update and Bulk Generate documents bas" +
-"ed on PDF Templates for Jobs, Devices\r\n                    and Users.\r\n         " +
-"                   </div>\r\n");
+"ed on PDF Templates for Jobs, Devices\r\n                                and Users" +
+".\r\n                            </div>\r\n");
 
             
             #line 142 "..\..\Areas\Config\Views\Config\Index.cshtml"
@@ -922,10 +922,60 @@ WriteLiteral(">\r\n                                Create, Update and Bulk Gener
             
             #line default
             #line hidden
+WriteLiteral("                        ");
+
+            
+            #line 143 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                         if (Authorization.Has(Claims.Config.ManageSavedExports))
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <i");
+
+WriteLiteral(" class=\"fa fa-cog\"");
+
+WriteLiteral("></i>");
+
+            
+            #line 145 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                     
+            
+            #line default
+            #line hidden
+            
+            #line 145 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                Write(Html.ActionLinkClass("Saved Exports", MVC.Config.Export.Index(), "config"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 145 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                                                                                                                                
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"pageMenuBlurb\"");
+
+WriteLiteral(">\r\n                                Update and run saved exports.\r\n               " +
+"             </div>\r\n");
+
+            
+            #line 149 "..\..\Areas\Config\Views\Config\Index.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 144 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 151 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 }
 
             
@@ -934,7 +984,7 @@ WriteLiteral("                    </div>\r\n");
 WriteLiteral("            </td>\r\n");
 
             
-            #line 146 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 153 "..\..\Areas\Config\Views\Config\Index.cshtml"
         }
 
             
@@ -943,7 +993,7 @@ WriteLiteral("            </td>\r\n");
 WriteLiteral("    </tr>\r\n</table>\r\n");
 
             
-            #line 149 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 156 "..\..\Areas\Config\Views\Config\Index.cshtml"
   
     if (Model.UpdateAvailable)
     {
@@ -961,14 +1011,14 @@ WriteLiteral(" class=\"fa fa-cloud-download info\"");
 
 WriteLiteral("></i>\r\n        <div>An updated version of Disco is available</div>\r\n        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8213), Tuple.Create("\"", 8249)
+WriteAttribute("href", Tuple.Create(" href=\"", 8682), Tuple.Create("\"", 8718)
             
-            #line 155 "..\..\Areas\Config\Views\Config\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 8220), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
+            #line 162 "..\..\Areas\Config\Views\Config\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 8689), Tuple.Create<System.Object, System.Int32>(Model.UpdateResponse.UrlLink
             
             #line default
             #line hidden
-, 8220), false)
+, 8689), false)
 );
 
 WriteLiteral(" class=\"button small alert\"");
@@ -978,7 +1028,7 @@ WriteLiteral(" target=\"_blank\"");
 WriteLiteral(">Download v");
 
             
-            #line 155 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 162 "..\..\Areas\Config\Views\Config\Index.cshtml"
                                                                                                  Write(Model.UpdateResponse.LatestVersion);
 
             
@@ -995,13 +1045,13 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 163 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 170 "..\..\Areas\Config\Views\Config\Index.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 163 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 170 "..\..\Areas\Config\Views\Config\Index.cshtml"
                   
         if (Model.UpdateResponse.ReleasedDate < DateTime.Now.AddDays(-14))
         {
@@ -1017,7 +1067,7 @@ WriteLiteral("\r\n                updateAvailableContainer.effect(\"shake\", { t
 WriteLiteral("\r\n");
 
             
-            #line 169 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 176 "..\..\Areas\Config\Views\Config\Index.cshtml"
         }
                 
             
@@ -1026,7 +1076,7 @@ WriteLiteral("\r\n");
 WriteLiteral("\r\n            });\r\n        })();\r\n    </script>\r\n");
 
             
-            #line 174 "..\..\Areas\Config\Views\Config\Index.cshtml"
+            #line 181 "..\..\Areas\Config\Views\Config\Index.cshtml"
     }
 
             

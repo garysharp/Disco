@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace Disco.Models.UI.Config.Export
 {
-    public interface ConfigExportCreateModel : BaseUIModel
+    public interface ConfigExportEditModel : BaseUIModel
     {
         string ExportTypeName { get; set; }
         Guid Id { get; set; }
 
         string Name { get; set; }
         string Description { get; set; }
+        bool IsEnabled { get; set; }
 
         string FilePath { get; set; }
         bool TimestampSuffix { get; set; }

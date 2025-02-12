@@ -61,6 +61,12 @@ namespace Disco.Web.Areas.Config.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Show()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Create()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
@@ -70,6 +76,12 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual System.Web.Mvc.ActionResult Run()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Run);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult RunScheduled()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RunScheduled);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -87,18 +99,34 @@ namespace Disco.Web.Areas.Config.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string Index = "Index";
+            public readonly string Show = "Show";
             public readonly string Create = "Create";
             public readonly string Run = "Run";
+            public readonly string RunScheduled = "RunScheduled";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string Index = "Index";
+            public const string Show = "Show";
             public const string Create = "Create";
             public const string Run = "Run";
+            public const string RunScheduled = "RunScheduled";
         }
 
 
+        static readonly ActionParamsClass_Show s_params_Show = new ActionParamsClass_Show();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Show ShowParams { get { return s_params_Show; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Show
+        {
+            public readonly string id = "id";
+            public readonly string saved = "saved";
+            public readonly string exported = "exported";
+        }
         static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
@@ -106,13 +134,20 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string id = "id";
-            public readonly string model = "model";
         }
         static readonly ActionParamsClass_Run s_params_Run = new ActionParamsClass_Run();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Run RunParams { get { return s_params_Run; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Run
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_RunScheduled s_params_RunScheduled = new ActionParamsClass_RunScheduled();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RunScheduled RunScheduledParams { get { return s_params_RunScheduled; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RunScheduled
         {
             public readonly string id = "id";
         }
@@ -126,9 +161,15 @@ namespace Disco.Web.Areas.Config.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _Edit = "_Edit";
                 public readonly string Create = "Create";
+                public readonly string Index = "Index";
+                public readonly string Show = "Show";
             }
+            public readonly string _Edit = "~/Areas/Config/Views/Export/_Edit.cshtml";
             public readonly string Create = "~/Areas/Config/Views/Export/Create.cshtml";
+            public readonly string Index = "~/Areas/Config/Views/Export/Index.cshtml";
+            public readonly string Show = "~/Areas/Config/Views/Export/Show.cshtml";
         }
     }
 
@@ -136,6 +177,31 @@ namespace Disco.Web.Areas.Config.Controllers
     public partial class T4MVC_ExportController : Disco.Web.Areas.Config.Controllers.ExportController
     {
         public T4MVC_ExportController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Index()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            IndexOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ShowOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id, bool? saved, bool? exported);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Show(System.Guid id, bool? saved, bool? exported)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "saved", saved);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exported", exported);
+            ShowOverride(callInfo, id, saved, exported);
+            return callInfo;
+        }
 
         [NonAction]
         partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id);
@@ -150,18 +216,6 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.Export.CreateModel model);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.Export.CreateModel model)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            CreateOverride(callInfo, model);
-            return callInfo;
-        }
-
-        [NonAction]
         partial void RunOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id);
 
         [NonAction]
@@ -170,6 +224,18 @@ namespace Disco.Web.Areas.Config.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Run);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             RunOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RunScheduledOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RunScheduled(System.Guid id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RunScheduled);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            RunScheduledOverride(callInfo, id);
             return callInfo;
         }
 

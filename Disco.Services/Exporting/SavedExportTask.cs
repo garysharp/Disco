@@ -35,7 +35,7 @@ namespace Disco.Services.Exporting
 
         protected override void ExecuteTask()
         {
-            SavedExports.EvaluateSavedExports();
+            SavedExports.EvaluateSavedExportSchedules();
         }
 
     }

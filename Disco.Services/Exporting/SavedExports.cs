@@ -171,6 +171,14 @@ namespace Disco.Services.Exporting
             return exports;
         }
 
+        public static List<SavedExport> GetSavedExports(DiscoDataContext database)
+            => database.DiscoConfiguration.SavedExports
+            .Where(e => e.Enabled && exportTypes.ContainsKey(e.Type))
+            .ToList();
+
+        public static Dictionary<string, string> GetSavedExportTypeNames()
+            => exportTypes.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Name, StringComparer.Ordinal);
+
         public static bool IsAuthorized(SavedExport savedExport, AuthorizationToken authorization)
         {
             if (authorization.Has(Claims.Config.ManageSavedExports))
@@ -188,7 +196,7 @@ namespace Disco.Services.Exporting
             return false;
         }
 
-        public static void EvaluateSavedExports()
+        public static void EvaluateSavedExportSchedules()
         {
             using (var database = new DiscoDataContext())
             {
@@ -198,39 +206,50 @@ namespace Disco.Services.Exporting
 
                 foreach (var scheduledExport in scheduledExports)
                 {
-                    ExportResult exportResult = null;
-                    try
-                    {
-                        exportResult = EvaluateSavedExport(database, scheduledExport);
-                    }
-                    catch (Exception ex)
-                    {
-                        SystemLog.LogException($"Failed to generate saved '{scheduledExport.Name}' [{scheduledExport.Id}]", ex);
-                        continue;
-                    }
-
-                    var filePath = scheduledExport.FilePath;
-                    if (scheduledExport.TimestampSuffix)
-                    {
-                        var timestamp = DateTime.Now.ToString("yyyyMMdd-HH");
-                        var extension = Path.GetExtension(filePath);
-                        filePath = Path.Combine(Path.GetDirectoryName(filePath), $"{Path.GetFileNameWithoutExtension(filePath)}-{timestamp}{extension}");
-                    }
-
-                    try
-                    {
-                        using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                        {
-                            exportResult.Result.CopyTo(fileStream);
-                        }
-
-                        SystemLog.LogInformation($"Saved '{scheduledExport.Name}' [{scheduledExport.Name}] wrote to '{filePath}'");
-                    }
-                    catch (Exception ex)
-                    {
-                        SystemLog.LogException($"Failed to write saved '{scheduledExport.Name}' [{scheduledExport.Id}] to '{filePath}'", ex);
-                    }
+                    EvaluateSavedExportSchedule(database, scheduledExport);
                 }
+            }
+        }
+
+        public static void EvaluateSavedExportSchedule(DiscoDataContext database, SavedExport scheduledExport)
+        {
+            ExportResult exportResult = null;
+            try
+            {
+                exportResult = EvaluateSavedExport(database, scheduledExport);
+            }
+            catch (Exception ex)
+            {
+                SystemLog.LogException($"Failed to generate saved '{scheduledExport.Name}' [{scheduledExport.Id}]", ex);
+                return;
+            }
+
+            var filePath = scheduledExport.FilePath;
+            if (scheduledExport.TimestampSuffix)
+            {
+                var timestamp = DateTime.Now.ToString("yyyyMMdd-HH");
+                var extension = Path.GetExtension(filePath);
+                filePath = Path.Combine(Path.GetDirectoryName(filePath), $"{Path.GetFileNameWithoutExtension(filePath)}-{timestamp}{extension}");
+            }
+
+            try
+            {
+                using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                {
+                    exportResult.Result.CopyTo(fileStream);
+                }
+
+                var allExports = database.DiscoConfiguration.SavedExports;
+                var configExport = allExports.First(e => e.Id == scheduledExport.Id);
+                configExport.LastRunOn = DateTime.Now;
+                database.DiscoConfiguration.SavedExports = allExports;
+                database.SaveChanges();
+
+                SystemLog.LogInformation($"Saved '{scheduledExport.Name}' [{scheduledExport.Name}] wrote to '{filePath}'");
+            }
+            catch (Exception ex)
+            {
+                SystemLog.LogException($"Failed to write saved '{scheduledExport.Name}' [{scheduledExport.Id}] to '{filePath}'", ex);
             }
         }
 
@@ -273,7 +292,7 @@ namespace Disco.Services.Exporting
             var exports = database.DiscoConfiguration.SavedExports;
             var now = DateTime.Now;
             var hour = now.Hour;
-            var day = (byte)(1 << (int)now.DayOfWeek);
+            var day = now.DayOfWeek;
 
             foreach (var export in exports)
             {
@@ -292,7 +311,7 @@ namespace Disco.Services.Exporting
                     continue;
 
                 // scheduled for today?
-                if ((schedule.WeekDays & day) == 0)
+                if (!schedule.IncludesDay(day))
                     continue;
 
                 // always run if scheduled earlier today? (potentially missed)

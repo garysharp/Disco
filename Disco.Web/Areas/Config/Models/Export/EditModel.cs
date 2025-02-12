@@ -8,16 +8,16 @@ using System.Linq;
 
 namespace Disco.Web.Areas.Config.Models.Export
 {
-    public class CreateModel : ConfigExportCreateModel
+    public class EditModel : ConfigExportCreateModel, ConfigExportShowModel
     {
-        public string ExportTypeName { get; set; }
         [Required]
         public Guid Id { get; set; }
+        public string ExportTypeName { get; set; }
         [Required]
         public string Name { get; set; }
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
-
+        public bool IsEnabled { get; set; }
         public string FilePath { get; set; }
         public bool TimestampSuffix { get; set; }
 
@@ -38,11 +38,12 @@ namespace Disco.Web.Areas.Config.Models.Export
         public List<SubjectDescriptorModel> OnDemandSubjects { get; set; }
         public List<string> OnDemandPrincipals { get; set; }
 
-        public static CreateModel FromSavedExport(SavedExport savedExport, string exportTypeName)
+        public static EditModel FromNewSavedExport(SavedExport savedExport, string exportTypeName)
         {
-            return new CreateModel
+            return new EditModel
             {
                 Id = savedExport.Id,
+                IsEnabled = false,
                 ExportTypeName = exportTypeName,
                 ScheduleMonday = true,
                 ScheduleTuesday = true,
