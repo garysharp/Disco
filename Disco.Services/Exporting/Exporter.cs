@@ -196,15 +196,15 @@ namespace Disco.Services.Exporting
             public static readonly string DateFormat = "yyyy-MM-dd";
             public static readonly string DateTimeFormat = DateFormat + " HH:mm:ss";
 
-            public static Func<object, string> StringEncoder = (o) => o == null ? null : $"\"{((string)o).Replace("\"", "\"\"")}\"";
-            public static Func<object, string> ObjectToStringEncoder = (o) => o == null ? null : o is string s ? StringEncoder(s) : o.ToString();
-            public static Func<object, string> ToStringEncoder = (o) => o == null ? null : o.ToString();
-            public static Func<object, string> CurrencyEncoder = (o) => ((decimal)o).ToString("C");
-            public static Func<object, string> NullableCurrencyEncoder = (o) => ((decimal?)o).HasValue ? ((decimal?)o).Value.ToString("C") : null;
-            public static Func<object, string> DateEncoder = (o) => ((DateTime)o).ToString(DateFormat);
-            public static Func<object, string> NullableDateEncoder = (o) => ((DateTime?)o).HasValue ? DateEncoder(o) : null;
-            public static Func<object, string> DateTimeEncoder = (o) => ((DateTime)o).ToString(DateTimeFormat);
-            public static Func<object, string> NullableDateTimeEncoder = (o) => ((DateTime?)o).HasValue ? DateTimeEncoder(o) : null;
+            public static string StringEncoder(object o) => o == null ? null : $"\"{((string)o).Replace("\"", "\"\"")}\"";
+            public static string ObjectToStringEncoder(object o) => o == null ? null : o is string s ? StringEncoder(s) : o.ToString();
+            public static string ToStringEncoder(object o) => o == null ? null : o.ToString();
+            public static string CurrencyEncoder(object o) => ((decimal)o).ToString("C");
+            public static string NullableCurrencyEncoder(object o) => ((decimal?)o).HasValue ? ((decimal?)o).Value.ToString("C") : null;
+            public static string DateEncoder(object o) => ((DateTime)o).ToString(DateFormat);
+            public static string NullableDateEncoder(object o) => ((DateTime?)o).HasValue ? DateEncoder(o) : null;
+            public static string DateTimeEncoder(object o) => ((DateTime)o).ToString(DateTimeFormat);
+            public static string NullableDateTimeEncoder(object o) => ((DateTime?)o).HasValue ? DateTimeEncoder(o) : null;
 
             public static Func<object, string> GetEncoder<T>()
                 => GetEncoder(typeof(T));
