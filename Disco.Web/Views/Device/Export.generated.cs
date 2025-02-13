@@ -571,8 +571,8 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "   autoOpen: true\r\n                });\r\n                $(\'#Devices_Export_Butto" +
 "n\').click(function () {\r\n                    $form.submit();\r\n                })" +
 ";\r\n                $(\'#Devices_Export_Save_Button\').click(function () {\r\n       " +
-"             $form.attr(\'action\', $form.data(\'saveaction\'));\r\n                  " +
-"  $form.submit();\r\n                });\r\n            });\r\n        </script>\r\n");
+"             $form.attr(\'action\', $form[0].dataset.saveaction);\r\n               " +
+"     $form.submit();\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
             #line 180 "..\..\Views\Device\Export.cshtml"
@@ -648,14 +648,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 9955), Tuple.Create("\"", 10026)
+WriteAttribute("href", Tuple.Create(" href=\"", 9958), Tuple.Create("\"", 10029)
             
             #line 192 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 9962), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportId.Value))
+, Tuple.Create(Tuple.Create("", 9965), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 9962), false)
+, 9965), false)
 );
 
 WriteLiteral(" class=\"button\"");

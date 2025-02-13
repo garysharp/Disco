@@ -80,8 +80,8 @@ namespace Disco.Services.Devices.DeviceFlags
             }
 
             status.UpdateStatus(15, "Extracting records from the database");
-
-            var records = query.Select(a => new DeviceFlagExportRecord()
+            var assignments = query.ToList();
+            var records = assignments.Select(a => new DeviceFlagExportRecord()
             {
                 Assignment = a
             }).ToList();

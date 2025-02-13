@@ -706,6 +706,7 @@ namespace Disco.Web.Areas.API.Controllers
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
         }
+
         [DiscoAuthorize(Claims.Device.Actions.Export)]
         public virtual ActionResult ExportRetrieve(Guid id)
         {
@@ -725,6 +726,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
         }
+
         [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Device.Actions.Export)]
         [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult SaveExport(ExportModel Model)

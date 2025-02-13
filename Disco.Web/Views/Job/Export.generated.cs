@@ -77,7 +77,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 13 "..\..\Views\Job\Export.cshtml"
-     using (Html.BeginForm(MVC.API.Job.Export()))
+     using (Html.BeginForm(MVC.API.Job.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.Job.SaveExport()) }))
     {
         
             
@@ -221,15 +221,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 2639), Tuple.Create("\"", 2678)
-, Tuple.Create(Tuple.Create("", 2644), Tuple.Create("Jobs_Export_SubTypes_", 2644), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 2721), Tuple.Create("\"", 2760)
+, Tuple.Create(Tuple.Create("", 2726), Tuple.Create("Jobs_Export_SubTypes_", 2726), true)
             
             #line 56 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 2665), Tuple.Create<System.Object, System.Int32>(jobType.Id
+, Tuple.Create(Tuple.Create("", 2747), Tuple.Create<System.Object, System.Int32>(jobType.Id
             
             #line default
             #line hidden
-, 2665), false)
+, 2747), false)
 );
 
 WriteLiteral(" class=\"Jobs_Export_SubType_Target\"");
@@ -320,35 +320,35 @@ WriteLiteral("                                                                <l
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 3687), Tuple.Create("\"", 3740)
-, Tuple.Create(Tuple.Create("", 3692), Tuple.Create("Jobs_Export_SubTypes_", 3692), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 3769), Tuple.Create("\"", 3822)
+, Tuple.Create(Tuple.Create("", 3774), Tuple.Create("Jobs_Export_SubTypes_", 3774), true)
             
             #line 68 "..\..\Views\Job\Export.cshtml"
-                                     , Tuple.Create(Tuple.Create("", 3713), Tuple.Create<System.Object, System.Int32>(jobType.Id
+                                     , Tuple.Create(Tuple.Create("", 3795), Tuple.Create<System.Object, System.Int32>(jobType.Id
             
             #line default
             #line hidden
-, 3713), false)
-, Tuple.Create(Tuple.Create("", 3726), Tuple.Create("_", 3726), true)
+, 3795), false)
+, Tuple.Create(Tuple.Create("", 3808), Tuple.Create("_", 3808), true)
             
             #line 68 "..\..\Views\Job\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 3727), Tuple.Create<System.Object, System.Int32>(subType.Id
+                                                   , Tuple.Create(Tuple.Create("", 3809), Tuple.Create<System.Object, System.Int32>(subType.Id
             
             #line default
             #line hidden
-, 3727), false)
+, 3809), false)
 );
 
 WriteLiteral(" name=\"Options.FilterJobSubTypeIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 3776), Tuple.Create("\"", 3795)
+WriteAttribute("value", Tuple.Create(" value=\"", 3858), Tuple.Create("\"", 3877)
             
             #line 68 "..\..\Views\Job\Export.cshtml"
-                                                                                                           , Tuple.Create(Tuple.Create("", 3784), Tuple.Create<System.Object, System.Int32>(subType.Id
+                                                                                                           , Tuple.Create(Tuple.Create("", 3866), Tuple.Create<System.Object, System.Int32>(subType.Id
             
             #line default
             #line hidden
-, 3784), false)
+, 3866), false)
 );
 
 WriteLiteral(" ");
@@ -362,23 +362,23 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 3932), Tuple.Create("\"", 3986)
-, Tuple.Create(Tuple.Create("", 3938), Tuple.Create("Jobs_Export_SubTypes_", 3938), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 4014), Tuple.Create("\"", 4068)
+, Tuple.Create(Tuple.Create("", 4020), Tuple.Create("Jobs_Export_SubTypes_", 4020), true)
             
             #line 68 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                                                                                                                                           , Tuple.Create(Tuple.Create("", 3959), Tuple.Create<System.Object, System.Int32>(jobType.Id
+                                                                                                                                                                                                                                                                                           , Tuple.Create(Tuple.Create("", 4041), Tuple.Create<System.Object, System.Int32>(jobType.Id
             
             #line default
             #line hidden
-, 3959), false)
-, Tuple.Create(Tuple.Create("", 3972), Tuple.Create("_", 3972), true)
+, 4041), false)
+, Tuple.Create(Tuple.Create("", 4054), Tuple.Create("_", 4054), true)
             
             #line 68 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                                                                                                                                                         , Tuple.Create(Tuple.Create("", 3973), Tuple.Create<System.Object, System.Int32>(subType.Id
+                                                                                                                                                                                                                                                                                                         , Tuple.Create(Tuple.Create("", 4055), Tuple.Create<System.Object, System.Int32>(subType.Id
             
             #line default
             #line hidden
-, 3973), false)
+, 4055), false)
 );
 
 WriteLiteral(">");
@@ -431,35 +431,35 @@ WriteLiteral("                                                                <l
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 4766), Tuple.Create("\"", 4819)
-, Tuple.Create(Tuple.Create("", 4771), Tuple.Create("Jobs_Export_SubTypes_", 4771), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 4848), Tuple.Create("\"", 4901)
+, Tuple.Create(Tuple.Create("", 4853), Tuple.Create("Jobs_Export_SubTypes_", 4853), true)
             
             #line 78 "..\..\Views\Job\Export.cshtml"
-                                     , Tuple.Create(Tuple.Create("", 4792), Tuple.Create<System.Object, System.Int32>(jobType.Id
+                                     , Tuple.Create(Tuple.Create("", 4874), Tuple.Create<System.Object, System.Int32>(jobType.Id
             
             #line default
             #line hidden
-, 4792), false)
-, Tuple.Create(Tuple.Create("", 4805), Tuple.Create("_", 4805), true)
+, 4874), false)
+, Tuple.Create(Tuple.Create("", 4887), Tuple.Create("_", 4887), true)
             
             #line 78 "..\..\Views\Job\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 4806), Tuple.Create<System.Object, System.Int32>(subType.Id
+                                                   , Tuple.Create(Tuple.Create("", 4888), Tuple.Create<System.Object, System.Int32>(subType.Id
             
             #line default
             #line hidden
-, 4806), false)
+, 4888), false)
 );
 
 WriteLiteral(" name=\"Options.FilterJobSubTypeIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 4855), Tuple.Create("\"", 4874)
+WriteAttribute("value", Tuple.Create(" value=\"", 4937), Tuple.Create("\"", 4956)
             
             #line 78 "..\..\Views\Job\Export.cshtml"
-                                                                                                           , Tuple.Create(Tuple.Create("", 4863), Tuple.Create<System.Object, System.Int32>(subType.Id
+                                                                                                           , Tuple.Create(Tuple.Create("", 4945), Tuple.Create<System.Object, System.Int32>(subType.Id
             
             #line default
             #line hidden
-, 4863), false)
+, 4945), false)
 );
 
 WriteLiteral(" ");
@@ -473,23 +473,23 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 5011), Tuple.Create("\"", 5065)
-, Tuple.Create(Tuple.Create("", 5017), Tuple.Create("Jobs_Export_SubTypes_", 5017), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 5093), Tuple.Create("\"", 5147)
+, Tuple.Create(Tuple.Create("", 5099), Tuple.Create("Jobs_Export_SubTypes_", 5099), true)
             
             #line 78 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                                                                                                                                           , Tuple.Create(Tuple.Create("", 5038), Tuple.Create<System.Object, System.Int32>(jobType.Id
+                                                                                                                                                                                                                                                                                           , Tuple.Create(Tuple.Create("", 5120), Tuple.Create<System.Object, System.Int32>(jobType.Id
             
             #line default
             #line hidden
-, 5038), false)
-, Tuple.Create(Tuple.Create("", 5051), Tuple.Create("_", 5051), true)
+, 5120), false)
+, Tuple.Create(Tuple.Create("", 5133), Tuple.Create("_", 5133), true)
             
             #line 78 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                                                                                                                                                         , Tuple.Create(Tuple.Create("", 5052), Tuple.Create<System.Object, System.Int32>(subType.Id
+                                                                                                                                                                                                                                                                                                         , Tuple.Create(Tuple.Create("", 5134), Tuple.Create<System.Object, System.Int32>(subType.Id
             
             #line default
             #line hidden
-, 5052), false)
+, 5134), false)
 );
 
 WriteLiteral(">");
@@ -689,40 +689,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 7775), Tuple.Create("\"", 7806)
+WriteAttribute("title", Tuple.Create(" title=\"", 7857), Tuple.Create("\"", 7888)
             
             #line 129 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 7783), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+, Tuple.Create(Tuple.Create("", 7865), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 7783), false)
+, 7865), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 7888), Tuple.Create("\"", 7925)
-, Tuple.Create(Tuple.Create("", 7893), Tuple.Create("Options_", 7893), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 7970), Tuple.Create("\"", 8007)
+, Tuple.Create(Tuple.Create("", 7975), Tuple.Create("Options_", 7975), true)
             
             #line 130 "..\..\Views\Job\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 7901), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+           , Tuple.Create(Tuple.Create("", 7983), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 7901), false)
+, 7983), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 7926), Tuple.Create("\"", 7965)
-, Tuple.Create(Tuple.Create("", 7933), Tuple.Create("Options.", 7933), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 8008), Tuple.Create("\"", 8047)
+, Tuple.Create(Tuple.Create("", 8015), Tuple.Create("Options.", 8015), true)
             
             #line 130 "..\..\Views\Job\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 7941), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                   , Tuple.Create(Tuple.Create("", 8023), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 7941), false)
+, 8023), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -738,15 +738,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 8036), Tuple.Create("\"", 8074)
-, Tuple.Create(Tuple.Create("", 8042), Tuple.Create("Options_", 8042), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 8118), Tuple.Create("\"", 8156)
+, Tuple.Create(Tuple.Create("", 8124), Tuple.Create("Options_", 8124), true)
             
             #line 130 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 8050), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 8132), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 8050), false)
+, 8132), false)
 );
 
 WriteLiteral(">");
@@ -794,40 +794,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 8663), Tuple.Create("\"", 8694)
+WriteAttribute("title", Tuple.Create(" title=\"", 8745), Tuple.Create("\"", 8776)
             
             #line 139 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 8671), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+, Tuple.Create(Tuple.Create("", 8753), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 8671), false)
+, 8753), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 8776), Tuple.Create("\"", 8813)
-, Tuple.Create(Tuple.Create("", 8781), Tuple.Create("Options_", 8781), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 8858), Tuple.Create("\"", 8895)
+, Tuple.Create(Tuple.Create("", 8863), Tuple.Create("Options_", 8863), true)
             
             #line 140 "..\..\Views\Job\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 8789), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+           , Tuple.Create(Tuple.Create("", 8871), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 8789), false)
+, 8871), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 8814), Tuple.Create("\"", 8853)
-, Tuple.Create(Tuple.Create("", 8821), Tuple.Create("Options.", 8821), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 8896), Tuple.Create("\"", 8935)
+, Tuple.Create(Tuple.Create("", 8903), Tuple.Create("Options.", 8903), true)
             
             #line 140 "..\..\Views\Job\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 8829), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                   , Tuple.Create(Tuple.Create("", 8911), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 8829), false)
+, 8911), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -843,15 +843,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 8924), Tuple.Create("\"", 8962)
-, Tuple.Create(Tuple.Create("", 8930), Tuple.Create("Options_", 8930), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 9006), Tuple.Create("\"", 9044)
+, Tuple.Create(Tuple.Create("", 9012), Tuple.Create("Options_", 9012), true)
             
             #line 140 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 8938), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 9020), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 8938), false)
+, 9020), false)
 );
 
 WriteLiteral(">");
@@ -947,10 +947,13 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "164,\r\n                    resizable: false,\r\n                    modal: true,\r\n " +
 "                   autoOpen: true\r\n                });\r\n                $(\'#Jobs" +
 "_Export_Button\').click(function () {\r\n                    $form.submit();\r\n     " +
-"           });\r\n            });\r\n        </script>\r\n");
+"           });\r\n                $(\'#Jobs_Export_Save_Button\').click(function () " +
+"{\r\n                    $form.attr(\'action\', $form[0].dataset.saveaction);\r\n     " +
+"               $form.submit();\r\n                });\r\n            });\r\n        </" +
+"script>\r\n");
 
             
-            #line 254 "..\..\Views\Job\Export.cshtml"
+            #line 258 "..\..\Views\Job\Export.cshtml"
     }
 
             
@@ -959,7 +962,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 256 "..\..\Views\Job\Export.cshtml"
+            #line 260 "..\..\Views\Job\Export.cshtml"
  if (Model.ExportId.HasValue)
 {
 
@@ -977,13 +980,13 @@ WriteLiteral(" title=\"Export Jobs\"");
 WriteLiteral(">\r\n");
 
             
-            #line 259 "..\..\Views\Job\Export.cshtml"
+            #line 263 "..\..\Views\Job\Export.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 259 "..\..\Views\Job\Export.cshtml"
+            #line 263 "..\..\Views\Job\Export.cshtml"
          if (Model.ExportResult.RecordCount == 0)
         {
 
@@ -993,7 +996,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 
             
-            #line 262 "..\..\Views\Job\Export.cshtml"
+            #line 266 "..\..\Views\Job\Export.cshtml"
         }
         else
         {
@@ -1004,7 +1007,7 @@ WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 WriteLiteral("            <h4>");
 
             
-            #line 265 "..\..\Views\Job\Export.cshtml"
+            #line 269 "..\..\Views\Job\Export.cshtml"
            Write(Model.ExportResult.RecordCount);
 
             
@@ -1013,7 +1016,7 @@ WriteLiteral("            <h4>");
 WriteLiteral(" record");
 
             
-            #line 265 "..\..\Views\Job\Export.cshtml"
+            #line 269 "..\..\Views\Job\Export.cshtml"
                                                   Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
@@ -1023,14 +1026,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 14417), Tuple.Create("\"", 14485)
+WriteAttribute("href", Tuple.Create(" href=\"", 14696), Tuple.Create("\"", 14764)
             
-            #line 266 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 14424), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
+            #line 270 "..\..\Views\Job\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 14703), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 14424), false)
+, 14703), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -1042,7 +1045,7 @@ WriteLiteral(" class=\"fa fa-download fa-lg\"");
 WriteLiteral("></i>Download Job Export</a>\r\n");
 
             
-            #line 267 "..\..\Views\Job\Export.cshtml"
+            #line 271 "..\..\Views\Job\Export.cshtml"
         }
 
             
@@ -1065,7 +1068,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 281 "..\..\Views\Job\Export.cshtml"
+            #line 285 "..\..\Views\Job\Export.cshtml"
 }
 
             
@@ -1089,7 +1092,61 @@ WriteLiteral("></i>Exporting jobs...</h4>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
-WriteLiteral(">\r\n    <button");
+WriteLiteral(">\r\n");
+
+            
+            #line 290 "..\..\Views\Job\Export.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 290 "..\..\Views\Job\Export.cshtml"
+     if (Authorization.Has(Claims.Config.ManageSavedExports))
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" id=\"Jobs_Export_Save_Button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Save Export</button>\r\n");
+
+            
+            #line 293 "..\..\Views\Job\Export.cshtml"
+    }
+    else
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(" disabled");
+
+WriteLiteral(" title=\"Requires Manage Saved Exports Permission\"");
+
+WriteLiteral(">Save Export</button>\r\n");
+
+            
+            #line 297 "..\..\Views\Job\Export.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    <button");
 
 WriteLiteral(" id=\"Jobs_Export_Button\"");
 

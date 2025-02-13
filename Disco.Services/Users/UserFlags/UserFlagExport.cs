@@ -68,8 +68,8 @@ namespace Disco.Services.Users.UserFlags
             }
 
             status.UpdateStatus(15, "Extracting records from the database");
-
-            var records = query.Select(a => new UserFlagExportRecord()
+            var assignments = query.ToList();
+            var records = assignments.Select(a => new UserFlagExportRecord()
             {
                 Assignment = a
             }).ToList();

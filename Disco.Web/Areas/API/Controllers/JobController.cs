@@ -16,7 +16,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
 
@@ -2209,6 +2208,15 @@ namespace Disco.Web.Areas.API.Controllers
             return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
         }
 
+        [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Job.Actions.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult SaveExport(ExportModel Model)
+        {
+            var export = new JobExport(Model.Options);
+            var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
+
+            return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));
+        }
         #endregion
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Disco.Models.Repository;
-using Disco.Models.Services.Devices.DeviceFlag;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.DeviceFlags;
@@ -11,8 +10,6 @@ using Disco.Web.Areas.Config.Models.DeviceFlag;
 using Disco.Web.Extensions;
 using System;
 using System.Linq;
-using System.Web;
-using System.Web.Caching;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -406,6 +403,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Exporting
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Export(ExportModel Model)
         {
             if (Model == null || Model.Options == null)
@@ -421,6 +419,7 @@ namespace Disco.Web.Areas.API.Controllers
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
         }
+
         [DiscoAuthorize(Claims.Config.DeviceFlag.Export)]
         public virtual ActionResult ExportRetrieve(Guid id)
         {
@@ -439,6 +438,16 @@ namespace Disco.Web.Areas.API.Controllers
             var fileStream = context.Result.Result;
 
             return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Config.DeviceFlag.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult SaveExport(ExportModel Model)
+        {
+            var export = new DeviceFlagExport(Model.Options);
+            var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
+
+            return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));
         }
 
         #endregion

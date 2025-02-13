@@ -77,8 +77,22 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 13 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-     using (Html.BeginForm(MVC.API.UserFlag.Export()))
+     using (Html.BeginForm(MVC.API.UserFlag.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.UserFlag.SaveExport()) }))
     {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 15 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+   Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 15 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+                                
 
             
             #line default
@@ -100,13 +114,13 @@ WriteLiteral(">\r\n                        User Flags:\r\n                    </
 "      <td>\r\n");
 
             
-            #line 23 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 24 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 23 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 24 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                          foreach (var userFlag in Model.UserFlags)
                         {
 
@@ -122,20 +136,20 @@ WriteLiteral(" id=\"Options_UserFlagIds\"");
 
 WriteLiteral(" name=\"Options.UserFlagIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 1234), Tuple.Create("\"", 1254)
+WriteAttribute("value", Tuple.Create(" value=\"", 1355), Tuple.Create("\"", 1375)
             
-            #line 27 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-                                      , Tuple.Create(Tuple.Create("", 1242), Tuple.Create<System.Object, System.Int32>(userFlag.Id
+            #line 28 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+                                      , Tuple.Create(Tuple.Create("", 1363), Tuple.Create<System.Object, System.Int32>(userFlag.Id
             
             #line default
             #line hidden
-, 1242), false)
+, 1363), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 27 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 28 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                                                                                                 Write(((bool)Model.Options.UserFlagIds.Contains(userFlag.Id)) ? "checked " : null);
 
             
@@ -143,31 +157,31 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1377), Tuple.Create("\"", 1438)
-, Tuple.Create(Tuple.Create("", 1385), Tuple.Create("fa", 1385), true)
-, Tuple.Create(Tuple.Create(" ", 1387), Tuple.Create("fa-", 1388), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1498), Tuple.Create("\"", 1559)
+, Tuple.Create(Tuple.Create("", 1506), Tuple.Create("fa", 1506), true)
+, Tuple.Create(Tuple.Create(" ", 1508), Tuple.Create("fa-", 1509), true)
             
-            #line 28 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 1391), Tuple.Create<System.Object, System.Int32>(userFlag.Icon
-            
-            #line default
-            #line hidden
-, 1391), false)
-, Tuple.Create(Tuple.Create(" ", 1407), Tuple.Create("fa-lg", 1408), true)
-, Tuple.Create(Tuple.Create(" ", 1413), Tuple.Create("d-", 1414), true)
-            
-            #line 28 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 1416), Tuple.Create<System.Object, System.Int32>(userFlag.IconColour
+            #line 29 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 1512), Tuple.Create<System.Object, System.Int32>(userFlag.Icon
             
             #line default
             #line hidden
-, 1416), false)
+, 1512), false)
+, Tuple.Create(Tuple.Create(" ", 1528), Tuple.Create("fa-lg", 1529), true)
+, Tuple.Create(Tuple.Create(" ", 1534), Tuple.Create("d-", 1535), true)
+            
+            #line 29 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 1537), Tuple.Create<System.Object, System.Int32>(userFlag.IconColour
+            
+            #line default
+            #line hidden
+, 1537), false)
 );
 
 WriteLiteral("></i>\r\n                                    <span>");
 
             
-            #line 29 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 30 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                      Write(userFlag.Name);
 
             
@@ -177,7 +191,7 @@ WriteLiteral("</span>\r\n                                </label>\r\n           
 "div>\r\n");
 
             
-            #line 32 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 33 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                         }
 
             
@@ -187,7 +201,7 @@ WriteLiteral("                    </td>\r\n                </tr>\r\n            
 "           <th>");
 
             
-            #line 36 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 37 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                    Write(Html.LabelFor(m => m.Options.CurrentOnly));
 
             
@@ -198,7 +212,7 @@ WriteLiteral("</th>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 38 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 39 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                    Write(Html.CheckBoxFor(m => m.Options.CurrentOnly));
 
             
@@ -209,7 +223,7 @@ WriteLiteral("\r\n                        <p>Uncheck to include all historical u
 "\r\n                    <th>");
 
             
-            #line 43 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 44 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                    Write(Html.LabelFor(m => m.Options.Format));
 
             
@@ -220,7 +234,7 @@ WriteLiteral("</th>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 45 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 46 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                    Write(Html.DropDownListFor(m => m.Options.Format, Enum.GetNames(typeof(Disco.Models.Exporting.ExportFormat)).Select(v => new SelectListItem() { Value = v, Text = v })));
 
             
@@ -246,13 +260,13 @@ WriteLiteral(" href=\"#\"");
 WriteLiteral(">(Defaults)</a></h2>\r\n            <table>\r\n");
 
             
-            #line 53 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 54 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 53 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 54 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                  foreach (var optionGroup in optionGroups)
                 {
                     var optionFields = optionGroup.ToList();
@@ -270,7 +284,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 59 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 60 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                        Write(optionGroup.Key);
 
             
@@ -279,13 +293,13 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n");
 
             
-            #line 60 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 61 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 60 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 61 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                              if (optionFields.Count > 2)
                             {
 
@@ -313,7 +327,7 @@ WriteLiteral(" href=\"#\"");
 WriteLiteral(">NONE</a></span>\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 64 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                             }
 
             
@@ -340,13 +354,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 71 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 72 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 72 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                  foreach (var optionItem in optionFields.Take(itemsPerColumn))
                                                 {
 
@@ -355,40 +369,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3824), Tuple.Create("\"", 3855)
+WriteAttribute("title", Tuple.Create(" title=\"", 3945), Tuple.Create("\"", 3976)
             
-            #line 73 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 3832), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+            #line 74 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 3953), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 3832), false)
+, 3953), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 3937), Tuple.Create("\"", 3974)
-, Tuple.Create(Tuple.Create("", 3942), Tuple.Create("Options_", 3942), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 4058), Tuple.Create("\"", 4095)
+, Tuple.Create(Tuple.Create("", 4063), Tuple.Create("Options_", 4063), true)
             
-            #line 74 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 3950), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+           , Tuple.Create(Tuple.Create("", 4071), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 3950), false)
+, 4071), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 3975), Tuple.Create("\"", 4014)
-, Tuple.Create(Tuple.Create("", 3982), Tuple.Create("Options.", 3982), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 4096), Tuple.Create("\"", 4135)
+, Tuple.Create(Tuple.Create("", 4103), Tuple.Create("Options.", 4103), true)
             
-            #line 74 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 3990), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+                                                   , Tuple.Create(Tuple.Create("", 4111), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 3990), false)
+, 4111), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -396,7 +410,7 @@ WriteLiteral(" value=\"true\"");
 WriteLiteral(" ");
 
             
-            #line 74 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                                                                                                                                       Write(((bool)optionItem.Model) ? "checked " : null);
 
             
@@ -404,21 +418,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 4085), Tuple.Create("\"", 4123)
-, Tuple.Create(Tuple.Create("", 4091), Tuple.Create("Options_", 4091), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 4206), Tuple.Create("\"", 4244)
+, Tuple.Create(Tuple.Create("", 4212), Tuple.Create("Options_", 4212), true)
             
-            #line 74 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4099), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4220), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4099), false)
+, 4220), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 74 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                                                                                                                                                                                                                                      Write(optionItem.DisplayName);
 
             
@@ -427,7 +441,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                                    </li>\r\n");
 
             
-            #line 76 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 77 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                 }
 
             
@@ -445,13 +459,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 81 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 82 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 81 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 82 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                  foreach (var optionItem in optionFields.Skip(itemsPerColumn))
                                                 {
 
@@ -460,40 +474,40 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                                    <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4712), Tuple.Create("\"", 4743)
+WriteAttribute("title", Tuple.Create(" title=\"", 4833), Tuple.Create("\"", 4864)
             
-            #line 83 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 4720), Tuple.Create<System.Object, System.Int32>(optionItem.Description
+            #line 84 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 4841), Tuple.Create<System.Object, System.Int32>(optionItem.Description
             
             #line default
             #line hidden
-, 4720), false)
+, 4841), false)
 );
 
 WriteLiteral(">\r\n                                                        <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 4825), Tuple.Create("\"", 4862)
-, Tuple.Create(Tuple.Create("", 4830), Tuple.Create("Options_", 4830), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 4946), Tuple.Create("\"", 4983)
+, Tuple.Create(Tuple.Create("", 4951), Tuple.Create("Options_", 4951), true)
             
-            #line 84 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 4838), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 85 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+           , Tuple.Create(Tuple.Create("", 4959), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4838), false)
+, 4959), false)
 );
 
-WriteAttribute("name", Tuple.Create(" name=\"", 4863), Tuple.Create("\"", 4902)
-, Tuple.Create(Tuple.Create("", 4870), Tuple.Create("Options.", 4870), true)
+WriteAttribute("name", Tuple.Create(" name=\"", 4984), Tuple.Create("\"", 5023)
+, Tuple.Create(Tuple.Create("", 4991), Tuple.Create("Options.", 4991), true)
             
-            #line 84 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 4878), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 85 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+                                                   , Tuple.Create(Tuple.Create("", 4999), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4878), false)
+, 4999), false)
 );
 
 WriteLiteral(" value=\"true\"");
@@ -501,7 +515,7 @@ WriteLiteral(" value=\"true\"");
 WriteLiteral(" ");
 
             
-            #line 84 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 85 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                                                                                                                                       Write(((bool)optionItem.Model) ? "checked " : null);
 
             
@@ -509,21 +523,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 4973), Tuple.Create("\"", 5011)
-, Tuple.Create(Tuple.Create("", 4979), Tuple.Create("Options_", 4979), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 5094), Tuple.Create("\"", 5132)
+, Tuple.Create(Tuple.Create("", 5100), Tuple.Create("Options_", 5100), true)
             
-            #line 84 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4987), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
+            #line 85 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+                                                                                                                                                                , Tuple.Create(Tuple.Create("", 5108), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
             
             #line default
             #line hidden
-, 4987), false)
+, 5108), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 84 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 85 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                                                                                                                                                                                                                                      Write(optionItem.DisplayName);
 
             
@@ -532,7 +546,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                                                    </li>\r\n");
 
             
-            #line 86 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 87 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                 }
 
             
@@ -548,7 +562,7 @@ WriteLiteral(@"                                            </ul>
 ");
 
             
-            #line 94 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 95 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
 
                 }
 
@@ -588,10 +602,13 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "                   resizable: false,\r\n                    modal: true,\r\n        " +
 "            autoOpen: true\r\n                });\r\n                $(\'#UserFlag_Ex" +
 "port_Button\').click(function () {\r\n                    $form.submit();\r\n        " +
-"        });\r\n            });\r\n        </script>\r\n");
+"        });\r\n                $(\'#UserFlag_Export_Save_Button\').click(function ()" +
+" {\r\n                    $form.attr(\'action\', $form[0].dataset.saveaction);\r\n    " +
+"                $form.submit();\r\n                });\r\n            });\r\n        <" +
+"/script>\r\n");
 
             
-            #line 162 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 167 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
     }
 
             
@@ -600,7 +617,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 164 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 169 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
  if (Model.ExportId.HasValue)
 {
 
@@ -618,13 +635,13 @@ WriteLiteral(" title=\"Export User Flags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 167 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 172 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 167 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 172 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
          if (Model.ExportResult.RecordCount == 0)
         {
 
@@ -634,7 +651,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 
             
-            #line 170 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 175 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
         }
         else
         {
@@ -645,7 +662,7 @@ WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 WriteLiteral("            <h4>");
 
             
-            #line 173 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 178 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
            Write(Model.ExportResult.RecordCount);
 
             
@@ -654,7 +671,7 @@ WriteLiteral("            <h4>");
 WriteLiteral(" record");
 
             
-            #line 173 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 178 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
                                                   Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
@@ -664,14 +681,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8473), Tuple.Create("\"", 8546)
+WriteAttribute("href", Tuple.Create(" href=\"", 8795), Tuple.Create("\"", 8868)
             
-            #line 174 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 8480), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.UserFlag.ExportRetrieve(Model.ExportId.Value))
+            #line 179 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 8802), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.UserFlag.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 8480), false)
+, 8802), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -683,7 +700,7 @@ WriteLiteral(" class=\"fa fa-download fa-lg\"");
 WriteLiteral("></i>Download User Flag Export</a>\r\n");
 
             
-            #line 175 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 180 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
         }
 
             
@@ -706,7 +723,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 189 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+            #line 194 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
 }
 
             
@@ -730,7 +747,61 @@ WriteLiteral("></i>Exporting user flags...</h4>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
-WriteLiteral(">\r\n    <button");
+WriteLiteral(">\r\n");
+
+            
+            #line 199 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 199 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+     if (Authorization.Has(Claims.Config.ManageSavedExports))
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" id=\"UserFlag_Export_Save_Button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Save Export</button>\r\n");
+
+            
+            #line 202 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+    }
+    else
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(" disabled");
+
+WriteLiteral(" title=\"Requires Manage Saved Exports Permission\"");
+
+WriteLiteral(">Save Export</button>\r\n");
+
+            
+            #line 206 "..\..\Areas\Config\Views\UserFlag\Export.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    <button");
 
 WriteLiteral(" type=\"button\"");
 

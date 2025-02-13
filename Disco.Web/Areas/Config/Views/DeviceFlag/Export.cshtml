@@ -10,8 +10,9 @@
         .GroupBy(m => m.ShortDisplayName);
 }
 <div id="DeviceFlag_Export">
-    @using (Html.BeginForm(MVC.API.DeviceFlag.Export()))
+    @using (Html.BeginForm(MVC.API.DeviceFlag.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.DeviceFlag.SaveExport()) }))
     {
+        @Html.AntiForgeryToken()
         <div id="DeviceFlag_Export_Scope" class="form" style="width: 570px">
             <h2>Export Scope</h2>
             <table>
@@ -157,6 +158,10 @@
                 $('#DeviceFlag_Export_Button').click(function () {
                     $form.submit();
                 });
+                $('#DeviceFlag_Export_Save_Button').click(function () {
+                    $form.attr('action', $form[0].dataset.saveaction);
+                    $form.submit();
+                });
             });
         </script>
     }
@@ -191,5 +196,14 @@
     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting device flags...</h4>
 </div>
 <div class="actionBar">
+    @if (Authorization.Has(Claims.Config.ManageSavedExports))
+    {
+        <button type="button" id="DeviceFlag_Export_Save_Button" class="button">Save Export</button>
+    }
+    else
+    {
+        <button type="button" class="button" disabled title="Requires Manage Saved Exports Permission">Save Export</button>
+    }
+
     <button type="button" id="DeviceFlag_Export_Button" class="button">Export Device Flags</button>
 </div>

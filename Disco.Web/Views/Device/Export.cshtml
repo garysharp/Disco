@@ -172,7 +172,7 @@
                     $form.submit();
                 });
                 $('#Devices_Export_Save_Button').click(function () {
-                    $form.attr('action', $form.data('saveaction'));
+                    $form.attr('action', $form[0].dataset.saveaction);
                     $form.submit();
                 });
             });
