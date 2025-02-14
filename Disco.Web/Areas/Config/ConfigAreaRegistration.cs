@@ -65,6 +65,11 @@ namespace Disco.Web.Areas.Config
                 new { controller = "DocumentTemplate", action = "CreatePackage" }
             );
             context.MapRoute(
+                "Config_DocumentTemplate_Export",
+                "Config/DocumentTemplate/Export/{id}",
+                new { controller = "DocumentTemplate", action = "Export", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
                 "Config_DocumentTemplate_ImportStatus",
                 "Config/DocumentTemplate/ImportStatus",
                 new { controller = "DocumentTemplate", action = "ImportStatus", id = UrlParameter.Optional }

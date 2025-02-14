@@ -3198,6 +3198,31 @@ WriteLiteral("            ");
 
             
             #line 1055 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+             if (Authorization.Has(Claims.Config.DocumentTemplate.Export))
+            {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 1057 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+           Write(Html.ActionLinkButton("Export Instances", MVC.Config.DocumentTemplate.Export(Model.DocumentTemplate.Id, null)));
+
+            
+            #line default
+            #line hidden
+            
+            #line 1057 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                                                                                               
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            ");
+
+            
+            #line 1059 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (canBulkGenerate)
             {
                 if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
@@ -3207,14 +3232,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 1059 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1063 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                Write(Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)));
 
             
             #line default
             #line hidden
             
-            #line 1059 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1063 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                                 
                 }
                 else
@@ -3239,16 +3264,16 @@ WriteLiteral(" id=\"dialogBulkGenerate\"");
 
 WriteLiteral(" class=\"hiddenDialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 62552), Tuple.Create("\"", 62603)
-, Tuple.Create(Tuple.Create("", 62560), Tuple.Create("Bulk", 62560), true)
-, Tuple.Create(Tuple.Create(" ", 62564), Tuple.Create("Generate:", 62565), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 62787), Tuple.Create("\"", 62838)
+, Tuple.Create(Tuple.Create("", 62795), Tuple.Create("Bulk", 62795), true)
+, Tuple.Create(Tuple.Create(" ", 62799), Tuple.Create("Generate:", 62800), true)
             
-            #line 1064 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                , Tuple.Create(Tuple.Create(" ", 62574), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+            #line 1068 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                , Tuple.Create(Tuple.Create(" ", 62809), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 62575), false)
+, 62810), false)
 );
 
 WriteLiteral(">\r\n                        <div");
@@ -3258,13 +3283,13 @@ WriteLiteral(" class=\"brief\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1066 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1070 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 1066 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1070 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                              switch (Model.DocumentTemplate.Scope)
                             {
                                 case "Device":
@@ -3306,7 +3331,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">01234567;ABCD9876;8VQ6G2R</div>\r\n                                    </div>\r\n");
 
             
-            #line 1082 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1086 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     break;
                                 case "Job":
 
@@ -3345,7 +3370,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">86;99;44</div>\r\n                                    </div>\r\n");
 
             
-            #line 1097 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1101 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     break;
                             }
 
@@ -3355,13 +3380,13 @@ WriteLiteral(">86;99;44</div>\r\n                                    </div>\r\n"
 WriteLiteral("                        </div>\r\n");
 
             
-            #line 1100 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1104 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1100 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1104 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                          using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
                         {
 
@@ -3391,7 +3416,7 @@ WriteLiteral(" data-val-required=\"Identifiers are required\"");
 WriteLiteral("></textarea>\r\n");
 
             
-            #line 1104 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1108 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
                             {
 
@@ -3420,7 +3445,7 @@ WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n         
 "      </div>\r\n");
 
             
-            #line 1109 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1113 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                         }
 
@@ -3430,7 +3455,7 @@ WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n         
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 1112 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1116 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
 
 
             
@@ -3469,7 +3494,7 @@ WriteLiteral(@"                    <script>
 ");
 
             
-            #line 1143 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1147 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                 }
             }
 
@@ -3479,7 +3504,7 @@ WriteLiteral(@"                    <script>
 WriteLiteral("            ");
 
             
-            #line 1145 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1149 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
             {
                 
@@ -3487,14 +3512,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 1147 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1151 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
            Write(Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 1147 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1151 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                                   
             }
 
@@ -3504,13 +3529,13 @@ WriteLiteral("            ");
 WriteLiteral("        </div>\r\n");
 
             
-            #line 1150 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1154 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 1150 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1154 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
          if (!string.IsNullOrWhiteSpace(Model.BulkGenerateDownloadId))
         {
 
@@ -3527,14 +3552,14 @@ WriteLiteral(" title=\"Download Bulk Documents\"");
 
 WriteLiteral(">\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 67854), Tuple.Create("\"", 67985)
+WriteAttribute("href", Tuple.Create(" href=\"", 68089), Tuple.Create("\"", 68220)
             
-            #line 1153 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 67861), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))
+            #line 1157 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 68096), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))
             
             #line default
             #line hidden
-, 67861), false)
+, 68096), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -3560,7 +3585,7 @@ WriteLiteral(@"            <script>
 ");
 
             
-            #line 1167 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1171 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
         }
             
             #line default

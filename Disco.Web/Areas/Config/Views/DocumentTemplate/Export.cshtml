@@ -1,0 +1,219 @@
+﻿@using Disco.Web.Areas.Config.Models.DocumentTemplate;
+@using Disco.Services.Exporting;
+@model ExportModel
+@{
+    Authorization.Require(Claims.Config.DocumentTemplate.Export);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Export");
+}
+<div id="DocumentTemplate_Export">
+    @using (Html.BeginForm(MVC.API.DocumentTemplate.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.DocumentTemplate.SaveExport()) }))
+    {
+        @Html.AntiForgeryToken()
+        <div id="DocumentTemplate_Export_Scope" class="form" style="width: 570px">
+            <h2>Export Scope</h2>
+            <table>
+                <tr>
+                    <th style="width: 100px">
+                        Documents:
+                    </th>
+                    <td class="details">
+                        <table class="tableData">
+                            @{
+                                var index = 0;
+                                foreach (var document in Model.DocumentTemplates)
+                                {
+                                    <tr>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox" id="Options_DocumentTemplateIds_@index" name="Options.DocumentTemplateIds" value="@document.Id" @(((bool)Model.Options.DocumentTemplateIds.Contains(document.Id)) ? "checked " : null) />
+                                                <strong>@document.Id</strong>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label for="Options_DocumentTemplateIds_@index">@document.Description</label>
+                                        </td>
+                                        <td>
+                                            @document.Scope
+                                        </td>
+                                    </tr>
+                                    index++;
+                                }
+                            }
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.Options.LatestOnly)</th>
+                    <td>
+                        @Html.CheckBoxFor(m => m.Options.LatestOnly)
+                        <p>Uncheck to include all document instances.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.LabelFor(m => m.Options.Format)</th>
+                    <td>
+                        @Html.DropDownListFor(m => m.Options.Format, Enum.GetNames(typeof(Disco.Models.Exporting.ExportFormat)).Select(v => new SelectListItem() { Value = v, Text = v }))
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="DocumentTemplate_Export_Fields" class="form" style="width: 570px; margin-top: 15px;">
+            <h2>Export Fields <a id="DocumentTemplate_Export_Fields_Defaults" href="#">(Defaults)</a></h2>
+            <table>
+                @foreach (var optionGroup in Model.Fields.FieldGroups)
+                {
+                    var optionFields = optionGroup.ToList();
+                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
+                    <tr>
+                        <th style="width: 120px;">
+                            @optionGroup.Name
+                            @if (optionFields.Count > 2)
+                            {
+                                <span style="display: block;" class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
+                            }
+                        </th>
+                        <td>
+                            <div class="DocumentTemplate_Export_Fields_Group">
+                                <table class="none">
+                                    <tr>
+                                        <td style="width: 50%">
+                                            <ul class="none">
+                                                @foreach (var optionItem in optionFields.Take(itemsPerColumn))
+                                                {
+                                                    <li title="@optionItem.Description">
+                                                        <input type="checkbox" id="Options_@optionItem.Name" name="Options.@(optionItem.Key ?? optionItem.Name)" value="@(optionItem.Value ?? "true")" @((optionItem.Checked) ? "checked " : null) /><label for="Options_@optionItem.Name">@optionItem.DisplayName</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </td>
+                                        <td style="width: 50%">
+                                            <ul class="none">
+                                                @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
+                                                {
+                                                    <li title="@optionItem.Description">
+                                                        <input type="checkbox" id="Options_@optionItem.Name" name="Options.@(optionItem.Key ?? optionItem.Name)" value="@(optionItem.Value ?? "true")" @((optionItem.Checked) ? "checked " : null) /><label for="Options_@optionItem.Name">@optionItem.DisplayName</label>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            </table>
+        </div>
+        <script>
+            $(function () {
+                var exportDefaultFields = ['Id', 'Description', 'Scope', 'AttachmentId', 'AttachmentCreatedUser', 'AttachmentCreatedDate', 'AttachmentComments', 'DeviceSerialNumber', 'JobId', 'JobStatus', 'JobType', 'UserId', 'UserDisplayName'];
+                var $exportFields = $('#DocumentTemplate_Export_Fields');
+                var $exportScope = $('#DocumentTemplate_Export_Scope');
+                var $form = $exportScope.closest('form');
+                var $exportingDialog = null;
+
+                $exportFields.on('click', 'a.selectAll,a.selectNone', function () {
+                    var $this = $(this);
+
+                    $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
+
+                    return false;
+                });
+
+                $('#DocumentTemplate_Export_Fields_Defaults').click(function () {
+
+                    $exportFields.find('input').prop('checked', false);
+
+                    $.each(exportDefaultFields, function (index, value) {
+                        $('#Options_' + value).prop('checked', true);
+                    });
+
+                    return false;
+                });
+
+                // Submit Validation
+                function submitHandler() {
+                    var exportFieldCount = $exportFields.find('input:checked').length;
+
+                    if (exportFieldCount > 0) {
+
+                        if ($exportingDialog == null) {
+                            $exportingDialog = $('#DocumentTemplate_Export_Exporting').dialog({
+                                width: 400,
+                                height: 164,
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false
+                            });
+                        }
+                        $exportingDialog.dialog('open');
+
+                        $form[0].submit();
+                    }
+                    else
+                        alert('Select at least one field to export.');
+                }
+                $.validator.unobtrusive.parse($form);
+                $form.data("validator").settings.submitHandler = submitHandler;
+
+                $('#DocumentTemplate_Export_Download_Dialog').dialog({
+                    width: 400,
+                    height: 164,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+                $('#DocumentTemplate_Export_Button').click(function () {
+                    $form.submit();
+                });
+                $('#DocumentTemplate_Export_Save_Button').click(function () {
+                    $form.attr('action', $form[0].dataset.saveaction);
+                    $form.submit();
+                });
+            });
+        </script>
+    }
+</div>
+@if (Model.ExportId.HasValue)
+{
+    <div id="DocumentTemplate_Export_Download_Dialog" class="dialog" title="Export Document Instances">
+        @if (Model.ExportResult.RecordCount == 0)
+        {
+            <h4>No records matched the filter criteria</h4>
+        }
+        else
+        {
+            <h4>@Model.ExportResult.RecordCount record@(Model.ExportResult.RecordCount != 1 ? "s" : null) were successfully exported.</h4>
+            <a href="@Url.Action(MVC.API.DocumentTemplate.ExportRetrieve(Model.ExportId.Value))" class="button"><i class="fa fa-download fa-lg"></i>Download Document Instance Export</a>
+        }
+    </div>
+    <script>
+        $(function () {
+            $('#DocumentTemplate_Export_Download_Dialog')
+                .dialog({
+                    width: 400,
+                    height: 164,
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true
+                });
+        });
+    </script>
+}
+<div id="DocumentTemplate_Export_Exporting" class="dialog" title="Exporting Document Instances...">
+    <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting document instances...</h4>
+</div>
+<div class="actionBar">
+    @if (Authorization.Has(Claims.Config.ManageSavedExports))
+    {
+        <button type="button" id="DocumentTemplate_Export_Save_Button" class="button">Save Export</button>
+    }
+    else
+    {
+        <button type="button" class="button" disabled title="Requires Manage Saved Exports Permission">Save Export</button>
+    }
+
+    <button type="button" id="DocumentTemplate_Export_Button" class="button">Export Now</button>
+</div>

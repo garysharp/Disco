@@ -629,7 +629,7 @@ WriteLiteral("    ");
 
             
             #line 123 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-     if (Model.DocumentTemplates.Count > 2 && Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
+     if (Authorization.Has(Claims.Config.DocumentTemplate.Export))
     {
         
             
@@ -637,14 +637,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 125 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-   Write(Html.ActionLinkButton("Create Package", MVC.Config.DocumentTemplate.CreatePackage()));
+   Write(Html.ActionLinkButton("Export Instances", MVC.Config.DocumentTemplate.Export()));
 
             
             #line default
             #line hidden
             
             #line 125 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-                                                                                             
+                                                                                        
     }
 
             
@@ -654,7 +654,7 @@ WriteLiteral("    ");
 
             
             #line 127 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-     if (Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
+     if (Model.DocumentTemplates.Count > 2 && Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
     {
         
             
@@ -662,13 +662,38 @@ WriteLiteral("    ");
             #line hidden
             
             #line 129 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
-   Write(Html.ActionLinkButton("Create Document Template", MVC.Config.DocumentTemplate.Create()));
+   Write(Html.ActionLinkButton("Create Package", MVC.Config.DocumentTemplate.CreatePackage()));
 
             
             #line default
             #line hidden
             
             #line 129 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+                                                                                             
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    ");
+
+            
+            #line 131 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+     if (Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
+    {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 133 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
+   Write(Html.ActionLinkButton("Create Document Template", MVC.Config.DocumentTemplate.Create()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 133 "..\..\Areas\Config\Views\DocumentTemplate\Index.cshtml"
                                                                                                 
     }
 

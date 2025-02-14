@@ -60,6 +60,10 @@
     <Compile Include="Repository\Device\Flag\DeviceFlagAssignment.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportOptions.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportRecord.cs" />
+    <Compile Include="Services\Documents\DocumentExportOptions.cs" />
+    <Compile Include="Services\Documents\DocumentExportRecord.cs" />
+    <Compile Include="Services\Exporting\ExportOptionField.cs" />
+    <Compile Include="Services\Exporting\ExportOptionGroup.cs" />
     <Compile Include="Services\Exporting\SavedExport.cs" />
     <Compile Include="Services\Exporting\SavedExportSchedule.cs" />
     <Compile Include="Services\Expressions\Extensions\ImageExpressionFormat.cs" />
@@ -198,6 +202,7 @@
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateBulkGenerate.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreatePackageModel.cs" />
     <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateCreateModel.cs" />
+    <Compile Include="UI\Config\DocumentTemplate\ConfigDocumentTemplateExportModel.cs" />
     <Compile Include="UI\Config\Export\ConfigExportShowModel.cs" />
     <Compile Include="UI\Config\Export\ConfigExportEditModel.cs" />
     <Compile Include="UI\Config\Export\ConfigExportIndexModel.cs" />
@@ -239,6 +244,7 @@
     <Compile Include="UI\Job\JobListModel.cs" />
     <Compile Include="UI\Job\JobShowModel.cs" />
     <Compile Include="UI\Search\SearchQueryModel.cs" />
+    <Compile Include="UI\Shared\SharedExportFieldsModel.cs" />
     <Compile Include="UI\User\UserIndexModel.cs" />
     <Compile Include="UI\User\UserShowModel.cs" />
   </ItemGroup>

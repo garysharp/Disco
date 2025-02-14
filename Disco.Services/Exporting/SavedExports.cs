@@ -3,12 +3,14 @@ using Disco.Models.Exporting;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices;
 using Disco.Models.Services.Devices.DeviceFlag;
+using Disco.Models.Services.Documents;
 using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Jobs;
 using Disco.Models.Services.Users.UserFlags;
 using Disco.Services.Authorization;
 using Disco.Services.Devices;
 using Disco.Services.Devices.DeviceFlags;
+using Disco.Services.Documents;
 using Disco.Services.Jobs;
 using Disco.Services.Logging;
 using Disco.Services.Tasks;
@@ -32,6 +34,7 @@ namespace Disco.Services.Exporting
             RegisterExportType<DeviceExport, DeviceExportOptions, DeviceExportRecord>();
             RegisterExportType<JobExport, JobExportOptions, JobExportRecord>();
             RegisterExportType<UserFlagExport, UserFlagExportOptions, UserFlagExportRecord>();
+            RegisterExportType<DocumentExport, DocumentExportOptions, DocumentExportRecord>();
         }
 
         internal static void RegisterExportType<T, E, R>()

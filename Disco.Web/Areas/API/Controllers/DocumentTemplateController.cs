@@ -5,13 +5,17 @@ using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Documents;
 using Disco.Services.Documents.ManagedGroups;
+using Disco.Services.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.DocumentHandlerProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
+using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using Disco.Web.Areas.API.Models.DocumentTemplate;
+using Disco.Web.Areas.Config.Models.DocumentTemplate;
+using Disco.Web.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -1443,6 +1447,59 @@ namespace Disco.Web.Areas.API.Controllers
 
             return Json(model);
         }
+        #endregion
+
+        #region Exporting
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Export(ExportModel Model)
+        {
+            if (Model == null || Model.Options == null)
+                throw new ArgumentNullException(nameof(Model));
+
+            var templateId = default(string);
+            if (Model.Options.DocumentTemplateIds.Count == 1)
+                templateId = Model.Options.DocumentTemplateIds.First();
+
+            // Start Export
+            var exportContext = new DocumentExport(Model.Options);
+            var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.DocumentTemplate.Export(templateId, id)));
+
+            // Try waiting for completion
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+                return RedirectToAction(MVC.Config.DocumentTemplate.Export(templateId, taskContext.Id));
+            else
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
+        }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Export)]
+        public virtual ActionResult ExportRetrieve(Guid id)
+        {
+            if (!ExportTask.TryFromCache(id, out var context))
+                throw new ArgumentException("The export id specified is invalid, or the export data expired (60 minutes)", nameof(id));
+
+            if (context.Result == null || context.Result.Result == null)
+                throw new ArgumentException("The export session is still running, or failed to complete successfully", nameof(id));
+
+            if (context.Result.RecordCount == 0)
+                throw new ArgumentException("No records were found to export", nameof(id));
+
+            var fileStream = context.Result.Result;
+
+            return this.File(fileStream.GetBuffer(), 0, (int)fileStream.Length, context.Result.MimeType, context.Result.Filename);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Config.DocumentTemplate.Export)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult SaveExport(ExportModel Model)
+        {
+            var export = new DocumentExport(Model.Options);
+            var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
+
+            return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));
+        }
+
         #endregion
     }
 }

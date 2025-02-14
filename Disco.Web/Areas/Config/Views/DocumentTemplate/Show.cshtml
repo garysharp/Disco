@@ -1052,6 +1052,10 @@
             {
                 @Html.ActionLinkButton("Expression Browser", MVC.Config.Expressions.Browser())
             }
+            @if (Authorization.Has(Claims.Config.DocumentTemplate.Export))
+            {
+                @Html.ActionLinkButton("Export Instances", MVC.Config.DocumentTemplate.Export(Model.DocumentTemplate.Id, null))
+            }
             @if (canBulkGenerate)
             {
                 if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)

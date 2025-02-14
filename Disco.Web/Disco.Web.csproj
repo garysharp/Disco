@@ -248,6 +248,7 @@
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\BulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreatePackageModel.cs" />
+    <Compile Include="Areas\Config\Models\DocumentTemplate\ExportModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ShowPackageModel.cs" />
     <Compile Include="Areas\Config\Models\Export\EditModel.cs" />
     <Compile Include="Areas\Config\Models\Export\IndexModel.cs" />
@@ -296,6 +297,11 @@
     </Compile>
     <Compile Include="Areas\Config\Views\DocumentTemplate\CreatePackage.generated.cs">
       <DependentUpon>CreatePackage.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\Export.generated.cs">
+      <DependentUpon>Export.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -901,6 +907,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Shared\ExportFieldsModel.cs" />
     <Compile Include="Models\Shared\GenerateDocumentControlModel.cs" />
     <Compile Include="Views\Device\DeviceParts\_Flags.generated.cs">
       <DependentUpon>_Flags.cshtml</DependentUpon>
@@ -1374,6 +1381,10 @@
     <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>BulkGenerate.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\Export.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Export.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml">
       <Generator>RazorGenerator</Generator>

@@ -281,6 +281,24 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DocumentHandlers);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ExportRetrieve()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SaveExport()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DocumentTemplateController Actions { get { return MVC.API.DocumentTemplate; } }
@@ -335,6 +353,9 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string AddOnImportUserFlagRule = "AddOnImportUserFlagRule";
             public readonly string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
             public readonly string DocumentHandlers = "DocumentHandlers";
+            public readonly string Export = "Export";
+            public readonly string ExportRetrieve = "ExportRetrieve";
+            public readonly string SaveExport = "SaveExport";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -378,6 +399,9 @@ namespace Disco.Web.Areas.API.Controllers
             public const string AddOnImportUserFlagRule = "AddOnImportUserFlagRule";
             public const string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
             public const string DocumentHandlers = "DocumentHandlers";
+            public const string Export = "Export";
+            public const string ExportRetrieve = "ExportRetrieve";
+            public const string SaveExport = "SaveExport";
         }
 
 
@@ -727,6 +751,30 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string templateId = "templateId";
             public readonly string targetId = "targetId";
+        }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string Model = "Model";
+        }
+        static readonly ActionParamsClass_ExportRetrieve s_params_ExportRetrieve = new ActionParamsClass_ExportRetrieve();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ExportRetrieve ExportRetrieveParams { get { return s_params_ExportRetrieve; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ExportRetrieve
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_SaveExport s_params_SaveExport = new ActionParamsClass_SaveExport();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SaveExport SaveExportParams { get { return s_params_SaveExport; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SaveExport
+        {
+            public readonly string Model = "Model";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1262,6 +1310,42 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "templateId", templateId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
             DocumentHandlersOverride(callInfo, templateId, targetId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DocumentTemplate.ExportModel Model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Export(Disco.Web.Areas.Config.Models.DocumentTemplate.ExportModel Model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
+            ExportOverride(callInfo, Model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportRetrieveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ExportRetrieve(System.Guid id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ExportRetrieve);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ExportRetrieveOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SaveExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DocumentTemplate.ExportModel Model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SaveExport(Disco.Web.Areas.Config.Models.DocumentTemplate.ExportModel Model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
+            SaveExportOverride(callInfo, Model);
             return callInfo;
         }
 

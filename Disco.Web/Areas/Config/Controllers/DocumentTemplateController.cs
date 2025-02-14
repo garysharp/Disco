@@ -1,16 +1,19 @@
 ﻿using Disco.BI.Extensions;
 using Disco.Data.Repository;
+using Disco.Models.Areas.Config.UI.UserFlag;
 using Disco.Models.Repository;
+using Disco.Models.Services.Documents;
+using Disco.Models.Services.Exporting;
 using Disco.Models.UI.Config.DocumentTemplate;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Documents;
 using Disco.Services.Documents.ManagedGroups;
-using Disco.Services.Expressions;
-using Disco.Services.Plugins.Features.ExpressionExtensionProvider;
+using Disco.Services.Exporting;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.DocumentTemplate;
+using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -291,6 +294,60 @@ namespace Disco.Web.Areas.Config.Controllers
             UIExtensions.ExecuteExtensions(ControllerContext, model);
 
             return View(MVC.Config.DocumentTemplate.Views.BulkGenerate, model);
+        }
+
+        [HttpGet]
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Export)]
+        public virtual ActionResult Export(string id, Guid? exportId)
+        {
+            var m = new ExportModel()
+            {
+                Options = DocumentExportOptions.DefaultOptions(),
+                DocumentTemplates = Database.DocumentTemplates.OrderBy(d => d.Id).ToList(),
+            };
+
+            m.Fields = ExportFieldsModel.Create(m.Options, nameof(DocumentExportOptions.LatestOnly));
+
+            var userCustomDetailKeys = Database.UserDetails.Where(d => d.Scope == "Details").Select(d => d.Key).Distinct().OrderBy(k => k).ToList();
+            if (userCustomDetailKeys.Any())
+            {
+                var group = new ExportOptionGroup("User Custom Details");
+                foreach (var key in userCustomDetailKeys)
+                {
+                    group.Add(new ExportOptionField()
+                    {
+                        GroupName = group.Name,
+                        Name = key,
+                        DisplayName = key.TrimEnd('*', '&'),
+                        Description = $"{key} custom detail for the user associated with the document instance",
+                        Checked = false,
+                        Key = "UserDetailCustom",
+                        Value = key,
+                    });
+                }
+                m.Fields.FieldGroups.Add(group);
+            }
+
+            if (ExportTask.TryFromCache(exportId, out var context))
+            {
+                m.ExportId = exportId;
+                m.ExportResult = context.Result;
+            }
+
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                var template = m.DocumentTemplates.FirstOrDefault(d => string.Equals(d.Id, id, StringComparison.OrdinalIgnoreCase));
+
+                if (template != null)
+                {
+                    m.Options.DocumentTemplateIds.Add(template.Id);
+                }
+            }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateExportModel>(ControllerContext, m);
+
+            return View(m);
         }
 
         public virtual ActionResult ExpressionBrowser()

@@ -77,6 +77,12 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Export()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DocumentTemplateController Actions { get { return MVC.Config.DocumentTemplate; } }
@@ -100,6 +106,7 @@ namespace Disco.Web.Areas.Config.Controllers
             public readonly string Create = "Create";
             public readonly string CreatePackage = "CreatePackage";
             public readonly string BulkGenerate = "BulkGenerate";
+            public readonly string Export = "Export";
             public readonly string ExpressionBrowser = "ExpressionBrowser";
         }
 
@@ -113,6 +120,7 @@ namespace Disco.Web.Areas.Config.Controllers
             public const string Create = "Create";
             public const string CreatePackage = "CreatePackage";
             public const string BulkGenerate = "BulkGenerate";
+            public const string Export = "Export";
             public const string ExpressionBrowser = "ExpressionBrowser";
         }
 
@@ -159,6 +167,15 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Export ExportParams { get { return s_params_Export; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Export
+        {
+            public readonly string id = "id";
+            public readonly string exportId = "exportId";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -173,6 +190,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 public readonly string BulkGenerate = "BulkGenerate";
                 public readonly string Create = "Create";
                 public readonly string CreatePackage = "CreatePackage";
+                public readonly string Export = "Export";
                 public readonly string ImportStatus = "ImportStatus";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
@@ -183,6 +201,7 @@ namespace Disco.Web.Areas.Config.Controllers
             public readonly string BulkGenerate = "~/Areas/Config/Views/DocumentTemplate/BulkGenerate.cshtml";
             public readonly string Create = "~/Areas/Config/Views/DocumentTemplate/Create.cshtml";
             public readonly string CreatePackage = "~/Areas/Config/Views/DocumentTemplate/CreatePackage.cshtml";
+            public readonly string Export = "~/Areas/Config/Views/DocumentTemplate/Export.cshtml";
             public readonly string ImportStatus = "~/Areas/Config/Views/DocumentTemplate/ImportStatus.cshtml";
             public readonly string Index = "~/Areas/Config/Views/DocumentTemplate/Index.cshtml";
             public readonly string Show = "~/Areas/Config/Views/DocumentTemplate/Show.cshtml";
@@ -299,6 +318,19 @@ namespace Disco.Web.Areas.Config.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             BulkGenerateOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, System.Guid? exportId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Export(string id, System.Guid? exportId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "exportId", exportId);
+            ExportOverride(callInfo, id, exportId);
             return callInfo;
         }
 

@@ -120,6 +120,10 @@ else
     {
         @Html.ActionLinkButton("Expression Browser", MVC.Config.Expressions.Browser())
     }
+    @if (Authorization.Has(Claims.Config.DocumentTemplate.Export))
+    {
+        @Html.ActionLinkButton("Export Instances", MVC.Config.DocumentTemplate.Export())
+    }
     @if (Model.DocumentTemplates.Count > 2 && Authorization.HasAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure))
     {
         @Html.ActionLinkButton("Create Package", MVC.Config.DocumentTemplate.CreatePackage())

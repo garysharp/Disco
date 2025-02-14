@@ -43,7 +43,9 @@ namespace Disco.Services
 
         public static List<DeviceUserAssignment> CurrentDeviceUserAssignments(this User u)
         {
-            return u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).ToList();
+            return u.DeviceUserAssignments?
+                .Where(dua => !dua.UnassignedDate.HasValue)
+                .ToList() ?? new List<DeviceUserAssignment>(0);
         }
 
         public static bool CanCreateJob(this User u)

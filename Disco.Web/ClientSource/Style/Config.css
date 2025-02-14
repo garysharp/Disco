@@ -2067,3 +2067,31 @@ h1.Config_DocumentTemplates {
 #Config_Export_Edit_OnDemand #Config_Export_Edit_OnDemand_List li .remove:hover {
   opacity: 1;
 }
+#DocumentTemplate_Export #DocumentTemplate_Export_Fields #DocumentTemplate_Export_Fields_Defaults {
+  font-size: 0.75em;
+}
+#DocumentTemplate_Export #DocumentTemplate_Export_Fields th {
+  font-size: 1.05em;
+}
+#DocumentTemplate_Export #DocumentTemplate_Export_Fields th span {
+  margin-top: 4px;
+  font-size: 0.8em;
+}
+#DocumentTemplate_Export_Download_Dialog {
+  padding-top: 20px;
+  text-align: center;
+}
+#DocumentTemplate_Export_Download_Dialog h4 {
+  margin-bottom: 30px;
+}
+#DocumentTemplate_Export_Download_Dialog a {
+  margin-bottom: 20px;
+}
+#DocumentTemplate_Export_Exporting {
+  padding-top: 50px;
+  text-align: center;
+}
+#DocumentTemplate_Export_Exporting i {
+  margin-right: 10px;
+  color: #1e6dab;
+}

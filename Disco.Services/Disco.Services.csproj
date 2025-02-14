@@ -366,6 +366,7 @@
     <Compile Include="Devices\DeviceFlags\DeviceFlagService.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagDeviceAssignedUsersManagedGroup.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagDevicesManagedGroup.cs" />
+    <Compile Include="Documents\DocumentExport.cs" />
     <Compile Include="Exporting\Exporter.cs" />
     <Compile Include="Exporting\ExportTask.cs" />
     <Compile Include="Exporting\ExportTaskContext.cs" />

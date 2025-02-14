@@ -51,6 +51,7 @@ namespace Disco.Services.Authorization
 				{ "Config.DocumentTemplate.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Configure, (c, v) => c.Config.DocumentTemplate.Configure = v, "Configure Document Templates", "Can configure document templates", false) },
 				{ "Config.DocumentTemplate.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Create, (c, v) => c.Config.DocumentTemplate.Create = v, "Create Document Templates", "Can create document templates", false) },
 				{ "Config.DocumentTemplate.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Delete, (c, v) => c.Config.DocumentTemplate.Delete = v, "Delete Document Templates", "Can delete document templates", false) },
+				{ "Config.DocumentTemplate.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Export, (c, v) => c.Config.DocumentTemplate.Export = v, "Export Attachment Instances", "Can export document attachment instances", false) },
 				{ "Config.DocumentTemplate.UndetectedPages", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.UndetectedPages, (c, v) => c.Config.DocumentTemplate.UndetectedPages = v, "Process Undetected Pages", "Can show and assign imported documents which were not undetected", false) },
 				{ "Config.DocumentTemplate.ShowStatus", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ShowStatus, (c, v) => c.Config.DocumentTemplate.ShowStatus = v, "Show Document Template Import Status", "Can show the document template import status", false) },
 				{ "Config.DocumentTemplate.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Show, (c, v) => c.Config.DocumentTemplate.Show = v, "Show Document Templates", "Can show document templates", false) },
@@ -275,6 +276,7 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Config.DocumentTemplate.Configure", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.Create", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.Delete", false),
+				            new ClaimNavigatorItem("Config.DocumentTemplate.Export", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.UndetectedPages", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.ShowStatus", false),
 				            new ClaimNavigatorItem("Config.DocumentTemplate.Show", false),
@@ -595,6 +597,7 @@ namespace Disco.Services.Authorization
 			c.Config.DocumentTemplate.Configure = true;
 			c.Config.DocumentTemplate.Create = true;
 			c.Config.DocumentTemplate.Delete = true;
+			c.Config.DocumentTemplate.Export = true;
 			c.Config.DocumentTemplate.UndetectedPages = true;
 			c.Config.DocumentTemplate.ShowStatus = true;
 			c.Config.DocumentTemplate.Show = true;
@@ -989,6 +992,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can delete document templates</para>
                 /// </summary>
                 public const string Delete = "Config.DocumentTemplate.Delete";
+
+                /// <summary>Export Attachment Instances
+                /// <para>Can export document attachment instances</para>
+                /// </summary>
+                public const string Export = "Config.DocumentTemplate.Export";
 
                 /// <summary>Process Undetected Pages
                 /// <para>Can show and assign imported documents which were not undetected</para>
