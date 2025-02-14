@@ -50,9 +50,9 @@ namespace Disco.Services.Logging
             return logRetriever.Query(database);
         }
 
-        public ExportMetadata<LogLiveEvent> BuildMetadata(DiscoDataContext database, List<LogLiveEvent> records, IScheduledTaskStatus status)
+        public ExportMetadata<LogExportOptions, LogLiveEvent> BuildMetadata(DiscoDataContext database, List<LogLiveEvent> records, IScheduledTaskStatus status)
         {
-            var metadata = new ExportMetadata<LogLiveEvent>
+            var metadata = new ExportMetadata<LogExportOptions, LogLiveEvent>(Options)
             {
                 { nameof(LogLiveEvent.Timestamp), r => r.Timestamp },
                 { nameof(LogLiveEvent.ModuleId), r => r.ModuleId },

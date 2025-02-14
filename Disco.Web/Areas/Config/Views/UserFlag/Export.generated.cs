@@ -809,7 +809,7 @@ WriteLiteral(" id=\"UserFlag_Export_Button\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Export User Flags</button>\r\n</div>\r\n");
+WriteLiteral(">Export Now</button>\r\n</div>\r\n");
 
         }
     }

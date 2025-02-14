@@ -126,12 +126,12 @@ namespace Disco.Services.Exporting
             return stream;
         }
 
-        public static void Add<T, O, V>(this ExportMetadata<T> metadata, O options, Expression<Func<O, bool>> optionAccessor, Func<T, V> valueAccessor, Func<object, string> csvValueEncoder = null, string columnName = null)
-            where T : IExportRecord
+        public static void Add<O, R, V>(this ExportMetadata<O, R> metadata, Expression<Func<O, bool>> optionAccessor, Func<R, V> valueAccessor, Func<object, string> csvValueEncoder = null, string columnName = null)
             where O : IExportOptions
+            where R : IExportRecord
         {
             // is field enabled?
-            if (!optionAccessor.Compile().Invoke(options))
+            if (!optionAccessor.Compile().Invoke(metadata.Options))
                 return;
 
             if (columnName is null)
@@ -147,8 +147,9 @@ namespace Disco.Services.Exporting
 
             metadata.Add(columnName, valueAccessor, csvValueEncoder);
         }
-        public static void Add<T, V>(this ExportMetadata<T> metadata, string columnName, Func<T, V> valueAccessor, Func<object, string> csvValueEncoder = null)
-            where T : IExportRecord
+        public static void Add<O, R, V>(this ExportMetadata<O, R> metadata, string columnName, Func<R, V> valueAccessor, Func<object, string> csvValueEncoder = null)
+            where O : IExportOptions
+            where R : IExportRecord
         {
             var valueType = typeof(V);
             if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -157,7 +158,7 @@ namespace Disco.Services.Exporting
             if (csvValueEncoder is null)
                 csvValueEncoder = CsvEncoders.GetEncoder<V>();
 
-            var field = new ExportMetadataField<T>(columnName, valueType, (T i) => valueAccessor(i), csvValueEncoder);
+            var field = new ExportMetadataField<R>(columnName, valueType, (R i) => valueAccessor(i), csvValueEncoder);
             metadata.Add(field);
         }
 

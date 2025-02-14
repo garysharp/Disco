@@ -91,33 +91,33 @@ namespace Disco.Services.Users.UserFlags
             return records;
         }
 
-        public ExportMetadata<UserFlagExportRecord> BuildMetadata(DiscoDataContext database, List<UserFlagExportRecord> records, IScheduledTaskStatus status)
+        public ExportMetadata<UserFlagExportOptions, UserFlagExportRecord> BuildMetadata(DiscoDataContext database, List<UserFlagExportRecord> records, IScheduledTaskStatus status)
         {
             status.UpdateStatus(80, "Building metadata");
 
-            var metadata = new ExportMetadata<UserFlagExportRecord>();
+            var metadata = new ExportMetadata<UserFlagExportOptions, UserFlagExportRecord>(Options);
             metadata.IgnoreShortNames.Add("User Flag");
 
             // User Flag
-            metadata.Add(Options, o => o.Id, r => r.Assignment.UserFlagId);
-            metadata.Add(Options, o => o.Name, r => r.Assignment.UserFlag.Name);
-            metadata.Add(Options, o => o.Description, r => r.Assignment.UserFlag.Description);
-            metadata.Add(Options, o => o.Icon, r => r.Assignment.UserFlag.Icon);
-            metadata.Add(Options, o => o.IconColour, r => r.Assignment.UserFlag.IconColour);
-            metadata.Add(Options, o => o.AssignmentId, r => r.Assignment.Id);
-            metadata.Add(Options, o => o.AddedDate, r => r.Assignment.AddedDate);
-            metadata.Add(Options, o => o.AddedUserId, r => r.Assignment.AddedUserId);
-            metadata.Add(Options, o => o.RemovedUserId, r => r.Assignment.RemovedUserId);
-            metadata.Add(Options, o => o.RemovedDate, r => r.Assignment.RemovedDate);
-            metadata.Add(Options, o => o.Comments, r => r.Assignment.Comments);
+            metadata.Add(o => o.Id, r => r.Assignment.UserFlagId);
+            metadata.Add(o => o.Name, r => r.Assignment.UserFlag.Name);
+            metadata.Add(o => o.Description, r => r.Assignment.UserFlag.Description);
+            metadata.Add(o => o.Icon, r => r.Assignment.UserFlag.Icon);
+            metadata.Add(o => o.IconColour, r => r.Assignment.UserFlag.IconColour);
+            metadata.Add(o => o.AssignmentId, r => r.Assignment.Id);
+            metadata.Add(o => o.AddedDate, r => r.Assignment.AddedDate);
+            metadata.Add(o => o.AddedUserId, r => r.Assignment.AddedUserId);
+            metadata.Add(o => o.RemovedUserId, r => r.Assignment.RemovedUserId);
+            metadata.Add(o => o.RemovedDate, r => r.Assignment.RemovedDate);
+            metadata.Add(o => o.Comments, r => r.Assignment.Comments);
 
             // User
-            metadata.Add(Options, o => o.UserId, r => r.Assignment.User?.UserId);
-            metadata.Add(Options, o => o.UserDisplayName, r => r.Assignment.User?.DisplayName);
-            metadata.Add(Options, o => o.UserSurname, r => r.Assignment.User?.Surname);
-            metadata.Add(Options, o => o.UserGivenName, r => r.Assignment.User?.GivenName);
-            metadata.Add(Options, o => o.UserPhoneNumber, r => r.Assignment.User?.PhoneNumber);
-            metadata.Add(Options, o => o.UserEmailAddress, r => r.Assignment.User?.EmailAddress);
+            metadata.Add(o => o.UserId, r => r.Assignment.User?.UserId);
+            metadata.Add(o => o.UserDisplayName, r => r.Assignment.User?.DisplayName);
+            metadata.Add(o => o.UserSurname, r => r.Assignment.User?.Surname);
+            metadata.Add(o => o.UserGivenName, r => r.Assignment.User?.GivenName);
+            metadata.Add(o => o.UserPhoneNumber, r => r.Assignment.User?.PhoneNumber);
+            metadata.Add(o => o.UserEmailAddress, r => r.Assignment.User?.EmailAddress);
 
             // User Custom Details
             if (Options.UserDetailCustom)

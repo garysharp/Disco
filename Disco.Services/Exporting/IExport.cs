@@ -32,6 +32,6 @@ namespace Disco.Services.Exporting
         T Options { get; set; }
 
         List<R> BuildRecords(DiscoDataContext database, IScheduledTaskStatus status);
-        ExportMetadata<R> BuildMetadata(DiscoDataContext database, List<R> records, IScheduledTaskStatus status);
+        ExportMetadata<T, R> BuildMetadata(DiscoDataContext database, List<R> records, IScheduledTaskStatus status);
     }
 }

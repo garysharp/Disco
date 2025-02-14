@@ -216,100 +216,100 @@ namespace Disco.Services.Jobs
             return records;
         }
 
-        public ExportMetadata<JobExportRecord> BuildMetadata(DiscoDataContext database, List<JobExportRecord> records, IScheduledTaskStatus status)
+        public ExportMetadata<JobExportOptions, JobExportRecord> BuildMetadata(DiscoDataContext database, List<JobExportRecord> records, IScheduledTaskStatus status)
         {
-            var metadata = new ExportMetadata<JobExportRecord>();
+            var metadata = new ExportMetadata<JobExportOptions, JobExportRecord>(Options);
             metadata.IgnoreShortNames.Add("Job");
             metadata.IgnoreShortNames.Add("Job Details");
 
             // Job
-            metadata.Add(Options, o => o.JobId, r => r.Job.Id);
-            metadata.Add(Options, o => o.JobStatus, r => Job.JobStatusIds.StatusDescriptions.TryGetValue(r.JobStatus, out var jobStatus) ? jobStatus : "Unknown");
-            metadata.Add(Options, o => o.JobType, r => r.JobTypeDescription);
-            metadata.Add(Options, o => o.JobSubTypes, r => string.Join(", ", r.JobSubTypeDescriptions));
-            metadata.Add(Options, o => o.JobOpenedDate, r => r.Job.OpenedDate);
-            metadata.Add(Options, o => o.JobOpenedUser, r => r.Job.OpenedTechUserId);
-            metadata.Add(Options, o => o.JobExpectedClosedDate, r => r.Job.ExpectedClosedDate);
-            metadata.Add(Options, o => o.JobClosedDate, r => r.Job.ClosedDate);
-            metadata.Add(Options, o => o.JobClosedUser, r => r.Job.ClosedTechUserId);
+            metadata.Add(o => o.JobId, r => r.Job.Id);
+            metadata.Add(o => o.JobStatus, r => Job.JobStatusIds.StatusDescriptions.TryGetValue(r.JobStatus, out var jobStatus) ? jobStatus : "Unknown");
+            metadata.Add(o => o.JobType, r => r.JobTypeDescription);
+            metadata.Add(o => o.JobSubTypes, r => string.Join(", ", r.JobSubTypeDescriptions));
+            metadata.Add(o => o.JobOpenedDate, r => r.Job.OpenedDate);
+            metadata.Add(o => o.JobOpenedUser, r => r.Job.OpenedTechUserId);
+            metadata.Add(o => o.JobExpectedClosedDate, r => r.Job.ExpectedClosedDate);
+            metadata.Add(o => o.JobClosedDate, r => r.Job.ClosedDate);
+            metadata.Add(o => o.JobClosedUser, r => r.Job.ClosedTechUserId);
 
             // Job Details
-            metadata.Add(Options, o => o.JobDeviceHeldDate, r => r.Job.DeviceHeld);
-            metadata.Add(Options, o => o.JobDeviceHeldUser, r => r.Job.DeviceHeldTechUserId);
-            metadata.Add(Options, o => o.JobDeviceHeldLocation, r => r.Job.DeviceHeldLocation);
-            metadata.Add(Options, o => o.JobDeviceReadyForReturnDate, r => r.Job.DeviceReadyForReturn);
-            metadata.Add(Options, o => o.JobDeviceReadyForReturnUser, r => r.Job.DeviceReadyForReturnTechUserId);
-            metadata.Add(Options, o => o.JobDeviceReturnedDate, r => r.Job.DeviceReturnedDate);
-            metadata.Add(Options, o => o.JobDeviceReturnedUser, r => r.Job.DeviceReturnedTechUserId);
-            metadata.Add(Options, o => o.JobWaitingForUserActionDate, r => r.Job.WaitingForUserAction);
+            metadata.Add(o => o.JobDeviceHeldDate, r => r.Job.DeviceHeld);
+            metadata.Add(o => o.JobDeviceHeldUser, r => r.Job.DeviceHeldTechUserId);
+            metadata.Add(o => o.JobDeviceHeldLocation, r => r.Job.DeviceHeldLocation);
+            metadata.Add(o => o.JobDeviceReadyForReturnDate, r => r.Job.DeviceReadyForReturn);
+            metadata.Add(o => o.JobDeviceReadyForReturnUser, r => r.Job.DeviceReadyForReturnTechUserId);
+            metadata.Add(o => o.JobDeviceReturnedDate, r => r.Job.DeviceReturnedDate);
+            metadata.Add(o => o.JobDeviceReturnedUser, r => r.Job.DeviceReturnedTechUserId);
+            metadata.Add(o => o.JobWaitingForUserActionDate, r => r.Job.WaitingForUserAction);
 
             // Job Logs
-            metadata.Add(Options, o => o.LogCount, r => r.LogCount);
-            metadata.Add(Options, o => o.LogFirstDate, r => r.FirstLog?.Timestamp);
-            metadata.Add(Options, o => o.LogFirstUser, r => r.FirstLog?.TechUserId);
-            metadata.Add(Options, o => o.LogFirstContent, r => r.FirstLog?.Comments);
-            metadata.Add(Options, o => o.LogLastDate, r => r.LastLog?.Timestamp);
-            metadata.Add(Options, o => o.LogLastUser, r => r.LastLog?.TechUserId);
-            metadata.Add(Options, o => o.LogLastContent, r => r.LastLog?.Comments);
+            metadata.Add(o => o.LogCount, r => r.LogCount);
+            metadata.Add(o => o.LogFirstDate, r => r.FirstLog?.Timestamp);
+            metadata.Add(o => o.LogFirstUser, r => r.FirstLog?.TechUserId);
+            metadata.Add(o => o.LogFirstContent, r => r.FirstLog?.Comments);
+            metadata.Add(o => o.LogLastDate, r => r.LastLog?.Timestamp);
+            metadata.Add(o => o.LogLastUser, r => r.LastLog?.TechUserId);
+            metadata.Add(o => o.LogLastContent, r => r.LastLog?.Comments);
 
             // Attachments
-            metadata.Add(Options, o => o.AttachmentsCount, r => r.AttachmentsCount);
+            metadata.Add(o => o.AttachmentsCount, r => r.AttachmentsCount);
 
             // Job Queues
-            metadata.Add(Options, o => o.JobQueueCount, r => r.QueueCount);
-            metadata.Add(Options, o => o.JobQueueActiveCount, r => r.QueueActiveCount);
-            metadata.Add(Options, o => o.JobQueueActiveLatest, r => r.QueueLatestActive?.JobQueueId == null ? null : JobQueueService.GetQueue(r.QueueLatestActive.JobQueueId).JobQueue.Name);
-            metadata.Add(Options, o => o.JobQueueActiveLatestAddedDate, r => r.QueueLatestActive?.AddedDate);
-            metadata.Add(Options, o => o.JobQueueActiveLatestAddedUser, r => r.QueueLatestActive?.AddedUserId);
+            metadata.Add(o => o.JobQueueCount, r => r.QueueCount);
+            metadata.Add(o => o.JobQueueActiveCount, r => r.QueueActiveCount);
+            metadata.Add(o => o.JobQueueActiveLatest, r => r.QueueLatestActive?.JobQueueId == null ? null : JobQueueService.GetQueue(r.QueueLatestActive.JobQueueId).JobQueue.Name);
+            metadata.Add(o => o.JobQueueActiveLatestAddedDate, r => r.QueueLatestActive?.AddedDate);
+            metadata.Add(o => o.JobQueueActiveLatestAddedUser, r => r.QueueLatestActive?.AddedUserId);
 
             // Warranty
-            metadata.Add(Options, o => o.JobWarrantyExternalName, r => r.JobMetaWarranty?.ExternalName);
-            metadata.Add(Options, o => o.JobWarrantyExternalReference, r => r.JobMetaWarranty?.ExternalReference);
-            metadata.Add(Options, o => o.JobWarrantyExternalLoggedDate, r => r.JobMetaWarranty?.ExternalLoggedDate);
-            metadata.Add(Options, o => o.JobWarrantyExternalCompletedDate, r => r.JobMetaWarranty?.ExternalCompletedDate);
+            metadata.Add(o => o.JobWarrantyExternalName, r => r.JobMetaWarranty?.ExternalName);
+            metadata.Add(o => o.JobWarrantyExternalReference, r => r.JobMetaWarranty?.ExternalReference);
+            metadata.Add(o => o.JobWarrantyExternalLoggedDate, r => r.JobMetaWarranty?.ExternalLoggedDate);
+            metadata.Add(o => o.JobWarrantyExternalCompletedDate, r => r.JobMetaWarranty?.ExternalCompletedDate);
 
             // Non-Warranty
-            metadata.Add(Options, o => o.JobNonWarrantyAccountingChargeRequiredDate, r => r.JobMetaNonWarranty?.AccountingChargeRequiredDate);
-            metadata.Add(Options, o => o.JobNonWarrantyAccountingChargeAddedDate, r => r.JobMetaNonWarranty?.AccountingChargeAddedDate);
-            metadata.Add(Options, o => o.JobNonWarrantyAccountingChargePaidDate, r => r.JobMetaNonWarranty?.AccountingChargePaidDate);
-            metadata.Add(Options, o => o.JobNonWarrantyPurchaseOrderRaisedDate, r => r.JobMetaNonWarranty?.PurchaseOrderRaisedDate);
-            metadata.Add(Options, o => o.JobNonWarrantyPurchaseOrderReference, r => r.JobMetaNonWarranty?.PurchaseOrderReference);
-            metadata.Add(Options, o => o.JobNonWarrantyPurchaseOrderSentDate, r => r.JobMetaNonWarranty?.PurchaseOrderSentDate);
-            metadata.Add(Options, o => o.JobNonWarrantyInvoiceReceivedDate, r => r.JobMetaNonWarranty?.InvoiceReceivedDate);
-            metadata.Add(Options, o => o.JobNonWarrantyRepairerName, r => r.JobMetaNonWarranty?.RepairerName);
-            metadata.Add(Options, o => o.JobNonWarrantyRepairerLoggedDate, r => r.JobMetaNonWarranty?.RepairerLoggedDate);
-            metadata.Add(Options, o => o.JobNonWarrantyRepairerReference, r => r.JobMetaNonWarranty?.RepairerReference);
-            metadata.Add(Options, o => o.JobNonWarrantyRepairerCompletedDate, r => r.JobMetaNonWarranty?.RepairerCompletedDate);
+            metadata.Add(o => o.JobNonWarrantyAccountingChargeRequiredDate, r => r.JobMetaNonWarranty?.AccountingChargeRequiredDate);
+            metadata.Add(o => o.JobNonWarrantyAccountingChargeAddedDate, r => r.JobMetaNonWarranty?.AccountingChargeAddedDate);
+            metadata.Add(o => o.JobNonWarrantyAccountingChargePaidDate, r => r.JobMetaNonWarranty?.AccountingChargePaidDate);
+            metadata.Add(o => o.JobNonWarrantyPurchaseOrderRaisedDate, r => r.JobMetaNonWarranty?.PurchaseOrderRaisedDate);
+            metadata.Add(o => o.JobNonWarrantyPurchaseOrderReference, r => r.JobMetaNonWarranty?.PurchaseOrderReference);
+            metadata.Add(o => o.JobNonWarrantyPurchaseOrderSentDate, r => r.JobMetaNonWarranty?.PurchaseOrderSentDate);
+            metadata.Add(o => o.JobNonWarrantyInvoiceReceivedDate, r => r.JobMetaNonWarranty?.InvoiceReceivedDate);
+            metadata.Add(o => o.JobNonWarrantyRepairerName, r => r.JobMetaNonWarranty?.RepairerName);
+            metadata.Add(o => o.JobNonWarrantyRepairerLoggedDate, r => r.JobMetaNonWarranty?.RepairerLoggedDate);
+            metadata.Add(o => o.JobNonWarrantyRepairerReference, r => r.JobMetaNonWarranty?.RepairerReference);
+            metadata.Add(o => o.JobNonWarrantyRepairerCompletedDate, r => r.JobMetaNonWarranty?.RepairerCompletedDate);
 
             // Insurance
-            metadata.Add(Options, o => o.JobMetaInsuranceLossOrDamageDate, r => r.JobMetaInsurance?.LossOrDamageDate);
-            metadata.Add(Options, o => o.JobMetaInsuranceEventLocation, r => r.JobMetaInsurance?.EventLocation);
-            metadata.Add(Options, o => o.JobMetaInsuranceDescription, r => r.JobMetaInsurance?.Description);
-            metadata.Add(Options, o => o.JobMetaInsuranceThirdPartyCausedName, r => r.JobMetaInsurance?.ThirdPartyCausedName);
-            metadata.Add(Options, o => o.JobMetaInsuranceThirdPartyCausedWhy, r => r.JobMetaInsurance?.ThirdPartyCausedWhy);
-            metadata.Add(Options, o => o.JobMetaInsuranceWitnessesNamesAddresses, r => r.JobMetaInsurance?.WitnessesNamesAddresses);
-            metadata.Add(Options, o => o.JobMetaInsuranceBurglaryTheftMethodOfEntry, r => r.JobMetaInsurance?.BurglaryTheftMethodOfEntry);
-            metadata.Add(Options, o => o.JobMetaInsurancePropertyLastSeenDate, r => r.JobMetaInsurance?.PropertyLastSeenDate);
-            metadata.Add(Options, o => o.JobMetaInsurancePoliceNotifiedStation, r => r.JobMetaInsurance?.PoliceNotifiedStation);
-            metadata.Add(Options, o => o.JobMetaInsurancePoliceNotifiedDate, r => r.JobMetaInsurance?.PoliceNotifiedDate);
-            metadata.Add(Options, o => o.JobMetaInsurancePoliceNotifiedCrimeReportNo, r => r.JobMetaInsurance?.PoliceNotifiedCrimeReportNo);
-            metadata.Add(Options, o => o.JobMetaInsuranceRecoverReduceAction, r => r.JobMetaInsurance?.RecoverReduceAction);
-            metadata.Add(Options, o => o.JobMetaInsuranceOtherInterestedParties, r => r.JobMetaInsurance?.OtherInterestedParties);
-            metadata.Add(Options, o => o.JobMetaInsuranceDateOfPurchase, r => r.JobMetaInsurance?.DateOfPurchase);
-            metadata.Add(Options, o => o.JobMetaInsuranceClaimFormSentDate, r => r.JobMetaInsurance?.ClaimFormSentDate);
-            metadata.Add(Options, o => o.JobMetaInsuranceInsurer, r => r.JobMetaInsurance?.Insurer);
-            metadata.Add(Options, o => o.JobMetaInsuranceInsurerReference, r => r.JobMetaInsurance?.InsurerReference);
+            metadata.Add(o => o.JobMetaInsuranceLossOrDamageDate, r => r.JobMetaInsurance?.LossOrDamageDate);
+            metadata.Add(o => o.JobMetaInsuranceEventLocation, r => r.JobMetaInsurance?.EventLocation);
+            metadata.Add(o => o.JobMetaInsuranceDescription, r => r.JobMetaInsurance?.Description);
+            metadata.Add(o => o.JobMetaInsuranceThirdPartyCausedName, r => r.JobMetaInsurance?.ThirdPartyCausedName);
+            metadata.Add(o => o.JobMetaInsuranceThirdPartyCausedWhy, r => r.JobMetaInsurance?.ThirdPartyCausedWhy);
+            metadata.Add(o => o.JobMetaInsuranceWitnessesNamesAddresses, r => r.JobMetaInsurance?.WitnessesNamesAddresses);
+            metadata.Add(o => o.JobMetaInsuranceBurglaryTheftMethodOfEntry, r => r.JobMetaInsurance?.BurglaryTheftMethodOfEntry);
+            metadata.Add(o => o.JobMetaInsurancePropertyLastSeenDate, r => r.JobMetaInsurance?.PropertyLastSeenDate);
+            metadata.Add(o => o.JobMetaInsurancePoliceNotifiedStation, r => r.JobMetaInsurance?.PoliceNotifiedStation);
+            metadata.Add(o => o.JobMetaInsurancePoliceNotifiedDate, r => r.JobMetaInsurance?.PoliceNotifiedDate);
+            metadata.Add(o => o.JobMetaInsurancePoliceNotifiedCrimeReportNo, r => r.JobMetaInsurance?.PoliceNotifiedCrimeReportNo);
+            metadata.Add(o => o.JobMetaInsuranceRecoverReduceAction, r => r.JobMetaInsurance?.RecoverReduceAction);
+            metadata.Add(o => o.JobMetaInsuranceOtherInterestedParties, r => r.JobMetaInsurance?.OtherInterestedParties);
+            metadata.Add(o => o.JobMetaInsuranceDateOfPurchase, r => r.JobMetaInsurance?.DateOfPurchase);
+            metadata.Add(o => o.JobMetaInsuranceClaimFormSentDate, r => r.JobMetaInsurance?.ClaimFormSentDate);
+            metadata.Add(o => o.JobMetaInsuranceInsurer, r => r.JobMetaInsurance?.Insurer);
+            metadata.Add(o => o.JobMetaInsuranceInsurerReference, r => r.JobMetaInsurance?.InsurerReference);
 
             // User Management
-            metadata.Add(Options, o => o.JobUserManagementFlags, r => r.Job.Flags?.ToString());
+            metadata.Add(o => o.JobUserManagementFlags, r => r.Job.Flags?.ToString());
 
             // User
-            metadata.Add(Options, o => o.UserId, r => r.User?.UserId);
-            metadata.Add(Options, o => o.UserDisplayName, r => r.User?.DisplayName);
-            metadata.Add(Options, o => o.UserSurname, r => r.User?.Surname);
-            metadata.Add(Options, o => o.UserGivenName, r => r.User?.GivenName);
-            metadata.Add(Options, o => o.UserPhoneNumber, r => r.User?.PhoneNumber);
-            metadata.Add(Options, o => o.UserEmailAddress, r => r.User?.EmailAddress);
+            metadata.Add(o => o.UserId, r => r.User?.UserId);
+            metadata.Add(o => o.UserDisplayName, r => r.User?.DisplayName);
+            metadata.Add(o => o.UserSurname, r => r.User?.Surname);
+            metadata.Add(o => o.UserGivenName, r => r.User?.GivenName);
+            metadata.Add(o => o.UserPhoneNumber, r => r.User?.PhoneNumber);
+            metadata.Add(o => o.UserEmailAddress, r => r.User?.EmailAddress);
 
             // User Custom Details
             if (Options.UserDetailCustom)
@@ -322,40 +322,40 @@ namespace Disco.Services.Jobs
             }
 
             // Device
-            metadata.Add(Options, o => o.DeviceSerialNumber, r => r.Device?.SerialNumber);
-            metadata.Add(Options, o => o.DeviceAssetNumber, r => r.Device?.AssetNumber);
-            metadata.Add(Options, o => o.DeviceLocation, r => r.Device?.Location);
-            metadata.Add(Options, o => o.DeviceComputerName, r => r.Device?.DeviceDomainId);
-            metadata.Add(Options, o => o.DeviceLastNetworkLogon, r => r.Device?.LastNetworkLogonDate);
-            metadata.Add(Options, o => o.DeviceCreatedDate, r => r.Device?.CreatedDate);
-            metadata.Add(Options, o => o.DeviceFirstEnrolledDate, r => r.Device?.EnrolledDate);
-            metadata.Add(Options, o => o.DeviceLastEnrolledDate, r => r.Device?.LastEnrolDate);
-            metadata.Add(Options, o => o.DeviceAllowUnauthenticatedEnrol, r => r.Device?.AllowUnauthenticatedEnrol);
-            metadata.Add(Options, o => o.DeviceDecommissionedDate, r => r.Device?.DecommissionedDate);
-            metadata.Add(Options, o => o.DeviceDecommissionedReason, r => r.Device?.DecommissionReason?.ToString());
+            metadata.Add(o => o.DeviceSerialNumber, r => r.Device?.SerialNumber);
+            metadata.Add(o => o.DeviceAssetNumber, r => r.Device?.AssetNumber);
+            metadata.Add(o => o.DeviceLocation, r => r.Device?.Location);
+            metadata.Add(o => o.DeviceComputerName, r => r.Device?.DeviceDomainId);
+            metadata.Add(o => o.DeviceLastNetworkLogon, r => r.Device?.LastNetworkLogonDate);
+            metadata.Add(o => o.DeviceCreatedDate, r => r.Device?.CreatedDate);
+            metadata.Add(o => o.DeviceFirstEnrolledDate, r => r.Device?.EnrolledDate);
+            metadata.Add(o => o.DeviceLastEnrolledDate, r => r.Device?.LastEnrolDate);
+            metadata.Add(o => o.DeviceAllowUnauthenticatedEnrol, r => r.Device?.AllowUnauthenticatedEnrol);
+            metadata.Add(o => o.DeviceDecommissionedDate, r => r.Device?.DecommissionedDate);
+            metadata.Add(o => o.DeviceDecommissionedReason, r => r.Device?.DecommissionReason?.ToString());
 
             // Model
-            metadata.Add(Options, o => o.DeviceModelId, r => r.DeviceModelId);
-            metadata.Add(Options, o => o.DeviceModelDescription, r => r.DeviceModelDescription);
-            metadata.Add(Options, o => o.DeviceModelManufacturer, r => r.DeviceModelManufacturer);
-            metadata.Add(Options, o => o.DeviceModelModel, r => r.DeviceModelModel);
-            metadata.Add(Options, o => o.DeviceModelType, r => r.DeviceModelType);
+            metadata.Add(o => o.DeviceModelId, r => r.DeviceModelId);
+            metadata.Add(o => o.DeviceModelDescription, r => r.DeviceModelDescription);
+            metadata.Add(o => o.DeviceModelManufacturer, r => r.DeviceModelManufacturer);
+            metadata.Add(o => o.DeviceModelModel, r => r.DeviceModelModel);
+            metadata.Add(o => o.DeviceModelType, r => r.DeviceModelType);
 
             // Batch
-            metadata.Add(Options, o => o.DeviceBatchId, r => r.DeviceBatchId);
-            metadata.Add(Options, o => o.DeviceBatchName, r => r.DeviceBatchName);
-            metadata.Add(Options, o => o.DeviceBatchPurchaseDate, r => r.DeviceBatchPurchaseDate);
-            metadata.Add(Options, o => o.DeviceBatchSupplier, r => r.DeviceBatchSupplier);
-            metadata.Add(Options, o => o.DeviceBatchUnitCost, r => r.DeviceBatchUnitCost);
-            metadata.Add(Options, o => o.DeviceBatchWarrantyValidUntilDate, r => r.DeviceBatchWarrantyValidUntilDate);
-            metadata.Add(Options, o => o.DeviceBatchInsuredDate, r => r.DeviceBatchInsuredDate);
-            metadata.Add(Options, o => o.DeviceBatchInsuranceSupplier, r => r.DeviceBatchInsuranceSupplier);
-            metadata.Add(Options, o => o.DeviceBatchInsuredUntilDate, r => r.DeviceBatchInsuredUntilDate);
+            metadata.Add(o => o.DeviceBatchId, r => r.DeviceBatchId);
+            metadata.Add(o => o.DeviceBatchName, r => r.DeviceBatchName);
+            metadata.Add(o => o.DeviceBatchPurchaseDate, r => r.DeviceBatchPurchaseDate);
+            metadata.Add(o => o.DeviceBatchSupplier, r => r.DeviceBatchSupplier);
+            metadata.Add(o => o.DeviceBatchUnitCost, r => r.DeviceBatchUnitCost);
+            metadata.Add(o => o.DeviceBatchWarrantyValidUntilDate, r => r.DeviceBatchWarrantyValidUntilDate);
+            metadata.Add(o => o.DeviceBatchInsuredDate, r => r.DeviceBatchInsuredDate);
+            metadata.Add(o => o.DeviceBatchInsuranceSupplier, r => r.DeviceBatchInsuranceSupplier);
+            metadata.Add(o => o.DeviceBatchInsuredUntilDate, r => r.DeviceBatchInsuredUntilDate);
 
             // Profile
-            metadata.Add(Options, o => o.DeviceProfileId, r => r.DeviceProfileId);
-            metadata.Add(Options, o => o.DeviceProfileName, r => r.DeviceProfileName);
-            metadata.Add(Options, o => o.DeviceProfileShortName, r => r.DeviceProfileShortName);
+            metadata.Add(o => o.DeviceProfileId, r => r.DeviceProfileId);
+            metadata.Add(o => o.DeviceProfileName, r => r.DeviceProfileName);
+            metadata.Add(o => o.DeviceProfileShortName, r => r.DeviceProfileShortName);
 
             return metadata;
         }

@@ -108,67 +108,67 @@ namespace Disco.Services.Devices.DeviceFlags
             return records;
         }
 
-        public ExportMetadata<DeviceFlagExportRecord> BuildMetadata(DiscoDataContext database, List<DeviceFlagExportRecord> records, IScheduledTaskStatus status)
+        public ExportMetadata<DeviceFlagExportOptions, DeviceFlagExportRecord> BuildMetadata(DiscoDataContext database, List<DeviceFlagExportRecord> records, IScheduledTaskStatus status)
         {
-            var metadata = new ExportMetadata<DeviceFlagExportRecord>();
+            var metadata = new ExportMetadata<DeviceFlagExportOptions, DeviceFlagExportRecord>(Options);
             metadata.IgnoreShortNames.Add("Device Flag");
 
             // Device Flag
-            metadata.Add(Options, o => o.Id, r => r.Assignment.DeviceFlagId);
-            metadata.Add(Options, o => o.Name, r => r.Assignment.DeviceFlag.Name);
-            metadata.Add(Options, o => o.Description, r => r.Assignment.DeviceFlag.Description);
-            metadata.Add(Options, o => o.Icon, r => r.Assignment.DeviceFlag.Icon);
-            metadata.Add(Options, o => o.IconColour, r => r.Assignment.DeviceFlag.IconColour);
-            metadata.Add(Options, o => o.AssignmentId, r => r.Assignment.Id);
-            metadata.Add(Options, o => o.AddedDate, r => r.Assignment.AddedDate);
-            metadata.Add(Options, o => o.AddedUserId, r => r.Assignment.AddedUserId);
-            metadata.Add(Options, o => o.RemovedUserId, r => r.Assignment.RemovedUserId);
-            metadata.Add(Options, o => o.RemovedDate, r => r.Assignment.RemovedDate);
-            metadata.Add(Options, o => o.Comments, r => r.Assignment.Comments);
+            metadata.Add(o => o.Id, r => r.Assignment.DeviceFlagId);
+            metadata.Add(o => o.Name, r => r.Assignment.DeviceFlag.Name);
+            metadata.Add(o => o.Description, r => r.Assignment.DeviceFlag.Description);
+            metadata.Add(o => o.Icon, r => r.Assignment.DeviceFlag.Icon);
+            metadata.Add(o => o.IconColour, r => r.Assignment.DeviceFlag.IconColour);
+            metadata.Add(o => o.AssignmentId, r => r.Assignment.Id);
+            metadata.Add(o => o.AddedDate, r => r.Assignment.AddedDate);
+            metadata.Add(o => o.AddedUserId, r => r.Assignment.AddedUserId);
+            metadata.Add(o => o.RemovedUserId, r => r.Assignment.RemovedUserId);
+            metadata.Add(o => o.RemovedDate, r => r.Assignment.RemovedDate);
+            metadata.Add(o => o.Comments, r => r.Assignment.Comments);
 
             // Device
-            metadata.Add(Options, o => o.DeviceSerialNumber, r => r.Assignment.Device.SerialNumber);
-            metadata.Add(Options, o => o.DeviceAssetNumber, r => r.Assignment.Device.AssetNumber);
-            metadata.Add(Options, o => o.DeviceLocation, r => r.Assignment.Device.Location);
-            metadata.Add(Options, o => o.DeviceComputerName, r => r.Assignment.Device.DeviceDomainId);
-            metadata.Add(Options, o => o.DeviceLastNetworkLogon, r => r.Assignment.Device.LastNetworkLogonDate);
-            metadata.Add(Options, o => o.DeviceCreatedDate, r => r.Assignment.Device.CreatedDate);
-            metadata.Add(Options, o => o.DeviceFirstEnrolledDate, r => r.Assignment.Device.EnrolledDate);
-            metadata.Add(Options, o => o.DeviceLastEnrolledDate, r => r.Assignment.Device.LastEnrolDate);
-            metadata.Add(Options, o => o.DeviceAllowUnauthenticatedEnrol, r => r.Assignment.Device.AllowUnauthenticatedEnrol);
-            metadata.Add(Options, o => o.DeviceDecommissionedDate, r => r.Assignment.Device.DecommissionedDate);
-            metadata.Add(Options, o => o.DeviceDecommissionedReason, r => r.Assignment.Device.DecommissionReason?.ToString());
+            metadata.Add(o => o.DeviceSerialNumber, r => r.Assignment.Device.SerialNumber);
+            metadata.Add(o => o.DeviceAssetNumber, r => r.Assignment.Device.AssetNumber);
+            metadata.Add(o => o.DeviceLocation, r => r.Assignment.Device.Location);
+            metadata.Add(o => o.DeviceComputerName, r => r.Assignment.Device.DeviceDomainId);
+            metadata.Add(o => o.DeviceLastNetworkLogon, r => r.Assignment.Device.LastNetworkLogonDate);
+            metadata.Add(o => o.DeviceCreatedDate, r => r.Assignment.Device.CreatedDate);
+            metadata.Add(o => o.DeviceFirstEnrolledDate, r => r.Assignment.Device.EnrolledDate);
+            metadata.Add(o => o.DeviceLastEnrolledDate, r => r.Assignment.Device.LastEnrolDate);
+            metadata.Add(o => o.DeviceAllowUnauthenticatedEnrol, r => r.Assignment.Device.AllowUnauthenticatedEnrol);
+            metadata.Add(o => o.DeviceDecommissionedDate, r => r.Assignment.Device.DecommissionedDate);
+            metadata.Add(o => o.DeviceDecommissionedReason, r => r.Assignment.Device.DecommissionReason?.ToString());
 
             // Model
-            metadata.Add(Options, o => o.ModelId, r => r.Assignment.Device.DeviceModel.Id);
-            metadata.Add(Options, o => o.ModelDescription, r => r.Assignment.Device.DeviceModel.Description);
-            metadata.Add(Options, o => o.ModelManufacturer, r => r.Assignment.Device.DeviceModel.Manufacturer);
-            metadata.Add(Options, o => o.ModelModel, r => r.Assignment.Device.DeviceModel.Model);
-            metadata.Add(Options, o => o.ModelType, r => r.Assignment.Device.DeviceModel.ModelType);
+            metadata.Add(o => o.ModelId, r => r.Assignment.Device.DeviceModel.Id);
+            metadata.Add(o => o.ModelDescription, r => r.Assignment.Device.DeviceModel.Description);
+            metadata.Add(o => o.ModelManufacturer, r => r.Assignment.Device.DeviceModel.Manufacturer);
+            metadata.Add(o => o.ModelModel, r => r.Assignment.Device.DeviceModel.Model);
+            metadata.Add(o => o.ModelType, r => r.Assignment.Device.DeviceModel.ModelType);
 
             // Batch
-            metadata.Add(Options, o => o.BatchId, r => r.Assignment.Device.DeviceBatch?.Id);
-            metadata.Add(Options, o => o.BatchName, r => r.Assignment.Device.DeviceBatch?.Name);
-            metadata.Add(Options, o => o.BatchPurchaseDate, r => r.Assignment.Device.DeviceBatch?.PurchaseDate);
-            metadata.Add(Options, o => o.BatchSupplier, r => r.Assignment.Device.DeviceBatch?.Supplier);
-            metadata.Add(Options, o => o.BatchUnitCost, r => r.Assignment.Device.DeviceBatch?.UnitCost, Exporter.CsvEncoders.NullableCurrencyEncoder);
-            metadata.Add(Options, o => o.BatchWarrantyValidUntilDate, r => r.Assignment.Device.DeviceBatch?.WarrantyValidUntil);
-            metadata.Add(Options, o => o.BatchInsuredDate, r => r.Assignment.Device.DeviceBatch?.InsuredDate);
-            metadata.Add(Options, o => o.BatchInsuranceSupplier, r => r.Assignment.Device.DeviceBatch?.InsuranceSupplier);
-            metadata.Add(Options, o => o.BatchInsuredUntilDate, r => r.Assignment.Device.DeviceBatch?.InsuredUntil);
+            metadata.Add(o => o.BatchId, r => r.Assignment.Device.DeviceBatch?.Id);
+            metadata.Add(o => o.BatchName, r => r.Assignment.Device.DeviceBatch?.Name);
+            metadata.Add(o => o.BatchPurchaseDate, r => r.Assignment.Device.DeviceBatch?.PurchaseDate);
+            metadata.Add(o => o.BatchSupplier, r => r.Assignment.Device.DeviceBatch?.Supplier);
+            metadata.Add(o => o.BatchUnitCost, r => r.Assignment.Device.DeviceBatch?.UnitCost, Exporter.CsvEncoders.NullableCurrencyEncoder);
+            metadata.Add(o => o.BatchWarrantyValidUntilDate, r => r.Assignment.Device.DeviceBatch?.WarrantyValidUntil);
+            metadata.Add(o => o.BatchInsuredDate, r => r.Assignment.Device.DeviceBatch?.InsuredDate);
+            metadata.Add(o => o.BatchInsuranceSupplier, r => r.Assignment.Device.DeviceBatch?.InsuranceSupplier);
+            metadata.Add(o => o.BatchInsuredUntilDate, r => r.Assignment.Device.DeviceBatch?.InsuredUntil);
 
             // Profile
-            metadata.Add(Options, o => o.ProfileId, r => r.Assignment.Device.DeviceProfile?.Id);
-            metadata.Add(Options, o => o.ProfileName, r => r.Assignment.Device.DeviceProfile?.Name);
-            metadata.Add(Options, o => o.ProfileShortName, r => r.Assignment.Device.DeviceProfile?.ShortName);
+            metadata.Add(o => o.ProfileId, r => r.Assignment.Device.DeviceProfile?.Id);
+            metadata.Add(o => o.ProfileName, r => r.Assignment.Device.DeviceProfile?.Name);
+            metadata.Add(o => o.ProfileShortName, r => r.Assignment.Device.DeviceProfile?.ShortName);
 
             // User
-            metadata.Add(Options, o => o.AssignedUserId, r => r.Assignment.Device?.AssignedUser?.UserId);
-            metadata.Add(Options, o => o.AssignedUserDisplayName, r => r.Assignment.Device?.AssignedUser?.DisplayName);
-            metadata.Add(Options, o => o.AssignedUserSurname, r => r.Assignment.Device?.AssignedUser?.Surname);
-            metadata.Add(Options, o => o.AssignedUserGivenName, r => r.Assignment.Device?.AssignedUser?.GivenName);
-            metadata.Add(Options, o => o.AssignedUserPhoneNumber, r => r.Assignment.Device?.AssignedUser?.PhoneNumber);
-            metadata.Add(Options, o => o.AssignedUserEmailAddress, r => r.Assignment.Device?.AssignedUser?.EmailAddress);
+            metadata.Add(o => o.AssignedUserId, r => r.Assignment.Device?.AssignedUser?.UserId);
+            metadata.Add(o => o.AssignedUserDisplayName, r => r.Assignment.Device?.AssignedUser?.DisplayName);
+            metadata.Add(o => o.AssignedUserSurname, r => r.Assignment.Device?.AssignedUser?.Surname);
+            metadata.Add(o => o.AssignedUserGivenName, r => r.Assignment.Device?.AssignedUser?.GivenName);
+            metadata.Add(o => o.AssignedUserPhoneNumber, r => r.Assignment.Device?.AssignedUser?.PhoneNumber);
+            metadata.Add(o => o.AssignedUserEmailAddress, r => r.Assignment.Device?.AssignedUser?.EmailAddress);
 
             // User Custom Details
             if (Options.AssignedUserDetailCustom)

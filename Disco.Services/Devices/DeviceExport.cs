@@ -2,16 +2,13 @@
 using Disco.Models.Exporting;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices;
-using Disco.Models.Services.Devices.DeviceFlag;
 using Disco.Models.Services.Exporting;
-using Disco.Services.Devices.DeviceFlags;
 using Disco.Services.Exporting;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -184,56 +181,56 @@ namespace Disco.Services.Devices
             return records;
         }
 
-        public ExportMetadata<DeviceExportRecord> BuildMetadata(DiscoDataContext database, List<DeviceExportRecord> records, IScheduledTaskStatus taskStatus)
+        public ExportMetadata<DeviceExportOptions, DeviceExportRecord> BuildMetadata(DiscoDataContext database, List<DeviceExportRecord> records, IScheduledTaskStatus taskStatus)
         {
-            var metadata = new ExportMetadata<DeviceExportRecord>();
+            var metadata = new ExportMetadata<DeviceExportOptions, DeviceExportRecord>(Options);
             metadata.IgnoreShortNames.Add("Device");
             metadata.IgnoreShortNames.Add("Details");
 
             // Device
-            metadata.Add(Options, o => o.DeviceSerialNumber, r => r.Device.SerialNumber);
-            metadata.Add(Options, o => o.DeviceAssetNumber, r => r.Device.AssetNumber);
-            metadata.Add(Options, o => o.DeviceLocation, r => r.Device.Location);
-            metadata.Add(Options, o => o.DeviceComputerName, r => r.Device.DeviceDomainId);
-            metadata.Add(Options, o => o.DeviceLastNetworkLogon, r => r.Device.LastNetworkLogonDate);
-            metadata.Add(Options, o => o.DeviceCreatedDate, r => r.Device.CreatedDate);
-            metadata.Add(Options, o => o.DeviceFirstEnrolledDate, r => r.Device.EnrolledDate);
-            metadata.Add(Options, o => o.DeviceLastEnrolledDate, r => r.Device.LastEnrolDate);
-            metadata.Add(Options, o => o.DeviceAllowUnauthenticatedEnrol, r => r.Device.AllowUnauthenticatedEnrol);
-            metadata.Add(Options, o => o.DeviceDecommissionedDate, r => r.Device.DecommissionedDate);
-            metadata.Add(Options, o => o.DeviceDecommissionedReason, r => r.Device.DecommissionReason?.ToString());
+            metadata.Add(o => o.DeviceSerialNumber, r => r.Device.SerialNumber);
+            metadata.Add(o => o.DeviceAssetNumber, r => r.Device.AssetNumber);
+            metadata.Add(o => o.DeviceLocation, r => r.Device.Location);
+            metadata.Add(o => o.DeviceComputerName, r => r.Device.DeviceDomainId);
+            metadata.Add(o => o.DeviceLastNetworkLogon, r => r.Device.LastNetworkLogonDate);
+            metadata.Add(o => o.DeviceCreatedDate, r => r.Device.CreatedDate);
+            metadata.Add(o => o.DeviceFirstEnrolledDate, r => r.Device.EnrolledDate);
+            metadata.Add(o => o.DeviceLastEnrolledDate, r => r.Device.LastEnrolDate);
+            metadata.Add(o => o.DeviceAllowUnauthenticatedEnrol, r => r.Device.AllowUnauthenticatedEnrol);
+            metadata.Add(o => o.DeviceDecommissionedDate, r => r.Device.DecommissionedDate);
+            metadata.Add(o => o.DeviceDecommissionedReason, r => r.Device.DecommissionReason?.ToString());
 
             // Model
-            metadata.Add(Options, o => o.ModelId, r => r.ModelId);
-            metadata.Add(Options, o => o.ModelDescription, r => r.ModelDescription);
-            metadata.Add(Options, o => o.ModelManufacturer, r => r.ModelManufacturer);
-            metadata.Add(Options, o => o.ModelModel, r => r.ModelModel);
-            metadata.Add(Options, o => o.ModelType, r => r.ModelType);
+            metadata.Add(o => o.ModelId, r => r.ModelId);
+            metadata.Add(o => o.ModelDescription, r => r.ModelDescription);
+            metadata.Add(o => o.ModelManufacturer, r => r.ModelManufacturer);
+            metadata.Add(o => o.ModelModel, r => r.ModelModel);
+            metadata.Add(o => o.ModelType, r => r.ModelType);
 
             // Batch
-            metadata.Add(Options, o => o.BatchId, r => r.BatchId);
-            metadata.Add(Options, o => o.BatchName, r => r.BatchName);
-            metadata.Add(Options, o => o.BatchPurchaseDate, r => r.BatchPurchaseDate);
-            metadata.Add(Options, o => o.BatchSupplier, r => r.BatchSupplier);
-            metadata.Add(Options, o => o.BatchUnitCost, r => r.BatchUnitCost, Exporter.CsvEncoders.NullableCurrencyEncoder);
-            metadata.Add(Options, o => o.BatchWarrantyValidUntilDate, r => r.BatchWarrantyValidUntilDate);
-            metadata.Add(Options, o => o.BatchInsuredDate, r => r.BatchInsuredDate);
-            metadata.Add(Options, o => o.BatchInsuranceSupplier, r => r.BatchInsuranceSupplier);
-            metadata.Add(Options, o => o.BatchInsuredUntilDate, r => r.BatchInsuredUntilDate);
+            metadata.Add(o => o.BatchId, r => r.BatchId);
+            metadata.Add(o => o.BatchName, r => r.BatchName);
+            metadata.Add(o => o.BatchPurchaseDate, r => r.BatchPurchaseDate);
+            metadata.Add(o => o.BatchSupplier, r => r.BatchSupplier);
+            metadata.Add(o => o.BatchUnitCost, r => r.BatchUnitCost, Exporter.CsvEncoders.NullableCurrencyEncoder);
+            metadata.Add(o => o.BatchWarrantyValidUntilDate, r => r.BatchWarrantyValidUntilDate);
+            metadata.Add(o => o.BatchInsuredDate, r => r.BatchInsuredDate);
+            metadata.Add(o => o.BatchInsuranceSupplier, r => r.BatchInsuranceSupplier);
+            metadata.Add(o => o.BatchInsuredUntilDate, r => r.BatchInsuredUntilDate);
 
             // Profile
-            metadata.Add(Options, o => o.ProfileId, r => r.ProfileId);
-            metadata.Add(Options, o => o.ProfileName, r => r.ProfileName);
-            metadata.Add(Options, o => o.ProfileShortName, r => r.ProfileShortName);
+            metadata.Add(o => o.ProfileId, r => r.ProfileId);
+            metadata.Add(o => o.ProfileName, r => r.ProfileName);
+            metadata.Add(o => o.ProfileShortName, r => r.ProfileShortName);
 
             // User
-            metadata.Add(Options, o => o.AssignedUserId, r => r.AssignedUser?.UserId);
-            metadata.Add(Options, o => o.AssignedUserDate, r => r.DeviceUserAssignment?.AssignedDate);
-            metadata.Add(Options, o => o.AssignedUserDisplayName, r => r.AssignedUser?.DisplayName);
-            metadata.Add(Options, o => o.AssignedUserSurname, r => r.AssignedUser?.Surname);
-            metadata.Add(Options, o => o.AssignedUserGivenName, r => r.AssignedUser?.GivenName);
-            metadata.Add(Options, o => o.AssignedUserPhoneNumber, r => r.AssignedUser?.PhoneNumber);
-            metadata.Add(Options, o => o.AssignedUserEmailAddress, r => r.AssignedUser?.EmailAddress);
+            metadata.Add(o => o.AssignedUserId, r => r.AssignedUser?.UserId);
+            metadata.Add(o => o.AssignedUserDate, r => r.DeviceUserAssignment?.AssignedDate);
+            metadata.Add(o => o.AssignedUserDisplayName, r => r.AssignedUser?.DisplayName);
+            metadata.Add(o => o.AssignedUserSurname, r => r.AssignedUser?.Surname);
+            metadata.Add(o => o.AssignedUserGivenName, r => r.AssignedUser?.GivenName);
+            metadata.Add(o => o.AssignedUserPhoneNumber, r => r.AssignedUser?.PhoneNumber);
+            metadata.Add(o => o.AssignedUserEmailAddress, r => r.AssignedUser?.EmailAddress);
 
             // User Custom Details
             if (Options.AssignedUserDetailCustom)
@@ -246,11 +243,11 @@ namespace Disco.Services.Devices
             }
 
             // Jobs
-            metadata.Add(Options, o => o.JobsTotalCount, r => r.JobsTotalCount);
-            metadata.Add(Options, o => o.JobsOpenCount, r => r.JobsOpenCount);
+            metadata.Add(o => o.JobsTotalCount, r => r.JobsTotalCount);
+            metadata.Add(o => o.JobsOpenCount, r => r.JobsOpenCount);
 
             // Attachments
-            metadata.Add(Options, o => o.AttachmentsCount, r => r.AttachmentsCount);
+            metadata.Add(o => o.AttachmentsCount, r => r.AttachmentsCount);
 
             // Certificates
             if (Options.Certificates)
@@ -433,10 +430,10 @@ namespace Disco.Services.Devices
                 }
             }
 
-            metadata.Add(Options, o => o.DetailACAdapter, r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault());
+            metadata.Add(o => o.DetailACAdapter, r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyACAdapter).Select(dd => dd.Value).FirstOrDefault());
 
             // Batteries
-            metadata.Add(Options, o => o.DetailBattery, r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault());
+            metadata.Add(o => o.DetailBattery, r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyBattery).Select(dd => dd.Value).FirstOrDefault());
             if (Options.DetailBatteries)
             {
                 var batteriesMaxCount = Math.Max(1, records.Max(r => r.DeviceDetailBatteries?.Count ?? 0));
@@ -454,8 +451,8 @@ namespace Disco.Services.Devices
                 }
             }
 
-            metadata.Add(Options, o => o.DetailKeyboard, r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault());
-            metadata.Add(Options, o => o.DetailMdmHardwareData, r => r.DeviceDetails.MdmHardwareData());
+            metadata.Add(o => o.DetailKeyboard, r => r.DeviceDetails.Where(dd => dd.Key == DeviceDetail.HardwareKeyKeyboard).Select(dd => dd.Value).FirstOrDefault());
+            metadata.Add(o => o.DetailMdmHardwareData, r => r.DeviceDetails.MdmHardwareData());
 
             return metadata;
         }

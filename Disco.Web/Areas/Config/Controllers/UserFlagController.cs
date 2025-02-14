@@ -12,7 +12,6 @@ using Disco.Web.Areas.Config.Models.UserFlag;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -123,7 +122,8 @@ namespace Disco.Web.Areas.Config.Controllers
 
         #region Export
 
-        [DiscoAuthorizeAny(Claims.Config.UserFlag.Export), HttpGet]
+        [HttpGet]
+        [DiscoAuthorizeAny(Claims.Config.UserFlag.Export)]
         public virtual ActionResult Export(Guid? exportId, int? userFlagId, bool? currentOnly)
         {
             var m = new ExportModel()
