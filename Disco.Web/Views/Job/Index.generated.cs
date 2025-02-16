@@ -338,7 +338,7 @@ WriteLiteral("\r\n    </div>\r\n");
             #line hidden
             
             #line 154 "..\..\Views\Job\Index.cshtml"
- if (Model.PendingEnrollments != null && Model.PendingEnrollments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
+ if (Model.PendingEnrolments != null && Model.PendingEnrolments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
 {
 
             
@@ -346,35 +346,35 @@ WriteLiteral("\r\n    </div>\r\n");
             #line hidden
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"pendingEnrollments\"");
+WriteLiteral(" id=\"pendingEnrolments\"");
 
 WriteLiteral(">\r\n        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-circle info\"");
 
-WriteLiteral("></i>\r\n        <div>There are device enrollments pending approval.</div>\r\n       " +
-" <a");
+WriteLiteral("></i>\r\n        <div>There are device enrolments pending approval.</div>\r\n        " +
+"<a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6930), Tuple.Create("\"", 6979)
+WriteAttribute("href", Tuple.Create(" href=\"", 6926), Tuple.Create("\"", 6975)
             
             #line 159 "..\..\Views\Job\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 6937), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
+, Tuple.Create(Tuple.Create("", 6933), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
             
             #line default
             #line hidden
-, 6937), false)
+, 6933), false)
 );
 
 WriteLiteral(" class=\"button small alert\"");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(">View Enrollments</a>\r\n    </div>\r\n");
+WriteLiteral(">View Enrolments</a>\r\n    </div>\r\n");
 
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var layout_PageHeading = $(\'#l" +
-"ayout_PageHeading\').height(80);\r\n            $(\'#pendingEnrollments\')\r\n         " +
-"       .detach()\r\n                .appendTo(layout_PageHeading);\r\n        });\r\n " +
-"   </script>\r\n");
+"ayout_PageHeading\').height(80);\r\n            $(\'#pendingEnrolments\')\r\n          " +
+"      .detach()\r\n                .appendTo(layout_PageHeading);\r\n        });\r\n  " +
+"  </script>\r\n");
 
             
             #line 169 "..\..\Views\Job\Index.cshtml"

@@ -119,7 +119,7 @@ namespace Disco.Client
                 EnrolResponse response = null;
 
                 // Build Request
-                Presentation.UpdateStatus("Enrolling Device", "Building enrollment request and preparing to send data to the server.", true, -1);
+                Presentation.UpdateStatus("Enrolling Device", "Building enrolment request and preparing to send data to the server.", true, -1);
                 request = new Enrol();
                 request.Build();
 
@@ -127,11 +127,11 @@ namespace Disco.Client
                 do
                 {
                     // Send Request
-                    Presentation.UpdateStatus("Enrolling Device", "Sending the enrollment request to the server.", true, -1);
+                    Presentation.UpdateStatus("Enrolling Device", "Sending the enrolment request to the server.", true, -1);
                     response = request.Post(Program.IsAuthenticated);
 
                     // Process Response
-                    Presentation.UpdateStatus("Enrolling Device", "Processing the enrollment response from the server.", true, -1);
+                    Presentation.UpdateStatus("Enrolling Device", "Processing the enrolment response from the server.", true, -1);
                     response.Process();
 
                     if (response.IsPending)
@@ -144,7 +144,7 @@ namespace Disco.Client
                         var secondsConsumed = (DateTimeOffset.Now - startTime).TotalSeconds;
                         var progress = (int)((secondsConsumed / totalSeconds) * 100);
 
-                        Presentation.UpdateStatus($"Pending Device Enrollment Approval: {response.PendingIdentifier}", $"Waiting for enrollment session '{response.PendingIdentifier}' to be approved.{Environment.NewLine}Reason: {response.PendingReason}", true, progress);
+                        Presentation.UpdateStatus($"Pending Device Enrolment Approval: {response.PendingIdentifier}", $"Waiting for enrolment session '{response.PendingIdentifier}' to be approved.{Environment.NewLine}Reason: {response.PendingReason}", true, progress);
                         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
                     }
                     else

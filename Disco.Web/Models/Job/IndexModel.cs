@@ -10,7 +10,7 @@ namespace Disco.Web.Models.Job
     {
         public JobTableModel MyJobs { get; set; }
         public JobTableModel StaleJobs { get; set; }
-        public List<EnrolResponse> PendingEnrollments { get; set; }
+        public List<EnrolResponse> PendingEnrolments { get; set; }
 
         public List<DailyOpenedClosedItem> DailyOpenedClosedStatistics { get; set; }
     }

@@ -50,7 +50,7 @@ namespace Disco.Web.Controllers
                 m.DailyOpenedClosedStatistics = DailyOpenedClosed.Data(Database, true);
 
             if (Authorization.Has(Claims.Device.Actions.EnrolDevices))
-                m.PendingEnrollments = WindowsDeviceEnrolment.GetPendingEnrolments();
+                m.PendingEnrolments = WindowsDeviceEnrolment.GetPendingEnrolments();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);

@@ -6,14 +6,14 @@ using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class EnrollmentController : AuthorizedDatabaseController
+    public partial class EnrolmentController : AuthorizedDatabaseController
     {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DiscoAuthorize(Claims.Device.Actions.EnrolDevices)]
         public virtual ActionResult ResolveSessionPending(string sessionId, bool approve, string reason)
         {
-            WindowsDeviceEnrolment.ResolvePendingEnrollment(sessionId, approve, CurrentUser.UserId, reason);
+            WindowsDeviceEnrolment.ResolvePendingEnrolment(sessionId, approve, CurrentUser.UserId, reason);
 
             return new HttpStatusCodeResult(200);
         }

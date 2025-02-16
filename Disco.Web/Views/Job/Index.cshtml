@@ -151,17 +151,17 @@
         @Html.ActionLinkButton("Export Jobs", MVC.Job.Export())
     </div>
 }
-@if (Model.PendingEnrollments != null && Model.PendingEnrollments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
+@if (Model.PendingEnrolments != null && Model.PendingEnrolments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
 {
-    <div id="pendingEnrollments">
+    <div id="pendingEnrolments">
         <i class="fa fa-exclamation-circle info"></i>
-        <div>There are device enrollments pending approval.</div>
-        <a href="@Url.Action(MVC.Config.Enrolment.Status())" class="button small alert" target="_blank">View Enrollments</a>
+        <div>There are device enrolments pending approval.</div>
+        <a href="@Url.Action(MVC.Config.Enrolment.Status())" class="button small alert" target="_blank">View Enrolments</a>
     </div>
     <script>
         $(function () {
             var layout_PageHeading = $('#layout_PageHeading').height(80);
-            $('#pendingEnrollments')
+            $('#pendingEnrolments')
                 .detach()
                 .appendTo(layout_PageHeading);
         });

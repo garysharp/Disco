@@ -47,7 +47,7 @@ namespace Disco.Services.Devices.Enrolment
         {
             get
             {
-                return "Device Enrollment";
+                return "Device Enrolment";
             }
         }
         public override int ModuleId
@@ -340,7 +340,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionStarting,
                     ModuleId = _ModuleId,
                     Name = "Session Starting",
-                    Format = "Starting '{2}' Enrollment for {1} (Session# {0})",
+                    Format = "Starting '{2}' Enrolment for {1} (Session# {0})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,
@@ -384,7 +384,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionPending,
                     ModuleId = _ModuleId,
                     Name = "Session Pending",
-                    Format = "Pending '{2}' Enrollment for {1} (Session# {0}; Reason: {3}; Identifier: {4})",
+                    Format = "Pending '{2}' Enrolment for {1} (Session# {0}; Reason: {3}; Identifier: {4})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,
@@ -395,7 +395,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionPendingApproved,
                     ModuleId = _ModuleId,
                     Name = "Session Pending Approved",
-                    Format = "Pending enrollment approved by {1} (Session# {0}; Reason: {2})",
+                    Format = "Pending enrolment approved by {1} (Session# {0}; Reason: {2})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,
@@ -406,7 +406,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionPendingRejected,
                     ModuleId = _ModuleId,
                     Name = "Session Pending Rejected",
-                    Format = "Pending enrollment rejected by {1} (Session# {0}; Reason: {2})",
+                    Format = "Pending enrolment rejected by {1} (Session# {0}; Reason: {2})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,
@@ -417,7 +417,7 @@ namespace Disco.Services.Devices.Enrolment
                     Id = (int)EventTypeIds.SessionContinuing,
                     ModuleId = _ModuleId,
                     Name = "Session Continuing",
-                    Format = "Continuing '{2}' Enrollment for {1} (Session# {0})",
+                    Format = "Continuing '{2}' Enrolment for {1} (Session# {0})",
                     Severity = 0,
                     UseLive = true,
                     UsePersist = true,

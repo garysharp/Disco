@@ -212,7 +212,7 @@
     <Compile Include="Areas\API\Controllers\AuthorizationRoleController.cs" />
     <Compile Include="Areas\API\Controllers\DocumentTemplatePackageController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagAssignmentController.cs" />
-    <Compile Include="Areas\API\Controllers\EnrollmentController.cs" />
+    <Compile Include="Areas\API\Controllers\EnrolmentController.cs" />
     <Compile Include="Areas\API\Controllers\ExportController.cs" />
     <Compile Include="Areas\API\Controllers\UserFlagAssignmentController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceFlagController.cs" />
@@ -739,7 +739,7 @@
     <Compile Include="Extensions\T4MVC\API.DocumentTemplatePackageController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Extensions\T4MVC\API.EnrollmentController.generated.cs">
+    <Compile Include="Extensions\T4MVC\API.EnrolmentController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\API.ExportController.generated.cs">

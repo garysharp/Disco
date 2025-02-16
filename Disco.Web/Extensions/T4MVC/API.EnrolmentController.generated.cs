@@ -25,13 +25,13 @@ using System.Web.Routing;
 using T4MVC;
 namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class EnrollmentController
+    public partial class EnrolmentController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public EnrollmentController() { }
+        public EnrolmentController() { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected EnrollmentController(Dummy d) { }
+        protected EnrolmentController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -73,13 +73,13 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public EnrollmentController Actions { get { return MVC.API.Enrollment; } }
+        public EnrolmentController Actions { get { return MVC.API.Enrolment; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "API";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "Enrollment";
+        public readonly string Name = "Enrolment";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "Enrollment";
+        public const string NameConst = "Enrolment";
         [GeneratedCode("T4MVC", "2.0")]
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -132,9 +132,9 @@ namespace Disco.Web.Areas.API.Controllers
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_EnrollmentController : Disco.Web.Areas.API.Controllers.EnrollmentController
+    public partial class T4MVC_EnrolmentController : Disco.Web.Areas.API.Controllers.EnrolmentController
     {
-        public T4MVC_EnrollmentController() : base(Dummy.Instance) { }
+        public T4MVC_EnrolmentController() : base(Dummy.Instance) { }
 
         [NonAction]
         partial void ResolveSessionPendingOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string sessionId, bool approve, string reason);

@@ -8,6 +8,6 @@ namespace Disco.Models.UI.Job
     {
         JobTableModel MyJobs { get; set; }
         JobTableModel StaleJobs { get; set; }
-        List<EnrolResponse> PendingEnrollments { get; set; }
+        List<EnrolResponse> PendingEnrolments { get; set; }
     }
 }

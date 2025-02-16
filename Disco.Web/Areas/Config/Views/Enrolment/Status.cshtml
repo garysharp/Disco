@@ -1,15 +1,15 @@
 ﻿@{
     Authorization.Require(Claims.Config.Enrolment.ShowStatus);
 
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrollment", MVC.Config.Enrolment.Index(), "Status");
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Enrolment", MVC.Config.Enrolment.Index(), "Status");
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Isotope");
 }
 <div id="enrolStatus">
-    @Html.AntiForgeryToken();
+    @Html.AntiForgeryToken()
     <div id="noSessions" data-bind="visible: noSessions">
-        <h2>No enrollment sessions today</h2>
+        <h2>No enrolment sessions today</h2>
     </div>
     <div id="sessions" data-bind="visible: !noSessions(), foreach: { data: sessions, afterRender: sessionRendered, afterAdd: sessionAdded }" style="display: none">
         <div class="session" data-bind="style: { backgroundImage: deviceModelImageUrl }, click: select">
@@ -30,7 +30,7 @@
             <p class="sessionStatus" data-bind="text: progressStatus"></p>
             <div data-bind="visible: !sessionEnded() && progressValue >= 0, progressValue: progressValue"></div>
             <div id="formResolveSessionPending" data-bind="visible: isPending">
-                @using (Html.BeginForm(MVC.API.Enrollment.ResolveSessionPending(), FormMethod.Post))
+                @using (Html.BeginForm(MVC.API.Enrolment.ResolveSessionPending(), FormMethod.Post))
                 {
                     <code data-bind="text: pendingIdentifier"></code>
                     @Html.AntiForgeryToken();
@@ -208,7 +208,7 @@
             self.select = function (e, d) {
                 vm.currentSession(self);
                 hostDialogSessions.dialog('open');
-                hostDialogSessions.dialog('option', 'title', 'Device Enrollment: ' + self.title());
+                hostDialogSessions.dialog('option', 'title', 'Device Enrolment: ' + self.title());
             }
         }
 
@@ -254,19 +254,19 @@
                             session.pendingIdentifier(log.Arguments[4]);
                             session.messages.unshift(log);
                             session.progressValue(-1);
-                            session.progressStatus('Pending enrollment approval');
+                            session.progressStatus('Pending enrolment approval');
                             break;
                         case 15: // SessionPendingApproved
                             session.isPending(false);
                             session.messages.unshift(log);
                             session.progressValue(-1);
-                            session.progressStatus('Enrollment approval, waiting for client');
+                            session.progressStatus('Enrolment approval, waiting for client');
                             break;
                         case 16: // SessionPendingRejected
                             session.isPending(false);
                             session.messages.unshift(log);
                             session.progressValue(-1);
-                            session.progressStatus('Enrollment rejected, waiting for client');
+                            session.progressStatus('Enrolment rejected, waiting for client');
                             break;
                         case 17: // SessionContinuing
                             session.isPending(false);
@@ -276,12 +276,12 @@
                             session.sessionEnded(true);
                             session.isPending(false);
                             if (session.hasError())
-                                session.progressStatus('Enrollment Finished with an Error');
+                                session.progressStatus('Enrolment Finished with an Error');
                             else
                                 if (session.hasWarning())
-                                    session.progressStatus('Enrollment Finished with a Warning');
+                                    session.progressStatus('Enrolment Finished with a Warning');
                                 else
-                                    session.progressStatus('Enrollment Finished Successfully');
+                                    session.progressStatus('Enrolment Finished Successfully');
                             session.messages.unshift(log);
                             break;
                         case 21: // SessionDiagnosticInformation

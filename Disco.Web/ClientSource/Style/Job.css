@@ -97,7 +97,7 @@
   height: 50px;
   font-size: 0.6em;
 }
-#layout_PageHeading #pendingEnrollments {
+#layout_PageHeading #pendingEnrolments {
   position: relative;
   float: right;
   border: 1px dashed #ddd;
@@ -108,7 +108,7 @@
   text-align: right;
   height: 50px;
 }
-#layout_PageHeading #pendingEnrollments i {
+#layout_PageHeading #pendingEnrolments i {
   position: absolute;
   display: block;
   height: 64px;
@@ -119,7 +119,7 @@
   font-size: 50px;
   color: #e51400;
 }
-#layout_PageHeading #pendingEnrollments a.button {
+#layout_PageHeading #pendingEnrolments a.button {
   font-size: 12px;
   margin-top: 8px;
 }

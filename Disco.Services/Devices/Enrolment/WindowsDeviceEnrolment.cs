@@ -59,7 +59,7 @@ namespace Disco.Services.Devices.Enrolment
                 .ToList();
         }
 
-        public static void ResolvePendingEnrollment(string sessionId, bool approve, string username, string reason)
+        public static void ResolvePendingEnrolment(string sessionId, bool approve, string username, string reason)
         {
             if (!pendingEnrolments.TryGetValue(sessionId, out var enrolResponse))
                 throw new InvalidOperationException("The pending session is invalid or has expired");
@@ -79,7 +79,7 @@ namespace Disco.Services.Devices.Enrolment
             }
             else
             {
-                enrolResponse.ErrorMessage = $"Enrollment rejected";
+                enrolResponse.ErrorMessage = $"Enrolment rejected";
                 EnrolmentLog.LogSessionPendingRejected(sessionId, username, reason);
             }
         }

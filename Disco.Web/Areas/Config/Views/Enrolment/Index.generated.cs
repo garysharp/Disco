@@ -51,7 +51,7 @@ namespace Disco.Web.Areas.Config.Views.Enrolment
     var canConfig = Authorization.Has(Claims.Config.Enrolment.Configure);
     var canShowStatus = Authorization.Has(Claims.Config.Enrolment.ShowStatus);
 
-    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Enrollment");
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Enrolment");
 
             
             #line default
@@ -160,7 +160,7 @@ WriteLiteral(@">
 
             
             #line 48 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                             Write(Url.Action(MVC.API.Enrollment.PendingTimeoutMinutes()));
+                             Write(Url.Action(MVC.API.Enrolment.PendingTimeoutMinutes()));
 
             
             #line default
@@ -221,8 +221,8 @@ WriteLiteral(">\r\n                <span");
 WriteLiteral(" class=\"smallText\"");
 
 WriteLiteral(@">
-                    If a device enrollment is not automatically approved it will remain pending until the timeout is reached.
-                    Pending enrollments can be approved manually from the Enrollment Status page.
+                    If a device enrolment is not automatically approved it will remain pending until the timeout is reached.
+                    Pending enrolments can be approved manually from the Enrolment Status page.
                 </span>
             </td>
         </tr>
@@ -562,8 +562,8 @@ WriteLiteral(" target=\"_blank\"");
 
 WriteLiteral(" href=\"http://json.org/\"");
 
-WriteLiteral(">JSON</a> response containing basic information about the enrollment.</span><br /" +
-">\r\n                <span");
+WriteLiteral(">JSON</a> response containing basic information about the enrolment.</span><br />" +
+"\r\n                <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
@@ -594,7 +594,7 @@ WriteLiteral(">&lt;script&gt;</span>\r\n                    tag embedded on the 
             
             #line default
             #line hidden
-WriteLiteral("    <h2>Live Enrollment Logging</h2>\r\n");
+WriteLiteral("    <h2>Live Enrolment Logging</h2>\r\n");
 
             
             #line 231 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
@@ -671,14 +671,14 @@ WriteLiteral("    ");
             #line hidden
             
             #line 247 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-   Write(Html.ActionLinkButton("Enrollment Status", MVC.Config.Enrolment.Status()));
+   Write(Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status()));
 
             
             #line default
             #line hidden
             
             #line 247 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
-                                                                                  
+                                                                                 
     }
 
             
