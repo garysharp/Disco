@@ -10,6 +10,7 @@
         const handlersPresent = $container.attr('data-handlerspresent') === 'true';
         const handlersUrl = $container.attr('data-handlersurl');
         let $handlersDialog = null;
+        let lastTemplateId = null;
 
         const downloadPdf = function (templateId) {
 
@@ -66,6 +67,7 @@
         $control.change(function () {
             var templateId = $control.val();
             if (templateId) {
+                lastTemplateId = templateId;
                 if (handlersPresent) {
                     if (!$handlersDialog) {
                         $handlersDialog = $container.find('#Document_Generation_Dialog');
@@ -83,7 +85,7 @@
                         });
                         $handlersDialog.find('#Document_Generation_Dialog_Download').click(e => {
                             e.preventDefault();
-                            downloadPdf(templateId);
+                            downloadPdf(lastTemplateId);
                             $handlersDialog.dialog('close');
                             return false;
                         })
