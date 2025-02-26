@@ -4721,6 +4721,7 @@ header .watermark,
   background-color: #888;
 }
 #QuickSearchMenu {
+  width: 190px !important;
   max-height: 400px;
   font-size: 0.9em;
   background: none;
@@ -4750,6 +4751,9 @@ header .watermark,
   position: relative;
   border-left: 1px solid #D1D1D1;
   border-right: 1px solid #D1D1D1;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 #layout_PageHeading a {
   text-decoration: none;
@@ -6037,4 +6041,32 @@ i.clipboard-button {
 }
 i.clipboard-button:hover {
   color: #9e9e9e;
+}
+#Export_Exporting {
+  padding-top: 50px;
+  text-align: center;
+}
+#Export_Exporting i {
+  margin-right: 10px;
+  color: #1e6dab;
+}
+#Export_Download_Dialog {
+  padding-top: 20px;
+  text-align: center;
+}
+#Export_Download_Dialog h4 {
+  margin-bottom: 30px;
+}
+#Export_Download_Dialog a {
+  margin-bottom: 20px;
+}
+#Export_Fields #Export_Fields_Defaults {
+  font-size: 0.75em;
+}
+#Export_Fields th {
+  font-size: 1.05em;
+}
+#Export_Fields th span {
+  margin-top: 4px;
+  font-size: 0.8em;
 }

@@ -54,11 +54,7 @@ namespace Disco.Web.Views.Device
   
     Authorization.RequireAny(Claims.Device.Actions.Export);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Export Devices");
-
-    var optionsMetadata = ModelMetadata.FromLambdaExpression(m => m.Options, ViewData);
-    var optionGroups = optionsMetadata.Properties.Where(p => p.ShortDisplayName != null && p.ModelType == typeof(bool))
-        .GroupBy(m => m.ShortDisplayName);
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Export");
 
             
             #line default
@@ -70,13 +66,13 @@ WriteLiteral(" id=\"Devices_Export\"");
 WriteLiteral(">\r\n");
 
             
-            #line 13 "..\..\Views\Device\Export.cshtml"
+            #line 9 "..\..\Views\Device\Export.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 13 "..\..\Views\Device\Export.cshtml"
+            #line 9 "..\..\Views\Device\Export.cshtml"
      using (Html.BeginForm(MVC.API.Device.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.Device.SaveExport()) }))
     {
         
@@ -84,14 +80,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\Device\Export.cshtml"
+            #line 11 "..\..\Views\Device\Export.cshtml"
    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\Device\Export.cshtml"
+            #line 11 "..\..\Views\Device\Export.cshtml"
                                 
 
             
@@ -116,7 +112,7 @@ WriteLiteral(">\r\n                        Type:\r\n                    </th>\r\
 WriteLiteral("                        ");
 
             
-            #line 24 "..\..\Views\Device\Export.cshtml"
+            #line 20 "..\..\Views\Device\Export.cshtml"
                    Write(Html.DropDownListFor(m => m.Options.ExportType, Enum.GetNames(typeof(Disco.Models.Services.Devices.DeviceExportTypes)).Select(t => new SelectListItem() { Text = t, Value = t })));
 
             
@@ -133,7 +129,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 26 "..\..\Views\Device\Export.cshtml"
+            #line 22 "..\..\Views\Device\Export.cshtml"
                        Write(Html.DropDownListFor(m => m.Options.ExportTypeTargetId, Model.DeviceBatches.Select(i => new SelectListItem() { Value = i.Key.ToString(), Text = i.Value })));
 
             
@@ -150,7 +146,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 29 "..\..\Views\Device\Export.cshtml"
+            #line 25 "..\..\Views\Device\Export.cshtml"
                        Write(Html.DropDownListFor(m => m.Options.ExportTypeTargetId, Model.DeviceModels.Select(i => new SelectListItem() { Value = i.Key.ToString(), Text = i.Value })));
 
             
@@ -167,7 +163,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 32 "..\..\Views\Device\Export.cshtml"
+            #line 28 "..\..\Views\Device\Export.cshtml"
                        Write(Html.DropDownListFor(m => m.Options.ExportTypeTargetId, Model.DeviceProfiles.Select(i => new SelectListItem() { Value = i.Key.ToString(), Text = i.Value })));
 
             
@@ -177,7 +173,7 @@ WriteLiteral("\r\n                        </div>\r\n                    </td>\r\
 ">\r\n                <tr>\r\n                    <th>");
 
             
-            #line 37 "..\..\Views\Device\Export.cshtml"
+            #line 33 "..\..\Views\Device\Export.cshtml"
                    Write(Html.LabelFor(m => m.Options.Format));
 
             
@@ -188,7 +184,7 @@ WriteLiteral("</th>\r\n                    <td>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 39 "..\..\Views\Device\Export.cshtml"
+            #line 35 "..\..\Views\Device\Export.cshtml"
                    Write(Html.DropDownListFor(m => m.Options.Format, Enum.GetNames(typeof(Disco.Models.Exporting.ExportFormat)).Select(v => new SelectListItem() { Value = v, Text = v })));
 
             
@@ -197,385 +193,62 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n       " +
 " </div>\r\n");
 
-WriteLiteral("        <div");
-
-WriteLiteral(" id=\"Devices_Export_Fields\"");
-
-WriteLiteral(" class=\"form\"");
-
-WriteLiteral(" style=\"width: 570px; margin-top: 15px;\"");
-
-WriteLiteral(">\r\n            <h2>Export Fields <a");
-
-WriteLiteral(" id=\"Devices_Export_Fields_Defaults\"");
-
-WriteLiteral(" href=\"#\"");
-
-WriteLiteral(">(Defaults)</a></h2>\r\n            <table>\r\n");
-
             
-            #line 47 "..\..\Views\Device\Export.cshtml"
-                
+            #line 40 "..\..\Views\Device\Export.cshtml"
+        
             
             #line default
             #line hidden
             
-            #line 47 "..\..\Views\Device\Export.cshtml"
-                 foreach (var optionGroup in optionGroups)
-                {
-                    var optionFields = optionGroup.ToList();
-                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
+            #line 40 "..\..\Views\Device\Export.cshtml"
+   Write(Html.Partial(MVC.Shared.Views._ExportFields, Model.Fields.FieldGroups));
 
             
             #line default
             #line hidden
-WriteLiteral("                    <tr>\r\n                        <th");
-
-WriteLiteral(" style=\"width: 120px;\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 53 "..\..\Views\Device\Export.cshtml"
-                       Write(optionGroup.Key);
+            #line 40 "..\..\Views\Device\Export.cshtml"
+                                                                               
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
+WriteLiteral("        <script>\r\n            $(function () {\r\n                const $exportType " +
+"= $(\'#Options_ExportType\');\r\n                const $exportTypeTargetContainers =" +
+" $(\'#Devices_Export_Type\').find(\'.Devices_Export_Type_Target\');\r\n               " +
+" const $form = $exportType.closest(\'form\');\r\n                let $exportingDialo" +
+"g = null;\r\n\r\n                $exportType.on(\'change\', function () {\r\n           " +
+"         $exportTypeTargetContainers.hide();\r\n                    $exportTypeTar" +
+"getContainers.find(\'select\').prop(\'disabled\', true);\r\n\r\n                    swit" +
+"ch ($exportType.val()) {\r\n                        case \'Batch\':\r\n               " +
+"             $(\'#Devices_Export_Type_Target_Batch\').show().find(\'select\').prop(\'" +
+"disabled\', false);\r\n                            break;\r\n                        " +
+"case \'Profile\':\r\n                            $(\'#Devices_Export_Type_Target_Prof" +
+"ile\').show().find(\'select\').prop(\'disabled\', false);\r\n                          " +
+"  break;\r\n                        case \'Model\':\r\n                            $(\'" +
+"#Devices_Export_Type_Target_Model\').show().find(\'select\').prop(\'disabled\', false" +
+");\r\n                            break;\r\n                    }\r\n                }" +
+").trigger(\'change\');\r\n\r\n                $.validator.unobtrusive.parse($form);\r\n " +
+"               $form.data(\"validator\").settings.submitHandler = function () {\r\n " +
+"                   const exportFieldCount = $(\'#Export_Fields\').find(\'input:chec" +
+"ked\').length;\r\n                    if (exportFieldCount > 0) {\r\n                " +
+"        if ($exportingDialog == null) {\r\n                            $exportingD" +
+"ialog = $(\'#Export_Exporting\').dialog({\r\n                                width: " +
+"400,\r\n                                height: 164,\r\n                            " +
+"    resizable: false,\r\n                                modal: true,\r\n           " +
+"                     autoOpen: false\r\n                            });\r\n         " +
+"               }\r\n                        $exportingDialog.dialog(\'open\');\r\n\r\n  " +
+"                      $form[0].submit();\r\n                        return;\r\n     " +
+"               }\r\n\r\n                    alert(\'Select at least one field to expo" +
+"rt.\');\r\n                };\r\n\r\n                $(\'#Devices_Export_Button\').on(\'cl" +
+"ick\', function () {\r\n                    $form.submit();\r\n                });\r\n " +
+"               $(\'#Devices_Export_Save_Button\').on(\'click\', function () {\r\n     " +
+"               $form.attr(\'action\', $form[0].dataset.saveaction);\r\n             " +
+"       $form.submit();\r\n                });\r\n            });\r\n        </script>\r" +
+"\n");
 
             
-            #line 54 "..\..\Views\Device\Export.cshtml"
-                            
-            
-            #line default
-            #line hidden
-            
-            #line 54 "..\..\Views\Device\Export.cshtml"
-                             if (optionFields.Count > 2)
-                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <span");
-
-WriteLiteral(" style=\"display: block;\"");
-
-WriteLiteral(" class=\"select\"");
-
-WriteLiteral("><a");
-
-WriteLiteral(" class=\"selectAll\"");
-
-WriteLiteral(" href=\"#\"");
-
-WriteLiteral(">ALL</a> | <a");
-
-WriteLiteral(" class=\"selectNone\"");
-
-WriteLiteral(" href=\"#\"");
-
-WriteLiteral(">NONE</a></span>\r\n");
-
-            
-            #line 57 "..\..\Views\Device\Export.cshtml"
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        </th>\r\n                        <td>\r\n                    " +
-"        <div");
-
-WriteLiteral(" class=\"Devices_Export_Fields_Group\"");
-
-WriteLiteral(">\r\n                                <table");
-
-WriteLiteral(" class=\"none\"");
-
-WriteLiteral(">\r\n                                    <tr>\r\n                                    " +
-"    <td");
-
-WriteLiteral(" style=\"width: 50%\"");
-
-WriteLiteral(">\r\n                                            <ul");
-
-WriteLiteral(" class=\"none\"");
-
-WriteLiteral(">\r\n");
-
-            
-            #line 65 "..\..\Views\Device\Export.cshtml"
-                                                
-            
-            #line default
-            #line hidden
-            
-            #line 65 "..\..\Views\Device\Export.cshtml"
-                                                 foreach (var optionItem in optionFields.Take(itemsPerColumn))
-                                                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                                    <li");
-
-WriteAttribute("title", Tuple.Create(" title=\"", 4003), Tuple.Create("\"", 4034)
-            
-            #line 67 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 4011), Tuple.Create<System.Object, System.Int32>(optionItem.Description
-            
-            #line default
-            #line hidden
-, 4011), false)
-);
-
-WriteLiteral(">\r\n                                                        <input");
-
-WriteLiteral(" type=\"checkbox\"");
-
-WriteAttribute("id", Tuple.Create(" id=\"", 4116), Tuple.Create("\"", 4153)
-, Tuple.Create(Tuple.Create("", 4121), Tuple.Create("Options_", 4121), true)
-            
-            #line 68 "..\..\Views\Device\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 4129), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 4129), false)
-);
-
-WriteAttribute("name", Tuple.Create(" name=\"", 4154), Tuple.Create("\"", 4193)
-, Tuple.Create(Tuple.Create("", 4161), Tuple.Create("Options.", 4161), true)
-            
-            #line 68 "..\..\Views\Device\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 4169), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 4169), false)
-);
-
-WriteLiteral(" value=\"true\"");
-
-WriteLiteral(" ");
-
-            
-            #line 68 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                      Write(((bool)optionItem.Model) ? "checked " : null);
-
-            
-            #line default
-            #line hidden
-WriteLiteral(" /><label");
-
-WriteAttribute("for", Tuple.Create(" for=\"", 4264), Tuple.Create("\"", 4302)
-, Tuple.Create(Tuple.Create("", 4270), Tuple.Create("Options_", 4270), true)
-            
-            #line 68 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 4278), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 4278), false)
-);
-
-WriteLiteral(">");
-
-            
-            #line 68 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                                                                                                                     Write(optionItem.DisplayName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</label>\r\n                                                    </li>\r\n");
-
-            
-            #line 70 "..\..\Views\Device\Export.cshtml"
-                                                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                            </ul>\r\n                              " +
-"          </td>\r\n                                        <td");
-
-WriteLiteral(" style=\"width: 50%\"");
-
-WriteLiteral(">\r\n                                            <ul");
-
-WriteLiteral(" class=\"none\"");
-
-WriteLiteral(">\r\n");
-
-            
-            #line 75 "..\..\Views\Device\Export.cshtml"
-                                                
-            
-            #line default
-            #line hidden
-            
-            #line 75 "..\..\Views\Device\Export.cshtml"
-                                                 foreach (var optionItem in optionFields.Skip(itemsPerColumn))
-                                                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                                    <li");
-
-WriteAttribute("title", Tuple.Create(" title=\"", 4891), Tuple.Create("\"", 4922)
-            
-            #line 77 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 4899), Tuple.Create<System.Object, System.Int32>(optionItem.Description
-            
-            #line default
-            #line hidden
-, 4899), false)
-);
-
-WriteLiteral(">\r\n                                                        <input");
-
-WriteLiteral(" type=\"checkbox\"");
-
-WriteAttribute("id", Tuple.Create(" id=\"", 5004), Tuple.Create("\"", 5041)
-, Tuple.Create(Tuple.Create("", 5009), Tuple.Create("Options_", 5009), true)
-            
-            #line 78 "..\..\Views\Device\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 5017), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 5017), false)
-);
-
-WriteAttribute("name", Tuple.Create(" name=\"", 5042), Tuple.Create("\"", 5081)
-, Tuple.Create(Tuple.Create("", 5049), Tuple.Create("Options.", 5049), true)
-            
-            #line 78 "..\..\Views\Device\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 5057), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 5057), false)
-);
-
-WriteLiteral(" value=\"true\"");
-
-WriteLiteral(" ");
-
-            
-            #line 78 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                      Write(((bool)optionItem.Model) ? "checked " : null);
-
-            
-            #line default
-            #line hidden
-WriteLiteral(" /><label");
-
-WriteAttribute("for", Tuple.Create(" for=\"", 5152), Tuple.Create("\"", 5190)
-, Tuple.Create(Tuple.Create("", 5158), Tuple.Create("Options_", 5158), true)
-            
-            #line 78 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 5166), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 5166), false)
-);
-
-WriteLiteral(">");
-
-            
-            #line 78 "..\..\Views\Device\Export.cshtml"
-                                                                                                                                                                                                                                                                     Write(optionItem.DisplayName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</label>\r\n                                                    </li>\r\n");
-
-            
-            #line 80 "..\..\Views\Device\Export.cshtml"
-                                                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"                                            </ul>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-");
-
-            
-            #line 88 "..\..\Views\Device\Export.cshtml"
-
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </table>\r\n        </div>\r\n");
-
-WriteLiteral("        <script>\r\n            $(function () {\r\n                var exportDefaultF" +
-"ields = [\'DeviceSerialNumber\', \'ModelId\', \'ProfileId\', \'BatchId\', \'AssignedUserI" +
-"d\', \'DeviceLocation\', \'DeviceAssetNumber\'];\r\n                var $exportFields =" +
-" $(\'#Devices_Export_Fields\');\r\n                var $exportType = $(\'#Options_Exp" +
-"ortType\');\r\n                var $exportTypeTargetContainers = $(\'#Devices_Export" +
-"_Type\').find(\'.Devices_Export_Type_Target\');\r\n                var $form = $expor" +
-"tType.closest(\'form\');\r\n                var $exportingDialog = null;\r\n\r\n        " +
-"        function exportTypeChange() {\r\n                    $exportTypeTargetCont" +
-"ainers.hide();\r\n                    $exportTypeTargetContainers.find(\'select\').p" +
-"rop(\'disabled\', true);\r\n\r\n                    switch ($exportType.val()) {\r\n    " +
-"                    case \'Batch\':\r\n                            $(\'#Devices_Expor" +
-"t_Type_Target_Batch\').show().find(\'select\').prop(\'disabled\', false);\r\n          " +
-"                  break;\r\n                        case \'Profile\':\r\n             " +
-"               $(\'#Devices_Export_Type_Target_Profile\').show().find(\'select\').pr" +
-"op(\'disabled\', false);\r\n                            break;\r\n                    " +
-"    case \'Model\':\r\n                            $(\'#Devices_Export_Type_Target_Mo" +
-"del\').show().find(\'select\').prop(\'disabled\', false);\r\n                          " +
-"  break;\r\n                    }\r\n                }\r\n                $exportType." +
-"change(exportTypeChange);\r\n                exportTypeChange();\r\n\r\n              " +
-"  $exportFields.on(\'click\', \'a.selectAll,a.selectNone\', function () {\r\n         " +
-"           var $this = $(this);\r\n\r\n                    $this.closest(\'tr\').find(" +
-"\'input\').prop(\'checked\', $this.is(\'.selectAll\'));\r\n\r\n                    return " +
-"false;\r\n                });\r\n\r\n                $(\'#Devices_Export_Fields_Default" +
-"s\').click(function () {\r\n\r\n                    $exportFields.find(\'input\').prop(" +
-"\'checked\', false);\r\n\r\n                    $.each(exportDefaultFields, function (" +
-"index, value) {\r\n                        $(\'#Options_\' + value).prop(\'checked\', " +
-"true);\r\n                    });\r\n\r\n                    return false;\r\n          " +
-"      });\r\n\r\n                // Submit Validation\r\n                function subm" +
-"itHandler() {\r\n                    var exportFieldCount = $exportFields.find(\'in" +
-"put:checked\').length;\r\n\r\n                    if (exportFieldCount > 0) {\r\n\r\n    " +
-"                    if ($exportingDialog == null) {\r\n                           " +
-" $exportingDialog = $(\'#Devices_Export_Exporting\').dialog({\r\n                   " +
-"             width: 400,\r\n                                height: 164,\r\n        " +
-"                        resizable: false,\r\n                                modal" +
-": true,\r\n                                autoOpen: false\r\n                      " +
-"      });\r\n                        }\r\n                        $exportingDialog.d" +
-"ialog(\'open\');\r\n\r\n                        $form[0].submit();\r\n                  " +
-"  }\r\n                    else\r\n                        alert(\'Select at least on" +
-"e field to export.\');\r\n                }\r\n                $.validator.unobtrusiv" +
-"e.parse($form);\r\n                $form.data(\"validator\").settings.submitHandler " +
-"= submitHandler;\r\n\r\n                $(\'#Devices_Export_Download_Dialog\').dialog(" +
-"{\r\n                    width: 400,\r\n                    height: 164,\r\n          " +
-"          resizable: false,\r\n                    modal: true,\r\n                 " +
-"   autoOpen: true\r\n                });\r\n                $(\'#Devices_Export_Butto" +
-"n\').click(function () {\r\n                    $form.submit();\r\n                })" +
-";\r\n                $(\'#Devices_Export_Save_Button\').click(function () {\r\n       " +
-"             $form.attr(\'action\', $form[0].dataset.saveaction);\r\n               " +
-"     $form.submit();\r\n                });\r\n            });\r\n        </script>\r\n");
-
-            
-            #line 180 "..\..\Views\Device\Export.cshtml"
+            #line 96 "..\..\Views\Device\Export.cshtml"
     }
 
             
@@ -584,7 +257,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 182 "..\..\Views\Device\Export.cshtml"
+            #line 98 "..\..\Views\Device\Export.cshtml"
  if (Model.ExportId.HasValue)
 {
 
@@ -593,7 +266,7 @@ WriteLiteral("</div>\r\n");
             #line hidden
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"Devices_Export_Download_Dialog\"");
+WriteLiteral(" id=\"Export_Download_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
@@ -602,13 +275,13 @@ WriteLiteral(" title=\"Export Devices\"");
 WriteLiteral(">\r\n");
 
             
-            #line 185 "..\..\Views\Device\Export.cshtml"
+            #line 101 "..\..\Views\Device\Export.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 185 "..\..\Views\Device\Export.cshtml"
+            #line 101 "..\..\Views\Device\Export.cshtml"
          if (Model.ExportResult.RecordCount == 0)
         {
 
@@ -618,7 +291,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 
             
-            #line 188 "..\..\Views\Device\Export.cshtml"
+            #line 104 "..\..\Views\Device\Export.cshtml"
         }
         else
         {
@@ -629,7 +302,7 @@ WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 WriteLiteral("            <h4>");
 
             
-            #line 191 "..\..\Views\Device\Export.cshtml"
+            #line 107 "..\..\Views\Device\Export.cshtml"
            Write(Model.ExportResult.RecordCount);
 
             
@@ -638,7 +311,7 @@ WriteLiteral("            <h4>");
 WriteLiteral(" record");
 
             
-            #line 191 "..\..\Views\Device\Export.cshtml"
+            #line 107 "..\..\Views\Device\Export.cshtml"
                                                   Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
@@ -648,14 +321,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 9958), Tuple.Create("\"", 10029)
+WriteAttribute("href", Tuple.Create(" href=\"", 5389), Tuple.Create("\"", 5460)
             
-            #line 192 "..\..\Views\Device\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 9965), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportId.Value))
+            #line 108 "..\..\Views\Device\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 5396), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 9965), false)
+, 5396), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -667,7 +340,7 @@ WriteLiteral(" class=\"fa fa-download fa-lg\"");
 WriteLiteral("></i>Download Device Export</a>\r\n");
 
             
-            #line 193 "..\..\Views\Device\Export.cshtml"
+            #line 109 "..\..\Views\Device\Export.cshtml"
         }
 
             
@@ -677,7 +350,7 @@ WriteLiteral("    </div>\r\n");
 
 WriteLiteral(@"    <script>
         $(function () {
-            $('#Devices_Export_Download_Dialog')
+            $('#Export_Download_Dialog')
                 .dialog({
                     width: 400,
                     height: 164,
@@ -690,7 +363,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 207 "..\..\Views\Device\Export.cshtml"
+            #line 123 "..\..\Views\Device\Export.cshtml"
 }
 
             
@@ -698,7 +371,7 @@ WriteLiteral(@"    <script>
             #line hidden
 WriteLiteral("<div");
 
-WriteLiteral(" id=\"Devices_Export_Exporting\"");
+WriteLiteral(" id=\"Export_Exporting\"");
 
 WriteLiteral(" class=\"dialog\"");
 
@@ -717,13 +390,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 212 "..\..\Views\Device\Export.cshtml"
+            #line 128 "..\..\Views\Device\Export.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 212 "..\..\Views\Device\Export.cshtml"
+            #line 128 "..\..\Views\Device\Export.cshtml"
      if (Authorization.Has(Claims.Config.ManageSavedExports))
     {
 
@@ -741,7 +414,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Save Export</button>\r\n");
 
             
-            #line 215 "..\..\Views\Device\Export.cshtml"
+            #line 131 "..\..\Views\Device\Export.cshtml"
     }
     else
     {
@@ -762,7 +435,7 @@ WriteLiteral(" title=\"Requires Manage Saved Exports Permission\"");
 WriteLiteral(">Save Export</button>\r\n");
 
             
-            #line 219 "..\..\Views\Device\Export.cshtml"
+            #line 135 "..\..\Views\Device\Export.cshtml"
     }
 
             

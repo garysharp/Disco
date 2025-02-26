@@ -2182,7 +2182,7 @@ namespace Disco.Web.Areas.API.Controllers
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Job.Export(id)));
 
             // Try waiting for completion
-            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
                 return RedirectToAction(MVC.Job.Export(taskContext.Id));
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
@@ -2210,9 +2210,13 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Job.Actions.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult SaveExport(ExportModel Model)
+        public virtual ActionResult SaveExport(ExportModel model)
         {
-            var export = new JobExport(Model.Options);
+            // Write Options to Configuration
+            Database.DiscoConfiguration.JobPreferences.LastExportOptions = model.Options;
+            Database.SaveChanges();
+
+            var export = new JobExport(model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 
             return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));

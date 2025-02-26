@@ -409,20 +409,20 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Config.UserFlag.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult Export(ExportModel Model)
+        public virtual ActionResult Export(ExportModel model)
         {
-            if (Model == null || Model.Options == null)
-                throw new ArgumentNullException(nameof(Model));
+            if (model == null || model.Options == null)
+                throw new ArgumentNullException(nameof(model));
 
-            Database.DiscoConfiguration.UserFlags.LastExportOptions = Model.Options;
+            Database.DiscoConfiguration.UserFlags.LastExportOptions = model.Options;
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = new UserFlagExport(Model.Options);
+            var exportContext = new UserFlagExport(model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.UserFlag.Export(id, null, null)));
 
             // Try waiting for completion
-            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
                 return RedirectToAction(MVC.Config.UserFlag.Export(taskContext.Id, null, null));
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
@@ -447,11 +447,11 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Config.UserFlag.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult SaveExport(ExportModel Model)
+        public virtual ActionResult SaveExport(ExportModel model)
         {
-            Database.DiscoConfiguration.UserFlags.LastExportOptions = Model.Options;
+            Database.DiscoConfiguration.UserFlags.LastExportOptions = model.Options;
 
-            var export = new UserFlagExport(Model.Options);
+            var export = new UserFlagExport(model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 
             return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));

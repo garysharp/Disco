@@ -7,12 +7,12 @@ namespace Disco.Services.Plugins.Features.ExportProvider
     [PluginFeatureCategory(DisplayName = "Exporter")]
     public class ExportProviderFeature : PluginFeature
     {
-        public void RegisterExportType<T, E, R>()
-            where T : IExport<E, R>, new()
-            where E : IExportOptions, new()
+        public void RegisterExportType<T, O, R>()
+            where T : IExport<O, R>, new()
+            where O : IExportOptions, new()
             where R : IExportRecord
         {
-            SavedExports.RegisterExportType<T, E, R>();
+            SavedExports.RegisterExportType<T, O, R>();
         }
     }
 }

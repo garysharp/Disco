@@ -74,7 +74,7 @@ namespace Disco.Services.Users.UserFlags
                 Assignment = a
             }).ToList();
 
-            if (Options.UserDetailCustom)
+            if (Options.UserDetailCustom?.Any() ?? false)
             {
                 status.UpdateStatus(50, "Extracting custom user detail records");
 
@@ -96,7 +96,7 @@ namespace Disco.Services.Users.UserFlags
             status.UpdateStatus(80, "Building metadata");
 
             var metadata = new ExportMetadata<UserFlagExportOptions, UserFlagExportRecord>(Options);
-            metadata.IgnoreShortNames.Add("User Flag");
+            metadata.IgnoreGroupNames.Add("User Flag");
 
             // User Flag
             metadata.Add(o => o.Id, r => r.Assignment.UserFlagId);
@@ -120,13 +120,10 @@ namespace Disco.Services.Users.UserFlags
             metadata.Add(o => o.UserEmailAddress, r => r.Assignment.User?.EmailAddress);
 
             // User Custom Details
-            if (Options.UserDetailCustom)
+            if (Options.UserDetailCustom?.Any() ?? false)
             {
-                var keys = records.Where(r => r.UserCustomDetails != null).SelectMany(r => r.UserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-                foreach (var key in keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
-                {
-                    metadata.Add(key, r => r.UserCustomDetails != null && r.UserCustomDetails.TryGetValue(key, out var value) ? value : null);
-                }
+                foreach (var key in Options.UserDetailCustom.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
+                    metadata.Add($"User Detail {key.TrimEnd('*', '&')}", r => r.UserCustomDetails != null && r.UserCustomDetails.TryGetValue(key, out var value) ? value : null);
             }
 
             return metadata;

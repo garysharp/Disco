@@ -3,11 +3,7 @@
 @{
     Authorization.RequireAny(Claims.Device.Actions.Export);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Export Devices");
-
-    var optionsMetadata = ModelMetadata.FromLambdaExpression(m => m.Options, ViewData);
-    var optionGroups = optionsMetadata.Properties.Where(p => p.ShortDisplayName != null && p.ModelType == typeof(bool))
-        .GroupBy(m => m.ShortDisplayName);
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Export");
 }
 <div id="Devices_Export">
     @using (Html.BeginForm(MVC.API.Device.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.Device.SaveExport()) }))
@@ -41,64 +37,15 @@
                 </tr>
             </table>
         </div>
-        <div id="Devices_Export_Fields" class="form" style="width: 570px; margin-top: 15px;">
-            <h2>Export Fields <a id="Devices_Export_Fields_Defaults" href="#">(Defaults)</a></h2>
-            <table>
-                @foreach (var optionGroup in optionGroups)
-                {
-                    var optionFields = optionGroup.ToList();
-                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
-                    <tr>
-                        <th style="width: 120px;">
-                            @optionGroup.Key
-                            @if (optionFields.Count > 2)
-                            {
-                                <span style="display: block;" class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
-                            }
-                        </th>
-                        <td>
-                            <div class="Devices_Export_Fields_Group">
-                                <table class="none">
-                                    <tr>
-                                        <td style="width: 50%">
-                                            <ul class="none">
-                                                @foreach (var optionItem in optionFields.Take(itemsPerColumn))
-                                                {
-                                                    <li title="@optionItem.Description">
-                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </td>
-                                        <td style="width: 50%">
-                                            <ul class="none">
-                                                @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
-                                                {
-                                                    <li title="@optionItem.Description">
-                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-
-                }
-            </table>
-        </div>
+        @Html.Partial(MVC.Shared.Views._ExportFields, Model.Fields.FieldGroups)
         <script>
             $(function () {
-                var exportDefaultFields = ['DeviceSerialNumber', 'ModelId', 'ProfileId', 'BatchId', 'AssignedUserId', 'DeviceLocation', 'DeviceAssetNumber'];
-                var $exportFields = $('#Devices_Export_Fields');
-                var $exportType = $('#Options_ExportType');
-                var $exportTypeTargetContainers = $('#Devices_Export_Type').find('.Devices_Export_Type_Target');
-                var $form = $exportType.closest('form');
-                var $exportingDialog = null;
+                const $exportType = $('#Options_ExportType');
+                const $exportTypeTargetContainers = $('#Devices_Export_Type').find('.Devices_Export_Type_Target');
+                const $form = $exportType.closest('form');
+                let $exportingDialog = null;
 
-                function exportTypeChange() {
+                $exportType.on('change', function () {
                     $exportTypeTargetContainers.hide();
                     $exportTypeTargetContainers.find('select').prop('disabled', true);
 
@@ -113,37 +60,14 @@
                             $('#Devices_Export_Type_Target_Model').show().find('select').prop('disabled', false);
                             break;
                     }
-                }
-                $exportType.change(exportTypeChange);
-                exportTypeChange();
+                }).trigger('change');
 
-                $exportFields.on('click', 'a.selectAll,a.selectNone', function () {
-                    var $this = $(this);
-
-                    $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
-
-                    return false;
-                });
-
-                $('#Devices_Export_Fields_Defaults').click(function () {
-
-                    $exportFields.find('input').prop('checked', false);
-
-                    $.each(exportDefaultFields, function (index, value) {
-                        $('#Options_' + value).prop('checked', true);
-                    });
-
-                    return false;
-                });
-
-                // Submit Validation
-                function submitHandler() {
-                    var exportFieldCount = $exportFields.find('input:checked').length;
-
+                $.validator.unobtrusive.parse($form);
+                $form.data("validator").settings.submitHandler = function () {
+                    const exportFieldCount = $('#Export_Fields').find('input:checked').length;
                     if (exportFieldCount > 0) {
-
                         if ($exportingDialog == null) {
-                            $exportingDialog = $('#Devices_Export_Exporting').dialog({
+                            $exportingDialog = $('#Export_Exporting').dialog({
                                 width: 400,
                                 height: 164,
                                 resizable: false,
@@ -154,24 +78,16 @@
                         $exportingDialog.dialog('open');
 
                         $form[0].submit();
+                        return;
                     }
-                    else
-                        alert('Select at least one field to export.');
-                }
-                $.validator.unobtrusive.parse($form);
-                $form.data("validator").settings.submitHandler = submitHandler;
 
-                $('#Devices_Export_Download_Dialog').dialog({
-                    width: 400,
-                    height: 164,
-                    resizable: false,
-                    modal: true,
-                    autoOpen: true
-                });
-                $('#Devices_Export_Button').click(function () {
+                    alert('Select at least one field to export.');
+                };
+
+                $('#Devices_Export_Button').on('click', function () {
                     $form.submit();
                 });
-                $('#Devices_Export_Save_Button').click(function () {
+                $('#Devices_Export_Save_Button').on('click', function () {
                     $form.attr('action', $form[0].dataset.saveaction);
                     $form.submit();
                 });
@@ -181,7 +97,7 @@
 </div>
 @if (Model.ExportId.HasValue)
 {
-    <div id="Devices_Export_Download_Dialog" class="dialog" title="Export Devices">
+    <div id="Export_Download_Dialog" class="dialog" title="Export Devices">
         @if (Model.ExportResult.RecordCount == 0)
         {
             <h4>No records matched the filter criteria</h4>
@@ -194,7 +110,7 @@
     </div>
     <script>
         $(function () {
-            $('#Devices_Export_Download_Dialog')
+            $('#Export_Download_Dialog')
                 .dialog({
                     width: 400,
                     height: 164,
@@ -205,7 +121,7 @@
         });
     </script>
 }
-<div id="Devices_Export_Exporting" class="dialog" title="Exporting Devices...">
+<div id="Export_Exporting" class="dialog" title="Exporting Devices...">
     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting devices...</h4>
 </div>
 <div class="actionBar">

@@ -4,10 +4,6 @@
     Authorization.RequireAny(Claims.Config.DeviceFlag.Export);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Flags", MVC.Config.DeviceFlag.Index(null), "Export");
-
-    var optionsMetadata = ModelMetadata.FromLambdaExpression(m => m.Options, ViewData);
-    var optionGroups = optionsMetadata.Properties.Where(p => p.ShortDisplayName != null && p.ModelType == typeof(bool) && p.PropertyName != "CurrentOnly")
-        .GroupBy(m => m.ShortDisplayName);
 }
 <div id="DeviceFlag_Export">
     @using (Html.BeginForm(MVC.API.DeviceFlag.Export(), FormMethod.Post, new { @data_saveaction = Url.Action(MVC.API.DeviceFlag.SaveExport()) }))
@@ -48,89 +44,21 @@
                 </tr>
             </table>
         </div>
-        <div id="DeviceFlag_Export_Fields" class="form" style="width: 570px; margin-top: 15px;">
-            <h2>Export Fields <a id="DeviceFlag_Export_Fields_Defaults" href="#">(Defaults)</a></h2>
-            <table>
-                @foreach (var optionGroup in optionGroups)
-                {
-                    var optionFields = optionGroup.ToList();
-                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
-                    <tr>
-                        <th style="width: 120px;">
-                            @optionGroup.Key
-                            @if (optionFields.Count > 2)
-                            {
-                                <span style="display: block;" class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
-                            }
-                        </th>
-                        <td>
-                            <div class="DeviceFlag_Export_Fields_Group">
-                                <table class="none">
-                                    <tr>
-                                        <td style="width: 50%">
-                                            <ul class="none">
-                                                @foreach (var optionItem in optionFields.Take(itemsPerColumn))
-                                                {
-                                                    <li title="@optionItem.Description">
-                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </td>
-                                        <td style="width: 50%">
-                                            <ul class="none">
-                                                @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
-                                                {
-                                                    <li title="@optionItem.Description">
-                                                        <input type="checkbox" id="Options_@optionItem.PropertyName" name="Options.@optionItem.PropertyName" value="true" @(((bool)optionItem.Model) ? "checked " : null) /><label for="Options_@optionItem.PropertyName">@optionItem.DisplayName</label>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-
-                }
-            </table>
-        </div>
+        @Html.Partial(MVC.Shared.Views._ExportFields, Model.Fields.FieldGroups)
         <script>
             $(function () {
-                var exportDefaultFields = ['Name', 'AddedDate', 'UserId', 'UserDisplayName', 'Comments'];
-                var $exportFields = $('#DeviceFlag_Export_Fields');
-                var $exportScope = $('#DeviceFlag_Export_Scope');
-                var $form = $exportScope.closest('form');
-                var $exportingDialog = null;
+                const $exportFields = $('#Export_Fields');
+                const $form = $exportFields.closest('form');
+                let $exportingDialog = null;
 
-                $exportFields.on('click', 'a.selectAll,a.selectNone', function () {
-                    var $this = $(this);
-
-                    $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
-
-                    return false;
-                });
-
-                $('#DeviceFlag_Export_Fields_Defaults').click(function () {
-
-                    $exportFields.find('input').prop('checked', false);
-
-                    $.each(exportDefaultFields, function (index, value) {
-                        $('#Options_' + value).prop('checked', true);
-                    });
-
-                    return false;
-                });
-
-                // Submit Validation
-                function submitHandler() {
-                    var exportFieldCount = $exportFields.find('input:checked').length;
+                $.validator.unobtrusive.parse($form);
+                $form.data("validator").settings.submitHandler = function () {
+                    const exportFieldCount = $exportFields.find('input:checked').length;
 
                     if (exportFieldCount > 0) {
 
-                        if ($exportingDialog == null) {
-                            $exportingDialog = $('#DeviceFlag_Export_Exporting').dialog({
+                        if (!$exportingDialog) {
+                            $exportingDialog = $('#Export_Exporting').dialog({
                                 width: 400,
                                 height: 164,
                                 resizable: false,
@@ -141,24 +69,16 @@
                         $exportingDialog.dialog('open');
 
                         $form[0].submit();
+                        return;
                     }
-                    else
-                        alert('Select at least one field to export.');
-                }
-                $.validator.unobtrusive.parse($form);
-                $form.data("validator").settings.submitHandler = submitHandler;
 
-                $('#DeviceFlag_Export_Download_Dialog').dialog({
-                    width: 400,
-                    height: 164,
-                    resizable: false,
-                    modal: true,
-                    autoOpen: true
-                });
-                $('#DeviceFlag_Export_Button').click(function () {
+                    alert('Select at least one field to export.');
+                };
+
+                $('#DeviceFlag_Export_Button').on('click', function () {
                     $form.submit();
                 });
-                $('#DeviceFlag_Export_Save_Button').click(function () {
+                $('#DeviceFlag_Export_Save_Button').on('click', function () {
                     $form.attr('action', $form[0].dataset.saveaction);
                     $form.submit();
                 });
@@ -168,7 +88,7 @@
 </div>
 @if (Model.ExportId.HasValue)
 {
-    <div id="DeviceFlag_Export_Download_Dialog" class="dialog" title="Export Device Flags">
+    <div id="Export_Download_Dialog" class="dialog" title="Export Device Flags">
         @if (Model.ExportResult.RecordCount == 0)
         {
             <h4>No records matched the filter criteria</h4>
@@ -181,7 +101,7 @@
     </div>
     <script>
         $(function () {
-            $('#DeviceFlag_Export_Download_Dialog')
+            $('#Export_Download_Dialog')
                 .dialog({
                     width: 400,
                     height: 164,
@@ -192,7 +112,7 @@
         });
     </script>
 }
-<div id="DeviceFlag_Export_Exporting" class="dialog" title="Exporting Device Flags...">
+<div id="Export_Exporting" class="dialog" title="Exporting Device Flags...">
     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting device flags...</h4>
 </div>
 <div class="actionBar">

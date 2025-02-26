@@ -1,0 +1,79 @@
+﻿@using Disco.Models.Services.Exporting;
+@using System.Collections.Generic;
+@model List<ExportOptionGroup>
+@{
+    var optionId = 0;
+}
+<div id="Export_Fields" class="form" style="width: 570px; margin-top: 15px;">
+    <h2>Export Fields <a id="Export_Fields_Defaults" href="#">(Defaults)</a></h2>
+    <table>
+        @foreach (var optionGroup in Model)
+        {
+            var optionFields = optionGroup.ToList();
+            var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
+            <tr>
+                <th style="width: 120px;">
+                    @optionGroup.Name
+                    @if (optionFields.Count > 2)
+                    {
+                        <span style="display: block;" class="select"><a class="selectAll" href="#">ALL</a> | <a class="selectNone" href="#">NONE</a></span>
+                    }
+                </th>
+                <td>
+                    <div class="Export_Fields_Group">
+                        <table class="none">
+                            <tr>
+                                <td style="width: 50%">
+                                    <ul class="none">
+                                        @foreach (var optionItem in optionFields.Take(itemsPerColumn))
+                                        {
+                                            <li title="@optionItem.Description">
+                                                <input type="checkbox" id="Export_Field_Option_@optionId" name="Options.@(optionItem.CustomKey ?? optionItem.Name)" value="@(optionItem.CustomValue ?? "true")" @(optionItem.IsDefault ? " data-default" : null) @((optionItem.IsChecked) ? " checked " : null) /><label for="Export_Field_Option_@optionId">@optionItem.DisplayName</label>
+                                            </li>
+                                            optionId++;
+                                        }
+                                    </ul>
+                                </td>
+                                <td style="width: 50%">
+                                    <ul class="none">
+                                        @foreach (var optionItem in optionFields.Skip(itemsPerColumn))
+                                        {
+                                            <li title="@optionItem.Description">
+                                                <input type="checkbox" id="Export_Field_Option_@optionId" name="Options.@(optionItem.CustomKey ?? optionItem.Name)" value="@(optionItem.CustomValue ?? "true")" @(optionItem.IsDefault ? " data-default" : null) @((optionItem.IsChecked) ? " checked " : null) /><label for="Export_Field_Option_@optionId">@optionItem.DisplayName</label>
+                                            </li>
+                                            optionId++;
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+
+        }
+    </table>
+</div>
+<script>
+    $(function () {
+        var $exportFields = $('#Export_Fields');
+        var $form = $exportFields.closest('form');
+        var $exportingDialog = null;
+
+        $exportFields.on('click', 'a.selectAll,a.selectNone', function (e) {
+            e.preventDefault();
+
+            const $this = $(this);
+            $this.closest('tr').find('input').prop('checked', $this.is('.selectAll'));
+
+            return false;
+        });
+
+        $('#Export_Fields_Defaults').click(function (e) {
+            e.preventDefault();
+            $exportFields.find('input').prop('checked', false);
+            $exportFields.find('input[data-default]').prop('checked', true);
+            return false;
+        });
+    });
+</script>

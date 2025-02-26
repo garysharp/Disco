@@ -1,17 +1,21 @@
-﻿using Disco.Models.Services.Exporting;
+﻿using Disco.Data.Repository;
+using Disco.Models.Services.Exporting;
 using Disco.Models.UI.Shared;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 
 namespace Disco.Web.Models.Shared
 {
     public static class ExportFieldsModel
     {
-        public static ExportFieldsModel<V> Create<V>(V options, params string[] ignoreProperties)
+        public static ExportFieldsModel<V> Create<V>(V options, V defaultOptions, params string[] ignoreProperties)
             where V : IExportOptions
         {
-            return new ExportFieldsModel<V>(options, ignoreProperties);
+            return new ExportFieldsModel<V>(options, defaultOptions, ignoreProperties);
         }
     }
 
@@ -20,28 +24,37 @@ namespace Disco.Web.Models.Shared
         public T Options { get; set; }
         public List<ExportOptionGroup> FieldGroups { get; set; }
 
-        public ExportFieldsModel(T options, params string[] ignoreProperties)
+        public ExportFieldsModel(T options, T defaultOptions, params string[] ignoreProperties)
         {
-            FieldGroups = GetFields(options, ignoreProperties);
+            Options = options;
+            FieldGroups = GetFields(options, defaultOptions, ignoreProperties);
         }
 
-        private static List<ExportOptionGroup> GetFields(T options, params string[] ignoreProperties)
+        private static List<ExportOptionGroup> GetFields(T options, T defaultOptions, params string[] ignoreProperties)
         {
-            var viewData = new ViewDataDictionary<IExportOptions>(options);
-            var metaData = ModelMetadata.FromLambdaExpression(o => o, viewData);
+            var properties = new List<ExportOptionField>();
 
-            var properties = metaData.Properties
-                .Where(p => p.ShortDisplayName != null && p.ModelType == typeof(bool) && !ignoreProperties.Contains(p.PropertyName));
+            foreach (var prop in typeof(T).GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
+            {
+                if (prop.PropertyType != typeof(bool) || ignoreProperties.Contains(prop.Name))
+                    continue;
+
+                var display = prop.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault() as DisplayAttribute;
+                if (display == null)
+                    continue;
+
+                properties.Add(new ExportOptionField()
+                {
+                    GroupName = display.GroupName,
+                    Name = prop.Name,
+                    DisplayName = display.Name,
+                    Description = display.Description,
+                    IsDefault = (bool)prop.GetValue(defaultOptions),
+                    IsChecked = (bool)prop.GetValue(options),
+                });
+            }
 
             return properties
-                .Select(p => new ExportOptionField()
-                {
-                    GroupName = p.ShortDisplayName,
-                    Name = p.PropertyName,
-                    DisplayName = p.DisplayName,
-                    Description = p.Description,
-                    Checked = (bool)p.Model,
-                })
                 .GroupBy(p => p.GroupName)
                 .Select(g =>
                 {
@@ -50,6 +63,40 @@ namespace Disco.Web.Models.Shared
                     return group;
                 })
                 .ToList();
+        }
+
+        public void AddCustomUserDetails(Expression<Func<T, List<string>>> modelAccessor, int groupIndex = -1)
+        {
+            List<string> userCustomDetailKeys;
+            using (var database = new DiscoDataContext())
+                userCustomDetailKeys = database.UserDetails.Where(d => d.Scope == "Details").Select(d => d.Key).Distinct().OrderBy(k => k).ToList();
+            
+            if (userCustomDetailKeys.Any())
+            {
+                var fieldKey = ((MemberExpression)modelAccessor.Body).Member.Name;
+                var checkedKeys = modelAccessor.Compile().Invoke(Options);
+
+                var group = new ExportOptionGroup("User Custom Details");
+                foreach (var key in userCustomDetailKeys)
+                {
+                    var displayName = key.TrimEnd('*', '&');
+                    group.Add(new ExportOptionField()
+                    {
+                        GroupName = group.Name,
+                        Name = key,
+                        DisplayName = displayName,
+                        Description = $"{displayName} custom detail for the user",
+                        IsChecked = checkedKeys?.Contains(key) ?? false,
+                        CustomKey = fieldKey,
+                        CustomValue = key,
+                    });
+                }
+
+                if (groupIndex < 0)
+                    FieldGroups.Add(group);
+                else
+                    FieldGroups.Insert(groupIndex, group);
+            }
         }
     }
 }

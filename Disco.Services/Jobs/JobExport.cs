@@ -219,8 +219,8 @@ namespace Disco.Services.Jobs
         public ExportMetadata<JobExportOptions, JobExportRecord> BuildMetadata(DiscoDataContext database, List<JobExportRecord> records, IScheduledTaskStatus status)
         {
             var metadata = new ExportMetadata<JobExportOptions, JobExportRecord>(Options);
-            metadata.IgnoreShortNames.Add("Job");
-            metadata.IgnoreShortNames.Add("Job Details");
+            metadata.IgnoreGroupNames.Add("Job");
+            metadata.IgnoreGroupNames.Add("Job Details");
 
             // Job
             metadata.Add(o => o.JobId, r => r.Job.Id);

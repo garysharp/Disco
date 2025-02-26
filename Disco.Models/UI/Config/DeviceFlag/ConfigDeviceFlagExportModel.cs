@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Services.Devices.DeviceFlag;
 using Disco.Models.Services.Exporting;
 using Disco.Models.UI;
+using Disco.Models.UI.Shared;
 using System;
 using System.Collections.Generic;
 
@@ -14,5 +15,7 @@ namespace Disco.Models.Areas.Config.UI.DeviceFlag
         ExportResult ExportResult { get; set; }
 
         List<Repository.DeviceFlag> DeviceFlags { get; set; }
+
+        SharedExportFieldsModel<DeviceFlagExportOptions> Fields { get; set; }
     }
 }

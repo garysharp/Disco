@@ -1293,7 +1293,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SaveExport
         {
-            public readonly string Model = "Model";
+            public readonly string model = "model";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2257,14 +2257,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void SaveExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.ExportModel Model);
+        partial void SaveExportOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Models.Job.ExportModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SaveExport(Disco.Web.Models.Job.ExportModel Model)
+        public override System.Web.Mvc.ActionResult SaveExport(Disco.Web.Models.Job.ExportModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Model", Model);
-            SaveExportOverride(callInfo, Model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            SaveExportOverride(callInfo, model);
             return callInfo;
         }
 

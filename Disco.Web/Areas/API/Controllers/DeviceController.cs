@@ -687,21 +687,21 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Device.Actions.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult Export(ExportModel Model)
+        public virtual ActionResult Export(ExportModel model)
         {
-            if (Model == null || Model.Options == null)
+            if (model == null || model.Options == null)
                 throw new ArgumentNullException("Model");
 
             // Write Options to Configuration
-            Database.DiscoConfiguration.Devices.LastExportOptions = Model.Options;
+            Database.DiscoConfiguration.Devices.LastExportOptions = model.Options;
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = new DeviceExport(Model.Options);
+            var exportContext = new DeviceExport(model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Device.Export(id, null, null)));
 
             // Try waiting for completion
-            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
                 return RedirectToAction(MVC.Device.Export(taskContext.Id, null, null));
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
@@ -729,9 +729,11 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Device.Actions.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult SaveExport(ExportModel Model)
+        public virtual ActionResult SaveExport(ExportModel model)
         {
-            var export = new DeviceExport(Model.Options);
+            Database.DiscoConfiguration.Devices.LastExportOptions = model.Options;
+
+            var export = new DeviceExport(model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 
             return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));

@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Areas.Config.UI.DeviceFlag;
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.DeviceFlag;
+using Disco.Models.Services.Users.UserFlags;
 using Disco.Models.UI.Config.DeviceFlag;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.DeviceFlags;
@@ -9,6 +10,7 @@ using Disco.Services.Extensions;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.DeviceFlag;
+using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +130,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 Options = Database.DiscoConfiguration.DeviceFlags.LastExportOptions,
                 DeviceFlags = DeviceFlagService.GetDeviceFlags(),
             };
+
+            m.Fields = ExportFieldsModel.Create(m.Options, DeviceFlagExportOptions.DefaultOptions(), nameof(DeviceFlagExportOptions.CurrentOnly));
+            m.Fields.AddCustomUserDetails(o => o.UserDetailCustom);
 
             if (ExportTask.TryFromCache(exportId, out var context))
             {

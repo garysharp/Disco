@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Services.Devices;
 using Disco.Models.Services.Exporting;
+using Disco.Models.UI.Shared;
 using System;
 using System.Collections.Generic;
 
@@ -15,5 +16,7 @@ namespace Disco.Models.UI.Device
         IEnumerable<KeyValuePair<int, string>> DeviceBatches { get; set; }
         IEnumerable<KeyValuePair<int, string>> DeviceModels { get; set; }
         IEnumerable<KeyValuePair<int, string>> DeviceProfiles { get; set; }
+
+        SharedExportFieldsModel<DeviceExportOptions> Fields { get; set; }
     }
 }

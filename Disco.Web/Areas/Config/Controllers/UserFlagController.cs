@@ -9,6 +9,7 @@ using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.UserFlag;
+using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,6 +132,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 Options = Database.DiscoConfiguration.UserFlags.LastExportOptions,
                 UserFlags = UserFlagService.GetUserFlags(),
             };
+
+            m.Fields = ExportFieldsModel.Create(m.Options, UserFlagExportOptions.DefaultOptions(), nameof(UserFlagExportOptions.CurrentOnly));
+            m.Fields.AddCustomUserDetails(o => o.UserDetailCustom);
 
             if (ExportTask.TryFromCache(exportId, out var context))
             {

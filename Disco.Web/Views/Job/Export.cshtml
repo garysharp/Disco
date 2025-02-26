@@ -225,7 +225,7 @@
 
                     if (exportFieldCount > 0) {
 
-                        const $exportingDialog = $('#Devices_Export_Exporting').dialog({
+                        const $exportingDialog = $('#Export_Exporting').dialog({
                             width: 400,
                             height: 164,
                             resizable: false,
@@ -239,13 +239,6 @@
                         alert('Select at least one field to export.');
                 };
 
-                $('#Devices_Export_Download_Dialog').dialog({
-                    width: 400,
-                    height: 164,
-                    resizable: false,
-                    modal: true,
-                    autoOpen: true
-                });
                 $('#Jobs_Export_Button').click(function () {
                     $form.submit();
                 });
@@ -259,7 +252,7 @@
 </div>
 @if (Model.ExportId.HasValue)
 {
-    <div id="Jobs_Export_Download_Dialog" class="dialog" title="Export Jobs">
+    <div id="Export_Download_Dialog" class="dialog" title="Export Jobs">
         @if (Model.ExportResult.RecordCount == 0)
         {
             <h4>No records matched the filter criteria</h4>
@@ -272,7 +265,7 @@
     </div>
     <script>
         $(function () {
-            $('#Jobs_Export_Download_Dialog')
+            $('#Export_Download_Dialog')
                 .dialog({
                     width: 400,
                     height: 164,
@@ -283,7 +276,7 @@
         });
     </script>
 }
-<div id="Jobs_Export_Exporting" class="dialog" title="Exporting Jobs...">
+<div id="Export_Exporting" class="dialog" title="Exporting Jobs...">
     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Exporting jobs...</h4>
 </div>
 <div class="actionBar">

@@ -536,34 +536,6 @@
   margin-top: 10px;
   display: none;
 }
-#Devices_Export #Devices_Export_Fields #Devices_Export_Fields_Defaults {
-  font-size: 0.75em;
-}
-#Devices_Export #Devices_Export_Fields th {
-  font-size: 1.05em;
-}
-#Devices_Export #Devices_Export_Fields th span {
-  margin-top: 4px;
-  font-size: 0.8em;
-}
-#Devices_Export_Download_Dialog {
-  padding-top: 20px;
-  text-align: center;
-}
-#Devices_Export_Download_Dialog h4 {
-  margin-bottom: 30px;
-}
-#Devices_Export_Download_Dialog a {
-  margin-bottom: 20px;
-}
-#Devices_Export_Exporting {
-  padding-top: 50px;
-  text-align: center;
-}
-#Devices_Export_Exporting i {
-  margin-right: 10px;
-  color: #1e6dab;
-}
 #Devices_Import #ImportFile {
   width: 96%;
   margin-bottom: 8px;

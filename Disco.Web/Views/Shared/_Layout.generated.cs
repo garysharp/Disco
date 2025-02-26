@@ -135,7 +135,7 @@ WriteAttribute("href", Tuple.Create(" href=\"", 688), Tuple.Create("\"", 723)
 
 WriteLiteral("><i");
 
-WriteLiteral(" title=\"Disco ICT - Jobs\"");
+WriteLiteral(" title=\"Disco ICT\"");
 
 WriteLiteral("></i></a>\r\n            </div>\r\n            <nav>\r\n                <ul");
 
@@ -143,15 +143,15 @@ WriteLiteral(" id=\"menu\"");
 
 WriteLiteral(">\r\n                    <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 857), Tuple.Create("\"", 947)
-, Tuple.Create(Tuple.Create("", 865), Tuple.Create("d-sm", 865), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 850), Tuple.Create("\"", 940)
+, Tuple.Create(Tuple.Create("", 858), Tuple.Create("d-sm", 858), true)
             
             #line 24 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 869), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Job.Name ? " active" : null
+, Tuple.Create(Tuple.Create("", 862), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Job.Name ? " active" : null
             
             #line default
             #line hidden
-, 869), false)
+, 862), false)
 );
 
 WriteLiteral(">");
@@ -208,37 +208,37 @@ WriteLiteral("></i><a>Queues</a>\r\n                                    <ul>\r\n
             #line hidden
 WriteLiteral("                                            <li><a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1688), Tuple.Create("\"", 1745)
+WriteAttribute("href", Tuple.Create(" href=\"", 1681), Tuple.Create("\"", 1738)
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 1695), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))
+, Tuple.Create(Tuple.Create("", 1688), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Queue(queueToken.JobQueue.Id))
             
             #line default
             #line hidden
-, 1695), false)
+, 1688), false)
 );
 
 WriteLiteral("><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1749), Tuple.Create("\"", 1832)
-, Tuple.Create(Tuple.Create("", 1757), Tuple.Create("fa", 1757), true)
-, Tuple.Create(Tuple.Create(" ", 1759), Tuple.Create("fa-", 1760), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1742), Tuple.Create("\"", 1825)
+, Tuple.Create(Tuple.Create("", 1750), Tuple.Create("fa", 1750), true)
+, Tuple.Create(Tuple.Create(" ", 1752), Tuple.Create("fa-", 1753), true)
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-                                              , Tuple.Create(Tuple.Create("", 1763), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.Icon
+                                              , Tuple.Create(Tuple.Create("", 1756), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.Icon
             
             #line default
             #line hidden
-, 1763), false)
-, Tuple.Create(Tuple.Create(" ", 1790), Tuple.Create("fa-fw", 1791), true)
-, Tuple.Create(Tuple.Create(" ", 1796), Tuple.Create("d-", 1797), true)
+, 1756), false)
+, Tuple.Create(Tuple.Create(" ", 1783), Tuple.Create("fa-fw", 1784), true)
+, Tuple.Create(Tuple.Create(" ", 1789), Tuple.Create("d-", 1790), true)
             
             #line 35 "..\..\Views\Shared\_Layout.cshtml"
-                                                                                  , Tuple.Create(Tuple.Create("", 1799), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.IconColour
+                                                                                  , Tuple.Create(Tuple.Create("", 1792), Tuple.Create<System.Object, System.Int32>(queueToken.JobQueue.IconColour
             
             #line default
             #line hidden
-, 1799), false)
+, 1792), false)
 );
 
 WriteLiteral("></i>");
@@ -718,14 +718,14 @@ WriteLiteral("                        </ul>\r\n                    </li>\r\n");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6912), Tuple.Create("\"", 7000)
+WriteAttribute("class", Tuple.Create(" class=\"", 6905), Tuple.Create("\"", 6993)
             
             #line 111 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 6920), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null
+, Tuple.Create(Tuple.Create("", 6913), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Device.Name ? "active" : null
             
             #line default
             #line hidden
-, 6920), false)
+, 6913), false)
 );
 
 WriteLiteral(">");
@@ -758,14 +758,14 @@ WriteLiteral("                    ");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7213), Tuple.Create("\"", 7299)
+WriteAttribute("class", Tuple.Create(" class=\"", 7206), Tuple.Create("\"", 7292)
             
             #line 115 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 7221), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null
+, Tuple.Create(Tuple.Create("", 7214), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.User.Name ? "active" : null
             
             #line default
             #line hidden
-, 7221), false)
+, 7214), false)
 );
 
 WriteLiteral(">");
@@ -788,15 +788,15 @@ WriteLiteral("</li>\r\n");
             #line hidden
 WriteLiteral("                    <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7413), Tuple.Create("\"", 7511)
-, Tuple.Create(Tuple.Create("", 7421), Tuple.Create("moveRight", 7421), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 7406), Tuple.Create("\"", 7504)
+, Tuple.Create(Tuple.Create("", 7414), Tuple.Create("moveRight", 7414), true)
             
             #line 117 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 7430), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null
+, Tuple.Create(Tuple.Create("", 7423), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Public.Name ? " active" : null
             
             #line default
             #line hidden
-, 7430), false)
+, 7423), false)
 );
 
 WriteLiteral(">");
@@ -826,14 +826,14 @@ WriteLiteral("</li>\r\n");
             #line hidden
 WriteLiteral("                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7689), Tuple.Create("\"", 7777)
+WriteAttribute("class", Tuple.Create(" class=\"", 7682), Tuple.Create("\"", 7770)
             
             #line 120 "..\..\Views\Shared\_Layout.cshtml"
-, Tuple.Create(Tuple.Create("", 7697), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null
+, Tuple.Create(Tuple.Create("", 7690), Tuple.Create<System.Object, System.Int32>((string)ViewContext.ViewData["MenuArea"] == MVC.Config.Name ? "active" : null
             
             #line default
             #line hidden
-, 7697), false)
+, 7690), false)
 );
 
 WriteLiteral(">");

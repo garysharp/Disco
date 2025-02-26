@@ -936,24 +936,20 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "e($form);\r\n                $form.data(\"validator\").settings.submitHandler = func" +
 "tion () {\r\n                    var exportFieldCount = $exportFields.find(\'input:" +
 "checked\').length;\r\n\r\n                    if (exportFieldCount > 0) {\r\n\r\n        " +
-"                const $exportingDialog = $(\'#Devices_Export_Exporting\').dialog({" +
-"\r\n                            width: 400,\r\n                            height: 1" +
-"64,\r\n                            resizable: false,\r\n                            " +
-"modal: true,\r\n                            autoOpen: true\r\n                      " +
-"  });\r\n\r\n                        $form[0].submit();\r\n                    }\r\n    " +
-"                else\r\n                        alert(\'Select at least one field t" +
-"o export.\');\r\n                };\r\n\r\n                $(\'#Devices_Export_Download_" +
-"Dialog\').dialog({\r\n                    width: 400,\r\n                    height: " +
-"164,\r\n                    resizable: false,\r\n                    modal: true,\r\n " +
-"                   autoOpen: true\r\n                });\r\n                $(\'#Jobs" +
-"_Export_Button\').click(function () {\r\n                    $form.submit();\r\n     " +
-"           });\r\n                $(\'#Jobs_Export_Save_Button\').click(function () " +
-"{\r\n                    $form.attr(\'action\', $form[0].dataset.saveaction);\r\n     " +
-"               $form.submit();\r\n                });\r\n            });\r\n        </" +
-"script>\r\n");
+"                const $exportingDialog = $(\'#Export_Exporting\').dialog({\r\n      " +
+"                      width: 400,\r\n                            height: 164,\r\n   " +
+"                         resizable: false,\r\n                            modal: t" +
+"rue,\r\n                            autoOpen: true\r\n                        });\r\n\r" +
+"\n                        $form[0].submit();\r\n                    }\r\n            " +
+"        else\r\n                        alert(\'Select at least one field to export" +
+".\');\r\n                };\r\n\r\n                $(\'#Jobs_Export_Button\').click(funct" +
+"ion () {\r\n                    $form.submit();\r\n                });\r\n            " +
+"    $(\'#Jobs_Export_Save_Button\').click(function () {\r\n                    $form" +
+".attr(\'action\', $form[0].dataset.saveaction);\r\n                    $form.submit(" +
+");\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 258 "..\..\Views\Job\Export.cshtml"
+            #line 251 "..\..\Views\Job\Export.cshtml"
     }
 
             
@@ -962,7 +958,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 260 "..\..\Views\Job\Export.cshtml"
+            #line 253 "..\..\Views\Job\Export.cshtml"
  if (Model.ExportId.HasValue)
 {
 
@@ -971,7 +967,7 @@ WriteLiteral("</div>\r\n");
             #line hidden
 WriteLiteral("    <div");
 
-WriteLiteral(" id=\"Jobs_Export_Download_Dialog\"");
+WriteLiteral(" id=\"Export_Download_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
@@ -980,13 +976,13 @@ WriteLiteral(" title=\"Export Jobs\"");
 WriteLiteral(">\r\n");
 
             
-            #line 263 "..\..\Views\Job\Export.cshtml"
+            #line 256 "..\..\Views\Job\Export.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 263 "..\..\Views\Job\Export.cshtml"
+            #line 256 "..\..\Views\Job\Export.cshtml"
          if (Model.ExportResult.RecordCount == 0)
         {
 
@@ -996,7 +992,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 
             
-            #line 266 "..\..\Views\Job\Export.cshtml"
+            #line 259 "..\..\Views\Job\Export.cshtml"
         }
         else
         {
@@ -1007,7 +1003,7 @@ WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 WriteLiteral("            <h4>");
 
             
-            #line 269 "..\..\Views\Job\Export.cshtml"
+            #line 262 "..\..\Views\Job\Export.cshtml"
            Write(Model.ExportResult.RecordCount);
 
             
@@ -1016,7 +1012,7 @@ WriteLiteral("            <h4>");
 WriteLiteral(" record");
 
             
-            #line 269 "..\..\Views\Job\Export.cshtml"
+            #line 262 "..\..\Views\Job\Export.cshtml"
                                                   Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
@@ -1026,14 +1022,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 14696), Tuple.Create("\"", 14764)
+WriteAttribute("href", Tuple.Create(" href=\"", 14423), Tuple.Create("\"", 14491)
             
-            #line 270 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 14703), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
+            #line 263 "..\..\Views\Job\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 14430), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 14703), false)
+, 14430), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -1045,7 +1041,7 @@ WriteLiteral(" class=\"fa fa-download fa-lg\"");
 WriteLiteral("></i>Download Job Export</a>\r\n");
 
             
-            #line 271 "..\..\Views\Job\Export.cshtml"
+            #line 264 "..\..\Views\Job\Export.cshtml"
         }
 
             
@@ -1055,7 +1051,7 @@ WriteLiteral("    </div>\r\n");
 
 WriteLiteral(@"    <script>
         $(function () {
-            $('#Jobs_Export_Download_Dialog')
+            $('#Export_Download_Dialog')
                 .dialog({
                     width: 400,
                     height: 164,
@@ -1068,7 +1064,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 285 "..\..\Views\Job\Export.cshtml"
+            #line 278 "..\..\Views\Job\Export.cshtml"
 }
 
             
@@ -1076,7 +1072,7 @@ WriteLiteral(@"    <script>
             #line hidden
 WriteLiteral("<div");
 
-WriteLiteral(" id=\"Jobs_Export_Exporting\"");
+WriteLiteral(" id=\"Export_Exporting\"");
 
 WriteLiteral(" class=\"dialog\"");
 
@@ -1095,13 +1091,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 290 "..\..\Views\Job\Export.cshtml"
+            #line 283 "..\..\Views\Job\Export.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 290 "..\..\Views\Job\Export.cshtml"
+            #line 283 "..\..\Views\Job\Export.cshtml"
      if (Authorization.Has(Claims.Config.ManageSavedExports))
     {
 
@@ -1119,7 +1115,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Save Export</button>\r\n");
 
             
-            #line 293 "..\..\Views\Job\Export.cshtml"
+            #line 286 "..\..\Views\Job\Export.cshtml"
     }
     else
     {
@@ -1140,7 +1136,7 @@ WriteLiteral(" title=\"Requires Manage Saved Exports Permission\"");
 WriteLiteral(">Save Export</button>\r\n");
 
             
-            #line 297 "..\..\Views\Job\Export.cshtml"
+            #line 290 "..\..\Views\Job\Export.cshtml"
     }
 
             

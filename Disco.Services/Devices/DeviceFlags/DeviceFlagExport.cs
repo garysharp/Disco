@@ -54,7 +54,7 @@ namespace Disco.Services.Devices.DeviceFlags
                 query = query.Include(a => a.Device.DeviceProfile);
             if (Options.HasAssignedUserOptions())
                 query = query.Include(a => a.Device.AssignedUser);
-            if (Options.AssignedUserDetailCustom)
+            if (Options.UserDetailCustom?.Any() ?? false)
                 query = query.Include(a => a.Device.AssignedUser.UserDetails);
 
             query = query.Where(a => Options.DeviceFlagIds.Contains(a.DeviceFlagId));
@@ -86,7 +86,7 @@ namespace Disco.Services.Devices.DeviceFlags
                 Assignment = a
             }).ToList();
 
-            if (Options.AssignedUserDetailCustom)
+            if (Options.UserDetailCustom?.Any() ?? false)
             {
                 status.UpdateStatus(50, "Extracting custom user detail records");
 
@@ -111,7 +111,7 @@ namespace Disco.Services.Devices.DeviceFlags
         public ExportMetadata<DeviceFlagExportOptions, DeviceFlagExportRecord> BuildMetadata(DiscoDataContext database, List<DeviceFlagExportRecord> records, IScheduledTaskStatus status)
         {
             var metadata = new ExportMetadata<DeviceFlagExportOptions, DeviceFlagExportRecord>(Options);
-            metadata.IgnoreShortNames.Add("Device Flag");
+            metadata.IgnoreGroupNames.Add("Device Flag");
 
             // Device Flag
             metadata.Add(o => o.Id, r => r.Assignment.DeviceFlagId);
@@ -171,13 +171,10 @@ namespace Disco.Services.Devices.DeviceFlags
             metadata.Add(o => o.AssignedUserEmailAddress, r => r.Assignment.Device?.AssignedUser?.EmailAddress);
 
             // User Custom Details
-            if (Options.AssignedUserDetailCustom)
+            if (Options.UserDetailCustom?.Any() ?? false)
             {
-                var keys = records.Where(r => r.AssignedUserCustomDetails != null).SelectMany(r => r.AssignedUserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-                foreach (var key in keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
-                {
-                    metadata.Add(key, r => r.AssignedUserCustomDetails != null && r.AssignedUserCustomDetails.TryGetValue(key, out var value) ? value : null);
-                }
+                foreach (var key in Options.UserDetailCustom.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
+                    metadata.Add($"Assigned User Detail {key.TrimEnd('*', '&')}", r => r.AssignedUserCustomDetails != null && r.AssignedUserCustomDetails.TryGetValue(key, out var value) ? value : null);
             }
 
             return metadata;

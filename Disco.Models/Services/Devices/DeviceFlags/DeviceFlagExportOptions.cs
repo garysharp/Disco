@@ -17,51 +17,51 @@ namespace Disco.Models.Services.Devices.DeviceFlag
         public bool CurrentOnly { get; set; }
 
         // Device Flag
-        [Display(ShortName = "Device Flag", Name = "Identifier", Description = "The identifier of the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Identifier", Description = "The identifier of the device flag")]
         public bool Id { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Name", Description = "The name of the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Name", Description = "The name of the device flag")]
         public bool Name { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Description", Description = "The description of the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Description", Description = "The description of the device flag")]
         public bool Description { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Icon", Description = "The icon assigned to the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Icon", Description = "The icon assigned to the device flag")]
         public bool Icon { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Icon Colour", Description = "The icon colour assigned to the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Icon Colour", Description = "The icon colour assigned to the device flag")]
         public bool IconColour { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Assignment Identifier", Description = "The identifier of the device flag assignment")]
+        [Display(GroupName = "Device Flag", Name = "Assignment Identifier", Description = "The identifier of the device flag assignment")]
         public bool AssignmentId { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Added Date", Description = "The date the device flag was assigned to the user")]
+        [Display(GroupName = "Device Flag", Name = "Added Date", Description = "The date the device flag was assigned to the user")]
         public bool AddedDate { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Added User Identifier", Description = "The identifier of the user who assigned the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Added User Identifier", Description = "The identifier of the user who assigned the device flag")]
         public bool AddedUserId { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Removed Date", Description = "The date the device flag was unassigned from the user")]
+        [Display(GroupName = "Device Flag", Name = "Removed Date", Description = "The date the device flag was unassigned from the user")]
         public bool RemovedDate { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Removed User Identifier", Description = "The identifier of the user who unassigned the device flag")]
+        [Display(GroupName = "Device Flag", Name = "Removed User Identifier", Description = "The identifier of the user who unassigned the device flag")]
         public bool RemovedUserId { get; set; }
-        [Display(ShortName = "Device Flag", Name = "Comments", Description = "The comments associated with the device flag assignment")]
+        [Display(GroupName = "Device Flag", Name = "Comments", Description = "The comments associated with the device flag assignment")]
         public bool Comments { get; set; }
 
         // Device
-        [Display(ShortName = "Device", Name = "Serial Number", Description = "The device serial number")]
+        [Display(GroupName = "Device", Name = "Serial Number", Description = "The device serial number")]
         public bool DeviceSerialNumber { get; set; }
-        [Display(ShortName = "Device", Name = "Asset Number", Description = "The device asset number")]
+        [Display(GroupName = "Device", Name = "Asset Number", Description = "The device asset number")]
         public bool DeviceAssetNumber { get; set; }
-        [Display(ShortName = "Device", Name = "Location", Description = "The device location")]
+        [Display(GroupName = "Device", Name = "Location", Description = "The device location")]
         public bool DeviceLocation { get; set; }
-        [Display(ShortName = "Device", Name = "Computer Name", Description = "The device computer name")]
+        [Display(GroupName = "Device", Name = "Computer Name", Description = "The device computer name")]
         public bool DeviceComputerName { get; set; }
-        [Display(ShortName = "Device", Name = "Last Network Logon", Description = "The last recorded time the device access the network")]
+        [Display(GroupName = "Device", Name = "Last Network Logon", Description = "The last recorded time the device access the network")]
         public bool DeviceLastNetworkLogon { get; set; }
-        [Display(ShortName = "Device", Name = "Created Date", Description = "The date the device was created in Disco ICT")]
+        [Display(GroupName = "Device", Name = "Created Date", Description = "The date the device was created in Disco ICT")]
         public bool DeviceCreatedDate { get; set; }
-        [Display(ShortName = "Device", Name = "First Enrolled Date", Description = "The date the device was first enrolled in Disco ICT")]
+        [Display(GroupName = "Device", Name = "First Enrolled Date", Description = "The date the device was first enrolled in Disco ICT")]
         public bool DeviceFirstEnrolledDate { get; set; }
-        [Display(ShortName = "Device", Name = "Last Enrolled Date", Description = "The date the device was last enrolled in Disco ICT")]
+        [Display(GroupName = "Device", Name = "Last Enrolled Date", Description = "The date the device was last enrolled in Disco ICT")]
         public bool DeviceLastEnrolledDate { get; set; }
-        [Display(ShortName = "Device", Name = "Enrolment Trusted", Description = "The device is trusted to complete an unauthenticated enrolment")]
+        [Display(GroupName = "Device", Name = "Enrolment Trusted", Description = "The device is trusted to complete an unauthenticated enrolment")]
         public bool DeviceAllowUnauthenticatedEnrol { get; set; }
-        [Display(ShortName = "Device", Name = "Decommissioned Date", Description = "The date the device was decommissioned in Disco ICT")]
+        [Display(GroupName = "Device", Name = "Decommissioned Date", Description = "The date the device was decommissioned in Disco ICT")]
         public bool DeviceDecommissionedDate { get; set; }
-        [Display(ShortName = "Device", Name = "Decommissioned Reason", Description = "The reason the device was decommissioned")]
+        [Display(GroupName = "Device", Name = "Decommissioned Reason", Description = "The reason the device was decommissioned")]
         public bool DeviceDecommissionedReason { get; set; }
 
         public bool HasDeviceOptions()
@@ -80,15 +80,15 @@ namespace Disco.Models.Services.Devices.DeviceFlag
         }
 
         // Model
-        [Display(ShortName = "Model", Name = "Identifier", Description = "The identifier of the device model associated with the device")]
+        [Display(GroupName = "Model", Name = "Identifier", Description = "The identifier of the device model associated with the device")]
         public bool ModelId { get; set; }
-        [Display(ShortName = "Model", Name = "Description", Description = "The description of the device model associated with the device")]
+        [Display(GroupName = "Model", Name = "Description", Description = "The description of the device model associated with the device")]
         public bool ModelDescription { get; set; }
-        [Display(ShortName = "Model", Name = "Manufacturer", Description = "The manufacturer of the device model associated with the device")]
+        [Display(GroupName = "Model", Name = "Manufacturer", Description = "The manufacturer of the device model associated with the device")]
         public bool ModelManufacturer { get; set; }
-        [Display(ShortName = "Model", Name = "Model", Description = "The model of the device model associated with the device")]
+        [Display(GroupName = "Model", Name = "Model", Description = "The model of the device model associated with the device")]
         public bool ModelModel { get; set; }
-        [Display(ShortName = "Model", Name = "Type", Description = "The type of device model associated with the device")]
+        [Display(GroupName = "Model", Name = "Type", Description = "The type of device model associated with the device")]
         public bool ModelType { get; set; }
         public bool HasDeviceModelOptions()
         {
@@ -100,23 +100,23 @@ namespace Disco.Models.Services.Devices.DeviceFlag
         }
 
         // Batch
-        [Display(ShortName = "Batch", Name = "Identifier", Description = "The identifier of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Identifier", Description = "The identifier of the device batch associated with the device")]
         public bool BatchId { get; set; }
-        [Display(ShortName = "Batch", Name = "Name", Description = "The name of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Name", Description = "The name of the device batch associated with the device")]
         public bool BatchName { get; set; }
-        [Display(ShortName = "Batch", Name = "Purchase Date", Description = "The purchase date of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Purchase Date", Description = "The purchase date of the device batch associated with the device")]
         public bool BatchPurchaseDate { get; set; }
-        [Display(ShortName = "Batch", Name = "Supplier", Description = "The supplier of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Supplier", Description = "The supplier of the device batch associated with the device")]
         public bool BatchSupplier { get; set; }
-        [Display(ShortName = "Batch", Name = "Unit Cost", Description = "The unit cost of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Unit Cost", Description = "The unit cost of the device batch associated with the device")]
         public bool BatchUnitCost { get; set; }
-        [Display(ShortName = "Batch", Name = "Warranty Valid Until Date", Description = "The warranty valid until date of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Warranty Valid Until Date", Description = "The warranty valid until date of the device batch associated with the device")]
         public bool BatchWarrantyValidUntilDate { get; set; }
-        [Display(ShortName = "Batch", Name = "Insured Date", Description = "The insured date of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Insured Date", Description = "The insured date of the device batch associated with the device")]
         public bool BatchInsuredDate { get; set; }
-        [Display(ShortName = "Batch", Name = "Insurance Supplier", Description = "The insurance supplier of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Insurance Supplier", Description = "The insurance supplier of the device batch associated with the device")]
         public bool BatchInsuranceSupplier { get; set; }
-        [Display(ShortName = "Batch", Name = "Insured Until Date", Description = "The insured until date of the device batch associated with the device")]
+        [Display(GroupName = "Batch", Name = "Insured Until Date", Description = "The insured until date of the device batch associated with the device")]
         public bool BatchInsuredUntilDate { get; set; }
         public bool HasDeviceBatchOptions()
         {
@@ -132,11 +132,11 @@ namespace Disco.Models.Services.Devices.DeviceFlag
         }
 
         // Profile
-        [Display(ShortName = "Profile", Name = "Identifier", Description = "The identifier of the device profile associated with the device")]
+        [Display(GroupName = "Profile", Name = "Identifier", Description = "The identifier of the device profile associated with the device")]
         public bool ProfileId { get; set; }
-        [Display(ShortName = "Profile", Name = "Name", Description = "The name of the device profile associated with the device")]
+        [Display(GroupName = "Profile", Name = "Name", Description = "The name of the device profile associated with the device")]
         public bool ProfileName { get; set; }
-        [Display(ShortName = "Profile", Name = "Short Name", Description = "The short name of the device profile associated with the device")]
+        [Display(GroupName = "Profile", Name = "Short Name", Description = "The short name of the device profile associated with the device")]
         public bool ProfileShortName { get; set; }
         public bool HasDeviceProfileOptions()
         {
@@ -146,20 +146,19 @@ namespace Disco.Models.Services.Devices.DeviceFlag
         }
 
         // Assigned User
-        [Display(ShortName = "Assigned User", Name = "Identifier", Description = "The identifier of the user assigned to the device flag")]
+        [Display(GroupName = "Assigned User", Name = "Identifier", Description = "The identifier of the user assigned to the device flag")]
         public bool AssignedUserId { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Display Name", Description = "The display name of the user assigned to the device flag")]
+        [Display(GroupName = "Assigned User", Name = "Display Name", Description = "The display name of the user assigned to the device flag")]
         public bool AssignedUserDisplayName { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Surname", Description = "The surname of the user assigned to the device flag")]
+        [Display(GroupName = "Assigned User", Name = "Surname", Description = "The surname of the user assigned to the device flag")]
         public bool AssignedUserSurname { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Given Name", Description = "The given name of the user assigned to the device flag")]
+        [Display(GroupName = "Assigned User", Name = "Given Name", Description = "The given name of the user assigned to the device flag")]
         public bool AssignedUserGivenName { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Phone Number", Description = "The phone number of the user assigned to the device flag")]
+        [Display(GroupName = "Assigned User", Name = "Phone Number", Description = "The phone number of the user assigned to the device flag")]
         public bool AssignedUserPhoneNumber { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Email Address", Description = "The email address of the user assigned to the device flag")]
+        [Display(GroupName = "Assigned User", Name = "Email Address", Description = "The email address of the user assigned to the device flag")]
         public bool AssignedUserEmailAddress { get; set; }
-        [Display(ShortName = "Assigned User", Name = "Custom Details", Description = "The custom details provided by plugins for the user assigned to the device flag")]
-        public bool AssignedUserDetailCustom { get; set; }
+        public List<string> UserDetailCustom { get; set; } = new List<string>();
         public bool HasAssignedUserOptions()
         {
             return AssignedUserId ||

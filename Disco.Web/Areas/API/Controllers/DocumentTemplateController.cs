@@ -11,7 +11,6 @@ using Disco.Services.Plugins;
 using Disco.Services.Plugins.Features.DocumentHandlerProvider;
 using Disco.Services.Tasks;
 using Disco.Services.Users;
-using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using Disco.Web.Areas.API.Models.DocumentTemplate;
 using Disco.Web.Areas.Config.Models.DocumentTemplate;
@@ -1453,25 +1452,25 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult Export(ExportModel Model)
+        public virtual ActionResult Export(ExportModel model)
         {
-            if (Model == null || Model.Options == null)
-                throw new ArgumentNullException(nameof(Model));
+            if (model == null || model.Options == null)
+                throw new ArgumentNullException(nameof(model));
 
             var templateId = default(string);
-            if (Model.Options.DocumentTemplateIds.Count == 1)
-                templateId = Model.Options.DocumentTemplateIds.First();
+            if (model.Options.DocumentTemplateIds.Count == 1)
+                templateId = model.Options.DocumentTemplateIds.First();
 
-            Database.DiscoConfiguration.Documents.LastExportOptions = Model.Options;
+            Database.DiscoConfiguration.Documents.LastExportOptions = model.Options;
             Database.SaveChanges();
 
             // Start Export
-            var exportContext = new DocumentExport(Model.Options);
-            var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.DocumentTemplate.Export(templateId, id)));
+            var exportContext = new DocumentExport(model.Options);
+            var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.DocumentTemplate.Export(null, id)));
 
             // Try waiting for completion
-            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
-                return RedirectToAction(MVC.Config.DocumentTemplate.Export(templateId, taskContext.Id));
+            if (taskContext.TaskStatus.WaitUntilFinished(TimeSpan.FromSeconds(2)))
+                return RedirectToAction(MVC.Config.DocumentTemplate.Export(null, taskContext.Id));
             else
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskContext.TaskStatus.SessionId));
         }
@@ -1495,11 +1494,11 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorizeAll(Claims.Config.ManageSavedExports, Claims.Config.DocumentTemplate.Export)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult SaveExport(ExportModel Model)
+        public virtual ActionResult SaveExport(ExportModel model)
         {
-            Database.DiscoConfiguration.Documents.LastExportOptions = Model.Options;
+            Database.DiscoConfiguration.Documents.LastExportOptions = model.Options;
 
-            var export = new DocumentExport(Model.Options);
+            var export = new DocumentExport(model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 
             return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));

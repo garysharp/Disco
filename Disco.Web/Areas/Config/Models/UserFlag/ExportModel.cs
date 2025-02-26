@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Areas.Config.UI.UserFlag;
 using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Users.UserFlags;
+using Disco.Models.UI.Shared;
 using System;
 using System.Collections.Generic;
 
@@ -14,5 +15,7 @@ namespace Disco.Web.Areas.Config.Models.UserFlag
         public ExportResult ExportResult { get; set; }
 
         public List<Disco.Models.Repository.UserFlag> UserFlags { get; set; }
+
+        public SharedExportFieldsModel<UserFlagExportOptions> Fields { get; set; }
     }
 }

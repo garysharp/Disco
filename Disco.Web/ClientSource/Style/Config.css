@@ -1827,24 +1827,6 @@ h1.Config_DocumentTemplates {
   margin-top: 4px;
   font-size: 0.8em;
 }
-#UserFlag_Export_Download_Dialog {
-  padding-top: 20px;
-  text-align: center;
-}
-#UserFlag_Export_Download_Dialog h4 {
-  margin-bottom: 30px;
-}
-#UserFlag_Export_Download_Dialog a {
-  margin-bottom: 20px;
-}
-#UserFlag_Export_Exporting {
-  padding-top: 50px;
-  text-align: center;
-}
-#UserFlag_Export_Exporting i {
-  margin-right: 10px;
-  color: #1e6dab;
-}
 #Config_DeviceFlags_Show #DeviceFlag_OnAssignmentExpression,
 #Config_DeviceFlags_Show #DeviceFlag_OnUnassignmentExpression {
   height: 16px;
@@ -1975,34 +1957,6 @@ h1.Config_DocumentTemplates {
 #Config_DeviceFlags_BulkAssign_AssignDialog.loading > form {
   display: none;
 }
-#DeviceFlag_Export #DeviceFlag_Export_Fields #DeviceFlag_Export_Fields_Defaults {
-  font-size: 0.75em;
-}
-#DeviceFlag_Export #DeviceFlag_Export_Fields th {
-  font-size: 1.05em;
-}
-#DeviceFlag_Export #DeviceFlag_Export_Fields th span {
-  margin-top: 4px;
-  font-size: 0.8em;
-}
-#DeviceFlag_Export_Download_Dialog {
-  padding-top: 20px;
-  text-align: center;
-}
-#DeviceFlag_Export_Download_Dialog h4 {
-  margin-bottom: 30px;
-}
-#DeviceFlag_Export_Download_Dialog a {
-  margin-bottom: 20px;
-}
-#DeviceFlag_Export_Exporting {
-  padding-top: 50px;
-  text-align: center;
-}
-#DeviceFlag_Export_Exporting i {
-  margin-right: 10px;
-  color: #1e6dab;
-}
 #DocumentTemplate_BulkGenerate .actions {
   padding-bottom: 0.5em;
   text-align: right;
@@ -2076,22 +2030,4 @@ h1.Config_DocumentTemplates {
 #DocumentTemplate_Export #DocumentTemplate_Export_Fields th span {
   margin-top: 4px;
   font-size: 0.8em;
-}
-#DocumentTemplate_Export_Download_Dialog {
-  padding-top: 20px;
-  text-align: center;
-}
-#DocumentTemplate_Export_Download_Dialog h4 {
-  margin-bottom: 30px;
-}
-#DocumentTemplate_Export_Download_Dialog a {
-  margin-bottom: 20px;
-}
-#DocumentTemplate_Export_Exporting {
-  padding-top: 50px;
-  text-align: center;
-}
-#DocumentTemplate_Export_Exporting i {
-  margin-right: 10px;
-  color: #1e6dab;
 }

@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Devices;
+using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;
@@ -11,6 +12,7 @@ using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -111,8 +113,8 @@ namespace Disco.Web.Controllers
         #endregion
 
         #region Export
-
-        [DiscoAuthorizeAny(Claims.Device.Actions.Export), HttpGet]
+        [HttpGet]
+        [DiscoAuthorize(Claims.Device.Actions.Export)]
         public virtual ActionResult Export(Guid? exportId, DeviceExportTypes? exportType, int? exportTypeTargetId)
         {
             var m = new Models.Device.ExportModel()
@@ -122,6 +124,9 @@ namespace Disco.Web.Controllers
                 DeviceModels = Database.DeviceModels.OrderBy(dm => dm.Description).Select(dm => new { Key = dm.Id, Value = dm.Description }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value)),
                 DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).Select(dp => new { Key = dp.Id, Value = dp.Name }).ToList().Select(i => new KeyValuePair<int, string>(i.Key, i.Value))
             };
+
+            m.Fields = ExportFieldsModel.Create(m.Options, DeviceExportOptions.DefaultOptions());
+            m.Fields.AddCustomUserDetails(o => o.UserDetailCustom, m.Fields.FieldGroups.FindIndex(g => g.Name == "Assigned User") + 1);
 
             if (ExportTask.TryFromCache(exportId, out var context))
             {
@@ -136,7 +141,7 @@ namespace Disco.Web.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceExportModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceExportModel>(ControllerContext, m);
 
             return View(m);
         }

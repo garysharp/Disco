@@ -3,7 +3,6 @@ using Disco.Data.Repository;
 using Disco.Models.Areas.Config.UI.UserFlag;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
-using Disco.Models.Services.Exporting;
 using Disco.Models.UI.Config.DocumentTemplate;
 using Disco.Services;
 using Disco.Services.Authorization;
@@ -306,27 +305,8 @@ namespace Disco.Web.Areas.Config.Controllers
                 DocumentTemplates = Database.DocumentTemplates.OrderBy(d => d.Id).ToList(),
             };
 
-            m.Fields = ExportFieldsModel.Create(m.Options, nameof(DocumentExportOptions.LatestOnly));
-
-            var userCustomDetailKeys = Database.UserDetails.Where(d => d.Scope == "Details").Select(d => d.Key).Distinct().OrderBy(k => k).ToList();
-            if (userCustomDetailKeys.Any())
-            {
-                var group = new ExportOptionGroup("User Custom Details");
-                foreach (var key in userCustomDetailKeys)
-                {
-                    group.Add(new ExportOptionField()
-                    {
-                        GroupName = group.Name,
-                        Name = key,
-                        DisplayName = key.TrimEnd('*', '&'),
-                        Description = $"{key} custom detail for the user associated with the document instance",
-                        Checked = false,
-                        Key = "UserDetailCustom",
-                        Value = key,
-                    });
-                }
-                m.Fields.FieldGroups.Add(group);
-            }
+            m.Fields = ExportFieldsModel.Create(m.Options, DocumentExportOptions.DefaultOptions(), nameof(DocumentExportOptions.LatestOnly));
+            m.Fields.AddCustomUserDetails(o => o.UserDetailCustom);
 
             if (ExportTask.TryFromCache(exportId, out var context))
             {
@@ -340,6 +320,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
                 if (template != null)
                 {
+                    m.Options.DocumentTemplateIds.Clear();
                     m.Options.DocumentTemplateIds.Add(template.Id);
                 }
             }

@@ -139,10 +139,10 @@ namespace Disco.Services.Exporting
                 var member = ((MemberExpression)optionAccessor.Body).Member;
                 var attribute = (DisplayAttribute)member.GetCustomAttributes(typeof(DisplayAttribute), false).Single();
 
-                if (metadata.IgnoreShortNames.Contains(attribute.ShortName))
+                if (metadata.IgnoreGroupNames.Contains(attribute.GroupName))
                     columnName = attribute.Name;
                 else
-                    columnName = $"{attribute.ShortName} {attribute.Name}";
+                    columnName = $"{attribute.GroupName} {attribute.Name}";
             }
 
             metadata.Add(columnName, valueAccessor, csvValueEncoder);
@@ -190,6 +190,8 @@ namespace Disco.Services.Exporting
                 { typeof(ushort?), ToStringEncoder },
                 { typeof(bool), ToStringEncoder },
                 { typeof(bool?), ToStringEncoder },
+                { typeof(Guid), ToStringEncoder },
+                { typeof(Guid?), ToStringEncoder },
                 { typeof(DateTime), DateTimeEncoder },
                 { typeof(DateTime?), NullableDateTimeEncoder },
             };

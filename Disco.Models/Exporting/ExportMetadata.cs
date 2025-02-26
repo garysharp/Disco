@@ -8,7 +8,7 @@ namespace Disco.Models.Exporting
         where O : IExportOptions
         where R : IExportRecord
     {
-        public List<string> IgnoreShortNames { get; } = new List<string>();
+        public List<string> IgnoreGroupNames { get; } = new List<string>();
         public O Options { get; set; }
 
         public ExportMetadata(O options)

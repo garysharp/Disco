@@ -41,6 +41,7 @@ namespace T4MVC
                 public readonly string _CustomDetailValueRender = "_CustomDetailValueRender";
                 public readonly string _DialogLayout = "_DialogLayout";
                 public readonly string _EmptyLayout = "_EmptyLayout";
+                public readonly string _ExportFields = "_ExportFields";
                 public readonly string _GenerateDocumentControl = "_GenerateDocumentControl";
                 public readonly string _JobTable = "_JobTable";
                 public readonly string _JobTableRender = "_JobTableRender";
@@ -52,6 +53,7 @@ namespace T4MVC
             public readonly string _CustomDetailValueRender = "~/Views/Shared/_CustomDetailValueRender.cshtml";
             public readonly string _DialogLayout = "~/Views/Shared/_DialogLayout.cshtml";
             public readonly string _EmptyLayout = "~/Views/Shared/_EmptyLayout.cshtml";
+            public readonly string _ExportFields = "~/Views/Shared/_ExportFields.cshtml";
             public readonly string _GenerateDocumentControl = "~/Views/Shared/_GenerateDocumentControl.cshtml";
             public readonly string _JobTable = "~/Views/Shared/_JobTable.cshtml";
             public readonly string _JobTableRender = "~/Views/Shared/_JobTableRender.cshtml";

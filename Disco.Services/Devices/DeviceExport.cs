@@ -171,21 +171,37 @@ namespace Disco.Services.Devices
                 if (Options.DetailBatteries)
                     r.DeviceDetailBatteries = r.DeviceDetails.Batteries();
 
-                if (Options.AssignedUserDetailCustom && r.AssignedUser != null)
-                {
-                    var detailsService = new DetailsProviderService(database);
-                    r.AssignedUserCustomDetails = detailsService.GetDetails(r.AssignedUser);
-                }
             });
 
+            if (Options.UserDetailCustom?.Any() ?? false)
+                AddUserCustomDetails(database, records, taskStatus);
+
             return records;
+        }
+
+        private static void AddUserCustomDetails(DiscoDataContext database, List<DeviceExportRecord> records, IScheduledTaskStatus status)
+        {
+            if (!records.Any(r => r.AssignedUser != null))
+                return;
+            status.UpdateStatus(50, "Extracting custom user detail records");
+            var detailsService = new DetailsProviderService(database);
+            var cache = new Dictionary<string, Dictionary<string, string>>(StringComparer.Ordinal);
+            foreach (var record in records)
+            {
+                var userId = record.AssignedUser?.UserId;
+                if (string.IsNullOrWhiteSpace(userId))
+                    continue;
+                if (!cache.TryGetValue(userId, out var details))
+                    details = detailsService.GetDetails(record.AssignedUser);
+                record.AssignedUserCustomDetails = details;
+            }
         }
 
         public ExportMetadata<DeviceExportOptions, DeviceExportRecord> BuildMetadata(DiscoDataContext database, List<DeviceExportRecord> records, IScheduledTaskStatus taskStatus)
         {
             var metadata = new ExportMetadata<DeviceExportOptions, DeviceExportRecord>(Options);
-            metadata.IgnoreShortNames.Add("Device");
-            metadata.IgnoreShortNames.Add("Details");
+            metadata.IgnoreGroupNames.Add("Device");
+            metadata.IgnoreGroupNames.Add("Details");
 
             // Device
             metadata.Add(o => o.DeviceSerialNumber, r => r.Device.SerialNumber);
@@ -233,13 +249,10 @@ namespace Disco.Services.Devices
             metadata.Add(o => o.AssignedUserEmailAddress, r => r.AssignedUser?.EmailAddress);
 
             // User Custom Details
-            if (Options.AssignedUserDetailCustom)
+            if (Options.UserDetailCustom.Any())
             {
-                var keys = records.Where(r => r.AssignedUserCustomDetails != null).SelectMany(r => r.AssignedUserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-                foreach (var key in keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
-                {
-                    metadata.Add(key, r => r.AssignedUserCustomDetails != null && r.AssignedUserCustomDetails.TryGetValue(key, out var value) ? value : null);
-                }
+                foreach (var key in Options.UserDetailCustom.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
+                    metadata.Add($"Assigned User Detail {key.TrimEnd('*', '&')}", r => r.AssignedUserCustomDetails != null && r.AssignedUserCustomDetails.TryGetValue(key, out var value) ? value : null);
             }
 
             // Jobs

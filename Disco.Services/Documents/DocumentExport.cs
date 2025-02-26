@@ -4,14 +4,14 @@ using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
 using Disco.Models.Services.Exporting;
 using Disco.Services.Exporting;
+using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Tasks;
+using Disco.Services.Users;
 using Newtonsoft.Json;
-using System.Data.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using Disco.Services.Users;
-using Disco.Services.Plugins.Features.DetailsProvider;
 
 namespace Disco.Services.Documents
 {
@@ -110,12 +110,10 @@ namespace Disco.Services.Documents
             metadata.Add(o => o.UserEmailAddress, r => r.User?.EmailAddress);
 
             // User Custom Details
-            if (Options.UserDetailCustom.Any())
+            if (Options.UserDetailCustom?.Any() ?? false)
             {
                 foreach (var key in Options.UserDetailCustom.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
-                {
-                    metadata.Add(key, r => r.UserCustomDetails != null && r.UserCustomDetails.TryGetValue(key, out var value) ? value : null);
-                }
+                    metadata.Add($"User Detail {key.TrimEnd('*', '&')}", r => r.UserCustomDetails != null && r.UserCustomDetails.TryGetValue(key, out var value) ? value : null);
             }
 
             return metadata;

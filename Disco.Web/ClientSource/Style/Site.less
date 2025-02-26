@@ -217,6 +217,7 @@ header, #header {
 }
 
 #QuickSearchMenu {
+    width: 190px !important;
     max-height: 400px;
     font-size: .9em;
     background: none;
@@ -253,6 +254,9 @@ header, #header {
     position: relative;
     border-left: 1px solid @BackgroundColour;
     border-right: 1px solid @BackgroundColour;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     a {
         text-decoration: none;
@@ -1708,5 +1712,43 @@ i.clipboard-button {
 
     &:hover {
         color: @ButtonHoverColour;
+    }
+}
+
+#Export_Exporting {
+    padding-top: 50px;
+    text-align: center;
+
+    i {
+        margin-right: 10px;
+        color: @StatusInformation;
+    }
+}
+
+#Export_Download_Dialog {
+    padding-top: 20px;
+    text-align: center;
+
+    h4 {
+        margin-bottom: 30px;
+    }
+
+    a {
+        margin-bottom: 20px;
+    }
+}
+
+#Export_Fields {
+    #Export_Fields_Defaults {
+        font-size: .75em;
+    }
+
+    th {
+        font-size: 1.05em;
+
+        span {
+            margin-top: 4px;
+            font-size: .8em;
+        }
     }
 }
