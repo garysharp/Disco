@@ -1,6 +1,5 @@
 ﻿@* Generator: WebPagesHelper *@
 @using Disco;
-@using Disco.BI.Extensions;
 @using Disco.Models.Repository;
 @using Disco.Services;
 @using Disco.Services.Web;
@@ -9,9 +8,9 @@
 @using System.Web.Mvc.Html;
 
 @helper FriendlyDate(DateTime d, string ElementId = null, bool WithoutSuffix = false)
-{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime()" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime()</span>}
+{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId))) title="@d.ToFullDateTime()" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime()</span>}
 @helper FriendlyDate(DateTime? d, string NullValue = "n/a", string ElementId = null, bool WithoutSuffix = false)
-{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId)))title="@d.ToFullDateTime(NullValue)" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime(NullValue)</span>}
+{<span @(ElementId == null ? null : new HtmlString(string.Format("id=\"{0}\" ", ElementId))) title="@d.ToFullDateTime(NullValue)" data-livestamp="@d.ToUnixEpoc()" data-isodate="@d.ToISO8601()" class="date nowrap@(WithoutSuffix ? " noMomentSuffix" : null)">@d.ToFullDateTime(NullValue)</span>}
 @helper FriendlyDateAndUser(DateTime? d, User u, string DateNullValue = "n/a", bool WithoutSuffix = false)
 {
     @FriendlyDate(d, DateNullValue, WithoutSuffix: WithoutSuffix);
@@ -43,23 +42,23 @@
 @helper FriendlyUser(User u, string nullValue = null, string prepend = null)
 {
     if (u != null)
-    { 
-    @prepend <span title="@u">@u.FriendlyId()</span>
+    {
+        @prepend <span title="@u">@u.FriendlyId()</span>
     }
     else
-    { 
-    <span>@nullValue</span>
+    {
+        <span>@nullValue</span>
     }
 }
 @helper FriendlyUser(string UserId, string nullValue = null, string prepend = null)
 {
     if (UserId != null)
-    { 
-    @prepend <span>@Disco.Services.Interop.ActiveDirectory.ActiveDirectory.FriendlyAccountId(UserId)</span>
+    {
+        @prepend <span>@Disco.Services.Interop.ActiveDirectory.ActiveDirectory.FriendlyAccountId(UserId)</span>
     }
     else
-    { 
-    <span>@nullValue</span>
+    {
+        <span>@nullValue</span>
     }
 }
 
@@ -102,21 +101,24 @@
         <tr>
             @for (int i = 0; i < columns; i++)
             {
-                <td@(alignEven ? new HtmlString(string.Format(" style=\"width: {0}%\"", columnWidth)) : new HtmlString(string.Empty))>
+                <td @(alignEven ? new HtmlString(string.Format(" style=\"width: {0}%\"", columnWidth)) : new HtmlString(string.Empty))>
                     <ul class="none">
                         @{
-                int itemsForThisColumn = itemsPerColumn + (items.Count % columns > i ? 1 : 0);
-                for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < items.Count; i2++)
-                {
-                    var item = items[itemNextId];
-                    itemNextId++;
-                    var itemId = forceUniqueIds.HasValue ? string.Format("{0}_{1}_{2}", id, item.Value, forceUniqueIds++) : string.Format("{0}_{1}", id, item.Value);
-                            <li>
-                                <input id="@itemId" name="@id" value="@item.Value" type="@inputType" @(item.Selected ? new HtmlString("checked=\"checked\" ") : null)/><label for="@itemId">@if (htmlEncodeText)
-                                                                                                                                                                                            { @item.Text }
-                                                                                                                                                                                            else
-                                                                                                                                                                                            { @(new HtmlString(item.Text)) }</label></li>
-                }
+                            int itemsForThisColumn = itemsPerColumn + (items.Count % columns > i ? 1 : 0);
+                            for (int i2 = 0; i2 < itemsForThisColumn && itemNextId < items.Count; i2++)
+                            {
+                                var item = items[itemNextId];
+                                itemNextId++;
+                                var itemId = forceUniqueIds.HasValue ? string.Format("{0}_{1}_{2}", id, item.Value, forceUniqueIds++) : string.Format("{0}_{1}", id, item.Value);
+                                <li>
+                                    <input id="@itemId" name="@id" value="@item.Value" type="@inputType" @(item.Selected ? new HtmlString("checked=\"checked\" ") : null) /><label for="@itemId">
+                                        @if (htmlEncodeText)
+                                        {@item.Text }
+                                    else
+                                    { @(new HtmlString(item.Text))}
+                                    </label>
+                                </li>
+                            }
                         }
                     </ul>
                 </td>
@@ -133,15 +135,15 @@
         var breadCrumb = BreadCrumbs[index];
         if (index != 0)
         {
-    <span>&gt;</span>
+            <span>&gt;</span>
         }
         if (breadCrumb.Item2 == null)
         {
-    @breadCrumb.Item1
+            <span title="@breadCrumb.Item1">@breadCrumb.Item1</span>
         }
         else
-        { 
-    @Html.GetPageHelper().ActionLink(breadCrumb.Item1, breadCrumb.Item2)
+        {
+            @Html.GetPageHelper().ActionLink(breadCrumb.Item1, breadCrumb.Item2)
         }
     }
 }
@@ -156,9 +158,9 @@
         var breadCrumb = BreadCrumbs[index];
         if (index != 0)
         {
-    @(new HtmlString(" > "))
+            @(new HtmlString(" > "))
         }
-    @breadCrumb.Item1
+        @breadCrumb.Item1
     }
 }
 @helper BreadcrumbsTitle(string Title)

@@ -65,16 +65,14 @@ namespace Disco.Models.Repository
         public AttachmentTypes HasAttachmentType { get { return AttachmentTypes.User; } }
 
         public override string ToString()
-        {
-            return string.Format("{0} ({1})", this.DisplayName, this.UserId);
-        }
+            => $"{DisplayName} ({UserId})";
 
         public bool UpdateSelf(User u)
         {
             var changed = false;
 
             if (!this.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException("User Id's do not match", "u");
+                throw new ArgumentException("User Id's do not match", nameof(u));
 
             if (this.Surname != u.Surname)
             {

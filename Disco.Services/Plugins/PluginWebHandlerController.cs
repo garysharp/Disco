@@ -14,7 +14,7 @@ namespace Disco.Services.Plugins
         public void OnAuthorization(AuthorizationContext authorizationContext, string actionName)
         {
             var actionDescriptor = (PluginActionDescriptor)authorizationContext.ActionDescriptor;
-            
+
             var authorizationFilters = actionDescriptor.GetAuthorizationFilters;
             foreach (var filter in authorizationFilters)
             {
@@ -144,11 +144,28 @@ namespace Disco.Services.Plugins
             {
                 this.controllerDescription = controllerDescription;
                 this.methodInfo = methodInfo;
-                UniqueId = $"{ControllerDescriptor.UniqueId}_{methodName}";
-                ActionName = methodName;
                 authorizationFilters = DiscoverAuthorizationFilters();
                 methodSelector = DiscoverMethodSelector();
                 parameterDescriptors = DiscoverParameters();
+
+                switch (methodSelector)
+                {
+                    case HttpPostAttribute _:
+                        methodName += ":POST";
+                        break;
+                    case HttpGetAttribute _:
+                        methodName += ":GET";
+                        break;
+                    case HttpPutAttribute _:
+                        methodName += ":PUT";
+                        break;
+                    case HttpDeleteAttribute _:
+                        methodName += ":DELETE";
+                        break;
+                }
+
+                ActionName = methodName;
+                UniqueId = $"{ControllerDescriptor.UniqueId}_{methodName}";
             }
 
             private IAuthorizationFilter[] DiscoverAuthorizationFilters()
@@ -311,14 +328,19 @@ namespace Disco.Services.Plugins
                 var methods = Array.FindAll(ControllerType.GetMethods(BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly), mi => { return !mi.IsSpecialName && typeof(ActionResult).IsAssignableFrom(mi.ReturnType); });
                 foreach (var method in methods)
                 {
-                    actions.Add(method.Name, new PluginActionDescriptor(this, method.Name, method));
+                    var descriptor = new PluginActionDescriptor(this, method.Name, method);
+                    actions.Add(descriptor.ActionName, descriptor);
                 }
                 return actions;
             }
 
             public override ActionDescriptor FindAction(ControllerContext controllerContext, string actionName)
             {
-                if (actions.TryGetValue(actionName, out var action))
+                var method = controllerContext.HttpContext.Request.HttpMethod.ToUpperInvariant();
+
+                if (actions.TryGetValue($"{actionName}:{method}", out var action))
+                    return action;
+                if (actions.TryGetValue(actionName, out action))
                     return action;
                 else
                     return null;
