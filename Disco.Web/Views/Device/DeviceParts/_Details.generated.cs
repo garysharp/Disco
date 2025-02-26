@@ -1526,7 +1526,7 @@ WriteLiteral(@"</code>
                                         });
                                     }
                                     $container.find('button[data-action=""show""]').on('click', function () {
-                                        $container.find('code').removeClass('hidden');
+                                        $container.find('code').css('display', 'block').removeClass('hidden');
                                         $(this).remove();
                                     });
                                 });

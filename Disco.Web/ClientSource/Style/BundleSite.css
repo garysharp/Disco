@@ -5887,7 +5887,7 @@ div.columnHost .column50 {
   width: 50%;
 }
 .hidden {
-  display: none !important;
+  display: none;
 }
 .success {
   color: #60A917;
