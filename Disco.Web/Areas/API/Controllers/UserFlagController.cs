@@ -414,6 +414,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (Model == null || Model.Options == null)
                 throw new ArgumentNullException(nameof(Model));
 
+            Database.DiscoConfiguration.UserFlags.LastExportOptions = Model.Options;
+            Database.SaveChanges();
+
             // Start Export
             var exportContext = new UserFlagExport(Model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.UserFlag.Export(id, null, null)));
@@ -446,6 +449,8 @@ namespace Disco.Web.Areas.API.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult SaveExport(ExportModel Model)
         {
+            Database.DiscoConfiguration.UserFlags.LastExportOptions = Model.Options;
+
             var export = new UserFlagExport(Model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 

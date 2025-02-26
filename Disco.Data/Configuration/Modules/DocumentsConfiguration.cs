@@ -15,5 +15,11 @@ namespace Disco.Data.Configuration.Modules
             get { return Get<List<DocumentTemplatePackage>>(null); }
             set { Set(value); }
         }
+
+        public DocumentExportOptions LastExportOptions
+        {
+            get => Get(DocumentExportOptions.DefaultOptions());
+            set => Set(value);
+        }
     }
 }

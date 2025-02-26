@@ -77,6 +77,8 @@
     <Compile Include="Configuration\ConfigurationCache.cs" />
     <Compile Include="Configuration\Modules\ActiveDirectoryConfiguration.cs" />
     <Compile Include="Configuration\Modules\DevicesConfiguration.cs" />
+    <Compile Include="Configuration\Modules\DeviceFlagsConfiguration.cs" />
+    <Compile Include="Configuration\Modules\UserFlagsConfiguration.cs" />
     <Compile Include="Configuration\Modules\DocumentsConfiguration.cs" />
     <Compile Include="Configuration\Modules\JobPreferencesConfiguration.cs" />
     <Compile Include="Configuration\SystemConfiguration.cs" />

@@ -409,6 +409,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (Model == null || Model.Options == null)
                 throw new ArgumentNullException(nameof(Model));
 
+            Database.DiscoConfiguration.DeviceFlags.LastExportOptions = Model.Options;
+            Database.SaveChanges();
+
             // Start Export
             var exportContext = new DeviceFlagExport(Model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.DeviceFlag.Export(id, null, null)));
@@ -444,6 +447,8 @@ namespace Disco.Web.Areas.API.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult SaveExport(ExportModel Model)
         {
+            Database.DiscoConfiguration.DeviceFlags.LastExportOptions = Model.Options;
+
             var export = new DeviceFlagExport(Model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 

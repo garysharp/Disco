@@ -125,7 +125,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new ExportModel()
             {
-                Options = DeviceFlagExportOptions.DefaultOptions(),
+                Options = Database.DiscoConfiguration.DeviceFlags.LastExportOptions,
                 DeviceFlags = DeviceFlagService.GetDeviceFlags(),
             };
 

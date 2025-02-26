@@ -302,7 +302,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new ExportModel()
             {
-                Options = DocumentExportOptions.DefaultOptions(),
+                Options = Database.DiscoConfiguration.Documents.LastExportOptions,
                 DocumentTemplates = Database.DocumentTemplates.OrderBy(d => d.Id).ToList(),
             };
 

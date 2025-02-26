@@ -128,7 +128,7 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             var m = new ExportModel()
             {
-                Options = UserFlagExportOptions.DefaultOptions(),
+                Options = Database.DiscoConfiguration.UserFlags.LastExportOptions,
                 UserFlags = UserFlagService.GetUserFlags(),
             };
 

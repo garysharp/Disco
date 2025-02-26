@@ -20,6 +20,8 @@ namespace Disco.Data.Configuration
             moduleActiveDirectoryConfiguration = new Lazy<Modules.ActiveDirectoryConfiguration>(() => new Modules.ActiveDirectoryConfiguration(Database));
             moduleDevicesConfiguration = new Lazy<Modules.DevicesConfiguration>(() => new Modules.DevicesConfiguration(Database));
             moduleDocumentsConfiguration = new Lazy<Modules.DocumentsConfiguration>(() => new Modules.DocumentsConfiguration(Database));
+            moduleUserFlagsConfiguration = new Lazy<Modules.UserFlagsConfiguration>(() => new Modules.UserFlagsConfiguration(Database));
+            moduleDeviceFlagsConfiguration = new Lazy<Modules.DeviceFlagsConfiguration>(() => new Modules.DeviceFlagsConfiguration(Database));
         }
 
         #region Configuration Modules
@@ -31,57 +33,18 @@ namespace Disco.Data.Configuration
         private Lazy<Modules.ActiveDirectoryConfiguration> moduleActiveDirectoryConfiguration;
         private Lazy<Modules.DevicesConfiguration> moduleDevicesConfiguration;
         private Lazy<Modules.DocumentsConfiguration> moduleDocumentsConfiguration;
+        private Lazy<Modules.UserFlagsConfiguration> moduleUserFlagsConfiguration;
+        private Lazy<Modules.DeviceFlagsConfiguration> moduleDeviceFlagsConfiguration;
 
-        public Modules.BootstrapperConfiguration Bootstrapper
-        {
-            get
-            {
-                return moduleBootstrapperConfiguration.Value;
-            }
-        }
-        public Modules.DeviceProfilesConfiguration DeviceProfiles
-        {
-            get
-            {
-                return moduleDeviceProfilesConfiguration.Value;
-            }
-        }
-        public Modules.OrganisationAddressesConfiguration OrganisationAddresses
-        {
-            get
-            {
-                return moduleOrganisationAddressesConfiguration.Value;
-            }
-        }
-        public Modules.JobPreferencesConfiguration JobPreferences
-        {
-            get
-            {
-                return moduleJobPreferencesConfiguration.Value;
-            }
-        }
-        public Modules.ActiveDirectoryConfiguration ActiveDirectory
-        {
-            get
-            {
-                return moduleActiveDirectoryConfiguration.Value;
-            }
-        }
-        public Modules.DevicesConfiguration Devices
-        {
-            get
-            {
-                return moduleDevicesConfiguration.Value;
-            }
-        }
-
-        public Modules.DocumentsConfiguration Documents
-        {
-            get
-            {
-                return moduleDocumentsConfiguration.Value;
-            }
-        }
+        public Modules.BootstrapperConfiguration Bootstrapper => moduleBootstrapperConfiguration.Value;
+        public Modules.DeviceProfilesConfiguration DeviceProfiles => moduleDeviceProfilesConfiguration.Value;
+        public Modules.OrganisationAddressesConfiguration OrganisationAddresses => moduleOrganisationAddressesConfiguration.Value;
+        public Modules.JobPreferencesConfiguration JobPreferences => moduleJobPreferencesConfiguration.Value;
+        public Modules.ActiveDirectoryConfiguration ActiveDirectory => moduleActiveDirectoryConfiguration.Value;
+        public Modules.DevicesConfiguration Devices => moduleDevicesConfiguration.Value;
+        public Modules.DocumentsConfiguration Documents => moduleDocumentsConfiguration.Value;
+        public Modules.UserFlagsConfiguration UserFlags => moduleUserFlagsConfiguration.Value;
+        public Modules.DeviceFlagsConfiguration DeviceFlags => moduleDeviceFlagsConfiguration.Value;
 
         #endregion
 
@@ -95,26 +58,27 @@ namespace Disco.Data.Configuration
                 if (result == null)
                 {
                     var appDataPath = System.Web.HttpContext.Current.Server.MapPath("~/App_Data");
-                    if (appDataPath.EndsWith("\\"))
-                        return appDataPath;
-                    else
-                        return string.Concat(appDataPath, '\\');
+                    
+                    if (!appDataPath.EndsWith(@"\"))
+                        appDataPath += @"\";
+
+                    return appDataPath;
                 }
                 else
                     return result;
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                if (!System.IO.Directory.Exists(value))
-                    throw new System.IO.DirectoryNotFoundException(string.Format("DataStoreLocation: '{0}' could not be found", value));
-                string storePath;
-                if (value.EndsWith("\\"))
-                    storePath = value;
-                else
-                    storePath = string.Concat(value, '\\');
-                Set(storePath);
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentNullException(nameof(value));
+
+                if (!Directory.Exists(value))
+                    throw new DirectoryNotFoundException($"DataStoreLocation: '{value}' could not be found");
+
+                if (!value.EndsWith(@"\"))
+                    value += @"\";
+
+                Set(value);
             }
         }
 
@@ -131,30 +95,10 @@ namespace Disco.Data.Configuration
         }
 
         #region Plugin Locations
-        public string PluginsLocation
-        {
-            get
-            {
-                return System.IO.Path.Combine(DataStoreLocation, @"Plugins\");
-            }
-        }
-        public string PluginStorageLocation
-        {
-            get
-            {
-                return System.IO.Path.Combine(DataStoreLocation, @"PluginStorage\");
-            }
-        }
-        public string PluginPackagesLocation
-        {
-            get
-            {
-                return System.IO.Path.Combine(DataStoreLocation, @"PluginPackages\");
-            }
-        }
-
-        public string PluginUserPhotosLocation
-            => Path.Combine(DataStoreLocation, @"PluginUserPhotos\");
+        public string PluginsLocation => Path.Combine(DataStoreLocation, @"Plugins\");
+        public string PluginStorageLocation => Path.Combine(DataStoreLocation, @"PluginStorage\");
+        public string PluginPackagesLocation => Path.Combine(DataStoreLocation, @"PluginPackages\");
+        public string PluginUserPhotosLocation => Path.Combine(DataStoreLocation, @"PluginUserPhotos\");
 
         public DateTime PluginDetailsCacheExpiration
         {

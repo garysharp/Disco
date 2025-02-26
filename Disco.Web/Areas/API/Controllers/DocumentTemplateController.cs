@@ -1462,6 +1462,9 @@ namespace Disco.Web.Areas.API.Controllers
             if (Model.Options.DocumentTemplateIds.Count == 1)
                 templateId = Model.Options.DocumentTemplateIds.First();
 
+            Database.DiscoConfiguration.Documents.LastExportOptions = Model.Options;
+            Database.SaveChanges();
+
             // Start Export
             var exportContext = new DocumentExport(Model.Options);
             var taskContext = ExportTask.ScheduleNowCacheResult(exportContext, id => Url.Action(MVC.Config.DocumentTemplate.Export(templateId, id)));
@@ -1494,6 +1497,8 @@ namespace Disco.Web.Areas.API.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult SaveExport(ExportModel Model)
         {
+            Database.DiscoConfiguration.Documents.LastExportOptions = Model.Options;
+
             var export = new DocumentExport(Model.Options);
             var savedExport = SavedExports.SaveExport(export, Database, CurrentUser);
 
