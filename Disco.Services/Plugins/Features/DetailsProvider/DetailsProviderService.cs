@@ -87,9 +87,6 @@ namespace Disco.Services.Plugins.Features.DetailsProvider
 
         public Dictionary<string, string> GetDetails(User user)
         {
-            if (!UserService.CurrentAuthorization.HasAll(Claims.User.Show, Claims.User.ShowDetails))
-                return new Dictionary<string, string>();
-
             if (user.UserDetails != null)
             {
                 return user.UserDetails
