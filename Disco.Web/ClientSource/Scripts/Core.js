@@ -58474,18 +58474,19 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
     $(function () {
 
         // Search Functionality
-        var quickSearchInited = false;
-        $('#SearchQuery').watermark('Search').keypress(function (e) {
+        let quickSearchInited = false;
+        $('#SearchQuery').keypress(function (e) {
             if (e.keyCode == 13) {
+                e.preventDefault();
                 $(this).closest('form').submit();
                 return false;
             }
         }).focus(function () {
-            $this = $(this);
+            const $this = $(this);
             $this.select();
 
             if (!quickSearchInited) {
-                var quickSearchUrl = $this.attr('data-quicksearchurl');
+                const quickSearchUrl = $this.attr('data-quicksearchurl');
                 if (quickSearchUrl) {
                     $this.autocomplete({
                         source: quickSearchUrl,
@@ -58496,7 +58497,7 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                         },
                         response: function (e, ui) {
                             for (var i = 0; i < ui.content.length; i++) {
-                                var item = ui.content[i];
+                                const item = ui.content[i];
                                 switch (item.Type) {
                                     case 'Device':
                                         item.tag = '!' + item.Id;
@@ -58513,7 +58514,7 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                     }).autocomplete("widget").attr('id', 'QuickSearchMenu');
 
                     $this.data('ui-autocomplete')._renderItem = function (ul, item) {
-                        var template;
+                        let template;
 
                         //"<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>"
 
@@ -58547,14 +58548,14 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
         });
 
         // Menu Functionality
-        var $menu = $('#menu');
+        const $menu = $('#menu');
 
         if ($menu.length > 0) {
 
             function subMenuShow() {
-                var $this = $(this);
-                var $subMenu = $this.children('ul');
-                var hideToken = $this.data('menuHideToken');
+                const $this = $(this);
+                const $subMenu = $this.children('ul');
+                const hideToken = $this.data('menuHideToken');
 
                 if (hideToken)
                     window.clearTimeout(hideToken);
@@ -58563,8 +58564,8 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                     $subMenu.show();
             }
             function subMenuHide() {
-                var $this = $(this);
-                var $subMenu = $this.children('ul');
+                const $this = $(this);
+                const $subMenu = $this.children('ul');
 
                 var hideToken = window.setTimeout(function () {
                     $subMenu.hide();
@@ -58573,9 +58574,9 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                 $this.data('menuHideToken', hideToken);
             }
             function subMenuTouchDown(e, preventClick) {
-                var $this = $(this);
-                var $link = $this.children('a');
-                var $subMenu = $this.children('ul');
+                const $this = $(this);
+                const $link = $this.children('a');
+                const $subMenu = $this.children('ul');
 
                 if (!$subMenu.is(':visible')) {
 
@@ -58587,7 +58588,7 @@ jQuery.fn.DataTable.defaults.aLengthMenu = [[10, 20, 50, 100, 200, -1], [10, 20,
                     if (preventClick) {
                         // Stop Click Event
                         if ($link.length > 0) {
-                            var preventClick = function () { $link.off('click', preventClick); return false; }
+                            const preventClick = function () { $link.off('click', preventClick); return false; }
                             $link.on('click', preventClick);
                         }
                     }
