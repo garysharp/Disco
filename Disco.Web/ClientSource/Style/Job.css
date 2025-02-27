@@ -76,12 +76,8 @@
   opacity: 1;
 }
 #layout_PageHeading #Job_Show_Status {
-  /*position: absolute;
-        right: 20px;
-        top: 6px;*/
   margin-left: 20px;
   display: inline-block;
-  height: 50px;
   font-family: "Segoe UI", Arial, Verdana, Tahoma, sans-serif;
   font-weight: lighter;
   font-stretch: condensed;
@@ -94,7 +90,6 @@
 #layout_PageHeading #Job_Show_QueueStatus {
   display: inline-block;
   float: right;
-  height: 50px;
   font-size: 0.6em;
 }
 #layout_PageHeading #pendingEnrolments {
