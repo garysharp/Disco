@@ -52,7 +52,7 @@ namespace Disco.Services.Devices
                     break;
                 case DeviceExportTypes.Batch:
                     if (Options.ExportTypeTargetId.HasValue && Options.ExportTypeTargetId.Value > 0)
-                        query = query.Where(d => d.DeviceBatchId != Options.ExportTypeTargetId);
+                        query = query.Where(d => d.DeviceBatchId == Options.ExportTypeTargetId);
                     else
                         query = query.Where(d => d.DeviceBatchId != null);
                     break;
