@@ -105,7 +105,7 @@ namespace Disco.Services.Interop.DiscoServices
                                 throw new InvalidOperationException($"Failed to authenticate ({authResponse.ErrorMessage})");
 
                             token = authResponse.Token;
-                            tokenExpires = DateTime.Now.AddSeconds(authResponse.ExpiresInSeconds.Value);
+                            tokenExpires = DateTime.UtcNow.AddSeconds(authResponse.ExpiresInSeconds.Value);
 
                             return token;
                         }
