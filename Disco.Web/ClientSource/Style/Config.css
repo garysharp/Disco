@@ -1018,6 +1018,7 @@ h1.Config_DocumentTemplates {
 .deviceBatches #DeviceBatch_Attachments {
   border: 1px solid #ccc;
   background-color: #fff;
+  position: relative;
 }
 .deviceBatches #DeviceBatch_Attachments div.attachmentOutput {
   position: relative;

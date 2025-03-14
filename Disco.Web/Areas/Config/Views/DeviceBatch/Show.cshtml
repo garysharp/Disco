@@ -668,8 +668,8 @@
         <tr>
             <th>Attachments:</th>
             <td>
-
-                <div id="DeviceBatch_Attachments" class="@(canConfig ? "canAddAttachments" : "cannotAddAttachments")">
+                <div id="DeviceBatch_Attachments" class="@(canConfig ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.DeviceBatch.AttachmentUpload(Model.DeviceBatch.Id, null)))">
+                    @Html.AntiForgeryToken()
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -694,7 +694,7 @@
                     {
                         <div class="Disco-AttachmentUpload-Progress"></div>
                         <div class="attachmentInput clearfix">
-                            <span class="action upload fa fa-upload disabled" title="Attach File"></span><span class="action photo fa fa-camera disabled" title="Capture Image"></span>
+                            <span class="action enabled upload fa fa-upload disabled" title="Attach File"></span><span class="action enabled photo fa fa-camera disabled" title="Capture Image"></span>
                         </div>
                         <div id="dialogRemoveAttachment" class="dialog" title="Remove this Attachment?">
                             <p>
@@ -726,20 +726,20 @@
                             $.connection.hub.disconnected(onHubFailed);
 
                             $.connection.hub.reconnecting(function () {
-                                $Attachments.find('span.action').addClass('disabled');
+                                $Attachments.find('span.action.enabled').addClass('disabled');
                             });
                             $.connection.hub.reconnected(function () {
-                                $Attachments.find('span.action').removeClass('disabled');
+                                $Attachments.find('span.action.enabled').removeClass('disabled');
                             });
 
                             // Start Connection
                             $.connection.hub.start(function () {
-                                $Attachments.find('span.action').removeClass('disabled');
+                                $Attachments.find('span.action.enabled').removeClass('disabled');
                             }).fail(onHubFailed);
 
                             function onHubFailed(error) {
                                 // Disable UI
-                                $Attachments.find('span.action').addClass('disabled');
+                                $Attachments.find('span.action.enabled').addClass('disabled');
 
                                 // Show Dialog Message
                                 if ($('.disconnected-dialog').length == 0) {
@@ -876,14 +876,19 @@
                         @if (canConfig)
                         {<text>
                             //#region Add Attachments
-                            var attachmentUploader = new document.Disco.AttachmentUploader(
-                                '@(Url.Action(MVC.API.DeviceBatch.AttachmentUpload(Model.DeviceBatch.Id, null)))',
-                            $Attachments.find('.Disco-AttachmentUpload-DropTarget'),
-                            $Attachments.find('.Disco-AttachmentUpload-Progress'));
+                            var attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
 
                             var $attachmentInput = $Attachments.find('.attachmentInput');
+                            if (window.location.protocol != 'https:') {
+                                $attachmentInput.find('.photo')
+                                    .removeClass('enabled')
+                                    .addClass('disabled')
+                                    .attr('title', 'Capture Image: this functionality is only available over a HTTPS connection');
+                            }
                             $attachmentInput.find('.photo').click(function () {
-                                if ($(this).hasClass('disabled'))
+                                if (!$(this).hasClass('enabled'))
+                                    alert('This functionality is only available over a HTTPS connection');
+                                else if ($(this).hasClass('disabled'))
                                     alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
                                 else
                                     attachmentUploader.uploadImage();

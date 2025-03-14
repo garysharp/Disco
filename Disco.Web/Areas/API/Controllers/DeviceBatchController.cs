@@ -652,7 +652,8 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
-        public virtual ActionResult AttachmentUpload(int id, string Comments)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult AttachmentUpload(int id, string comments)
         {
             var batch = Database.DeviceBatches.Find(id);
             if (batch != null)
@@ -666,14 +667,14 @@ namespace Disco.Web.Areas.API.Controllers
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = MimeTypes.ResolveMimeType(file.FileName);
 
-                        var attachment = new Disco.Models.Repository.DeviceBatchAttachment()
+                        var attachment = new DeviceBatchAttachment()
                         {
                             DeviceBatchId = batch.Id,
                             TechUserId = CurrentUser.UserId,
                             Filename = file.FileName,
                             MimeType = contentType,
                             Timestamp = DateTime.Now,
-                            Comments = Comments
+                            Comments = comments
                         };
                         Database.DeviceBatchAttachments.Add(attachment);
                         Database.SaveChanges();

@@ -2001,21 +2001,43 @@ WriteLiteral(">&lt;None Specified&gt;</span>");
             #line default
             #line hidden
 WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Attachments:</th>" +
-"\r\n            <td>\r\n\r\n                <div");
+"\r\n            <td>\r\n                <div");
 
 WriteLiteral(" id=\"DeviceBatch_Attachments\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 34487), Tuple.Create("\"", 34554)
+WriteAttribute("class", Tuple.Create(" class=\"", 34485), Tuple.Create("\"", 34552)
             
-            #line 672 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 34495), Tuple.Create<System.Object, System.Int32>(canConfig ? "canAddAttachments" : "cannotAddAttachments"
+            #line 671 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 34493), Tuple.Create<System.Object, System.Int32>(canConfig ? "canAddAttachments" : "cannotAddAttachments"
             
             #line default
             #line hidden
-, 34495), false)
+, 34493), false)
 );
 
-WriteLiteral(">\r\n                    <div");
+WriteLiteral(" data-uploadurl=\"");
+
+            
+            #line 671 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+                                                                                                                                  Write(Url.Action(MVC.API.DeviceBatch.AttachmentUpload(Model.DeviceBatch.Id, null)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 672 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+               Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <div");
 
 WriteLiteral(" class=\"Disco-AttachmentUpload-DropTarget\"");
 
@@ -2044,14 +2066,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 35033), Tuple.Create("\"", 35106)
+WriteAttribute("href", Tuple.Create(" href=\"", 35174), Tuple.Create("\"", 35247)
             
             #line 681 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 35040), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceBatch.AttachmentDownload(attachment.Id))
+, Tuple.Create(Tuple.Create("", 35181), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceBatch.AttachmentDownload(attachment.Id))
             
             #line default
             #line hidden
-, 35040), false)
+, 35181), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -2080,28 +2102,28 @@ WriteLiteral(">\r\n                                    <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 35236), Tuple.Create("\"", 35264)
+WriteAttribute("title", Tuple.Create(" title=\"", 35377), Tuple.Create("\"", 35405)
             
             #line 682 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 35244), Tuple.Create<System.Object, System.Int32>(attachment.Filename
+, Tuple.Create(Tuple.Create("", 35385), Tuple.Create<System.Object, System.Int32>(attachment.Filename
             
             #line default
             #line hidden
-, 35244), false)
+, 35385), false)
 );
 
 WriteLiteral(">\r\n                                        <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 35339), Tuple.Create("\"", 35414)
+WriteAttribute("src", Tuple.Create(" src=\"", 35480), Tuple.Create("\"", 35555)
             
             #line 683 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 35345), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceBatch.AttachmentThumbnail(attachment.Id))
+, Tuple.Create(Tuple.Create("", 35486), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceBatch.AttachmentThumbnail(attachment.Id))
             
             #line default
             #line hidden
-, 35345), false)
+, 35486), false)
 );
 
 WriteLiteral(" />\r\n                                    </span>\r\n                               " +
@@ -2109,14 +2131,14 @@ WriteLiteral(" />\r\n                                    </span>\r\n            
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 35523), Tuple.Create("\"", 35551)
+WriteAttribute("title", Tuple.Create(" title=\"", 35664), Tuple.Create("\"", 35692)
             
             #line 685 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 35531), Tuple.Create<System.Object, System.Int32>(attachment.Comments
+, Tuple.Create(Tuple.Create("", 35672), Tuple.Create<System.Object, System.Int32>(attachment.Comments
             
             #line default
             #line hidden
-, 35531), false)
+, 35672), false)
 );
 
 WriteLiteral(">\r\n");
@@ -2168,14 +2190,14 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 35857), Tuple.Create("\"", 35903)
+WriteAttribute("title", Tuple.Create(" title=\"", 35998), Tuple.Create("\"", 36044)
             
             #line 688 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                                                , Tuple.Create(Tuple.Create("", 35865), Tuple.Create<System.Object, System.Int32>(attachment.Timestamp.ToFullDateTime()
+                                                , Tuple.Create(Tuple.Create("", 36006), Tuple.Create<System.Object, System.Int32>(attachment.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 35865), false)
+, 36006), false)
 );
 
 WriteLiteral(" data-livestamp=\"");
@@ -2236,13 +2258,13 @@ WriteLiteral(" class=\"attachmentInput clearfix\"");
 
 WriteLiteral(">\r\n                            <span");
 
-WriteLiteral(" class=\"action upload fa fa-upload disabled\"");
+WriteLiteral(" class=\"action enabled upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
 WriteLiteral("></span><span");
 
-WriteLiteral(" class=\"action photo fa fa-camera disabled\"");
+WriteLiteral(" class=\"action enabled photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
@@ -2305,39 +2327,39 @@ WriteLiteral(@">
 WriteLiteral("\' };\r\n                            $.connection.hub.error(onHubFailed);\r\n         " +
 "                   $.connection.hub.disconnected(onHubFailed);\r\n\r\n              " +
 "              $.connection.hub.reconnecting(function () {\r\n                     " +
-"           $Attachments.find(\'span.action\').addClass(\'disabled\');\r\n             " +
-"               });\r\n                            $.connection.hub.reconnected(fun" +
-"ction () {\r\n                                $Attachments.find(\'span.action\').rem" +
-"oveClass(\'disabled\');\r\n                            });\r\n\r\n                      " +
-"      // Start Connection\r\n                            $.connection.hub.start(fu" +
-"nction () {\r\n                                $Attachments.find(\'span.action\').re" +
-"moveClass(\'disabled\');\r\n                            }).fail(onHubFailed);\r\n\r\n   " +
-"                         function onHubFailed(error) {\r\n                        " +
-"        // Disable UI\r\n                                $Attachments.find(\'span.a" +
-"ction\').addClass(\'disabled\');\r\n\r\n                                // Show Dialog " +
-"Message\r\n                                if ($(\'.disconnected-dialog\').length ==" +
-" 0) {\r\n                                    $(\'<div>\')\r\n                         " +
-"               .addClass(\'dialog disconnected-dialog\')\r\n                        " +
-"                .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-" +
-"stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected fro" +
-"m the Disco ICT Server</h3><div>This page is not receiving live updates. Please " +
-"ensure you are connected to the server, then refresh this page to enable feature" +
-"s.</div>\')\r\n                                        .dialog({\r\n                 " +
-"                           resizable: false,\r\n                                  " +
-"          title: \'Disconnected\',\r\n                                            wi" +
-"dth: 400,\r\n                                            modal: true,\r\n           " +
-"                                 buttons: {\r\n                                   " +
-"             \'Refresh Now\': function () {\r\n                                     " +
-"               $(this).dialog(\'option\', \'buttons\', null);\r\n                     " +
-"                               window.location.reload(true);\r\n                  " +
-"                              },\r\n                                              " +
-"  \'Close\': function () {\r\n                                                    $(" +
-"this).dialog(\'destroy\');\r\n                                                }\r\n   " +
-"                                         }\r\n                                    " +
-"    });\r\n                                }\r\n                            }\r\n\r\n   " +
-"                         function onAddAttachment(id, quick) {\r\n                " +
-"                var data = { id: id };\r\n                                $.ajax({" +
-"\r\n                                    url: \'");
+"           $Attachments.find(\'span.action.enabled\').addClass(\'disabled\');\r\n     " +
+"                       });\r\n                            $.connection.hub.reconne" +
+"cted(function () {\r\n                                $Attachments.find(\'span.acti" +
+"on.enabled\').removeClass(\'disabled\');\r\n                            });\r\n\r\n      " +
+"                      // Start Connection\r\n                            $.connect" +
+"ion.hub.start(function () {\r\n                                $Attachments.find(\'" +
+"span.action.enabled\').removeClass(\'disabled\');\r\n                            }).f" +
+"ail(onHubFailed);\r\n\r\n                            function onHubFailed(error) {\r\n" +
+"                                // Disable UI\r\n                                $" +
+"Attachments.find(\'span.action.enabled\').addClass(\'disabled\');\r\n\r\n               " +
+"                 // Show Dialog Message\r\n                                if ($(\'" +
+".disconnected-dialog\').length == 0) {\r\n                                    $(\'<d" +
+"iv>\')\r\n                                        .addClass(\'dialog disconnected-di" +
+"alog\')\r\n                                        .html(\'<h3><span class=\"fa-stack" +
+" fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x er" +
+"ror\"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not" +
+" receiving live updates. Please ensure you are connected to the server, then ref" +
+"resh this page to enable features.</div>\')\r\n                                    " +
+"    .dialog({\r\n                                            resizable: false,\r\n  " +
+"                                          title: \'Disconnected\',\r\n              " +
+"                              width: 400,\r\n                                     " +
+"       modal: true,\r\n                                            buttons: {\r\n   " +
+"                                             \'Refresh Now\': function () {\r\n     " +
+"                                               $(this).dialog(\'option\', \'buttons" +
+"\', null);\r\n                                                    window.location.r" +
+"eload(true);\r\n                                                },\r\n              " +
+"                                  \'Close\': function () {\r\n                      " +
+"                              $(this).dialog(\'destroy\');\r\n                      " +
+"                          }\r\n                                            }\r\n    " +
+"                                    });\r\n                                }\r\n    " +
+"                        }\r\n\r\n                            function onAddAttachmen" +
+"t(id, quick) {\r\n                                var data = { id: id };\r\n        " +
+"                        $.ajax({\r\n                                    url: \'");
 
             
             #line 770 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
@@ -2507,51 +2529,47 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
             #line default
             #line hidden
 WriteLiteral("\r\n                            //#region Add Attachments\r\n                        " +
-"    var attachmentUploader = new document.Disco.AttachmentUploader(\r\n           " +
-"                     \'");
+"    var attachmentUploader = new document.Disco.AttachmentUploader($Attachments)" +
+";\r\n\r\n                            var $attachmentInput = $Attachments.find(\'.atta" +
+"chmentInput\');\r\n                            if (window.location.protocol != \'htt" +
+"ps:\') {\r\n                                $attachmentInput.find(\'.photo\')\r\n      " +
+"                              .removeClass(\'enabled\')\r\n                         " +
+"           .addClass(\'disabled\')\r\n                                    .attr(\'tit" +
+"le\', \'Capture Image: this functionality is only available over a HTTPS connectio" +
+"n\');\r\n                            }\r\n                            $attachmentInpu" +
+"t.find(\'.photo\').click(function () {\r\n                                if (!$(thi" +
+"s).hasClass(\'enabled\'))\r\n                                    alert(\'This functio" +
+"nality is only available over a HTTPS connection\');\r\n                           " +
+"     else if ($(this).hasClass(\'disabled\'))\r\n                                   " +
+" alert(\'Disconnected from the Disco ICT Server, please refresh this page and try" +
+" again\');\r\n                                else\r\n                               " +
+"     attachmentUploader.uploadImage();\r\n                            });\r\n       " +
+"                     $attachmentInput.find(\'.upload\').click(function () {\r\n     " +
+"                           if ($(this).hasClass(\'disabled\'))\r\n                  " +
+"                  alert(\'Disconnected from the Disco ICT Server, please refresh " +
+"this page and try again\');\r\n                                else\r\n              " +
+"                      attachmentUploader.uploadFiles();\r\n                       " +
+"     });\r\n                            //#endregion\r\n                            " +
+"//#region Remove Attachments\r\n                            $attachmentOutput.find" +
+"(\'span.remove\').click(removeAttachment);\r\n\r\n                            function" +
+" removeAttachment() {\r\n                                $this = $(this).closest(\'" +
+"a\');\r\n\r\n                                var data = { id: $this.attr(\'data-attach" +
+"mentid\') };\r\n\r\n                                if (!$dialogRemoveAttachment) {\r\n" +
+"                                    $dialogRemoveAttachment = $(\'#dialogRemoveAt" +
+"tachment\').dialog({\r\n                                        resizable: false,\r\n" +
+"                                        height: 140,\r\n                          " +
+"              modal: true,\r\n                                        autoOpen: fa" +
+"lse\r\n                                    });\r\n                                }\r" +
+"\n\r\n                                $dialogRemoveAttachment.dialog(\"enable\");\r\n  " +
+"                              $dialogRemoveAttachment.dialog(\'option\', \'buttons\'" +
+", {\r\n                                    \"Remove\": function () {\r\n              " +
+"                          $dialogRemoveAttachment.dialog(\"disable\");\r\n          " +
+"                              $dialogRemoveAttachment.dialog(\"option\", \"buttons\"" +
+", null);\r\n                                        $.ajax({\r\n                    " +
+"                        url: \'");
 
             
-            #line 880 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-                             Write(Url.Action(MVC.API.DeviceBatch.AttachmentUpload(Model.DeviceBatch.Id, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-DropTa" +
-"rget\'),\r\n                            $Attachments.find(\'.Disco-AttachmentUpload-" +
-"Progress\'));\r\n\r\n                            var $attachmentInput = $Attachments." +
-"find(\'.attachmentInput\');\r\n                            $attachmentInput.find(\'.p" +
-"hoto\').click(function () {\r\n                                if ($(this).hasClass" +
-"(\'disabled\'))\r\n                                    alert(\'Disconnected from the " +
-"Disco ICT Server, please refresh this page and try again\');\r\n                   " +
-"             else\r\n                                    attachmentUploader.upload" +
-"Image();\r\n                            });\r\n                            $attachme" +
-"ntInput.find(\'.upload\').click(function () {\r\n                                if " +
-"($(this).hasClass(\'disabled\'))\r\n                                    alert(\'Disco" +
-"nnected from the Disco ICT Server, please refresh this page and try again\');\r\n  " +
-"                              else\r\n                                    attachme" +
-"ntUploader.uploadFiles();\r\n                            });\r\n                    " +
-"        //#endregion\r\n                            //#region Remove Attachments\r\n" +
-"                            $attachmentOutput.find(\'span.remove\').click(removeAt" +
-"tachment);\r\n\r\n                            function removeAttachment() {\r\n       " +
-"                         $this = $(this).closest(\'a\');\r\n\r\n                      " +
-"          var data = { id: $this.attr(\'data-attachmentid\') };\r\n\r\n               " +
-"                 if (!$dialogRemoveAttachment) {\r\n                              " +
-"      $dialogRemoveAttachment = $(\'#dialogRemoveAttachment\').dialog({\r\n         " +
-"                               resizable: false,\r\n                              " +
-"          height: 140,\r\n                                        modal: true,\r\n  " +
-"                                      autoOpen: false\r\n                         " +
-"           });\r\n                                }\r\n\r\n                           " +
-"     $dialogRemoveAttachment.dialog(\"enable\");\r\n                                " +
-"$dialogRemoveAttachment.dialog(\'option\', \'buttons\', {\r\n                         " +
-"           \"Remove\": function () {\r\n                                        $dia" +
-"logRemoveAttachment.dialog(\"disable\");\r\n                                        " +
-"$dialogRemoveAttachment.dialog(\"option\", \"buttons\", null);\r\n                    " +
-"                    $.ajax({\r\n                                            url: \'" +
-"");
-
-            
-            #line 921 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 926 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                              Write(Url.Action(MVC.API.DeviceBatch.AttachmentRemove()));
 
             
@@ -2579,7 +2597,7 @@ WriteLiteral("\',\r\n                                            dataType: \'jso
 "endregion\r\n                        ");
 
             
-            #line 948 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 953 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                }
 
             
@@ -2602,13 +2620,13 @@ WriteLiteral(@"
 ");
 
             
-            #line 963 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 968 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 963 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 968 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
          if (hideAdvanced)
         {
 
@@ -2642,7 +2660,7 @@ WriteLiteral(@">Show Advanced Options</button>
 ");
 
             
-            #line 979 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 984 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
         }
 
             
@@ -2658,7 +2676,7 @@ WriteLiteral(">\r\n            <th>Linked Groups:\r\n            </th>\r\n      
 WriteLiteral("                    ");
 
             
-            #line 985 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 990 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -2676,7 +2694,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                    ");
 
             
-            #line 993 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 998 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -2692,13 +2710,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n");
 
             
-            #line 1001 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1006 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 1001 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1006 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                      if (canConfig)
                     {
                         
@@ -2706,14 +2724,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 1003 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1008 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                    Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared));
 
             
             #line default
             #line hidden
             
-            #line 1003 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1008 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                 
                     }
 
@@ -2723,7 +2741,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 1010 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1015 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
 
             
@@ -2736,13 +2754,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1012 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1017 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 1012 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1017 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.CanDelete)
     { 
         
@@ -2750,14 +2768,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1014 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1019 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 1014 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1019 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                 
     }
 
@@ -2767,7 +2785,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 1016 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1021 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
@@ -2777,14 +2795,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1020 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1025 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Batch, Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
             
-            #line 1020 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1025 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                       
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
@@ -2794,14 +2812,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1024 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1029 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
    Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch")));
 
             
             #line default
             #line hidden
             
-            #line 1024 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1029 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                                                
         }
     }

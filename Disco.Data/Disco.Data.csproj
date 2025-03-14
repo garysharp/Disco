@@ -189,6 +189,10 @@
     <Compile Include="Migrations\202412180604170_DBv25.Designer.cs">
       <DependentUpon>202412180604170_DBv25.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503140520548_DBv26.cs" />
+    <Compile Include="Migrations\202503140520548_DBv26.Designer.cs">
+      <DependentUpon>202503140520548_DBv26.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DiscoDataMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -278,6 +282,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202412180604170_DBv25.resx">
       <DependentUpon>202412180604170_DBv25.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503140520548_DBv26.resx">
+      <DependentUpon>202503140520548_DBv26.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
