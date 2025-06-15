@@ -7,6 +7,7 @@ using Disco.Services.Devices.Importing;
 using Disco.Services.Exporting;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Interop.DiscoServices.Upload;
 using Disco.Services.Logging;
 using Disco.Services.Users;
 using Disco.Services.Web;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
@@ -600,6 +602,38 @@ namespace Disco.Web.Areas.API.Controllers
                 return Json("OK", JsonRequestBehavior.AllowGet);
             }
             return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.AddAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> AttachmentOnlineUploadSession(string id)
+        {
+            var device = Database.Devices.Find(id) ?? throw new InvalidOperationException("Unknown Device Serial Number");
+
+            try
+            {
+                if (!Database.DiscoConfiguration.IsActivated)
+                    throw new InvalidOperationException("Activation is required to use this feature (See: Configuration > System)");
+
+                var (uri, expiration) = await UploadOnlineService.CreateSession(CurrentUser, device);
+
+                UploadOnlineSyncTask.ScheduleInOneHour();
+
+                return Json(new
+                {
+                    Success = true,
+                    Expiration = expiration.ToUnixEpoc(),
+                    SessionUri = uri.ToString(),
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message,
+                });
+            }
         }
 
         #endregion

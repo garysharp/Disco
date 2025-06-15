@@ -1,5 +1,6 @@
 ﻿using Disco.Services.Interop.ActiveDirectory;
 using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
@@ -18,7 +19,7 @@ namespace Disco.Web.Controllers
                 userDomain = null; // Url doesn't contain Domain if it is the default.
 
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", UserId.Substring(slashIndex + 1));
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", userDomain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "domain", userDomain);
         }
 
         [NonAction]
@@ -53,6 +54,16 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult Attachments(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
+
+            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+
+            return callInfo;
+        }
+
+        [NonAction]
+        public virtual ActionResult AttachmentOnlineUploadSession(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentOnlineUploadSession);
 
             Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
 

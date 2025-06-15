@@ -453,25 +453,27 @@
   padding: 3px;
 }
 #userShowResources #Attachments div.attachmentInput span.action {
-  color: #333;
   display: block;
   margin: 0 4px 0 0;
   font-size: 1.5em;
   cursor: pointer;
   float: right;
-  border: 1px solid #fff;
   padding: 0.5em;
 }
-#userShowResources #Attachments div.attachmentInput span.action:hover {
+#userShowResources #Attachments div.attachmentInput span.action:not(.fa-spin) {
+  color: #333;
+  border: 1px solid #fff;
+}
+#userShowResources #Attachments div.attachmentInput span.action:not(.fa-spin):hover {
   color: #335A87;
   background-color: #ededed;
   border: 1px solid #ccc;
 }
-#userShowResources #Attachments div.attachmentInput span.action.disabled {
+#userShowResources #Attachments div.attachmentInput span.action:not(.fa-spin).disabled {
   color: rgba(51, 51, 51, 0.2);
   cursor: default;
 }
-#userShowResources #Attachments div.attachmentInput span.action.disabled:hover {
+#userShowResources #Attachments div.attachmentInput span.action:not(.fa-spin).disabled:hover {
   color: rgba(51, 51, 51, 0.2);
   background-color: inherit;
   border: 1px solid #fff;

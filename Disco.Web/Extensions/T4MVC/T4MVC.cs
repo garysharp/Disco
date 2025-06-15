@@ -396,6 +396,7 @@ namespace Links
                 public static readonly string Knockout_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Knockout.min.js") ? Url("Knockout.min.js") : Url("Knockout.js");
                 public static readonly string Knockout_min_js = Url("Knockout.min.js");
                 public static readonly string Knockout_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/Knockout.min.js") ? Url("Knockout.min.js") : Url("Knockout.js");
+                public static readonly string qrcode_min_js = Url("qrcode.min.js");
                 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
                 public static class Shadowbox {
                     public const string UrlPath = "~/ClientSource/Scripts/Modules/Shadowbox";
@@ -1186,6 +1187,7 @@ namespace Links
                         public const string jQueryUI_TimePicker_js_ = "~/ClientSource/Scripts/Modules/jQueryUI-TimePicker.js"; 
                         public const string Knockout_js = "~/ClientSource/Scripts/Modules/Knockout.js"; 
                         public const string Knockout_js_ = "~/ClientSource/Scripts/Modules/Knockout.js"; 
+                        public const string qrcode_min_js = "~/ClientSource/Scripts/Modules/qrcode.min.js"; 
                         public const string Shadowbox_js = "~/ClientSource/Scripts/Modules/Shadowbox.js"; 
                         public const string Shadowbox_js_ = "~/ClientSource/Scripts/Modules/Shadowbox.js"; 
                         public const string Timeline_js = "~/ClientSource/Scripts/Modules/Timeline.js"; 

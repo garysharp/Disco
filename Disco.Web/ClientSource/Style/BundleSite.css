@@ -5711,6 +5711,13 @@ body > .FlagAssignment_Tooltip span.added {
   font-style: italic;
   font-size: 0.9em;
 }
+div.Disco-AttachmentUpload-OnlineUploadDialog {
+  text-align: center;
+}
+div.Disco-AttachmentUpload-OnlineUploadDialog input {
+  width: 100%;
+  box-sizing: border-box;
+}
 #Document_Generation_Container #Document_Generate {
   padding: 0;
 }

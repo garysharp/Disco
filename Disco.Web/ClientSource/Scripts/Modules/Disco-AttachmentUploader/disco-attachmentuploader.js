@@ -161,6 +161,94 @@
         };
         // #endregion
 
+        // #region Online Upload
+        self.onlineUpload = async function () {
+            const onlineUploadUrl = self.$host.attr('data-onlineuploadurl');
+            const qrCodeUrl = self.$host.attr('data-qrcodeurl');
+            const $button = self.$host.find('.attachmentInput span.online-upload');
+
+            if ($button.hasClass('fa-spinner'))
+                return;
+
+            $button
+                .removeClass('fa-qrcode')
+                .addClass('fa-spinner fa-spin d-green');
+
+            if (!window.QRCode) {
+                const qrCodeElement = document.createElement('script');
+                qrCodeElement.src = qrCodeUrl;
+                qrCodeElement.type = 'text/javascript';
+                qrCodeElement.onload = function () {
+                    self.onlineUploadDisplay();
+                };
+                document.body.appendChild(qrCodeElement);
+            }
+
+            const formData = new FormData();
+            formData.append('__RequestVerificationToken', self.$host.find('input[name="__RequestVerificationToken"]').val());
+            const result = await fetch(onlineUploadUrl, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!result.ok) {
+                alert('Error creating online upload session: ' + result.statusText);
+                return;
+            }
+
+            const resultModel = await result.json();
+
+            if (!resultModel.Success) {
+                alert('Unable to create online upload session: ' + result.ErrorMessage);
+                return;
+            }
+
+            self.onlineUploadSession = resultModel;
+            self.onlineUploadDisplay();
+
+            $button
+                .removeClass('fa-spinner fa-spin d-green')
+                .addClass('fa-qrcode');
+        }
+        self.onlineUploadDisplay = function () {
+            if (!!window.QRCode && !!self.onlineUploadSession) {
+                var dialog = $('<div>')
+                    .attr({
+                        title: 'Online Upload',
+                        'class': 'dialog Disco-AttachmentUpload-OnlineUploadDialog'
+                    });
+                var qrCode = QRCode({
+                    msg: self.onlineUploadSession.SessionUri,
+                    ecl: 'L'
+                });
+                dialog.append(qrCode);
+                $('<input type="text" readonly>')
+                    .val(self.onlineUploadSession.SessionUri)
+                    .appendTo(dialog);
+                $('<div class="info-box"><p class="fa-p"><i class="fa fa-info-circle information"></i> Scan the QR Code or send the link to upload files</p></div>')
+                    .appendTo(dialog);
+
+                var expiration = new Date(self.onlineUploadSession.Expiration);
+                var sessionExpiration = setTimeout(function () {
+                    dialog.dialog('close');
+                }, expiration.getTime() - new Date().getTime());
+
+                dialog.dialog({
+                    resizable: false,
+                    width: 500,
+                    modal: true,
+                    autoOpen: true,
+                    close: function () {
+                        if (!!sessionExpiration) {
+                            window.clearTimeout(sessionExpiration);
+                        }
+                        dialog.dialog('destroy').remove();
+                    }
+                });
+            }
+        }
+        // #endregion
+
         // #region Helpers
         self.getFileComments = function (fileName, thumbnailHandler, complete) {
             var result = false;

@@ -5,6 +5,7 @@ using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Exporting;
 using Disco.Services.Interop;
+using Disco.Services.Interop.DiscoServices.Upload;
 using Disco.Services.Jobs;
 using Disco.Services.Jobs.JobLists;
 using Disco.Services.Jobs.Statistics;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Caching;
 using System.Web.Mvc;
 
@@ -2013,6 +2015,38 @@ namespace Disco.Web.Areas.API.Controllers
                 return Json("OK", JsonRequestBehavior.AllowGet);
             }
             return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+        }
+
+        [DiscoAuthorize(Claims.Job.Actions.AddAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> AttachmentOnlineUploadSession(int id)
+        {
+            var job = Database.Jobs.Find(id) ?? throw new InvalidOperationException("Unknown Job Id");
+
+            try
+            {
+                if (!Database.DiscoConfiguration.IsActivated)
+                    throw new InvalidOperationException("Activation is required to use this feature (See: Configuration > System)");
+
+                var (uri, expiration) = await UploadOnlineService.CreateSession(CurrentUser, job);
+
+                UploadOnlineSyncTask.ScheduleInOneHour();
+
+                return Json(new
+                {
+                    Success = true,
+                    Expiration = expiration.ToUnixEpoc(),
+                    SessionUri = uri.ToString(),
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message,
+                });
+            }
         }
 
         #endregion

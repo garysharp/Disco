@@ -97,6 +97,13 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> AttachmentOnlineUploadSession()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentOnlineUploadSession);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GeneratePdf()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
@@ -135,6 +142,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Attachment = "Attachment";
             public readonly string Attachments = "Attachments";
             public readonly string AttachmentRemove = "AttachmentRemove";
+            public readonly string AttachmentOnlineUploadSession = "AttachmentOnlineUploadSession";
             public readonly string GeneratePdf = "GeneratePdf";
             public readonly string GeneratePdfPackage = "GeneratePdfPackage";
             public readonly string Photo = "Photo";
@@ -149,6 +157,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Attachment = "Attachment";
             public const string Attachments = "Attachments";
             public const string AttachmentRemove = "AttachmentRemove";
+            public const string AttachmentOnlineUploadSession = "AttachmentOnlineUploadSession";
             public const string GeneratePdf = "GeneratePdf";
             public const string GeneratePdfPackage = "GeneratePdfPackage";
             public const string Photo = "Photo";
@@ -178,7 +187,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_AttachmentUpload
         {
             public readonly string id = "id";
-            public readonly string Domain = "Domain";
+            public readonly string domain = "domain";
             public readonly string comments = "comments";
         }
         static readonly ActionParamsClass_Attachment s_params_Attachment = new ActionParamsClass_Attachment();
@@ -196,7 +205,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Attachments
         {
             public readonly string id = "id";
-            public readonly string Domain = "Domain";
+            public readonly string domain = "domain";
         }
         static readonly ActionParamsClass_AttachmentRemove s_params_AttachmentRemove = new ActionParamsClass_AttachmentRemove();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -206,6 +215,15 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_AttachmentOnlineUploadSession s_params_AttachmentOnlineUploadSession = new ActionParamsClass_AttachmentOnlineUploadSession();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentOnlineUploadSession AttachmentOnlineUploadSessionParams { get { return s_params_AttachmentOnlineUploadSession; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentOnlineUploadSession
+        {
+            public readonly string id = "id";
+            public readonly string domain = "domain";
+        }
         static readonly ActionParamsClass_GeneratePdf s_params_GeneratePdf = new ActionParamsClass_GeneratePdf();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_GeneratePdf GeneratePdfParams { get { return s_params_GeneratePdf; } }
@@ -213,7 +231,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_GeneratePdf
         {
             public readonly string id = "id";
-            public readonly string Domain = "Domain";
+            public readonly string domain = "domain";
             public readonly string DocumentTemplateId = "DocumentTemplateId";
         }
         static readonly ActionParamsClass_GeneratePdfPackage s_params_GeneratePdfPackage = new ActionParamsClass_GeneratePdfPackage();
@@ -223,7 +241,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_GeneratePdfPackage
         {
             public readonly string id = "id";
-            public readonly string Domain = "Domain";
+            public readonly string domain = "domain";
             public readonly string DocumentTemplatePackageId = "DocumentTemplatePackageId";
         }
         static readonly ActionParamsClass_Photo s_params_Photo = new ActionParamsClass_Photo();
@@ -278,16 +296,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string comments);
+        partial void AttachmentUploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string domain, string comments);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string Domain, string comments)
+        public override System.Web.Mvc.ActionResult AttachmentUpload(string id, string domain, string comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "domain", domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
-            AttachmentUploadOverride(callInfo, id, Domain, comments);
+            AttachmentUploadOverride(callInfo, id, domain, comments);
             return callInfo;
         }
 
@@ -304,15 +322,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain);
+        partial void AttachmentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string domain);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Attachments(string id, string Domain)
+        public override System.Web.Mvc.ActionResult Attachments(string id, string domain)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
-            AttachmentsOverride(callInfo, id, Domain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "domain", domain);
+            AttachmentsOverride(callInfo, id, domain);
             return callInfo;
         }
 
@@ -329,30 +347,43 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string DocumentTemplateId);
+        partial void AttachmentOnlineUploadSessionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string domain);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GeneratePdf(string id, string Domain, string DocumentTemplateId)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> AttachmentOnlineUploadSession(string id, string domain)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentOnlineUploadSession);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "domain", domain);
+            AttachmentOnlineUploadSessionOverride(callInfo, id, domain);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+
+        [NonAction]
+        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string domain, string DocumentTemplateId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult GeneratePdf(string id, string domain, string DocumentTemplateId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "domain", domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
-            GeneratePdfOverride(callInfo, id, Domain, DocumentTemplateId);
+            GeneratePdfOverride(callInfo, id, domain, DocumentTemplateId);
             return callInfo;
         }
 
         [NonAction]
-        partial void GeneratePdfPackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string Domain, string DocumentTemplatePackageId);
+        partial void GeneratePdfPackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string domain, string DocumentTemplatePackageId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GeneratePdfPackage(string id, string Domain, string DocumentTemplatePackageId)
+        public override System.Web.Mvc.ActionResult GeneratePdfPackage(string id, string domain, string DocumentTemplatePackageId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Domain", Domain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "domain", domain);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
-            GeneratePdfPackageOverride(callInfo, id, Domain, DocumentTemplatePackageId);
+            GeneratePdfPackageOverride(callInfo, id, domain, DocumentTemplatePackageId);
             return callInfo;
         }
 

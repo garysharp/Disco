@@ -344,6 +344,28 @@ WriteLiteral(" data-uploadurl=\"");
             #line hidden
 WriteLiteral("\"");
 
+WriteLiteral(" data-onlineuploadurl=\"");
+
+            
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                                                                                                                                                     Write(Url.Action(MVC.API.Job.AttachmentOnlineUploadSession(Model.Job.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-qrcodeurl=\"");
+
+            
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                                                                                                                                                                                                                                            Write(Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n");
 
 WriteLiteral("                    ");
@@ -382,14 +404,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3557), Tuple.Create("\"", 3614)
+WriteAttribute("href", Tuple.Create(" href=\"", 3729), Tuple.Create("\"", 3786)
             
             #line 64 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3564), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 3736), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 3564), false)
+, 3736), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -418,28 +440,28 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3724), Tuple.Create("\"", 3744)
+WriteAttribute("title", Tuple.Create(" title=\"", 3896), Tuple.Create("\"", 3916)
             
             #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3732), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 3904), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 3732), false)
+, 3904), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 3815), Tuple.Create("\"", 3874)
+WriteAttribute("src", Tuple.Create(" src=\"", 3987), Tuple.Create("\"", 4046)
             
             #line 66 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3821), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 3993), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 3821), false)
+, 3993), false)
 );
 
 WriteLiteral(" />\r\n                                </span>\r\n                                <sp" +
@@ -447,14 +469,14 @@ WriteLiteral(" />\r\n                                </span>\r\n                
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3975), Tuple.Create("\"", 3995)
+WriteAttribute("title", Tuple.Create(" title=\"", 4147), Tuple.Create("\"", 4167)
             
             #line 68 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3983), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 4155), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 3983), false)
+, 4155), false)
 );
 
 WriteLiteral(">\r\n");
@@ -549,14 +571,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4680), Tuple.Create("\"", 4718)
+WriteAttribute("title", Tuple.Create(" title=\"", 4852), Tuple.Create("\"", 4890)
             
             #line 74 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 4688), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                           , Tuple.Create(Tuple.Create("", 4860), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 4688), false)
+, 4860), false)
 );
 
 WriteLiteral(">");
@@ -614,6 +636,12 @@ WriteLiteral("></span><span");
 WriteLiteral(" class=\"action enabled photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
+
+WriteLiteral("></span><span");
+
+WriteLiteral(" class=\"action enabled online-upload fa fa-qrcode disabled\"");
+
+WriteLiteral(" title=\"Upload with Online Services\"");
 
 WriteLiteral("></span>\r\n                        </div>\r\n");
 
@@ -1038,33 +1066,38 @@ WriteLiteral("\');\r\n\r\n            //#region Attachments\r\n            var $
             #line hidden
 WriteLiteral("\r\n            //#region Add Attachments\r\n            var attachmentUploader = new" +
 " document.Disco.AttachmentUploader($Attachments);\r\n\r\n            var $attachment" +
-"Input = $Attachments.find(\'.attachmentInput\');\r\n            if (window.location." +
-"protocol != \'https:\') {\r\n                $attachmentInput.find(\'.photo\')\r\n      " +
-"              .removeClass(\'enabled\')\r\n                    .addClass(\'disabled\')" +
-"\r\n                    .attr(\'title\', \'Capture Image: this functionality is only " +
-"available over a HTTPS connection\');\r\n            }\r\n            $attachmentInpu" +
-"t.find(\'.photo\').click(function () {\r\n                if (!$(this).hasClass(\'ena" +
-"bled\'))\r\n                    alert(\'This functionality is only available over a " +
-"HTTPS connection\');\r\n                else if ($(this).hasClass(\'disabled\'))\r\n   " +
-"                 alert(\'Disconnected from the Disco ICT Server, please refresh t" +
-"his page and try again\');\r\n                else\r\n                    attachmentU" +
-"ploader.uploadImage();\r\n            });\r\n            $attachmentInput.find(\'.upl" +
-"oad\').click(function () {\r\n                if ($(this).hasClass(\'disabled\'))\r\n  " +
-"                  alert(\'Disconnected from the Disco ICT Server, please refresh " +
-"this page and try again\');\r\n                else\r\n                    attachment" +
-"Uploader.uploadFiles();\r\n            });\r\n\r\n            var resourcesTab;\r\n     " +
-"       $(document).on(\'dragover\', function () {\r\n                if (!resourcesT" +
-"ab) {\r\n                    var tabs = $Attachments.closest(\'.ui-tabs\');\r\n       " +
-"             resourcesTab = {\r\n                        tabs: tabs,\r\n            " +
-"            resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#jobDe" +
-"tailTab-Resources\"]\').closest(\'li\').index()\r\n                    };\r\n           " +
-"     }\r\n                var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'ac" +
-"tive\');\r\n                if (resourcesTab.resourcesIndex !== selectedIndex)\r\n   " +
-"                 resourcesTab.tabs.tabs(\'option\', \'active\', resourcesTab.resourc" +
-"esIndex);\r\n            });\r\n            //#endregion\r\n            ");
+"Input = $Attachments.find(\'.attachmentInput\');\r\n            $attachmentInput.fin" +
+"d(\'.online-upload\').on(\'click\', function () {\r\n                if ($(this).hasCl" +
+"ass(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Ser" +
+"ver, please refresh this page and try again\');\r\n                else\r\n          " +
+"          attachmentUploader.onlineUpload();\r\n            });\r\n            if (w" +
+"indow.location.protocol != \'https:\') {\r\n                $attachmentInput.find(\'." +
+"photo\')\r\n                    .removeClass(\'enabled\')\r\n                    .addCl" +
+"ass(\'disabled\')\r\n                    .attr(\'title\', \'Capture Image: this functio" +
+"nality is only available over a HTTPS connection\');\r\n            }\r\n            " +
+"$attachmentInput.find(\'.photo\').click(function () {\r\n                if (!$(this" +
+").hasClass(\'enabled\'))\r\n                    alert(\'This functionality is only av" +
+"ailable over a HTTPS connection\');\r\n                else if ($(this).hasClass(\'d" +
+"isabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Server, p" +
+"lease refresh this page and try again\');\r\n                else\r\n                " +
+"    attachmentUploader.uploadImage();\r\n            });\r\n            $attachmentI" +
+"nput.find(\'.upload\').click(function () {\r\n                if ($(this).hasClass(\'" +
+"disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Server, " +
+"please refresh this page and try again\');\r\n                else\r\n               " +
+"     attachmentUploader.uploadFiles();\r\n            });\r\n\r\n            var resou" +
+"rcesTab;\r\n            $(document).on(\'dragover\', function () {\r\n                " +
+"if (!resourcesTab) {\r\n                    var tabs = $Attachments.closest(\'.ui-t" +
+"abs\');\r\n                    resourcesTab = {\r\n                        tabs: tabs" +
+",\r\n                        resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(" +
+"\'a[href=\"#jobDetailTab-Resources\"]\').closest(\'li\').index()\r\n                    " +
+"};\r\n                }\r\n                var selectedIndex = resourcesTab.tabs.tab" +
+"s(\'option\', \'active\');\r\n                if (resourcesTab.resourcesIndex !== sele" +
+"ctedIndex)\r\n                    resourcesTab.tabs.tabs(\'option\', \'active\', resou" +
+"rcesTab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n           " +
+" ");
 
             
-            #line 360 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 366 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1073,13 +1106,13 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            var attac
 WriteLiteral("\r\n");
 
             
-            #line 362 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 368 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 362 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 368 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyAttachments || canRemoveOwnAttachments)
             {
             
@@ -1114,7 +1147,7 @@ WriteLiteral(@"
                             url: '");
 
             
-            #line 389 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 395 "..\..\Views\Job\JobParts\Resources.cshtml"
                              Write(Url.Action(MVC.API.Job.AttachmentRemove()));
 
             
@@ -1150,7 +1183,7 @@ WriteLiteral(@"',
             ");
 
             
-            #line 416 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 422 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1160,7 +1193,7 @@ WriteLiteral("\r\n            function addAttachment(key, quick) {\r\n          
 "id: key };\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 421 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Attachment()));
 
             
@@ -1171,13 +1204,13 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "\'OK\') {\r\n                            var a = d.Attachment;\r\n");
 
             
-            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 433 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 433 "..\..\Views\Job\JobParts\Resources.cshtml"
                                  if (canRemoveAnyAttachments)
                                 {
 
@@ -1191,7 +1224,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 430 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 436 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else if (canRemoveOwnAttachments)
                                 {
@@ -1204,7 +1237,7 @@ WriteLiteral("                                ");
 WriteLiteral("buildAttachment(a, (a.AuthorId === \'");
 
             
-            #line 433 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 439 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                       Write(CurrentUser.UserId);
 
             
@@ -1215,7 +1248,7 @@ WriteLiteral("\'), quick);");
 WriteLiteral("\r\n");
 
             
-            #line 434 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 440 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
                                 else
                                 {
@@ -1230,7 +1263,7 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 438 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 444 "..\..\Views\Job\JobParts\Resources.cshtml"
                                 }
 
             
@@ -1257,7 +1290,7 @@ WriteLiteral(@"                        } else {
                     e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 457 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 463 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                   Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -1289,7 +1322,7 @@ WriteLiteral(@"/' + a.Id);
                             img.attr('src', '");
 
             
-            #line 480 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 486 "..\..\Views\Job\JobParts\Resources.cshtml"
                                          Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
@@ -1336,14 +1369,14 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 "script>\r\n");
 
             
-            #line 550 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 556 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 551 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 557 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs || canShowAttachments)
 {
 
@@ -1353,7 +1386,7 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var jobId = parseInt(\'");
 
             
-            #line 555 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 561 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1363,7 +1396,7 @@ WriteLiteral("\');\r\n\r\n            //#region LiveEvents\r\n            var hu
 "dates;\r\n\r\n            // Map Functions\r\n");
 
             
-            #line 561 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 567 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
             
@@ -1374,14 +1407,14 @@ WriteLiteral("\r\n            hub.client.addLog = document.DiscoFunctions.liveLo
 "      ");
 
             
-            #line 565 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 571 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
             #line default
             #line hidden
             
-            #line 566 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 572 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
             
@@ -1402,7 +1435,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 579 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 585 "..\..\Views\Job\JobParts\Resources.cshtml"
        }
 
             
@@ -1444,7 +1477,7 @@ WriteLiteral("\r\n            $.connection.hub.qs = { JobId: jobId };\r\n       
 "egion\r\n        });\r\n    </script>\r\n");
 
             
-            #line 632 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 638 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default

@@ -193,6 +193,13 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> AttachmentOnlineUploadSession()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentOnlineUploadSession);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult ImportBegin()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportBegin);
@@ -265,6 +272,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Attachment = "Attachment";
             public readonly string Attachments = "Attachments";
             public readonly string AttachmentRemove = "AttachmentRemove";
+            public readonly string AttachmentOnlineUploadSession = "AttachmentOnlineUploadSession";
             public readonly string ImportBegin = "ImportBegin";
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportApply = "ImportApply";
@@ -299,6 +307,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Attachment = "Attachment";
             public const string Attachments = "Attachments";
             public const string AttachmentRemove = "AttachmentRemove";
+            public const string AttachmentOnlineUploadSession = "AttachmentOnlineUploadSession";
             public const string ImportBegin = "ImportBegin";
             public const string ImportParse = "ImportParse";
             public const string ImportApply = "ImportApply";
@@ -511,6 +520,14 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_AttachmentRemove AttachmentRemoveParams { get { return s_params_AttachmentRemove; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_AttachmentRemove
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_AttachmentOnlineUploadSession s_params_AttachmentOnlineUploadSession = new ActionParamsClass_AttachmentOnlineUploadSession();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentOnlineUploadSession AttachmentOnlineUploadSessionParams { get { return s_params_AttachmentOnlineUploadSession; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentOnlineUploadSession
         {
             public readonly string id = "id";
         }
@@ -874,6 +891,18 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             AttachmentRemoveOverride(callInfo, id);
             return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentOnlineUploadSessionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> AttachmentOnlineUploadSession(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentOnlineUploadSession);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentOnlineUploadSessionOverride(callInfo, id);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 
         [NonAction]

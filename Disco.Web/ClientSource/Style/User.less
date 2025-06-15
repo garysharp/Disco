@@ -480,29 +480,32 @@
             padding: 3px;
 
             span.action {
-                color: @HeaderBackgroundColour;
                 display: block;
                 margin: 0 4px 0 0;
                 font-size: 1.5em;
                 cursor: pointer;
                 float: right;
-                border: 1px solid @white;
                 padding: .5em;
 
-                &:hover {
-                    color: @HyperLinkColour;
-                    background-color: @SubtleColour;
-                    border: 1px solid @SubtleBorderColour;
-                }
-
-                &.disabled {
-                    color: fade(@HeaderBackgroundColour, 20%);
-                    cursor: default;
+                &:not(.fa-spin) {
+                    color: @HeaderBackgroundColour;
+                    border: 1px solid @white;
 
                     &:hover {
+                        color: @HyperLinkColour;
+                        background-color: @SubtleColour;
+                        border: 1px solid @SubtleBorderColour;
+                    }
+
+                    &.disabled {
                         color: fade(@HeaderBackgroundColour, 20%);
-                        background-color: inherit;
-                        border: 1px solid @white;
+                        cursor: default;
+
+                        &:hover {
+                            color: fade(@HeaderBackgroundColour, 20%);
+                            background-color: inherit;
+                            border: 1px solid @white;
+                        }
                     }
                 }
             }

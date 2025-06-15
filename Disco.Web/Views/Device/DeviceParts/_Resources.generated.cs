@@ -103,6 +103,28 @@ WriteLiteral(" data-uploadurl=\"");
             #line hidden
 WriteLiteral("\"");
 
+WriteLiteral(" data-onlineuploadurl=\"");
+
+            
+            #line 22 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                                                                                                                                                                                                                                     Write(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-qrcodeurl=\"");
+
+            
+            #line 22 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                                                                                                                                                                                                                                                                                                                                            Write(Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n");
 
 WriteLiteral("                    ");
@@ -143,14 +165,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1582), Tuple.Create("\"", 1642)
+WriteAttribute("href", Tuple.Create(" href=\"", 1770), Tuple.Create("\"", 1830)
             
             #line 32 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1589), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
+, Tuple.Create(Tuple.Create("", 1777), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
             
             #line default
             #line hidden
-, 1589), false)
+, 1777), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -179,42 +201,42 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1752), Tuple.Create("\"", 1772)
+WriteAttribute("title", Tuple.Create(" title=\"", 1940), Tuple.Create("\"", 1960)
             
             #line 33 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1760), Tuple.Create<System.Object, System.Int32>(da.Filename
+, Tuple.Create(Tuple.Create("", 1948), Tuple.Create<System.Object, System.Int32>(da.Filename
             
             #line default
             #line hidden
-, 1760), false)
+, 1948), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 1843), Tuple.Create("\"", 1905)
+WriteAttribute("src", Tuple.Create(" src=\"", 2031), Tuple.Create("\"", 2093)
             
             #line 34 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1849), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
+, Tuple.Create(Tuple.Create("", 2037), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
             
             #line default
             #line hidden
-, 1849), false)
+, 2037), false)
 );
 
 WriteLiteral(" /></span>\r\n                                <span");
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1972), Tuple.Create("\"", 2009)
+WriteAttribute("title", Tuple.Create(" title=\"", 2160), Tuple.Create("\"", 2197)
             
             #line 35 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1980), Tuple.Create<System.Object, System.Int32>(da.Comments ?? da.Filename
+, Tuple.Create(Tuple.Create("", 2168), Tuple.Create<System.Object, System.Int32>(da.Comments ?? da.Filename
             
             #line default
             #line hidden
-, 1980), false)
+, 2168), false)
 );
 
 WriteLiteral(">\r\n");
@@ -298,14 +320,14 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2700), Tuple.Create("\"", 2738)
+WriteAttribute("title", Tuple.Create(" title=\"", 2888), Tuple.Create("\"", 2926)
             
             #line 41 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                       , Tuple.Create(Tuple.Create("", 2708), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
+                                                                                                       , Tuple.Create(Tuple.Create("", 2896), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 2708), false)
+, 2896), false)
 );
 
 WriteLiteral(" data-livestamp=\"");
@@ -375,6 +397,12 @@ WriteLiteral("></span><span");
 WriteLiteral(" class=\"action enabled photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
+
+WriteLiteral("></span><span");
+
+WriteLiteral(" class=\"action enabled online-upload fa fa-qrcode disabled\"");
+
+WriteLiteral(" title=\"Upload with Online Services\"");
 
 WriteLiteral("></span>\r\n                        </div>\r\n");
 
@@ -655,40 +683,45 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 WriteLiteral("\r\n                            //#region Add Attachments\r\n                        " +
 "    var attachmentUploader = new document.Disco.AttachmentUploader($Attachments)" +
 ";\r\n\r\n                            var $attachmentInput = $Attachments.find(\'.atta" +
-"chmentInput\');\r\n                            if (window.location.protocol != \'htt" +
-"ps:\') {\r\n                                $attachmentInput.find(\'.photo\')\r\n      " +
-"                              .removeClass(\'enabled\')\r\n                         " +
-"           .addClass(\'disabled\')\r\n                                    .attr(\'tit" +
-"le\', \'Capture Image: this functionality is only available over a HTTPS connectio" +
-"n\');\r\n                            }\r\n                            $attachmentInpu" +
-"t.find(\'.photo\').click(function () {\r\n                                if (!$(thi" +
-"s).hasClass(\'enabled\'))\r\n                                    alert(\'This functio" +
-"nality is only available over a HTTPS connection\');\r\n                           " +
-"     else if ($(this).hasClass(\'disabled\'))\r\n                                   " +
-" alert(\'Disconnected from the Disco ICT Server, please refresh this page and try" +
-" again\');\r\n                                else\r\n                               " +
-"     attachmentUploader.uploadImage();\r\n                            });\r\n       " +
-"                     $attachmentInput.find(\'.upload\').click(function () {\r\n     " +
-"                           if ($(this).hasClass(\'disabled\'))\r\n                  " +
-"                  alert(\'Disconnected from the Disco ICT Server, please refresh " +
-"this page and try again\');\r\n                                else\r\n              " +
-"                      attachmentUploader.uploadFiles();\r\n                       " +
-"     });\r\n\r\n                            var resourcesTab;\r\n                     " +
-"       $(document).on(\'dragover\', function () {\r\n                               " +
-" if (!resourcesTab) {\r\n                                    var tabs = $Attachmen" +
-"ts.closest(\'.ui-tabs\');\r\n                                    resourcesTab = {\r\n " +
-"                                       tabs: tabs,\r\n                            " +
-"            resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(\'a[href=\"#Devic" +
-"eDetailTab-Resources\"]\').closest(\'li\').index()\r\n                                " +
-"    };\r\n                                }\r\n                                var s" +
-"electedIndex = resourcesTab.tabs.tabs(\'option\', \'active\');\r\n                    " +
-"            if (resourcesTab.resourcesIndex !== selectedIndex)\r\n                " +
-"                    resourcesTab.tabs.tabs(\'option\', \'active\', resourcesTab.reso" +
-"urcesIndex);\r\n                            });\r\n                            //#en" +
-"dregion\r\n                            ");
+"chmentInput\');\r\n                            $attachmentInput.find(\'.online-uploa" +
+"d\').on(\'click\', function () {\r\n                                if ($(this).hasCl" +
+"ass(\'disabled\'))\r\n                                    alert(\'Disconnected from t" +
+"he Disco ICT Server, please refresh this page and try again\');\r\n                " +
+"                else\r\n                                    attachmentUploader.onl" +
+"ineUpload();\r\n                            });\r\n                            if (w" +
+"indow.location.protocol != \'https:\') {\r\n                                $attachm" +
+"entInput.find(\'.photo\')\r\n                                    .removeClass(\'enabl" +
+"ed\')\r\n                                    .addClass(\'disabled\')\r\n               " +
+"                     .attr(\'title\', \'Capture Image: this functionality is only a" +
+"vailable over a HTTPS connection\');\r\n                            }\r\n            " +
+"                $attachmentInput.find(\'.photo\').click(function () {\r\n           " +
+"                     if (!$(this).hasClass(\'enabled\'))\r\n                        " +
+"            alert(\'This functionality is only available over a HTTPS connection\'" +
+");\r\n                                else if ($(this).hasClass(\'disabled\'))\r\n    " +
+"                                alert(\'Disconnected from the Disco ICT Server, p" +
+"lease refresh this page and try again\');\r\n                                else\r\n" +
+"                                    attachmentUploader.uploadImage();\r\n         " +
+"                   });\r\n                            $attachmentInput.find(\'.uplo" +
+"ad\').click(function () {\r\n                                if ($(this).hasClass(\'" +
+"disabled\'))\r\n                                    alert(\'Disconnected from the Di" +
+"sco ICT Server, please refresh this page and try again\');\r\n                     " +
+"           else\r\n                                    attachmentUploader.uploadFi" +
+"les();\r\n                            });\r\n\r\n                            var resou" +
+"rcesTab;\r\n                            $(document).on(\'dragover\', function () {\r\n" +
+"                                if (!resourcesTab) {\r\n                          " +
+"          var tabs = $Attachments.closest(\'.ui-tabs\');\r\n                        " +
+"            resourcesTab = {\r\n                                        tabs: tabs" +
+",\r\n                                        resourcesIndex: tabs.children(\'ul.ui-" +
+"tabs-nav\').find(\'a[href=\"#DeviceDetailTab-Resources\"]\').closest(\'li\').index()\r\n " +
+"                                   };\r\n                                }\r\n      " +
+"                          var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'" +
+"active\');\r\n                                if (resourcesTab.resourcesIndex !== s" +
+"electedIndex)\r\n                                    resourcesTab.tabs.tabs(\'optio" +
+"n\', \'active\', resourcesTab.resourcesIndex);\r\n                            });\r\n  " +
+"                          //#endregion\r\n                            ");
 
             
-            #line 277 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 283 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    }
 
             
@@ -697,7 +730,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 278 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 284 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -730,7 +763,7 @@ WriteLiteral(@"
                                             url: '");
 
             
-            #line 303 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 309 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                              Write(Url.Action(MVC.API.Device.AttachmentRemove()));
 
             
@@ -758,7 +791,7 @@ WriteLiteral("\',\r\n                                            dataType: \'jso
 "endregion\r\n                        ");
 
             
-            #line 330 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 336 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -795,7 +828,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 351 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 357 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

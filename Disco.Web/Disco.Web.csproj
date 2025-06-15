@@ -1712,6 +1712,9 @@
       <DependentUpon>Knockout.js</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClientSource\Scripts\Modules\qrcode.min.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="ClientSource\Scripts\Modules\Shadowbox.js" />
     <Content Include="ClientSource\Scripts\Modules\Shadowbox.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Shadowbox.min.js">

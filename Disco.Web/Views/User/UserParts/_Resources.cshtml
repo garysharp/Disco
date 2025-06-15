@@ -19,7 +19,7 @@
     <table id="userShowResources">
         <tr>
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.User.AttachmentUpload(Model.User.UserId, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.User.AttachmentOnlineUploadSession(Model.User.UserId)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")">
                     @Html.AntiForgeryToken()
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
@@ -48,7 +48,7 @@
                     {
                         <div class="Disco-AttachmentUpload-Progress"></div>
                         <div class="attachmentInput clearfix">
-                            <span class="action enabled upload fa fa-upload disabled" title="Attach File"></span><span class="action enabled photo fa fa-camera disabled" title="Capture Image"></span>
+                            <span class="action enabled upload fa fa-upload disabled" title="Attach File"></span><span class="action enabled photo fa fa-camera disabled" title="Capture Image"></span><span class="action enabled online-upload fa fa-qrcode disabled" title="Upload with Online Services"></span>
                         </div>
                     }
                     <script type="text/javascript">
@@ -237,6 +237,12 @@
                             var attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
 
                             var $attachmentInput = $Attachments.find('.attachmentInput');
+                            $attachmentInput.find('.online-upload').on('click', function () {
+                                if ($(this).hasClass('disabled'))
+                                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                                else
+                                    attachmentUploader.onlineUpload();
+                            });
                             if (window.location.protocol != 'https:') {
                                 $attachmentInput.find('.photo')
                                     .removeClass('enabled')

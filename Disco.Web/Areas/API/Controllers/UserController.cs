@@ -2,12 +2,15 @@
 using Disco.Services.Authorization;
 using Disco.Services.Interop;
 using Disco.Services.Interop.ActiveDirectory;
+using Disco.Services.Interop.DiscoServices.Upload;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using System;
 using System.Data.Entity;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.API.Controllers
@@ -52,9 +55,9 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.User.Actions.AddAttachments), ValidateAntiForgeryToken]
-        public virtual ActionResult AttachmentUpload(string id, string Domain, string comments)
+        public virtual ActionResult AttachmentUpload(string id, string domain, string comments)
         {
-            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
+            id = ActiveDirectory.ParseDomainAccountId(id, domain);
 
             var u = Database.Users.Find(id);
             if (u != null)
@@ -117,9 +120,9 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.User.ShowAttachments)]
-        public virtual ActionResult Attachments(string id, string Domain)
+        public virtual ActionResult Attachments(string id, string domain)
         {
-            id = ActiveDirectory.ParseDomainAccountId(id, Domain);
+            id = ActiveDirectory.ParseDomainAccountId(id, domain);
 
             var u = Database.Users.Include("UserAttachments.DocumentTemplate").Include("UserAttachments.TechUser").Where(m => m.UserId == id).FirstOrDefault();
             if (u != null)
@@ -153,31 +156,65 @@ namespace Disco.Web.Areas.API.Controllers
             return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
         }
 
+        [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual async Task<ActionResult> AttachmentOnlineUploadSession(string id, string domain)
+        {
+            var userId = ActiveDirectory.ParseDomainAccountId(id, domain);
+            if (!UserService.TryGetUser(userId, Database, false,out var user))
+                throw new InvalidOperationException("Unknown User");
+
+            try
+            {
+                if (!Database.DiscoConfiguration.IsActivated)
+                    throw new InvalidOperationException("Activation is required to use this feature (See: Configuration > System)");
+
+                var (uri, expiration) = await UploadOnlineService.CreateSession(CurrentUser, user);
+
+                UploadOnlineSyncTask.ScheduleInOneHour();
+
+                return Json(new
+                {
+                    Success = true,
+                    Expiration = expiration.ToUnixEpoc(),
+                    SessionUri = uri.ToString(),
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Json(new
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message,
+                });
+            }
+        }
+
         #endregion
 
         [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdf(string id, string Domain, string DocumentTemplateId)
+        public virtual ActionResult GeneratePdf(string id, string domain, string DocumentTemplateId)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrEmpty(DocumentTemplateId))
                 throw new ArgumentNullException(nameof(DocumentTemplateId));
 
-            var userId = ActiveDirectory.ParseDomainAccountId(id, Domain);
+            var userId = ActiveDirectory.ParseDomainAccountId(id, domain);
 
             // Obsolete: Use API\DocumentTemplate\Generate instead
             return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, userId));
         }
 
         [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdfPackage(string id, string Domain, string DocumentTemplatePackageId)
+        public virtual ActionResult GeneratePdfPackage(string id, string domain, string DocumentTemplatePackageId)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
             if (string.IsNullOrEmpty(DocumentTemplatePackageId))
                 throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
 
-            var userId = ActiveDirectory.ParseDomainAccountId(id, Domain);
+            var userId = ActiveDirectory.ParseDomainAccountId(id, domain);
 
             // Obsolete: Use API\DocumentTemplatePackage\Generate instead
             return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, userId));
