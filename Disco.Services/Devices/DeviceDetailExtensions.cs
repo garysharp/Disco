@@ -10,16 +10,16 @@ namespace Disco.Services
     public static class DeviceDetailExtensions
     {
         #region Helpers
-        private static string GetDetail(this IEnumerable<DeviceDetail> details, string Scope, string Key)
+        public static string GetDetail(this IEnumerable<DeviceDetail> details, string scope, string key)
         {
             if (details == null)
                 throw new ArgumentNullException("details");
-            if (string.IsNullOrEmpty(Scope))
+            if (string.IsNullOrEmpty(scope))
                 throw new ArgumentNullException("Scope");
-            if (string.IsNullOrEmpty(Key))
+            if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("Key");
 
-            var detail = details.Where(d => d.Key == Key).FirstOrDefault();
+            var detail = details.Where(d => d.Scope == scope && d.Key == key).FirstOrDefault();
 
             if (detail == null)
                 return null;
@@ -27,19 +27,19 @@ namespace Disco.Services
                 return detail.Value;
         }
 
-        private static void SetDetail(this Device device, string Scope, string Key, string Value)
+        public static void SetDetail(this Device device, string scope, string key, string value)
         {
             if (device == null)
                 throw new ArgumentNullException("device");
-            if (string.IsNullOrEmpty(Scope))
+            if (string.IsNullOrEmpty(scope))
                 throw new ArgumentNullException("Scope");
-            if (string.IsNullOrEmpty(Key))
+            if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("Key");
 
-            var detail = device.DeviceDetails.Where(d => d.Scope == Scope && d.Key == Key).FirstOrDefault();
+            var detail = device.DeviceDetails.Where(d => d.Scope == scope && d.Key == key).FirstOrDefault();
 
             // No Detail Stored & Set to Null
-            if (detail == null && Value == null)
+            if (detail == null && value == null)
                 return;
 
             if (detail == null)
@@ -47,22 +47,22 @@ namespace Disco.Services
                 detail = new DeviceDetail()
                 {
                     DeviceSerialNumber = device.SerialNumber,
-                    Scope = Scope,
-                    Key = Key,
-                    Value = Value
+                    Scope = scope,
+                    Key = key,
+                    Value = value
                 };
                 device.DeviceDetails.Add(detail);
             }
 
-            if (detail.Value != Value)
+            if (detail.Value != value)
             {
-                if (Value == null)
+                if (value == null)
                 {
                     device.DeviceDetails.Remove(detail);
                 }
                 else
                 {
-                    detail.Value = Value;
+                    detail.Value = value;
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace Disco.Services
         public static List<Processor> Processors(this IEnumerable<DeviceDetail> details)
         {
             var json = details.GetDetail(DeviceDetail.ScopeHardware, DeviceDetail.HardwareKeyProcessors);
-            
+
             if (string.IsNullOrEmpty(json))
                 return null;
 
