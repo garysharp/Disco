@@ -19,7 +19,6 @@ namespace Disco.Services.Interop.DiscoServices
     public class ActivationService
     {
         private static readonly byte[] onlineServicesActivationKey;
-        internal static readonly Uri BaseUrl = new Uri("https://activate.discoict.com.au");
         private readonly DiscoDataContext database;
 
         static ActivationService()
@@ -41,7 +40,7 @@ namespace Disco.Services.Interop.DiscoServices
         public bool RequiresCleanup => Directory.Exists(GetDataStoreLocation);
 
         public Uri GetCallbackUrl()
-            => new Uri(BaseUrl, "/api/callback");
+            => new Uri(DiscoServiceHelpers.ActivationServiceUrl, "/api/callback");
 
         /// <summary>
         /// Begin the activation process
@@ -64,7 +63,7 @@ namespace Disco.Services.Interop.DiscoServices
             ChallengeResponse challenge;
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = BaseUrl;
+                httpClient.BaseAddress = DiscoServiceHelpers.ActivationServiceUrl;
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var body = new ChallengeRequest()
@@ -124,7 +123,7 @@ namespace Disco.Services.Interop.DiscoServices
                 TimeStamp = challenge.TimeStamp,
                 ChallengeResponse = challengeResponse,
                 ChallengeResponseIv = challengeResponseIv,
-                RedirectUrl = new Uri(BaseUrl, "/").ToString(),
+                RedirectUrl = new Uri(DiscoServiceHelpers.ActivationServiceUrl, "/").ToString(),
             };
 
             // store activation
@@ -174,7 +173,7 @@ namespace Disco.Services.Interop.DiscoServices
 
             using (var httpClient = new HttpClient())
             {
-                httpClient.BaseAddress = BaseUrl;
+                httpClient.BaseAddress = DiscoServiceHelpers.ActivationServiceUrl;
                 httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var body = new CompleteRequest()

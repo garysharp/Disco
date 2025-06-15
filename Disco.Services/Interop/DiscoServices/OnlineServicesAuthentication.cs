@@ -50,7 +50,7 @@ namespace Disco.Services.Interop.DiscoServices
             {
                 localExpires = tokenExpires;
                 localToken = token;
-                if (tokenExpires != null && tokenExpires.Value < DateTime.UtcNow && localToken != null)
+                if (tokenExpires != null && tokenExpires.Value > DateTime.UtcNow && localToken != null)
                     return localToken;
 
                 if (!IsActivated)
@@ -58,7 +58,7 @@ namespace Disco.Services.Interop.DiscoServices
 
                 using (var httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = ActivationService.BaseUrl;
+                    httpClient.BaseAddress = DiscoServiceHelpers.ActivationServiceUrl;
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     var timeStamp = DateTime.UtcNow.ToUnixEpoc();

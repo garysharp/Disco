@@ -484,11 +484,15 @@
     <Compile Include="Interop\DiscoServices\DiscoServiceHelpers.cs" />
     <Compile Include="Interop\DiscoServices\Jobs.cs" />
     <Compile Include="Interop\DiscoServices\LicenseValidationTask.cs" />
+    <Compile Include="Interop\DiscoServices\OnlineServicesAuthenticatedHandler.cs" />
     <Compile Include="Interop\DiscoServices\OnlineServicesAuthentication.cs" />
     <Compile Include="Interop\DiscoServices\OnlineServicesConnect.cs" />
     <Compile Include="Interop\DiscoServices\OnlineServicesConnectStartTask.cs" />
     <Compile Include="Interop\DiscoServices\PluginLibrary.cs" />
     <Compile Include="Interop\DiscoServices\PluginLibraryUpdateTask.cs" />
+    <Compile Include="Interop\DiscoServices\Upload\UploadOnlineClient.cs" />
+    <Compile Include="Interop\DiscoServices\Upload\UploadOnlineService.cs" />
+    <Compile Include="Interop\DiscoServices\Upload\UploadOnlineSyncTask.cs" />
     <Compile Include="Interop\IIS\PreserveIisBindingsTask.cs" />
     <Compile Include="Interop\MimeTypes.cs" />
     <Compile Include="Interop\VicEduDept\VicSmart.cs" />

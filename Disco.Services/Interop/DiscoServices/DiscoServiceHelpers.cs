@@ -4,18 +4,8 @@ namespace Disco.Services.Interop.DiscoServices
 {
     public static class DiscoServiceHelpers
     {
-        [Obsolete]
-        public static string CommunityUrl()
-        {
-            return "https://discoict.com.au/base/";
-        }
-
-        public static string ServicesUrl
-        {
-            get
-            {
-                return "https://services.discoict.com.au/";
-            }
-        }
+        public static string ServicesUrl { get; } = "https://services.discoict.com.au/";
+        public static Uri ActivationServiceUrl { get; } = new Uri("https://activate.discoict.com.au");
+        public static Uri UploadOnlineUrl { get; } = new Uri("https://upload.discoict.com.au");
     }
 }

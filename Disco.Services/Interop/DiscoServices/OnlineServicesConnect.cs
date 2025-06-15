@@ -33,7 +33,7 @@ namespace Disco.Services.Interop.DiscoServices
         static OnlineServicesConnect()
         {
             connection = new HubConnectionBuilder()
-                .WithUrl(new Uri(ActivationService.BaseUrl, "/connect"), options =>
+                .WithUrl(new Uri(DiscoServiceHelpers.ActivationServiceUrl, "/connect"), options =>
                 {
                     options.AccessTokenProvider = () => OnlineServicesAuthentication.GetTokenAsync();
                 })
