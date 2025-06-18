@@ -193,13 +193,19 @@
 
             if (!result.ok) {
                 alert('Error creating online upload session: ' + result.statusText);
+                $button
+                    .removeClass('fa-spinner fa-spin d-green')
+                    .addClass('fa-qrcode');
                 return;
             }
 
             const resultModel = await result.json();
 
             if (!resultModel.Success) {
-                alert('Unable to create online upload session: ' + result.ErrorMessage);
+                alert('Unable to create online upload session: ' + resultModel.ErrorMessage);
+                $button
+                    .removeClass('fa-spinner fa-spin d-green')
+                    .addClass('fa-qrcode');
                 return;
             }
 
