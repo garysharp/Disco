@@ -2975,7 +2975,7 @@ Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Mod
             
             #line default
             #line hidden
-WriteLiteral(";\r\n<div");
+WriteLiteral("\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 
