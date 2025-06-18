@@ -131,7 +131,7 @@
                 {
                     @Html.AntiForgeryToken();
                     <input id="license" type="text" name="license" value="@Model.License" />
-                    <button type="submit" class="button small">Activate</button>
+                    <button type="submit" class="button small">Apply</button>
                 }
                 <script type="text/javascript">
                     $(function () {
@@ -142,7 +142,7 @@
                             const value = $element.val();
                             if (!original) {
                                 $element.prop('required', true);
-                                $button.text('Activate');
+                                $button.text('Apply');
                             } else {
                                 if (original === value) {
                                     $button.text('Validate');
@@ -150,7 +150,7 @@
                                     if (!value) {
                                         $button.text('Clear');
                                     } else {
-                                        $button.text('Activate');
+                                        $button.text('Apply');
                                     }
                                 }
                             }

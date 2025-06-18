@@ -501,7 +501,7 @@ WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(">Activate</button>\r\n");
+WriteLiteral(">Apply</button>\r\n");
 
             
             #line 135 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
@@ -523,7 +523,7 @@ WriteLiteral(@">
                             const value = $element.val();
                             if (!original) {
                                 $element.prop('required', true);
-                                $button.text('Activate');
+                                $button.text('Apply');
                             } else {
                                 if (original === value) {
                                     $button.text('Validate');
@@ -531,7 +531,7 @@ WriteLiteral(@">
                                     if (!value) {
                                         $button.text('Clear');
                                     } else {
-                                        $button.text('Activate');
+                                        $button.text('Apply');
                                     }
                                 }
                             }
@@ -787,14 +787,14 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</div>\r\n                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 10143), Tuple.Create("\"", 10187)
+WriteAttribute("href", Tuple.Create(" href=\"", 10134), Tuple.Create("\"", 10178)
             
             #line 239 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 10150), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
+, Tuple.Create(Tuple.Create("", 10141), Tuple.Create<System.Object, System.Int32>(Model.UpdateLatestResponse.UrlLink
             
             #line default
             #line hidden
-, 10150), false)
+, 10141), false)
 );
 
 WriteLiteral(" target=\"_blank\"");
@@ -1164,18 +1164,18 @@ WriteLiteral("                                        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation warning fa-fw fa-lg\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 14574), Tuple.Create("\"", 14657)
-, Tuple.Create(Tuple.Create("", 14582), Tuple.Create("Unavailable,", 14582), true)
-, Tuple.Create(Tuple.Create(" ", 14594), Tuple.Create("will", 14595), true)
-, Tuple.Create(Tuple.Create(" ", 14599), Tuple.Create("retry", 14600), true)
-, Tuple.Create(Tuple.Create(" ", 14605), Tuple.Create("at", 14606), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 14565), Tuple.Create("\"", 14648)
+, Tuple.Create(Tuple.Create("", 14573), Tuple.Create("Unavailable,", 14573), true)
+, Tuple.Create(Tuple.Create(" ", 14585), Tuple.Create("will", 14586), true)
+, Tuple.Create(Tuple.Create(" ", 14590), Tuple.Create("retry", 14591), true)
+, Tuple.Create(Tuple.Create(" ", 14596), Tuple.Create("at", 14597), true)
             
             #line 343 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                                          , Tuple.Create(Tuple.Create(" ", 14608), Tuple.Create<System.Object, System.Int32>(server.AvailableWhen.Value.ToLongTimeString()
+                                          , Tuple.Create(Tuple.Create(" ", 14599), Tuple.Create<System.Object, System.Int32>(server.AvailableWhen.Value.ToLongTimeString()
             
             #line default
             #line hidden
-, 14609), false)
+, 14600), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -2645,14 +2645,14 @@ WriteLiteral(" name=\"Recipient\"");
 
 WriteLiteral(" type=\"text\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 40539), Tuple.Create("\"", 40572)
+WriteAttribute("value", Tuple.Create(" value=\"", 40530), Tuple.Create("\"", 40563)
             
             #line 876 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
-                              , Tuple.Create(Tuple.Create("", 40547), Tuple.Create<System.Object, System.Int32>(CurrentUser.EmailAddress
+                              , Tuple.Create(Tuple.Create("", 40538), Tuple.Create<System.Object, System.Int32>(CurrentUser.EmailAddress
             
             #line default
             #line hidden
-, 40547), false)
+, 40538), false)
 );
 
 WriteLiteral(" />\r\n");
