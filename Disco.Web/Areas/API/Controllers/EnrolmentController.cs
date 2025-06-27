@@ -11,9 +11,12 @@ namespace Disco.Web.Areas.API.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DiscoAuthorize(Claims.Device.Actions.EnrolDevices)]
-        public virtual ActionResult ResolveSessionPending(string sessionId, bool approve, string reason)
+        public virtual ActionResult ResolveSessionPending(string sessionId, bool approve, int? deviceProfileId, int? deviceBatchId, string reason)
         {
-            WindowsDeviceEnrolment.ResolvePendingEnrolment(sessionId, approve, CurrentUser.UserId, reason);
+            if (approve && deviceProfileId == null)
+                throw new Exception("You must select a device profile to approve the enrollment");
+
+            WindowsDeviceEnrolment.ResolvePendingEnrolment(sessionId, approve, CurrentUser.UserId, deviceProfileId, deviceBatchId, reason);
 
             return new HttpStatusCodeResult(200);
         }

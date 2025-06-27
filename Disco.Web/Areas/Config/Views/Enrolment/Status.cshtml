@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Disco.Web.Areas.Config.Models.Enrolment.StatusModel
+@{
     Authorization.Require(Claims.Config.Enrolment.ShowStatus);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Enrolment", MVC.Config.Enrolment.Index(), "Status");
@@ -6,7 +7,7 @@
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-Isotope");
 }
-<div id="enrolStatus">
+<div id="enrolStatus" data-defaultdeviceprofileid="@Model.DefaultDeviceProfileId">
     @Html.AntiForgeryToken()
     <div id="noSessions" data-bind="visible: noSessions">
         <h2>No enrolment sessions today</h2>
@@ -35,10 +36,34 @@
                     <code data-bind="text: pendingIdentifier"></code>
                     @Html.AntiForgeryToken();
                     <input type="hidden" name="sessionId" data-bind="value: id" />
-                    <div class="reason">
-                        <input type="text" name="reason" placeholder="Reason (optional)" />
+                    <div class="device-profile">
+                        <label>
+                            Device Profile
+                            <select name="deviceProfileId" data-bind="value: deviceProfileId">
+                                @foreach (var deviceProfile in Model.DeviceProfiles)
+                                {
+                                    <option value="@deviceProfile.Id">@deviceProfile.Name (@deviceProfile.Id)</option>
+                                }
+                            </select>
+                        </label>
                     </div>
-                    <div class="buttons">
+                    if (Model.DeviceBatches.Count != 0)
+                    {
+                        <div class="device-batch">
+                            <label>
+                                Device Batch
+                                <select name="deviceBatchId" data-bind="value: deviceBatchId">
+                                    <option value="" selected>&lt;None&gt;</option>
+                                    @foreach (var deviceBatch in Model.DeviceBatches)
+                                    {
+                                        <option value="@deviceBatch.Id">@deviceBatch.Name (@deviceBatch.Id)</option>
+                                    }
+                                </select>
+                            </label>
+                        </div>
+                    }
+                    <div>
+                        <input class="reason" type="text" name="reason" placeholder="Reason (optional)" />
                         <button type="button" value="True" class="button">Approve</button>
                         <button type="button" value="False" class="button">Reject</button>
                     </div>
@@ -119,7 +144,6 @@
         var host = $('#enrolStatus');
         var hostSessions = $('#sessions');
         var hostDialogSessions = $('#dialogSession');
-        //var hostDialogSessionsProgress = $('#dialogSession').find('.sessionProgress');
         var deviceModels = {};
         var logHub;
         var deviceBaseUrl = '@(Url.Action(MVC.Device.Show()))/'
@@ -168,6 +192,8 @@
             self.hasError = ko.observable(false);
             self.hasWarning = ko.observable(false);
             self.deviceModelId = ko.observable();
+            self.deviceProfileId = ko.observable(parseInt(host.attr('data-defaultdeviceprofileid')));
+            self.deviceBatchId = ko.observable(null);
             self.deviceModelDescription = ko.computed(function () {
                 var deviceModelId = self.deviceModelId();
                 var sessionDeviceInfo = self.sessionDeviceInfo();
@@ -231,7 +257,6 @@
                             session.messages.unshift(log);
                             break;
                         case 11: // SessionProgress
-                            //session.progressbar.progressbar('option', 'value', log.Arguments[1]);
                             session.progressValue(log.Arguments[1]);
                             session.progressStatus(log.Arguments[2]);
                             break;
@@ -252,6 +277,12 @@
                         case 14: // SessionPending
                             session.isPending(true);
                             session.pendingIdentifier(log.Arguments[4]);
+                            if (log.Arguments[5]) {
+                                session.deviceProfileId(log.Arguments[5]);
+                            }
+                            if (log.Arguments[6]) {
+                                session.deviceBatchId(log.Arguments[6]);
+                            }
                             session.messages.unshift(log);
                             session.progressValue(-1);
                             session.progressStatus('Pending enrolment approval');
@@ -309,9 +340,11 @@
                 height: 574,
                 width: 900,
                 resizable: false,
-                autoOpen: false
+                autoOpen: false,
+                open: function (e, ui) {
+
+                }
             });
-            //hostDialogSessionsProgress.progressbar();
 
             // Create View Model
             vm = new pageViewModel();
@@ -333,9 +366,10 @@
 
             // Load Logs
             var d = new Date();
+            d = new Date(d.getTime() - (d.getTimezoneOffset() * 60 * 1000));
             var loadData = {
                 Format: "json",
-                Start: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
+                Start: d.toISOString().substring(0, 10),
                 End: null,
                 ModuleId: 50,
                 Take: 2000,

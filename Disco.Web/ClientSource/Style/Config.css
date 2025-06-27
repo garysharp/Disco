@@ -525,19 +525,19 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
 }
 #dialogSession .sessionProgress > p.sessionStart {
   color: #888;
-  margin-bottom: 2px;
+  margin-bottom: 0;
 }
 #dialogSession .sessionProgress > p.sessionStatus {
   height: 1.6em;
   overflow: hidden;
-  margin-bottom: 3px;
+  margin-bottom: 0;
 }
 #dialogSession .sessionProgress code {
   font-size: 2em;
   color: #E51400;
 }
-#dialogSession .sessionProgress div.reason {
-  margin-bottom: 3px;
+#dialogSession .sessionProgress .reason {
+  width: 160px;
 }
 #dialogSession .sessionInfoContainer > div {
   float: left;

@@ -1,4 +1,5 @@
 ﻿using Disco.Models.ClientServices.EnrolmentInformation;
+using Newtonsoft.Json;
 using System;
 
 namespace Disco.Models.ClientServices
@@ -9,6 +10,11 @@ namespace Disco.Models.ClientServices
 
         public string DomainName { get; set; }
         public string ComputerName { get; set; }
+
+        [JsonIgnore]
+        public int? DeviceProfileId { get; set; }
+        [JsonIgnore]
+        public int? DeviceBatchId { get; set; }
 
         public string AssignedUserDomain { get; set; }
         public string AssignedUserUsername { get; set; }

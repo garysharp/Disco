@@ -36,7 +36,7 @@ namespace Disco.Web.Areas.Config.Views.Enrolment
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
     [System.Web.WebPages.PageVirtualPathAttribute("~/Areas/Config/Views/Enrolment/Status.cshtml")]
-    public partial class Status : Disco.Services.Web.WebViewPage<dynamic>
+    public partial class Status : Disco.Services.Web.WebViewPage<Disco.Web.Areas.Config.Models.Enrolment.StatusModel>
     {
         public Status()
         {
@@ -44,7 +44,7 @@ namespace Disco.Web.Areas.Config.Views.Enrolment
         public override void Execute()
         {
             
-            #line 1 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 2 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
   
     Authorization.Require(Claims.Config.Enrolment.ShowStatus);
 
@@ -60,12 +60,23 @@ WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"enrolStatus\"");
 
+WriteLiteral(" data-defaultdeviceprofileid=\"");
+
+            
+            #line 10 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                              Write(Model.DefaultDeviceProfileId);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n");
 
 WriteLiteral("    ");
 
             
-            #line 10 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 11 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
 Write(Html.AntiForgeryToken());
 
             
@@ -171,13 +182,13 @@ WriteLiteral(" data-bind=\"visible: isPending\"");
 WriteLiteral(">\r\n");
 
             
-            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 34 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 34 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                  using (Html.BeginForm(MVC.API.Enrolment.ResolveSessionPending(), FormMethod.Post))
                 {
 
@@ -191,20 +202,20 @@ WriteLiteral(" data-bind=\"text: pendingIdentifier\"");
 WriteLiteral("></code>\r\n");
 
             
-            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 37 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 37 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 37 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                             ;
 
             
@@ -222,9 +233,164 @@ WriteLiteral(" />\r\n");
 
 WriteLiteral("                    <div");
 
-WriteLiteral(" class=\"reason\"");
+WriteLiteral(" class=\"device-profile\"");
 
-WriteLiteral(">\r\n                        <input");
+WriteLiteral(">\r\n                        <label>\r\n                            Device Profile\r\n " +
+"                           <select");
+
+WriteLiteral(" name=\"deviceProfileId\"");
+
+WriteLiteral(" data-bind=\"value: deviceProfileId\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 43 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 43 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                 foreach (var deviceProfile in Model.DeviceProfiles)
+                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <option");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 2814), Tuple.Create("\"", 2839)
+            
+            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+, Tuple.Create(Tuple.Create("", 2822), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            
+            #line default
+            #line hidden
+, 2822), false)
+);
+
+WriteLiteral(">");
+
+            
+            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                                                 Write(deviceProfile.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" (");
+
+            
+            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                                                                      Write(deviceProfile.Id);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(")</option>\r\n");
+
+            
+            #line 46 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </select>\r\n                        </label>\r\n        " +
+"            </div>\r\n");
+
+            
+            #line 50 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                    if (Model.DeviceBatches.Count != 0)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
+
+WriteLiteral(" class=\"device-batch\"");
+
+WriteLiteral(">\r\n                            <label>\r\n                                Device Ba" +
+"tch\r\n                                <select");
+
+WriteLiteral(" name=\"deviceBatchId\"");
+
+WriteLiteral(" data-bind=\"value: deviceBatchId\"");
+
+WriteLiteral(">\r\n                                    <option");
+
+WriteLiteral(" value=\"\"");
+
+WriteLiteral(" selected>&lt;None&gt;</option>\r\n");
+
+            
+            #line 57 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 57 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                     foreach (var deviceBatch in Model.DeviceBatches)
+                                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        <option");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 3596), Tuple.Create("\"", 3619)
+            
+            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+, Tuple.Create(Tuple.Create("", 3604), Tuple.Create<System.Object, System.Int32>(deviceBatch.Id
+            
+            #line default
+            #line hidden
+, 3604), false)
+);
+
+WriteLiteral(">");
+
+            
+            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                                                   Write(deviceBatch.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" (");
+
+            
+            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                                                                      Write(deviceBatch.Id);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(")</option>\r\n");
+
+            
+            #line 60 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                </select>\r\n                            </label>\r\n" +
+"                        </div>\r\n");
+
+            
+            #line 64 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div>\r\n                        <input");
+
+WriteLiteral(" class=\"reason\"");
 
 WriteLiteral(" type=\"text\"");
 
@@ -232,13 +398,7 @@ WriteLiteral(" name=\"reason\"");
 
 WriteLiteral(" placeholder=\"Reason (optional)\"");
 
-WriteLiteral(" />\r\n                    </div>\r\n");
-
-WriteLiteral("                    <div");
-
-WriteLiteral(" class=\"buttons\"");
-
-WriteLiteral(">\r\n                        <button");
+WriteLiteral(" />\r\n                        <button");
 
 WriteLiteral(" type=\"button\"");
 
@@ -257,7 +417,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Reject</button>\r\n                    </div>\r\n");
 
             
-            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 70 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                 }
 
             
@@ -431,13 +591,12 @@ WriteLiteral(@">
         var host = $('#enrolStatus');
         var hostSessions = $('#sessions');
         var hostDialogSessions = $('#dialogSession');
-        //var hostDialogSessionsProgress = $('#dialogSession').find('.sessionProgress');
         var deviceModels = {};
         var logHub;
         var deviceBaseUrl = '");
 
             
-            #line 125 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 149 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -446,7 +605,7 @@ WriteLiteral(@">
 WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 
             
-            #line 126 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 150 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                Write(Url.Action(MVC.API.DeviceModel.Image()));
 
             
@@ -455,7 +614,7 @@ WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 
             
-            #line 127 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 151 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                               Write(Links.ClientSource.Style.Images.Status.warning32_png);
 
             
@@ -464,7 +623,7 @@ WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 WriteLiteral(")\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 128 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 152 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -490,104 +649,108 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "vable();\r\n            self.sessionEnded = ko.observable(false);\r\n            sel" +
 "f.progressbar = null;\r\n            self.hasError = ko.observable(false);\r\n      " +
 "      self.hasWarning = ko.observable(false);\r\n            self.deviceModelId = " +
-"ko.observable();\r\n            self.deviceModelDescription = ko.computed(function" +
-" () {\r\n                var deviceModelId = self.deviceModelId();\r\n              " +
-"  var sessionDeviceInfo = self.sessionDeviceInfo();\r\n                if (deviceM" +
-"odelId) {\r\n                    var dm = deviceModels[deviceModelId];\r\n          " +
-"          if (dm) {\r\n                        if (dm.Description)\r\n              " +
-"              return dm.Description;\r\n                        else\r\n            " +
-"                return dm.Manufacturer + \' \' + dm.Model;\r\n                    }\r" +
-"\n                }\r\n                if (sessionDeviceInfo) {\r\n                  " +
-"  return sessionDeviceInfo.Arguments[6] + \' \' + sessionDeviceInfo.Arguments[7];\r" +
-"\n                }\r\n            });\r\n            self.deviceUrl = ko.computed(fu" +
-"nction () {\r\n                var serialNumber = self.serialNumber();\r\n          " +
-"      if (serialNumber)\r\n                    return deviceBaseUrl + serialNumber" +
-";\r\n                else\r\n                    return null;\r\n            });\r\n    " +
-"        self.deviceModelImageUrl = ko.computed(function () {\r\n                va" +
-"r deviceModelImage;\r\n                if (self.deviceModelId())\r\n                " +
-"    deviceModelImage = \'url(\' + deviceModelImageUrl + self.deviceModelId() + \')\'" +
-";\r\n                else\r\n                    deviceModelImage = \'url(\' + deviceM" +
-"odelImageUrl + \')\';\r\n                if (self.hasError())\r\n                    r" +
-"eturn iconErrorUrl + \', \' + deviceModelImage;\r\n                else\r\n           " +
-"         if (self.hasWarning())\r\n                        return iconWarningUrl +" +
-" \', \' + deviceModelImage;\r\n                    else\r\n                        ret" +
-"urn \'none, \' + deviceModelImage;\r\n            });\r\n            self.select = fun" +
-"ction (e, d) {\r\n                vm.currentSession(self);\r\n                hostDi" +
-"alogSessions.dialog(\'open\');\r\n                hostDialogSessions.dialog(\'option\'" +
-", \'title\', \'Device Enrolment: \' + self.title());\r\n            }\r\n        }\r\n\r\n  " +
-"      function parseLog(log) {\r\n            if (log.ModuleId === 50 && log.Argum" +
-"ents && log.Arguments.length > 0) {\r\n                // find session\r\n          " +
-"      var sessionId = log.Arguments[0];\r\n                var session = vm.sessio" +
-"nIndex[sessionId];\r\n                if (!session && log.EventTypeId === 10) { //" +
-" Starting Session (Ignore \'partial\' sessions)\r\n                    session = new" +
-" sessionViewModel(sessionId);\r\n                    vm.sessionIndex[sessionId] = " +
-"session;\r\n                    vm.sessions.unshift(session);\r\n                   " +
-" vm.noSessions(false);\r\n                }\r\n                if (session) {\r\n     " +
-"               switch (log.EventTypeId) {\r\n                        case 10: // S" +
-"essionStarting\r\n                            session.title(log.Arguments[1]);\r\n  " +
-"                          session.startTime(log.FormattedTimestamp.substring(log" +
-".FormattedTimestamp.indexOf(\' \') + 1));\r\n                            session.mes" +
-"sages.unshift(log);\r\n                            break;\r\n                       " +
-" case 11: // SessionProgress\r\n                            //session.progressbar." +
-"progressbar(\'option\', \'value\', log.Arguments[1]);\r\n                            s" +
-"ession.progressValue(log.Arguments[1]);\r\n                            session.pro" +
-"gressStatus(log.Arguments[2]);\r\n                            break;\r\n            " +
-"            case 12: // SessionDevice\r\n                            session.title" +
-"(log.Arguments[1]);\r\n                            session.serialNumber(log.Argume" +
-"nts[1]);\r\n                            if (log.Arguments.length >= 3 && log.Argum" +
-"ents[2])\r\n                                session.deviceModelId(log.Arguments[2]" +
-");\r\n                            break;\r\n                            break;\r\n    " +
-"                    case 13: // SessionDeviceInfo\r\n                            s" +
-"ession.title(log.Arguments[1]);\r\n                            session.serialNumbe" +
-"r(log.Arguments[1]);\r\n                            session.sessionDeviceInfo(log)" +
-";\r\n                            if (log.Arguments.length >= 10 && log.Arguments[9" +
-"])\r\n                                session.deviceModelId(log.Arguments[9]);\r\n  " +
-"                          break;\r\n                        case 14: // SessionPen" +
-"ding\r\n                            session.isPending(true);\r\n                    " +
-"        session.pendingIdentifier(log.Arguments[4]);\r\n                          " +
-"  session.messages.unshift(log);\r\n                            session.progressVa" +
-"lue(-1);\r\n                            session.progressStatus(\'Pending enrolment " +
-"approval\');\r\n                            break;\r\n                        case 15" +
-": // SessionPendingApproved\r\n                            session.isPending(false" +
-");\r\n                            session.messages.unshift(log);\r\n                " +
-"            session.progressValue(-1);\r\n                            session.prog" +
-"ressStatus(\'Enrolment approval, waiting for client\');\r\n                         " +
-"   break;\r\n                        case 16: // SessionPendingRejected\r\n         " +
-"                   session.isPending(false);\r\n                            sessio" +
-"n.messages.unshift(log);\r\n                            session.progressValue(-1);" +
-"\r\n                            session.progressStatus(\'Enrolment rejected, waitin" +
-"g for client\');\r\n                            break;\r\n                        cas" +
-"e 17: // SessionContinuing\r\n                            session.isPending(false)" +
-";\r\n                            session.messages.unshift(log);\r\n                 " +
-"           break;\r\n                        case 20: // SessionFinished\r\n        " +
-"                    session.sessionEnded(true);\r\n                            ses" +
-"sion.isPending(false);\r\n                            if (session.hasError())\r\n   " +
-"                             session.progressStatus(\'Enrolment Finished with an " +
-"Error\');\r\n                            else\r\n                                if (" +
-"session.hasWarning())\r\n                                    session.progressStatu" +
-"s(\'Enrolment Finished with a Warning\');\r\n                                else\r\n " +
-"                                   session.progressStatus(\'Enrolment Finished Su" +
-"ccessfully\');\r\n                            session.messages.unshift(log);\r\n     " +
-"                       break;\r\n                        case 21: // SessionDiagno" +
-"sticInformation\r\n                            session.console.push(log);\r\n       " +
-"                     break;\r\n                        case 22: // SessionWarning\r" +
-"\n                            session.hasWarning(true);\r\n                        " +
-"    session.messages.unshift(log);\r\n                            break;\r\n        " +
-"                case 23: // SessionError\r\n                        case 24: // Se" +
-"ssionErrorWithInner\r\n                        case 25: // SessionClientError\r\n   " +
-"                         session.hasError(true);\r\n                            se" +
-"ssion.messages.unshift(log);\r\n                            break;\r\n              " +
-"          default:\r\n                            session.messages.unshift(log);\r\n" +
-"                    }\r\n                }\r\n            }\r\n        }\r\n        func" +
-"tion init() {\r\n            hostDialogSessions.dialog({\r\n                modal: t" +
-"rue,\r\n                height: 574,\r\n                width: 900,\r\n               " +
-" resizable: false,\r\n                autoOpen: false\r\n            });\r\n          " +
-"  //hostDialogSessionsProgress.progressbar();\r\n\r\n            // Create View Mode" +
-"l\r\n            vm = new pageViewModel();\r\n            $.ajax({\r\n                " +
-"url: \'");
+"ko.observable();\r\n            self.deviceProfileId = ko.observable(parseInt(host" +
+".attr(\'data-defaultdeviceprofileid\')));\r\n            self.deviceBatchId = ko.obs" +
+"ervable(null);\r\n            self.deviceModelDescription = ko.computed(function (" +
+") {\r\n                var deviceModelId = self.deviceModelId();\r\n                " +
+"var sessionDeviceInfo = self.sessionDeviceInfo();\r\n                if (deviceMod" +
+"elId) {\r\n                    var dm = deviceModels[deviceModelId];\r\n            " +
+"        if (dm) {\r\n                        if (dm.Description)\r\n                " +
+"            return dm.Description;\r\n                        else\r\n              " +
+"              return dm.Manufacturer + \' \' + dm.Model;\r\n                    }\r\n " +
+"               }\r\n                if (sessionDeviceInfo) {\r\n                    " +
+"return sessionDeviceInfo.Arguments[6] + \' \' + sessionDeviceInfo.Arguments[7];\r\n " +
+"               }\r\n            });\r\n            self.deviceUrl = ko.computed(func" +
+"tion () {\r\n                var serialNumber = self.serialNumber();\r\n            " +
+"    if (serialNumber)\r\n                    return deviceBaseUrl + serialNumber;\r" +
+"\n                else\r\n                    return null;\r\n            });\r\n      " +
+"      self.deviceModelImageUrl = ko.computed(function () {\r\n                var " +
+"deviceModelImage;\r\n                if (self.deviceModelId())\r\n                  " +
+"  deviceModelImage = \'url(\' + deviceModelImageUrl + self.deviceModelId() + \')\';\r" +
+"\n                else\r\n                    deviceModelImage = \'url(\' + deviceMod" +
+"elImageUrl + \')\';\r\n                if (self.hasError())\r\n                    ret" +
+"urn iconErrorUrl + \', \' + deviceModelImage;\r\n                else\r\n             " +
+"       if (self.hasWarning())\r\n                        return iconWarningUrl + \'" +
+", \' + deviceModelImage;\r\n                    else\r\n                        retur" +
+"n \'none, \' + deviceModelImage;\r\n            });\r\n            self.select = funct" +
+"ion (e, d) {\r\n                vm.currentSession(self);\r\n                hostDial" +
+"ogSessions.dialog(\'open\');\r\n                hostDialogSessions.dialog(\'option\', " +
+"\'title\', \'Device Enrolment: \' + self.title());\r\n            }\r\n        }\r\n\r\n    " +
+"    function parseLog(log) {\r\n            if (log.ModuleId === 50 && log.Argumen" +
+"ts && log.Arguments.length > 0) {\r\n                // find session\r\n            " +
+"    var sessionId = log.Arguments[0];\r\n                var session = vm.sessionI" +
+"ndex[sessionId];\r\n                if (!session && log.EventTypeId === 10) { // S" +
+"tarting Session (Ignore \'partial\' sessions)\r\n                    session = new s" +
+"essionViewModel(sessionId);\r\n                    vm.sessionIndex[sessionId] = se" +
+"ssion;\r\n                    vm.sessions.unshift(session);\r\n                    v" +
+"m.noSessions(false);\r\n                }\r\n                if (session) {\r\n       " +
+"             switch (log.EventTypeId) {\r\n                        case 10: // Ses" +
+"sionStarting\r\n                            session.title(log.Arguments[1]);\r\n    " +
+"                        session.startTime(log.FormattedTimestamp.substring(log.F" +
+"ormattedTimestamp.indexOf(\' \') + 1));\r\n                            session.messa" +
+"ges.unshift(log);\r\n                            break;\r\n                        c" +
+"ase 11: // SessionProgress\r\n                            session.progressValue(lo" +
+"g.Arguments[1]);\r\n                            session.progressStatus(log.Argumen" +
+"ts[2]);\r\n                            break;\r\n                        case 12: //" +
+" SessionDevice\r\n                            session.title(log.Arguments[1]);\r\n  " +
+"                          session.serialNumber(log.Arguments[1]);\r\n             " +
+"               if (log.Arguments.length >= 3 && log.Arguments[2])\r\n             " +
+"                   session.deviceModelId(log.Arguments[2]);\r\n                   " +
+"         break;\r\n                            break;\r\n                        cas" +
+"e 13: // SessionDeviceInfo\r\n                            session.title(log.Argume" +
+"nts[1]);\r\n                            session.serialNumber(log.Arguments[1]);\r\n " +
+"                           session.sessionDeviceInfo(log);\r\n                    " +
+"        if (log.Arguments.length >= 10 && log.Arguments[9])\r\n                   " +
+"             session.deviceModelId(log.Arguments[9]);\r\n                         " +
+"   break;\r\n                        case 14: // SessionPending\r\n                 " +
+"           session.isPending(true);\r\n                            session.pending" +
+"Identifier(log.Arguments[4]);\r\n                            if (log.Arguments[5])" +
+" {\r\n                                session.deviceProfileId(log.Arguments[5]);\r\n" +
+"                            }\r\n                            if (log.Arguments[6])" +
+" {\r\n                                session.deviceBatchId(log.Arguments[6]);\r\n  " +
+"                          }\r\n                            session.messages.unshif" +
+"t(log);\r\n                            session.progressValue(-1);\r\n               " +
+"             session.progressStatus(\'Pending enrolment approval\');\r\n            " +
+"                break;\r\n                        case 15: // SessionPendingApprov" +
+"ed\r\n                            session.isPending(false);\r\n                     " +
+"       session.messages.unshift(log);\r\n                            session.progr" +
+"essValue(-1);\r\n                            session.progressStatus(\'Enrolment app" +
+"roval, waiting for client\');\r\n                            break;\r\n              " +
+"          case 16: // SessionPendingRejected\r\n                            sessio" +
+"n.isPending(false);\r\n                            session.messages.unshift(log);\r" +
+"\n                            session.progressValue(-1);\r\n                       " +
+"     session.progressStatus(\'Enrolment rejected, waiting for client\');\r\n        " +
+"                    break;\r\n                        case 17: // SessionContinuin" +
+"g\r\n                            session.isPending(false);\r\n                      " +
+"      session.messages.unshift(log);\r\n                            break;\r\n      " +
+"                  case 20: // SessionFinished\r\n                            sessi" +
+"on.sessionEnded(true);\r\n                            session.isPending(false);\r\n " +
+"                           if (session.hasError())\r\n                            " +
+"    session.progressStatus(\'Enrolment Finished with an Error\');\r\n               " +
+"             else\r\n                                if (session.hasWarning())\r\n  " +
+"                                  session.progressStatus(\'Enrolment Finished wit" +
+"h a Warning\');\r\n                                else\r\n                          " +
+"          session.progressStatus(\'Enrolment Finished Successfully\');\r\n          " +
+"                  session.messages.unshift(log);\r\n                            br" +
+"eak;\r\n                        case 21: // SessionDiagnosticInformation\r\n        " +
+"                    session.console.push(log);\r\n                            brea" +
+"k;\r\n                        case 22: // SessionWarning\r\n                        " +
+"    session.hasWarning(true);\r\n                            session.messages.unsh" +
+"ift(log);\r\n                            break;\r\n                        case 23: " +
+"// SessionError\r\n                        case 24: // SessionErrorWithInner\r\n    " +
+"                    case 25: // SessionClientError\r\n                            " +
+"session.hasError(true);\r\n                            session.messages.unshift(lo" +
+"g);\r\n                            break;\r\n                        default:\r\n     " +
+"                       session.messages.unshift(log);\r\n                    }\r\n  " +
+"              }\r\n            }\r\n        }\r\n        function init() {\r\n          " +
+"  hostDialogSessions.dialog({\r\n                modal: true,\r\n                hei" +
+"ght: 574,\r\n                width: 900,\r\n                resizable: false,\r\n     " +
+"           autoOpen: false,\r\n                open: function (e, ui) {\r\n\r\n       " +
+"         }\r\n            });\r\n\r\n            // Create View Model\r\n            vm " +
+"= new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 319 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 352 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -610,9 +773,10 @@ WriteLiteral(@"',
 
             // Load Logs
             var d = new Date();
+            d = new Date(d.getTime() - (d.getTimezoneOffset() * 60 * 1000));
             var loadData = {
                 Format: ""json"",
-                Start: d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(),
+                Start: d.toISOString().substring(0, 10),
                 End: null,
                 ModuleId: 50,
                 Take: 2000,
@@ -622,7 +786,7 @@ WriteLiteral(@"',
                 url: '");
 
             
-            #line 345 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 379 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -661,7 +825,7 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 375 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 409 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                              Write(Disco.Services.Devices.Enrolment.EnrolmentLog.Current.LiveLogGroupName);
 
             

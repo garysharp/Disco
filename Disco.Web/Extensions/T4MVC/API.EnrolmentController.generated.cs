@@ -107,6 +107,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string sessionId = "sessionId";
             public readonly string approve = "approve";
+            public readonly string deviceProfileId = "deviceProfileId";
+            public readonly string deviceBatchId = "deviceBatchId";
             public readonly string reason = "reason";
         }
         static readonly ActionParamsClass_PendingTimeoutMinutes s_params_PendingTimeoutMinutes = new ActionParamsClass_PendingTimeoutMinutes();
@@ -137,16 +139,18 @@ namespace Disco.Web.Areas.API.Controllers
         public T4MVC_EnrolmentController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void ResolveSessionPendingOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string sessionId, bool approve, string reason);
+        partial void ResolveSessionPendingOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string sessionId, bool approve, int? deviceProfileId, int? deviceBatchId, string reason);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ResolveSessionPending(string sessionId, bool approve, string reason)
+        public override System.Web.Mvc.ActionResult ResolveSessionPending(string sessionId, bool approve, int? deviceProfileId, int? deviceBatchId, string reason)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResolveSessionPending);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "sessionId", sessionId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "approve", approve);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceProfileId", deviceProfileId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceBatchId", deviceBatchId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "reason", reason);
-            ResolveSessionPendingOverride(callInfo, sessionId, approve, reason);
+            ResolveSessionPendingOverride(callInfo, sessionId, approve, deviceProfileId, deviceBatchId, reason);
             return callInfo;
         }
 

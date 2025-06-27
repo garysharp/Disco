@@ -59,7 +59,7 @@ namespace Disco.Services.Devices.Enrolment
                 .ToList();
         }
 
-        public static void ResolvePendingEnrolment(string sessionId, bool approve, string username, string reason)
+        public static void ResolvePendingEnrolment(string sessionId, bool approve, string username, int? deviceProfileId, int? deviceBatchId, string reason)
         {
             if (!pendingEnrolments.TryGetValue(sessionId, out var enrolResponse))
                 throw new InvalidOperationException("The pending session is invalid or has expired");
@@ -71,7 +71,6 @@ namespace Disco.Services.Devices.Enrolment
             if (!enrolResponse.IsPending)
                 return;
 
-            enrolResponse.IsPending = false;
             if (approve)
             {
                 enrolResponse.ErrorMessage = null;
@@ -82,6 +81,9 @@ namespace Disco.Services.Devices.Enrolment
                 enrolResponse.ErrorMessage = $"Enrolment rejected";
                 EnrolmentLog.LogSessionPendingRejected(sessionId, username, reason);
             }
+            enrolResponse.DeviceProfileId = deviceProfileId;
+            enrolResponse.DeviceBatchId = deviceBatchId;
+            enrolResponse.IsPending = false;
         }
 
         public static EnrolResponse Enrol(DiscoDataContext Database, string Username, Enrol Request)
@@ -216,7 +218,7 @@ namespace Disco.Services.Devices.Enrolment
                         response.PendingTimeout = DateTimeOffset.Now.Add(Database.DiscoConfiguration.Bootstrapper.PendingTimeout);
                         response.PendingIdentifier = GeneratePendingIdentifier();
 
-                        EnrolmentLog.LogSessionPending(sessionId, Request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason, response.PendingIdentifier);
+                        EnrolmentLog.LogSessionPending(sessionId, Request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason, response.PendingIdentifier, device?.DeviceProfileId, device?.DeviceBatchId);
 
                         if (pendingEnrolments.TryAdd(sessionId, response))
                             return response;
@@ -248,7 +250,19 @@ namespace Disco.Services.Devices.Enrolment
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "New Device, Creating Disco Instance");
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.SerialNumber);
-                    DeviceProfile deviceProfile = Database.DeviceProfiles.Find(Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId);
+
+                    int deviceProfileId;
+                    if (response.DeviceProfileId.HasValue)
+                        deviceProfileId = response.DeviceProfileId.Value;
+                    else
+                        deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+
+                    var deviceProfile = Database.DeviceProfiles.Find(deviceProfileId)
+                        ?? throw new InvalidOperationException($"Device profile {deviceProfileId} was not found, please check your default profile configuration");
+
+                    var deviceBatch = default(DeviceBatch);
+                    if (response.DeviceBatchId.HasValue)
+                        deviceBatch = Database.DeviceBatches.Find(response.DeviceBatchId.Value);
 
                     var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
@@ -263,6 +277,7 @@ namespace Disco.Services.Devices.Enrolment
                         DeviceDomainId = domain == null ? Request.ComputerName : $@"{domain.NetBiosName}\{Request.ComputerName}",
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
+                        DeviceBatch = deviceBatch,
                         AllowUnauthenticatedEnrol = false,
                         CreatedDate = DateTime.Now,
                         EnrolledDate = DateTime.Now,
@@ -285,9 +300,29 @@ namespace Disco.Services.Devices.Enrolment
 
                     device.DeviceModel = deviceModel;
 
+                    if (response.DeviceProfileId.HasValue && device.DeviceProfile.Id != response.DeviceProfileId.Value)
+                    {
+                        var deviceProfile = Database.DeviceProfiles.Find(response.DeviceProfileId.Value);
+                        if (deviceProfile != null)
+                        {
+                            device.DeviceProfile = deviceProfile;
+                            device.DeviceProfileId = deviceProfile.Id;
+                        }
+                    }
+
+                    if (response.DeviceBatchId.HasValue && device.DeviceBatch?.Id != response.DeviceBatchId.Value)
+                    {
+                        var deviceBatch = Database.DeviceBatches.Find(response.DeviceBatchId.Value);
+                        if (deviceBatch != null)
+                        {
+                            device.DeviceBatch = deviceBatch;
+                            device.DeviceBatchId = deviceBatch.Id;
+                        }
+                    }
+
                     var deviceDomainId = domain == null ? Request.ComputerName : $@"{domain.NetBiosName}\{Request.ComputerName}";
                     if (!string.Equals(device.DeviceDomainId, deviceDomainId, StringComparison.Ordinal))
-                        device.DeviceDomainId = deviceDomainId;                    
+                        device.DeviceDomainId = deviceDomainId;
 
                     if (!device.EnrolledDate.HasValue)
                         device.EnrolledDate = DateTime.Now;

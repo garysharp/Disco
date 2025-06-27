@@ -2,6 +2,7 @@
 using Disco.Services.Authorization;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -27,6 +28,10 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult Status()
         {
             var m = new Models.Enrolment.StatusModel();
+
+            m.DefaultDeviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+            m.DeviceProfiles = Database.DeviceProfiles.ToList();
+            m.DeviceBatches = Database.DeviceBatches.ToList();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigEnrolmentStatusModel>(this.ControllerContext, m);
