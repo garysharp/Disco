@@ -266,23 +266,14 @@ header #SearchQuery,
 #header #SearchQuery {
   font-size: 0.9em;
   margin-left: 6px;
-  width: 130px;
+  width: 190px;
   background-color: #eee;
-  -moz-transition-property: width;
-  -o-transition-property: width;
-  -webkit-transition-property: width;
-  transition-property: width;
-  -moz-transition-duration: 0.1s;
-  -o-transition-duration: 0.1s;
-  -webkit-transition-duration: 0.1s;
-  transition-duration: 0.1s;
 }
 header #SearchQuery:hover,
 #header #SearchQuery:hover,
 header #SearchQuery:focus,
 #header #SearchQuery:focus {
   background-color: #fff;
-  width: 190px;
 }
 header .watermark,
 #header .watermark {

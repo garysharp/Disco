@@ -45,9 +45,6 @@
 
                     $this.data('ui-autocomplete')._renderItem = function (ul, item) {
                         let template;
-
-                        //"<a><strong>" + item.DisplayName + "</strong><br>" + item.Id + " (" + item.Type + ")</a>"
-
                         switch (item.Type) {
                             case 'Device':
                                 template = $('<a>').append('<i class="fa fa-desktop fa-fw">').append($('<strong>').text('Device ' + item.Id)).append($('<div>').text(item.ComputerName + '; ' + item.DeviceModelDescription))
