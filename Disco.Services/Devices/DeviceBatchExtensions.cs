@@ -5,28 +5,28 @@ using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Disco.Services
 {
     public static class DeviceBatchExtensions
     {
-        public static bool CanDelete(this DeviceBatch db, DiscoDataContext Database)
+        public static bool CanDelete(this DeviceBatch db, DiscoDataContext database)
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Config.DeviceBatch.Delete))
                 return false;
 
             // Can't Delete if Contains Devices
-            var deviceCount = Database.Devices.Count(d => d.DeviceBatchId == db.Id);
-            if (deviceCount > 0)
+            if (database.Devices.Any(d => d.DeviceBatchId == db.Id))
                 return false;
 
             return true;
         }
 
-        public static void Delete(this DeviceBatch db, DiscoDataContext Database)
+        public static void Delete(this DeviceBatch db, DiscoDataContext database)
         {
-            if (!db.CanDelete(Database))
+            if (!db.CanDelete(database))
                 throw new InvalidOperationException("The state of this Device Batch doesn't allow it to be deleted");
 
             // Remove Linked Group
@@ -34,7 +34,26 @@ namespace Disco.Services
             ActiveDirectory.Context.ManagedGroups.Remove(DeviceBatchAssignedUsersManagedGroup.GetKey(db));
 
             // Delete Batch
-            Database.DeviceBatches.Remove(db);
+            database.DeviceBatches.Remove(db);
+        }
+
+        public static bool CanDecommission(this DeviceBatch db, DiscoDataContext database)
+        {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.Import))
+                return false;
+
+            if (!database.Devices.Any(d => d.DeviceBatchId == db.Id && d.DecommissionedDate == null))
+                return false;
+
+            return true;
+        }
+
+        public static void Decommission(this DeviceBatch db, DiscoDataContext database, DecommissionReasons Reason, bool unassignUsers)
+        {
+            if (!db.CanDecommission(database))
+                throw new InvalidOperationException("Decommission of Device Batch is Denied");
+
+
         }
     }
 }

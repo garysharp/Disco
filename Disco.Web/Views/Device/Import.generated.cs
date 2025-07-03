@@ -668,11 +668,11 @@ WriteLiteral(" device");
             
             #line default
             #line hidden
-WriteLiteral(".</h3>\r\n        <div>File: <code>");
+WriteLiteral(".</h3>\r\n        <div><code>");
 
             
             #line 220 "..\..\Views\Device\Import.cshtml"
-                    Write(Model.CompletedImportSessionContext.Filename);
+              Write(Model.CompletedImportSessionContext.Filename);
 
             
             #line default

@@ -28,14 +28,16 @@
 <div class="form deviceBatches@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 730px">
     <table>
         <tr>
-            <th style="width: 150px">Id:
+            <th style="width: 150px">
+                Id:
             </th>
             <td>
                 @Html.DisplayFor(model => model.DeviceBatch.Id)
             </td>
         </tr>
         <tr>
-            <th>Name:
+            <th>
+                Name:
             </th>
             <td>
                 @if (canConfig)
@@ -61,14 +63,16 @@
             </td>
         </tr>
         <tr>
-            <th>Default Device Model:
+            <th>
+                Default Device Model:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems(null, true))
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <script type="text/javascript">
+                    @Html.DropDownListFor(model => model.DeviceBatch.DefaultDeviceModelId, Model.DeviceModels.ToSelectListItems(null, true))
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <script type="text/javascript">
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#DeviceBatch_DefaultDeviceModelId'),
@@ -77,7 +81,7 @@
                             'DefaultDeviceModelId'
                         );
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
@@ -85,11 +89,13 @@
                     {<span class="smallMessage">&lt;None Specified&gt;</span>}
                     else
                     {@Model.DefaultDeviceModel.ToString();
-                    }
                 }
+            }
                 <br />
-                <span class="smallMessage">Devices added offline will default to this Device Model.
-                    Once a device enrols the Device Model will be accurately represented.</span>
+                <span class="smallMessage">
+                    Devices added offline will default to this Device Model.
+                    Once a device enrols the Device Model will be accurately represented.
+                </span>
             </td>
         </tr>
         <tr>
@@ -154,12 +160,14 @@
             </td>
         </tr>
         <tr>
-            <th>Purchase:
+            <th>
+                Purchase:
             </th>
             <td class="details">
                 <table class="sub">
                     <tr>
-                        <th class="name" style="width: 100px">Purchase Date:
+                        <th class="name" style="width: 100px">
+                            Purchase Date:
                         </th>
                         <td>
                             @if (canConfig)
@@ -187,14 +195,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Supplier:
+                        <th>
+                            Supplier:
                         </th>
-                        <td>@if (canConfig)
+                        <td>
+                            @if (canConfig)
                             {
-                            @Html.EditorFor(model => model.DeviceBatch.Supplier)
-                            @AjaxHelpers.AjaxSave()
-                            @AjaxHelpers.AjaxLoader()
-                            <script type="text/javascript">
+                                @Html.EditorFor(model => model.DeviceBatch.Supplier)
+                                @AjaxHelpers.AjaxSave()
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
                                 $(function () {
                                     document.DiscoFunctions.PropertyChangeHelper(
                                         $('#DeviceBatch_Supplier'),
@@ -203,7 +213,7 @@
                                         'Supplier'
                                     );
                                 });
-                            </script>
+                                </script>
                             }
                             else
                             {
@@ -211,18 +221,20 @@
                                 {<span class="smallMessage">&lt;None Specified&gt;</span>}
                                 else
                                 {@Model.DeviceBatch.Supplier}
-                            }
+                        }
                         </td>
                     </tr>
                     <tr>
-                        <th>Unit Cost:
+                        <th>
+                            Unit Cost:
                         </th>
-                        <td>@if (canConfig)
+                        <td>
+                            @if (canConfig)
                             {
-                            @Html.EditorFor(model => model.DeviceBatch.UnitCost)
-                            @AjaxHelpers.AjaxSave()
-                            @AjaxHelpers.AjaxLoader()
-                            <script type="text/javascript">
+                                @Html.EditorFor(model => model.DeviceBatch.UnitCost)
+                                @AjaxHelpers.AjaxSave()
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
                                 $(function () {
                                     document.DiscoFunctions.PropertyChangeHelper(
                                         $('#DeviceBatch_UnitCost'),
@@ -231,7 +243,7 @@
                                         'UnitCost'
                                     );
                                 });
-                            </script>
+                                </script>
                             }
                             else
                             {
@@ -239,18 +251,20 @@
                                 {<span class="smallMessage">&lt;None Specified&gt;</span>}
                                 else
                                 {@Model.DeviceBatch.UnitCost.Value.ToString("C")}
-                            }
+                        }
                         </td>
                     </tr>
                     <tr>
-                        <th>Quantity:
+                        <th>
+                            Quantity:
                         </th>
-                        <td>@if (canConfig)
+                        <td>
+                            @if (canConfig)
                             {
-                            @Html.EditorFor(model => model.DeviceBatch.UnitQuantity)
-                            @AjaxHelpers.AjaxSave()
-                            @AjaxHelpers.AjaxLoader()
-                            <script type="text/javascript">
+                                @Html.EditorFor(model => model.DeviceBatch.UnitQuantity)
+                                @AjaxHelpers.AjaxSave()
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
                                 $(function () {
                                     document.DiscoFunctions.PropertyChangeHelper(
                                         $('#DeviceBatch_UnitQuantity'),
@@ -259,7 +273,7 @@
                                         'UnitQuantity'
                                     );
                                 });
-                            </script>
+                                </script>
                             }
                             else
                             {
@@ -267,7 +281,7 @@
                                 {<span class="smallMessage">&lt;None Specified&gt;</span>}
                                 else
                                 {@Model.DeviceBatch.UnitQuantity.Value.ToString("n0")}
-                            }
+                        }
                         </td>
                     </tr>
                 </table>
@@ -341,12 +355,14 @@
             </td>
         </tr>
         <tr>
-            <th>Warranty:
+            <th>
+                Warranty:
             </th>
             <td class="details">
                 <table class="sub">
                     <tr>
-                        <th class="name" style="width: 100px">Valid Until:
+                        <th class="name" style="width: 100px">
+                            Valid Until:
                         </th>
                         <td>
                             @if (canConfig)
@@ -444,19 +460,22 @@
             </td>
         </tr>
         <tr>
-            <th>Insurance:
+            <th>
+                Insurance:
             </th>
             <td class="details">
                 <table class="sub">
                     <tr>
-                        <th class="name" style="width: 100px">Supplier:
+                        <th class="name" style="width: 100px">
+                            Supplier:
                         </th>
-                        <td>@if (canConfig)
+                        <td>
+                            @if (canConfig)
                             {
-                            @Html.EditorFor(model => model.DeviceBatch.InsuranceSupplier)
-                            @AjaxHelpers.AjaxSave()
-                            @AjaxHelpers.AjaxLoader()
-                            <script type="text/javascript">
+                                @Html.EditorFor(model => model.DeviceBatch.InsuranceSupplier)
+                                @AjaxHelpers.AjaxSave()
+                                @AjaxHelpers.AjaxLoader()
+                                <script type="text/javascript">
                                 $(function () {
                                     document.DiscoFunctions.PropertyChangeHelper(
                                         $('#DeviceBatch_InsuranceSupplier'),
@@ -465,7 +484,7 @@
                                         'InsuranceSupplier'
                                     );
                                 });
-                            </script>
+                                </script>
                             }
                             else
                             {
@@ -473,18 +492,20 @@
                                 {<span class="smallMessage">&lt;None Specified&gt;</span>}
                                 else
                                 {@Model.DeviceBatch.InsuranceSupplier;
-                                }
                             }
+                        }
                         </td>
                     </tr>
                     <tr>
-                        <th class="name">Insured Date:
+                        <th class="name">
+                            Insured Date:
                         </th>
-                        <td>@if (canConfig)
+                        <td>
+                            @if (canConfig)
                             {
-                            @Html.EditorFor(model => model.DeviceBatch.InsuredDate)
-                            @AjaxHelpers.AjaxLoader()
-                            <script>
+                                @Html.EditorFor(model => model.DeviceBatch.InsuredDate)
+                                @AjaxHelpers.AjaxLoader()
+                                <script>
                                 $(function () {
                                     var dateField = $('#DeviceBatch_InsuredDate');
                                     document.DiscoFunctions.DateChangeHelper(
@@ -496,22 +517,24 @@
                                         true
                                     );
                                 });
-                            </script>
+                                </script>
                             }
                             else
                             {
-                            @CommonHelpers.FriendlyDate(Model.DeviceBatch.InsuredDate, "Unknown")
+                                @CommonHelpers.FriendlyDate(Model.DeviceBatch.InsuredDate, "Unknown")
                             }
                         </td>
                     </tr>
                     <tr>
-                        <th class="name">Insured Until:
+                        <th class="name">
+                            Insured Until:
                         </th>
-                        <td>@if (canConfig)
+                        <td>
+                            @if (canConfig)
                             {
-                            @Html.EditorFor(model => model.DeviceBatch.InsuredUntil)
-                            @AjaxHelpers.AjaxLoader()
-                            <script>
+                                @Html.EditorFor(model => model.DeviceBatch.InsuredUntil)
+                                @AjaxHelpers.AjaxLoader()
+                                <script>
                                 $(function () {
                                     var dateField = $('#DeviceBatch_InsuredUntil');
                                     document.DiscoFunctions.DateChangeHelper(
@@ -523,11 +546,11 @@
                                         true
                                     );
                                 });
-                            </script>
+                                </script>
                             }
                             else
                             {
-                            @CommonHelpers.FriendlyDate(Model.DeviceBatch.InsuredUntil, "Unknown")
+                                @CommonHelpers.FriendlyDate(Model.DeviceBatch.InsuredUntil, "Unknown")
                             }
                         </td>
                     </tr>
@@ -600,13 +623,15 @@
             </td>
         </tr>
         <tr>
-            <th>Comments:<br />
+            <th>
+                Comments:<br />
                 @AjaxHelpers.AjaxLoader("ajaxComments")
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.EditorFor(model => model.DeviceBatch.Comments)
-                <script type="text/javascript">
+                    @Html.EditorFor(model => model.DeviceBatch.Comments)
+                    <script type="text/javascript">
                     $(function () {
                         var model = {
                             $field: $('#DeviceBatch_Comments'),
@@ -654,7 +679,7 @@
                             }
                         });
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
@@ -983,7 +1008,8 @@
             </tr>
         }
         <tr class="Config_HideAdvanced_Item">
-            <th>Linked Groups:
+            <th>
+                Linked Groups:
             </th>
             <td>
                 <div>
@@ -1014,19 +1040,78 @@
 </div>
 @Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model)
 <div class="actionBar">
+    @if (Model.CanDecommission)
+    {
+        <button id="DeviceBatch_Decommission" class="button">Decommission All Devices</button>
+        <div id="DeviceBatch_Decommission_Dialog" class="dialog" title="Batch Device Decommission">
+            @using (Html.BeginForm(MVC.API.Device.DeviceBatchDecommission(Model.DeviceBatch.Id), FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="clearfix" style="margin-bottom: 10px;">
+                    <i class="fa fa-question-circle fa-lg information"></i>&nbsp;Why are these devices to be decommissioned?
+                </div>
+                <div>
+                    <ul class="none">
+                        @foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
+                        {
+                            <li>
+                                <input type="radio" id="DeviceBatch_Decommission_Dialog_Reason_@((int)decommissionReason)"
+                                       name="decommissionReason" value="@((int)decommissionReason)" @((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty) />
+                                <label for="DeviceBatch_Decommission_Dialog_Reason_@((int)decommissionReason)">@(decommissionReason.ReasonMessage())</label>
+                            </li>
+                        }
+                    </ul>
+                    <br />
+                    <label>
+                        <input type="checkbox" value="true" name="unassignUsers" />
+                        Unassign devices users
+                    </label>
+                </div>
+            }
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                let buttonDialog = null;
+                $('#DeviceBatch_Decommission').click(function () {
+                    if (!buttonDialog) {
+                        buttonDialog = $('#DeviceBatch_Decommission_Dialog')
+                            .dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    "Decommission": function () {
+                                        const $this = $(this);
+                                        $this.find('form').trigger('submit');
+                                        $this.dialog("disable");
+                                        $this.dialog("option", "buttons", null);
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                    }
+                    buttonDialog.dialog('open');
+                    return false;
+                });
+
+            });
+        </script>
+    }
     @if (Model.CanDelete)
-    { 
+    {
         @Html.ActionLinkButton("Delete", MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true), "buttonDelete")
     }
     @if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
         {
-        @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Batch, Model.DeviceBatch.Id))
+            @Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Batch, Model.DeviceBatch.Id))
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
         {
-        @Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch"))
+            @Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch"))
         }
     }
 </div>

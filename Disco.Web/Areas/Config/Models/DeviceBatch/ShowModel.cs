@@ -20,6 +20,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
         public int DeviceCount { get; set; }
         public int DeviceDecommissionedCount { get; set; }
         public bool CanDelete { get; set; }
+        public bool CanDecommission { get; set; }
 
         public override int DeviceGroupId => DeviceBatch.Id;
     }

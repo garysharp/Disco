@@ -2,7 +2,7 @@
 @{
     Authorization.Require(Claims.Device.Actions.Import);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), string.Format("File: {0}", Model.Context.DatasetName));
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), Model.Context.DatasetName);
 }
 <div id="Devices_Import_Headers">
 
@@ -29,7 +29,8 @@
                     {
                         <td data-headerindex="@header.Index" class="header@(header.Type.ToString())">
                             <ul class="importHeaderType" data-headerindex="@header.Index" data-headertype="@header.Type.ToString()">
-                                <li><a href="#"><span class="headerTypeTitle">@(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Type).Item2)</span></a>
+                                <li>
+                                    <a href="#"><span class="headerTypeTitle">@(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Type).Item2)</span></a>
                                     <ul>
                                         @foreach (var headerType in Model.HeaderTypes)
                                         {
@@ -62,7 +63,7 @@
     <div class="actionBar">
         @using (Html.BeginForm(MVC.API.Device.ImportParse(Model.Context.SessionId, null)))
         {
-            <a id="Devices_Import_Headers_Submit" href="#" class="button">Parse Device Import</a>   
+            <a id="Devices_Import_Headers_Submit" href="#" class="button">Parse Device Import</a>
         }
     </div>
 </div>

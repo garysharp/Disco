@@ -1,6 +1,5 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Devices;
-using Disco.Models.Services.Documents;
 using Disco.Models.Services.Jobs.JobLists;
 using Disco.Models.UI.Device;
 using Disco.Services;

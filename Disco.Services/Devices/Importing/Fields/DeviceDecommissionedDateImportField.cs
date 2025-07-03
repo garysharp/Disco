@@ -158,36 +158,48 @@ namespace Disco.Services.Devices.Importing.Fields
             return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }
 
-        public static bool CanDecommissionDevice(Device Device, IDeviceImportContext Context, IDeviceImportDataReader DataReader, out string ErrorMessage)
+        public static bool CanDecommissionDevice(Device device, IDeviceImportContext context, IDeviceImportDataReader dataReader, out string errorMessage)
         {
-            if (Device == null)
+            var isAssigningUser = false;
+            var assigningUserId = default(string);
+            var assignedUserIndex = context.GetColumnByType(DeviceImportFieldTypes.AssignedUserId);
+            if (assignedUserIndex.HasValue)
             {
-                ErrorMessage = "Cannot decommission new devices";
+                isAssigningUser = true;
+                assigningUserId = dataReader.GetString(assignedUserIndex.Value);
+            }
+            var hasOpenJobs = device.Jobs.Any(j => !j.ClosedDate.HasValue);
+
+            return CanDecommissionDevice(device, isAssigningUser, assigningUserId, hasOpenJobs, out errorMessage);
+        }
+
+        public static bool CanDecommissionDevice(Device device, bool isAssigningUser, string assigningUserId, bool hasOpenJobs, out string errorMessage)
+        {
+            if (device == null)
+            {
+                errorMessage = "Cannot decommission new devices";
                 return false;
             }
 
             // Check device is assigned (or being removed in this import)
-
-            var assignedUserIndex = Context.GetColumnByType(DeviceImportFieldTypes.AssignedUserId);
-            if ((!assignedUserIndex.HasValue && Device.AssignedUserId != null) ||
-                (assignedUserIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(assignedUserIndex.Value))))
+            if (isAssigningUser && !string.IsNullOrEmpty(assigningUserId) ||
+                (!isAssigningUser && device.AssignedUserId != null))
             {
-                if (Device.AssignedUserId != null)
-                    ErrorMessage = $"The device is assigned to a user ({Device.AssignedUser.DisplayName} [{Device.AssignedUser.UserId}]) and cannot be decommissioned";
+                if (!isAssigningUser)
+                    errorMessage = $"The device is assigned to a user ({device.AssignedUser.DisplayName} [{device.AssignedUser.UserId}]) and cannot be decommissioned";
                 else
-                    ErrorMessage = $"The device is being assigned to a user ({DataReader.GetString(assignedUserIndex.Value)}) and cannot be decommissioned";
+                    errorMessage = $"The device is being assigned to a user ({assigningUserId}) and cannot be decommissioned";
                 return false;
             }
 
             // Check device doesn't have any open jobs
-            var openJobCount = Device.Jobs.Count(j => !j.ClosedDate.HasValue);
-            if (openJobCount > 0)
+            if (hasOpenJobs)
             {
-                ErrorMessage = $"The device is associated with {openJobCount} open job{(openJobCount == 1 ? null : "s")} and cannot be decommissioned";
+                errorMessage = $"The device is associated with an open job and cannot be decommissioned";
                 return false;
             }
 
-            ErrorMessage = null;
+            errorMessage = null;
             return true;
         }
     }

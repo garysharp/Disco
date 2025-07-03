@@ -48,7 +48,7 @@ namespace Disco.Web.Views.Device
   
     Authorization.Require(Claims.Device.Actions.Import);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), string.Format("File: {0}", Model.Context.DatasetName));
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices", MVC.Device.Import(), Model.Context.DatasetName);
 
             
             #line default
@@ -138,15 +138,15 @@ WriteLiteral(" data-headerindex=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 947), Tuple.Create("\"", 986)
-, Tuple.Create(Tuple.Create("", 955), Tuple.Create("header", 955), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 919), Tuple.Create("\"", 958)
+, Tuple.Create(Tuple.Create("", 927), Tuple.Create("header", 927), true)
             
             #line 24 "..\..\Views\Device\ImportHeaders.cshtml"
-, Tuple.Create(Tuple.Create("", 961), Tuple.Create<System.Object, System.Int32>(header.Type.ToString()
+, Tuple.Create(Tuple.Create("", 933), Tuple.Create<System.Object, System.Int32>(header.Type.ToString()
             
             #line default
             #line hidden
-, 961), false)
+, 933), false)
 );
 
 WriteLiteral(">");
@@ -196,15 +196,15 @@ WriteLiteral(" data-headerindex=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1226), Tuple.Create("\"", 1265)
-, Tuple.Create(Tuple.Create("", 1234), Tuple.Create("header", 1234), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1198), Tuple.Create("\"", 1237)
+, Tuple.Create(Tuple.Create("", 1206), Tuple.Create("header", 1206), true)
             
             #line 30 "..\..\Views\Device\ImportHeaders.cshtml"
-, Tuple.Create(Tuple.Create("", 1240), Tuple.Create<System.Object, System.Int32>(header.Type.ToString()
+, Tuple.Create(Tuple.Create("", 1212), Tuple.Create<System.Object, System.Int32>(header.Type.ToString()
             
             #line default
             #line hidden
-, 1240), false)
+, 1212), false)
 );
 
 WriteLiteral(">\r\n                            <ul");
@@ -233,7 +233,7 @@ WriteLiteral(" data-headertype=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n                                <li><a");
+WriteLiteral(">\r\n                                <li>\r\n                                    <a");
 
 WriteLiteral(" href=\"#\"");
 
@@ -244,7 +244,7 @@ WriteLiteral(" class=\"headerTypeTitle\"");
 WriteLiteral(">");
 
             
-            #line 32 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 33 "..\..\Views\Device\ImportHeaders.cshtml"
                                                                           Write(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Type).Item2);
 
             
@@ -253,13 +253,13 @@ WriteLiteral(">");
 WriteLiteral("</span></a>\r\n                                    <ul>\r\n");
 
             
-            #line 34 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 35 "..\..\Views\Device\ImportHeaders.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 34 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 35 "..\..\Views\Device\ImportHeaders.cshtml"
                                          foreach (var headerType in Model.HeaderTypes)
                                         {
 
@@ -271,7 +271,7 @@ WriteLiteral("                                            <li");
 WriteLiteral(" data-headertype=\"");
 
             
-            #line 36 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 37 "..\..\Views\Device\ImportHeaders.cshtml"
                                                             Write(headerType.Item1);
 
             
@@ -286,7 +286,7 @@ WriteLiteral(" href=\"#\"");
 WriteLiteral(">");
 
             
-            #line 36 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 37 "..\..\Views\Device\ImportHeaders.cshtml"
                                                                                            Write(headerType.Item2);
 
             
@@ -295,7 +295,7 @@ WriteLiteral(">");
 WriteLiteral("</a></li>\r\n");
 
             
-            #line 37 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 38 "..\..\Views\Device\ImportHeaders.cshtml"
                                         }
 
             
@@ -305,7 +305,7 @@ WriteLiteral("                                    </ul>\r\n                     
 "\n                            </ul>\r\n                        </td>\r\n");
 
             
-            #line 42 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 43 "..\..\Views\Device\ImportHeaders.cshtml"
                     }
 
             
@@ -314,13 +314,13 @@ WriteLiteral("                                    </ul>\r\n                     
 WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbody>\r\n");
 
             
-            #line 46 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 47 "..\..\Views\Device\ImportHeaders.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 46 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 47 "..\..\Views\Device\ImportHeaders.cshtml"
                  using (var dataReader = Model.Context.GetDataReader())
                 {
                     for (int r = 0; r < Math.Min(10, Model.Context.RecordCount); r++)
@@ -333,13 +333,13 @@ WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbod
 WriteLiteral("                        <tr>\r\n");
 
             
-            #line 52 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 53 "..\..\Views\Device\ImportHeaders.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 52 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 53 "..\..\Views\Device\ImportHeaders.cshtml"
                              for (int c = 0; c < Model.Context.ColumnCount; c++)
                             {
 
@@ -351,7 +351,7 @@ WriteLiteral("                                <td");
 WriteLiteral(" data-headerindex=\"");
 
             
-            #line 54 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 55 "..\..\Views\Device\ImportHeaders.cshtml"
                                                  Write(c);
 
             
@@ -362,7 +362,7 @@ WriteLiteral("\"");
 WriteLiteral(">");
 
             
-            #line 54 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 55 "..\..\Views\Device\ImportHeaders.cshtml"
                                                      Write(dataReader.GetString(c));
 
             
@@ -371,7 +371,7 @@ WriteLiteral(">");
 WriteLiteral("</td>\r\n");
 
             
-            #line 55 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 56 "..\..\Views\Device\ImportHeaders.cshtml"
                             }
 
             
@@ -380,7 +380,7 @@ WriteLiteral("</td>\r\n");
 WriteLiteral("                        </tr>\r\n");
 
             
-            #line 57 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 58 "..\..\Views\Device\ImportHeaders.cshtml"
                     }
                 }
 
@@ -394,13 +394,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 63 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 64 "..\..\Views\Device\ImportHeaders.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 64 "..\..\Views\Device\ImportHeaders.cshtml"
          using (Html.BeginForm(MVC.API.Device.ImportParse(Model.Context.SessionId, null)))
         {
 
@@ -415,10 +415,10 @@ WriteLiteral(" href=\"#\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Parse Device Import</a>   \r\n");
+WriteLiteral(">Parse Device Import</a>\r\n");
 
             
-            #line 66 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 67 "..\..\Views\Device\ImportHeaders.cshtml"
         }
 
             
@@ -442,13 +442,13 @@ WriteLiteral("></i>Parsing device import...</h4>\r\n</div>\r\n<script>\r\n    $(
 "  var headerTypes = {\r\n");
 
             
-            #line 75 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 76 "..\..\Views\Device\ImportHeaders.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 75 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 76 "..\..\Views\Device\ImportHeaders.cshtml"
              foreach (var h in Model.HeaderTypes)
             {
 
@@ -460,7 +460,7 @@ WriteLiteral("                ");
 WriteLiteral("\'");
 
             
-            #line 77 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 78 "..\..\Views\Device\ImportHeaders.cshtml"
                    Write(h.Item1);
 
             
@@ -469,7 +469,7 @@ WriteLiteral("\'");
 WriteLiteral("\': \'");
 
             
-            #line 77 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 78 "..\..\Views\Device\ImportHeaders.cshtml"
                                  Write(h.Item2);
 
             
@@ -480,7 +480,7 @@ WriteLiteral("\',");
 WriteLiteral("\r\n");
 
             
-            #line 78 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 79 "..\..\Views\Device\ImportHeaders.cshtml"
             }
 
             

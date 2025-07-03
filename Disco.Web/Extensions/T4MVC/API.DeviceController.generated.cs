@@ -218,6 +218,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DeviceBatchDecommission()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceBatchDecommission);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Export()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
@@ -276,6 +282,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImportBegin = "ImportBegin";
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportApply = "ImportApply";
+            public readonly string DeviceBatchDecommission = "DeviceBatchDecommission";
             public readonly string Export = "Export";
             public readonly string ExportRetrieve = "ExportRetrieve";
             public readonly string SaveExport = "SaveExport";
@@ -311,6 +318,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImportBegin = "ImportBegin";
             public const string ImportParse = "ImportParse";
             public const string ImportApply = "ImportApply";
+            public const string DeviceBatchDecommission = "DeviceBatchDecommission";
             public const string Export = "Export";
             public const string ExportRetrieve = "ExportRetrieve";
             public const string SaveExport = "SaveExport";
@@ -556,6 +564,16 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ImportApply
         {
             public readonly string Id = "Id";
+        }
+        static readonly ActionParamsClass_DeviceBatchDecommission s_params_DeviceBatchDecommission = new ActionParamsClass_DeviceBatchDecommission();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DeviceBatchDecommission DeviceBatchDecommissionParams { get { return s_params_DeviceBatchDecommission; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DeviceBatchDecommission
+        {
+            public readonly string id = "id";
+            public readonly string decommissionReason = "decommissionReason";
+            public readonly string unassignUsers = "unassignUsers";
         }
         static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -940,6 +958,20 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportApply);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             ImportApplyOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeviceBatchDecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, Disco.Models.Repository.DecommissionReasons? decommissionReason, bool? unassignUsers);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeviceBatchDecommission(int id, Disco.Models.Repository.DecommissionReasons? decommissionReason, bool? unassignUsers)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceBatchDecommission);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "decommissionReason", decommissionReason);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "unassignUsers", unassignUsers);
+            DeviceBatchDecommissionOverride(callInfo, id, decommissionReason, unassignUsers);
             return callInfo;
         }
 

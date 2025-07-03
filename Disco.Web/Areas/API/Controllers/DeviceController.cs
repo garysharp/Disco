@@ -715,6 +715,21 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult DeviceBatchDecommission(int id, DecommissionReasons? decommissionReason = null, bool? unassignUsers = null)
+        {
+            var deviceBatch = Database.DeviceBatches.Find(id)
+                ?? throw new ArgumentException("Invalid Device Batch Id", nameof(id));
+            if (decommissionReason == null)
+                throw new ArgumentNullException(nameof(decommissionReason), "Decommission Reason is required");
+
+            var context = DeviceImport.BeginDecommissionImport(Database, deviceBatch, decommissionReason.Value, unassignUsers.GetValueOrDefault());
+            Import_StoreContext(context);
+
+            return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
+        }
+
         #endregion
 
         #region Exporting

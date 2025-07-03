@@ -30,22 +30,22 @@ namespace Disco.Services.Devices.Importing
             this.RecordAction = RecordAction;
         }
 
-        public bool Apply(DiscoDataContext Database)
+        public static bool Apply(IDeviceImportRecord record, DiscoDataContext Database)
         {
-            if (RecordAction == EntityState.Detached || !HasError)
+            if (record.RecordAction == EntityState.Detached || !record.HasError)
             {
                 Device device;
 
-                if (RecordAction == EntityState.Unchanged)
+                if (record.RecordAction == EntityState.Unchanged)
                 {
                     // Unchanged - No Action Required
                     return false;
                 }
-                else if (RecordAction == EntityState.Modified)
+                else if (record.RecordAction == EntityState.Modified)
                 {
-                    device = Database.Devices.Find(DeviceSerialNumber);
+                    device = Database.Devices.Find(record.DeviceSerialNumber);
                 }
-                else if (RecordAction == EntityState.Added)
+                else if (record.RecordAction == EntityState.Added)
                 {
                     // Use 'Add Device Offline' default if available
                     var deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
@@ -57,7 +57,7 @@ namespace Disco.Services.Devices.Importing
                     // Create Device
                     device = new Device()
                     {
-                        SerialNumber = DeviceSerialNumber.ToUpper(),
+                        SerialNumber = record.DeviceSerialNumber.ToUpper(),
                         CreatedDate = DateTime.Now,
                         AllowUnauthenticatedEnrol = true,
                         DeviceProfileId = deviceProfileId,
@@ -71,9 +71,9 @@ namespace Disco.Services.Devices.Importing
                     return false;
                 }
 
-                bool changesMade = (RecordAction == EntityState.Added);
+                bool changesMade = (record.RecordAction == EntityState.Added);
 
-                foreach (var field in Fields.Cast<DeviceImportFieldBase>())
+                foreach (var field in record.Fields.Cast<DeviceImportFieldBase>())
                 {
                     changesMade = field.Apply(Database, device) || changesMade;
                 }
@@ -84,7 +84,7 @@ namespace Disco.Services.Devices.Importing
 
                 bool adDescriptionSet = false;
 
-                foreach (var field in Fields.Cast<DeviceImportFieldBase>())
+                foreach (var field in record.Fields.Cast<DeviceImportFieldBase>())
                 {
                     field.Applied(Database, device, ref adDescriptionSet);
                 }

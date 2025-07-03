@@ -48,6 +48,8 @@ namespace Disco.Services.Devices.Importing
         public List<IDeviceImportRecord> Records { get; set; }
         public int AffectedRecords { get; set; }
 
+        public bool AllowBacktracking { get; } = true;
+
         public int ColumnCount { get { return columns.Count; } }
         public IEnumerable<IDeviceImportColumn> Columns
         {

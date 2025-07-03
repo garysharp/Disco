@@ -40,6 +40,9 @@ namespace Disco.Services.Devices.Importing
             return context;
         }
 
+        public static IDeviceImportContext BeginDecommissionImport(DiscoDataContext database, DeviceBatch deviceBatch, DecommissionReasons decommissionReason, bool unassignUsers)
+            => DeviceDecommissionImportContext.Create(database, deviceBatch, decommissionReason, unassignUsers);
+
         private static void GuessHeaderTypes(this IDeviceImportContext Context, DiscoDataContext Database)
         {
             using (var dataReader = Context.GetDataReader())
@@ -151,11 +154,11 @@ namespace Disco.Services.Devices.Importing
 
             int affectedRecords = 0;
 
-            foreach (var record in Context.Records.Cast<DeviceImportRecord>().Select((r, i) => Tuple.Create(r, i)))
+            foreach (var (record, index) in Context.Records.Select((r, i) => Tuple.Create(r, i)))
             {
-                Status.UpdateStatus(((double)record.Item2 / Context.Records.Count) * 100, string.Format("Applying: {0}", record.Item1.DeviceSerialNumber));
+                Status.UpdateStatus(((double)index / Context.Records.Count) * 100, $"Applying: {record.DeviceSerialNumber}");
 
-                if (record.Item1.Apply(Database))
+                if (DeviceImportRecord.Apply(record, Database))
                     affectedRecords++;
             }
 

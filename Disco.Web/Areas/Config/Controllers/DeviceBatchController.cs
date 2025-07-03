@@ -48,8 +48,8 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (DeviceBatchDevicesManagedGroup.TryGetManagedGroup(m.DeviceBatch, out devicesManagedGroup))
                     m.DevicesLinkedGroup = devicesManagedGroup;
 
-                if (Authorization.Has(Claims.Config.DeviceBatch.Delete))
-                    m.CanDelete = m.DeviceBatch.CanDelete(Database);
+                m.CanDelete = m.DeviceBatch.CanDelete(Database);
+                m.CanDecommission = m.DeviceBatch.CanDecommission(Database);
 
                 if (Authorization.Has(Claims.Config.DeviceBatch.Configure))
                 {

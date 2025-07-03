@@ -21,5 +21,6 @@ namespace Disco.Models.Services.Devices.Importing
 
         List<IDeviceImportRecord> Records { get; set; }
         int AffectedRecords { get; set; }
+        bool AllowBacktracking { get; }
     }
 }

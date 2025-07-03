@@ -23,6 +23,25 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
+        public static AssignedUserIdImportField CreateUnassigned(Device device)
+        {
+            var field = new AssignedUserIdImportField()
+            {
+                parsedValue = null,
+                friendlyValue = null,
+            };
+            if (device.AssignedUser != null)
+            {
+                field.friendlyPreviousValue = $"{device.AssignedUser.DisplayName} [{device.AssignedUser.UserId}]";
+                field.Success(EntityState.Modified);
+            }
+            else
+            {
+                field.Success(EntityState.Unchanged);
+            }
+            return field;
+        }
+
         public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
             var value = friendlyValue = DataReader.GetString(ColumnIndex);

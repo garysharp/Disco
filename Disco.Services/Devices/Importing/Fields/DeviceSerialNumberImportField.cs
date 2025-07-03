@@ -19,6 +19,16 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue; } }
         public override string FriendlyPreviousValue { get { return parsedValue; } }
 
+        public static DeviceSerialNumberImportField Create(Device device)
+        {
+            var field = new DeviceSerialNumberImportField()
+            {
+                parsedValue = device.SerialNumber,
+            };
+            field.Success(EntityState.Unchanged);
+            return field;
+        }
+
         public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
             var value = DataReader.GetString(ColumnIndex);

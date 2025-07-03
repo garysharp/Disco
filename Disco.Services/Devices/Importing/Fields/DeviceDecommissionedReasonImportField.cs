@@ -24,6 +24,26 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue.HasValue ? parsedValue.Value.ToString() : rawValue; } }
         public override string FriendlyPreviousValue { get { return previousValue.HasValue ? previousValue.Value.ToString() : null; } }
 
+        public static DeviceDecommissionedReasonImportField Create(Device device, DecommissionReasons? decommissionReason, bool setDate, bool isUnassigningUser)
+        {
+            var field = new DeviceDecommissionedReasonImportField()
+            {
+                rawValue = decommissionReason?.ToString(),
+                parsedValue = decommissionReason,
+                previousValue = device.DecommissionReason,
+                setDate = setDate
+            };
+            var hasOpenJobs = device.Jobs.Any(j => !j.ClosedDate.HasValue);
+            if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(device, isUnassigningUser, null, hasOpenJobs, out var errorMessage))
+                field.Error(errorMessage);
+            else if (device.DecommissionReason == decommissionReason)
+                field.Success(EntityState.Unchanged);
+            else
+                field.Success(EntityState.Modified);
+
+            return field;
+        }
+
         public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
             var value = DataReader.GetString(ColumnIndex);
@@ -50,8 +70,7 @@ namespace Disco.Services.Devices.Importing.Fields
             var decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
             if (parsedValue.HasValue && !decommissionedDateIndex.HasValue)
             {
-                string errorMessage;
-                if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(ExistingDevice, Context, DataReader, out errorMessage))
+                if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(ExistingDevice, Context, DataReader, out var errorMessage))
                     return Error(errorMessage);
 
                 setDate = true;
