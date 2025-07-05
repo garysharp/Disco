@@ -261,7 +261,7 @@ namespace Disco.Services.Searching
         #endregion
 
         #region Devices
-        public static List<DeviceSearchResultItem> SearchDevices(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit, bool SearchDetails = false)
+        public static List<DeviceSearchResultItem> SearchDevices(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit, bool SearchDetails = false, bool includeDecommissioned = false)
         {
             IQueryable<Device> query;
 
@@ -269,23 +269,28 @@ namespace Disco.Services.Searching
 
             if (SearchDetails)
             {
-                query = Database.Devices.Where(d =>
-                    d.AssetNumber.Contains(Term) ||
-                    d.DeviceDomainId.Contains(Term) ||
-                    d.SerialNumber.Contains(Term) ||
-                    d.Location.Contains(Term) ||
-                    Term.Contains(d.SerialNumber) ||
-                    d.DeviceDetails.Any(dd => dd.Value.Contains(Term))
+                query = Database.Devices
+                    .Where(d => includeDecommissioned || d.DecommissionedDate == null)
+                    .Where(d =>
+                        d.AssetNumber.Contains(Term) ||
+                        d.DeviceDomainId.Contains(Term) ||
+                        d.SerialNumber.Contains(Term) ||
+                        d.Location.Contains(Term) ||
+                        Term.Contains(d.SerialNumber) ||
+                        d.DeviceDetails.Any(dd => dd.Value.Contains(Term))
                     );
             }
             else
             {
-                query = Database.Devices.Where(d =>
-                    d.AssetNumber.Contains(Term) ||
-                    d.DeviceDomainId.Contains(Term) ||
-                    d.SerialNumber.Contains(Term) ||
-                    d.Location.Contains(Term) ||
-                    Term.Contains(d.SerialNumber));
+                query = Database.Devices
+                    .Where(d => includeDecommissioned || d.DecommissionedDate == null)
+                    .Where(d =>
+                        d.AssetNumber.Contains(Term) ||
+                        d.DeviceDomainId.Contains(Term) ||
+                        d.SerialNumber.Contains(Term) ||
+                        d.Location.Contains(Term) ||
+                        Term.Contains(d.SerialNumber)
+                    );
             }
 
             return query

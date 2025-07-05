@@ -112,14 +112,14 @@ WriteLiteral("\r\n");
             #line 15 "..\..\Views\Shared\_SearchDialog.cshtml"
                                                     
                         if (Model == "jobs" || Model == "devices")
-                        { 
+                        {
 
             
             #line default
             #line hidden
-WriteLiteral("                        <br />\r\n");
+WriteLiteral("                            <br />\r\n");
 
-WriteLiteral("                        <input");
+WriteLiteral("                            <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
@@ -131,10 +131,43 @@ WriteLiteral(" value=\"true\"");
 
 WriteLiteral(" />");
 
-WriteLiteral("<label\r\n                            for=\"searchDetails\">Search Details</label>\r\n");
+WriteLiteral("<label");
+
+WriteLiteral(" for=\"searchDetails\"");
+
+WriteLiteral(">Search Details</label>\r\n");
 
             
-            #line 21 "..\..\Views\Shared\_SearchDialog.cshtml"
+            #line 20 "..\..\Views\Shared\_SearchDialog.cshtml"
+                        }
+                        if (Model == "devices")
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <br />\r\n");
+
+WriteLiteral("                            <input");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" name=\"includeDecommissioned\"");
+
+WriteLiteral(" id=\"includeDecommissioned\"");
+
+WriteLiteral(" value=\"true\"");
+
+WriteLiteral(" />");
+
+WriteLiteral("<label");
+
+WriteLiteral(" for=\"includeDecommissioned\"");
+
+WriteLiteral(">Include Decommissioned</label>\r\n");
+
+            
+            #line 25 "..\..\Views\Shared\_SearchDialog.cshtml"
                         }
                     }
 
@@ -161,7 +194,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                $(\'#searchDia
 "watermark(\'Search\').focus();\r\n            });\r\n        </script>\r\n    </div>\r\n");
 
             
-            #line 35 "..\..\Views\Shared\_SearchDialog.cshtml"
+            #line 39 "..\..\Views\Shared\_SearchDialog.cshtml"
 }
             
             #line default

@@ -100,6 +100,7 @@ namespace Disco.Web.Controllers
             public readonly string term = "term";
             public readonly string limit = "limit";
             public readonly string searchDetails = "searchDetails";
+            public readonly string includeDecommissioned = "includeDecommissioned";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -123,16 +124,17 @@ namespace Disco.Web.Controllers
         public T4MVC_SearchController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void QueryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term, string limit, bool searchDetails);
+        partial void QueryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term, string limit, bool searchDetails, bool includeDecommissioned);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Query(string term, string limit, bool searchDetails)
+        public override System.Web.Mvc.ActionResult Query(string term, string limit, bool searchDetails, bool includeDecommissioned)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Query);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "limit", limit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "searchDetails", searchDetails);
-            QueryOverride(callInfo, term, limit, searchDetails);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "includeDecommissioned", includeDecommissioned);
+            QueryOverride(callInfo, term, limit, searchDetails, includeDecommissioned);
             return callInfo;
         }
 

@@ -14,7 +14,7 @@ namespace Disco.Web.Controllers
     {
         #region Query
         [DiscoAuthorizeAny(Claims.Job.Search, Claims.Device.Search, Claims.User.Search)]
-        public virtual ActionResult Query(string term, string limit = null, bool searchDetails = false)
+        public virtual ActionResult Query(string term, string limit = null, bool searchDetails = false, bool includeDecommissioned = false)
         {
             term = term.Trim();
             int termInt;
@@ -66,7 +66,7 @@ namespace Disco.Web.Controllers
                     m.Jobs = Services.Searching.Search.SearchJobsTable(Database, term, LimitCount: null, IncludeJobStatus: true, SearchDetails: searchDetails);
 
                 if (Authorization.Has(Claims.Device.Search))
-                    m.Devices = Services.Searching.Search.SearchDevices(Database, term, LimitCount: null, SearchDetails: searchDetails);
+                    m.Devices = Services.Searching.Search.SearchDevices(Database, term, LimitCount: null, SearchDetails: searchDetails, includeDecommissioned: includeDecommissioned);
 
                 if (Authorization.Has(Claims.User.Search))
                     m.Users = Services.Searching.Search.SearchUsers(Database, term, true, LimitCount: null);
@@ -134,7 +134,7 @@ namespace Disco.Web.Controllers
                             m.ErrorMessage = "A search term of at least two characters is required";
                             return View(m);
                         }
-                        m.Devices = Services.Searching.Search.SearchDevices(Database, term, null, searchDetails);
+                        m.Devices = Services.Searching.Search.SearchDevices(Database, term, null, searchDetails, includeDecommissioned);
                         if (m.Devices.Count == 1)
                         {
                             return RedirectToAction(MVC.Device.Show(m.Devices[0].Id));

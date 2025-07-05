@@ -14,10 +14,14 @@
                     {
                         @Html.Hidden("limit", Model)
                         if (Model == "jobs" || Model == "devices")
-                        { 
-                        <br />
-                        <input type="checkbox" name="searchDetails" id="searchDetails" value="true" /><label
-                            for="searchDetails">Search Details</label>
+                        {
+                            <br />
+                            <input type="checkbox" name="searchDetails" id="searchDetails" value="true" /><label for="searchDetails">Search Details</label>
+                        }
+                        if (Model == "devices")
+                        {
+                            <br />
+                            <input type="checkbox" name="includeDecommissioned" id="includeDecommissioned" value="true" /><label for="includeDecommissioned">Include Decommissioned</label>
                         }
                     }
                 </td>
