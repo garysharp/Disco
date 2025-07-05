@@ -245,9 +245,10 @@
                                     <input id="User_Show_Details_Actions_AddFlag_Dialog_Id" type="hidden" name="id" />
                                     <input id="User_Show_Details_Actions_AddFlag_Dialog_UserId" type="hidden" name="UserId" value="@Model.User.UserId" />
                                     <div class="flagPicker">
+                                        <input id="User_Show_Details_Actions_AddFlag_Dialog_Filter" type="text" placeholder="Filter" autocomplete="off" />
                                         @foreach (var userFlag in Model.AvailableUserFlags.OrderBy(jq => jq.Name))
                                         {
-                                            <div class="flag" data-userflagid="@(userFlag.Id)">
+                                            <div class="flag" data-userflagid="@(userFlag.Id)" data-userflagname="@userFlag.Name">
                                                 <i class="fa fa-@(userFlag.Icon) fa-fw fa-lg d-@(userFlag.IconColour)"></i>@userFlag.Name
                                             </div>
                                         }
@@ -262,17 +263,17 @@
                             </div>
                             <script type="text/javascript">
                                 $(function () {
-                                    var button = $('#User_Show_Details_Actions_AddFlag_Button');
-                                    var buttonDialog = null;
-                                    var buttonLink = button.attr('href');
+                                    const button = $('#User_Show_Details_Actions_AddFlag_Button');
+                                    let buttonDialog = null;
+                                    const buttonLink = button.attr('href');
 
-                                    var flagPicker = null;
-                                    var flagAddId = null;
-                                    var flagAddComments = null;
-                                    var details = null;
+                                    let flagPicker = null;
+                                    let flagAddId = null;
+                                    let flagAddComments = null;
+                                    let details = null;
 
                                     function flagSelected() {
-                                        var flag = $(this);
+                                        const flag = $(this);
 
                                         flagPicker.children().removeClass('selected');
                                         flag.addClass('selected');
@@ -301,7 +302,7 @@
                                                     },
                                                     "Add Flag": function () {
                                                         if (!!flagAddId.val()) {
-                                                            var $this = $(this);
+                                                            const $this = $(this);
                                                             $this.dialog("disable");
                                                             $this.dialog("option", "buttons", null);
                                                             buttonDialog.find('form').submit();
@@ -317,9 +318,26 @@
                                             flagPicker = buttonDialog.find('.flagPicker');
                                             details = buttonDialog.find('.details');
 
+                                            $('#User_Show_Details_Actions_AddFlag_Dialog_Filter').on('keyup', function (e) {
+                                                const filter = $(e.currentTarget).val().toLowerCase();
+                                                if (filter) {
+                                                    flagPicker.children('div.flag').each(function () {
+                                                        const $this = $(this);
+                                                        if ($this.attr('data-userflagname').toLowerCase().indexOf(filter) >= 0) {
+                                                            $this.css('display', 'block');
+                                                        } else {
+                                                            $this.css('display', 'none');
+                                                        }
+                                                    });
+                                                } else {
+                                                    flagPicker.children('div.flag').each(function () { $(this).css('display', 'block'); });
+                                                }
+                                            });
+
                                             flagPicker.on('click', 'div.flag', flagSelected);
                                         }
 
+                                        $('#User_Show_Details_Actions_AddFlag_Dialog_Filter').val('');
                                         buttonDialog.dialog('open');
                                         return false;
                                     });

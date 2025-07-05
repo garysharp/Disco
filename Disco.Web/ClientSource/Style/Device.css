@@ -427,6 +427,12 @@
   background-color: #fcfcfc;
   border: 1px solid #ccc;
 }
+#Device_Show_Details_Actions_AddFlag_Dialog .flagPicker > input {
+  box-sizing: border-box;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
 #Device_Show_Details_Actions_AddFlag_Dialog .flagPicker > div {
   background-color: #fff;
   border-bottom: 1px solid #ddd;

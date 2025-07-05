@@ -762,9 +762,10 @@
                         <input id="Device_Show_Details_Actions_AddFlag_Dialog_Id" type="hidden" name="id" />
                         <input id="Device_Show_Details_Actions_AddFlag_Dialog_DeviceSerialNumber" type="hidden" name="DeviceSerialNumber" value="@Model.Device.SerialNumber" />
                         <div class="flagPicker">
+                            <input id="Device_Show_Details_Actions_AddFlag_Dialog_Filter" type="text" placeholder="Filter" autocomplete="off" />
                             @foreach (var flag in Model.AvailableDeviceFlags.OrderBy(jq => jq.Name))
                             {
-                                <div class="flag" data-flagid="@(flag.Id)">
+                                <div class="flag" data-flagid="@(flag.Id)" data-flagname="@flag.Name">
                                     <i class="fa fa-@(flag.Icon) fa-fw fa-lg d-@(flag.IconColour)"></i>@flag.Name
                                 </div>
                             }
@@ -779,17 +780,17 @@
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        var button = $('#Device_Show_Details_Actions_AddFlag_Button');
-                        var buttonDialog = null;
-                        var buttonLink = button.attr('href');
+                        const button = $('#Device_Show_Details_Actions_AddFlag_Button');
+                        let buttonDialog = null;
+                        const buttonLink = button.attr('href');
 
-                        var flagPicker = null;
-                        var flagAddId = null;
-                        var flagAddComments = null;
-                        var details = null;
+                        let flagPicker = null;
+                        let flagAddId = null;
+                        let flagAddComments = null;
+                        let details = null;
 
                         function flagSelected() {
-                            var flag = $(this);
+                            const flag = $(this);
 
                             flagPicker.children().removeClass('selected');
                             flag.addClass('selected');
@@ -818,7 +819,7 @@
                                         },
                                         "Add Flag": function () {
                                             if (!!flagAddId.val()) {
-                                                var $this = $(this);
+                                                const $this = $(this);
                                                 $this.dialog("disable");
                                                 $this.dialog("option", "buttons", null);
                                                 buttonDialog.find('form').submit();
@@ -834,9 +835,26 @@
                                 flagPicker = buttonDialog.find('.flagPicker');
                                 details = buttonDialog.find('.details');
 
+                                $('#Device_Show_Details_Actions_AddFlag_Dialog_Filter').on('keyup', function (e) {
+                                    const filter = $(e.currentTarget).val().toLowerCase();
+                                    if (filter) {
+                                        flagPicker.children('div.flag').each(function () {
+                                            const $this = $(this);
+                                            if ($this.attr('data-flagname').toLowerCase().indexOf(filter) >= 0) {
+                                                $this.css('display', 'block');
+                                            } else {
+                                                $this.css('display', 'none');
+                                            }
+                                        });
+                                    } else {
+                                        flagPicker.children('div.flag').each(function () { $(this).css('display', 'block'); });
+                                    }
+                                });
+
                                 flagPicker.on('click', 'div.flag', flagSelected);
                             }
 
+                            $('#Device_Show_Details_Actions_AddFlag_Dialog_Filter').val('');
                             buttonDialog.dialog('open');
                             return false;
                         });
