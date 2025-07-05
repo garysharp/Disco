@@ -93,6 +93,26 @@ namespace Disco.Services.Devices.Importing
             return new DeviceDecommissionImportContext($"Batch: {deviceBatch.Name} ({deviceBatch.Id})", devices, decommissionReason, unassignUsers);
         }
 
+        public static DeviceDecommissionImportContext Create(DiscoDataContext database, DeviceProfile deviceProfile, DecommissionReasons decommissionReason, bool unassignUsers)
+        {
+            var devices = database.Devices
+                .Include(d => d.Jobs)
+                .Include(d => d.AssignedUser)
+                .Where(d => d.DeviceProfileId == deviceProfile.Id && d.DecommissionedDate == null)
+                .ToList();
+            return new DeviceDecommissionImportContext($"Profile: {deviceProfile.Name} ({deviceProfile.Id})", devices, decommissionReason, unassignUsers);
+        }
+
+        public static DeviceDecommissionImportContext Create(DiscoDataContext database, DeviceModel deviceModel, DecommissionReasons decommissionReason, bool unassignUsers)
+        {
+            var devices = database.Devices
+                .Include(d => d.Jobs)
+                .Include(d => d.AssignedUser)
+                .Where(d => d.DeviceModelId == deviceModel.Id && d.DecommissionedDate == null)
+                .ToList();
+            return new DeviceDecommissionImportContext($"Model: {deviceModel.Description} ({deviceModel.Id})", devices, decommissionReason, unassignUsers);
+        }
+
         public IDeviceImportColumn GetColumn(int Index)
             => throw new NotImplementedException();
 

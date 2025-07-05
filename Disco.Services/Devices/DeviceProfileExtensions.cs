@@ -70,7 +70,18 @@ namespace Disco.Services
             // Delete Profile
             Database.DeviceProfiles.Remove(dp);
         }
-        
+
+        public static bool CanDecommission(this DeviceProfile dp, DiscoDataContext database)
+        {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.Import))
+                return false;
+
+            if (!database.Devices.Any(d => d.DeviceProfileId == dp.Id && d.DecommissionedDate == null))
+                return false;
+
+            return true;
+        }
+
         public static IEnumerable<PluginFeatureManifest> GetCertificateProviders(this DeviceProfile dp)
         {
             if (!string.IsNullOrEmpty(dp.CertificateProviders))

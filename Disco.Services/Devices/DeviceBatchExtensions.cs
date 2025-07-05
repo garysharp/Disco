@@ -48,12 +48,5 @@ namespace Disco.Services
             return true;
         }
 
-        public static void Decommission(this DeviceBatch db, DiscoDataContext database, DecommissionReasons Reason, bool unassignUsers)
-        {
-            if (!db.CanDecommission(database))
-                throw new InvalidOperationException("Decommission of Device Batch is Denied");
-
-
-        }
     }
 }

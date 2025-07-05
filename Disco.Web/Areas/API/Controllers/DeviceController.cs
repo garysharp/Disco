@@ -730,6 +730,32 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
         }
 
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult DeviceProfileDecommission(int id, DecommissionReasons? decommissionReason = null, bool? unassignUsers = null)
+        {
+            var deviceProfile = Database.DeviceProfiles.Find(id)
+                ?? throw new ArgumentException("Invalid Device Profile Id", nameof(id));
+            if (decommissionReason == null)
+                throw new ArgumentNullException(nameof(decommissionReason), "Decommission Reason is required");
+            var context = DeviceImport.BeginDecommissionImport(Database, deviceProfile, decommissionReason.Value, unassignUsers.GetValueOrDefault());
+            Import_StoreContext(context);
+            return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult DeviceModelDecommission(int id, DecommissionReasons? decommissionReason = null, bool? unassignUsers = null)
+        {
+            var deviceModel = Database.DeviceModels.Find(id)
+                ?? throw new ArgumentException("Invalid Device Model Id", nameof(id));
+            if (decommissionReason == null)
+                throw new ArgumentNullException(nameof(decommissionReason), "Decommission Reason is required");
+            var context = DeviceImport.BeginDecommissionImport(Database, deviceModel, decommissionReason.Value, unassignUsers.GetValueOrDefault());
+            Import_StoreContext(context);
+            return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
+        }
+
         #endregion
 
         #region Exporting

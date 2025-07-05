@@ -18,6 +18,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
         public int DeviceDecommissionedCount { get; set; }
 
         public bool CanDelete { get; set; }
+        public bool CanDecommission { get; set; }
 
         public override int DeviceGroupId => DeviceModel.Id;
     }

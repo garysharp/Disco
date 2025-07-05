@@ -43,6 +43,12 @@ namespace Disco.Services.Devices.Importing
         public static IDeviceImportContext BeginDecommissionImport(DiscoDataContext database, DeviceBatch deviceBatch, DecommissionReasons decommissionReason, bool unassignUsers)
             => DeviceDecommissionImportContext.Create(database, deviceBatch, decommissionReason, unassignUsers);
 
+        public static IDeviceImportContext BeginDecommissionImport(DiscoDataContext database, DeviceProfile deviceProfile, DecommissionReasons decommissionReason, bool unassignUsers)
+            => DeviceDecommissionImportContext.Create(database, deviceProfile, decommissionReason, unassignUsers);
+
+        public static IDeviceImportContext BeginDecommissionImport(DiscoDataContext database, DeviceModel deviceModel, DecommissionReasons decommissionReason, bool unassignUsers)
+            => DeviceDecommissionImportContext.Create(database, deviceModel, decommissionReason, unassignUsers);
+
         private static void GuessHeaderTypes(this IDeviceImportContext Context, DiscoDataContext Database)
         {
             using (var dataReader = Context.GetDataReader())

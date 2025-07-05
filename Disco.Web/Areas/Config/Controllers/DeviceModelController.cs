@@ -40,6 +40,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
 
                 m.CanDelete = m.DeviceModel.CanDelete(Database);
+                m.CanDecommission = m.DeviceModel.CanDecommission(Database);
 
                 if (m.DeviceCount - m.DeviceDecommissionedCount > 0)
                     m.BulkGenerateDocumentTemplates = Database.DocumentTemplates.Where(t => !t.IsHidden).ToList();

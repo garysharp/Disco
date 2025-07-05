@@ -1006,6 +1006,65 @@
 }
 @Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model)
 <div class="actionBar">
+    @if (Model.CanDecommission)
+    {
+        <button id="DeviceProfile_Decommission" class="button">Decommission All Devices</button>
+        <div id="DeviceProfile_Decommission_Dialog" class="dialog" title="Profile Device Decommission">
+            @using (Html.BeginForm(MVC.API.Device.DeviceProfileDecommission(Model.DeviceProfile.Id), FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="clearfix" style="margin-bottom: 10px;">
+                    <i class="fa fa-question-circle fa-lg information"></i>&nbsp;Why are these devices to be decommissioned?
+                </div>
+                <div>
+                    <ul class="none">
+                        @foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
+                        {
+                            <li>
+                                <input type="radio" id="DeviceProfile_Decommission_Dialog_Reason_@((int)decommissionReason)"
+                                       name="decommissionReason" value="@((int)decommissionReason)" @((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty) />
+                                <label for="DeviceProfile_Decommission_Dialog_Reason_@((int)decommissionReason)">@(decommissionReason.ReasonMessage())</label>
+                            </li>
+                        }
+                    </ul>
+                    <br />
+                    <label>
+                        <input type="checkbox" value="true" name="unassignUsers" />
+                        Unassign devices users
+                    </label>
+                </div>
+            }
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                let buttonDialog = null;
+                $('#DeviceProfile_Decommission').click(function () {
+                    if (!buttonDialog) {
+                        buttonDialog = $('#DeviceProfile_Decommission_Dialog')
+                            .dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    "Decommission": function () {
+                                        const $this = $(this);
+                                        $this.find('form').trigger('submit');
+                                        $this.dialog("disable");
+                                        $this.dialog("option", "buttons", null);
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                    }
+                    buttonDialog.dialog('open');
+                    return false;
+                });
+
+            });
+        </script>
+    }
     @if (canDelete)
     {
         @Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete")

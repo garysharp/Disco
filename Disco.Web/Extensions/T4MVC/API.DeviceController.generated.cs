@@ -224,6 +224,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DeviceProfileDecommission()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceProfileDecommission);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DeviceModelDecommission()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceModelDecommission);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Export()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
@@ -283,6 +295,8 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportApply = "ImportApply";
             public readonly string DeviceBatchDecommission = "DeviceBatchDecommission";
+            public readonly string DeviceProfileDecommission = "DeviceProfileDecommission";
+            public readonly string DeviceModelDecommission = "DeviceModelDecommission";
             public readonly string Export = "Export";
             public readonly string ExportRetrieve = "ExportRetrieve";
             public readonly string SaveExport = "SaveExport";
@@ -319,6 +333,8 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImportParse = "ImportParse";
             public const string ImportApply = "ImportApply";
             public const string DeviceBatchDecommission = "DeviceBatchDecommission";
+            public const string DeviceProfileDecommission = "DeviceProfileDecommission";
+            public const string DeviceModelDecommission = "DeviceModelDecommission";
             public const string Export = "Export";
             public const string ExportRetrieve = "ExportRetrieve";
             public const string SaveExport = "SaveExport";
@@ -570,6 +586,26 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_DeviceBatchDecommission DeviceBatchDecommissionParams { get { return s_params_DeviceBatchDecommission; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_DeviceBatchDecommission
+        {
+            public readonly string id = "id";
+            public readonly string decommissionReason = "decommissionReason";
+            public readonly string unassignUsers = "unassignUsers";
+        }
+        static readonly ActionParamsClass_DeviceProfileDecommission s_params_DeviceProfileDecommission = new ActionParamsClass_DeviceProfileDecommission();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DeviceProfileDecommission DeviceProfileDecommissionParams { get { return s_params_DeviceProfileDecommission; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DeviceProfileDecommission
+        {
+            public readonly string id = "id";
+            public readonly string decommissionReason = "decommissionReason";
+            public readonly string unassignUsers = "unassignUsers";
+        }
+        static readonly ActionParamsClass_DeviceModelDecommission s_params_DeviceModelDecommission = new ActionParamsClass_DeviceModelDecommission();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DeviceModelDecommission DeviceModelDecommissionParams { get { return s_params_DeviceModelDecommission; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DeviceModelDecommission
         {
             public readonly string id = "id";
             public readonly string decommissionReason = "decommissionReason";
@@ -972,6 +1008,34 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "decommissionReason", decommissionReason);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "unassignUsers", unassignUsers);
             DeviceBatchDecommissionOverride(callInfo, id, decommissionReason, unassignUsers);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeviceProfileDecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, Disco.Models.Repository.DecommissionReasons? decommissionReason, bool? unassignUsers);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeviceProfileDecommission(int id, Disco.Models.Repository.DecommissionReasons? decommissionReason, bool? unassignUsers)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceProfileDecommission);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "decommissionReason", decommissionReason);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "unassignUsers", unassignUsers);
+            DeviceProfileDecommissionOverride(callInfo, id, decommissionReason, unassignUsers);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeviceModelDecommissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, Disco.Models.Repository.DecommissionReasons? decommissionReason, bool? unassignUsers);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DeviceModelDecommission(int id, Disco.Models.Repository.DecommissionReasons? decommissionReason, bool? unassignUsers)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceModelDecommission);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "decommissionReason", decommissionReason);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "unassignUsers", unassignUsers);
+            DeviceModelDecommissionOverride(callInfo, id, decommissionReason, unassignUsers);
             return callInfo;
         }
 

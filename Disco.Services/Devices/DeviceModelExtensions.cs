@@ -48,6 +48,17 @@ namespace Disco.Services
             Database.DeviceModels.Remove(dm);
         }
 
+        public static bool CanDecommission(this DeviceModel dm, DiscoDataContext database)
+        {
+            if (!UserService.CurrentAuthorization.Has(Claims.Device.Actions.Import))
+                return false;
+
+            if (!database.Devices.Any(d => d.DeviceModelId == dm.Id && d.DecommissionedDate == null))
+                return false;
+
+            return true;
+        }
+
         public static Tuple<DeviceModel, bool> GetOrCreateDeviceModel(this DbSet<DeviceModel> DeviceModelsSet, string Manufacturer, string Model, string ModelType)
         {
             if (string.IsNullOrWhiteSpace(Manufacturer))

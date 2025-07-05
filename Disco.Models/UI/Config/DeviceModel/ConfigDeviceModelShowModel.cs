@@ -12,5 +12,6 @@ namespace Disco.Models.UI.Config.DeviceModel
         int DeviceDecommissionedCount { get; set; }
 
         bool CanDelete { get; set; }
+        bool CanDecommission { get; set; }
     }
 }

@@ -824,6 +824,224 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 250 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+     if (Model.CanDecommission)
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" id=\"DeviceModel_Decommission\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Decommission All Devices</button>\r\n");
+
+WriteLiteral("        <div");
+
+WriteLiteral(" id=\"DeviceModel_Decommission_Dialog\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Model Device Decommission\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 254 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            
+            
+            #line default
+            #line hidden
+            
+            #line 254 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+             using (Html.BeginForm(MVC.API.Device.DeviceModelDecommission(Model.DeviceModel.Id), FormMethod.Post))
+            {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 256 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 256 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"clearfix\"");
+
+WriteLiteral(" style=\"margin-bottom: 10px;\"");
+
+WriteLiteral(">\r\n                    <i");
+
+WriteLiteral(" class=\"fa fa-question-circle fa-lg information\"");
+
+WriteLiteral("></i>&nbsp;Why are these devices to be decommissioned?\r\n                </div>\r\n");
+
+WriteLiteral("                <div>\r\n                    <ul");
+
+WriteLiteral(" class=\"none\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 262 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 262 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                         foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <li>\r\n                                <input");
+
+WriteLiteral(" type=\"radio\"");
+
+WriteAttribute("id", Tuple.Create(" id=\"", 9803), Tuple.Create("\"", 9873)
+, Tuple.Create(Tuple.Create("", 9808), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 9808), true)
+            
+            #line 265 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                , Tuple.Create(Tuple.Create("", 9847), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            
+            #line default
+            #line hidden
+, 9847), false)
+);
+
+WriteLiteral("\r\n                                       name=\"decommissionReason\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 9940), Tuple.Create("\"", 9974)
+            
+            #line 266 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 9948), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            
+            #line default
+            #line hidden
+, 9948), false)
+);
+
+WriteLiteral(" ");
+
+            
+            #line 266 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                                Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" />\r\n                                <label");
+
+WriteAttribute("for", Tuple.Create(" for=\"", 10114), Tuple.Create("\"", 10185)
+, Tuple.Create(Tuple.Create("", 10120), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 10120), true)
+            
+            #line 267 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+   , Tuple.Create(Tuple.Create("", 10159), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            
+            #line default
+            #line hidden
+, 10159), false)
+);
+
+WriteLiteral(">");
+
+            
+            #line 267 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                                           Write(decommissionReason.ReasonMessage());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</label>\r\n                            </li>\r\n");
+
+            
+            #line 269 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </ul>\r\n                    <br />\r\n                    <label" +
+">\r\n                        <input");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" value=\"true\"");
+
+WriteLiteral(" name=\"unassignUsers\"");
+
+WriteLiteral(" />\r\n                        Unassign devices users\r\n                    </label>" +
+"\r\n                </div>\r\n");
+
+            
+            #line 277 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        </div>\r\n");
+
+WriteLiteral("        <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+            $(function () {
+                let buttonDialog = null;
+                $('#DeviceModel_Decommission').click(function () {
+                    if (!buttonDialog) {
+                        buttonDialog = $('#DeviceModel_Decommission_Dialog')
+                            .dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    ""Decommission"": function () {
+                                        const $this = $(this);
+                                        $this.find('form').trigger('submit');
+                                        $this.dialog(""disable"");
+                                        $this.dialog(""option"", ""buttons"", null);
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog(""close"");
+                                    }
+                                }
+                            });
+                    }
+                    buttonDialog.dialog('open');
+                    return false;
+                });
+
+            });
+        </script>
+");
+
+            
+            #line 308 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    ");
+
+            
+            #line 309 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.CanDelete)
     {
         
@@ -831,14 +1049,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 252 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 311 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 252 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 311 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                 
     }
 
@@ -848,7 +1066,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 254 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 313 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
@@ -858,14 +1076,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 258 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 317 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
        Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Model, Model.DeviceModel.Id)));
 
             
             #line default
             #line hidden
             
-            #line 258 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 317 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                                                           
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
@@ -875,14 +1093,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 262 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 321 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel")));
 
             
             #line default
             #line hidden
             
-            #line 262 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 321 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                                                                                                    
         }
     }
