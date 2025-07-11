@@ -20,6 +20,11 @@ namespace Disco.Web.Areas.Config
                 new { controller = "DeviceModel", action = "GenericComponents" }
             );
             context.MapRoute(
+                "Config_DeviceModel_Create",
+                "Config/DeviceModel/Create",
+                new { controller = "DeviceModel", action = "Create" }
+            );
+            context.MapRoute(
                 "Config_DeviceModel",
                 "Config/DeviceModel/{id}",
                 new { controller = "DeviceModel", action = "Index", id = UrlParameter.Optional }
@@ -27,7 +32,7 @@ namespace Disco.Web.Areas.Config
             context.MapRoute(
                 "Config_DeviceBatch_Create",
                 "Config/DeviceBatch/Create",
-                new { controller = "DeviceBatch", action = "Create", id = UrlParameter.Optional }
+                new { controller = "DeviceBatch", action = "Create" }
             );
             context.MapRoute(
                 "Config_DeviceBatch_Timeline",

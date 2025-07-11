@@ -73,6 +73,18 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateManufacturer()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateManufacturer);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateModel()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateModel);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateDefaultPurchaseDate()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDefaultPurchaseDate);
@@ -149,6 +161,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string Update = "Update";
             public readonly string UpdateDescription = "UpdateDescription";
+            public readonly string UpdateManufacturer = "UpdateManufacturer";
+            public readonly string UpdateModel = "UpdateModel";
             public readonly string UpdateDefaultPurchaseDate = "UpdateDefaultPurchaseDate";
             public readonly string UpdateDefaultWarrantyProvider = "UpdateDefaultWarrantyProvider";
             public readonly string UpdateDefaultRepairProvider = "UpdateDefaultRepairProvider";
@@ -167,6 +181,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string Update = "Update";
             public const string UpdateDescription = "UpdateDescription";
+            public const string UpdateManufacturer = "UpdateManufacturer";
+            public const string UpdateModel = "UpdateModel";
             public const string UpdateDefaultPurchaseDate = "UpdateDefaultPurchaseDate";
             public const string UpdateDefaultWarrantyProvider = "UpdateDefaultWarrantyProvider";
             public const string UpdateDefaultRepairProvider = "UpdateDefaultRepairProvider";
@@ -200,6 +216,26 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string Description = "Description";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateManufacturer s_params_UpdateManufacturer = new ActionParamsClass_UpdateManufacturer();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateManufacturer UpdateManufacturerParams { get { return s_params_UpdateManufacturer; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateManufacturer
+        {
+            public readonly string id = "id";
+            public readonly string manufacturer = "manufacturer";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateModel s_params_UpdateModel = new ActionParamsClass_UpdateModel();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateModel UpdateModelParams { get { return s_params_UpdateModel; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateModel
+        {
+            public readonly string id = "id";
+            public readonly string model = "model";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateDefaultPurchaseDate s_params_UpdateDefaultPurchaseDate = new ActionParamsClass_UpdateDefaultPurchaseDate();
@@ -342,6 +378,34 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Description", Description);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateDescriptionOverride(callInfo, id, Description, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateManufacturerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string manufacturer, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateManufacturer(int id, string manufacturer, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateManufacturer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "manufacturer", manufacturer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateManufacturerOverride(callInfo, id, manufacturer, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateModelOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string model, bool redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateModel(int id, string model, bool redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateModel);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateModelOverride(callInfo, id, model, redirect);
             return callInfo;
         }
 

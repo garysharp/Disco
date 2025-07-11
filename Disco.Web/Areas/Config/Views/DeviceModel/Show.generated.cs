@@ -50,6 +50,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceModel
 
     var canConfig = Authorization.Has(Claims.Config.DeviceModel.Configure);
     var canViewPlugins = Authorization.Has(Claims.Config.Plugin.Install);
+    var isCustom = Model.DeviceModel.IsCustomModel();
 
     if (canConfig)
     {
@@ -76,7 +77,7 @@ WriteLiteral(">\r\n                Id:\r\n            </th>\r\n            <td>\
 WriteLiteral("                ");
 
             
-            #line 22 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 23 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
            Write(Html.DisplayFor(model => model.DeviceModel.Id));
 
             
@@ -86,13 +87,13 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
 "   Description:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 30 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 31 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 30 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 31 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                  if (canConfig)
                 {
                     
@@ -100,42 +101,42 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
             #line default
             #line hidden
             
-            #line 32 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 33 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                Write(Html.EditorFor(model => model.DeviceModel.Description));
 
             
             #line default
             #line hidden
             
-            #line 32 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 33 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                            
                     
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 34 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 33 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 34 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                            
                     
             
             #line default
             #line hidden
             
-            #line 34 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 35 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 34 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 35 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                              
 
             
@@ -149,7 +150,7 @@ WriteLiteral(@"                    <script>
                             '");
 
             
-            #line 40 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         Write(Url.Action(MVC.API.DeviceModel.UpdateDescription(Model.DeviceModel.Id)));
 
             
@@ -159,7 +160,7 @@ WriteLiteral("\',\r\n                            \'Description\'\r\n            
 "              });\r\n                    </script>\r\n");
 
             
-            #line 45 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 46 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                 }
                 else
                 {
@@ -168,50 +169,226 @@ WriteLiteral("\',\r\n                            \'Description\'\r\n            
             #line default
             #line hidden
             
-            #line 48 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 49 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                Write(Html.DisplayFor(model => model.DeviceModel.Description));
 
             
             #line default
             #line hidden
             
-            #line 48 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 49 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                             
                 }
 
             
             #line default
             #line hidden
-WriteLiteral("        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>\r\n            Manufacturer:\r\n    " +
-"    </th>\r\n        <td>\r\n");
-
-WriteLiteral("            ");
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Manufacturer:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 57 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-       Write(Html.DisplayFor(model => model.DeviceModel.Manufacturer));
+            #line 58 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 58 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (isCustom && canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 60 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(Html.EditorFor(model => model.DeviceModel.Manufacturer));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>\r\n            Model:\r\n        <" +
-"/th>\r\n        <td>\r\n");
-
-WriteLiteral("            ");
-
             
-            #line 65 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-       Write(Html.DisplayFor(model => model.DeviceModel.Model));
+            #line 60 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                            
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 61 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>Statistics</th>\r\n        <td>\r\n" +
-"            <div><strong>");
+            
+            #line 61 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
-            #line 71 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                    Write(Model.DeviceCount.ToString("n0"));
+            #line default
+            #line hidden
+            
+            #line 62 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                    <script>
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceModel_Manufacturer'),
+                                'Manufacturer',
+                                '");
+
+            
+            #line 68 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                            Write(Url.Action(MVC.API.DeviceModel.UpdateManufacturer(Model.DeviceModel.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                                \'manufacturer\'\r\n                            )" +
+";\r\n                        });\r\n                    </script>\r\n");
+
+            
+            #line 73 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                }
+                else
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 76 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(Html.DisplayFor(model => model.DeviceModel.Manufacturer));
+
+            
+            #line default
+            #line hidden
+            
+            #line 76 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                             
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Model:\r\n            </th>\r\n            <td>\r\n");
+
+            
+            #line 85 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 85 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (isCustom && canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 87 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(Html.EditorFor(model => model.DeviceModel.Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 87 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                     
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 88 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(AjaxHelpers.AjaxSave());
+
+            
+            #line default
+            #line hidden
+            
+            #line 88 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 89 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 89 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                    <script>
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceModel_Model'),
+                                'Model',
+                                '");
+
+            
+            #line 95 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                            Write(Url.Action(MVC.API.DeviceModel.UpdateModel(Model.DeviceModel.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                                \'model\'\r\n                            );\r\n    " +
+"                    });\r\n                    </script>\r\n");
+
+            
+            #line 100 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                }
+                else
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 103 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(Html.DisplayFor(model => model.DeviceModel.Model));
+
+            
+            #line default
+            #line hidden
+            
+            #line 103 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                      
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Statistics</th>\r\n" +
+"            <td>\r\n                <div><strong>");
+
+            
+            #line 110 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                        Write(Model.DeviceCount.ToString("n0"));
 
             
             #line default
@@ -219,8 +396,8 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>Statisti
 WriteLiteral("</strong> ");
 
             
-            #line 71 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                Write(Model.DeviceCount == 1 ? "devices is" : "devices are");
+            #line 110 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                    Write(Model.DeviceCount == 1 ? "devices is" : "devices are");
 
             
             #line default
@@ -228,28 +405,28 @@ WriteLiteral("</strong> ");
 WriteLiteral(" of this model type.</div>\r\n");
 
             
-            #line 72 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            
+            #line 111 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                
             
             #line default
             #line hidden
             
-            #line 72 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-             if (Model.DeviceDecommissionedCount > 0)
-            {
+            #line 111 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (Model.DeviceDecommissionedCount > 0)
+                {
 
             
             #line default
             #line hidden
-WriteLiteral("                <div");
+WriteLiteral("                    <div");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">");
 
             
-            #line 74 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                     Write(Model.DeviceDecommissionedCount.ToString("n0"));
+            #line 113 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                         Write(Model.DeviceDecommissionedCount.ToString("n0"));
 
             
             #line default
@@ -257,8 +434,8 @@ WriteLiteral(">");
 WriteLiteral(" ");
 
             
-            #line 74 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                                      Write(Model.DeviceDecommissionedCount == 1 ? "device is" : "devices are");
+            #line 113 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                          Write(Model.DeviceDecommissionedCount == 1 ? "device is" : "devices are");
 
             
             #line default
@@ -266,58 +443,58 @@ WriteLiteral(" ");
 WriteLiteral(" decommissioned.</div>\r\n");
 
             
-            #line 75 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
+            #line 114 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                }
 
             
             #line default
             #line hidden
-WriteLiteral("        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>\r\n            Default Purchase Da" +
-"te:\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Default Purchase Date:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 83 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            
-            
-            #line default
-            #line hidden
-            
-            #line 83 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-             if (canConfig)
-            {
+            #line 122 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 85 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(Html.EditorFor(model => model.DeviceModel.DefaultPurchaseDate));
+            #line 122 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (canConfig)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 124 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(Html.EditorFor(model => model.DeviceModel.DefaultPurchaseDate));
 
             
             #line default
             #line hidden
             
-            #line 85 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                               
-                
+            #line 124 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                   
+                    
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 125 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 86 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                         
+            #line 125 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                             
 
             
             #line default
             #line hidden
-WriteLiteral(@"                <script>
+WriteLiteral(@"                    <script>
                     $(function () {
                         var dateField = $('#DeviceModel_DefaultPurchaseDate');
                         document.DiscoFunctions.DateChangeHelper(
@@ -326,7 +503,7 @@ WriteLiteral(@"                <script>
                         '");
 
             
-            #line 93 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 132 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                      Write(Url.Action(MVC.API.DeviceModel.UpdateDefaultPurchaseDate(Model.DeviceModel.Id)));
 
             
@@ -334,80 +511,80 @@ WriteLiteral(@"                <script>
             #line hidden
 WriteLiteral("\',\r\n                        \'DefaultPurchaseDate\',\r\n                        null," +
 "\r\n                        true\r\n                        );\r\n                    " +
-"});\r\n                </script>\r\n");
+"});\r\n                    </script>\r\n");
 
             
-            #line 100 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            else
-            {
+            #line 139 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                }
+                else
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 142 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               Write(CommonHelpers.FriendlyDate(Model.DeviceModel.DefaultPurchaseDate, "Unknown"));
+
+            
+            #line default
+            #line hidden
+            
+            #line 142 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                                 
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Default Warranty Provider:\r\n            </th>\r\n            <td>\r\n");
+
+            
+            #line 151 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(CommonHelpers.FriendlyDate(Model.DeviceModel.DefaultPurchaseDate, "Unknown"));
+            #line 151 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (canConfig)
+                {
+                    if (Model.WarrantyProviders.Count > 0)
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 155 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                   Write(Html.DropDownListFor(model => model.DeviceModel.DefaultWarrantyProvider, Model.WarrantyProviders.ToSelectListItems(Model.DeviceModel.DefaultWarrantyProvider, true, "None")));
 
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                                             
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("    </td>\r\n</tr>\r\n<tr>\r\n    <th>\r\n        Default Warranty Provider:\r\n    </th>\r\n" +
-"    <td>\r\n");
-
-            
-            #line 112 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-        
+            #line 155 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                                                                                                                                     
+                        
             
             #line default
             #line hidden
             
-            #line 112 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-         if (canConfig)
-        {
-            if (Model.WarrantyProviders.Count > 0)
-            {
-                
-            
-            #line default
-            #line hidden
-            
-            #line 116 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(Html.DropDownListFor(model => model.DeviceModel.DefaultWarrantyProvider, Model.WarrantyProviders.ToSelectListItems(Model.DeviceModel.DefaultWarrantyProvider, true, "None")));
+            #line 156 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 116 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                                                                                                                                             
-                
-            
-            #line default
-            #line hidden
-            
-            #line 117 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 156 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                 
 
             
             #line default
             #line hidden
-            
-            #line 117 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                         
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"                <script>
+WriteLiteral(@"                        <script>
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#DeviceModel_DefaultWarrantyProvider'),
@@ -415,176 +592,176 @@ WriteLiteral(@"                <script>
                             '");
 
             
-            #line 123 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 162 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         Write(Url.Action(MVC.API.DeviceModel.UpdateDefaultWarrantyProvider(Model.DeviceModel.Id)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'DefaultWarrantyProvider\'\r\n                      " +
-"  );\r\n                    });\r\n                </script>\r\n");
+"  );\r\n                    });\r\n                        </script>\r\n");
 
             
-            #line 128 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            else
-            {
+            #line 167 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                    else
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                <span");
+WriteLiteral("                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">No warranty provider plugins installed</span>\r\n");
 
             
-            #line 132 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            if (canViewPlugins)
-            {
+            #line 171 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                    if (canViewPlugins)
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                <div");
+WriteLiteral("                        <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                    <p");
+WriteLiteral(">\r\n                            <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                        <i");
+WriteLiteral(">\r\n                                <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4919), Tuple.Create("\"", 4969)
+WriteAttribute("href", Tuple.Create(" href=\"", 6969), Tuple.Create("\"", 7019)
             
-            #line 137 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 4926), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+            #line 176 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+    , Tuple.Create(Tuple.Create("", 6976), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 4926), false)
+, 6976), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install warranty provider plugins.\r\n       " +
-"             </p>\r\n                </div>\r\n");
+"                     </p>\r\n                        </div>\r\n");
 
             
-            #line 140 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-        }
-        else
-        {
-            if (Model.DeviceModel.DefaultWarrantyProvider == null)
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
-
-            
-            #line 147 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            else
-            {
-                var provider = Model.WarrantyProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultWarrantyProvider);
-                if (provider == null)
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
-
-            
-            #line 154 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 179 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
                 }
                 else
                 {
-                    
+                    if (Model.DeviceModel.DefaultWarrantyProvider == null)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 186 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                    else
+                    {
+                        var provider = Model.WarrantyProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultWarrantyProvider);
+                        if (provider == null)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 193 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                        }
+                        else
+                        {
+                            
             
             #line default
             #line hidden
             
-            #line 157 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-               Write(provider.Name);
+            #line 196 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                       Write(provider.Name);
 
             
             #line default
             #line hidden
             
-            #line 157 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                  
+            #line 196 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                          
+                        }
+                    }
                 }
-            }
-        }
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n</tr>\r\n<tr>\r\n    <th>\r\n        Default Repair Provider:\r\n    </th>\r\n    <t" +
-"d>\r\n");
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Default Repair Provider:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 168 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-        
-            
-            #line default
-            #line hidden
-            
-            #line 168 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-         if (canConfig)
-        {
-            if (Model.RepairProviders.Count > 0)
-            {
+            #line 207 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 172 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(Html.DropDownListFor(model => model.DeviceModel.DefaultRepairProvider, Model.RepairProviders.ToSelectListItems(Model.DeviceModel.DefaultRepairProvider, true, "None")));
+            #line 207 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (canConfig)
+                {
+                    if (Model.RepairProviders.Count > 0)
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 211 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                   Write(Html.DropDownListFor(model => model.DeviceModel.DefaultRepairProvider, Model.RepairProviders.ToSelectListItems(Model.DeviceModel.DefaultRepairProvider, true, "None")));
 
             
             #line default
             #line hidden
             
-            #line 172 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                                                                                                                                       
-                
+            #line 211 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                                                                                                                                                               
+                        
             
             #line default
             #line hidden
             
-            #line 173 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+            #line 212 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                   Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 173 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                         
+            #line 212 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                 
 
             
             #line default
             #line hidden
-WriteLiteral(@"                <script>
+WriteLiteral(@"                        <script>
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#DeviceModel_DefaultRepairProvider'),
@@ -592,177 +769,178 @@ WriteLiteral(@"                <script>
                             '");
 
             
-            #line 179 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 218 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         Write(Url.Action(MVC.API.DeviceModel.UpdateDefaultRepairProvider(Model.DeviceModel.Id)));
 
             
             #line default
             #line hidden
 WriteLiteral("\',\r\n                            \'DefaultRepairProvider\'\r\n                        " +
-");\r\n                    });\r\n                </script>\r\n");
+");\r\n                    });\r\n                        </script>\r\n");
 
             
-            #line 184 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            else
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <div>No repair provider plugins installed</div>\r\n");
-
-            
-            #line 188 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            if (canViewPlugins)
-            {
+            #line 223 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                    else
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                <div");
+WriteLiteral("                        <div>No repair provider plugins installed</div>\r\n");
+
+            
+            #line 227 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                    if (canViewPlugins)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                    <p");
+WriteLiteral(">\r\n                            <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                        <i");
+WriteLiteral(">\r\n                                <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6980), Tuple.Create("\"", 7030)
+WriteAttribute("href", Tuple.Create(" href=\"", 9418), Tuple.Create("\"", 9468)
             
-            #line 193 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 6987), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+            #line 232 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+    , Tuple.Create(Tuple.Create("", 9425), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 6987), false)
+, 9425), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install repair provider plugins.\r\n         " +
-"           </p>\r\n                </div>\r\n");
+"                   </p>\r\n                        </div>\r\n");
 
             
-            #line 196 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-        }
-        else
-        {
-            if (Model.DeviceModel.DefaultRepairProvider == null)
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
-
-            
-            #line 203 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-            else
-            {
-                var provider = Model.RepairProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultRepairProvider);
-                if (provider == null)
-                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                    <span");
-
-WriteLiteral(" class=\"smallMessage\"");
-
-WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
-
-            
-            #line 210 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 235 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
                 }
                 else
                 {
-                    
+                    if (Model.DeviceModel.DefaultRepairProvider == null)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 242 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                    else
+                    {
+                        var provider = Model.RepairProviders.FirstOrDefault(wp => wp.Id == Model.DeviceModel.DefaultRepairProvider);
+                        if (provider == null)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
+
+            
+            #line 249 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                        }
+                        else
+                        {
+                            
             
             #line default
             #line hidden
             
-            #line 213 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-               Write(provider.Name);
+            #line 252 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                       Write(provider.Name);
 
             
             #line default
             #line hidden
             
-            #line 213 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                  
+            #line 252 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                          
+                        }
+                    }
                 }
-            }
-        }
 
             
             #line default
             #line hidden
-WriteLiteral("</td>\r\n</tr>\r\n<tr>\r\n    <th>\r\n        Type:\r\n    </th>\r\n    <td>\r\n");
+WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n               " +
+" Type:\r\n            </th>\r\n            <td>\r\n");
 
-WriteLiteral("        ");
+WriteLiteral("                ");
 
             
-            #line 224 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-   Write(Html.DisplayFor(model => model.DeviceModel.ModelType));
+            #line 263 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+           Write(Html.DisplayFor(model => model.DeviceModel.ModelType));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    </td>\r\n</tr>\r\n<tr>\r\n    <th>\r\n        Image:\r\n    </th>\r\n    <td>\r\n        " +
-"<img");
+WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n             " +
+"   Image:\r\n            </th>\r\n            <td>\r\n                <img");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 8041), Tuple.Create("\"", 8138)
+WriteAttribute("src", Tuple.Create(" src=\"", 10795), Tuple.Create("\"", 10892)
             
-            #line 232 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 8047), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, Model.DeviceModel.ImageHash()))
+            #line 271 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 10801), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, Model.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 8047), false)
+, 10801), false)
 );
 
 WriteLiteral(" />\r\n");
 
             
-            #line 233 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-        
+            #line 272 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                
             
             #line default
             #line hidden
             
-            #line 233 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-         if (canConfig)
-        {
+            #line 272 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                 if (canConfig)
+                {
 
             
             #line default
             #line hidden
-WriteLiteral("            <hr />\r\n");
+WriteLiteral("                    <hr />\r\n");
 
             
-            #line 236 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
+            #line 275 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                <input");
+WriteLiteral("                        <input");
 
 WriteLiteral(" type=\"file\"");
 
@@ -774,7 +952,7 @@ WriteLiteral(" style=\"width: 220px;\"");
 
 WriteLiteral(" />\r\n");
 
-WriteLiteral("                <input");
+WriteLiteral("                        <input");
 
 WriteLiteral(" class=\"button small\"");
 
@@ -785,17 +963,17 @@ WriteLiteral(" value=\"Upload Image\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 240 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-            }
-        }
+            #line 279 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                    }
+                }
 
             
             #line default
             #line hidden
-WriteLiteral("    </td>\r\n</tr>\r\n</table>\r\n</div>\r\n<h2>Components</h2>\r\n");
+WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<h2>Components</h2>\r\n");
 
             
-            #line 247 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 286 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
 Write(Html.Partial(MVC.Config.DeviceModel.Views._DeviceComponentsTable, Model.DeviceComponentsModel));
 
             
@@ -804,7 +982,7 @@ Write(Html.Partial(MVC.Config.DeviceModel.Views._DeviceComponentsTable, Model.De
 WriteLiteral("\r\n");
 
             
-            #line 248 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 287 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
 
             
@@ -817,13 +995,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 250 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 289 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 250 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 289 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.CanDecommission)
     {
 
@@ -849,13 +1027,13 @@ WriteLiteral(" title=\"Model Device Decommission\"");
 WriteLiteral(">\r\n");
 
             
-            #line 254 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 293 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 254 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 293 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
              using (Html.BeginForm(MVC.API.Device.DeviceModelDecommission(Model.DeviceModel.Id), FormMethod.Post))
             {
                 
@@ -863,14 +1041,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 256 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 295 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 256 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 295 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                         
 
             
@@ -895,13 +1073,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 262 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 301 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 262 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 301 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                          foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                         {
 
@@ -912,33 +1090,33 @@ WriteLiteral("                            <li>\r\n                              
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 9803), Tuple.Create("\"", 9873)
-, Tuple.Create(Tuple.Create("", 9808), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 9808), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 12649), Tuple.Create("\"", 12719)
+, Tuple.Create(Tuple.Create("", 12654), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 12654), true)
             
-            #line 265 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                , Tuple.Create(Tuple.Create("", 9847), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 304 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               , Tuple.Create(Tuple.Create("", 12693), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 9847), false)
+, 12693), false)
 );
 
 WriteLiteral("\r\n                                       name=\"decommissionReason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 9940), Tuple.Create("\"", 9974)
+WriteAttribute("value", Tuple.Create(" value=\"", 12786), Tuple.Create("\"", 12820)
             
-            #line 266 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 9948), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 305 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 12794), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 9948), false)
+, 12794), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 266 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 305 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                 Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -946,21 +1124,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 10114), Tuple.Create("\"", 10185)
-, Tuple.Create(Tuple.Create("", 10120), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 10120), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 12960), Tuple.Create("\"", 13031)
+, Tuple.Create(Tuple.Create("", 12966), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 12966), true)
             
-            #line 267 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-   , Tuple.Create(Tuple.Create("", 10159), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 306 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+   , Tuple.Create(Tuple.Create("", 13005), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 10159), false)
+, 13005), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 267 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 306 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                            Write(decommissionReason.ReasonMessage());
 
             
@@ -969,7 +1147,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                            </li>\r\n");
 
             
-            #line 269 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 308 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         }
 
             
@@ -988,7 +1166,7 @@ WriteLiteral(" />\r\n                        Unassign devices users\r\n         
 "\r\n                </div>\r\n");
 
             
-            #line 277 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 316 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
             }
 
             
@@ -1032,7 +1210,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 308 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 347 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
     }
 
             
@@ -1041,7 +1219,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 309 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 348 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.CanDelete)
     {
         
@@ -1049,14 +1227,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 311 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 350 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
    Write(Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
             
-            #line 311 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 350 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                 
     }
 
@@ -1066,7 +1244,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 313 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 352 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
@@ -1076,14 +1254,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 317 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 356 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
        Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Model, Model.DeviceModel.Id)));
 
             
             #line default
             #line hidden
             
-            #line 317 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 356 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                                                           
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
@@ -1093,14 +1271,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 321 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 360 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel")));
 
             
             #line default
             #line hidden
             
-            #line 321 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 360 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                                                                                                    
         }
     }

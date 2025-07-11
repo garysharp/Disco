@@ -77,14 +77,14 @@ namespace Disco.Services
                 ModelType = ModelType.Trim();
 
             // Already Exists?
-            var deviceModel = DeviceModelsSet.FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
+            var deviceModel = DeviceModelsSet.Where(dm => dm.ModelType != DeviceModel.CustomModelType).FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
             if (deviceModel == null)
             {
                 // Ensure only one thread/request at a time
                 lock (_CreateDeviceModelLock)
                 {
                     // Check again now that lock is enforced
-                    deviceModel = DeviceModelsSet.FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
+                    deviceModel = DeviceModelsSet.Where(dm => dm.ModelType != DeviceModel.CustomModelType).FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
 
                     if (deviceModel == null)
                     {

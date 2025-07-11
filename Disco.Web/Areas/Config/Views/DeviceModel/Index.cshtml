@@ -64,4 +64,8 @@
 </table>
 <div class="actionBar">
     @Html.ActionLinkButton("Generic Components", MVC.Config.DeviceModel.GenericComponents())
+    @if (Authorization.HasAll(Claims.Config.DeviceModel.CreateCustom, Claims.Config.DeviceModel.Configure))
+    {
+        @Html.ActionLinkButton("Create Custom Device Model", MVC.Config.DeviceModel.Create())
+    }
 </div>

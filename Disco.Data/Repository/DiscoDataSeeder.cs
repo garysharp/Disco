@@ -58,7 +58,7 @@ namespace Disco.Data.Repository
         {
             if (Database.DeviceModels.Count() == 0)
             {
-                Database.DeviceModels.Add(new DeviceModel { Manufacturer = "Unknown", Model = "Unknown", Description = "Unknown Device Model" });
+                Database.DeviceModels.Add(new DeviceModel { Manufacturer = "Unknown", Model = "Unknown", Description = "Unknown Device Model", ModelType = "Unknown" });
             }
             UpdateDeviceModelConfiguration(Database);
             // Removed: 2013-01-14 G#

@@ -9,6 +9,9 @@
         [ClaimDetails("Configure Device Model Components", "Can configure device model components")]
         public bool ConfigureComponents { get; set; }
 
+        [ClaimDetails("Create Custom Device Models", "Can create custom device models")]
+        public bool CreateCustom { get; set; }
+
         [ClaimDetails("Delete Device Models", "Can delete device models")]
         public bool Delete { get; set; }
 

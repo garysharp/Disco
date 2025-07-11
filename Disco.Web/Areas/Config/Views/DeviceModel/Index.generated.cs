@@ -304,7 +304,38 @@ Write(Html.ActionLinkButton("Generic Components", MVC.Config.DeviceModel.Generic
             
             #line default
             #line hidden
-WriteLiteral("\r\n</div>");
+WriteLiteral("\r\n");
+
+            
+            #line 67 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 67 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+     if (Authorization.HasAll(Claims.Config.DeviceModel.CreateCustom, Claims.Config.DeviceModel.Configure))
+    {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 69 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+   Write(Html.ActionLinkButton("Create Custom Device Model", MVC.Config.DeviceModel.Create()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 69 "..\..\Areas\Config\Views\DeviceModel\Index.cshtml"
+                                                                                             
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>");
 
         }
     }

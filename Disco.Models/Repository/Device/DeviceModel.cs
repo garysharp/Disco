@@ -6,6 +6,8 @@ namespace Disco.Models.Repository
 {
     public class DeviceModel
     {
+        public static readonly string CustomModelType = "Custom";
+
         [Key]
         public int Id { get; set; }
         [StringLength(500)]
@@ -17,11 +19,6 @@ namespace Disco.Models.Repository
         public string Model { get; set; }
         [StringLength(40)]
         public string ModelType { get; set; }
-        
-        // Remove Reliance On!
-        // Removed: 2013-01-14 G#
-        //[Obsolete("Image to be removed from the Database")]
-        //public byte[] Image { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, ConvertEmptyStringToNull = true, DataFormatString = "{0:yyyy/MM/dd}", HtmlEncode = false)]
         public DateTime? DefaultPurchaseDate { get; set; }
@@ -40,11 +37,14 @@ namespace Disco.Models.Repository
 
         public override string ToString()
         {
-            if (string.IsNullOrWhiteSpace(this.Description))
+            if (string.IsNullOrWhiteSpace(Description))
             {
-                return string.Format("{0} {1}", this.Manufacturer, this.Model);
+                return $"{Manufacturer} {Model}";
             }
-            return this.Description;
+            return Description;
         }
+
+        public bool IsCustomModel()
+            => CustomModelType.Equals(ModelType, StringComparison.Ordinal);
     }
 }

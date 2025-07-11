@@ -1,4 +1,5 @@
-﻿using Disco.Models.UI.Config.DeviceModel;
+﻿using Disco.Models.Repository;
+using Disco.Models.UI.Config.DeviceModel;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Plugins;
@@ -36,7 +37,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 {
                     DeviceModelId = m.DeviceModel.Id,
                     DeviceComponents = Database.DeviceComponents.Include("JobSubTypes").Where(dc => dc.DeviceModelId == m.DeviceModel.Id).ToList(),
-                    JobSubTypes = Database.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
+                    JobSubTypes = Database.JobSubTypes.Where(jst => jst.JobTypeId == JobType.JobTypeIds.HNWar).ToList()
                 };
 
                 m.CanDelete = m.DeviceModel.CanDelete(Database);
@@ -46,7 +47,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.BulkGenerateDocumentTemplates = Database.DocumentTemplates.Where(t => !t.IsHidden).ToList();
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceModelShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceModelShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.DeviceModel.Views.Show, m);
             }
@@ -55,10 +56,47 @@ namespace Disco.Web.Areas.Config.Controllers
                 var m = Models.DeviceModel.IndexModel.Build(Database);
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceModelIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceModelIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DeviceModel.CreateCustom, Claims.Config.DeviceModel.Configure)]
+        [HttpGet]
+        public virtual ActionResult Create()
+        {
+            var m = new Models.DeviceModel.CreateModel();
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceModelCreateModel>(ControllerContext, m);
+
+            return View(m);
+        }
+
+        [DiscoAuthorizeAll(Claims.Config.DeviceModel.CreateCustom, Claims.Config.DeviceModel.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Create(Models.DeviceModel.CreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var deviceModel = new DeviceModel()
+                {
+                    Description = model.Description.NullOrTrimmed(),
+                    Manufacturer = model.Manufacturer.NullOrTrimmed(),
+                    Model = model.ManufacturerModel.NullOrTrimmed(),
+                    ModelType = DeviceModel.CustomModelType,
+                };
+
+                Database.DeviceModels.Add(deviceModel);
+                Database.SaveChanges();
+                return RedirectToAction(MVC.Config.DeviceModel.Index(deviceModel.Id));
+            }
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<ConfigDeviceModelCreateModel>(ControllerContext, model);
+
+            return View(model);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceModel.Show)]
@@ -67,11 +105,11 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new Models.DeviceModel.ComponentsModel()
             {
                 DeviceComponents = Database.DeviceComponents.Include("JobSubTypes").Where(dc => !dc.DeviceModelId.HasValue).ToList(),
-                JobSubTypes = Database.JobSubTypes.Where(jst => jst.JobTypeId == Disco.Models.Repository.JobType.JobTypeIds.HNWar).ToList()
+                JobSubTypes = Database.JobSubTypes.Where(jst => jst.JobTypeId == JobType.JobTypeIds.HNWar).ToList()
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceModelComponentsModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceModelComponentsModel>(ControllerContext, m);
 
             return View(m);
         }

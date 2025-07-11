@@ -194,6 +194,7 @@
     <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelIndexModelItem.cs" />
     <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelComponentsModel.cs" />
     <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelShowModel.cs" />
+    <Compile Include="UI\Config\DeviceModel\ConfigDeviceModelCreateModel.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileCreateModel.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileDefaultsModel.cs" />
     <Compile Include="UI\Config\DeviceProfile\ConfigDeviceProfileIndexModel.cs" />

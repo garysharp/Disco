@@ -116,5 +116,13 @@ namespace Disco
                 .Select(s => s.Score(Test, Fuzziness))
                 .Average();
         }
+
+        public static string NullOrTrimmed(this string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+            else
+                return value.Trim();
+        }
     }
 }

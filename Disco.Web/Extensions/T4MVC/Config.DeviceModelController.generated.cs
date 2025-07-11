@@ -82,6 +82,7 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionNamesClass
         {
             public readonly string Index = "Index";
+            public readonly string Create = "Create";
             public readonly string GenericComponents = "GenericComponents";
         }
 
@@ -89,6 +90,7 @@ namespace Disco.Web.Areas.Config.Controllers
         public class ActionNameConstants
         {
             public const string Index = "Index";
+            public const string Create = "Create";
             public const string GenericComponents = "GenericComponents";
         }
 
@@ -101,6 +103,14 @@ namespace Disco.Web.Areas.Config.Controllers
         {
             public readonly string id = "id";
         }
+        static readonly ActionParamsClass_Create s_params_Create = new ActionParamsClass_Create();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Create CreateParams { get { return s_params_Create; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Create
+        {
+            public readonly string model = "model";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -112,11 +122,13 @@ namespace Disco.Web.Areas.Config.Controllers
             public class _ViewNamesClass
             {
                 public readonly string _DeviceComponentsTable = "_DeviceComponentsTable";
+                public readonly string Create = "Create";
                 public readonly string GenericComponents = "GenericComponents";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
             }
             public readonly string _DeviceComponentsTable = "~/Areas/Config/Views/DeviceModel/_DeviceComponentsTable.cshtml";
+            public readonly string Create = "~/Areas/Config/Views/DeviceModel/Create.cshtml";
             public readonly string GenericComponents = "~/Areas/Config/Views/DeviceModel/GenericComponents.cshtml";
             public readonly string Index = "~/Areas/Config/Views/DeviceModel/Index.cshtml";
             public readonly string Show = "~/Areas/Config/Views/DeviceModel/Show.cshtml";
@@ -137,6 +149,29 @@ namespace Disco.Web.Areas.Config.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             IndexOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Create()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            CreateOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.DeviceModel.CreateModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Create(Disco.Web.Areas.Config.Models.DeviceModel.CreateModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            CreateOverride(callInfo, model);
             return callInfo;
         }
 

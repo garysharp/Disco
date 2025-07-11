@@ -242,6 +242,7 @@
     <Compile Include="Areas\Config\Models\AuthorizationRole\IndexModel.cs" />
     <Compile Include="Areas\Config\Models\AuthorizationRole\ShowModel.cs" />
     <Compile Include="Areas\Config\Models\Config\IndexModel.cs" />
+    <Compile Include="Areas\Config\Models\DeviceModel\CreateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\BulkGenerateModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\CreatePackageModel.cs" />
     <Compile Include="Areas\Config\Models\DocumentTemplate\ExportModel.cs" />
@@ -283,6 +284,11 @@
     </Compile>
     <Compile Include="Areas\Config\Views\AuthorizationRole\Show.generated.cs">
       <DependentUpon>Show.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DeviceModel\Create.generated.cs">
+      <DependentUpon>Create.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -1379,6 +1385,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Show.generated.cs</LastGenOutput>
     </None>
+    <None Include="Areas\Config\Views\DeviceModel\Create.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>Create.generated.cs</LastGenOutput>
+    </None>
     <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>BulkGenerate.generated.cs</LastGenOutput>
@@ -1713,7 +1723,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientSource\Scripts\Modules\qrcode.min.js">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClientSource\Scripts\Modules\Shadowbox.js" />
     <Content Include="ClientSource\Scripts\Modules\Shadowbox.js" Condition=" '$(Configuration)' == 'Debug' " />

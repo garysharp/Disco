@@ -38,6 +38,7 @@ namespace Disco.Services.Authorization
 				{ "Config.DeviceFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Show, (c, v) => c.Config.DeviceFlag.Show = v, "Show Device Flags", "Can show device flags", false) },
 				{ "Config.DeviceModel.ConfigureComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.ConfigureComponents, (c, v) => c.Config.DeviceModel.ConfigureComponents = v, "Configure Device Model Components", "Can configure device model components", false) },
 				{ "Config.DeviceModel.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Configure, (c, v) => c.Config.DeviceModel.Configure = v, "Configure Device Models", "Can configure device models", false) },
+				{ "Config.DeviceModel.CreateCustom", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.CreateCustom, (c, v) => c.Config.DeviceModel.CreateCustom = v, "Create Custom Device Models", "Can create custom device models", false) },
 				{ "Config.DeviceModel.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Delete, (c, v) => c.Config.DeviceModel.Delete = v, "Delete Device Models", "Can delete device models", false) },
 				{ "Config.DeviceModel.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Show, (c, v) => c.Config.DeviceModel.Show = v, "Show Device Models", "Can show device models", false) },
 				{ "Config.DeviceProfile.ConfigureComputerNameTemplate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.ConfigureComputerNameTemplate, (c, v) => c.Config.DeviceProfile.ConfigureComputerNameTemplate = v, "Configure Computer Name Templates", "Can configure computer name templates for device profiles", false) },
@@ -259,6 +260,7 @@ namespace Disco.Services.Authorization
 				        new ClaimNavigatorItem("Config.DeviceModel", "Device Models", "Permissions related to Device Models", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Config.DeviceModel.ConfigureComponents", false),
 				            new ClaimNavigatorItem("Config.DeviceModel.Configure", false),
+				            new ClaimNavigatorItem("Config.DeviceModel.CreateCustom", false),
 				            new ClaimNavigatorItem("Config.DeviceModel.Delete", false),
 				            new ClaimNavigatorItem("Config.DeviceModel.Show", false)
 				        }),
@@ -584,6 +586,7 @@ namespace Disco.Services.Authorization
 			c.Config.DeviceFlag.Show = true;
 			c.Config.DeviceModel.ConfigureComponents = true;
 			c.Config.DeviceModel.Configure = true;
+			c.Config.DeviceModel.CreateCustom = true;
 			c.Config.DeviceModel.Delete = true;
 			c.Config.DeviceModel.Show = true;
 			c.Config.DeviceProfile.ConfigureComputerNameTemplate = true;
@@ -913,6 +916,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can configure device models</para>
                 /// </summary>
                 public const string Configure = "Config.DeviceModel.Configure";
+
+                /// <summary>Create Custom Device Models
+                /// <para>Can create custom device models</para>
+                /// </summary>
+                public const string CreateCustom = "Config.DeviceModel.CreateCustom";
 
                 /// <summary>Delete Device Models
                 /// <para>Can delete device models</para>

@@ -17,6 +17,8 @@ namespace Disco.Web.Areas.API.Controllers
     {
 
         const string pDescription = "description";
+        const string pManufacturer = "manufacturer";
+        const string pModel = "model";
         const string pDefaultPurchaseDate = "defaultpurchasedate";
         const string pDefaultWarrantyProvider = "defaultwarrantyprovider";
         const string pDefaultRepairProvider = "defaultrepairprovider";
@@ -39,6 +41,12 @@ namespace Disco.Web.Areas.API.Controllers
                     {
                         case pDescription:
                             UpdateDescription(deviceModel, value);
+                            break;
+                        case pManufacturer:
+                            UpdateManufacturer(deviceModel, value);
+                            break;
+                        case pModel:
+                            UpdateModel(deviceModel, value);
                             break;
                         case pDefaultPurchaseDate:
                             UpdateDefaultPurchaseDate(deviceModel, value);
@@ -72,11 +80,23 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
-        
+
         [DiscoAuthorize(Claims.Config.DeviceModel.Configure)]
         public virtual ActionResult UpdateDescription(int id, string Description = null, bool redirect = false)
         {
             return Update(id, pDescription, Description, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceModel.Configure)]
+        public virtual ActionResult UpdateManufacturer(int id, string manufacturer = null, bool redirect = false)
+        {
+            return Update(id, pManufacturer, manufacturer, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceModel.Configure)]
+        public virtual ActionResult UpdateModel(int id, string model = null, bool redirect = false)
+        {
+            return Update(id, pModel, model, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceModel.Configure)]
@@ -100,7 +120,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Update Properties
-        private void UpdateDescription(Disco.Models.Repository.DeviceModel deviceModel, string Description)
+        private void UpdateDescription(DeviceModel deviceModel, string Description)
         {
             if (string.IsNullOrWhiteSpace(Description))
                 deviceModel.Description = null;
@@ -108,7 +128,29 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceModel.Description = Description;
             Database.SaveChanges();
         }
-        private void UpdateDefaultPurchaseDate(Disco.Models.Repository.DeviceModel deviceModel, string DefaultPurchaseDate)
+        private void UpdateManufacturer(DeviceModel deviceModel, string manufacturer)
+        {
+            if (!deviceModel.IsCustomModel())
+                throw new InvalidCastException("Cannot update Manufacturer for a non-custom device model.");
+
+            if (string.IsNullOrWhiteSpace(manufacturer))
+                deviceModel.Manufacturer = null;
+            else
+                deviceModel.Manufacturer = manufacturer;
+            Database.SaveChanges();
+        }
+        private void UpdateModel(DeviceModel deviceModel, string model)
+        {
+            if (!deviceModel.IsCustomModel())
+                throw new InvalidCastException("Cannot update Model for a non-custom device model.");
+
+            if (string.IsNullOrWhiteSpace(model))
+                deviceModel.Model = null;
+            else
+                deviceModel.Model = model;
+            Database.SaveChanges();
+        }
+        private void UpdateDefaultPurchaseDate(DeviceModel deviceModel, string DefaultPurchaseDate)
         {
             if (string.IsNullOrEmpty(DefaultPurchaseDate))
             {
@@ -128,7 +170,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateDefaultWarrantyProvider(Disco.Models.Repository.DeviceModel deviceModel, string DefaultWarrantyProvider)
+        private void UpdateDefaultWarrantyProvider(DeviceModel deviceModel, string DefaultWarrantyProvider)
         {
             if (string.IsNullOrEmpty(DefaultWarrantyProvider))
             {
@@ -142,7 +184,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateDefaultRepairProvider(Disco.Models.Repository.DeviceModel deviceModel, string DefaultRepairProvider)
+        private void UpdateDefaultRepairProvider(DeviceModel deviceModel, string DefaultRepairProvider)
         {
             if (string.IsNullOrEmpty(DefaultRepairProvider))
             {
@@ -192,7 +234,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             return File(Links.ClientSource.Style.Images.DeviceTypes.Unknown_png, "image/png");
         }
-        
+
         [DiscoAuthorize(Claims.Config.DeviceModel.Configure), HttpPost]
         public virtual ActionResult Image(int id, bool redirect, HttpPostedFileBase Image)
         {
@@ -232,7 +274,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DeviceModel.Delete)]
-        public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
+        public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
             {
@@ -292,7 +334,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Cost = Cost.Substring(Cost.IndexOf("$") + 1);
             decimal.TryParse(Cost, out cost);
 
-            var dc = new Disco.Models.Repository.DeviceComponent()
+            var dc = new DeviceComponent()
             {
                 Description = Description,
                 Cost = cost
