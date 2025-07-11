@@ -8,11 +8,11 @@ namespace Disco.Services
 {
     public static class JobFlagExtensions
     {
+        private static Dictionary<string, Dictionary<long, string>> cache;
 
-        private static Dictionary<string, Dictionary<long, string>> allFlags;
-        private static void CacheAllFlags()
+        private static Dictionary<string, Dictionary<long, string>> GetAllFlags()
         {
-            if (allFlags == null)
+            if (cache == null)
             {
                 var fType = typeof(Job.UserManagementFlags);
                 var fMembers = fType.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
@@ -20,57 +20,52 @@ namespace Disco.Services
                 var flags = new Dictionary<string, Dictionary<long, string>>();
                 foreach (var f in fMembers)
                 {
-                    DisplayAttribute display = (DisplayAttribute)(f.GetCustomAttributes(typeof(DisplayAttribute), false)[0]);
-                    string gn = display.GroupName;
-                    Dictionary<long, string> g;
-                    if (!flags.TryGetValue(gn, out g))
+                    var display = (DisplayAttribute)f.GetCustomAttributes(typeof(DisplayAttribute), false)[0];
+
+                    if (!flags.TryGetValue(display.GroupName, out var group))
                     {
-                        g = new Dictionary<long, string>();
-                        flags.Add(gn, g);
+                        group = new Dictionary<long, string>();
+                        flags.Add(display.GroupName, group);
                     }
-                    g[(long)f.GetRawConstantValue()] = display.Name;
+                    group[(long)f.GetRawConstantValue()] = display.Name;
                 }
-                allFlags = flags;
+                cache = flags;
             }
+            return cache;
         }
 
-        public static Dictionary<string, List<Tuple<long, string, bool>>> ValidFlagsGrouped(this Job j)
+        public static Dictionary<string, List<Tuple<long, string, bool>>> ValidFlagsGrouped(this Job job)
         {
-            Dictionary<string, List<Tuple<long, string, bool>>> validFlags = new Dictionary<string, List<Tuple<long, string, bool>>>();
+            var validFlags = new Dictionary<string, List<Tuple<long, string, bool>>>();
 
-            CacheAllFlags();
+            var allFlags = GetAllFlags();
 
-            var currentFlags = (long)(j.Flags ?? 0);
+            var currentFlags = (long)(job.Flags ?? 0);
 
-            foreach (var jt in j.JobSubTypes)
+            foreach (var jobSubType in job.JobSubTypes)
             {
-                Dictionary<long, string> g;
-                if (allFlags.TryGetValue(jt.Id, out g))
+                if (allFlags.TryGetValue(jobSubType.Id, out var group))
                 {
-                    validFlags[jt.Id] = g.Select(f => new Tuple<long, string, bool>(f.Key, f.Value, ((currentFlags & f.Key) == f.Key))).ToList();
-                }
-                else
-                {
-                    validFlags[jt.Id] = null;
+                    validFlags[jobSubType.Id] = group.Select(o => Tuple.Create(o.Key, o.Value, (currentFlags & o.Key) == o.Key)).ToList();
                 }
             }
             return validFlags;
         }
-        public static Dictionary<long, Tuple<string, bool>> ValidFlags(this Job j)
+
+        public static Dictionary<long, Tuple<string, bool>> ValidFlags(this Job job)
         {
-            Dictionary<long, Tuple<string, bool>> validFlags = new Dictionary<long, Tuple<string, bool>>();
+            var validFlags = new Dictionary<long, Tuple<string, bool>>();
 
-            CacheAllFlags();
+            var allFlags = GetAllFlags();
 
-            var currentFlags = (long)(j.Flags ?? 0);
+            var currentFlags = (long)(job.Flags ?? 0);
 
-            foreach (var jt in j.JobSubTypes)
+            foreach (var jobSubType in job.JobSubTypes)
             {
-                Dictionary<long, string> g;
-                if (allFlags.TryGetValue(jt.Id, out g))
+                if (allFlags.TryGetValue(jobSubType.Id, out var group))
                 {
-                    foreach (var f in g)
-                        validFlags[f.Key] = new Tuple<string, bool>(string.Format("{0}: {1}", jt.Description, f.Value), ((currentFlags & f.Key) == f.Key));
+                    foreach (var option in group)
+                        validFlags[option.Key] = Tuple.Create($"{jobSubType.Description}: {option.Value}", (currentFlags & option.Key) == option.Key);
                 }
             }
             return validFlags;

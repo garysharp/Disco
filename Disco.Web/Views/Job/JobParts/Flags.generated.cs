@@ -49,6 +49,12 @@ namespace Disco.Web.Views.Job.JobParts
     Authorization.Require(Claims.Job.ShowFlags);
 
     var validFlags = Model.Job.ValidFlagsGrouped();
+
+    if (validFlags.Count == 0)
+    {
+        return;
+    }
+
     var canEdit = Authorization.Has(Claims.Job.Properties.Flags);
 
             
@@ -67,13 +73,13 @@ WriteLiteral(" id=\"jobFlags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 10 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 16 "..\..\Views\Job\JobParts\Flags.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 16 "..\..\Views\Job\JobParts\Flags.cshtml"
          foreach (var flagGroup in validFlags)
         {
 
@@ -87,7 +93,7 @@ WriteLiteral(" class=\"flagGroupName\"");
 WriteLiteral(">");
 
             
-            #line 14 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 20 "..\..\Views\Job\JobParts\Flags.cshtml"
                                            Write(flagGroup.Key);
 
             
@@ -98,7 +104,7 @@ WriteLiteral("</span><br />\r\n");
 WriteLiteral("                    ");
 
             
-            #line 15 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
@@ -107,13 +113,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 18 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 24 "..\..\Views\Job\JobParts\Flags.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 24 "..\..\Views\Job\JobParts\Flags.cshtml"
                      foreach (var flagItem in flagGroup.Value)
                     {
 
@@ -124,31 +130,31 @@ WriteLiteral("                        <div>\r\n                            <inpu
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 728), Tuple.Create("\"", 751)
+WriteAttribute("value", Tuple.Create(" value=\"", 795), Tuple.Create("\"", 818)
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 736), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 803), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
             
             #line default
             #line hidden
-, 736), false)
+, 803), false)
 );
 
-WriteAttribute("id", Tuple.Create(" id=\"", 752), Tuple.Create("\"", 782)
-, Tuple.Create(Tuple.Create("", 757), Tuple.Create("jobFlag_", 757), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 819), Tuple.Create("\"", 849)
+, Tuple.Create(Tuple.Create("", 824), Tuple.Create("jobFlag_", 824), true)
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
-         , Tuple.Create(Tuple.Create("", 765), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
+         , Tuple.Create(Tuple.Create("", 832), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
             
             #line default
             #line hidden
-, 765), false)
+, 832), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                                       Write(flagItem.Item3 ? new HtmlString("checked=\"checked\"") : new HtmlString(string.Empty));
 
             
@@ -157,7 +163,7 @@ WriteLiteral(" ");
 WriteLiteral(" ");
 
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                                                                                                                                Write(canEdit ? new HtmlString(string.Empty) : new HtmlString("disabled=\"disabled\""));
 
             
@@ -165,32 +171,32 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 965), Tuple.Create("\"", 1000)
-, Tuple.Create(Tuple.Create("", 970), Tuple.Create("jobFlagLabel_", 970), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 1032), Tuple.Create("\"", 1067)
+, Tuple.Create(Tuple.Create("", 1037), Tuple.Create("jobFlagLabel_", 1037), true)
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
-                                                                                                                                                                                                                                   , Tuple.Create(Tuple.Create("", 983), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
+                                                                                                                                                                                                                                  , Tuple.Create(Tuple.Create("", 1050), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
             
             #line default
             #line hidden
-, 983), false)
+, 1050), false)
 );
 
-WriteAttribute("for", Tuple.Create(" for=\"", 1001), Tuple.Create("\"", 1032)
-, Tuple.Create(Tuple.Create("", 1007), Tuple.Create("jobFlag_", 1007), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 1068), Tuple.Create("\"", 1099)
+, Tuple.Create(Tuple.Create("", 1074), Tuple.Create("jobFlag_", 1074), true)
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
-                                                                                                                                                                                                                                                                  , Tuple.Create(Tuple.Create("", 1015), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
+                                                                                                                                                                                                                                                                  , Tuple.Create(Tuple.Create("", 1082), Tuple.Create<System.Object, System.Int32>(flagItem.Item1
             
             #line default
             #line hidden
-, 1015), false)
+, 1082), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 21 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 27 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                                                                                                                                                                                                                                                                                                Write(flagItem.Item2);
 
             
@@ -199,7 +205,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                        </div>\r\n");
 
             
-            #line 23 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 29 "..\..\Views\Job\JobParts\Flags.cshtml"
                     }
 
             
@@ -208,7 +214,7 @@ WriteLiteral("</label>\r\n                        </div>\r\n");
 WriteLiteral("                </td>\r\n            </tr>\r\n");
 
             
-            #line 26 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 32 "..\..\Views\Job\JobParts\Flags.cshtml"
         }
 
             
@@ -217,13 +223,13 @@ WriteLiteral("                </td>\r\n            </tr>\r\n");
 WriteLiteral("    </table>\r\n");
 
             
-            #line 28 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 34 "..\..\Views\Job\JobParts\Flags.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 28 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 34 "..\..\Views\Job\JobParts\Flags.cshtml"
      if (canEdit)
     {
 
@@ -239,13 +245,13 @@ WriteLiteral(" title=\"Add Flag\"");
 WriteLiteral(">\r\n");
 
             
-            #line 31 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 37 "..\..\Views\Job\JobParts\Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 37 "..\..\Views\Job\JobParts\Flags.cshtml"
              using (Html.BeginForm(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, true)))
             {
 
@@ -275,7 +281,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                </p>\r\n");
 
             
-            #line 38 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 44 "..\..\Views\Job\JobParts\Flags.cshtml"
             }
 
             
@@ -291,7 +297,7 @@ WriteLiteral(">\r\n            $(\'#jobDetailTabItems\').append(\'<li><a href=\"
 "Flags [");
 
             
-            #line 41 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 47 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                  Write(validFlags.SelectMany(g => g.Value).Count(f => f.Item3));
 
             
@@ -320,7 +326,7 @@ WriteLiteral(@"]</a></li>');
                         $.getJSON('");
 
             
-            #line 61 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 67 "..\..\Views\Job\JobParts\Flags.cshtml"
                                Write(Url.Action(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, false)));
 
             
@@ -363,8 +369,9 @@ WriteLiteral(@"', { Flag: '-' + flagValue }, function (response, result) {
 ");
 
             
-            #line 95 "..\..\Views\Job\JobParts\Flags.cshtml"
-    }else
+            #line 101 "..\..\Views\Job\JobParts\Flags.cshtml"
+    }
+    else
     {
 
             
@@ -374,7 +381,7 @@ WriteLiteral("        <script>\r\n            $(\'#jobDetailTabItems\').append(\
 "tailTab-Flags\">Flags [");
 
             
-            #line 98 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 105 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                  Write(validFlags.SelectMany(g => g.Value).Count(f => f.Item3));
 
             
@@ -383,7 +390,7 @@ WriteLiteral("        <script>\r\n            $(\'#jobDetailTabItems\').append(\
 WriteLiteral("]</a></li>\');\r\n        </script>\r\n");
 
             
-            #line 100 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 107 "..\..\Views\Job\JobParts\Flags.cshtml"
     }
 
             

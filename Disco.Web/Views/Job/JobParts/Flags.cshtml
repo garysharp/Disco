@@ -3,6 +3,12 @@
     Authorization.Require(Claims.Job.ShowFlags);
 
     var validFlags = Model.Job.ValidFlagsGrouped();
+
+    if (validFlags.Count == 0)
+    {
+        return;
+    }
+
     var canEdit = Authorization.Has(Claims.Job.Properties.Flags);
 }
 <div id="jobDetailTab-Flags" class="jobPart">
@@ -92,7 +98,8 @@
             $flagCheckboxes.click(updateFlags);
         });
         </script>
-    }else
+    }
+    else
     {
         <script>
             $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Flags">Flags [@(validFlags.SelectMany(g => g.Value).Count(f => f.Item3))]</a></li>');

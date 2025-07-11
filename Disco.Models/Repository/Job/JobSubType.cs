@@ -25,6 +25,7 @@ namespace Disco.Models.Repository
         {
             public const string Infringement = "Infringement";
             public const string Contact = "Contact";
+            public const string BYOD = "BYOD";
         }
 
         public override string ToString()

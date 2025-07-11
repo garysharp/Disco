@@ -208,6 +208,15 @@ namespace Disco.Data.Repository
             #endregion
             // End
 
+            // 2025-07-11
+            #region "User Management - BYOD" Added
+            if (Database.JobSubTypes.Count(jst => jst.JobTypeId == JobType.JobTypeIds.UMgmt && jst.Id == JobSubType.UserManagementJobSubTypes.BYOD) == 0)
+            {
+                Database.JobSubTypes.Add(new JobSubType { Id = JobSubType.UserManagementJobSubTypes.BYOD, JobTypeId = JobType.JobTypeIds.UMgmt, Description = JobSubType.UserManagementJobSubTypes.BYOD });
+            }
+            #endregion
+            // End
+
             // 2012-05-29 - Audits
             #region "Audit" Added
             if (Database.JobSubTypes.Count(jst => jst.JobTypeId == JobType.JobTypeIds.HMisc && jst.Id == "Audit") == 0)

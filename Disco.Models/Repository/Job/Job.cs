@@ -60,10 +60,6 @@ namespace Disco.Models.Repository
         [ForeignKey("DeviceReturnedTechUserId")]
         public virtual User DeviceReturnedTechUser { get; set; }
 
-        //// Added 2012-10-23 G# - DBv5 Migration
-        //public virtual IList<JobAssignment> JobAssignments { get; set; }
-        //// End Added 2012-10-23 G# - DBv5 Migration
-
         public virtual IList<JobAttachment> JobAttachments { get; set; }
         public virtual IList<JobComponent> JobComponents { get; set; }
         public virtual IList<JobLog> JobLogs { get; set; }
