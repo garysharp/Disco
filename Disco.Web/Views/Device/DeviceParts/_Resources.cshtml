@@ -19,7 +19,7 @@
     <table id="deviceShowResources">
         <tr>
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")">
                     @Html.AntiForgeryToken()
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
@@ -121,18 +121,13 @@
                                     success: function (d) {
                                         if (d.Result == 'OK') {
                                             var a = d.Attachment;
-                                        @if (canRemoveAnyAttachments)
-                                        {
-                                        <text>buildAttachment(a, true, quick);</text>
-                                        }
-                                        else if (canRemoveOwnAttachments)
-                                        {
-                                        <text>buildAttachment(a, (a.AuthorId === '@(CurrentUser.UserId)'), quick);</text>
-                                        }
-                                        else
-                                        {
-                                        <text>buildAttachment(a, false, quick);</text>
-                                        }
+
+                                            if ($Attachments.hasClass('canRemoveAnyAttachments'))
+                                                buildAttachment(a, true, quick);
+                                            else if ($Attachments.hasClass('canRemoveOwnAttachments'))
+                                                buildAttachment(a, (a.AuthorId === $Attachments.attr('data-userid')), quick);
+                                            else
+                                                buildAttachment(a, false, quick);
                                         } else {
                                             alert('Unable to add attachment: ' + d.Result);
                                         }
