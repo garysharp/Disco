@@ -519,11 +519,13 @@ table {
 table.none {
     border: none !important;
 
-    tr, td, th {
-        padding: 0 !important;
-        margin: 0 !important;
-        background: none !important;
-        border: none !important;
+    & > tr, & > thead > tr, & > tbody > tr, & > tfoot > tr {
+        & > td, & > th {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: none !important;
+            border: none !important;
+        }
     }
 }
 

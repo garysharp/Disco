@@ -379,9 +379,9 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult CommentPost()
+        public virtual System.Web.Mvc.ActionResult CommentAdd()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentPost);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentAdd);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -549,7 +549,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string InitialComments = "InitialComments";
             public readonly string Comments = "Comments";
             public readonly string Comment = "Comment";
-            public readonly string CommentPost = "CommentPost";
+            public readonly string CommentAdd = "CommentAdd";
             public readonly string CommentRemove = "CommentRemove";
             public readonly string AttachmentDownload = "AttachmentDownload";
             public readonly string AttachmentThumbnail = "AttachmentThumbnail";
@@ -626,7 +626,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string InitialComments = "InitialComments";
             public const string Comments = "Comments";
             public const string Comment = "Comment";
-            public const string CommentPost = "CommentPost";
+            public const string CommentAdd = "CommentAdd";
             public const string CommentRemove = "CommentRemove";
             public const string AttachmentDownload = "AttachmentDownload";
             public const string AttachmentThumbnail = "AttachmentThumbnail";
@@ -1168,11 +1168,11 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
         }
-        static readonly ActionParamsClass_CommentPost s_params_CommentPost = new ActionParamsClass_CommentPost();
+        static readonly ActionParamsClass_CommentAdd s_params_CommentAdd = new ActionParamsClass_CommentAdd();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_CommentPost CommentPostParams { get { return s_params_CommentPost; } }
+        public ActionParamsClass_CommentAdd CommentAddParams { get { return s_params_CommentAdd; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_CommentPost
+        public class ActionParamsClass_CommentAdd
         {
             public readonly string id = "id";
             public readonly string comment = "comment";
@@ -2064,15 +2064,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void CommentPostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string comment);
+        partial void CommentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string comment);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult CommentPost(int id, string comment)
+        public override System.Web.Mvc.ActionResult CommentAdd(int id, string comment)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentPost);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentAdd);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comment", comment);
-            CommentPostOverride(callInfo, id, comment);
+            CommentAddOverride(callInfo, id, comment);
             return callInfo;
         }
 

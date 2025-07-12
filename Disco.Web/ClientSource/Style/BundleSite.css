@@ -4999,9 +4999,14 @@ table th {
 table.none {
   border: none !important;
 }
-table.none tr,
-table.none td,
-table.none th {
+table.none > tr > td,
+table.none > thead > tr > td,
+table.none > tbody > tr > td,
+table.none > tfoot > tr > td,
+table.none > tr > th,
+table.none > thead > tr > th,
+table.none > tbody > tr > th,
+table.none > tfoot > tr > th {
   padding: 0 !important;
   margin: 0 !important;
   background: none !important;

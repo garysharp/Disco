@@ -503,10 +503,8 @@
     <Compile Include="Areas\API\Models\DocumentTemplate\ImporterUndetectedDataIdLookupModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\ImporterUndetectedFilesModel.cs" />
     <Compile Include="Areas\API\Models\Expressions\ValidateExpressionModel.cs" />
-    <Compile Include="Areas\API\Models\Job\CommentPostModel.cs" />
-    <Compile Include="Areas\API\Models\Job\CommentsModel.cs" />
     <Compile Include="Areas\API\Models\Job\ComponentModel.cs" />
-    <Compile Include="Areas\API\Models\Job\_CommentModel.cs" />
+    <Compile Include="Areas\API\Models\Shared\CommentModel.cs" />
     <Compile Include="Areas\API\Models\Job\_ComponentModel.cs" />
     <Compile Include="Areas\API\Models\Job\_DateChangeModel.cs" />
     <Compile Include="Areas\API\Models\Logs\LogEventTypeModel.cs" />

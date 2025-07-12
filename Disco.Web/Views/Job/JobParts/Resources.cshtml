@@ -29,13 +29,14 @@
         @if (canShowLogs)
         {
             <td id="CommentsContainer">
-                <div id="Comments" class="@(canAddLogs ? "canAddLogs" : "cannotAddLogs")">
+                <div id="Comments" class="@(canAddLogs ? "canAddLogs" : "cannotAddLogs") @(canRemoveAnyLogs ? "canRemoveAnyLogs" : "cannotRemoveAnyLogs") @(canRemoveOwnLogs ? "canRemoveOwnLogs" : "cannotRemoveOwnLogs")" data-jobid="@Model.Job.Id" data-addurl="@Url.Action(MVC.API.Job.CommentAdd(Model.Job.Id))" data-removeurl="@Url.Action(MVC.API.Job.CommentRemove())" data-geturl="@Url.Action(MVC.API.Job.Comment())" data-userid="@CurrentUser.UserId">
+                    @Html.AntiForgeryToken()
                     <div class="commentOutput">
                         @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
                         {
                             <div data-logid="@jl.Id">
                                 <span class="author">@jl.TechUser.ToStringFriendly()</span>@if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
-                                                                                           {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
+                                {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(jl.Timestamp.ToUnixEpoc())" title="@jl.Timestamp.ToFullDateTime()">@jl.Timestamp.ToFullDateTime()</span>
                                 <div class="comment">@jl.Comments.ToHtmlComment()</div>
                             </div>
                         }
@@ -43,8 +44,8 @@
                     @if (canAddLogs)
                     {
                         <div class="commentInput clearfix">
-                            <textarea class="commentInput" placeholder="write comment..." accesskey="l"></textarea>
-                            <span class="action post commentInputPost fa fa-comment disabled" title="Post Comment"></span>
+                            <textarea class="commentInput" placeholder="add comment..." accesskey="l"></textarea>
+                            <span class="action post commentInputPost fa fa-comment disabled" title="Add Comment"></span>
                         </div>
                     }
                 </div>
@@ -87,22 +88,6 @@
         }
     </tr>
 </table>
-@if (canShowLogs && (canRemoveAnyLogs || canRemoveOwnLogs))
-{
-    <div id="dialogRemoveLog" class="dialog" title="Remove this Comment?">
-        <p>
-            <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
-        </p>
-    </div>
-}
-@if (canShowAttachments && (canRemoveAnyAttachments || canRemoveOwnAttachments))
-{
-    <div id="dialogRemoveAttachment" class="dialog" title="Remove this Attachment?">
-        <p>
-            <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
-        </p>
-    </div>
-}
 @if (canShowLogs)
 {
     <script>
@@ -111,12 +96,12 @@
         }
 
         $(function () {
-            var jobId = parseInt('@(Model.Job.Id)');
-
             //#region Comments
-            var $Comments = $('#Comments');
-            var $CommentOutput = $Comments.find('.commentOutput');
-            var $CommentOutputContainer = $Comments.find('.commentOutputContainer');
+            const $Comments = $('#Comments');
+            const jobId = parseInt($Comments.attr('data-jobid'));
+
+            const $CommentOutput = $Comments.find('.commentOutput');
+            const $CommentOutputContainer = $Comments.find('.commentOutputContainer');
 
             window.setTimeout(function () {
                 $CommentOutput[0].scrollTop = $CommentOutput[0].scrollHeight; // Scroll to Bottom
@@ -131,23 +116,23 @@
             {<text>
             //#region Add Logs
 
-            var $CommentInput = $Comments.find('textarea.commentInput');
-
-            $Comments.find('.commentInputPost').click(postComment);
-            $CommentInput.keypress(function (e) {
+            const $CommentInput = $Comments.find('textarea.commentInput');
+            const $CommentInputPost = $Comments.find('.commentInputPost');
+            $CommentInputPost.on('click', postComment);
+            $CommentInput.on('keypress', function (e) {
                 if (e.which == 13 && !e.shiftKey) {
                     postComment();
                     return false;
                 }
             });
 
-            function postComment() {
-                if ($Comments.find('.commentInputPost').hasClass('disabled')) {
+            async function postComment() {
+                if ($CommentInputPost.hasClass('disabled')) {
                     alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
                     return;
                 }
 
-                var comment = $CommentInput.val();
+                const comment = $CommentInput.val();
 
                 if (comment == '') {
                     alert('Enter a comment to post');
@@ -155,26 +140,23 @@
                     return;
                 }
 
-                var data = { comment: comment }
-                $.ajax({
-                    url: '@Url.Action(MVC.API.Job.CommentPost(Model.Job.Id, null))',
-                    dataType: 'json',
-                    data: data,
-                    success: function (d) {
-                        if (d.Result == 'OK') {
-                            // Should be added via Repository Notifications
-                            // addComment(d.Comment, false);
-                            $CommentInput.val('').attr('disabled', false).focus();
-                        } else {
-                            alert('Unable to post comment: ' + d.Result);
-                            $CommentInput.attr('disabled', false);
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to post comment: ' + textStatus);
-                        $CommentInput.attr('disabled', false);
-                    }
+                $CommentInput.prop('disabled', true);
+
+                const formData = new FormData();
+                formData.append('__RequestVerificationToken', $Comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('comment', comment);
+
+                const response = await fetch($Comments.attr('data-addurl'), {
+                    method: 'POST',
+                    body: formData
                 });
+
+                if (response.ok) {
+                    $CommentInput.val('').prop('disabled', false).focus();
+                } else {
+                    alert('Unable to add comment: ' + response.statusText);
+                    $CommentInput.prop('disabled', false).focus();
+                }
             }
 
             //#endregion
@@ -183,100 +165,101 @@
             {<text>
             //#region Remove Logs
 
-            var $dialogRemoveLog;
+            let $dialogRemoveLog = null;
 
-            $CommentOutput.find('span.remove').click(removePost);
+            $CommentOutput.on('click', 'span.remove', removePost);
 
-            function removePost() {
+            async function removeComment(commentId) {
+                const formData = new FormData();
+                formData.append('__RequestVerificationToken', $Comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('id', commentId);
+
+                const response = await fetch($Comments.attr('data-removeurl'), {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    alert('Unable to remove comment: ' + response.statusText);
+                }
+                $dialogRemoveLog.dialog("close");
+            }
+
+            function removePost(e) {
+                e.preventDefault();
+
                 $this = $(this);
-                var data = { id: $this.closest('div').attr('data-logid') };
+                const commentId = $this.closest('div').attr('data-logid');
 
                 if (!$dialogRemoveLog) {
-                    $dialogRemoveLog = $('#dialogRemoveLog').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        autoOpen: false
-                    });
+                    $dialogRemoveLog = $('<div class="dialog" title="Remove this Comment?"><p><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?</p></div>')
+                        .appendTo(document.body)
+                        .dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            autoOpen: false
+                        });
                 }
 
                 $dialogRemoveLog.dialog("enable").dialog('option', 'buttons', {
                     "Remove": function () {
                         $dialogRemoveLog.dialog("disable");
                         $dialogRemoveLog.dialog("option", "buttons", null);
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Job.CommentRemove())',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    // Should be removed via Repository Notifications
-                                    //$this.closest('div').slideUp(300).delay(300).queue(function () {
-                                    //    $(this).remove();
-                                    //});
-                                } else {
-                                    alert('Unable to remove comment: ' + d);
-                                }
-                                $dialogRemoveLog.dialog("close");
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to remove comment: ' + textStatus);
-                                $dialogRemoveLog.dialog("close");
-                            }
-                        });
+
+                        removeComment(commentId);
                     },
                     "Cancel": function () {
                         $dialogRemoveLog.dialog("close");
                     }
                 }).dialog('open');
-
-                return false;
             }
 
             //#endregion
             </text>}
 
-            function loadLiveComment(key) {
-                $.ajax({
-                    url: '@Url.Action(MVC.API.Job.Comment())',
-                    dataType: 'json',
-                    data: { id: key },
-                    success: function (d) {
-                        if (d && d.JobId == jobId) {
-                                @if (canRemoveAnyLogs)
-                                {<text>addComment(d, false, true);</text>}
-                                else if (canRemoveOwnLogs)
-                                {<text>addComment(d, false, (d.AuthorId === '@(CurrentUser.UserId)'));</text>}
-                                else
-                                {<text>addComment(d, false, false);</text>}
+            async function loadLiveComment(id) {
 
-                        }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to load live comment ' + id + ': ' + textStatus);
-                    }
+                const formData = new FormData();
+                formData.append('__RequestVerificationToken', $Comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('id', id);
+
+                const response = await fetch($Comments.attr('data-geturl'), {
+                    method: 'POST',
+                    body: formData
                 });
+
+                if (!response.ok) {
+                    alert('Unable to load live comment ' + id + ': ' + textStatus);
+                } else {
+                    const comment = await response.json();
+
+                    if ($Comments.hasClass('canRemoveAnyLogs'))
+                        addComment(comment, false, true);
+                    else if ($Comments.hasClass('canRemoveOwnLogs'))
+                        addComment(comment, false, (comment.AuthorId === $Comments.attr('data-userid')));
+                    else
+                        addComment(comment, false, false);
+                }
             }
-            function liveRemoveComment(key) {
-                $CommentOutput.children('div[data-logid="' + key + '"]').slideUp(300).delay(300).queue(function () {
-                    var $this = $(this);
+            function liveRemoveComment(id) {
+                $CommentOutput.children('div[data-logid="' + id + '"]').slideUp(300).delay(300).queue(function () {
+                    const $this = $(this);
                     $this.find('.timestamp').livestamp('destroy');
                     $this.remove();
                 });
             }
             function addComment(c, quick, canRemove) {
-                var t = '<div><span class="author" />';
+                let t = '<div><span class="author" />';
                 if (canRemove)
                     t += '<span class="remove fa fa-times-circle" />';
                 t += '<span class="timestamp" /><div class="comment" /></div>';
 
-                var e = $(t);
+                const e = $(t);
                 e.attr('data-logid', c.Id);
                 e.find('.author').text(c.Author);
                 e.find('.timestamp').text(c.TimestampFull).attr('title', c.TimestampFull).livestamp(c.TimestampUnixEpoc);
-                if (canRemove)
-                    e.find('.remove').click(removePost);
-                var eComment = e.find('.comment').html(c.HtmlComments);
+                e.find('.comment').html(c.HtmlComments);
 
                 $CommentOutput.append(e);
 
@@ -291,7 +274,9 @@
             }
 
             // Add Globally Available Functions
-            document.DiscoFunctions.liveLoadComment = loadLiveComment;
+            document.DiscoFunctions.liveLoadComment = function (id) {
+                loadLiveComment(id);
+            };
             document.DiscoFunctions.liveRemoveComment = liveRemoveComment;
             //#endregion
         });
@@ -379,12 +364,14 @@
                 var data = { id: $this.attr('data-attachmentid') };
 
                 if (!$dialogRemoveAttachment) {
-                    $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
-                        resizable: false,
-                        height: 140,
-                        modal: true,
-                        autoOpen: false
-                    });
+                    $dialogRemoveAttachment = $('<div class="dialog" title="Remove this Attachment?"><p><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?</p></div>')
+                        .appendTo(document.body)
+                        .dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            autoOpen: false
+                        });
                 }
 
                 $dialogRemoveAttachment.dialog("enable").dialog('option', 'buttons', {
