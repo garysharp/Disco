@@ -16,18 +16,33 @@ namespace Disco.Web.Areas.API.Models.Shared
         public long TimestampUnixEpoc => Timestamp.ToUnixEpoc();
         public string TimestampFull => Timestamp.ToFullDateTime();
 
-        public static CommentModel FromJobLog(JobLog jl)
+        public static CommentModel FromEntity(JobLog log)
         {
             return new CommentModel
             {
-                Id = jl.Id,
+                Id = log.Id,
                 TargetType = AttachmentTypes.Job,
-                TargetId = jl.JobId.ToString(),
-                AuthorId = jl.TechUserId,
-                Author = jl.TechUser.ToString(),
-                Timestamp = jl.Timestamp,
-                Comments = jl.Comments,
-                HtmlComments = jl.Comments.ToHtmlComment().ToString()
+                TargetId = log.JobId.ToString(),
+                AuthorId = log.TechUserId,
+                Author = log.TechUser.ToString(),
+                Timestamp = log.Timestamp,
+                Comments = log.Comments,
+                HtmlComments = log.Comments.ToHtmlComment().ToString()
+            };
+        }
+
+        public static CommentModel FromEntity(UserComment comment)
+        {
+            return new CommentModel
+            {
+                Id = comment.Id,
+                TargetType = AttachmentTypes.User,
+                TargetId = comment.UserId,
+                AuthorId = comment.TechUserId,
+                Author = comment.TechUser.ToString(),
+                Timestamp = comment.Timestamp,
+                Comments = comment.Comments,
+                HtmlComments = comment.Comments.ToHtmlComment().ToString()
             };
         }
 

@@ -56,6 +56,13 @@ namespace Disco.Web.Views.User
 
     ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.FriendlyId()));
 
+    var requiresLive = Authorization.HasAny(Claims.User.ShowComments, Claims.User.ShowAttachments);
+
+    if (requiresLive)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+    }
+
             
             #line default
             #line hidden
@@ -63,16 +70,27 @@ WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"User_Show\"");
 
+WriteLiteral(" data-userid=\"");
+
+            
+            #line 15 "..\..\Views\User\Show.cshtml"
+                            Write(Model.User.UserId);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n");
 
             
-            #line 9 "..\..\Views\User\Show.cshtml"
+            #line 16 "..\..\Views\User\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 9 "..\..\Views\User\Show.cshtml"
+            #line 16 "..\..\Views\User\Show.cshtml"
      if (Authorization.Has(Claims.User.ShowFlagAssignments))
     {
 
@@ -86,13 +104,13 @@ WriteLiteral(" id=\"User_Show_Flags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 12 "..\..\Views\User\Show.cshtml"
+            #line 19 "..\..\Views\User\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 12 "..\..\Views\User\Show.cshtml"
+            #line 19 "..\..\Views\User\Show.cshtml"
              foreach (var flag in Model.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
             {
 
@@ -101,27 +119,27 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 620), Tuple.Create("\"", 696)
-, Tuple.Create(Tuple.Create("", 628), Tuple.Create("flag", 628), true)
-, Tuple.Create(Tuple.Create(" ", 632), Tuple.Create("fa", 633), true)
-, Tuple.Create(Tuple.Create(" ", 635), Tuple.Create("fa-", 636), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 867), Tuple.Create("\"", 943)
+, Tuple.Create(Tuple.Create("", 875), Tuple.Create("flag", 875), true)
+, Tuple.Create(Tuple.Create(" ", 879), Tuple.Create("fa", 880), true)
+, Tuple.Create(Tuple.Create(" ", 882), Tuple.Create("fa-", 883), true)
             
-            #line 14 "..\..\Views\User\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 639), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
-            
-            #line default
-            #line hidden
-, 639), false)
-, Tuple.Create(Tuple.Create(" ", 657), Tuple.Create("fa-fw", 658), true)
-, Tuple.Create(Tuple.Create(" ", 663), Tuple.Create("fa-lg", 664), true)
-, Tuple.Create(Tuple.Create(" ", 669), Tuple.Create("d-", 670), true)
-            
-            #line 14 "..\..\Views\User\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 672), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+            #line 21 "..\..\Views\User\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 886), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
             
             #line default
             #line hidden
-, 672), false)
+, 886), false)
+, Tuple.Create(Tuple.Create(" ", 904), Tuple.Create("fa-fw", 905), true)
+, Tuple.Create(Tuple.Create(" ", 910), Tuple.Create("fa-lg", 911), true)
+, Tuple.Create(Tuple.Create(" ", 916), Tuple.Create("d-", 917), true)
+            
+            #line 21 "..\..\Views\User\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 919), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+            
+            #line default
+            #line hidden
+, 919), false)
 );
 
 WriteLiteral(">\r\n                    <span");
@@ -135,7 +153,7 @@ WriteLiteral(" class=\"name\"");
 WriteLiteral(">");
 
             
-            #line 16 "..\..\Views\User\Show.cshtml"
+            #line 23 "..\..\Views\User\Show.cshtml"
                                       Write(flag.Item2.Name);
 
             
@@ -144,7 +162,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 16 "..\..\Views\User\Show.cshtml"
+            #line 23 "..\..\Views\User\Show.cshtml"
                                                                    if (flag.Item1.Comments != null)
                         {
             
@@ -157,7 +175,7 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 17 "..\..\Views\User\Show.cshtml"
+            #line 24 "..\..\Views\User\Show.cshtml"
                                            Write(flag.Item1.Comments.ToHtmlComment());
 
             
@@ -166,7 +184,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 17 "..\..\Views\User\Show.cshtml"
+            #line 24 "..\..\Views\User\Show.cshtml"
                                                                                            }
             
             #line default
@@ -178,7 +196,7 @@ WriteLiteral(" class=\"added\"");
 WriteLiteral(">");
 
             
-            #line 17 "..\..\Views\User\Show.cshtml"
+            #line 24 "..\..\Views\User\Show.cshtml"
                                                                                                            Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser));
 
             
@@ -187,7 +205,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                    </span>\r\n                </i>\r\n");
 
             
-            #line 20 "..\..\Views\User\Show.cshtml"
+            #line 27 "..\..\Views\User\Show.cshtml"
             }
 
             
@@ -233,7 +251,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 53 "..\..\Views\User\Show.cshtml"
+            #line 60 "..\..\Views\User\Show.cshtml"
     }
 
             
@@ -242,7 +260,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 54 "..\..\Views\User\Show.cshtml"
+            #line 61 "..\..\Views\User\Show.cshtml"
 Write(Html.Partial(MVC.User.Views.UserParts._Subject, Model));
 
             
@@ -282,29 +300,29 @@ WriteLiteral(" id=\"UserDetailTabItems\"");
 WriteLiteral("></ul>\r\n");
 
             
-            #line 90 "..\..\Views\User\Show.cshtml"
+            #line 97 "..\..\Views\User\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 90 "..\..\Views\User\Show.cshtml"
-         if (Authorization.Has(Claims.User.ShowJobs))
+            #line 97 "..\..\Views\User\Show.cshtml"
+         if (Authorization.HasAny(Claims.User.ShowComments, Claims.User.ShowJobs))
         {
             
             
             #line default
             #line hidden
             
-            #line 92 "..\..\Views\User\Show.cshtml"
-       Write(Html.Partial(MVC.User.Views.UserParts._Jobs, Model));
+            #line 99 "..\..\Views\User\Show.cshtml"
+       Write(Html.Partial(MVC.User.Views.UserParts._CommentsAndJobs, Model));
 
             
             #line default
             #line hidden
             
-            #line 92 "..\..\Views\User\Show.cshtml"
-                                                                
+            #line 99 "..\..\Views\User\Show.cshtml"
+                                                                           
         }
 
             
@@ -313,7 +331,7 @@ WriteLiteral("></ul>\r\n");
 WriteLiteral("        ");
 
             
-            #line 94 "..\..\Views\User\Show.cshtml"
+            #line 101 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowAssignmentHistory))
         {
             
@@ -321,14 +339,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 96 "..\..\Views\User\Show.cshtml"
+            #line 103 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._AssignmentHistory, Model));
 
             
             #line default
             #line hidden
             
-            #line 96 "..\..\Views\User\Show.cshtml"
+            #line 103 "..\..\Views\User\Show.cshtml"
                                                                              
         }
 
@@ -338,7 +356,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 98 "..\..\Views\User\Show.cshtml"
+            #line 105 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowAttachments))
         {
             
@@ -346,14 +364,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\User\Show.cshtml"
+            #line 107 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._Resources, Model));
 
             
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\User\Show.cshtml"
+            #line 107 "..\..\Views\User\Show.cshtml"
                                                                      
         }
 
@@ -363,7 +381,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 102 "..\..\Views\User\Show.cshtml"
+            #line 109 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowFlagAssignments))
         {
             
@@ -371,14 +389,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 104 "..\..\Views\User\Show.cshtml"
+            #line 111 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._Flags, Model));
 
             
             #line default
             #line hidden
             
-            #line 104 "..\..\Views\User\Show.cshtml"
+            #line 111 "..\..\Views\User\Show.cshtml"
                                                                  
         }
 
@@ -388,7 +406,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 106 "..\..\Views\User\Show.cshtml"
+            #line 113 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowAuthorization))
         {
             
@@ -396,21 +414,91 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 108 "..\..\Views\User\Show.cshtml"
+            #line 115 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._Authorization, Model));
 
             
             #line default
             #line hidden
             
-            #line 108 "..\..\Views\User\Show.cshtml"
+            #line 115 "..\..\Views\User\Show.cshtml"
                                                                          
         }
 
             
             #line default
             #line hidden
-WriteLiteral("    </div>\r\n</div>\r\n");
+WriteLiteral("    </div>\r\n");
+
+            
+            #line 118 "..\..\Views\User\Show.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 118 "..\..\Views\User\Show.cshtml"
+     if (requiresLive)
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <script>\r\n            $(function () {\r\n                if (!document.Disc" +
+"oFunctions)\r\n                    return;\r\n\r\n                const userId = $(\'#U" +
+"ser_Show\').attr(\'data-userid\');\r\n                // Connect to Hub\r\n            " +
+"    var hub = $.connection.userUpdates;\r\n\r\n                // Map Functions\r\n   " +
+"             if (document.DiscoFunctions.onCommentAdded)\r\n                    hu" +
+"b.client.commentAdded = document.DiscoFunctions.onCommentAdded;\r\n               " +
+" if (document.DiscoFunctions.onCommentRemoved)\r\n                    hub.client.c" +
+"ommentRemoved = document.DiscoFunctions.onCommentRemoved;\r\n                if (d" +
+"ocument.DiscoFunctions.onAttachmentAdded)\r\n                    hub.client.attach" +
+"mentAdded = document.DiscoFunctions.onAttachmentAdded;\r\n                if (docu" +
+"ment.DiscoFunctions.onAttachmentRemoved)\r\n                    hub.client.attachm" +
+"entRemoved = document.DiscoFunctions.onAttachmentRemoved;\r\n\r\n                $.c" +
+"onnection.hub.qs = { UserId: userId };\r\n                $.connection.hub.error(o" +
+"nHubFailed);\r\n                $.connection.hub.disconnected(onHubFailed);\r\n\r\n   " +
+"             $.connection.hub.reconnecting(function () {\r\n                    $(" +
+"\'#AttachmentsContainer\').find(\'span.action.enabled\').addClass(\'disabled\');\r\n    " +
+"                $(\'#Comments\').find(\'button\').prop(\'disabled\', true);\r\n         " +
+"       });\r\n                $.connection.hub.reconnected(function () {\r\n        " +
+"            $(\'#AttachmentsContainer\').find(\'span.action.enabled\').removeClass(\'" +
+"disabled\');\r\n                    $(\'#Comments\').find(\'button\').prop(\'disabled\', " +
+"false);\r\n                });\r\n\r\n                // Start Connection\r\n           " +
+"     $.connection.hub.start(function () {\r\n                    $(\'#AttachmentsCo" +
+"ntainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n                " +
+"    $(\'#Comments\').find(\'button\').prop(\'disabled\', false);\r\n                }).f" +
+"ail(onHubFailed);\r\n\r\n                function onHubFailed(error) {\r\n            " +
+"        // Disable UI\r\n                    $(\'#AttachmentsContainer\').find(\'span" +
+".action.enabled\').addClass(\'disabled\');\r\n                    $(\'#Comments\').find" +
+"(\'button\').prop(\'disabled\', true);\r\n\r\n                    // Show Dialog Message" +
+"\r\n                    if ($(\'.disconnected-dialog\').length == 0) {\r\n            " +
+"            $(\'<div>\')\r\n                            .addClass(\'dialog disconnect" +
+"ed-dialog\')\r\n                            .html(\'<h3><span class=\"fa-stack fa-lg\"" +
+"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></" +
+"i></span>Disconnected from the Disco ICT Server</h3><div>This page is not receiv" +
+"ing live updates. Please ensure you are connected to the server, then refresh th" +
+"is page to enable features.</div>\')\r\n                            .dialog({\r\n    " +
+"                            resizable: false,\r\n                                t" +
+"itle: \'Disconnected\',\r\n                                width: 400,\r\n            " +
+"                    modal: true,\r\n                                buttons: {\r\n  " +
+"                                  \'Refresh Now\': function () {\r\n                " +
+"                        $(this).dialog(\'option\', \'buttons\', null);\r\n            " +
+"                            window.location.reload(true);\r\n                     " +
+"               },\r\n                                    \'Close\': function () {\r\n " +
+"                                       $(this).dialog(\'destroy\');\r\n             " +
+"                       }\r\n                                }\r\n                   " +
+"         });\r\n                    }\r\n                }\r\n            });\r\n       " +
+" </script>\r\n");
+
+            
+            #line 187 "..\..\Views\User\Show.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
 
         }
     }

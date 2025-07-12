@@ -17,6 +17,9 @@
         [ClaimDetails("Show Users Details", "Can show users contact and personal details")]
         public bool ShowDetails { get; set; }
 
+        [ClaimDetails("Show Comments", "Can show user comments")]
+        public bool ShowComments { get; set; }
+
         [ClaimDetails("Show Attachments", "Can show user attachments")]
         public bool ShowAttachments { get; set; }
 

@@ -24,7 +24,7 @@ namespace Disco.Web.Controllers
             var m = new Models.User.IndexModel();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<UserIndexModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<UserIndexModel>(ControllerContext, m);
 
             return View();
         }
@@ -64,6 +64,7 @@ namespace Disco.Web.Controllers
                 .Include(u => u.UserFlagAssignments.Select(ufa => ufa.AddedUser))
                 .Include(u => u.UserFlagAssignments.Select(ufa => ufa.RemovedUser))
                 .Include(u => u.UserDetails)
+                .Include(u => u.UserComments.Select(c => c.TechUser))
                 .FirstOrDefault(um => um.UserId == id);
 
             if (m.User == null)
@@ -121,7 +122,7 @@ namespace Disco.Web.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<UserShowModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<UserShowModel>(ControllerContext, m);
 
             return View(m);
         }

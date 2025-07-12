@@ -1830,7 +1830,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (job == null)
                 return BadRequest("Invalid Job Number");
 
-            var results = job.JobLogs.OrderByDescending(m => m.Timestamp).Select(jl => Models.Shared.CommentModel.FromJobLog(jl)).ToList();
+            var results = job.JobLogs.OrderByDescending(m => m.Timestamp).Select(jl => Models.Shared.CommentModel.FromEntity(jl)).ToList();
             return Json(results);
 
         }
@@ -1846,7 +1846,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (jobLog == null)
                 return BadRequest("Invalid JobLog Id");
 
-            var c = Models.Shared.CommentModel.FromJobLog(jobLog);
+            var c = Models.Shared.CommentModel.FromEntity(jobLog);
             return Json(c);
         }
 

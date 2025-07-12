@@ -19,6 +19,7 @@ namespace Disco.Data.Repository
         public virtual DbSet<DocumentTemplate> DocumentTemplates { get; set; }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserComment> UserComments { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<UserAttachment> UserAttachments { get; set; }
         public virtual DbSet<UserFlag> UserFlags { get; set; }
@@ -28,6 +29,7 @@ namespace Disco.Data.Repository
         public virtual DbSet<DeviceUserAssignment> DeviceUserAssignments { get; set; }
 
         public virtual DbSet<Device> Devices { get; set; }
+        public virtual DbSet<DeviceComment> DeviceComments { get; set; }
         public virtual DbSet<DeviceDetail> DeviceDetails { get; set; }
         public virtual DbSet<DeviceModel> DeviceModels { get; set; }
         public virtual DbSet<DeviceProfile> DeviceProfiles { get; set; }

@@ -1,6 +1,5 @@
 ﻿using Disco.Services.Interop.ActiveDirectory;
 using System;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Disco.Web.Controllers
@@ -39,12 +38,33 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class UserController
     {
         [NonAction]
+        public virtual ActionResult Comments(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(Comments));
+
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+
+            return callInfo;
+        }
+
+        [NonAction]
+        public virtual ActionResult CommentAdd(string id, string comment = null)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(CommentAdd));
+
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, nameof(comment), comment);
+
+            return callInfo;
+        }
+
+        [NonAction]
         public virtual ActionResult AttachmentUpload(string id, string Comments)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentUpload);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(AttachmentUpload));
 
-            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, nameof(Comments), Comments);
 
             return callInfo;
         }
@@ -53,9 +73,9 @@ namespace Disco.Web.Areas.API.Controllers
         [NonAction]
         public virtual ActionResult Attachments(string id)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Attachments);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(Attachments));
 
-            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
 
             return callInfo;
         }
@@ -63,9 +83,9 @@ namespace Disco.Web.Areas.API.Controllers
         [NonAction]
         public virtual ActionResult AttachmentOnlineUploadSession(string id)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentOnlineUploadSession);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(AttachmentOnlineUploadSession));
 
-            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
 
             return callInfo;
         }
@@ -73,10 +93,10 @@ namespace Disco.Web.Areas.API.Controllers
         [NonAction]
         public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(GeneratePdf));
 
-            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, nameof(DocumentTemplateId), DocumentTemplateId);
 
             return callInfo;
         }
@@ -84,10 +104,10 @@ namespace Disco.Web.Areas.API.Controllers
         [NonAction]
         public virtual ActionResult GeneratePdfPackage(string id, string DocumentTemplatePackageId)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, nameof(GeneratePdfPackage));
 
-            Disco.Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
+            Web.Controllers.UserController.T4MVCAddUserIdRouteValues(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, nameof(DocumentTemplatePackageId), DocumentTemplatePackageId);
 
             return callInfo;
         }

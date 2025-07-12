@@ -216,14 +216,18 @@ namespace Disco.Services.Authorization
 				{ "Device.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Show, (c, v) => c.Device.Show = v, "Show Devices", "Can show devices", false) },
 				{ "Device.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowJobs, (c, v) => c.Device.ShowJobs = v, "Show Devices Jobs", "Can show jobs associated with devices", false) },
 				{ "User.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddAttachments, (c, v) => c.User.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to users", false) },
+				{ "User.Actions.AddComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddComments, (c, v) => c.User.Actions.AddComments = v, "Add Comments", "Can add user comments", false) },
 				{ "User.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddFlags, (c, v) => c.User.Actions.AddFlags = v, "Add User Flags", "Can add user flags", false) },
 				{ "User.Actions.EditFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.EditFlags, (c, v) => c.User.Actions.EditFlags = v, "Edit User Flags", "Can edit user flags", false) },
 				{ "User.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.GenerateDocuments, (c, v) => c.User.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for users", false) },
 				{ "User.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyAttachments, (c, v) => c.User.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from users", false) },
+				{ "User.Actions.RemoveAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyComments, (c, v) => c.User.Actions.RemoveAnyComments = v, "Remove Any Comments", "Can remove any user comments", false) },
 				{ "User.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnAttachments, (c, v) => c.User.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from users", false) },
+				{ "User.Actions.RemoveOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnComments, (c, v) => c.User.Actions.RemoveOwnComments = v, "Remove Own Comments", "Can remove own user comments", false) },
 				{ "User.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveFlags, (c, v) => c.User.Actions.RemoveFlags = v, "Remove User Flags", "Can remove user flags", false) },
 				{ "User.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Search, (c, v) => c.User.Search = v, "Search Users", "Can search users", false) },
 				{ "User.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAttachments, (c, v) => c.User.ShowAttachments = v, "Show Attachments", "Can show user attachments", false) },
+				{ "User.ShowComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowComments, (c, v) => c.User.ShowComments = v, "Show Comments", "Can show user comments", false) },
 				{ "User.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignmentHistory, (c, v) => c.User.ShowAssignmentHistory = v, "Show Device Assignment History", "Can show the device assignment history for users", false) },
 				{ "User.ShowAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignments, (c, v) => c.User.ShowAssignments = v, "Show Device Assignments", "Can show the current device assignments users", false) },
 				{ "User.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Show, (c, v) => c.User.Show = v, "Show Users", "Can show users", false) },
@@ -488,15 +492,19 @@ namespace Disco.Services.Authorization
 				    new ClaimNavigatorItem("User", "User", "Permissions related to Users", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("User.Actions", "Actions", "Permissions related to User Actions", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("User.Actions.AddAttachments", false),
+				            new ClaimNavigatorItem("User.Actions.AddComments", false),
 				            new ClaimNavigatorItem("User.Actions.AddFlags", false),
 				            new ClaimNavigatorItem("User.Actions.EditFlags", false),
 				            new ClaimNavigatorItem("User.Actions.GenerateDocuments", false),
 				            new ClaimNavigatorItem("User.Actions.RemoveAnyAttachments", false),
+				            new ClaimNavigatorItem("User.Actions.RemoveAnyComments", false),
 				            new ClaimNavigatorItem("User.Actions.RemoveOwnAttachments", false),
+				            new ClaimNavigatorItem("User.Actions.RemoveOwnComments", false),
 				            new ClaimNavigatorItem("User.Actions.RemoveFlags", false)
 				        }),
 				        new ClaimNavigatorItem("User.Search", false),
 				        new ClaimNavigatorItem("User.ShowAttachments", false),
+				        new ClaimNavigatorItem("User.ShowComments", false),
 				        new ClaimNavigatorItem("User.ShowAssignmentHistory", false),
 				        new ClaimNavigatorItem("User.ShowAssignments", false),
 				        new ClaimNavigatorItem("User.Show", false),
@@ -764,14 +772,18 @@ namespace Disco.Services.Authorization
 			c.Device.Show = true;
 			c.Device.ShowJobs = true;
 			c.User.Actions.AddAttachments = true;
+			c.User.Actions.AddComments = true;
 			c.User.Actions.AddFlags = true;
 			c.User.Actions.EditFlags = true;
 			c.User.Actions.GenerateDocuments = true;
 			c.User.Actions.RemoveAnyAttachments = true;
+			c.User.Actions.RemoveAnyComments = true;
 			c.User.Actions.RemoveOwnAttachments = true;
+			c.User.Actions.RemoveOwnComments = true;
 			c.User.Actions.RemoveFlags = true;
 			c.User.Search = true;
 			c.User.ShowAttachments = true;
+			c.User.ShowComments = true;
 			c.User.ShowAssignmentHistory = true;
 			c.User.ShowAssignments = true;
 			c.User.Show = true;
@@ -1961,6 +1973,11 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string AddAttachments = "User.Actions.AddAttachments";
 
+                /// <summary>Add Comments
+                /// <para>Can add user comments</para>
+                /// </summary>
+                public const string AddComments = "User.Actions.AddComments";
+
                 /// <summary>Add User Flags
                 /// <para>Can add user flags</para>
                 /// </summary>
@@ -1981,10 +1998,20 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string RemoveAnyAttachments = "User.Actions.RemoveAnyAttachments";
 
+                /// <summary>Remove Any Comments
+                /// <para>Can remove any user comments</para>
+                /// </summary>
+                public const string RemoveAnyComments = "User.Actions.RemoveAnyComments";
+
                 /// <summary>Remove Own Attachments
                 /// <para>Can remove own attachments from users</para>
                 /// </summary>
                 public const string RemoveOwnAttachments = "User.Actions.RemoveOwnAttachments";
+
+                /// <summary>Remove Own Comments
+                /// <para>Can remove own user comments</para>
+                /// </summary>
+                public const string RemoveOwnComments = "User.Actions.RemoveOwnComments";
 
                 /// <summary>Remove User Flags
                 /// <para>Can remove user flags</para>
@@ -2001,6 +2028,11 @@ namespace Disco.Services.Authorization
             /// <para>Can show user attachments</para>
             /// </summary>
             public const string ShowAttachments = "User.ShowAttachments";
+
+            /// <summary>Show Comments
+            /// <para>Can show user comments</para>
+            /// </summary>
+            public const string ShowComments = "User.ShowComments";
 
             /// <summary>Show Device Assignment History
             /// <para>Can show the device assignment history for users</para>

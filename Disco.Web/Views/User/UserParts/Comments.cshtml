@@ -1,0 +1,212 @@
+﻿@model Disco.Web.Models.User.ShowModel
+@{
+    Authorization.Require(Claims.User.ShowComments);
+    var canAddComments = Authorization.Has(Claims.User.Actions.AddComments);
+    var canRemoveAnyComments = Authorization.Has(Claims.User.Actions.RemoveAnyComments);
+    var canRemoveOwnComments = Authorization.Has(Claims.User.Actions.RemoveOwnComments);
+}
+<div id="Comments" class="@(canAddComments ? "canAddComments" : "cannotAddComments") @(canRemoveAnyComments ? "canRemoveAnyComments" : "cannotRemoveAnyComments") @(canRemoveOwnComments ? "canRemoveOwnComments" : "cannotRemoveOwnComments")" data-id="@Model.User.UserId" data-userid="@CurrentUser.UserId" data-addurl="@Url.Action(MVC.API.User.CommentAdd(Model.User.UserId))" data-removeurl="@Url.Action(MVC.API.User.CommentRemove())" data-geturl="@Url.Action(MVC.API.User.Comment())">
+    @Html.AntiForgeryToken()
+    @if (canAddComments)
+    {
+        <div class="commentInput">
+            <textarea class="commentInput" placeholder="add comment..." accesskey="l"></textarea>
+            <button type="button" title="Add Comment" disabled><i class="fa fa-comment"></i></button>
+        </div>
+    }
+    <div class="commentOutput">
+        @foreach (var c in Model.User.UserComments.OrderBy(m => m.Timestamp))
+        {
+            <div class="comment" data-commentid="@c.Id">
+                <span class="author">@c.TechUser.ToStringFriendly()</span>@if (canRemoveAnyComments || (canRemoveOwnComments && c.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
+                {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" data-livestamp="@(c.Timestamp.ToUnixEpoc())" title="@c.Timestamp.ToFullDateTime()">@c.Timestamp.ToFullDateTime()</span>
+                <div class="comment">@c.Comments.ToHtmlComment()</div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    if (!document.DiscoFunctions) {
+        document.DiscoFunctions = {};
+    }
+
+    $(function () {
+        const $comments = $('#Comments');
+        const $commentOutput = $comments.find('.commentOutput');
+
+        window.setTimeout(function () {
+            $commentOutput[0].scrollTop = $commentOutput[0].scrollHeight; // Scroll to Bottom
+        }, 0);
+        $('#UserDetailTabs').on('tabsactivate', function (event, ui) {
+            if (ui.newPanel && ui.newPanel.is('#UserDetailTab-CommentsAndJobs')) {
+                $commentOutput[0].scrollTop = $commentOutput[0].scrollHeight; // Scroll to Bottom
+            }
+        });
+
+        function onCommentAdded(id) {
+            onCommentAddedAsync(id);
+        }
+        async function onCommentAddedAsync(id) {
+            const formData = new FormData();
+            formData.append('__RequestVerificationToken', $comments.find('input[name="__RequestVerificationToken"]').val());
+            formData.append('id', id);
+
+            const response = await fetch($comments.attr('data-geturl'), {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                alert('Unable to load live comment ' + id + ': ' + response.statusText);
+            } else {
+                const comment = await response.json();
+
+                if ($comments.hasClass('canRemoveAnyComments'))
+                    renderComment(comment, false, true);
+                else if ($comments.hasClass('canRemoveOwnComments'))
+                    renderComment(comment, false, (comment.AuthorId === $comments.attr('data-userid')));
+                else
+                    renderComment(comment, false, false);
+            }
+        }
+        function onCommentRemoved(id) {
+            $commentOutput.children('div[data-commentid="' + id + '"]').slideUp(300).delay(300).queue(function () {
+                const $this = $(this);
+                $this.find('.timestamp').livestamp('destroy');
+                $this.remove();
+            });
+        }
+        function renderComment(c, quick, canRemove) {
+            let t = '<div><span class="author" />';
+            if (canRemove)
+                t += '<span class="remove fa fa-times-circle" />';
+            t += '<span class="timestamp" /><div class="comment" /></div>';
+
+            const e = $(t);
+            e.attr('data-commentid', c.Id);
+            e.find('.author').text(c.Author);
+            e.find('.timestamp').text(c.TimestampFull).attr('title', c.TimestampFull).livestamp(c.TimestampUnixEpoc);
+            e.find('.comment').html(c.HtmlComments);
+
+            $commentOutput.append(e);
+
+            if (!quick) {
+                e.animate({ backgroundColor: '#ffff99' }, 500, function () {
+                    e.animate({ backgroundColor: '#fafafa' }, 500, function () {
+                        e.css('background-color', '');
+                    });
+                });
+                $commentOutput.animate({ scrollTop: $commentOutput[0].scrollHeight }, 250)
+            }
+        }
+
+        document.DiscoFunctions.onCommentAdded = onCommentAdded;
+        document.DiscoFunctions.onCommentRemoved = onCommentRemoved;
+    });
+</script>
+@if (canAddComments)
+{
+    <script>
+        $(function () {
+            const $comments = $('#Comments');
+            const $commentInput = $comments.find('textarea.commentInput');
+            const $commentInputButton = $comments.find('button');
+            $commentInputButton.on('click', postComment);
+            $commentInput.on('keypress', function (e) {
+                if (e.which == 13 && !e.shiftKey) {
+                    postComment();
+                    return false;
+                }
+            });
+
+            async function postComment() {
+                if ($commentInputButton.prop('disabled')) {
+                    alert('Disconnected from the Disco ICT Server, please refresh this page and try again');
+                    return;
+                }
+
+                const comment = $commentInput.val();
+
+                if (comment == '') {
+                    alert('Enter a comment to post');
+                    $commentInput.focus();
+                    return;
+                }
+
+                $commentInput.prop('disabled', true);
+
+                const formData = new FormData();
+                formData.append('__RequestVerificationToken', $comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('comment', comment);
+
+                const response = await fetch($comments.attr('data-addurl'), {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    $commentInput.val('').prop('disabled', false).focus();
+                } else {
+                    alert('Unable to add comment: ' + response.statusText);
+                    $commentInput.prop('disabled', false).focus();
+                }
+            }
+        });
+    </script>
+}
+@if (canRemoveAnyComments || canRemoveOwnComments)
+{
+    <script>
+        $(function () {
+            const $comments = $('#Comments');
+            const $commentOutput = $comments.find('.commentOutput');
+            let $dialogRemove = null;
+
+            $commentOutput.on('click', 'span.remove', removeComment);
+
+            function removeComment(e) {
+                e.preventDefault();
+
+                const commentId = $(this).closest('div').attr('data-commentid');
+
+                if (!$dialogRemove) {
+                    $dialogRemove = $('<div class="dialog" title="Remove this Comment?"><p><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?</p></div>')
+                        .appendTo(document.body)
+                        .dialog({
+                            resizable: false,
+                            height: 140,
+                            modal: true,
+                            autoOpen: false
+                        });
+                }
+
+                $dialogRemove.dialog("enable").dialog('option', 'buttons', {
+                    "Remove": function () {
+                        $dialogRemove.dialog("disable");
+                        $dialogRemove.dialog("option", "buttons", null);
+
+                        removeCommentAsync(commentId);
+                    },
+                    "Cancel": function () {
+                        $dialogRemove.dialog("close");
+                    }
+                }).dialog('open');
+            }
+            async function removeCommentAsync(commentId) {
+                const formData = new FormData();
+                formData.append('__RequestVerificationToken', $comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('id', commentId);
+
+                const response = await fetch($comments.attr('data-removeurl'), {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    alert('Unable to remove comment: ' + response.statusText);
+                }
+                $dialogRemove.dialog("close");
+            }
+        });
+    </script>
+}

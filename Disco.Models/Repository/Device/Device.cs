@@ -48,9 +48,12 @@ namespace Disco.Models.Repository
         public virtual IList<DeviceAttachment> DeviceAttachments { get; set; }
         public virtual IList<DeviceCertificate> DeviceCertificates { get; set; }
 
-        [InverseProperty("DeviceSerialNumber")]
+        [InverseProperty(nameof(Job.Device))]
         public virtual IList<Job> Jobs { get; set; }
         public virtual IList<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
+        
+        [InverseProperty(nameof(DeviceComment.Device))]
+        public virtual IList<DeviceComment> DeviceComments { get; set; }
 
         /// <summary>
         /// A list of the current device assignments, ordered by the most recent assignment date.

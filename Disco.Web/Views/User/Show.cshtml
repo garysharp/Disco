@@ -4,8 +4,15 @@
     Authorization.Require(Claims.User.Show);
 
     ViewBag.Title = Html.ToBreadcrumb("Users", MVC.User.Index(), string.Format("User: {0} ({1})", Model.User.DisplayName, Model.User.FriendlyId()));
+
+    var requiresLive = Authorization.HasAny(Claims.User.ShowComments, Claims.User.ShowAttachments);
+
+    if (requiresLive)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+    }
 }
-<div id="User_Show">
+<div id="User_Show" data-userid="@Model.User.UserId">
     @if (Authorization.Has(Claims.User.ShowFlagAssignments))
     {
         <div id="User_Show_Flags">
@@ -87,9 +94,9 @@
     </script>
     <div id="UserDetailTabs">
         <ul id="UserDetailTabItems"></ul>
-        @if (Authorization.Has(Claims.User.ShowJobs))
+        @if (Authorization.HasAny(Claims.User.ShowComments, Claims.User.ShowJobs))
         {
-            @Html.Partial(MVC.User.Views.UserParts._Jobs, Model)
+            @Html.Partial(MVC.User.Views.UserParts._CommentsAndJobs, Model)
         }
         @if (Authorization.Has(Claims.User.ShowAssignmentHistory))
         {
@@ -108,4 +115,74 @@
             @Html.Partial(MVC.User.Views.UserParts._Authorization, Model)
         }
     </div>
+    @if (requiresLive)
+    {
+        <script>
+            $(function () {
+                if (!document.DiscoFunctions)
+                    return;
+
+                const userId = $('#User_Show').attr('data-userid');
+                // Connect to Hub
+                var hub = $.connection.userUpdates;
+
+                // Map Functions
+                if (document.DiscoFunctions.onCommentAdded)
+                    hub.client.commentAdded = document.DiscoFunctions.onCommentAdded;
+                if (document.DiscoFunctions.onCommentRemoved)
+                    hub.client.commentRemoved = document.DiscoFunctions.onCommentRemoved;
+                if (document.DiscoFunctions.onAttachmentAdded)
+                    hub.client.attachmentAdded = document.DiscoFunctions.onAttachmentAdded;
+                if (document.DiscoFunctions.onAttachmentRemoved)
+                    hub.client.attachmentRemoved = document.DiscoFunctions.onAttachmentRemoved;
+
+                $.connection.hub.qs = { UserId: userId };
+                $.connection.hub.error(onHubFailed);
+                $.connection.hub.disconnected(onHubFailed);
+
+                $.connection.hub.reconnecting(function () {
+                    $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
+                    $('#Comments').find('button').prop('disabled', true);
+                });
+                $.connection.hub.reconnected(function () {
+                    $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
+                    $('#Comments').find('button').prop('disabled', false);
+                });
+
+                // Start Connection
+                $.connection.hub.start(function () {
+                    $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
+                    $('#Comments').find('button').prop('disabled', false);
+                }).fail(onHubFailed);
+
+                function onHubFailed(error) {
+                    // Disable UI
+                    $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
+                    $('#Comments').find('button').prop('disabled', true);
+
+                    // Show Dialog Message
+                    if ($('.disconnected-dialog').length == 0) {
+                        $('<div>')
+                            .addClass('dialog disconnected-dialog')
+                            .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not receiving live updates. Please ensure you are connected to the server, then refresh this page to enable features.</div>')
+                            .dialog({
+                                resizable: false,
+                                title: 'Disconnected',
+                                width: 400,
+                                modal: true,
+                                buttons: {
+                                    'Refresh Now': function () {
+                                        $(this).dialog('option', 'buttons', null);
+                                        window.location.reload(true);
+                                    },
+                                    'Close': function () {
+                                        $(this).dialog('destroy');
+                                    }
+                                }
+                            });
+                    }
+                }
+            });
+        </script>
+    }
 </div>

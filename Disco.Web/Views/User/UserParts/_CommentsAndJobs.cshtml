@@ -1,0 +1,41 @@
+﻿@model Disco.Web.Models.User.ShowModel
+@{
+    var canShowComments = Authorization.Has(Claims.User.ShowComments);
+    var canShowJobs = Authorization.Has(Claims.User.ShowJobs);
+
+    var jobCount = (Model.User.Jobs == null ? 0 : Model.User.Jobs.Count).ToString();
+    string label;
+    if (canShowComments & canShowJobs)
+    {
+        label = "Comments and Jobs [" + jobCount + "]";
+    }
+    else if (canShowComments)
+    {
+        label = "Comments";
+    }
+    else if (canShowJobs)
+    {
+        label = "Jobs [" + jobCount + "]";
+    }
+    else
+    {
+        return;
+    }
+}
+<div id="UserDetailTab-CommentsAndJobs" class="UserPart @(canShowComments ? "canShowComments" : "cannotShowComments") @(canShowJobs ? "canShowJobs" : "cannotShowJobs")">
+    @if (canShowComments)
+    {
+        <div id="UserDetailTab-CommentsContainer">
+            @Html.Partial(MVC.User.Views.UserParts.Comments, Model)
+        </div>
+    }
+    @if (canShowJobs)
+    {
+        <div id="UserDetailTab-JobsContainer">
+            @Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)
+        </div>
+    }
+    <script>
+        $('#UserDetailTabItems').append('<li><a href="#UserDetailTab-CommentsAndJobs">@label</a></li>');
+    </script>
+</div>

@@ -58,6 +58,8 @@
     <Compile Include="Exporting\IExportRecord.cs" />
     <Compile Include="Repository\Device\Flag\DeviceFlag.cs" />
     <Compile Include="Repository\Device\Flag\DeviceFlagAssignment.cs" />
+    <Compile Include="Repository\Device\DeviceComment.cs" />
+    <Compile Include="Repository\User\UserComment.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportOptions.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportRecord.cs" />
     <Compile Include="Services\Documents\DocumentExportOptions.cs" />

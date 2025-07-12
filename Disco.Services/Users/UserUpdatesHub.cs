@@ -1,43 +1,74 @@
 ﻿using Disco.Data.Repository.Monitor;
+using Disco.Models.Repository;
 using Disco.Services.Authorization;
 using Disco.Services.Web.Signalling;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Reactive.Linq;
-using Disco.Models.Repository;
-using Disco.Data.Repository;
+using System.Threading.Tasks;
 
 namespace Disco.Services.Users
 {
-    [HubName("userUpdates"), DiscoHubAuthorizeAll(Claims.User.Show, Claims.User.ShowAttachments)]
+    [HubName("userUpdates"), DiscoHubAuthorize(Claims.User.Show)]
     public class UserUpdatesHub : Hub
     {
-        private const string UserPrefix = "User_";
         public static IHubContext HubContext { get; private set; }
 
-        private static IDisposable RepositoryBeforeSubscription;
-        private static IDisposable RepositoryAfterSubscription;
+        private static readonly IDisposable repositoryBeforeSubscription;
+        private static readonly IDisposable repositoryAfterSubscription;
 
         static UserUpdatesHub()
         {
             HubContext = GlobalHost.ConnectionManager.GetHubContext<UserUpdatesHub>();
 
             // Subscribe to Repository Monitor for Changes
-            RepositoryBeforeSubscription = RepositoryMonitor.StreamBeforeCommit
-                .Where(e => e.EntityType == typeof(UserAttachment) && e.EventType == RepositoryMonitorEventType.Deleted)
-                .Subscribe(RepositoryEventBefore);
-            RepositoryAfterSubscription = RepositoryMonitor.StreamAfterCommit
-                .Where(e => e.EntityType == typeof(UserAttachment) && e.EventType == RepositoryMonitorEventType.Added)
-                .Subscribe(RepositoryAfterEvent);
+            repositoryBeforeSubscription = RepositoryMonitor.StreamBeforeCommit
+                .Where(e =>
+                    e.EventType == RepositoryMonitorEventType.Deleted && (
+                        e.EntityType == typeof(UserComment) ||
+                        e.EntityType == typeof(UserAttachment)
+                        )
+                ).Subscribe(RepositoryEventBefore);
+            repositoryAfterSubscription = RepositoryMonitor.StreamAfterCommit
+                .Where(e =>
+                    e.EventType == RepositoryMonitorEventType.Added && (
+                        e.EntityType == typeof(UserComment) ||
+                        e.EntityType == typeof(UserAttachment)
+                        )
+                ).Subscribe(RepositoryAfterEvent);
         }
 
-        private static string GroupName(string UserId)
+        private static bool TryAttachmentGroupName(RepositoryMonitorEvent e, out string groupName)
         {
-            return UserPrefix + UserId;
+            var userId = e.GetPreviousPropertyValue<string>(nameof(UserAttachment.UserId));
+            if (userId == null)
+            {
+                groupName = null;
+                return false;
+            }
+            groupName = AttachmentGroupName(userId);
+            return true;
         }
+
+        private static string AttachmentGroupName(string UserId)
+            => $"User_Attachment_{UserId.ToLowerInvariant()}";
+
+        private static bool TryCommentGroupName(RepositoryMonitorEvent e, out string groupName)
+        {
+            var userId = e.GetPreviousPropertyValue<string>(nameof(UserComment.UserId));
+            if (userId == null)
+            {
+                groupName = null;
+                return false;
+            }
+            groupName = CommentGroupName(userId);
+            return true;
+        }
+
+        private static string CommentGroupName(string UserId)
+            => $"User_Comment_{UserId.ToLowerInvariant()}";
 
         public override Task OnConnected()
         {
@@ -46,7 +77,12 @@ namespace Disco.Services.Users
             if (string.IsNullOrWhiteSpace(userId))
                 throw new ArgumentNullException("UserId");
 
-            Groups.Add(Context.ConnectionId, GroupName(userId));
+            var authorization = UserService.GetAuthorization(Context.User.Identity.Name);
+
+            if (authorization.Has(Claims.User.ShowComments))
+                Groups.Add(Context.ConnectionId, CommentGroupName(userId));
+            if (authorization.Has(Claims.User.ShowAttachments))
+                Groups.Add(Context.ConnectionId, AttachmentGroupName(userId));
 
             return base.OnConnected();
         }
@@ -55,16 +91,10 @@ namespace Disco.Services.Users
         {
             if (e.EventType == RepositoryMonitorEventType.Deleted)
             {
-                if (e.EntityType == typeof(UserAttachment))
-                {
-                    var repositoryAttachment = (UserAttachment)e.Entity;
-                    string attachmentUserId;
-
-                    using (DiscoDataContext Database = new DiscoDataContext())
-                        attachmentUserId = Database.UserAttachments.Where(a => a.Id == repositoryAttachment.Id).Select(a => a.UserId).First();
-
-                    HubContext.Clients.Group(GroupName(attachmentUserId)).removeAttachment(repositoryAttachment.Id);
-                }
+                if (e.Entity is UserComment comment && TryCommentGroupName(e, out var commentGroupName))
+                    HubContext.Clients.Group(commentGroupName).commentRemoved(comment.Id);
+                else if (e.Entity is UserAttachment attachment && TryAttachmentGroupName(e, out var attachmentGroupName))
+                    HubContext.Clients.Group(attachmentGroupName).attachmentRemoved(attachment.Id);
             }
         }
 
@@ -72,12 +102,10 @@ namespace Disco.Services.Users
         {
             if (e.EventType == RepositoryMonitorEventType.Added)
             {
-                if (e.EntityType == typeof(UserAttachment))
-                {
-                    var a = (UserAttachment)e.Entity;
-
-                    HubContext.Clients.Group(GroupName(a.UserId)).addAttachment(a.Id);
-                }
+                if (e.Entity is UserComment comment)
+                    HubContext.Clients.Group(CommentGroupName(comment.UserId)).commentAdded(comment.Id);
+                else if (e.Entity is UserAttachment attachment)
+                    HubContext.Clients.Group(AttachmentGroupName(attachment.UserId)).attachmentAdded(attachment.Id);
             }
         }
     }

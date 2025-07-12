@@ -8,7 +8,6 @@
 
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
-    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 
     if (canAddAttachments)
     {
@@ -61,57 +60,7 @@
                             var $attachmentOutput = $Attachments.find('.attachmentOutput');
                             var $dialogRemoveAttachment = null;
 
-                            // Connect to Hub
-                            var hub = $.connection.userUpdates;
-
-                            // Map Functions
-                            hub.client.addAttachment = onAddAttachment;
-                            hub.client.removeAttachment = onRemoveAttachment;
-
-                            $.connection.hub.qs = { UserId: '@(Model.User.UserId.Replace(@"\", @"\\"))' };
-                            $.connection.hub.error(onHubFailed);
-                            $.connection.hub.disconnected(onHubFailed);
-
-                            $.connection.hub.reconnecting(function () {
-                                $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
-                            });
-                            $.connection.hub.reconnected(function () {
-                                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
-                            });
-
-                            // Start Connection
-                            $.connection.hub.start(function () {
-                                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
-                            }).fail(onHubFailed);
-
-                            function onHubFailed(error) {
-                                // Disable UI
-                                $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
-
-                                // Show Dialog Message
-                                if ($('.disconnected-dialog').length == 0) {
-                                    $('<div>')
-                                        .addClass('dialog disconnected-dialog')
-                                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not receiving live updates. Please ensure you are connected to the server, then refresh this page to enable features.</div>')
-                                        .dialog({
-                                            resizable: false,
-                                            title: 'Disconnected',
-                                            width: 400,
-                                            modal: true,
-                                            buttons: {
-                                                'Refresh Now': function () {
-                                                    $(this).dialog('option', 'buttons', null);
-                                                    window.location.reload(true);
-                                                },
-                                                'Close': function () {
-                                                    $(this).dialog('destroy');
-                                                }
-                                            }
-                                        });
-                                }
-                            }
-
-                            function onAddAttachment(id, quick) {
+                            function onAttachmentAdded(id, quick) {
                                 var data = { id: id };
                                 $.ajax({
                                     url: '@Url.Action(MVC.API.User.Attachment())',
@@ -207,7 +156,7 @@
                                 return false;
                             }
 
-                            function onRemoveAttachment(id) {
+                            function onAttachmentRemoved(id) {
                                 var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
 
                                 a.hide(300).delay(300).queue(function () {
@@ -225,6 +174,9 @@
                                 var tabHeading = 'Attachments [' + attachmentCount + ']';
                                 $('#UserDetailTab-ResourcesLink').text(tabHeading);
                             }
+
+                            document.DiscoFunctions.onAttachmentAdded = onAttachmentAdded;
+                            document.DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;
 
                         @if (canAddAttachments)
                         {<text>

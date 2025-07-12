@@ -3,6 +3,13 @@
     [ClaimDetails("Actions", "Permissions related to User Actions")]
     public class UserActionsClaims : BaseRoleClaimGroup
     {
+        [ClaimDetails("Add Comments", "Can add user comments")]
+        public bool AddComments { get; set; }
+        [ClaimDetails("Remove Any Comments", "Can remove any user comments")]
+        public bool RemoveAnyComments { get; set; }
+        [ClaimDetails("Remove Own Comments", "Can remove own user comments")]
+        public bool RemoveOwnComments { get; set; }
+
         [ClaimDetails("Add Attachments", "Can add attachments to users")]
         public bool AddAttachments { get; set; }
         [ClaimDetails("Remove Any Attachments", "Can remove any attachments from users")]
