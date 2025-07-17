@@ -5,7 +5,8 @@
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 }
-<h2>Documents Imported Today
+<h2>
+    Documents Imported Today
 </h2>
 <div id="importStatus">
     @Html.AntiForgeryToken()
@@ -13,7 +14,7 @@
         <h3>No imported documents today</h3>
     </div>
     <div id="sessions" data-bind="visible: !noSessions(), foreach: { data: sessions, afterRender: sessionRendered }"
-        style="display: none">
+         style="display: none">
         <div class="session">
             <div class="clearfix">
                 <div class="sessionLeftPane">
@@ -56,16 +57,18 @@
                 <table class="logEventsViewport">
                     <thead>
                         <tr>
-                            <th class="icon">&nbsp;
+                            <th class="icon">
+                                &nbsp;
                             </th>
-                            <th class="message">Message
+                            <th class="message">
+                                Message
                             </th>
                         </tr>
                     </thead>
                 </table>
                 <div class="logEventsViewportContainer">
                     <div class="logEventsViewportNoLogs" data-bind="visible: messages().length == 0"
-                        style="display: none">
+                         style="display: none">
                         No logs
                     </div>
                     <table class="logEventsViewport" data-bind="visible: messages().length > 0" style="display: none">
@@ -309,13 +312,10 @@
             logHub.client.receiveLog = parseLog
 
             $.connection.hub.qs = { LogModules: '@(Disco.Services.Documents.DocumentsLog.Current.LiveLogGroupName)' };
-            $.connection.hub.error(onHubFailed);
-
-            $.connection.hub.start()
-                .done(function () { isLive = true; })
-                .fail(onHubFailed);
-
-            function onHubFailed(error) {
+            $.connection.hub.error(function (error) {
+                console.log('Server connection error: ' + error);
+            });
+            $.connection.hub.disconnected(function () {
                 // Show Dialog Message
                 if ($('.disconnected-dialog').length == 0) {
                     $('<div>')
@@ -337,7 +337,11 @@
                             }
                         });
                 }
-            }
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; });
+
         }
         init();
     });

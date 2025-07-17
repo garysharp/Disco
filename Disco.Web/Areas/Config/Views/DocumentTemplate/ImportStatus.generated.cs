@@ -55,7 +55,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
             
             #line default
             #line hidden
-WriteLiteral("\r\n<h2>Documents Imported Today\r\n</h2>\r\n<div");
+WriteLiteral("\r\n<h2>\r\n    Documents Imported Today\r\n</h2>\r\n<div");
 
 WriteLiteral(" id=\"importStatus\"");
 
@@ -64,7 +64,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 11 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 12 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
 Write(Html.AntiForgeryToken());
 
             
@@ -83,7 +83,7 @@ WriteLiteral(" id=\"sessions\"");
 WriteLiteral(" data-bind=\"visible: !noSessions(), foreach: { data: sessions, afterRender: sessi" +
 "onRendered }\"");
 
-WriteLiteral("\r\n        style=\"display: none\"");
+WriteLiteral("\r\n         style=\"display: none\"");
 
 WriteLiteral(">\r\n        <div");
 
@@ -210,12 +210,14 @@ WriteLiteral(">\r\n                    <thead>\r\n                        <tr>\r
 
 WriteLiteral(" class=\"icon\"");
 
-WriteLiteral(">&nbsp;\r\n                            </th>\r\n                            <th");
+WriteLiteral(">\r\n                                &nbsp;\r\n                            </th>\r\n   " +
+"                         <th");
 
 WriteLiteral(" class=\"message\"");
 
-WriteLiteral(">Message\r\n                            </th>\r\n                        </tr>\r\n     " +
-"               </thead>\r\n                </table>\r\n                <div");
+WriteLiteral(">\r\n                                Message\r\n                            </th>\r\n  " +
+"                      </tr>\r\n                    </thead>\r\n                </tab" +
+"le>\r\n                <div");
 
 WriteLiteral(" class=\"logEventsViewportContainer\"");
 
@@ -225,7 +227,7 @@ WriteLiteral(" class=\"logEventsViewportNoLogs\"");
 
 WriteLiteral(" data-bind=\"visible: messages().length == 0\"");
 
-WriteLiteral("\r\n                        style=\"display: none\"");
+WriteLiteral("\r\n                         style=\"display: none\"");
 
 WriteLiteral(">\r\n                        No logs\r\n                    </div>\r\n                 " +
 "   <table");
@@ -287,7 +289,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = 
 "var urlDeviceShow = \'");
 
             
-            #line 104 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 107 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -296,7 +298,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = 
 WriteLiteral("/\'\r\n        var urlJobShow = \'");
 
             
-            #line 105 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 108 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                       Write(Url.Action(MVC.Job.Show()));
 
             
@@ -305,7 +307,7 @@ WriteLiteral("/\'\r\n        var urlJobShow = \'");
 WriteLiteral("/\'\r\n        var urlUserShow = \'");
 
             
-            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 109 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                        Write(Url.Action(MVC.User.Show()));
 
             
@@ -314,7 +316,7 @@ WriteLiteral("/\'\r\n        var urlUserShow = \'");
 WriteLiteral("/\'\r\n        var urlPageThumbnail = \'");
 
             
-            #line 107 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                             Write(Url.Action(MVC.API.DocumentTemplate.ImporterThumbnail()));
 
             
@@ -323,7 +325,7 @@ WriteLiteral("/\'\r\n        var urlPageThumbnail = \'");
 WriteLiteral("/\'\r\n        var urlDocumentTemplate = \'");
 
             
-            #line 108 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 111 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                                Write(Url.Action(MVC.Config.DocumentTemplate.Index()));
 
             
@@ -332,7 +334,7 @@ WriteLiteral("/\'\r\n        var urlDocumentTemplate = \'");
 WriteLiteral("/\';\r\n        var urlManuallyAssign = \'");
 
             
-            #line 109 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 112 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                              Write(Url.Action(MVC.Config.DocumentTemplate.UndetectedPages()));
 
             
@@ -444,7 +446,7 @@ WriteLiteral("\';\r\n        var isLive = false;\r\n\r\n        function pageVie
 "n\"]\').val()\r\n            };\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 288 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 291 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -476,32 +478,33 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 311 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 314 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                                              Write(Disco.Services.Documents.DocumentsLog.Current.LiveLogGroupName);
 
             
             #line default
             #line hidden
-WriteLiteral("\' };\r\n            $.connection.hub.error(onHubFailed);\r\n\r\n            $.connectio" +
-"n.hub.start()\r\n                .done(function () { isLive = true; })\r\n          " +
-"      .fail(onHubFailed);\r\n\r\n            function onHubFailed(error) {\r\n        " +
-"        // Show Dialog Message\r\n                if ($(\'.disconnected-dialog\').le" +
-"ngth == 0) {\r\n                    $(\'<div>\')\r\n                        .addClass(" +
-"\'dialog disconnected-dialog\')\r\n                        .html(\'<h3><span class=\"f" +
-"a-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stac" +
-"k-2x error\"></i></span>Disconnected from the Disco ICT Server</h3><div>This page" +
-" is not receiving live updates. Please ensure you are connected to the server, t" +
-"hen refresh this page to enable features.</div>\')\r\n                        .dial" +
-"og({\r\n                            resizable: false,\r\n                           " +
-" title: \'Disconnected\',\r\n                            width: 400,\r\n              " +
-"              modal: true,\r\n                            buttons: {\r\n            " +
-"                    \'Refresh Now\': function () {\r\n                              " +
-"      $(this).dialog(\'option\', \'buttons\', null);\r\n                              " +
-"      window.location.reload(true);\r\n                                },\r\n       " +
-"                         \'Close\': function () {\r\n                               " +
-"     $(this).dialog(\'destroy\');\r\n                                }\r\n            " +
-"                }\r\n                        });\r\n                }\r\n            }" +
-"\r\n        }\r\n        init();\r\n    });\r\n</script>\r\n");
+WriteLiteral("\' };\r\n            $.connection.hub.error(function (error) {\r\n                cons" +
+"ole.log(\'Server connection error: \' + error);\r\n            });\r\n            $.co" +
+"nnection.hub.disconnected(function () {\r\n                // Show Dialog Message\r" +
+"\n                if ($(\'.disconnected-dialog\').length == 0) {\r\n                 " +
+"   $(\'<div>\')\r\n                        .addClass(\'dialog disconnected-dialog\')\r\n" +
+"                        .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-" +
+"wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconne" +
+"cted from the Disco ICT Server</h3><div>This page is not receiving live updates." +
+" Please ensure you are connected to the server, then refresh this page to enable" +
+" features.</div>\')\r\n                        .dialog({\r\n                         " +
+"   resizable: false,\r\n                            title: \'Disconnected\',\r\n      " +
+"                      width: 400,\r\n                            modal: true,\r\n   " +
+"                         buttons: {\r\n                                \'Refresh No" +
+"w\': function () {\r\n                                    $(this).dialog(\'option\', " +
+"\'buttons\', null);\r\n                                    window.location.reload(tr" +
+"ue);\r\n                                },\r\n                                \'Close" +
+"\': function () {\r\n                                    $(this).dialog(\'destroy\');" +
+"\r\n                                }\r\n                            }\r\n            " +
+"            });\r\n                }\r\n            });\r\n\r\n            $.connection." +
+"hub.start()\r\n                .done(function () { isLive = true; });\r\n\r\n        }" +
+"\r\n        init();\r\n    });\r\n</script>\r\n");
 
         }
     }

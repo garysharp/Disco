@@ -229,75 +229,77 @@ WriteLiteral("\';\r\n\r\n        var view = $(\'#Logging_Task_Status\');\r\n    
 "     if (self.FinishedTimestamp()) {\r\n                    if (self.FinishedUrl()" +
 " && !self.TaskExceptionMessage()) {\r\n\r\n                        if (self.FullUpda" +
 "teToken)\r\n                            window.clearTimeout(self.FullUpdateToken);" +
-"\r\n                        $.connection.hub.stop();\r\n\r\n                        if" +
-" (self.FinishedMessage())\r\n                            window.setTimeout(functio" +
-"n () { window.location.href = self.FinishedUrl(); }, 3000);\r\n                   " +
-"     else\r\n                            window.location.href = self.FinishedUrl()" +
-";\r\n                    }\r\n                }\r\n            }\r\n\r\n            self.I" +
-"nitialize = function (taskStatus) {\r\n                self.TaskName(taskStatus.Ta" +
-"skName);\r\n                self.FinishedUrl(taskStatus.FinishedUrl);\r\n\r\n         " +
-"       self.Progress(taskStatus.Progress);\r\n                self.CurrentProcess(" +
-"taskStatus.CurrentProcess);\r\n                self.CurrentDescription(taskStatus." +
-"CurrentDescription);\r\n\r\n                self.IsRunning(taskStatus.IsRunning);\r\n\r" +
-"\n                self.TaskExceptionMessage(taskStatus.TaskExceptionMessage);\r\n\r\n" +
-"                self.FinishedTimestamp(taskStatus.FinishedTimestamp);\r\n         " +
-"       self.NextScheduledTimestamp(taskStatus.NextScheduledTimestamp);\r\n\r\n      " +
-"          self.FinishedMessage(taskStatus.FinishedMessage);\r\n\r\n                s" +
-"elf.Initialized(true);\r\n\r\n                self.Finished();\r\n            }\r\n     " +
-"       self.Update = function (taskStatus) {\r\n                if (!self.Initiali" +
-"zed())\r\n                    return;\r\n\r\n                if (self.FullUpdateToken)" +
-"\r\n                    window.clearTimeout(self.FullUpdateToken);\r\n\r\n            " +
-"    if (taskStatus) {\r\n                    $.each(taskStatus, function (key, val" +
-"ue) {\r\n                        switch (key) {\r\n                            case " +
-"\'Progress\':\r\n                                self.Progress(value);\r\n            " +
-"                    break;\r\n                            case \'CurrentProcess\':\r\n" +
-"                                self.CurrentProcess(value);\r\n                   " +
-"             break;\r\n                            case \'CurrentDescription\':\r\n   " +
-"                             self.CurrentDescription(value);\r\n                  " +
-"              break;\r\n                            case \'IsRunning\':\r\n           " +
-"                     self.IsRunning(value);\r\n                                bre" +
-"ak;\r\n                            case \'TaskExceptionMessage\':\r\n                 " +
-"               self.TaskExceptionMessage(value);\r\n                              " +
-"  break;\r\n                            case \'NextScheduledTimestamp\':\r\n          " +
-"                      self.NextScheduledTimestamp(value);\r\n                     " +
-"           break;\r\n                            case \'FinishedUrl\':\r\n            " +
-"                    self.FinishedUrl(value);\r\n                                br" +
-"eak;\r\n                            case \'FinishedMessage\':\r\n                     " +
-"           self.FinishedMessage(value);\r\n                                break;\r" +
-"\n                            case \'FinishedTimestamp\':\r\n                        " +
-"        self.FinishedTimestamp(value);\r\n                                window.s" +
-"etTimeout(self.Finished, 1);\r\n                                break;\r\n          " +
-"                  default:\r\n                                // Ignore\r\n         " +
-"               }\r\n                    });\r\n                }\r\n\r\n                " +
-"if (!self.FinishedTimestamp())\r\n                    self.FullUpdateToken = windo" +
-"w.setTimeout(self.FullUpdate, 2000);\r\n            }\r\n\r\n            self.FullUpda" +
-"te = function () {\r\n                self.FullUpdateToken = null;\r\n\r\n            " +
-"    if (!self.FinishedTimestamp())\r\n                    notificationsHub.server." +
-"getStatus()\r\n                        .done(self.Initialize);\r\n            }\r\n   " +
-"     }\r\n\r\n        vm = new statusViewModel(sessionId);\r\n        ko.applyBindings" +
-"(vm, view[0]);\r\n\r\n        // Start Live Connection\r\n        updateWithLive();\r\n\r" +
-"\n        function updateWithLive() {\r\n            notificationsHub = $.connectio" +
-"n.scheduledTaskNotifications;\r\n            notificationsHub.client.initializeTas" +
-"kStatus = vm.Initialize;\r\n            notificationsHub.client.updateTaskStatus =" +
-" vm.Update;\r\n\r\n            $.connection.hub.qs = { TaskSessionId: sessionId };\r\n" +
-"            $.connection.hub.error(onHubFailed);\r\n\r\n            $.connection.hub" +
-".start()\r\n                .fail(onHubFailed);\r\n        }\r\n\r\n        function onH" +
-"ubFailed(error) {\r\n            // Show Dialog Message\r\n            if ($(\'.disco" +
-"nnected-dialog\').length == 0) {\r\n                $(\'<div>\')\r\n                   " +
-" .addClass(\'dialog disconnected-dialog\')\r\n                    .html(\'<h3><span c" +
-"lass=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban " +
-"fa-stack-2x error\"></i></span>Disconnected from the Disco ICT Server</h3><div>Th" +
-"is page is not receiving live updates. Please ensure you are connected to the se" +
-"rver, then refresh this page to enable features.</div>\')\r\n                    .d" +
-"ialog({\r\n                        resizable: false,\r\n                        titl" +
-"e: \'Disconnected\',\r\n                        width: 400,\r\n                       " +
-" modal: true,\r\n                        buttons: {\r\n                            \'" +
-"Refresh Now\': function () {\r\n                                $(this).dialog(\'opt" +
-"ion\', \'buttons\', null);\r\n                                window.location.reload(" +
-"true);\r\n                            },\r\n                            \'Close\': fun" +
-"ction () {\r\n                                $(this).dialog(\'destroy\');\r\n        " +
-"                    }\r\n                        }\r\n                    });\r\n     " +
-"       }\r\n        }\r\n\r\n    });\r\n</script>\r\n");
+"\r\n\r\n                        if (self.FinishedMessage())\r\n                       " +
+"     window.setTimeout(function () { window.location.href = self.FinishedUrl(); " +
+"}, 3000);\r\n                        else\r\n                            window.loca" +
+"tion.href = self.FinishedUrl();\r\n                    }\r\n                }\r\n     " +
+"       }\r\n\r\n            self.Initialize = function (taskStatus) {\r\n             " +
+"   self.TaskName(taskStatus.TaskName);\r\n                self.FinishedUrl(taskSta" +
+"tus.FinishedUrl);\r\n\r\n                self.Progress(taskStatus.Progress);\r\n      " +
+"          self.CurrentProcess(taskStatus.CurrentProcess);\r\n                self." +
+"CurrentDescription(taskStatus.CurrentDescription);\r\n\r\n                self.IsRun" +
+"ning(taskStatus.IsRunning);\r\n\r\n                self.TaskExceptionMessage(taskSta" +
+"tus.TaskExceptionMessage);\r\n\r\n                self.FinishedTimestamp(taskStatus." +
+"FinishedTimestamp);\r\n                self.NextScheduledTimestamp(taskStatus.Next" +
+"ScheduledTimestamp);\r\n\r\n                self.FinishedMessage(taskStatus.Finished" +
+"Message);\r\n\r\n                self.Initialized(true);\r\n\r\n                self.Fin" +
+"ished();\r\n            }\r\n            self.Update = function (taskStatus) {\r\n    " +
+"            if (!self.Initialized())\r\n                    return;\r\n\r\n           " +
+"     if (self.FullUpdateToken)\r\n                    window.clearTimeout(self.Ful" +
+"lUpdateToken);\r\n\r\n                if (taskStatus) {\r\n                    $.each(" +
+"taskStatus, function (key, value) {\r\n                        switch (key) {\r\n   " +
+"                         case \'Progress\':\r\n                                self." +
+"Progress(value);\r\n                                break;\r\n                      " +
+"      case \'CurrentProcess\':\r\n                                self.CurrentProces" +
+"s(value);\r\n                                break;\r\n                            c" +
+"ase \'CurrentDescription\':\r\n                                self.CurrentDescripti" +
+"on(value);\r\n                                break;\r\n                            " +
+"case \'IsRunning\':\r\n                                self.IsRunning(value);\r\n     " +
+"                           break;\r\n                            case \'TaskExcepti" +
+"onMessage\':\r\n                                self.TaskExceptionMessage(value);\r\n" +
+"                                break;\r\n                            case \'NextSc" +
+"heduledTimestamp\':\r\n                                self.NextScheduledTimestamp(" +
+"value);\r\n                                break;\r\n                            cas" +
+"e \'FinishedUrl\':\r\n                                self.FinishedUrl(value);\r\n    " +
+"                            break;\r\n                            case \'FinishedMe" +
+"ssage\':\r\n                                self.FinishedMessage(value);\r\n         " +
+"                       break;\r\n                            case \'FinishedTimesta" +
+"mp\':\r\n                                self.FinishedTimestamp(value);\r\n          " +
+"                      window.setTimeout(self.Finished, 1);\r\n                    " +
+"            break;\r\n                            default:\r\n                      " +
+"          // Ignore\r\n                        }\r\n                    });\r\n       " +
+"         }\r\n\r\n                if (!self.FinishedTimestamp())\r\n                  " +
+"  self.FullUpdateToken = window.setTimeout(self.FullUpdate, 2000);\r\n            " +
+"}\r\n\r\n            self.FullUpdate = function () {\r\n                self.FullUpdat" +
+"eToken = null;\r\n\r\n                if (!self.FinishedTimestamp())\r\n              " +
+"      notificationsHub.server.getStatus()\r\n                        .done(self.In" +
+"itialize);\r\n            }\r\n        }\r\n\r\n        vm = new statusViewModel(session" +
+"Id);\r\n        ko.applyBindings(vm, view[0]);\r\n\r\n        // Start Live Connection" +
+"\r\n        updateWithLive();\r\n\r\n        function updateWithLive() {\r\n            " +
+"notificationsHub = $.connection.scheduledTaskNotifications;\r\n            notific" +
+"ationsHub.client.initializeTaskStatus = vm.Initialize;\r\n            notification" +
+"sHub.client.updateTaskStatus = vm.Update;\r\n\r\n            $.connection.hub.qs = {" +
+" TaskSessionId: sessionId };\r\n            $.connection.hub.error(function (error" +
+") {\r\n                console.log(\'Server connection error: \' + error);\r\n        " +
+"    });\r\n            $.connection.hub.disconnected(function () {\r\n              " +
+"  // Show Dialog Message\r\n                if ($(\'.disconnected-dialog\').length =" +
+"= 0) {\r\n                    $(\'<div>\')\r\n                        .addClass(\'dialo" +
+"g disconnected-dialog\')\r\n                        .html(\'<h3><span class=\"fa-stac" +
+"k fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x e" +
+"rror\"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is no" +
+"t receiving live updates. Please ensure you are connected to the server, then re" +
+"fresh this page to enable features.</div>\')\r\n                        .dialog({\r\n" +
+"                            resizable: false,\r\n                            title" +
+": \'Disconnected\',\r\n                            width: 400,\r\n                    " +
+"        modal: true,\r\n                            buttons: {\r\n                  " +
+"              \'Refresh Now\': function () {\r\n                                    " +
+"$(this).dialog(\'option\', \'buttons\', null);\r\n                                    " +
+"window.location.reload(true);\r\n                                },\r\n             " +
+"                   \'Close\': function () {\r\n                                    $" +
+"(this).dialog(\'destroy\');\r\n                                }\r\n                  " +
+"          }\r\n                        });\r\n                }\r\n            })\r\n\r\n " +
+"           $.connection.hub.start()\r\n                .fail(onHubFailed);\r\n      " +
+"  }\r\n\r\n    });\r\n</script>\r\n");
 
         }
     }

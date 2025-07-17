@@ -747,8 +747,6 @@
                             hub.client.removeAttachment = onRemoveAttachment;
 
                             $.connection.hub.qs = { DeviceBatchId: '@(Model.DeviceBatch.Id)' };
-                            $.connection.hub.error(onHubFailed);
-                            $.connection.hub.disconnected(onHubFailed);
 
                             $.connection.hub.reconnecting(function () {
                                 $Attachments.find('span.action.enabled').addClass('disabled');
@@ -756,13 +754,10 @@
                             $.connection.hub.reconnected(function () {
                                 $Attachments.find('span.action.enabled').removeClass('disabled');
                             });
-
-                            // Start Connection
-                            $.connection.hub.start(function () {
-                                $Attachments.find('span.action.enabled').removeClass('disabled');
-                            }).fail(onHubFailed);
-
-                            function onHubFailed(error) {
+                            $.connection.hub.error(function (error) {
+                                console.log('Server connection error: ' + error);
+                            });
+                            $.connection.hub.disconnected(function () {
                                 // Disable UI
                                 $Attachments.find('span.action.enabled').addClass('disabled');
 
@@ -787,7 +782,12 @@
                                             }
                                         });
                                 }
-                            }
+                            });
+
+                            // Start Connection
+                            $.connection.hub.start(function () {
+                                $Attachments.find('span.action.enabled').removeClass('disabled');
+                            });
 
                             function onAddAttachment(id, quick) {
                                 var data = { id: id };

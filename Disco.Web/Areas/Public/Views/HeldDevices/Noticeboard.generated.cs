@@ -256,9 +256,10 @@ WriteLiteral(">\r\n        <li data-bind=\"css: { alert: IsAlert }\">\r\n       
             #line default
             #line hidden
 WriteLiteral(@"' };
-                $.connection.hub.error(connectionError);
+                $.connection.hub.error(function (error) {
+                    console.log('Server connection error: ' + error);
+                });
                 $.connection.hub.disconnected(connectionError);
-                $.connection.hub.reconnected(connectionError);
 
                 // Start Connection
                 $.connection.hub.start().fail(connectionError).done(loadData);
@@ -269,7 +270,7 @@ WriteLiteral(@"' };
                 $.getJSON('");
 
             
-            #line 144 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
+            #line 145 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
                        Write(Url.Action(MVC.Public.HeldDevices.HeldDevices()));
 
             
@@ -399,54 +400,54 @@ WriteLiteral("\', null, function (data) {\r\n\r\n                    var inProce
 "ngth > 0)\r\n                        itemFilters = filters;\r\n                    e" +
 "lse\r\n                        itemFilters = null;\r\n                }\r\n           " +
 " }\r\n\r\n            function connectionError() {\r\n                try {\r\n         " +
-"           $(\'body\').addClass(\'status-error\');\r\n                    $.connection" +
-".hub.stop();\r\n                } catch (e) {\r\n                    // Ignore\r\n    " +
-"            }\r\n\r\n                window.setTimeout(function () {\r\n              " +
-"      window.location.reload(true);\r\n                }, 10000);\r\n            }\r\n" +
-"\r\n            // Helpers\r\n            function rotateArray(koArray, element) {\r\n" +
-"                var items = koArray();\r\n\r\n                if (items.length <= 1)" +
-"\r\n                    return 0;\r\n\r\n                if (element.height() < (eleme" +
-"nt.parent().height() - 30)) {\r\n\r\n                    if (findUnsortedArrayTopInd" +
-"ex(items) !== 0)\r\n                        koArray.sort(sortFunction);\r\n\r\n       " +
-"             // Don\'t rotate if small & sorted correctly\r\n                    re" +
-"turn;\r\n                }\r\n\r\n                // Move Last Item to Top\r\n          " +
-"      var item = koArray.pop();\r\n                koArray.unshift(item);\r\n       " +
-"     }\r\n            function removeItemFromArray(koArray, deviceSerialNumber) {\r" +
-"\n                var items = koArray();\r\n                for (var i = 0; i < ite" +
-"ms.length; i++) {\r\n                    if (items[i].DeviceSerialNumber == device" +
-"SerialNumber) {\r\n                        koArray.splice(i, 1);\r\n                " +
-"        items = koArray();\r\n                        i--;\r\n                    }\r" +
-"\n                }\r\n            }\r\n            function findUnsortedArrayTopInde" +
-"x(items) {\r\n                // Only one Item\r\n                if (items.length <" +
-"= 1)\r\n                    return 0;\r\n\r\n                for (var i = 1; i < items" +
-".length; i++) {\r\n                    var s = sortFunction(items[i - 1], items[i]" +
-");\r\n                    if (s > 0)\r\n                        return i;\r\n         " +
-"       }\r\n\r\n                return 0;\r\n            }\r\n            function findS" +
-"ortedInsertIndex(koArray, heldDeviceItem) {\r\n                var items = koArray" +
-"();\r\n                var startIndex = findUnsortedArrayTopIndex(items);\r\n       " +
-"         for (var i = startIndex; i < items.length; i++) {\r\n                    " +
-"var s = sortFunction(heldDeviceItem, items[i]);\r\n                    if (s <= 0)" +
-"\r\n                        return i;\r\n                }\r\n                if (star" +
-"tIndex !== 0) {\r\n                    for (var i = 0; i < startIndex; i++) {\r\n   " +
-"                     var s = sortFunction(heldDeviceItem, items[i]);\r\n          " +
-"              if (s <= 0)\r\n                            return i;\r\n              " +
-"      }\r\n                    return startIndex;\r\n                } else {\r\n     " +
-"               return -1;\r\n                }\r\n            }\r\n            functio" +
-"n sortFunction(l, r) {\r\n                return l.DeviceDescription.toLowerCase()" +
-" == r.DeviceDescription.toLowerCase() ? 0 : (l.DeviceDescription.toLowerCase() <" +
-" r.DeviceDescription.toLowerCase() ? -1 : 1)\r\n            }\r\n            functio" +
-"n isInProcess(i) {\r\n                return !i.ReadyForReturn && !i.WaitingForUse" +
-"rAction;\r\n            }\r\n            function isReadyForReturn(i) {\r\n           " +
-"     return i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n       " +
-"     function isWaitingForUserAction(i) {\r\n                return i.WaitingForUs" +
-"erAction;\r\n            }\r\n            function getQueryStringParameters() {\r\n\r\n " +
-"               if (window.location.search.length === 0)\r\n                    ret" +
-"urn null;\r\n\r\n                var params = {};\r\n                window.location.s" +
-"earch.substr(1).split(\"&\").forEach(function (pair) {\r\n                    if (pa" +
-"ir === \"\") return;\r\n                    var parts = pair.split(\"=\");\r\n          " +
-"          params[parts[0]] = parts[1] && decodeURIComponent(parts[1].replace(/\\+" +
-"/g, \" \"));\r\n                });\r\n                return params;\r\n            }\r\n" +
-"\r\n            init();\r\n        });\r\n    </script>\r\n</body>\r\n</html>");
+"           $(\'body\').addClass(\'status-error\');\r\n                } catch (e) {\r\n " +
+"                   // Ignore\r\n                }\r\n\r\n                window.setTim" +
+"eout(function () {\r\n                    window.location.reload(true);\r\n         " +
+"       }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n            function" +
+" rotateArray(koArray, element) {\r\n                var items = koArray();\r\n\r\n    " +
+"            if (items.length <= 1)\r\n                    return 0;\r\n\r\n           " +
+"     if (element.height() < (element.parent().height() - 30)) {\r\n\r\n             " +
+"       if (findUnsortedArrayTopIndex(items) !== 0)\r\n                        koAr" +
+"ray.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if small & sorted" +
+" correctly\r\n                    return;\r\n                }\r\n\r\n                //" +
+" Move Last Item to Top\r\n                var item = koArray.pop();\r\n             " +
+"   koArray.unshift(item);\r\n            }\r\n            function removeItemFromArr" +
+"ay(koArray, deviceSerialNumber) {\r\n                var items = koArray();\r\n     " +
+"           for (var i = 0; i < items.length; i++) {\r\n                    if (ite" +
+"ms[i].DeviceSerialNumber == deviceSerialNumber) {\r\n                        koArr" +
+"ay.splice(i, 1);\r\n                        items = koArray();\r\n                  " +
+"      i--;\r\n                    }\r\n                }\r\n            }\r\n           " +
+" function findUnsortedArrayTopIndex(items) {\r\n                // Only one Item\r\n" +
+"                if (items.length <= 1)\r\n                    return 0;\r\n\r\n       " +
+"         for (var i = 1; i < items.length; i++) {\r\n                    var s = s" +
+"ortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n          " +
+"              return i;\r\n                }\r\n\r\n                return 0;\r\n       " +
+"     }\r\n            function findSortedInsertIndex(koArray, heldDeviceItem) {\r\n " +
+"               var items = koArray();\r\n                var startIndex = findUnso" +
+"rtedArrayTopIndex(items);\r\n                for (var i = startIndex; i < items.le" +
+"ngth; i++) {\r\n                    var s = sortFunction(heldDeviceItem, items[i])" +
+";\r\n                    if (s <= 0)\r\n                        return i;\r\n         " +
+"       }\r\n                if (startIndex !== 0) {\r\n                    for (var " +
+"i = 0; i < startIndex; i++) {\r\n                        var s = sortFunction(held" +
+"DeviceItem, items[i]);\r\n                        if (s <= 0)\r\n                   " +
+"         return i;\r\n                    }\r\n                    return startIndex" +
+";\r\n                } else {\r\n                    return -1;\r\n                }\r\n" +
+"            }\r\n            function sortFunction(l, r) {\r\n                return" +
+" l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? 0 : (l" +
+".DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)\r\n" +
+"            }\r\n            function isInProcess(i) {\r\n                return !i." +
+"ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n            function " +
+"isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingForU" +
+"serAction;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n   " +
+"             return i.WaitingForUserAction;\r\n            }\r\n            function" +
+" getQueryStringParameters() {\r\n\r\n                if (window.location.search.leng" +
+"th === 0)\r\n                    return null;\r\n\r\n                var params = {};\r" +
+"\n                window.location.search.substr(1).split(\"&\").forEach(function (p" +
+"air) {\r\n                    if (pair === \"\") return;\r\n                    var pa" +
+"rts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] && decod" +
+"eURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n             " +
+"   return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </scri" +
+"pt>\r\n</body>\r\n</html>");
 
         }
     }

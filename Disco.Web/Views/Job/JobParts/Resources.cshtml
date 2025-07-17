@@ -567,9 +567,6 @@
 </text>}
 
             $.connection.hub.qs = { JobId: jobId };
-            $.connection.hub.error(onHubFailed);
-            $.connection.hub.disconnected(onHubFailed);
-
             $.connection.hub.reconnecting(function () {
                 $('#CommentsContainer').find('span.action').addClass('disabled');
                 $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
@@ -578,14 +575,10 @@
                 $('#CommentsContainer').find('span.action').removeClass('disabled');
                 $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
             });
-
-            // Start Connection
-            $.connection.hub.start(function () {
-                $('#CommentsContainer').find('span.action').removeClass('disabled');
-                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
-            }).fail(onHubFailed);
-
-            function onHubFailed(error) {
+            $.connection.hub.error(function (error) {
+                console.log('Server connection error: ' + error);
+            });
+            $.connection.hub.disconnected(function () {
                 // Disable UI
                 $('#CommentsContainer').find('textarea.commentInput').attr('readonly', 'readonly');
                 $('#CommentsContainer').find('span.action').addClass('disabled');
@@ -612,7 +605,13 @@
                             }
                         });
                 }
-            }
+            });
+
+            // Start Connection
+            $.connection.hub.start(function () {
+                $('#CommentsContainer').find('span.action').removeClass('disabled');
+                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
+            });
 
             //#endregion
         });

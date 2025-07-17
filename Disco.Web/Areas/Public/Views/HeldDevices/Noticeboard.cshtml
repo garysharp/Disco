@@ -131,9 +131,10 @@
                 hub.client.setTheme = setTheme;
 
                 $.connection.hub.qs = { Noticeboard: '@(Disco.Services.Jobs.Noticeboards.HeldDevices.Name)' };
-                $.connection.hub.error(connectionError);
+                $.connection.hub.error(function (error) {
+                    console.log('Server connection error: ' + error);
+                });
                 $.connection.hub.disconnected(connectionError);
-                $.connection.hub.reconnected(connectionError);
 
                 // Start Connection
                 $.connection.hub.start().fail(connectionError).done(loadData);
@@ -356,7 +357,6 @@
             function connectionError() {
                 try {
                     $('body').addClass('status-error');
-                    $.connection.hub.stop();
                 } catch (e) {
                     // Ignore
                 }

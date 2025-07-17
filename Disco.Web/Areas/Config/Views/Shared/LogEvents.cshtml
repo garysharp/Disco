@@ -122,11 +122,10 @@
                     };
 
                     $.connection.hub.qs = {LogModules: logModuleLiveGroupName};
-                    $.connection.hub.error(onHubFailed);
-
-                    $.connection.hub.start().fail(onHubFailed);
-
-                    function onHubFailed(error) {
+                    $.connection.hub.error(function (error) {
+                        console.log('Server connection error: ' + error);
+                    });
+                    $.connection.hub.disconnected(function () {
                         // Show Dialog Message
                         if ($('.disconnected-dialog').length == 0) {
                             $('<div>')
@@ -148,7 +147,9 @@
                                     }
                                 });
                         }
-                    }
+                    })
+
+                    $.connection.hub.start();
                 }
             }
 

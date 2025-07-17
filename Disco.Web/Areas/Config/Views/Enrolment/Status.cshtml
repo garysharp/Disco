@@ -407,13 +407,10 @@
             logHub.client.receiveLog = parseLog
 
             $.connection.hub.qs = { LogModules: '@(Disco.Services.Devices.Enrolment.EnrolmentLog.Current.LiveLogGroupName)' };
-            $.connection.hub.error(onHubFailed);
-
-            $.connection.hub.start()
-                .done(function () { isLive = true; })
-                .fail(onHubFailed);
-
-            function onHubFailed(error) {
+            $.connection.hub.error(function (error) {
+                console.log('Server connection error: ' + error);
+            });
+            $.connection.hub.disconnected(function (error) {
                 // Show Dialog Message
                 if ($('.disconnected-dialog').length == 0) {
                     $('<div>')
@@ -435,7 +432,11 @@
                             }
                         });
                 }
-            }
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; });
+
         }
         $('#dialogSession').on('click', '#formResolveSessionPending button', function (e) {
             const $button = $(this);

@@ -2383,42 +2383,43 @@ WriteLiteral(@">
             
             #line default
             #line hidden
-WriteLiteral("\' };\r\n                            $.connection.hub.error(onHubFailed);\r\n         " +
-"                   $.connection.hub.disconnected(onHubFailed);\r\n\r\n              " +
-"              $.connection.hub.reconnecting(function () {\r\n                     " +
-"           $Attachments.find(\'span.action.enabled\').addClass(\'disabled\');\r\n     " +
-"                       });\r\n                            $.connection.hub.reconne" +
-"cted(function () {\r\n                                $Attachments.find(\'span.acti" +
-"on.enabled\').removeClass(\'disabled\');\r\n                            });\r\n\r\n      " +
-"                      // Start Connection\r\n                            $.connect" +
-"ion.hub.start(function () {\r\n                                $Attachments.find(\'" +
-"span.action.enabled\').removeClass(\'disabled\');\r\n                            }).f" +
-"ail(onHubFailed);\r\n\r\n                            function onHubFailed(error) {\r\n" +
-"                                // Disable UI\r\n                                $" +
-"Attachments.find(\'span.action.enabled\').addClass(\'disabled\');\r\n\r\n               " +
-"                 // Show Dialog Message\r\n                                if ($(\'" +
-".disconnected-dialog\').length == 0) {\r\n                                    $(\'<d" +
-"iv>\')\r\n                                        .addClass(\'dialog disconnected-di" +
-"alog\')\r\n                                        .html(\'<h3><span class=\"fa-stack" +
-" fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x er" +
-"ror\"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not" +
-" receiving live updates. Please ensure you are connected to the server, then ref" +
-"resh this page to enable features.</div>\')\r\n                                    " +
-"    .dialog({\r\n                                            resizable: false,\r\n  " +
-"                                          title: \'Disconnected\',\r\n              " +
-"                              width: 400,\r\n                                     " +
-"       modal: true,\r\n                                            buttons: {\r\n   " +
-"                                             \'Refresh Now\': function () {\r\n     " +
-"                                               $(this).dialog(\'option\', \'buttons" +
-"\', null);\r\n                                                    window.location.r" +
-"eload(true);\r\n                                                },\r\n              " +
-"                                  \'Close\': function () {\r\n                      " +
-"                              $(this).dialog(\'destroy\');\r\n                      " +
-"                          }\r\n                                            }\r\n    " +
-"                                    });\r\n                                }\r\n    " +
-"                        }\r\n\r\n                            function onAddAttachmen" +
-"t(id, quick) {\r\n                                var data = { id: id };\r\n        " +
-"                        $.ajax({\r\n                                    url: \'");
+WriteLiteral("\' };\r\n\r\n                            $.connection.hub.reconnecting(function () {\r\n" +
+"                                $Attachments.find(\'span.action.enabled\').addClas" +
+"s(\'disabled\');\r\n                            });\r\n                            $.c" +
+"onnection.hub.reconnected(function () {\r\n                                $Attach" +
+"ments.find(\'span.action.enabled\').removeClass(\'disabled\');\r\n                    " +
+"        });\r\n                            $.connection.hub.error(function (error)" +
+" {\r\n                                console.log(\'Server connection error: \' + er" +
+"ror);\r\n                            });\r\n                            $.connection" +
+".hub.disconnected(function () {\r\n                                // Disable UI\r\n" +
+"                                $Attachments.find(\'span.action.enabled\').addClas" +
+"s(\'disabled\');\r\n\r\n                                // Show Dialog Message\r\n      " +
+"                          if ($(\'.disconnected-dialog\').length == 0) {\r\n        " +
+"                            $(\'<div>\')\r\n                                        " +
+".addClass(\'dialog disconnected-dialog\')\r\n                                       " +
+" .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><" +
+"i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT" +
+" Server</h3><div>This page is not receiving live updates. Please ensure you are " +
+"connected to the server, then refresh this page to enable features.</div>\')\r\n   " +
+"                                     .dialog({\r\n                                " +
+"            resizable: false,\r\n                                            title" +
+": \'Disconnected\',\r\n                                            width: 400,\r\n    " +
+"                                        modal: true,\r\n                          " +
+"                  buttons: {\r\n                                                \'R" +
+"efresh Now\': function () {\r\n                                                    " +
+"$(this).dialog(\'option\', \'buttons\', null);\r\n                                    " +
+"                window.location.reload(true);\r\n                                 " +
+"               },\r\n                                                \'Close\': func" +
+"tion () {\r\n                                                    $(this).dialog(\'d" +
+"estroy\');\r\n                                                }\r\n                  " +
+"                          }\r\n                                        });\r\n      " +
+"                          }\r\n                            });\r\n\r\n                " +
+"            // Start Connection\r\n                            $.connection.hub.st" +
+"art(function () {\r\n                                $Attachments.find(\'span.actio" +
+"n.enabled\').removeClass(\'disabled\');\r\n                            });\r\n\r\n       " +
+"                     function onAddAttachment(id, quick) {\r\n                    " +
+"            var data = { id: id };\r\n                                $.ajax({\r\n  " +
+"                                  url: \'");
 
             
             #line 795 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
@@ -2908,27 +2909,27 @@ WriteLiteral("                            <li>\r\n                              
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 56824), Tuple.Create("\"", 56894)
-, Tuple.Create(Tuple.Create("", 56829), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 56829), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 56868), Tuple.Create("\"", 56938)
+, Tuple.Create(Tuple.Create("", 56873), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 56873), true)
             
             #line 1058 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-               , Tuple.Create(Tuple.Create("", 56868), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+               , Tuple.Create(Tuple.Create("", 56912), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 56868), false)
+, 56912), false)
 );
 
 WriteLiteral("\r\n                                       name=\"decommissionReason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 56961), Tuple.Create("\"", 56995)
+WriteAttribute("value", Tuple.Create(" value=\"", 57005), Tuple.Create("\"", 57039)
             
             #line 1059 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 56969), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+, Tuple.Create(Tuple.Create("", 57013), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 56969), false)
+, 57013), false)
 );
 
 WriteLiteral(" ");
@@ -2942,15 +2943,15 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 57135), Tuple.Create("\"", 57206)
-, Tuple.Create(Tuple.Create("", 57141), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 57141), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 57179), Tuple.Create("\"", 57250)
+, Tuple.Create(Tuple.Create("", 57185), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 57185), true)
             
             #line 1060 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-   , Tuple.Create(Tuple.Create("", 57180), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+   , Tuple.Create(Tuple.Create("", 57224), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 57180), false)
+, 57224), false)
 );
 
 WriteLiteral(">");

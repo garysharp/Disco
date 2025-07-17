@@ -1337,42 +1337,42 @@ WriteLiteral(@"
             #line default
             #line hidden
 WriteLiteral("\r\n            $.connection.hub.qs = { JobId: jobId };\r\n            $.connection.h" +
-"ub.error(onHubFailed);\r\n            $.connection.hub.disconnected(onHubFailed);\r" +
-"\n\r\n            $.connection.hub.reconnecting(function () {\r\n                $(\'#" +
-"CommentsContainer\').find(\'span.action\').addClass(\'disabled\');\r\n                $" +
-"(\'#AttachmentsContainer\').find(\'span.action.enabled\').addClass(\'disabled\');\r\n   " +
-"         });\r\n            $.connection.hub.reconnected(function () {\r\n          " +
-"      $(\'#CommentsContainer\').find(\'span.action\').removeClass(\'disabled\');\r\n    " +
-"            $(\'#AttachmentsContainer\').find(\'span.action.enabled\').removeClass(\'" +
-"disabled\');\r\n            });\r\n\r\n            // Start Connection\r\n            $.c" +
-"onnection.hub.start(function () {\r\n                $(\'#CommentsContainer\').find(" +
-"\'span.action\').removeClass(\'disabled\');\r\n                $(\'#AttachmentsContaine" +
-"r\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n            }).fail(on" +
-"HubFailed);\r\n\r\n            function onHubFailed(error) {\r\n                // Dis" +
-"able UI\r\n                $(\'#CommentsContainer\').find(\'textarea.commentInput\').a" +
-"ttr(\'readonly\', \'readonly\');\r\n                $(\'#CommentsContainer\').find(\'span" +
-".action\').addClass(\'disabled\');\r\n                $(\'#AttachmentsContainer\').find" +
-"(\'span.action.enabled\').addClass(\'disabled\');\r\n\r\n                // Show Dialog " +
-"Message\r\n                if ($(\'.disconnected-dialog\').length == 0) {\r\n         " +
-"           $(\'<div>\')\r\n                        .addClass(\'dialog disconnected-di" +
-"alog\')\r\n                        .html(\'<h3><span class=\"fa-stack fa-lg\"><i class" +
-"=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>" +
-"Disconnected from the Disco ICT Server</h3><div>This page is not receiving live " +
-"updates. Please ensure you are connected to the server, then refresh this page t" +
-"o enable features.</div>\')\r\n                        .dialog({\r\n                 " +
-"           resizable: false,\r\n                            title: \'Disconnected\'," +
-"\r\n                            width: 400,\r\n                            modal: tr" +
-"ue,\r\n                            buttons: {\r\n                                \'Re" +
-"fresh Now\': function () {\r\n                                    $(this).dialog(\'o" +
-"ption\', \'buttons\', null);\r\n                                    window.location.r" +
-"eload(true);\r\n                                },\r\n                              " +
-"  \'Close\': function () {\r\n                                    $(this).dialog(\'de" +
-"stroy\');\r\n                                }\r\n                            }\r\n    " +
-"                    });\r\n                }\r\n            }\r\n\r\n            //#endr" +
-"egion\r\n        });\r\n    </script>\r\n");
+"ub.reconnecting(function () {\r\n                $(\'#CommentsContainer\').find(\'spa" +
+"n.action\').addClass(\'disabled\');\r\n                $(\'#AttachmentsContainer\').fin" +
+"d(\'span.action.enabled\').addClass(\'disabled\');\r\n            });\r\n            $.c" +
+"onnection.hub.reconnected(function () {\r\n                $(\'#CommentsContainer\')" +
+".find(\'span.action\').removeClass(\'disabled\');\r\n                $(\'#AttachmentsCo" +
+"ntainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n            });\r" +
+"\n            $.connection.hub.error(function (error) {\r\n                console." +
+"log(\'Server connection error: \' + error);\r\n            });\r\n            $.connec" +
+"tion.hub.disconnected(function () {\r\n                // Disable UI\r\n            " +
+"    $(\'#CommentsContainer\').find(\'textarea.commentInput\').attr(\'readonly\', \'read" +
+"only\');\r\n                $(\'#CommentsContainer\').find(\'span.action\').addClass(\'d" +
+"isabled\');\r\n                $(\'#AttachmentsContainer\').find(\'span.action.enabled" +
+"\').addClass(\'disabled\');\r\n\r\n                // Show Dialog Message\r\n            " +
+"    if ($(\'.disconnected-dialog\').length == 0) {\r\n                    $(\'<div>\')" +
+"\r\n                        .addClass(\'dialog disconnected-dialog\')\r\n             " +
+"           .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack" +
+"-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the" +
+" Disco ICT Server</h3><div>This page is not receiving live updates. Please ensur" +
+"e you are connected to the server, then refresh this page to enable features.</d" +
+"iv>\')\r\n                        .dialog({\r\n                            resizable:" +
+" false,\r\n                            title: \'Disconnected\',\r\n                   " +
+"         width: 400,\r\n                            modal: true,\r\n                " +
+"            buttons: {\r\n                                \'Refresh Now\': function " +
+"() {\r\n                                    $(this).dialog(\'option\', \'buttons\', nu" +
+"ll);\r\n                                    window.location.reload(true);\r\n       " +
+"                         },\r\n                                \'Close\': function (" +
+") {\r\n                                    $(this).dialog(\'destroy\');\r\n           " +
+"                     }\r\n                            }\r\n                        }" +
+");\r\n                }\r\n            });\r\n\r\n            // Start Connection\r\n     " +
+"       $.connection.hub.start(function () {\r\n                $(\'#CommentsContain" +
+"er\').find(\'span.action\').removeClass(\'disabled\');\r\n                $(\'#Attachmen" +
+"tsContainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n            " +
+"});\r\n\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
 
             
-            #line 620 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 619 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default
