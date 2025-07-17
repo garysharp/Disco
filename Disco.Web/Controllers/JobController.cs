@@ -18,6 +18,7 @@ using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Models.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -1091,6 +1092,9 @@ namespace Disco.Web.Controllers
                 JobTypes = Database.JobTypes.Include(t => t.JobSubTypes).ToList(),
                 JobStatuses = Job.JobStatusIds.StatusDescriptions.ToList(),
             };
+
+            m.Fields = ExportFieldsModel.Create(m.Options, JobExportOptions.DefaultOptions());
+            m.Fields.AddCustomUserDetails(o => o.UserDetailsCustom, m.Fields.FieldGroups.FindIndex(g => g.Name == "User") + 1);
 
             if (Database.DiscoConfiguration.JobPreferences.LastExportDate.GetValueOrDefault() < DateTime.Today.AddDays(-1))
             {

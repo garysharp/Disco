@@ -1,6 +1,7 @@
 ﻿using Disco.Models.Repository;
 using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Jobs;
+using Disco.Models.UI.Shared;
 using System;
 using System.Collections.Generic;
 
@@ -16,5 +17,7 @@ namespace Disco.Models.UI.Job
         List<JobQueue> JobQueues { get; set; }
         List<KeyValuePair<string, string>> JobStatuses { get; set; }
         List<JobType> JobTypes { get; set; }
+
+        SharedExportFieldsModel<JobExportOptions> Fields { get; set; }
     }
 }

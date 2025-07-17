@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Exporting;
 using Disco.Models.Repository;
+using Disco.Models.Services.Devices;
 using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Jobs;
 using Disco.Services.Exporting;
@@ -12,6 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Disco.Services.Jobs
 {
@@ -205,15 +207,30 @@ namespace Disco.Services.Jobs
                     r.Job.DeviceReadyForReturn,
                         r.Job.DeviceReturnedDate);
                 }
-
-                if (Options.UserDetailCustom && r.User != null)
-                {
-                    var detailsService = new DetailsProviderService(database);
-                    r.UserCustomDetails = detailsService.GetDetails(r.User);
-                }
             });
 
+            if (Options.UserDetailsCustom?.Any() ?? false)
+                AddUserCustomDetails(database, records, status);
+
             return records;
+        }
+
+        private static void AddUserCustomDetails(DiscoDataContext database, List<JobExportRecord> records, IScheduledTaskStatus status)
+        {
+            if (!records.Any(r => r.User != null))
+                return;
+            status.UpdateStatus(50, "Extracting custom user detail records");
+            var detailsService = new DetailsProviderService(database);
+            var cache = new Dictionary<string, Dictionary<string, string>>(StringComparer.Ordinal);
+            foreach (var record in records)
+            {
+                var userId = record.User?.UserId;
+                if (string.IsNullOrWhiteSpace(userId))
+                    continue;
+                if (!cache.TryGetValue(userId, out var details))
+                    details = detailsService.GetDetails(record.User);
+                record.UserCustomDetails = details;
+            }
         }
 
         public ExportMetadata<JobExportOptions, JobExportRecord> BuildMetadata(DiscoDataContext database, List<JobExportRecord> records, IScheduledTaskStatus status)
@@ -312,13 +329,10 @@ namespace Disco.Services.Jobs
             metadata.Add(o => o.UserEmailAddress, r => r.User?.EmailAddress);
 
             // User Custom Details
-            if (Options.UserDetailCustom)
+            if (Options.UserDetailsCustom.Any())
             {
-                var keys = records.Where(r => r.UserCustomDetails != null).SelectMany(r => r.UserCustomDetails.Keys).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
-                foreach (var key in keys.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
-                {
-                    metadata.Add(key, r => r.UserCustomDetails != null && r.UserCustomDetails.TryGetValue(key, out var value) ? value : null);
-                }
+                foreach (var key in Options.UserDetailsCustom.OrderBy(k => k, StringComparer.OrdinalIgnoreCase))
+                    metadata.Add($"User Detail {key.TrimEnd('*', '&')}", r => r.UserCustomDetails != null && r.UserCustomDetails.TryGetValue(key, out var value) ? value : null);
             }
 
             // Device

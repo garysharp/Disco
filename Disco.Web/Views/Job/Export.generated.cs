@@ -563,334 +563,26 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n            </table>\r\n       " +
 " </div>\r\n");
 
-WriteLiteral("        <div");
-
-WriteLiteral(" id=\"Jobs_Export_Fields\"");
-
-WriteLiteral(" class=\"form\"");
-
-WriteLiteral(" style=\"width: 570px; margin-top: 15px;\"");
-
-WriteLiteral(">\r\n            <h2>Export Fields <a");
-
-WriteLiteral(" id=\"Jobs_Export_Fields_Defaults\"");
-
-WriteLiteral(" href=\"#\"");
-
-WriteLiteral(">(Defaults)</a></h2>\r\n            <table>\r\n");
-
             
-            #line 109 "..\..\Views\Job\Export.cshtml"
-                
+            #line 106 "..\..\Views\Job\Export.cshtml"
+        
             
             #line default
             #line hidden
             
-            #line 109 "..\..\Views\Job\Export.cshtml"
-                 foreach (var optionGroup in optionGroups)
-                {
-                    var optionFields = optionGroup.ToList();
-                    var itemsPerColumn = (int)Math.Ceiling((double)optionFields.Count / 2);
+            #line 106 "..\..\Views\Job\Export.cshtml"
+   Write(Html.Partial(MVC.Shared.Views._ExportFields, Model.Fields.FieldGroups));
 
             
             #line default
             #line hidden
-WriteLiteral("                    <tr>\r\n                        <th");
-
-WriteLiteral(" style=\"width: 120px;\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("                            ");
-
             
-            #line 115 "..\..\Views\Job\Export.cshtml"
-                       Write(optionGroup.Key);
+            #line 106 "..\..\Views\Job\Export.cshtml"
+                                                                               
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n");
-
-            
-            #line 116 "..\..\Views\Job\Export.cshtml"
-                            
-            
-            #line default
-            #line hidden
-            
-            #line 116 "..\..\Views\Job\Export.cshtml"
-                             if (optionFields.Count > 2)
-                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <span");
-
-WriteLiteral(" style=\"display: block;\"");
-
-WriteLiteral(" class=\"select\"");
-
-WriteLiteral("><a");
-
-WriteLiteral(" class=\"selectAll\"");
-
-WriteLiteral(" href=\"#\"");
-
-WriteLiteral(">ALL</a> | <a");
-
-WriteLiteral(" class=\"selectNone\"");
-
-WriteLiteral(" href=\"#\"");
-
-WriteLiteral(">NONE</a></span>\r\n");
-
-            
-            #line 119 "..\..\Views\Job\Export.cshtml"
-                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        </th>\r\n                        <td>\r\n                    " +
-"        <div");
-
-WriteLiteral(" class=\"Jobs_Export_Fields_Group\"");
-
-WriteLiteral(">\r\n                                <table");
-
-WriteLiteral(" class=\"none\"");
-
-WriteLiteral(">\r\n                                    <tr>\r\n                                    " +
-"    <td");
-
-WriteLiteral(" style=\"width: 50%\"");
-
-WriteLiteral(">\r\n                                            <ul");
-
-WriteLiteral(" class=\"none\"");
-
-WriteLiteral(">\r\n");
-
-            
-            #line 127 "..\..\Views\Job\Export.cshtml"
-                                                
-            
-            #line default
-            #line hidden
-            
-            #line 127 "..\..\Views\Job\Export.cshtml"
-                                                 foreach (var optionItem in optionFields.Take(itemsPerColumn))
-                                                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                                    <li");
-
-WriteAttribute("title", Tuple.Create(" title=\"", 7857), Tuple.Create("\"", 7888)
-            
-            #line 129 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 7865), Tuple.Create<System.Object, System.Int32>(optionItem.Description
-            
-            #line default
-            #line hidden
-, 7865), false)
-);
-
-WriteLiteral(">\r\n                                                        <input");
-
-WriteLiteral(" type=\"checkbox\"");
-
-WriteAttribute("id", Tuple.Create(" id=\"", 7970), Tuple.Create("\"", 8007)
-, Tuple.Create(Tuple.Create("", 7975), Tuple.Create("Options_", 7975), true)
-            
-            #line 130 "..\..\Views\Job\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 7983), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 7983), false)
-);
-
-WriteAttribute("name", Tuple.Create(" name=\"", 8008), Tuple.Create("\"", 8047)
-, Tuple.Create(Tuple.Create("", 8015), Tuple.Create("Options.", 8015), true)
-            
-            #line 130 "..\..\Views\Job\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 8023), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 8023), false)
-);
-
-WriteLiteral(" value=\"true\"");
-
-WriteLiteral(" ");
-
-            
-            #line 130 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                      Write(((bool)optionItem.Model) ? "checked " : null);
-
-            
-            #line default
-            #line hidden
-WriteLiteral(" /><label");
-
-WriteAttribute("for", Tuple.Create(" for=\"", 8118), Tuple.Create("\"", 8156)
-, Tuple.Create(Tuple.Create("", 8124), Tuple.Create("Options_", 8124), true)
-            
-            #line 130 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 8132), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 8132), false)
-);
-
-WriteLiteral(">");
-
-            
-            #line 130 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                                                                                                                     Write(optionItem.DisplayName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</label>\r\n                                                    </li>\r\n");
-
-            
-            #line 132 "..\..\Views\Job\Export.cshtml"
-                                                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                            </ul>\r\n                              " +
-"          </td>\r\n                                        <td");
-
-WriteLiteral(" style=\"width: 50%\"");
-
-WriteLiteral(">\r\n                                            <ul");
-
-WriteLiteral(" class=\"none\"");
-
-WriteLiteral(">\r\n");
-
-            
-            #line 137 "..\..\Views\Job\Export.cshtml"
-                                                
-            
-            #line default
-            #line hidden
-            
-            #line 137 "..\..\Views\Job\Export.cshtml"
-                                                 foreach (var optionItem in optionFields.Skip(itemsPerColumn))
-                                                {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                                    <li");
-
-WriteAttribute("title", Tuple.Create(" title=\"", 8745), Tuple.Create("\"", 8776)
-            
-            #line 139 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 8753), Tuple.Create<System.Object, System.Int32>(optionItem.Description
-            
-            #line default
-            #line hidden
-, 8753), false)
-);
-
-WriteLiteral(">\r\n                                                        <input");
-
-WriteLiteral(" type=\"checkbox\"");
-
-WriteAttribute("id", Tuple.Create(" id=\"", 8858), Tuple.Create("\"", 8895)
-, Tuple.Create(Tuple.Create("", 8863), Tuple.Create("Options_", 8863), true)
-            
-            #line 140 "..\..\Views\Job\Export.cshtml"
-           , Tuple.Create(Tuple.Create("", 8871), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 8871), false)
-);
-
-WriteAttribute("name", Tuple.Create(" name=\"", 8896), Tuple.Create("\"", 8935)
-, Tuple.Create(Tuple.Create("", 8903), Tuple.Create("Options.", 8903), true)
-            
-            #line 140 "..\..\Views\Job\Export.cshtml"
-                                                   , Tuple.Create(Tuple.Create("", 8911), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 8911), false)
-);
-
-WriteLiteral(" value=\"true\"");
-
-WriteLiteral(" ");
-
-            
-            #line 140 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                      Write(((bool)optionItem.Model) ? "checked " : null);
-
-            
-            #line default
-            #line hidden
-WriteLiteral(" /><label");
-
-WriteAttribute("for", Tuple.Create(" for=\"", 9006), Tuple.Create("\"", 9044)
-, Tuple.Create(Tuple.Create("", 9012), Tuple.Create("Options_", 9012), true)
-            
-            #line 140 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                , Tuple.Create(Tuple.Create("", 9020), Tuple.Create<System.Object, System.Int32>(optionItem.PropertyName
-            
-            #line default
-            #line hidden
-, 9020), false)
-);
-
-WriteLiteral(">");
-
-            
-            #line 140 "..\..\Views\Job\Export.cshtml"
-                                                                                                                                                                                                                                                                     Write(optionItem.DisplayName);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</label>\r\n                                                    </li>\r\n");
-
-            
-            #line 142 "..\..\Views\Job\Export.cshtml"
-                                                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"                                            </ul>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-");
-
-            
-            #line 150 "..\..\Views\Job\Export.cshtml"
-
-                }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            </table>\r\n        </div>\r\n");
-
 WriteLiteral("        <script>\r\n            $(function () {\r\n                const $FilterStart" +
 "Date = $(\'#Options_FilterStartDate\');\r\n                const $FilterEndDate = $(" +
 "\'#Options_FilterEndDate\');\r\n                const $FilterJobTypeId = $(\'#Options" +
@@ -898,58 +590,48 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "               $FilterEndDate.attr(\'type\', \'date\');\r\n\r\n                var expor" +
 "tDefaultFields = [\'JobId\', \'JobStatus\', \'JobType\', \'JobSubTypes\', \'JobOpenedDate" +
 "\', \'DeviceSerialNumber\', \'DeviceModelDescription\', \'DeviceProfileName\', \'UserId\'" +
-", \'UserDisplayName\'];\r\n                var $exportFields = $(\'#Jobs_Export_Field" +
-"s\');\r\n                var $form = $FilterStartDate.closest(\'form\');\r\n\r\n         " +
-"       function exportTypeChange() {\r\n                    $exportTypeTargetConta" +
-"iners.hide();\r\n                    $exportTypeTargetContainers.find(\'select\').pr" +
-"op(\'disabled\', true);\r\n\r\n                    switch ($exportType.val()) {\r\n     " +
-"                   case \'Batch\':\r\n                            $(\'#Devices_Export" +
-"_Type_Target_Batch\').show().find(\'select\').prop(\'disabled\', false);\r\n           " +
-"                 break;\r\n                        case \'Profile\':\r\n              " +
-"              $(\'#Devices_Export_Type_Target_Profile\').show().find(\'select\').pro" +
-"p(\'disabled\', false);\r\n                            break;\r\n                     " +
-"   case \'Model\':\r\n                            $(\'#Devices_Export_Type_Target_Mod" +
-"el\').show().find(\'select\').prop(\'disabled\', false);\r\n                           " +
-" break;\r\n                    }\r\n                }\r\n                $FilterJobTyp" +
-"eId\r\n                    .on(\'change\', function (e) {\r\n                        $" +
-"(\'#Jobs_Export_SubTypes\').hide()\r\n                            .find(\'.Jobs_Expor" +
-"t_SubType_Target\').hide()\r\n                            .find(\'input\').prop(\'disa" +
-"bled\', true);\r\n\r\n                        const type = $(e.currentTarget).val();\r" +
-"\n                        if (type) {\r\n                            $(\'#Jobs_Expor" +
-"t_SubTypes\').show()\r\n                            $(\'#Jobs_Export_SubTypes_\' + ty" +
-"pe).show()\r\n                                .find(\'input\').prop(\'disabled\', fals" +
-"e);\r\n                        }\r\n                    }).trigger(\'change\');\r\n     " +
-"           $(\'#Jobs_Export_SubTypes\').on(\'click\', \'a.selectAll,a.selectNone\', fu" +
-"nction (e) {\r\n                    e.preventDefault();\r\n                    var $" +
-"this = $(this);\r\n                    $this.closest(\'div\').find(\'input\').prop(\'ch" +
-"ecked\', $this.is(\'.selectAll\'));\r\n                    return false;\r\n           " +
-"     });\r\n\r\n                $exportFields.on(\'click\', \'a.selectAll,a.selectNone\'" +
-", function (e) {\r\n                    e.preventDefault();\r\n                    v" +
-"ar $this = $(this);\r\n                    $this.closest(\'tr\').find(\'input\').prop(" +
-"\'checked\', $this.is(\'.selectAll\'));\r\n                    return false;\r\n        " +
-"        });\r\n\r\n                $(\'#Jobs_Export_Fields_Defaults\').click(function " +
-"(e) {\r\n                    e.preventDefault();\r\n\r\n                    $exportFie" +
-"lds.find(\'input\').prop(\'checked\', false);\r\n\r\n                    $.each(exportDe" +
-"faultFields, function (index, value) {\r\n                        $(\'#Options_\' + " +
-"value).prop(\'checked\', true);\r\n                    });\r\n\r\n                    re" +
-"turn false;\r\n                });\r\n\r\n                $.validator.unobtrusive.pars" +
-"e($form);\r\n                $form.data(\"validator\").settings.submitHandler = func" +
-"tion () {\r\n                    var exportFieldCount = $exportFields.find(\'input:" +
-"checked\').length;\r\n\r\n                    if (exportFieldCount > 0) {\r\n\r\n        " +
-"                const $exportingDialog = $(\'#Export_Exporting\').dialog({\r\n      " +
-"                      width: 400,\r\n                            height: 164,\r\n   " +
-"                         resizable: false,\r\n                            modal: t" +
-"rue,\r\n                            autoOpen: true\r\n                        });\r\n\r" +
-"\n                        $form[0].submit();\r\n                    }\r\n            " +
-"        else\r\n                        alert(\'Select at least one field to export" +
-".\');\r\n                };\r\n\r\n                $(\'#Jobs_Export_Button\').click(funct" +
-"ion () {\r\n                    $form.submit();\r\n                });\r\n            " +
-"    $(\'#Jobs_Export_Save_Button\').click(function () {\r\n                    $form" +
-".attr(\'action\', $form[0].dataset.saveaction);\r\n                    $form.submit(" +
-");\r\n                });\r\n            });\r\n        </script>\r\n");
+", \'UserDisplayName\'];\r\n                var $form = $FilterStartDate.closest(\'for" +
+"m\');\r\n\r\n                function exportTypeChange() {\r\n                    $expo" +
+"rtTypeTargetContainers.hide();\r\n                    $exportTypeTargetContainers." +
+"find(\'select\').prop(\'disabled\', true);\r\n\r\n                    switch ($exportTyp" +
+"e.val()) {\r\n                        case \'Batch\':\r\n                            $" +
+"(\'#Devices_Export_Type_Target_Batch\').show().find(\'select\').prop(\'disabled\', fal" +
+"se);\r\n                            break;\r\n                        case \'Profile\'" +
+":\r\n                            $(\'#Devices_Export_Type_Target_Profile\').show().f" +
+"ind(\'select\').prop(\'disabled\', false);\r\n                            break;\r\n    " +
+"                    case \'Model\':\r\n                            $(\'#Devices_Expor" +
+"t_Type_Target_Model\').show().find(\'select\').prop(\'disabled\', false);\r\n          " +
+"                  break;\r\n                    }\r\n                }\r\n            " +
+"    $FilterJobTypeId\r\n                    .on(\'change\', function (e) {\r\n        " +
+"                $(\'#Jobs_Export_SubTypes\').hide()\r\n                            ." +
+"find(\'.Jobs_Export_SubType_Target\').hide()\r\n                            .find(\'i" +
+"nput\').prop(\'disabled\', true);\r\n\r\n                        const type = $(e.curre" +
+"ntTarget).val();\r\n                        if (type) {\r\n                         " +
+"   $(\'#Jobs_Export_SubTypes\').show()\r\n                            $(\'#Jobs_Expor" +
+"t_SubTypes_\' + type).show()\r\n                                .find(\'input\').prop" +
+"(\'disabled\', false);\r\n                        }\r\n                    }).trigger(" +
+"\'change\');\r\n                $(\'#Jobs_Export_SubTypes\').on(\'click\', \'a.selectAll," +
+"a.selectNone\', function (e) {\r\n                    e.preventDefault();\r\n        " +
+"            var $this = $(this);\r\n                    $this.closest(\'div\').find(" +
+"\'input\').prop(\'checked\', $this.is(\'.selectAll\'));\r\n                    return fa" +
+"lse;\r\n                });\r\n\r\n                $.validator.unobtrusive.parse($form" +
+");\r\n                $form.data(\"validator\").settings.submitHandler = function ()" +
+" {\r\n                    var exportFieldCount = $(\'#Export_Fields\').find(\'input:c" +
+"hecked\').length;\r\n\r\n                    if (exportFieldCount > 0) {\r\n\r\n         " +
+"               const $exportingDialog = $(\'#Export_Exporting\').dialog({\r\n       " +
+"                     width: 400,\r\n                            height: 164,\r\n    " +
+"                        resizable: false,\r\n                            modal: tr" +
+"ue,\r\n                            autoOpen: true\r\n                        });\r\n\r\n" +
+"                        $form[0].submit();\r\n                    }\r\n             " +
+"       else\r\n                        alert(\'Select at least one field to export." +
+"\');\r\n                };\r\n\r\n                $(\'#Jobs_Export_Button\').click(functi" +
+"on () {\r\n                    $form.submit();\r\n                });\r\n             " +
+"   $(\'#Jobs_Export_Save_Button\').click(function () {\r\n                    $form." +
+"attr(\'action\', $form[0].dataset.saveaction);\r\n                    $form.submit()" +
+";\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 251 "..\..\Views\Job\Export.cshtml"
+            #line 184 "..\..\Views\Job\Export.cshtml"
     }
 
             
@@ -958,7 +640,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 WriteLiteral("</div>\r\n");
 
             
-            #line 253 "..\..\Views\Job\Export.cshtml"
+            #line 186 "..\..\Views\Job\Export.cshtml"
  if (Model.ExportId.HasValue)
 {
 
@@ -976,13 +658,13 @@ WriteLiteral(" title=\"Export Jobs\"");
 WriteLiteral(">\r\n");
 
             
-            #line 256 "..\..\Views\Job\Export.cshtml"
+            #line 189 "..\..\Views\Job\Export.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 256 "..\..\Views\Job\Export.cshtml"
+            #line 189 "..\..\Views\Job\Export.cshtml"
          if (Model.ExportResult.RecordCount == 0)
         {
 
@@ -992,7 +674,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 
             
-            #line 259 "..\..\Views\Job\Export.cshtml"
+            #line 192 "..\..\Views\Job\Export.cshtml"
         }
         else
         {
@@ -1003,7 +685,7 @@ WriteLiteral("            <h4>No records matched the filter criteria</h4>\r\n");
 WriteLiteral("            <h4>");
 
             
-            #line 262 "..\..\Views\Job\Export.cshtml"
+            #line 195 "..\..\Views\Job\Export.cshtml"
            Write(Model.ExportResult.RecordCount);
 
             
@@ -1012,7 +694,7 @@ WriteLiteral("            <h4>");
 WriteLiteral(" record");
 
             
-            #line 262 "..\..\Views\Job\Export.cshtml"
+            #line 195 "..\..\Views\Job\Export.cshtml"
                                                   Write(Model.ExportResult.RecordCount != 1 ? "s" : null);
 
             
@@ -1022,14 +704,14 @@ WriteLiteral(" were successfully exported.</h4>\r\n");
 
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 14423), Tuple.Create("\"", 14491)
+WriteAttribute("href", Tuple.Create(" href=\"", 10612), Tuple.Create("\"", 10680)
             
-            #line 263 "..\..\Views\Job\Export.cshtml"
-, Tuple.Create(Tuple.Create("", 14430), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
+            #line 196 "..\..\Views\Job\Export.cshtml"
+, Tuple.Create(Tuple.Create("", 10619), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.ExportRetrieve(Model.ExportId.Value))
             
             #line default
             #line hidden
-, 14430), false)
+, 10619), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -1041,7 +723,7 @@ WriteLiteral(" class=\"fa fa-download fa-lg\"");
 WriteLiteral("></i>Download Job Export</a>\r\n");
 
             
-            #line 264 "..\..\Views\Job\Export.cshtml"
+            #line 197 "..\..\Views\Job\Export.cshtml"
         }
 
             
@@ -1064,7 +746,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 278 "..\..\Views\Job\Export.cshtml"
+            #line 211 "..\..\Views\Job\Export.cshtml"
 }
 
             
@@ -1091,13 +773,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 283 "..\..\Views\Job\Export.cshtml"
+            #line 216 "..\..\Views\Job\Export.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 283 "..\..\Views\Job\Export.cshtml"
+            #line 216 "..\..\Views\Job\Export.cshtml"
      if (Authorization.Has(Claims.Config.ManageSavedExports))
     {
 
@@ -1115,7 +797,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Save Export</button>\r\n");
 
             
-            #line 286 "..\..\Views\Job\Export.cshtml"
+            #line 219 "..\..\Views\Job\Export.cshtml"
     }
     else
     {
@@ -1136,7 +818,7 @@ WriteLiteral(" title=\"Requires Manage Saved Exports Permission\"");
 WriteLiteral(">Save Export</button>\r\n");
 
             
-            #line 290 "..\..\Views\Job\Export.cshtml"
+            #line 223 "..\..\Views\Job\Export.cshtml"
     }
 
             
