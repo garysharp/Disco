@@ -909,6 +909,16 @@
     </Compile>
     <Compile Include="Models\Shared\ExportFieldsModel.cs" />
     <Compile Include="Models\Shared\GenerateDocumentControlModel.cs" />
+    <Compile Include="Views\Device\DeviceParts\_Comments.generated.cs">
+      <DependentUpon>_Comments.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Views\Device\DeviceParts\_CommentsAndJobs.generated.cs">
+      <DependentUpon>_CommentsAndJobs.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Device\DeviceParts\_Flags.generated.cs">
       <DependentUpon>_Flags.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1070,11 +1080,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>_Certificates.cshtml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Device\DeviceParts\_Jobs.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_Jobs.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Views\Device\DeviceParts\_Resources.generated.cs">
       <DependentUpon>_Resources.cshtml</DependentUpon>
@@ -1336,8 +1341,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Views\User\UserParts\Comments.generated.cs">
-      <DependentUpon>Comments.cshtml</DependentUpon>
+    <Compile Include="Views\User\UserParts\_Comments.generated.cs">
+      <DependentUpon>_Comments.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -2099,6 +2104,14 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>AddOffline.generated.cs</LastGenOutput>
     </None>
+    <None Include="Views\Device\DeviceParts\_Comments.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_Comments.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Views\Device\DeviceParts\_CommentsAndJobs.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_CommentsAndJobs.generated.cs</LastGenOutput>
+    </None>
     <None Include="Views\Device\DeviceParts\_Flags.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Flags.generated.cs</LastGenOutput>
@@ -2118,10 +2131,6 @@
     <None Include="Views\Device\DeviceParts\_Certificates.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_Certificates.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Views\Device\DeviceParts\_Jobs.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_Jobs.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\Device\DeviceParts\_Resources.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -2575,9 +2584,9 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_CommentsAndJobs.generated.cs</LastGenOutput>
     </None>
-    <None Include="Views\User\UserParts\Comments.cshtml">
+    <None Include="Views\User\UserParts\_Comments.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>Comments.generated.cs</LastGenOutput>
+      <LastGenOutput>_Comments.generated.cs</LastGenOutput>
     </None>
     <None Include="Views\User\UserParts\_Resources.cshtml">
       <Generator>RazorGenerator</Generator>

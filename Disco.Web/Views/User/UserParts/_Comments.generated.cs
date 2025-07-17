@@ -35,16 +35,16 @@ namespace Disco.Web.Views.User.UserParts
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/UserParts/Comments.cshtml")]
-    public partial class Comments : Disco.Services.Web.WebViewPage<Disco.Web.Models.User.ShowModel>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/UserParts/_Comments.cshtml")]
+    public partial class _Comments : Disco.Services.Web.WebViewPage<Disco.Web.Models.User.ShowModel>
     {
-        public Comments()
+        public _Comments()
         {
         }
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 2 "..\..\Views\User\UserParts\_Comments.cshtml"
   
     Authorization.Require(Claims.User.ShowComments);
     var canAddComments = Authorization.Has(Claims.User.Actions.AddComments);
@@ -60,21 +60,21 @@ WriteLiteral(" id=\"Comments\"");
 
 WriteAttribute("class", Tuple.Create(" class=\"", 377), Tuple.Create("\"", 597)
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
 , Tuple.Create(Tuple.Create("", 385), Tuple.Create<System.Object, System.Int32>(canAddComments ? "canAddComments" : "cannotAddComments"
             
             #line default
             #line hidden
 , 385), false)
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
       , Tuple.Create(Tuple.Create(" ", 443), Tuple.Create<System.Object, System.Int32>(canRemoveAnyComments ? "canRemoveAnyComments" : "cannotRemoveAnyComments"
             
             #line default
             #line hidden
 , 444), false)
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                    , Tuple.Create(Tuple.Create(" ", 520), Tuple.Create<System.Object, System.Int32>(canRemoveOwnComments ? "canRemoveOwnComments" : "cannotRemoveOwnComments"
             
             #line default
@@ -85,7 +85,7 @@ WriteAttribute("class", Tuple.Create(" class=\"", 377), Tuple.Create("\"", 597)
 WriteLiteral(" data-id=\"");
 
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                                                                                     Write(Model.User.UserId);
 
             
@@ -96,7 +96,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-userid=\"");
 
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                                                                                                                      Write(CurrentUser.UserId);
 
             
@@ -107,7 +107,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-addurl=\"");
 
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                                                                                                                                                        Write(Url.Action(MVC.API.User.CommentAdd(Model.User.UserId)));
 
             
@@ -118,7 +118,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-removeurl=\"");
 
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                                                                                                                                                                                                                                 Write(Url.Action(MVC.API.User.CommentRemove()));
 
             
@@ -129,7 +129,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-geturl=\"");
 
             
-            #line 8 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                                                                                                                                                                                                                                                                                         Write(Url.Action(MVC.API.User.Comment()));
 
             
@@ -142,7 +142,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 9 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 9 "..\..\Views\User\UserParts\_Comments.cshtml"
 Write(Html.AntiForgeryToken());
 
             
@@ -151,13 +151,13 @@ Write(Html.AntiForgeryToken());
 WriteLiteral("\r\n");
 
             
-            #line 10 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 10 "..\..\Views\User\UserParts\_Comments.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 10 "..\..\Views\User\UserParts\_Comments.cshtml"
      if (canAddComments)
     {
 
@@ -189,7 +189,7 @@ WriteLiteral(" class=\"fa fa-comment\"");
 WriteLiteral("></i></button>\r\n        </div>\r\n");
 
             
-            #line 16 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 16 "..\..\Views\User\UserParts\_Comments.cshtml"
     }
 
             
@@ -202,13 +202,13 @@ WriteLiteral(" class=\"commentOutput\"");
 WriteLiteral(">\r\n");
 
             
-            #line 18 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 18 "..\..\Views\User\UserParts\_Comments.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 18 "..\..\Views\User\UserParts\_Comments.cshtml"
          foreach (var c in Model.User.UserComments.OrderBy(m => m.Timestamp))
         {
 
@@ -222,7 +222,7 @@ WriteLiteral(" class=\"comment\"");
 WriteLiteral(" data-commentid=\"");
 
             
-            #line 20 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 20 "..\..\Views\User\UserParts\_Comments.cshtml"
                                             Write(c.Id);
 
             
@@ -237,7 +237,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 21 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
                                 Write(c.TechUser.ToStringFriendly());
 
             
@@ -246,7 +246,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 21 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                            if (canRemoveAnyComments || (canRemoveOwnComments && c.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                 {
             
@@ -259,7 +259,7 @@ WriteLiteral(" class=\"remove fa fa-times-circle\"");
 WriteLiteral("></span>");
 
             
-            #line 22 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                              }
             
             #line default
@@ -271,7 +271,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 22 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                   Write(c.Timestamp.ToUnixEpoc());
 
             
@@ -281,7 +281,7 @@ WriteLiteral("\"");
 
 WriteAttribute("title", Tuple.Create(" title=\"", 1701), Tuple.Create("\"", 1738)
             
-            #line 22 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                           , Tuple.Create(Tuple.Create("", 1709), Tuple.Create<System.Object, System.Int32>(c.Timestamp.ToFullDateTime()
             
             #line default
@@ -292,7 +292,7 @@ WriteAttribute("title", Tuple.Create(" title=\"", 1701), Tuple.Create("\"", 1738
 WriteLiteral(">");
 
             
-            #line 22 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                     Write(c.Timestamp.ToFullDateTime());
 
             
@@ -305,7 +305,7 @@ WriteLiteral(" class=\"comment\"");
 WriteLiteral(">");
 
             
-            #line 23 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 23 "..\..\Views\User\UserParts\_Comments.cshtml"
                                 Write(c.Comments.ToHtmlComment());
 
             
@@ -314,7 +314,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n            </div>\r\n");
 
             
-            #line 25 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 25 "..\..\Views\User\UserParts\_Comments.cshtml"
         }
 
             
@@ -364,7 +364,7 @@ WriteLiteral("    </div>\r\n</div>\r\n<script>\r\n    if (!document.DiscoFunctio
 "tRemoved;\r\n    });\r\n</script>\r\n");
 
             
-            #line 107 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 107 "..\..\Views\User\UserParts\_Comments.cshtml"
  if (canAddComments)
 {
 
@@ -396,14 +396,14 @@ WriteLiteral("    <script>\r\n        $(function () {\r\n            const $comm
 "();\r\n                }\r\n            }\r\n        });\r\n    </script>\r\n");
 
             
-            #line 156 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 156 "..\..\Views\User\UserParts\_Comments.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 157 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 157 "..\..\Views\User\UserParts\_Comments.cshtml"
  if (canRemoveAnyComments || canRemoveOwnComments)
 {
 
@@ -440,8 +440,9 @@ WriteLiteral("    <script>\r\n        $(function () {\r\n            const $comm
 "pt>\r\n");
 
             
-            #line 212 "..\..\Views\User\UserParts\Comments.cshtml"
+            #line 212 "..\..\Views\User\UserParts\_Comments.cshtml"
 }
+
             
             #line default
             #line hidden

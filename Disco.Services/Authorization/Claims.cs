@@ -193,6 +193,7 @@ namespace Disco.Services.Authorization
 				{ "Device.Properties.DeviceProfile", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceProfile, (c, v) => c.Device.Properties.DeviceProfile = v, "Device Profile Property", "Can update property", false) },
 				{ "Device.Properties.Location", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Location, (c, v) => c.Device.Properties.Location = v, "Location Property", "Can update property", false) },
 				{ "Device.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddAttachments, (c, v) => c.Device.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to devices", false) },
+				{ "Device.Actions.AddComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddComments, (c, v) => c.Device.Actions.AddComments = v, "Add Comments", "Can add device comments", false) },
 				{ "Device.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddFlags, (c, v) => c.Device.Actions.AddFlags = v, "Add Device Flags", "Can add device flags", false) },
 				{ "Device.Actions.AllowUnauthenticatedEnrol", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AllowUnauthenticatedEnrol, (c, v) => c.Device.Actions.AllowUnauthenticatedEnrol = v, "Allow Unauthenticated Enrol", "Can allow devices to enrol without authentication", false) },
 				{ "Device.Actions.AssignUser", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AssignUser, (c, v) => c.Device.Actions.AssignUser = v, "Assign User", "Can update the user assignment of devices", false) },
@@ -205,12 +206,15 @@ namespace Disco.Services.Authorization
 				{ "Device.Actions.Import", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Import, (c, v) => c.Device.Actions.Import = v, "Import Devices", "Can bulk import devices", false) },
 				{ "Device.Actions.Recommission", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Recommission, (c, v) => c.Device.Actions.Recommission = v, "Recommission", "Can recommission devices", false) },
 				{ "Device.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveAnyAttachments, (c, v) => c.Device.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from devices", false) },
+				{ "Device.Actions.RemoveAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveAnyComments, (c, v) => c.Device.Actions.RemoveAnyComments = v, "Remove Any Comments", "Can remove any device comments", false) },
 				{ "Device.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveFlags, (c, v) => c.Device.Actions.RemoveFlags = v, "Remove Device Flags", "Can remove device flags", false) },
 				{ "Device.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveOwnAttachments, (c, v) => c.Device.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from devices", false) },
+				{ "Device.Actions.RemoveOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveOwnComments, (c, v) => c.Device.Actions.RemoveOwnComments = v, "Remove Own Comments", "Can remove own device comments", false) },
 				{ "Device.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Search, (c, v) => c.Device.Search = v, "Search Devices", "Can search devices", false) },
 				{ "Device.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowAssignmentHistory, (c, v) => c.Device.ShowAssignmentHistory = v, "Show Assignment History", "Can show the assignment history for devices", false) },
 				{ "Device.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowAttachments, (c, v) => c.Device.ShowAttachments = v, "Show Attachments", "Can show device attachments", false) },
 				{ "Device.ShowCertificates", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowCertificates, (c, v) => c.Device.ShowCertificates = v, "Show Certificates", "Can show certificates associated with devices", false) },
+				{ "Device.ShowComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowComments, (c, v) => c.Device.ShowComments = v, "Show Comments", "Can show device comments", false) },
 				{ "Device.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowDetails, (c, v) => c.Device.ShowDetails = v, "Show Details", "Can show details associated with devices", false) },
 				{ "Device.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowFlagAssignments, (c, v) => c.Device.ShowFlagAssignments = v, "Show Device Flag Assignments", "Can show flags associated with devices", false) },
 				{ "Device.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Show, (c, v) => c.Device.Show = v, "Show Devices", "Can show devices", false) },
@@ -458,6 +462,7 @@ namespace Disco.Services.Authorization
 				    new ClaimNavigatorItem("Device", "Device", "Permissions related to Devices", false, new List<IClaimNavigatorItem>() {
 				        new ClaimNavigatorItem("Device.Actions", "Actions", "Permissions related to Device Actions", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Device.Actions.AddAttachments", false),
+				            new ClaimNavigatorItem("Device.Actions.AddComments", false),
 				            new ClaimNavigatorItem("Device.Actions.AddFlags", false),
 				            new ClaimNavigatorItem("Device.Actions.AllowUnauthenticatedEnrol", false),
 				            new ClaimNavigatorItem("Device.Actions.AssignUser", false),
@@ -470,8 +475,10 @@ namespace Disco.Services.Authorization
 				            new ClaimNavigatorItem("Device.Actions.Import", false),
 				            new ClaimNavigatorItem("Device.Actions.Recommission", false),
 				            new ClaimNavigatorItem("Device.Actions.RemoveAnyAttachments", false),
+				            new ClaimNavigatorItem("Device.Actions.RemoveAnyComments", false),
 				            new ClaimNavigatorItem("Device.Actions.RemoveFlags", false),
-				            new ClaimNavigatorItem("Device.Actions.RemoveOwnAttachments", false)
+				            new ClaimNavigatorItem("Device.Actions.RemoveOwnAttachments", false),
+				            new ClaimNavigatorItem("Device.Actions.RemoveOwnComments", false)
 				        }),
 				        new ClaimNavigatorItem("Device.Properties", "Device Properties", "Permissions related to Device Properties", false, new List<IClaimNavigatorItem>() {
 				            new ClaimNavigatorItem("Device.Properties.AssetNumber", false),
@@ -484,6 +491,7 @@ namespace Disco.Services.Authorization
 				        new ClaimNavigatorItem("Device.ShowAssignmentHistory", false),
 				        new ClaimNavigatorItem("Device.ShowAttachments", false),
 				        new ClaimNavigatorItem("Device.ShowCertificates", false),
+				        new ClaimNavigatorItem("Device.ShowComments", false),
 				        new ClaimNavigatorItem("Device.ShowDetails", false),
 				        new ClaimNavigatorItem("Device.ShowFlagAssignments", false),
 				        new ClaimNavigatorItem("Device.Show", false),
@@ -749,6 +757,7 @@ namespace Disco.Services.Authorization
 			c.Device.Properties.DeviceProfile = true;
 			c.Device.Properties.Location = true;
 			c.Device.Actions.AddAttachments = true;
+			c.Device.Actions.AddComments = true;
 			c.Device.Actions.AddFlags = true;
 			c.Device.Actions.AllowUnauthenticatedEnrol = true;
 			c.Device.Actions.AssignUser = true;
@@ -761,12 +770,15 @@ namespace Disco.Services.Authorization
 			c.Device.Actions.Import = true;
 			c.Device.Actions.Recommission = true;
 			c.Device.Actions.RemoveAnyAttachments = true;
+			c.Device.Actions.RemoveAnyComments = true;
 			c.Device.Actions.RemoveFlags = true;
 			c.Device.Actions.RemoveOwnAttachments = true;
+			c.Device.Actions.RemoveOwnComments = true;
 			c.Device.Search = true;
 			c.Device.ShowAssignmentHistory = true;
 			c.Device.ShowAttachments = true;
 			c.Device.ShowCertificates = true;
+			c.Device.ShowComments = true;
 			c.Device.ShowDetails = true;
 			c.Device.ShowFlagAssignments = true;
 			c.Device.Show = true;
@@ -1844,6 +1856,11 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string AddAttachments = "Device.Actions.AddAttachments";
 
+                /// <summary>Add Comments
+                /// <para>Can add device comments</para>
+                /// </summary>
+                public const string AddComments = "Device.Actions.AddComments";
+
                 /// <summary>Add Device Flags
                 /// <para>Can add device flags</para>
                 /// </summary>
@@ -1904,6 +1921,11 @@ namespace Disco.Services.Authorization
                 /// </summary>
                 public const string RemoveAnyAttachments = "Device.Actions.RemoveAnyAttachments";
 
+                /// <summary>Remove Any Comments
+                /// <para>Can remove any device comments</para>
+                /// </summary>
+                public const string RemoveAnyComments = "Device.Actions.RemoveAnyComments";
+
                 /// <summary>Remove Device Flags
                 /// <para>Can remove device flags</para>
                 /// </summary>
@@ -1913,6 +1935,11 @@ namespace Disco.Services.Authorization
                 /// <para>Can remove own attachments from devices</para>
                 /// </summary>
                 public const string RemoveOwnAttachments = "Device.Actions.RemoveOwnAttachments";
+
+                /// <summary>Remove Own Comments
+                /// <para>Can remove own device comments</para>
+                /// </summary>
+                public const string RemoveOwnComments = "Device.Actions.RemoveOwnComments";
             }
 
             /// <summary>Search Devices
@@ -1934,6 +1961,11 @@ namespace Disco.Services.Authorization
             /// <para>Can show certificates associated with devices</para>
             /// </summary>
             public const string ShowCertificates = "Device.ShowCertificates";
+
+            /// <summary>Show Comments
+            /// <para>Can show device comments</para>
+            /// </summary>
+            public const string ShowComments = "Device.ShowComments";
 
             /// <summary>Show Details
             /// <para>Can show details associated with devices</para>

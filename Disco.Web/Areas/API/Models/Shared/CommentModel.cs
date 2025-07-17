@@ -46,5 +46,19 @@ namespace Disco.Web.Areas.API.Models.Shared
             };
         }
 
+        public static CommentModel FromEntity(DeviceComment comment)
+        {
+            return new CommentModel
+            {
+                Id = comment.Id,
+                TargetType = AttachmentTypes.Device,
+                TargetId = comment.DeviceSerialNumber,
+                AuthorId = comment.TechUserId,
+                Author = comment.TechUser.ToString(),
+                Timestamp = comment.Timestamp,
+                Comments = comment.Comments,
+                HtmlComments = comment.Comments.ToHtmlComment().ToString()
+            };
+        }
     }
 }

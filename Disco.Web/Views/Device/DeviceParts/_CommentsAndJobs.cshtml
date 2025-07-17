@@ -1,0 +1,41 @@
+﻿@model Disco.Web.Models.Device.ShowModel
+@{
+    var canShowComments = Authorization.Has(Claims.Device.ShowComments);
+    var canShowJobs = Authorization.Has(Claims.Device.ShowJobs);
+
+    var jobCount = (Model.Device.Jobs == null ? 0 : Model.Device.Jobs.Count).ToString();
+    string label;
+    if (canShowComments & canShowJobs)
+    {
+        label = "Comments and Jobs [" + jobCount + "]";
+    }
+    else if (canShowComments)
+    {
+        label = "Comments";
+    }
+    else if (canShowJobs)
+    {
+        label = "Jobs [" + jobCount + "]";
+    }
+    else
+    {
+        return;
+    }
+}
+<div id="DeviceDetailTab-CommentsAndJobs" class="DevicePart @(canShowComments ? "canShowComments" : "cannotShowComments") @(canShowJobs ? "canShowJobs" : "cannotShowJobs")">
+    @if (canShowComments)
+    {
+        <div id="DeviceDetailTab-CommentsContainer">
+            @Html.Partial(MVC.Device.Views.DeviceParts._Comments, Model)
+        </div>
+    }
+    @if (canShowJobs)
+    {
+        <div id="DeviceDetailTab-JobsContainer">
+            @Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs)
+        </div>
+    }
+    <script>
+        $('#DeviceDetailTabItems').append('<li><a href="#DeviceDetailTab-CommentsAndJobs">@label</a></li>');
+    </script>
+</div>

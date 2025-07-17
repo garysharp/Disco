@@ -132,19 +132,19 @@ namespace Disco.Web.Controllers
                 {
                     public readonly string _AssignmentHistory = "_AssignmentHistory";
                     public readonly string _Authorization = "_Authorization";
+                    public readonly string _Comments = "_Comments";
                     public readonly string _CommentsAndJobs = "_CommentsAndJobs";
                     public readonly string _Flags = "_Flags";
                     public readonly string _Resources = "_Resources";
                     public readonly string _Subject = "_Subject";
-                    public readonly string Comments = "Comments";
                 }
                 public readonly string _AssignmentHistory = "~/Views/User/UserParts/_AssignmentHistory.cshtml";
                 public readonly string _Authorization = "~/Views/User/UserParts/_Authorization.cshtml";
+                public readonly string _Comments = "~/Views/User/UserParts/_Comments.cshtml";
                 public readonly string _CommentsAndJobs = "~/Views/User/UserParts/_CommentsAndJobs.cshtml";
                 public readonly string _Flags = "~/Views/User/UserParts/_Flags.cshtml";
                 public readonly string _Resources = "~/Views/User/UserParts/_Resources.cshtml";
                 public readonly string _Subject = "~/Views/User/UserParts/_Subject.cshtml";
-                public readonly string Comments = "~/Views/User/UserParts/Comments.cshtml";
             }
         }
     }

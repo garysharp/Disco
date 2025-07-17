@@ -1,11 +1,11 @@
-﻿@model Disco.Web.Models.User.ShowModel
+﻿@model Disco.Web.Models.Device.ShowModel
 @{
-    Authorization.Require(Claims.User.ShowComments);
-    var canAddComments = Authorization.Has(Claims.User.Actions.AddComments);
-    var canRemoveAnyComments = Authorization.Has(Claims.User.Actions.RemoveAnyComments);
-    var canRemoveOwnComments = Authorization.Has(Claims.User.Actions.RemoveOwnComments);
+    Authorization.Require(Claims.Device.ShowComments);
+    var canAddComments = Authorization.Has(Claims.Device.Actions.AddComments);
+    var canRemoveAnyComments = Authorization.Has(Claims.Device.Actions.RemoveAnyComments);
+    var canRemoveOwnComments = Authorization.Has(Claims.Device.Actions.RemoveOwnComments);
 }
-<div id="Comments" class="@(canAddComments ? "canAddComments" : "cannotAddComments") @(canRemoveAnyComments ? "canRemoveAnyComments" : "cannotRemoveAnyComments") @(canRemoveOwnComments ? "canRemoveOwnComments" : "cannotRemoveOwnComments")" data-id="@Model.User.UserId" data-userid="@CurrentUser.UserId" data-addurl="@Url.Action(MVC.API.User.CommentAdd(Model.User.UserId))" data-removeurl="@Url.Action(MVC.API.User.CommentRemove())" data-geturl="@Url.Action(MVC.API.User.Comment())">
+<div id="Comments" class="@(canAddComments ? "canAddComments" : "cannotAddComments") @(canRemoveAnyComments ? "canRemoveAnyComments" : "cannotRemoveAnyComments") @(canRemoveOwnComments ? "canRemoveOwnComments" : "cannotRemoveOwnComments")" data-id="@Model.Device.SerialNumber" data-userid="@CurrentUser.UserId" data-addurl="@Url.Action(MVC.API.Device.CommentAdd(Model.Device.SerialNumber))" data-removeurl="@Url.Action(MVC.API.Device.CommentRemove())" data-geturl="@Url.Action(MVC.API.Device.Comment())">
     @Html.AntiForgeryToken()
     @if (canAddComments)
     {
@@ -15,7 +15,7 @@
         </div>
     }
     <div class="commentOutput">
-        @foreach (var c in Model.User.UserComments.OrderBy(m => m.Timestamp))
+        @foreach (var c in Model.Device.DeviceComments.OrderBy(m => m.Timestamp))
         {
             <div class="comment" data-commentid="@c.Id">
                 <span class="author">@c.TechUser.ToStringFriendly()</span>@if (canRemoveAnyComments || (canRemoveOwnComments && c.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
@@ -37,8 +37,8 @@
         window.setTimeout(function () {
             $commentOutput[0].scrollTop = $commentOutput[0].scrollHeight; // Scroll to Bottom
         }, 0);
-        $('#UserDetailTabs').on('tabsactivate', function (event, ui) {
-            if (ui.newPanel && ui.newPanel.is('#UserDetailTab-CommentsAndJobs')) {
+        $('#DeviceDetailTabs').on('tabsactivate', function (event, ui) {
+            if (ui.newPanel && ui.newPanel.is('#DeviceDetailTab-CommentsAndJobs')) {
                 $commentOutput[0].scrollTop = $commentOutput[0].scrollHeight; // Scroll to Bottom
             }
         });

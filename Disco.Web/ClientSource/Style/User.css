@@ -219,6 +219,13 @@
 #UserDetailTab-CommentsAndJobs.cannotShowComments div.jobTable {
   border: 1px solid #ccc;
 }
+#UserDetailTab-CommentsContainer {
+  max-height: 650px;
+}
+#UserDetailTab-JobsContainer {
+  max-height: 650px;
+  overflow: auto;
+}
 #Comments {
   box-sizing: border-box;
   height: 100%;

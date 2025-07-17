@@ -451,6 +451,7 @@ WriteLiteral(@">
                             var $Attachments = $('#Attachments');
                             var $attachmentOutput = $Attachments.find('.attachmentOutput');
                             var $dialogRemoveAttachment = null;
+                            let $attachmentDownloadHost = null;
 
                             function onAttachmentAdded(id, quick) {
                                 var data = { id: id };
@@ -458,7 +459,7 @@ WriteLiteral(@">
                                     url: '");
 
             
-            #line 66 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 67 "..\..\Views\User\UserParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.User.Attachment()));
 
             
@@ -491,7 +492,7 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "chmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'href\', \'");
 
             
-            #line 96 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 97 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.User.AttachmentDownload()));
 
             
@@ -523,7 +524,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 119 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 120 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.User.AttachmentThumbnail()));
 
             
@@ -576,13 +577,13 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;\r\n\r\n");
 
             
-            #line 181 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 182 "..\..\Views\User\UserParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 181 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 182 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
@@ -629,7 +630,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 "                        //#endregion\r\n                            ");
 
             
-            #line 228 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 229 "..\..\Views\User\UserParts\_Resources.cshtml"
                                    }
 
             
@@ -638,7 +639,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 229 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 230 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -672,7 +673,7 @@ WriteLiteral(@"
                                             url: '");
 
             
-            #line 255 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 256 "..\..\Views\User\UserParts\_Resources.cshtml"
                                              Write(Url.Action(MVC.API.User.AttachmentRemove()));
 
             
@@ -700,7 +701,7 @@ WriteLiteral("\',\r\n                                            dataType: \'jso
 "/#endregion\r\n                        ");
 
             
-            #line 283 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 284 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
@@ -724,7 +725,7 @@ WriteLiteral(@"
         $('#UserDetailTabItems').append('<li><a href=""#UserDetailTab-Resources"" id=""UserDetailTab-ResourcesLink"">Attachments [");
 
             
-            #line 299 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 300 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             
@@ -733,7 +734,7 @@ WriteLiteral(@"
 WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
             
-            #line 302 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 303 "..\..\Views\User\UserParts\_Resources.cshtml"
  if (canRemoveAnyAttachments || canRemoveOwnAttachments)
 {
 
@@ -755,7 +756,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 309 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 310 "..\..\Views\User\UserParts\_Resources.cshtml"
 }
             
             #line default

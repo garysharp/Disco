@@ -179,6 +179,172 @@
     }
 }
 
+#DeviceDetailTab-CommentsAndJobs {
+    display: grid;
+    grid-template-columns: auto;
+
+    &.canShowComments.canShowJobs {
+        grid-template-columns: 375px auto;
+
+        & > #DeviceDetailTab-Comments {
+            grid-column: 1;
+        }
+
+        & > #DeviceDetailTab-JobsContainer {
+            grid-column: 2;
+        }
+    }
+
+    &.cannotShowComments div.jobTable {
+        border: 1px solid @SubtleBorderColour;
+    }
+}
+
+#DeviceDetailTab-CommentsContainer {
+    max-height: 650px;
+}
+
+#DeviceDetailTab-JobsContainer {
+    max-height: 650px;
+    overflow: auto;
+}
+
+#Comments {
+    box-sizing: border-box;
+    height: 100%;
+    min-height: 373px;
+    padding-bottom: 51px;
+    border: 1px solid @SubtleBorderColour;
+    background-color: @white;
+    position: relative;
+
+    div.commentInput {
+        border-top: 1px solid @SubtleBorderColour;
+        box-sizing: border-box;
+        width: 100%;
+        height: 51px;
+        padding: 5px;
+        position: absolute;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: auto 40px;
+
+        textarea.commentInput {
+            grid-column: 1;
+            border: 0;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 40px;
+            min-height: 40px;
+            overflow: auto;
+            resize: none;
+        }
+
+        button {
+            grid-column: 2;
+            appearance: none;
+            font-size: 1.5em;
+            display: block;
+            border: 1px solid @white;
+            background-color: @white;
+
+            &:not([disabled]) {
+                &:hover, &:focus {
+                    color: @HyperLinkColour;
+                    background-color: @SubtleColour;
+                    border: 1px solid @SubtleBorderColour;
+                }
+            }
+
+            &[disabled] {
+                color: fade(@HeaderBackgroundColour, 20%);
+                cursor: default;
+            }
+        }
+    }
+
+    div.commentOutput {
+        height: 100%;
+        overflow: auto;
+        background-color: @BackgroundColourLight;
+        color: @black;
+
+        & > div {
+            padding: 3px;
+            margin: 4px 6px;
+            border-bottom: 1px solid @SubtleBorderColour;
+
+            span.author {
+                color: #444;
+                display: block;
+                font-weight: @FontWeightBodyBold;
+                font-size: 0.95em;
+                float: left;
+            }
+
+            span.timestamp {
+                display: block;
+                float: right;
+                font-size: 0.90em;
+                font-style: italic;
+            }
+
+            div.comment {
+                clear: both;
+                display: block;
+                margin-left: 4px;
+
+                p {
+                    line-height: 1.2em;
+                    padding-bottom: .2em;
+                }
+
+                h1, h2, h3, h4, h5 {
+                    font-family: @FontFamilyBody;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin: 2px 0 !important;
+                }
+
+                hr {
+                    margin-top: .2em;
+                }
+
+                code {
+                    font-size: .9em;
+                }
+            }
+
+            &:hover {
+                span.remove {
+                    opacity: .5;
+                }
+            }
+
+            span.remove {
+                font-size: 1.2em;
+                color: @StatusRemove;
+                margin-left: 6px;
+                cursor: pointer;
+                opacity: 0;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+
+    &.cannotAddComments {
+        padding-bottom: 0;
+    }
+}
+
 #Device_Show_Policies_Profile_Actions_Update_Dialog, #Device_Show_Policies_Batch_Actions_Update_Dialog {
     .profile-list {
         max-height: 300px;
@@ -206,8 +372,10 @@
 
 #DeviceDetailTab-JobsContainer {
     div.jobTable {
-        margin: -1px;
-        border: 1px solid #ddd;
+        min-height: 320px;
+        border-top: 1px solid @SubtleBorderColour;
+        border-right: 1px solid @SubtleBorderColour;
+        border-bottom: 1px solid @SubtleBorderColour;
     }
 
     .dataTables_wrapper {

@@ -62,11 +62,11 @@
         <ul id="jobDetailTabItems">
             @if (Authorization.HasAll(Claims.Job.ShowLogs, Claims.Job.ShowAttachments))
             {
-                <li><a id="jobDetailTab-ResourcesLink" href="#jobDetailTab-Resources">Log and Attachments [@(Model.Job.JobAttachments.Count)]</a></li>
+                <li><a id="jobDetailTab-ResourcesLink" href="#jobDetailTab-Resources">Comments and Attachments [@(Model.Job.JobAttachments.Count)]</a></li>
             }
             else if (Authorization.Has(Claims.Job.ShowLogs))
             {
-                <li><a id="jobDetailTab-ResourcesLink" href="#jobDetailTab-Resources">Log</a></li>
+                <li><a id="jobDetailTab-ResourcesLink" href="#jobDetailTab-Resources">Comments</a></li>
             }
             else if (Authorization.Has(Claims.Job.ShowAttachments))
             {

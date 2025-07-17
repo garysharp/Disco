@@ -16,6 +16,13 @@
         [ClaimDetails("Delete", "Can delete devices")]
         public bool Delete { get; set; }
 
+        [ClaimDetails("Add Comments", "Can add device comments")]
+        public bool AddComments { get; set; }
+        [ClaimDetails("Remove Any Comments", "Can remove any device comments")]
+        public bool RemoveAnyComments { get; set; }
+        [ClaimDetails("Remove Own Comments", "Can remove own device comments")]
+        public bool RemoveOwnComments { get; set; }
+
         [ClaimDetails("Add Attachments", "Can add attachments to devices")]
         public bool AddAttachments { get; set; }
         [ClaimDetails("Remove Any Attachments", "Can remove any attachments from devices")]

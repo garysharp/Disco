@@ -157,6 +157,30 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Comments()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comments);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Comment()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comment);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult CommentAdd()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentAdd);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult CommentRemove()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentRemove);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AttachmentDownload()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
@@ -284,6 +308,10 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string GeneratePdf = "GeneratePdf";
             public readonly string GeneratePdfPackage = "GeneratePdfPackage";
             public readonly string LastNetworkLogonDate = "LastNetworkLogonDate";
+            public readonly string Comments = "Comments";
+            public readonly string Comment = "Comment";
+            public readonly string CommentAdd = "CommentAdd";
+            public readonly string CommentRemove = "CommentRemove";
             public readonly string AttachmentDownload = "AttachmentDownload";
             public readonly string AttachmentThumbnail = "AttachmentThumbnail";
             public readonly string AttachmentUpload = "AttachmentUpload";
@@ -322,6 +350,10 @@ namespace Disco.Web.Areas.API.Controllers
             public const string GeneratePdf = "GeneratePdf";
             public const string GeneratePdfPackage = "GeneratePdfPackage";
             public const string LastNetworkLogonDate = "LastNetworkLogonDate";
+            public const string Comments = "Comments";
+            public const string Comment = "Comment";
+            public const string CommentAdd = "CommentAdd";
+            public const string CommentRemove = "CommentRemove";
             public const string AttachmentDownload = "AttachmentDownload";
             public const string AttachmentThumbnail = "AttachmentThumbnail";
             public const string AttachmentUpload = "AttachmentUpload";
@@ -495,6 +527,39 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_LastNetworkLogonDate LastNetworkLogonDateParams { get { return s_params_LastNetworkLogonDate; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_LastNetworkLogonDate
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_Comments s_params_Comments = new ActionParamsClass_Comments();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Comments CommentsParams { get { return s_params_Comments; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Comments
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_Comment s_params_Comment = new ActionParamsClass_Comment();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Comment CommentParams { get { return s_params_Comment; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Comment
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_CommentAdd s_params_CommentAdd = new ActionParamsClass_CommentAdd();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_CommentAdd CommentAddParams { get { return s_params_CommentAdd; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_CommentAdd
+        {
+            public readonly string id = "id";
+            public readonly string comment = "comment";
+        }
+        static readonly ActionParamsClass_CommentRemove s_params_CommentRemove = new ActionParamsClass_CommentRemove();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_CommentRemove CommentRemoveParams { get { return s_params_CommentRemove; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_CommentRemove
         {
             public readonly string id = "id";
         }
@@ -871,6 +936,55 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LastNetworkLogonDate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             LastNetworkLogonDateOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Comments(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            CommentsOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CommentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Comment(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Comment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            CommentOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CommentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string comment);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CommentAdd(string id, string comment)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentAdd);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comment", comment);
+            CommentAddOverride(callInfo, id, comment);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void CommentRemoveOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult CommentRemove(int id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.CommentRemove);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            CommentRemoveOverride(callInfo, id);
             return callInfo;
         }
 

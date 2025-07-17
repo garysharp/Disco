@@ -14,7 +14,7 @@ namespace Disco.Services.Users
     [HubName("userUpdates"), DiscoHubAuthorize(Claims.User.Show)]
     public class UserUpdatesHub : Hub
     {
-        public static IHubContext HubContext { get; private set; }
+        public static IHubContext HubContext { get; }
 
         private static readonly IDisposable repositoryBeforeSubscription;
         private static readonly IDisposable repositoryAfterSubscription;
@@ -52,8 +52,8 @@ namespace Disco.Services.Users
             return true;
         }
 
-        private static string AttachmentGroupName(string UserId)
-            => $"User_Attachment_{UserId.ToLowerInvariant()}";
+        private static string AttachmentGroupName(string userId)
+            => $"User_Attachment_{userId.ToLowerInvariant()}";
 
         private static bool TryCommentGroupName(RepositoryMonitorEvent e, out string groupName)
         {
@@ -67,8 +67,8 @@ namespace Disco.Services.Users
             return true;
         }
 
-        private static string CommentGroupName(string UserId)
-            => $"User_Comment_{UserId.ToLowerInvariant()}";
+        private static string CommentGroupName(string userId)
+            => $"User_Comment_{userId.ToLowerInvariant()}";
 
         public override Task OnConnected()
         {

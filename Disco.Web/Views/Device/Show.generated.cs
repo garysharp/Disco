@@ -54,6 +54,13 @@ namespace Disco.Web.Views.Device
   
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), string.Format("Device: {0}", Model.Device.SerialNumber));
 
+    var requiresLive = Authorization.HasAny(Claims.Device.ShowComments, Claims.Device.ShowAttachments);
+
+    if (requiresLive)
+    {
+        Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
+    }
+
             
             #line default
             #line hidden
@@ -61,29 +68,40 @@ WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"Device_Show\"");
 
+WriteLiteral(" data-deviceserialnumber=\"");
+
+            
+            #line 13 "..\..\Views\Device\Show.cshtml"
+                                          Write(Model.Device.SerialNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n    <div");
 
 WriteLiteral(" id=\"Device_Show_Status\"");
 
 WriteLiteral(">\r\n        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 290), Tuple.Create("\"", 352)
-, Tuple.Create(Tuple.Create("", 298), Tuple.Create("fa", 298), true)
-, Tuple.Create(Tuple.Create(" ", 300), Tuple.Create("fa-square", 301), true)
-, Tuple.Create(Tuple.Create(" ", 310), Tuple.Create("deviceStatus", 311), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 561), Tuple.Create("\"", 623)
+, Tuple.Create(Tuple.Create("", 569), Tuple.Create("fa", 569), true)
+, Tuple.Create(Tuple.Create(" ", 571), Tuple.Create("fa-square", 572), true)
+, Tuple.Create(Tuple.Create(" ", 581), Tuple.Create("deviceStatus", 582), true)
             
-            #line 8 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create(" ", 323), Tuple.Create<System.Object, System.Int32>(Model.Device.StatusCode()
+            #line 15 "..\..\Views\Device\Show.cshtml"
+, Tuple.Create(Tuple.Create(" ", 594), Tuple.Create<System.Object, System.Int32>(Model.Device.StatusCode()
             
             #line default
             #line hidden
-, 324), false)
+, 595), false)
 );
 
 WriteLiteral("></i>&nbsp;");
 
             
-            #line 8 "..\..\Views\Device\Show.cshtml"
+            #line 15 "..\..\Views\Device\Show.cshtml"
                                                                                Write(Model.Device.Status());
 
             
@@ -97,13 +115,13 @@ WriteLiteral(">\r\n            $(function () {\r\n                $(\'#Device_Sh
 "(\'#layout_PageHeading\')\r\n            });\r\n        </script>\r\n    </div>\r\n");
 
             
-            #line 15 "..\..\Views\Device\Show.cshtml"
+            #line 22 "..\..\Views\Device\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\Device\Show.cshtml"
+            #line 22 "..\..\Views\Device\Show.cshtml"
      if (Authorization.Has(Claims.Device.ShowFlagAssignments))
     {
 
@@ -117,13 +135,13 @@ WriteLiteral(" id=\"Device_Show_Flags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 18 "..\..\Views\Device\Show.cshtml"
+            #line 25 "..\..\Views\Device\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Views\Device\Show.cshtml"
+            #line 25 "..\..\Views\Device\Show.cshtml"
              foreach (var flag in Model.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
             {
 
@@ -132,27 +150,27 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 907), Tuple.Create("\"", 983)
-, Tuple.Create(Tuple.Create("", 915), Tuple.Create("flag", 915), true)
-, Tuple.Create(Tuple.Create(" ", 919), Tuple.Create("fa", 920), true)
-, Tuple.Create(Tuple.Create(" ", 922), Tuple.Create("fa-", 923), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1178), Tuple.Create("\"", 1254)
+, Tuple.Create(Tuple.Create("", 1186), Tuple.Create("flag", 1186), true)
+, Tuple.Create(Tuple.Create(" ", 1190), Tuple.Create("fa", 1191), true)
+, Tuple.Create(Tuple.Create(" ", 1193), Tuple.Create("fa-", 1194), true)
             
-            #line 20 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 926), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
-            
-            #line default
-            #line hidden
-, 926), false)
-, Tuple.Create(Tuple.Create(" ", 944), Tuple.Create("fa-fw", 945), true)
-, Tuple.Create(Tuple.Create(" ", 950), Tuple.Create("fa-lg", 951), true)
-, Tuple.Create(Tuple.Create(" ", 956), Tuple.Create("d-", 957), true)
-            
-            #line 20 "..\..\Views\Device\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 959), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+            #line 27 "..\..\Views\Device\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 1197), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
             
             #line default
             #line hidden
-, 959), false)
+, 1197), false)
+, Tuple.Create(Tuple.Create(" ", 1215), Tuple.Create("fa-fw", 1216), true)
+, Tuple.Create(Tuple.Create(" ", 1221), Tuple.Create("fa-lg", 1222), true)
+, Tuple.Create(Tuple.Create(" ", 1227), Tuple.Create("d-", 1228), true)
+            
+            #line 27 "..\..\Views\Device\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 1230), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+            
+            #line default
+            #line hidden
+, 1230), false)
 );
 
 WriteLiteral(">\r\n                    <span");
@@ -166,7 +184,7 @@ WriteLiteral(" class=\"name\"");
 WriteLiteral(">");
 
             
-            #line 22 "..\..\Views\Device\Show.cshtml"
+            #line 29 "..\..\Views\Device\Show.cshtml"
                                       Write(flag.Item2.Name);
 
             
@@ -175,7 +193,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 22 "..\..\Views\Device\Show.cshtml"
+            #line 29 "..\..\Views\Device\Show.cshtml"
                                                                    if (flag.Item1.Comments != null)
                         {
             
@@ -188,7 +206,7 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 23 "..\..\Views\Device\Show.cshtml"
+            #line 30 "..\..\Views\Device\Show.cshtml"
                                            Write(flag.Item1.Comments.ToHtmlComment());
 
             
@@ -197,7 +215,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 23 "..\..\Views\Device\Show.cshtml"
+            #line 30 "..\..\Views\Device\Show.cshtml"
                                                                                            }
             
             #line default
@@ -209,7 +227,7 @@ WriteLiteral(" class=\"added\"");
 WriteLiteral(">");
 
             
-            #line 23 "..\..\Views\Device\Show.cshtml"
+            #line 30 "..\..\Views\Device\Show.cshtml"
                                                                                                            Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser));
 
             
@@ -218,7 +236,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                    </span>\r\n                </i>\r\n");
 
             
-            #line 26 "..\..\Views\Device\Show.cshtml"
+            #line 33 "..\..\Views\Device\Show.cshtml"
             }
 
             
@@ -264,7 +282,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 59 "..\..\Views\Device\Show.cshtml"
+            #line 66 "..\..\Views\Device\Show.cshtml"
     }
 
             
@@ -273,7 +291,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 60 "..\..\Views\Device\Show.cshtml"
+            #line 67 "..\..\Views\Device\Show.cshtml"
 Write(Html.Partial(MVC.Device.Views.DeviceParts._Subject, Model));
 
             
@@ -314,29 +332,29 @@ WriteLiteral(" id=\"DeviceDetailTabItems\"");
 WriteLiteral("></ul>\r\n");
 
             
-            #line 96 "..\..\Views\Device\Show.cshtml"
+            #line 103 "..\..\Views\Device\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 96 "..\..\Views\Device\Show.cshtml"
-         if (Authorization.Has(Claims.Device.ShowJobs))
+            #line 103 "..\..\Views\Device\Show.cshtml"
+         if (Authorization.HasAny(Claims.Device.ShowComments, Claims.Device.ShowJobs))
         {
             
             
             #line default
             #line hidden
             
-            #line 98 "..\..\Views\Device\Show.cshtml"
-       Write(Html.Partial(MVC.Device.Views.DeviceParts._Jobs, Model));
+            #line 105 "..\..\Views\Device\Show.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._CommentsAndJobs, Model));
 
             
             #line default
             #line hidden
             
-            #line 98 "..\..\Views\Device\Show.cshtml"
-                                                                    
+            #line 105 "..\..\Views\Device\Show.cshtml"
+                                                                               
         }
 
             
@@ -345,7 +363,7 @@ WriteLiteral("></ul>\r\n");
 WriteLiteral("        ");
 
             
-            #line 100 "..\..\Views\Device\Show.cshtml"
+            #line 107 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowDetails))
         {
             
@@ -353,14 +371,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 102 "..\..\Views\Device\Show.cshtml"
+            #line 109 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Details, Model));
 
             
             #line default
             #line hidden
             
-            #line 102 "..\..\Views\Device\Show.cshtml"
+            #line 109 "..\..\Views\Device\Show.cshtml"
                                                                        
         }
 
@@ -370,7 +388,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 104 "..\..\Views\Device\Show.cshtml"
+            #line 111 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowAssignmentHistory))
         {
             
@@ -378,14 +396,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 106 "..\..\Views\Device\Show.cshtml"
+            #line 113 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model));
 
             
             #line default
             #line hidden
             
-            #line 106 "..\..\Views\Device\Show.cshtml"
+            #line 113 "..\..\Views\Device\Show.cshtml"
                                                                                  
         }
 
@@ -395,7 +413,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 108 "..\..\Views\Device\Show.cshtml"
+            #line 115 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowAttachments))
         {
             
@@ -403,14 +421,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 110 "..\..\Views\Device\Show.cshtml"
+            #line 117 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model));
 
             
             #line default
             #line hidden
             
-            #line 110 "..\..\Views\Device\Show.cshtml"
+            #line 117 "..\..\Views\Device\Show.cshtml"
                                                                          
         }
 
@@ -420,7 +438,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 112 "..\..\Views\Device\Show.cshtml"
+            #line 119 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowFlagAssignments))
         {
             
@@ -428,14 +446,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 114 "..\..\Views\Device\Show.cshtml"
+            #line 121 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Flags, Model));
 
             
             #line default
             #line hidden
             
-            #line 114 "..\..\Views\Device\Show.cshtml"
+            #line 121 "..\..\Views\Device\Show.cshtml"
                                                                      
         }
 
@@ -445,7 +463,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 116 "..\..\Views\Device\Show.cshtml"
+            #line 123 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowCertificates))
         {
             
@@ -453,21 +471,91 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Device\Show.cshtml"
+            #line 125 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
 
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Device\Show.cshtml"
+            #line 125 "..\..\Views\Device\Show.cshtml"
                                                                             
         }
 
             
             #line default
             #line hidden
-WriteLiteral("    </div>\r\n</div>\r\n");
+WriteLiteral("    </div>\r\n");
+
+            
+            #line 128 "..\..\Views\Device\Show.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 128 "..\..\Views\Device\Show.cshtml"
+     if (requiresLive)
+    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <script>\r\n            $(function () {\r\n                if (!document.Disc" +
+"oFunctions)\r\n                    return;\r\n\r\n                const deviceSerialNu" +
+"mber = $(\'#Device_Show\').attr(\'data-deviceserialnumber\');\r\n                // Co" +
+"nnect to Hub\r\n                var hub = $.connection.deviceUpdates;\r\n\r\n         " +
+"       // Map Functions\r\n                if (document.DiscoFunctions.onCommentAd" +
+"ded)\r\n                    hub.client.commentAdded = document.DiscoFunctions.onCo" +
+"mmentAdded;\r\n                if (document.DiscoFunctions.onCommentRemoved)\r\n    " +
+"                hub.client.commentRemoved = document.DiscoFunctions.onCommentRem" +
+"oved;\r\n                if (document.DiscoFunctions.onAttachmentAdded)\r\n         " +
+"           hub.client.attachmentAdded = document.DiscoFunctions.onAttachmentAdde" +
+"d;\r\n                if (document.DiscoFunctions.onAttachmentRemoved)\r\n          " +
+"          hub.client.attachmentRemoved = document.DiscoFunctions.onAttachmentRem" +
+"oved;\r\n\r\n                $.connection.hub.qs = { DeviceSerialNumber: deviceSeria" +
+"lNumber };\r\n                $.connection.hub.error(onHubFailed);\r\n              " +
+"  $.connection.hub.disconnected(onHubFailed);\r\n\r\n                $.connection.hu" +
+"b.reconnecting(function () {\r\n                    $(\'#AttachmentsContainer\').fin" +
+"d(\'span.action.enabled\').addClass(\'disabled\');\r\n                    $(\'#Comments" +
+"\').find(\'button\').prop(\'disabled\', true);\r\n                });\r\n                " +
+"$.connection.hub.reconnected(function () {\r\n                    $(\'#AttachmentsC" +
+"ontainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n               " +
+"     $(\'#Comments\').find(\'button\').prop(\'disabled\', false);\r\n                });" +
+"\r\n\r\n                // Start Connection\r\n                $.connection.hub.start(" +
+"function () {\r\n                    $(\'#AttachmentsContainer\').find(\'span.action." +
+"enabled\').removeClass(\'disabled\');\r\n                    $(\'#Comments\').find(\'but" +
+"ton\').prop(\'disabled\', false);\r\n                }).fail(onHubFailed);\r\n\r\n       " +
+"         function onHubFailed(error) {\r\n                    // Disable UI\r\n     " +
+"               $(\'#AttachmentsContainer\').find(\'span.action.enabled\').addClass(\'" +
+"disabled\');\r\n                    $(\'#Comments\').find(\'button\').prop(\'disabled\', " +
+"true);\r\n\r\n                    // Show Dialog Message\r\n                    if ($(" +
+"\'.disconnected-dialog\').length == 0) {\r\n                        $(\'<div>\')\r\n    " +
+"                        .addClass(\'dialog disconnected-dialog\')\r\n               " +
+"             .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-sta" +
+"ck-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from t" +
+"he Disco ICT Server</h3><div>This page is not receiving live updates. Please ens" +
+"ure you are connected to the server, then refresh this page to enable features.<" +
+"/div>\')\r\n                            .dialog({\r\n                                " +
+"resizable: false,\r\n                                title: \'Disconnected\',\r\n     " +
+"                           width: 400,\r\n                                modal: t" +
+"rue,\r\n                                buttons: {\r\n                              " +
+"      \'Refresh Now\': function () {\r\n                                        $(th" +
+"is).dialog(\'option\', \'buttons\', null);\r\n                                        " +
+"window.location.reload(true);\r\n                                    },\r\n         " +
+"                           \'Close\': function () {\r\n                             " +
+"           $(this).dialog(\'destroy\');\r\n                                    }\r\n  " +
+"                              }\r\n                            });\r\n              " +
+"      }\r\n                }\r\n            });\r\n        </script>\r\n");
+
+            
+            #line 197 "..\..\Views\Device\Show.cshtml"
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
 
         }
     }

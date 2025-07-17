@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Disco.Web.Views.User.UserParts
+namespace Disco.Web.Views.Device.DeviceParts
 {
     using System;
     using System.Collections.Generic;
@@ -35,8 +35,8 @@ namespace Disco.Web.Views.User.UserParts
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/User/UserParts/_CommentsAndJobs.cshtml")]
-    public partial class _CommentsAndJobs : Disco.Services.Web.WebViewPage<Disco.Web.Models.User.ShowModel>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/DeviceParts/_CommentsAndJobs.cshtml")]
+    public partial class _CommentsAndJobs : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ShowModel>
     {
         public _CommentsAndJobs()
         {
@@ -44,12 +44,12 @@ namespace Disco.Web.Views.User.UserParts
         public override void Execute()
         {
             
-            #line 2 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 2 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
   
-    var canShowComments = Authorization.Has(Claims.User.ShowComments);
-    var canShowJobs = Authorization.Has(Claims.User.ShowJobs);
+    var canShowComments = Authorization.Has(Claims.Device.ShowComments);
+    var canShowJobs = Authorization.Has(Claims.Device.ShowJobs);
 
-    var jobCount = (Model.User.Jobs == null ? 0 : Model.User.Jobs.Count).ToString();
+    var jobCount = (Model.Device.Jobs == null ? 0 : Model.Device.Jobs.Count).ToString();
     string label;
     if (canShowComments & canShowJobs)
     {
@@ -73,36 +73,36 @@ namespace Disco.Web.Views.User.UserParts
             #line hidden
 WriteLiteral("\r\n<div");
 
-WriteLiteral(" id=\"UserDetailTab-CommentsAndJobs\"");
+WriteLiteral(" id=\"DeviceDetailTab-CommentsAndJobs\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 640), Tuple.Create("\"", 768)
-, Tuple.Create(Tuple.Create("", 648), Tuple.Create("UserPart", 648), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 652), Tuple.Create("\"", 782)
+, Tuple.Create(Tuple.Create("", 660), Tuple.Create("DevicePart", 660), true)
             
-            #line 25 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
-, Tuple.Create(Tuple.Create(" ", 656), Tuple.Create<System.Object, System.Int32>(canShowComments ? "canShowComments" : "cannotShowComments"
-            
-            #line default
-            #line hidden
-, 657), false)
-            
-            #line 25 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
-                                       , Tuple.Create(Tuple.Create(" ", 718), Tuple.Create<System.Object, System.Int32>(canShowJobs ? "canShowJobs" : "cannotShowJobs"
+            #line 25 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
+, Tuple.Create(Tuple.Create(" ", 670), Tuple.Create<System.Object, System.Int32>(canShowComments ? "canShowComments" : "cannotShowComments"
             
             #line default
             #line hidden
-, 719), false)
+, 671), false)
+            
+            #line 25 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
+                                           , Tuple.Create(Tuple.Create(" ", 732), Tuple.Create<System.Object, System.Int32>(canShowJobs ? "canShowJobs" : "cannotShowJobs"
+            
+            #line default
+            #line hidden
+, 733), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 26 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 26 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 26 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 26 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
      if (canShowComments)
     {
 
@@ -111,15 +111,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("        <div");
 
-WriteLiteral(" id=\"UserDetailTab-CommentsContainer\"");
+WriteLiteral(" id=\"DeviceDetailTab-CommentsContainer\"");
 
 WriteLiteral(">\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 29 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
-       Write(Html.Partial(MVC.User.Views.UserParts._Comments, Model));
+            #line 29 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
+       Write(Html.Partial(MVC.Device.Views.DeviceParts._Comments, Model));
 
             
             #line default
@@ -127,7 +127,7 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </div>\r\n");
 
             
-            #line 31 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 31 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
     }
 
             
@@ -136,7 +136,7 @@ WriteLiteral("\r\n        </div>\r\n");
 WriteLiteral("    ");
 
             
-            #line 32 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 32 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
      if (canShowJobs)
     {
 
@@ -145,14 +145,14 @@ WriteLiteral("    ");
             #line hidden
 WriteLiteral("        <div");
 
-WriteLiteral(" id=\"UserDetailTab-JobsContainer\"");
+WriteLiteral(" id=\"DeviceDetailTab-JobsContainer\"");
 
 WriteLiteral(">\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 35 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 35 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
        Write(Html.Partial(MVC.Shared.Views._JobTable, Model.Jobs));
 
             
@@ -161,18 +161,18 @@ WriteLiteral("            ");
 WriteLiteral("\r\n        </div>\r\n");
 
             
-            #line 37 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
+            #line 37 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
     }
 
             
             #line default
             #line hidden
-WriteLiteral("    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a href=\"#UserDetailTa" +
-"b-CommentsAndJobs\">");
+WriteLiteral("    <script>\r\n        $(\'#DeviceDetailTabItems\').append(\'<li><a href=\"#DeviceDeta" +
+"ilTab-CommentsAndJobs\">");
 
             
-            #line 39 "..\..\Views\User\UserParts\_CommentsAndJobs.cshtml"
-                                                                                 Write(label);
+            #line 39 "..\..\Views\Device\DeviceParts\_CommentsAndJobs.cshtml"
+                                                                                     Write(label);
 
             
             #line default

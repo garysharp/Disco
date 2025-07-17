@@ -265,11 +265,11 @@ WriteLiteral(" id=\"jobDetailTab-ResourcesLink\"");
 
 WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 
-WriteLiteral(">Log and Attachments [");
+WriteLiteral(">Comments and Attachments [");
 
             
             #line 65 "..\..\Views\Job\Show.cshtml"
-                                                                                                       Write(Model.Job.JobAttachments.Count);
+                                                                                                            Write(Model.Job.JobAttachments.Count);
 
             
             #line default
@@ -291,7 +291,7 @@ WriteLiteral(" id=\"jobDetailTab-ResourcesLink\"");
 
 WriteLiteral(" href=\"#jobDetailTab-Resources\"");
 
-WriteLiteral(">Log</a></li>\r\n");
+WriteLiteral(">Comments</a></li>\r\n");
 
             
             #line 70 "..\..\Views\Job\Show.cshtml"

@@ -1,7 +1,7 @@
-﻿using Disco.Data.Repository;
-using Disco.Data.Repository.Monitor;
+﻿using Disco.Data.Repository.Monitor;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Users;
 using Disco.Services.Web.Signalling;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -12,14 +12,13 @@ using System.Threading.Tasks;
 
 namespace Disco.Services.Devices
 {
-    [HubName("deviceUpdates"), DiscoHubAuthorizeAll(Claims.Device.Show, Claims.Device.ShowAttachments)]
+    [HubName("deviceUpdates"), DiscoHubAuthorize(Claims.Device.Show)]
     public class DeviceUpdatesHub : Hub
     {
-        private const string UserPrefix = "Device_";
-        public static IHubContext HubContext { get; private set; }
+        public static IHubContext HubContext { get; }
 
-        private static IDisposable RepositoryBeforeSubscription;
-        private static IDisposable RepositoryAfterSubscription;
+        private readonly static IDisposable RepositoryBeforeSubscription;
+        private readonly static IDisposable RepositoryAfterSubscription;
 
         static DeviceUpdatesHub()
         {
@@ -27,17 +26,50 @@ namespace Disco.Services.Devices
 
             // Subscribe to Repository Monitor for Changes
             RepositoryBeforeSubscription = RepositoryMonitor.StreamBeforeCommit
-                .Where(e => e.EntityType == typeof(DeviceAttachment) && e.EventType == RepositoryMonitorEventType.Deleted)
-                .Subscribe(RepositoryEventBefore);
+                .Where(e =>
+                    e.EventType == RepositoryMonitorEventType.Deleted && (
+                        e.EntityType == typeof(DeviceComment) ||
+                        e.EntityType == typeof(DeviceAttachment)
+                        )
+                ).Subscribe(RepositoryEventBefore);
             RepositoryAfterSubscription = RepositoryMonitor.StreamAfterCommit
-                .Where(e => e.EntityType == typeof(DeviceAttachment) && e.EventType == RepositoryMonitorEventType.Added)
-                .Subscribe(RepositoryAfterEvent);
+                .Where(e =>
+                    e.EventType == RepositoryMonitorEventType.Added && (
+                        e.EntityType == typeof(DeviceComment) ||
+                        e.EntityType == typeof(DeviceAttachment)
+                        )
+                ).Subscribe(RepositoryAfterEvent);
         }
 
-        private static string GroupName(string DeviceSerialNumber)
+        private static bool TryAttachmentGroupName(RepositoryMonitorEvent e, out string groupName)
         {
-            return UserPrefix + DeviceSerialNumber;
+            var deviceSerialNumber = e.GetPreviousPropertyValue<string>(nameof(DeviceAttachment.DeviceSerialNumber));
+            if (deviceSerialNumber == null)
+            {
+                groupName = null;
+                return false;
+            }
+            groupName = AttachmentGroupName(deviceSerialNumber);
+            return true;
         }
+
+        private static string AttachmentGroupName(string deviceSerialNumber)
+            => $"Device_Attachment_{deviceSerialNumber.ToLowerInvariant()}";
+
+        private static bool TryCommentGroupName(RepositoryMonitorEvent e, out string groupName)
+        {
+            var deviceSerialNumber = e.GetPreviousPropertyValue<string>(nameof(DeviceComment.DeviceSerialNumber));
+            if (deviceSerialNumber == null)
+            {
+                groupName = null;
+                return false;
+            }
+            groupName = CommentGroupName(deviceSerialNumber);
+            return true;
+        }
+
+        private static string CommentGroupName(string deviceSerialNumber)
+            => $"Device_Comment_{deviceSerialNumber.ToLowerInvariant()}";
 
         public override Task OnConnected()
         {
@@ -46,7 +78,12 @@ namespace Disco.Services.Devices
             if (string.IsNullOrWhiteSpace(deviceSerialNumber))
                 throw new ArgumentNullException("DeviceSerialNumber");
 
-            Groups.Add(Context.ConnectionId, GroupName(deviceSerialNumber));
+            var authorization = UserService.GetAuthorization(Context.User.Identity.Name);
+
+            if (authorization.Has(Claims.Device.ShowComments))
+                Groups.Add(Context.ConnectionId, CommentGroupName(deviceSerialNumber));
+            if (authorization.Has(Claims.Device.ShowAttachments))
+                Groups.Add(Context.ConnectionId, AttachmentGroupName(deviceSerialNumber));
 
             return base.OnConnected();
         }
@@ -55,16 +92,10 @@ namespace Disco.Services.Devices
         {
             if (e.EventType == RepositoryMonitorEventType.Deleted)
             {
-                if (e.EntityType == typeof(DeviceAttachment))
-                {
-                    var repositoryAttachment = (DeviceAttachment)e.Entity;
-                    string attachmentDeviceSerialNumber;
-
-                    using (DiscoDataContext Database = new DiscoDataContext())
-                        attachmentDeviceSerialNumber = Database.DeviceAttachments.Where(a => a.Id == repositoryAttachment.Id).Select(a => a.DeviceSerialNumber).First();
-
-                    HubContext.Clients.Group(GroupName(attachmentDeviceSerialNumber)).removeAttachment(repositoryAttachment.Id);
-                }
+                if (e.Entity is DeviceComment comment && TryCommentGroupName(e, out var commentGroupName))
+                    HubContext.Clients.Group(commentGroupName).commentRemoved(comment.Id);
+                else if (e.Entity is DeviceAttachment attachment && TryAttachmentGroupName(e, out var attachmentGroupName))
+                    HubContext.Clients.Group(attachmentGroupName).attachmentRemoved(attachment.Id);
             }
         }
 
@@ -72,12 +103,10 @@ namespace Disco.Services.Devices
         {
             if (e.EventType == RepositoryMonitorEventType.Added)
             {
-                if (e.EntityType == typeof(DeviceAttachment))
-                {
-                    var a = (DeviceAttachment)e.Entity;
-
-                    HubContext.Clients.Group(GroupName(a.DeviceSerialNumber)).addAttachment(a.Id);
-                }
+                if (e.Entity is DeviceComment comment)
+                    HubContext.Clients.Group(CommentGroupName(comment.DeviceSerialNumber)).commentAdded(comment.Id);
+                else if (e.Entity is DeviceAttachment attachment)
+                    HubContext.Clients.Group(AttachmentGroupName(attachment.DeviceSerialNumber)).attachmentAdded(attachment.Id);
             }
         }
     }

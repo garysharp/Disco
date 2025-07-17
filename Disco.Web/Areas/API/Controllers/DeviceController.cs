@@ -472,7 +472,88 @@ namespace Disco.Web.Areas.API.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        #region Device Attachements
+        #region Device Comments
+
+        [DiscoAuthorize(Claims.Device.ShowComments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Comments(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException(nameof(id));
+
+            var device = Database.Devices
+                .Include(d => d.DeviceComments.Select(l => l.TechUser))
+                .Where(d => d.SerialNumber == id).FirstOrDefault();
+            if (device == null)
+                return BadRequest("Invalid Device Serial Number");
+
+            var results = device.DeviceComments.OrderByDescending(c => c.Timestamp).Select(c => Models.Shared.CommentModel.FromEntity(c)).ToList();
+            return Json(results);
+        }
+
+        [DiscoAuthorize(Claims.Device.ShowComments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Comment(int id)
+        {
+            var entity = Database.DeviceComments
+                .Include(c => c.TechUser)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (entity == null)
+                return BadRequest("Invalid Device Comment Id");
+
+            var comment = Models.Shared.CommentModel.FromEntity(entity);
+            return Json(comment);
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.AddComments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult CommentAdd(string id, string comment = null)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException(nameof(id));
+
+            if (string.IsNullOrWhiteSpace(comment))
+                return BadRequest("Comment is required");
+
+            var device = Database.Devices.Find(id);
+            if (device == null)
+                return BadRequest("Invalid Device Serial Number");
+
+            var entity = new DeviceComment()
+            {
+                DeviceSerialNumber = device.SerialNumber,
+                TechUserId = CurrentUser.UserId,
+                Timestamp = DateTime.Now,
+                Comments = comment
+            };
+            Database.DeviceComments.Add(entity);
+            Database.SaveChanges();
+
+            return Json(entity.Id);
+        }
+
+        [DiscoAuthorizeAny(Claims.Device.Actions.RemoveAnyComments, Claims.Device.Actions.RemoveOwnComments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult CommentRemove(int id)
+        {
+            var entity = Database.DeviceComments.Find(id);
+            if (entity != null)
+            {
+                if (entity.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase))
+                    Authorization.RequireAny(Claims.Device.Actions.RemoveAnyComments, Claims.Device.Actions.RemoveOwnComments);
+                else
+                    Authorization.Require(Claims.Device.Actions.RemoveAnyComments);
+
+                Database.DeviceComments.Remove(entity);
+                Database.SaveChanges();
+            }
+            // Doesn't Exist/Already Deleted - OK
+            return Ok();
+        }
+        #endregion
+
+        #region Device Attachments
 
         [DiscoAuthorize(Claims.Device.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentDownload(int id)

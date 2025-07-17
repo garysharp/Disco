@@ -8,7 +8,6 @@
 
     Html.BundleDeferred("~/Style/Shadowbox");
     Html.BundleDeferred("~/ClientScripts/Modules/Shadowbox");
-    Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 
     if (canAddAttachments)
     {
@@ -29,17 +28,18 @@
                         {
                             foreach (var da in Model.Device.DeviceAttachments.OrderByDescending(a => a.Id))
                             {
-                            <a href="@Url.Action(MVC.API.Device.AttachmentDownload(da.Id))" data-attachmentid="@da.Id" data-mimetype="@da.MimeType">
-                                <span class="icon" title="@da.Filename">
-                                    <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id)))" /></span>
-                                <span class="comments" title="@(da.Comments ?? da.Filename)">
-                                    @{if (!string.IsNullOrEmpty(da.DocumentTemplateId))
-                                      { @da.DocumentTemplate.Description}
-                                      else
-                                      { @(da.Comments ?? da.Filename) }}
-                                </span><span class="author">@da.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && da.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
-                                                                                          {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@da.Timestamp.ToFullDateTime()" data-livestamp="@da.Timestamp.ToUnixEpoc()">@da.Timestamp.ToFullDateTime()</span>
-                            </a>   
+                                <a href="@Url.Action(MVC.API.Device.AttachmentDownload(da.Id))" data-attachmentid="@da.Id" data-mimetype="@da.MimeType">
+                                    <span class="icon" title="@da.Filename">
+                                        <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id)))" />
+                                    </span>
+                                    <span class="comments" title="@(da.Comments ?? da.Filename)">
+                                        @{if (!string.IsNullOrEmpty(da.DocumentTemplateId))
+                                            { @da.DocumentTemplate.Description}
+                                        else
+                                        { @(da.Comments ?? da.Filename) }}
+                                    </span><span class="author">@da.TechUser.ToString()</span>@if (canRemoveAnyAttachments || (canRemoveOwnAttachments && da.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
+                                    {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@da.Timestamp.ToFullDateTime()" data-livestamp="@da.Timestamp.ToUnixEpoc()">@da.Timestamp.ToFullDateTime()</span>
+                                </a>
                             }
                         }
                     </div>
@@ -56,63 +56,12 @@
                             modal: true
                         });
                         $(function () {
-                            var $Attachments = $('#Attachments');
-                            var $attachmentOutput = $Attachments.find('.attachmentOutput');
-                            var $attachmentDownloadHost;
+                            const $Attachments = $('#Attachments');
+                            const $attachmentOutput = $Attachments.find('.attachmentOutput');
+                            let $attachmentDownloadHost = null;
+                            let $dialogRemoveAttachment = null;
 
-                            var $dialogRemoveAttachment = null;
-
-                            // Connect to Hub
-                            var hub = $.connection.deviceUpdates;
-
-                            // Map Functions
-                            hub.client.addAttachment = onAddAttachment;
-                            hub.client.removeAttachment = onRemoveAttachment;
-
-                            $.connection.hub.qs = { DeviceSerialNumber: '@(Model.Device.SerialNumber)' };
-                            $.connection.hub.error(onHubFailed);
-                            $.connection.hub.disconnected(onHubFailed);
-
-                            $.connection.hub.reconnecting(function () {
-                                $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
-                            });
-                            $.connection.hub.reconnected(function () {
-                                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
-                            });
-
-                            // Start Connection
-                            $.connection.hub.start(function () {
-                                $('#AttachmentsContainer').find('span.action.enabled').removeClass('disabled');
-                            }).fail(onHubFailed);
-
-                            function onHubFailed(error) {
-                                // Disable UI
-                                $('#AttachmentsContainer').find('span.action.enabled').addClass('disabled');
-
-                                // Show Dialog Message
-                                if ($('.disconnected-dialog').length == 0) {
-                                    $('<div>')
-                                        .addClass('dialog disconnected-dialog')
-                                        .html('<h3><span class="fa-stack fa-lg"><i class="fa fa-wifi fa-stack-1x"></i><i class="fa fa-ban fa-stack-2x error"></i></span>Disconnected from the Disco ICT Server</h3><div>This page is not receiving live updates. Please ensure you are connected to the server, then refresh this page to enable features.</div>')
-                                        .dialog({
-                                            resizable: false,
-                                            title: 'Disconnected',
-                                            width: 400,
-                                            modal: true,
-                                            buttons: {
-                                                'Refresh Now': function () {
-                                                    $(this).dialog('option', 'buttons', null);
-                                                    window.location.reload(true);
-                                                },
-                                                'Close': function () {
-                                                    $(this).dialog('destroy');
-                                                }
-                                            }
-                                        });
-                                }
-                            }
-
-                            function onAddAttachment(id, quick) {
+                            function onAttachmentAdded(id, quick) {
                                 var data = { id: id };
                                 $.ajax({
                                     url: '@Url.Action(MVC.API.Device.Attachment())',
@@ -185,25 +134,12 @@
                                 buildThumbnail();
                             }
 
-                            function onRemoveAttachment(id) {
-                                var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
-
-                                a.hide(300).delay(300).queue(function () {
-                                    var $this = $(this);
-                                    if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
-                                        Shadowbox.removeCache(this);
-                                    $this.find('.timestamp').livestamp('destroy');
-                                    $this.remove();
-                                    onUpdate();
-                                });
-                            }
-
                             function onDownload() {
                                 var $this = $(this);
                                 var url = $this.attr('href');
 
                                 if ($.connection && $.connection.hub && $.connection.hub.transport &&
-                                                    $.connection.hub.transport.name == 'foreverFrame') {
+                                    $.connection.hub.transport.name == 'foreverFrame') {
                                     // SignalR active with foreverFrame transport - use popup window
                                     window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
                                 } else {
@@ -222,11 +158,27 @@
                                 return false;
                             }
 
+                            function onAttachmentRemoved(id) {
+                                var a = $attachmentOutput.find('a[data-attachmentid=' + id + ']');
+
+                                a.hide(300).delay(300).queue(function () {
+                                    var $this = $(this);
+                                    if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                                        Shadowbox.removeCache(this);
+                                    $this.find('.timestamp').livestamp('destroy');
+                                    $this.remove();
+                                    onUpdate();
+                                });
+                            }
+
                             function onUpdate() {
                                 var attachmentCount = $attachmentOutput.children('a').length;
                                 var tabHeading = 'Attachments [' + attachmentCount + ']';
                                 $('#DeviceDetailTab-ResourcesLink').text(tabHeading);
                             }
+
+                            document.DiscoFunctions.onAttachmentAdded = onAttachmentAdded;
+                            document.DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;
 
                         @if (canAddAttachments)
                         {<text>

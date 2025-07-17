@@ -17,6 +17,8 @@
 
         [ClaimDetails("Show Details", "Can show details associated with devices")]
         public bool ShowDetails { get; set; }
+        [ClaimDetails("Show Comments", "Can show device comments")]
+        public bool ShowComments { get; set; }
         [ClaimDetails("Show Attachments", "Can show device attachments")]
         public bool ShowAttachments { get; set; }
         [ClaimDetails("Show Certificates", "Can show certificates associated with devices")]
