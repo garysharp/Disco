@@ -12,7 +12,13 @@ namespace Disco.Services.Web
         protected static HttpStatusCodeResult BadRequest(string message = null)
             => StatusCode(HttpStatusCode.BadRequest, message);
 
-        protected static HttpStatusCodeResult StatusCode(HttpStatusCode statusCode, string message = null)
-            => new HttpStatusCodeResult(statusCode, message);
+        protected static HttpStatusCodeResult StatusCode(HttpStatusCode statusCode, string statusDescription = null)
+            => new HttpStatusCodeResult(statusCode, statusDescription);
+
+        protected static HttpNotFoundResult NotFound(string statusDescription = null)
+            => new HttpNotFoundResult(statusDescription);
+
+        protected static HttpUnauthorizedResult Unauthorized(string statusDescription = null)
+            => new HttpUnauthorizedResult(statusDescription);
     }
 }

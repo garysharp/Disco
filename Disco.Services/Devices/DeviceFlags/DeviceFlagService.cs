@@ -13,7 +13,7 @@ namespace Disco.Services.Devices.DeviceFlags
 {
     public static class DeviceFlagService
     {
-        private static Cache _cache;
+        private static Cache cache;
         internal static Lazy<IObservable<RepositoryMonitorEvent>> DeviceFlagAssignmentRepositoryEvents;
 
         static DeviceFlagService()
@@ -31,18 +31,51 @@ namespace Disco.Services.Devices.DeviceFlags
 
         public static void Initialize(DiscoDataContext database)
         {
-            _cache = new Cache(database);
+            cache = new Cache(database);
 
             // Initialize Managed Groups (if configured)
-            _cache.GetDeviceFlags().ForEach(uf =>
+            cache.GetDeviceFlags().ForEach(uf =>
             {
-                DeviceFlagDevicesManagedGroup.Initialize(uf);
-                DeviceFlagDeviceAssignedUsersManagedGroup.Initialize(uf);
+                DeviceFlagDevicesManagedGroup.Initialize(uf.flag);
+                DeviceFlagDeviceAssignedUsersManagedGroup.Initialize(uf.flag);
             });
         }
 
-        public static List<DeviceFlag> GetDeviceFlags() { return _cache.GetDeviceFlags(); }
-        public static DeviceFlag GetDeviceFlag(int deviceFlagId) { return _cache.GetDeviceFlag(deviceFlagId); }
+        public static IEnumerable<(DeviceFlag flag, FlagPermission permission)> GetDeviceFlags() { return cache.GetDeviceFlags(); }
+        public static (DeviceFlag flag, FlagPermission permission) GetDeviceFlag(int deviceFlagId) { return cache.GetDeviceFlag(deviceFlagId); }
+
+        public static DeviceFlag GetAvailableUserFlag(int deviceFlagId, Device targetDevice)
+        {
+            var (deviceFlag, permission) = cache.GetDeviceFlag(deviceFlagId);
+
+            if (targetDevice.DeviceFlagAssignments
+                .Where(a => a.DeviceFlagId == deviceFlagId && !a.RemovedDate.HasValue).Any())
+                return null;
+
+            if (permission.CanAssign())
+                return deviceFlag;
+
+            return null;
+        }
+
+        public static IEnumerable<DeviceFlag> GetAvailableDeviceFlags(Device targetDevice)
+        {
+            var records = cache.GetDeviceFlags();
+
+            var usedFlags = targetDevice.DeviceFlagAssignments
+                    .Where(a => !a.RemovedDate.HasValue)
+                    .Select(a => a.DeviceFlagId)
+                    .ToList();
+
+            foreach (var (flag, permission) in records)
+            {
+                if (usedFlags.Contains(flag.Id))
+                    continue;
+
+                if (permission.CanAssign())
+                    yield return flag;
+            }
+        }
 
         #region Device Flag Maintenance
         public static DeviceFlag CreateDeviceFlag(DiscoDataContext database, string name, string description)
@@ -52,7 +85,7 @@ namespace Disco.Services.Devices.DeviceFlags
                 throw new ArgumentException("The Device Flag Name is required", nameof(name));
 
             // Name Unique
-            if (_cache.GetDeviceFlags().Any(f => f.Name.Equals(name, StringComparison.Ordinal)))
+            if (cache.GetDeviceFlags().Any(f => f.flag.Name.Equals(name, StringComparison.Ordinal)))
                 throw new ArgumentException("Another Device Flag already exists with that name", nameof(name));
 
             // Clone to break reference
@@ -67,7 +100,7 @@ namespace Disco.Services.Devices.DeviceFlags
             database.DeviceFlags.Add(flag);
             database.SaveChanges();
 
-            _cache.AddOrUpdate(flag);
+            cache.AddOrUpdate(flag);
 
             return flag;
         }
@@ -78,12 +111,12 @@ namespace Disco.Services.Devices.DeviceFlags
                 throw new ArgumentException("The Device Flag Name is required", nameof(deviceFlag));
 
             // Name Unique
-            if (_cache.GetDeviceFlags().Any(f => f.Id != deviceFlag.Id && f.Name == deviceFlag.Name))
+            if (cache.GetDeviceFlags().Any(f => f.flag.Id != deviceFlag.Id && f.flag.Name == deviceFlag.Name))
                 throw new ArgumentException("Another Device Flag already exists with that name", nameof(deviceFlag));
 
             database.SaveChanges();
 
-            _cache.AddOrUpdate(deviceFlag);
+            cache.AddOrUpdate(deviceFlag);
             DeviceFlagDevicesManagedGroup.Initialize(deviceFlag);
             DeviceFlagDeviceAssignedUsersManagedGroup.Initialize(deviceFlag);
 
@@ -113,7 +146,7 @@ namespace Disco.Services.Devices.DeviceFlags
             database.SaveChanges();
 
             // Remove from Cache
-            _cache.Remove(deviceFlagId);
+            cache.Remove(deviceFlagId);
 
             status.Finished($"Successfully Deleted Device Flag: '{flag.Name}' [{flag.Id}]");
         }
@@ -140,7 +173,7 @@ namespace Disco.Services.Devices.DeviceFlags
                     {
                         status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {device}");
 
-                        return device.OnAddDeviceFlag(database, deviceFlag, technician, comments);
+                        return device.OnAddDeviceFlagUnsafe(database, deviceFlag, technician, comments);
                     }).ToList();
 
                     // Save Chunk Items to Database
@@ -206,7 +239,7 @@ namespace Disco.Services.Devices.DeviceFlags
                     {
                         status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {device}");
 
-                        return device.OnAddDeviceFlag(database, deviceFlag, technician, comments);
+                        return device.OnAddDeviceFlagUnsafe(database, deviceFlag, technician, comments);
                     }).ToList();
 
                     // Save Chunk Items to Database
@@ -229,11 +262,11 @@ namespace Disco.Services.Devices.DeviceFlags
 
         public static string RandomUnusedIcon()
         {
-            return UIHelpers.RandomIcon(_cache.GetDeviceFlags().Select(f => f.Icon));
+            return UIHelpers.RandomIcon(cache.GetDeviceFlags().Select(f => f.flag.Icon));
         }
         public static string RandomUnusedThemeColour()
         {
-            return UIHelpers.RandomThemeColour(_cache.GetDeviceFlags().Select(f => f.IconColour));
+            return UIHelpers.RandomThemeColour(cache.GetDeviceFlags().Select(f => f.flag.IconColour));
         }
     }
 }

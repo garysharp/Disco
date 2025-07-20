@@ -52,15 +52,8 @@ namespace Disco.Web.Views.Device.DeviceParts
             
             #line 3 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
   
-    Authorization.Require(Claims.Device.ShowFlagAssignments);
-
-    var hasRemove = Authorization.Has(Claims.Device.Actions.RemoveFlags);
-    var hasEdit = Authorization.Has(Claims.Device.Actions.EditFlags);
-
-    var hasDeviceFlagShow = Authorization.Has(Claims.Config.DeviceFlag.Show);
-    var activeAssignmentCount = Model.Device.DeviceFlagAssignments == null ? 0 : Model.Device.DeviceFlagAssignments.Count(a => !a.RemovedDate.HasValue);
-
-    var flagAssignments = Model.Device.DeviceFlagAssignments.Select(a => Tuple.Create(a, DeviceFlagService.GetDeviceFlag(a.DeviceFlagId))).ToList();
+    var flagAssignments = Model.Device.DeviceFlagAssignments.Select(a => Tuple.Create(a, DeviceFlagService.GetDeviceFlag(a.DeviceFlagId))).Where(a => a.Item2.permission.CanShow()).ToList();
+    var activeAssignmentCount = flagAssignments.Count(a => !a.Item1.RemovedDate.HasValue);
 
             
             #line default
@@ -74,13 +67,13 @@ WriteLiteral(" class=\"DevicePart\"");
 WriteLiteral(">\r\n");
 
             
-            #line 15 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 8 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 8 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
      if (flagAssignments.Count > 0)
     {
 
@@ -110,13 +103,13 @@ WriteLiteral(" class=\"removed\"");
 WriteLiteral(">Removed</th>\r\n            </tr>\r\n");
 
             
-            #line 24 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 17 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 24 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 17 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
              foreach (var fa in flagAssignments.OrderByDescending(a => a.Item1.AddedDate))
             {
 
@@ -128,7 +121,7 @@ WriteLiteral("                <tr");
 WriteLiteral(" data-deviceflagassignmentid=\"");
 
             
-            #line 26 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 19 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                             Write(fa.Item1.Id);
 
             
@@ -139,7 +132,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-flagassignmentaddeddate=\"");
 
             
-            #line 26 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 19 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                                                          Write(fa.Item1.AddedDate.ToString("s"));
 
             
@@ -147,14 +140,14 @@ WriteLiteral(" data-flagassignmentaddeddate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1282), Tuple.Create("\"", 1345)
+WriteAttribute("class", Tuple.Create(" class=\"", 967), Tuple.Create("\"", 1030)
             
-            #line 26 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                                                          , Tuple.Create(Tuple.Create("", 1290), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
+            #line 19 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                                           , Tuple.Create(Tuple.Create("", 975), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
             
             #line default
             #line hidden
-, 1290), false)
+, 975), false)
 );
 
 WriteLiteral(">\r\n                    <td");
@@ -163,54 +156,54 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1414), Tuple.Create("\"", 1481)
-, Tuple.Create(Tuple.Create("", 1422), Tuple.Create("fa", 1422), true)
-, Tuple.Create(Tuple.Create(" ", 1424), Tuple.Create("fa-", 1425), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1099), Tuple.Create("\"", 1176)
+, Tuple.Create(Tuple.Create("", 1107), Tuple.Create("fa", 1107), true)
+, Tuple.Create(Tuple.Create(" ", 1109), Tuple.Create("fa-", 1110), true)
             
-            #line 28 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1428), Tuple.Create<System.Object, System.Int32>(fa.Item2.Icon
-            
-            #line default
-            #line hidden
-, 1428), false)
-, Tuple.Create(Tuple.Create(" ", 1444), Tuple.Create("fa-fw", 1445), true)
-, Tuple.Create(Tuple.Create(" ", 1450), Tuple.Create("fa-lg", 1451), true)
-, Tuple.Create(Tuple.Create(" ", 1456), Tuple.Create("d-", 1457), true)
-            
-            #line 28 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1459), Tuple.Create<System.Object, System.Int32>(fa.Item2.IconColour
+            #line 21 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 1113), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.Icon
             
             #line default
             #line hidden
-, 1459), false)
+, 1113), false)
+, Tuple.Create(Tuple.Create(" ", 1134), Tuple.Create("fa-fw", 1135), true)
+, Tuple.Create(Tuple.Create(" ", 1140), Tuple.Create("fa-lg", 1141), true)
+, Tuple.Create(Tuple.Create(" ", 1146), Tuple.Create("d-", 1147), true)
+            
+            #line 21 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 1149), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.IconColour
+            
+            #line default
+            #line hidden
+, 1149), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 29 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 22 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 29 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                         if (hasDeviceFlagShow)
+            #line 22 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                         if (Authorization.Has(Claims.Config.DeviceFlag.Show))
                         {
                             
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                       Write(Html.ActionLink(fa.Item2.Name, MVC.Config.DeviceFlag.Index(fa.Item2.Id)));
+            #line 24 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                       Write(Html.ActionLink(fa.Item2.flag.Name, MVC.Config.DeviceFlag.Index(fa.Item2.flag.Id)));
 
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                                                                                                     
+            #line 24 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                                                                                               
                         }
                         else
                         {
@@ -219,15 +212,15 @@ WriteLiteral("></i>\r\n");
             #line default
             #line hidden
             
-            #line 35 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                       Write(fa.Item2.Name);
+            #line 28 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                       Write(fa.Item2.flag.Name);
 
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                                          
+            #line 28 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                               
                         }
 
             
@@ -242,7 +235,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 39 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 32 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                    Write(CommonHelpers.FriendlyDateAndUser(fa.Item1.AddedDate, fa.Item1.AddedUser));
 
             
@@ -251,13 +244,13 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n");
 
             
-            #line 40 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 33 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 40 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 33 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                          if (fa.Item1.OnAssignmentExpressionResult != null)
                         {
 
@@ -271,7 +264,7 @@ WriteLiteral(" class=\"expressionResult\"");
 WriteLiteral(">");
 
             
-            #line 42 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 35 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                      Write(fa.Item1.OnAssignmentExpressionResult);
 
             
@@ -280,7 +273,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 43 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 36 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         }
 
             
@@ -293,14 +286,14 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">\r\n");
 
             
-            #line 46 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 39 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 46 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                         if (hasEdit)
+            #line 39 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                         if (fa.Item2.permission.CanEdit())
                         {
 
             
@@ -319,7 +312,7 @@ WriteLiteral(" title=\"Edit Comments\"");
 WriteLiteral("></i></div>\r\n");
 
             
-            #line 49 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 42 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         }
 
             
@@ -328,7 +321,7 @@ WriteLiteral("></i></div>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 50 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 43 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                          if (fa.Item1.Comments == null)
                         {
 
@@ -342,7 +335,7 @@ WriteLiteral(" class=\"comments smallMessage\"");
 WriteLiteral(">[no comments]</div>\r\n");
 
             
-            #line 53 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 46 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         }
                         else
                         {
@@ -357,7 +350,7 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 56 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 49 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                              Write(fa.Item1.Comments.ToHtmlComment());
 
             
@@ -372,7 +365,7 @@ WriteLiteral(" class=\"commentsRaw\"");
 WriteLiteral(">");
 
             
-            #line 57 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 50 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                 Write(fa.Item1.Comments);
 
             
@@ -381,7 +374,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 58 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 51 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         }
 
             
@@ -389,27 +382,27 @@ WriteLiteral("</div>\r\n");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3000), Tuple.Create("\"", 3063)
-, Tuple.Create(Tuple.Create("", 3008), Tuple.Create("removed", 3008), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2763), Tuple.Create("\"", 2826)
+, Tuple.Create(Tuple.Create("", 2771), Tuple.Create("removed", 2771), true)
             
-            #line 60 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 3015), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
+            #line 53 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 2778), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
             
             #line default
             #line hidden
-, 3015), false)
+, 2778), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 61 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 54 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 61 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 54 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                          if (fa.Item1.RemovedDate.HasValue)
                         {
                             
@@ -417,14 +410,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 56 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                        Write(CommonHelpers.FriendlyDateAndUser(fa.Item1.RemovedDate.Value, fa.Item1.RemovedUser));
 
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 56 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                                                                                 
                             if (fa.Item1.OnUnassignmentExpressionResult != null)
                             {
@@ -439,7 +432,7 @@ WriteLiteral(" class=\"expressionResult\"");
 WriteLiteral(">");
 
             
-            #line 66 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 59 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                          Write(fa.Item1.OnUnassignmentExpressionResult);
 
             
@@ -448,7 +441,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 67 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 60 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                             }
                         }
                         else if (fa.Item1.CanRemove())
@@ -466,7 +459,7 @@ WriteLiteral(" class=\"button small remove\"");
 WriteLiteral(">Remove</a>\r\n");
 
             
-            #line 72 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 65 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         }
 
             
@@ -475,7 +468,7 @@ WriteLiteral(">Remove</a>\r\n");
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 75 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 68 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             }
 
             
@@ -494,15 +487,29 @@ WriteLiteral(" title=\"Remove this flag from the device?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 78 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 71 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 78 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 71 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
              using (Html.BeginForm(MVC.API.DeviceFlagAssignment.RemoveDevice()))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 73 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 73 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                        
 
             
             #line default
@@ -526,7 +533,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n                </p>\r\n");
 
             
-            #line 84 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 78 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             }
 
             
@@ -545,15 +552,29 @@ WriteLiteral(" title=\"Edit the Comments\"");
 WriteLiteral(">\r\n");
 
             
-            #line 87 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 81 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 87 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 81 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
              using (Html.BeginForm(MVC.API.DeviceFlagAssignment.UpdateComments()))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 83 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 83 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                        
 
             
             #line default
@@ -593,7 +614,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                </p>\r\n");
 
             
-            #line 95 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 90 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             }
 
             
@@ -651,7 +672,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var deviceFlag
 "eturn false;\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 174 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 169 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
     }
     else
     {
@@ -666,7 +687,7 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">This device has no associated flags</div>\r\n");
 
             
-            #line 178 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 173 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
     }
 
             
@@ -676,7 +697,7 @@ WriteLiteral("    <script>\r\n        $(\'#DeviceDetailTabItems\').append(\'<li>
 "ilTab-Flags\">Flags [");
 
             
-            #line 180 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 175 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                                                   Write(activeAssignmentCount);
 
             

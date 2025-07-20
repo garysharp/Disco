@@ -91,7 +91,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 16 "..\..\Views\User\Show.cshtml"
-     if (Authorization.Has(Claims.User.ShowFlagAssignments))
+     if (Model.User.UserFlagAssignments.CanShowAny())
     {
 
             
@@ -113,48 +113,50 @@ WriteLiteral(">\r\n");
             #line 19 "..\..\Views\User\Show.cshtml"
              foreach (var flag in Model.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
             {
+                if (flag.Item2.permission.CanShow())
+                {
 
             
             #line default
             #line hidden
-WriteLiteral("                <i");
+WriteLiteral("                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 867), Tuple.Create("\"", 943)
-, Tuple.Create(Tuple.Create("", 875), Tuple.Create("flag", 875), true)
-, Tuple.Create(Tuple.Create(" ", 879), Tuple.Create("fa", 880), true)
-, Tuple.Create(Tuple.Create(" ", 882), Tuple.Create("fa-", 883), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 937), Tuple.Create("\"", 1023)
+, Tuple.Create(Tuple.Create("", 945), Tuple.Create("flag", 945), true)
+, Tuple.Create(Tuple.Create(" ", 949), Tuple.Create("fa", 950), true)
+, Tuple.Create(Tuple.Create(" ", 952), Tuple.Create("fa-", 953), true)
             
-            #line 21 "..\..\Views\User\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 886), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
-            
-            #line default
-            #line hidden
-, 886), false)
-, Tuple.Create(Tuple.Create(" ", 904), Tuple.Create("fa-fw", 905), true)
-, Tuple.Create(Tuple.Create(" ", 910), Tuple.Create("fa-lg", 911), true)
-, Tuple.Create(Tuple.Create(" ", 916), Tuple.Create("d-", 917), true)
-            
-            #line 21 "..\..\Views\User\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 919), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+            #line 23 "..\..\Views\User\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 956), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
             
             #line default
             #line hidden
-, 919), false)
+, 956), false)
+, Tuple.Create(Tuple.Create(" ", 979), Tuple.Create("fa-fw", 980), true)
+, Tuple.Create(Tuple.Create(" ", 985), Tuple.Create("fa-lg", 986), true)
+, Tuple.Create(Tuple.Create(" ", 991), Tuple.Create("d-", 992), true)
+            
+            #line 23 "..\..\Views\User\Show.cshtml"
+ , Tuple.Create(Tuple.Create("", 994), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
+            
+            #line default
+            #line hidden
+, 994), false)
 );
 
-WriteLiteral(">\r\n                    <span");
+WriteLiteral(">\r\n                        <span");
 
 WriteLiteral(" class=\"details\"");
 
-WriteLiteral(">\r\n                        <span");
+WriteLiteral(">\r\n                            <span");
 
 WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">");
 
             
-            #line 23 "..\..\Views\User\Show.cshtml"
-                                      Write(flag.Item2.Name);
+            #line 25 "..\..\Views\User\Show.cshtml"
+                                          Write(flag.Item2.flag.Name);
 
             
             #line default
@@ -162,9 +164,9 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 23 "..\..\Views\User\Show.cshtml"
-                                                                   if (flag.Item1.Comments != null)
-                        {
+            #line 25 "..\..\Views\User\Show.cshtml"
+                                                                            if (flag.Item1.Comments != null)
+                            {
             
             #line default
             #line hidden
@@ -175,8 +177,8 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 24 "..\..\Views\User\Show.cshtml"
-                                           Write(flag.Item1.Comments.ToHtmlComment());
+            #line 26 "..\..\Views\User\Show.cshtml"
+                                               Write(flag.Item1.Comments.ToHtmlComment());
 
             
             #line default
@@ -184,8 +186,8 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 24 "..\..\Views\User\Show.cshtml"
-                                                                                           }
+            #line 26 "..\..\Views\User\Show.cshtml"
+                                                                                               }
             
             #line default
             #line hidden
@@ -196,16 +198,17 @@ WriteLiteral(" class=\"added\"");
 WriteLiteral(">");
 
             
-            #line 24 "..\..\Views\User\Show.cshtml"
-                                                                                                           Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser));
+            #line 26 "..\..\Views\User\Show.cshtml"
+                                                                                                               Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser));
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n                    </span>\r\n                </i>\r\n");
+WriteLiteral("</span>\r\n                        </span>\r\n                    </i>\r\n");
 
             
-            #line 27 "..\..\Views\User\Show.cshtml"
+            #line 29 "..\..\Views\User\Show.cshtml"
+                }
             }
 
             
@@ -251,7 +254,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 60 "..\..\Views\User\Show.cshtml"
+            #line 63 "..\..\Views\User\Show.cshtml"
     }
 
             
@@ -260,7 +263,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 61 "..\..\Views\User\Show.cshtml"
+            #line 64 "..\..\Views\User\Show.cshtml"
 Write(Html.Partial(MVC.User.Views.UserParts._Subject, Model));
 
             
@@ -300,13 +303,13 @@ WriteLiteral(" id=\"UserDetailTabItems\"");
 WriteLiteral("></ul>\r\n");
 
             
-            #line 97 "..\..\Views\User\Show.cshtml"
+            #line 100 "..\..\Views\User\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 97 "..\..\Views\User\Show.cshtml"
+            #line 100 "..\..\Views\User\Show.cshtml"
          if (Authorization.HasAny(Claims.User.ShowComments, Claims.User.ShowJobs))
         {
             
@@ -314,14 +317,14 @@ WriteLiteral("></ul>\r\n");
             #line default
             #line hidden
             
-            #line 99 "..\..\Views\User\Show.cshtml"
+            #line 102 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._CommentsAndJobs, Model));
 
             
             #line default
             #line hidden
             
-            #line 99 "..\..\Views\User\Show.cshtml"
+            #line 102 "..\..\Views\User\Show.cshtml"
                                                                            
         }
 
@@ -331,7 +334,7 @@ WriteLiteral("></ul>\r\n");
 WriteLiteral("        ");
 
             
-            #line 101 "..\..\Views\User\Show.cshtml"
+            #line 104 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowAssignmentHistory))
         {
             
@@ -339,14 +342,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\User\Show.cshtml"
+            #line 106 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._AssignmentHistory, Model));
 
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\User\Show.cshtml"
+            #line 106 "..\..\Views\User\Show.cshtml"
                                                                              
         }
 
@@ -356,7 +359,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 105 "..\..\Views\User\Show.cshtml"
+            #line 108 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowAttachments))
         {
             
@@ -364,14 +367,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 107 "..\..\Views\User\Show.cshtml"
+            #line 110 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._Resources, Model));
 
             
             #line default
             #line hidden
             
-            #line 107 "..\..\Views\User\Show.cshtml"
+            #line 110 "..\..\Views\User\Show.cshtml"
                                                                      
         }
 
@@ -381,22 +384,22 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 109 "..\..\Views\User\Show.cshtml"
-         if (Authorization.Has(Claims.User.ShowFlagAssignments))
+            #line 112 "..\..\Views\User\Show.cshtml"
+         if (Authorization.Has(Claims.User.ShowFlagAssignments) || Model.User.UserFlagAssignments.CanShowAny())
         {
             
             
             #line default
             #line hidden
             
-            #line 111 "..\..\Views\User\Show.cshtml"
+            #line 114 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._Flags, Model));
 
             
             #line default
             #line hidden
             
-            #line 111 "..\..\Views\User\Show.cshtml"
+            #line 114 "..\..\Views\User\Show.cshtml"
                                                                  
         }
 
@@ -406,7 +409,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 113 "..\..\Views\User\Show.cshtml"
+            #line 116 "..\..\Views\User\Show.cshtml"
          if (Authorization.Has(Claims.User.ShowAuthorization))
         {
             
@@ -414,14 +417,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 115 "..\..\Views\User\Show.cshtml"
+            #line 118 "..\..\Views\User\Show.cshtml"
        Write(Html.Partial(MVC.User.Views.UserParts._Authorization, Model));
 
             
             #line default
             #line hidden
             
-            #line 115 "..\..\Views\User\Show.cshtml"
+            #line 118 "..\..\Views\User\Show.cshtml"
                                                                          
         }
 
@@ -431,13 +434,13 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 118 "..\..\Views\User\Show.cshtml"
+            #line 121 "..\..\Views\User\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\User\Show.cshtml"
+            #line 121 "..\..\Views\User\Show.cshtml"
      if (requiresLive)
     {
 
@@ -492,7 +495,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "   });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 187 "..\..\Views\User\Show.cshtml"
+            #line 190 "..\..\Views\User\Show.cshtml"
     }
 
             

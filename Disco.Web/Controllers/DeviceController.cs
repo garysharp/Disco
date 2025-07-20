@@ -235,6 +235,7 @@ namespace Disco.Web.Controllers
                 .Include(d => d.DeviceCertificates)
                 .Include(d => d.DeviceAttachments.Select(a => a.TechUser))
                 .Include(d => d.DeviceAttachments.Select(a => a.DocumentTemplate))
+                .Include(d => d.DeviceFlagAssignments.Select(a => a.DeviceFlag))
                 .Include(d => d.DeviceFlagAssignments.Select(a => a.AddedUser))
                 .Include(d => d.DeviceFlagAssignments.Select(a => a.RemovedUser))
                 .FirstOrDefault(d => d.SerialNumber == id);
@@ -311,15 +312,7 @@ namespace Disco.Web.Controllers
                 m.DeviceProfileWirelessProfileProviders = m.Device.DeviceProfile.GetWirelessProfileProviders().ToList();
             }
 
-            if (Authorization.Has(Claims.Device.ShowFlagAssignments))
-            {
-                var usedFlags = m.Device.DeviceFlagAssignments
-                    .Where(a => !a.RemovedDate.HasValue)
-                    .Select(a => a.DeviceFlagId)
-                    .Distinct().ToList();
-
-                m.AvailableDeviceFlags = DeviceFlagService.GetDeviceFlags().Where(f => !usedFlags.Contains(f.Id)).ToList();
-            }
+            m.AvailableDeviceFlags = DeviceFlagService.GetAvailableDeviceFlags(m.Device).ToList();
 
             if (Authorization.Has(Claims.User.ShowDetails))
             {

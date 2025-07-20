@@ -5,6 +5,7 @@ using Disco.Services.Extensions;
 using Disco.Services.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reactive.Linq;
 
@@ -12,7 +13,7 @@ namespace Disco.Services.Users.UserFlags
 {
     public static class UserFlagService
     {
-        private static Cache _cache;
+        private static Cache cache;
         internal static Lazy<IObservable<RepositoryMonitorEvent>> UserFlagAssignmentRepositoryEvents;
 
         static UserFlagService()
@@ -24,25 +25,58 @@ namespace Disco.Services.Users.UserFlags
                     RepositoryMonitor.StreamAfterCommit.Where(e =>
                         e.EntityType == typeof(UserFlagAssignment) &&
                         (e.EventType != RepositoryMonitorEventType.Modified ||
-                        e.ModifiedProperties.Contains("RemovedDate"))
+                        e.ModifiedProperties.Contains(nameof(UserFlagAssignment.RemovedDate)))
                         )
                     );
         }
 
         public static void Initialize(DiscoDataContext Database)
         {
-            _cache = new Cache(Database);
+            cache = new Cache(Database);
 
             // Initialize Managed Groups (if configured)
-            _cache.GetUserFlags().ForEach(uf =>
+            cache.GetUserFlags().ForEach(uf =>
             {
-                UserFlagUsersManagedGroup.Initialize(uf);
-                UserFlagUserDevicesManagedGroup.Initialize(uf);
+                UserFlagUsersManagedGroup.Initialize(uf.flag);
+                UserFlagUserDevicesManagedGroup.Initialize(uf.flag);
             });
         }
 
-        public static List<UserFlag> GetUserFlags() { return _cache.GetUserFlags(); }
-        public static UserFlag GetUserFlag(int UserFlagId) { return _cache.GetUserFlag(UserFlagId); }
+        public static IEnumerable<(UserFlag flag, FlagPermission permission)> GetUserFlags() { return cache.GetUserFlags(); }
+        public static (UserFlag flag, FlagPermission permission) GetUserFlag(int UserFlagId) { return cache.GetUserFlag(UserFlagId); }
+
+        public static UserFlag GetAvailableUserFlag(int userFlagId, User targetUser)
+        {
+            var (userFlag, permission) = cache.GetUserFlag(userFlagId);
+
+            if (targetUser.UserFlagAssignments
+                .Where(a => a.UserFlagId == userFlagId && !a.RemovedDate.HasValue).Any())
+                return null;
+
+            if (permission.CanAssign())
+                return userFlag;
+
+            return null;
+        }
+
+        public static IEnumerable<UserFlag> GetAvailableUserFlags(User targetUser)
+        {
+            var records = cache.GetUserFlags();
+
+            var usedFlags = targetUser.UserFlagAssignments
+                    .Where(a => !a.RemovedDate.HasValue)
+                    .Select(a => a.UserFlagId)
+                    .ToList();
+
+            foreach (var (flag, permission) in records)
+            {
+                if (usedFlags.Contains(flag.Id))
+                    continue;
+
+                if (permission.CanAssign())
+                    yield return flag;
+            }
+        }
 
         #region User Flag Maintenance
         public static UserFlag CreateUserFlag(DiscoDataContext Database, string name, string description)
@@ -52,7 +86,7 @@ namespace Disco.Services.Users.UserFlags
                 throw new ArgumentException("The User Flag Name is required", nameof(name));
 
             // Name Unique
-            if (_cache.GetUserFlags().Any(f => f.Name.Equals(name, StringComparison.Ordinal)))
+            if (cache.GetUserFlags().Any(f => f.flag.Name.Equals(name, StringComparison.Ordinal)))
                 throw new ArgumentException("Another User Flag already exists with that name", nameof(name));
 
             // Clone to break reference
@@ -67,7 +101,7 @@ namespace Disco.Services.Users.UserFlags
             Database.UserFlags.Add(flag);
             Database.SaveChanges();
 
-            _cache.AddOrUpdate(flag);
+            cache.AddOrUpdate(flag);
 
             return flag;
         }
@@ -78,12 +112,12 @@ namespace Disco.Services.Users.UserFlags
                 throw new ArgumentException("The User Flag Name is required");
 
             // Name Unique
-            if (_cache.GetUserFlags().Any(f => f.Id != UserFlag.Id && f.Name == UserFlag.Name))
-                throw new ArgumentException("Another User Flag already exists with that name", "UserFlag");
+            if (cache.GetUserFlags().Any(f => f.flag.Id != UserFlag.Id && f.flag.Name == UserFlag.Name))
+                throw new ArgumentException("Another User Flag already exists with that name", nameof(UserFlag));
 
             Database.SaveChanges();
 
-            _cache.AddOrUpdate(UserFlag);
+            cache.AddOrUpdate(UserFlag);
             UserFlagUsersManagedGroup.Initialize(UserFlag);
             UserFlagUserDevicesManagedGroup.Initialize(UserFlag);
 
@@ -113,22 +147,22 @@ namespace Disco.Services.Users.UserFlags
             Database.SaveChanges();
 
             // Remove from Cache
-            _cache.Remove(UserFlagId);
+            cache.Remove(UserFlagId);
 
             Status.Finished($"Successfully Deleted User Flag: '{flag.Name}' [{flag.Id}]");
         }
         #endregion
 
         #region Bulk Assignment
-        public static IEnumerable<UserFlagAssignment> BulkAssignAddUsers(DiscoDataContext Database, UserFlag UserFlag, User Technician, string Comments, List<User> Users, IScheduledTaskStatus Status)
+        public static IEnumerable<UserFlagAssignment> BulkAssignAddUsers(DiscoDataContext database, UserFlag userFlag, User techUser, string comments, List<User> users, IScheduledTaskStatus status)
         {
-            if (Users.Count > 0)
+            if (users.Count > 0)
             {
                 double progressInterval;
                 const int databaseChunkSize = 100;
-                string comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+                comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim();
 
-                var addUsers = Users.Where(u => !u.UserFlagAssignments.Any(a => a.UserFlagId == UserFlag.Id && !a.RemovedDate.HasValue)).ToList();
+                var addUsers = users.Where(u => !u.UserFlagAssignments.Any(a => a.UserFlagId == userFlag.Id && !a.RemovedDate.HasValue)).ToList();
 
                 progressInterval = (double)100 / addUsers.Count;
 
@@ -138,39 +172,39 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((user, index) =>
                     {
-                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {user.ToString()}");
+                        status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {user}");
 
-                        return user.OnAddUserFlag(Database, UserFlag, Technician, comments);
+                        return user.OnAddUserFlagUnsafe(database, userFlag, techUser, comments);
                     }).ToList();
 
                     // Save Chunk Items to Database
-                    Database.SaveChanges();
+                    database.SaveChanges();
 
                     return chunkResults;
                 }).Where(fa => fa != null).ToList();
 
-                Status.SetFinishedMessage($"{addUsers.Count} Users/s Added; {(Users.Count - addUsers.Count)} User/s Skipped");
+                status.SetFinishedMessage($"{addUsers.Count} Users/s Added; {users.Count - addUsers.Count} User/s Skipped");
 
                 return addedUserAssignments;
             }
             else
             {
-                Status.SetFinishedMessage("No changes found");
+                status.SetFinishedMessage("No changes found");
                 return Enumerable.Empty<UserFlagAssignment>();
             }
         }
 
-        public static IEnumerable<UserFlagAssignment> BulkAssignOverrideUsers(DiscoDataContext Database, UserFlag UserFlag, User Technician, string Comments, List<User> Users, IScheduledTaskStatus Status)
+        public static IEnumerable<UserFlagAssignment> BulkAssignOverrideUsers(DiscoDataContext database, UserFlag userFlag, User techUser, string comments, List<User> users, IScheduledTaskStatus status)
         {
             double progressInterval;
             const int databaseChunkSize = 100;
-            string comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+            comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim();
 
-            Status.UpdateStatus(0, "Calculating assignment changes");
+            status.UpdateStatus(0, "Calculating assignment changes");
 
-            var currentAssignments = Database.UserFlagAssignments.Include("User").Where(a => a.UserFlagId == UserFlag.Id && !a.RemovedDate.HasValue).ToList();
-            var removeAssignments = currentAssignments.Where(ca => !Users.Any(u => u.UserId.Equals(ca.UserId, StringComparison.OrdinalIgnoreCase))).ToList();
-            var addUsers = Users.Where(u => !currentAssignments.Any(ca => ca.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))).ToList();
+            var currentAssignments = database.UserFlagAssignments.Include(a => a.User).Where(a => a.UserFlagId == userFlag.Id && !a.RemovedDate.HasValue).ToList();
+            var removeAssignments = currentAssignments.Where(ca => !users.Any(u => u.UserId.Equals(ca.UserId, StringComparison.OrdinalIgnoreCase))).ToList();
+            var addUsers = users.Where(u => !currentAssignments.Any(ca => ca.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))).ToList();
 
             if (removeAssignments.Count > 0 || addUsers.Count > 0)
             {
@@ -184,15 +218,15 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((flagAssignment, index) =>
                     {
-                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Removing Flag: {flagAssignment.User.ToString()}");
+                        status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Removing Flag: {flagAssignment.User}");
 
-                        flagAssignment.OnRemoveUnsafe(Database, Technician);
+                        flagAssignment.OnRemoveUnsafe(database, techUser);
 
                         return flagAssignment;
                     }).ToList();
 
                     // Save Chunk Items to Database
-                    Database.SaveChanges();
+                    database.SaveChanges();
 
                     return chunkResults;
                 }).ToList();
@@ -204,24 +238,24 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((user, index) =>
                     {
-                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {user.ToString()}");
+                        status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
 
-                        return user.OnAddUserFlag(Database, UserFlag, Technician, comments);
+                        return user.OnAddUserFlagUnsafe(database, userFlag, techUser, comments);
                     }).ToList();
 
                     // Save Chunk Items to Database
-                    Database.SaveChanges();
+                    database.SaveChanges();
 
                     return chunkResults;
                 }).ToList();
 
-                Status.SetFinishedMessage($"{addUsers.Count} Users/s Added; {removeAssignments.Count} User/s Removed; {(Users.Count - addUsers.Count)} User/s Skipped");
+                status.SetFinishedMessage($"{addUsers.Count} Users/s Added; {removeAssignments.Count} User/s Removed; {users.Count - addUsers.Count} User/s Skipped");
 
                 return addedUserAssignments;
             }
             else
             {
-                Status.SetFinishedMessage("No changes found");
+                status.SetFinishedMessage("No changes found");
                 return Enumerable.Empty<UserFlagAssignment>();
             }
         }
@@ -229,11 +263,11 @@ namespace Disco.Services.Users.UserFlags
 
         public static string RandomUnusedIcon()
         {
-            return UIHelpers.RandomIcon(_cache.GetUserFlags().Select(f => f.Icon));
+            return UIHelpers.RandomIcon(cache.GetUserFlags().Select(f => f.flag.Icon));
         }
         public static string RandomUnusedThemeColour()
         {
-            return UIHelpers.RandomThemeColour(_cache.GetUserFlags().Select(f => f.IconColour));
+            return UIHelpers.RandomThemeColour(cache.GetUserFlags().Select(f => f.flag.IconColour));
         }
     }
 }

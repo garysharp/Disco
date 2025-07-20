@@ -1,4 +1,5 @@
-﻿using Disco.Models.UI.Config.DeviceFlag;
+﻿using Disco.Models.Repository;
+using Disco.Models.UI.Config.DeviceFlag;
 using Disco.Services.Devices.DeviceFlags;
 using System.Collections.Generic;
 
@@ -16,5 +17,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceFlag
 
         public IEnumerable<KeyValuePair<string, string>> Icons { get; set; }
         public IEnumerable<KeyValuePair<string, string>> ThemeColours { get; set; }
+
+        public FlagPermission Permission { get; set; }
     }
 }

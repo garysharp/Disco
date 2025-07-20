@@ -47,6 +47,9 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.ThemeColours = UIHelpers.ThemeColours;
                 }
 
+                var (_, permission) = DeviceFlagService.GetDeviceFlag(m.DeviceFlag.Id);
+                m.Permission = permission;
+
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigDeviceFlagShowModel>(ControllerContext, m);
 
@@ -121,7 +124,7 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new ExportModel()
             {
                 Options = Database.DiscoConfiguration.DeviceFlags.LastExportOptions,
-                DeviceFlags = DeviceFlagService.GetDeviceFlags(),
+                DeviceFlags = DeviceFlagService.GetDeviceFlags().Select(f => f.flag).ToList(),
             };
 
             m.Fields = ExportFieldsModel.Create(m.Options, DeviceFlagExportOptions.DefaultOptions(), nameof(DeviceFlagExportOptions.CurrentOnly));

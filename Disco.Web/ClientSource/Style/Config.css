@@ -1960,6 +1960,23 @@ h1.Config_DocumentTemplates {
 #Config_DeviceFlags_BulkAssign_AssignDialog.loading > form {
   display: none;
 }
+#Config_Flag_Permissions #Config_Flag_Permissions_Inherit_Container {
+  margin: 5px 0;
+}
+#Config_Flag_Permissions .tableDataContainer {
+  min-height: 260px;
+}
+#Config_Flag_Permissions .tableDataContainer td i.remove {
+  float: right;
+  cursor: pointer;
+  visibility: hidden;
+  color: #e51400;
+  font-size: 1.4em;
+  opacity: 0.8;
+}
+#Config_Flag_Permissions .tableDataContainer td:hover i.remove {
+  visibility: visible;
+}
 #DocumentTemplate_BulkGenerate .actions {
   padding-bottom: 0.5em;
   text-align: right;

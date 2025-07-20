@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Devices.DeviceFlags;
 using Disco.Services.Expressions;
 using Disco.Services.Logging;
 using Disco.Services.Users;
@@ -15,16 +16,18 @@ namespace Disco.Services
     {
 
         #region Edit Comments
-        public static bool CanEditComments(this DeviceFlagAssignment fa)
+        public static bool CanEdit(this DeviceFlagAssignment fa)
         {
-            return UserService.CurrentAuthorization.Has(Claims.Device.Actions.EditFlags);
+            var (_, permission) = DeviceFlagService.GetDeviceFlag(fa.DeviceFlagId);
+
+            return permission.CanEdit();
         }
-        public static void OnEditComments(this DeviceFlagAssignment fa, string Comments)
+        public static void OnEdit(this DeviceFlagAssignment fa, string comments)
         {
-            if (!fa.CanEditComments())
+            if (!fa.CanEdit())
                 throw new InvalidOperationException("Editing comments for device flags is denied");
 
-            fa.Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+            fa.Comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim();
         }
         #endregion
 
@@ -34,36 +37,38 @@ namespace Disco.Services
             if (fa.RemovedDate.HasValue)
                 return false;
 
-            return UserService.CurrentAuthorization.Has(Claims.Device.Actions.RemoveFlags);
+            var (_, permission) = DeviceFlagService.GetDeviceFlag(fa.DeviceFlagId);
+
+            return permission.CanRemove();
         }
-        public static void OnRemove(this DeviceFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
+        public static void OnRemove(this DeviceFlagAssignment fa, DiscoDataContext database)
         {
             if (!fa.CanRemove())
                 throw new InvalidOperationException("Removing device flags is denied");
 
-            fa.OnRemoveUnsafe(Database, RemovingUser);
+            fa.OnRemoveUnsafe(database, UserService.CurrentUser);
         }
 
-        public static void OnRemoveUnsafe(this DeviceFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
+        public static void OnRemoveUnsafe(this DeviceFlagAssignment fa, DiscoDataContext database, User removingUser)
         {
-            fa = Database.DeviceFlagAssignments
+            fa = database.DeviceFlagAssignments
                 .Include(a => a.DeviceFlag)
                 .First(a => a.Id == fa.Id);
-            RemovingUser = Database.Users.First(u => u.UserId == RemovingUser.UserId);
+            removingUser = database.Users.First(u => u.UserId == removingUser.UserId);
 
             fa.RemovedDate = DateTime.Now;
-            fa.RemovedUserId = RemovingUser.UserId;
+            fa.RemovedUserId = removingUser.UserId;
 
             if (!string.IsNullOrWhiteSpace(fa.DeviceFlag.OnUnassignmentExpression))
             {
                 try
                 {
-                    Database.SaveChanges();
-                    var expressionResult = fa.EvaluateOnUnassignmentExpression(Database, RemovingUser, fa.AddedDate);
+                    database.SaveChanges();
+                    var expressionResult = fa.EvaluateOnUnassignmentExpression(database, removingUser, fa.AddedDate);
                     if (!string.IsNullOrWhiteSpace(expressionResult))
                     {
                         fa.OnUnassignmentExpressionResult = expressionResult;
-                        Database.SaveChanges();
+                        database.SaveChanges();
                     }
                 }
                 catch (Exception ex)
@@ -75,58 +80,52 @@ namespace Disco.Services
         #endregion
 
         #region Add
-        public static bool CanAddDeviceFlags(this Device d)
-        {
-            return UserService.CurrentAuthorization.Has(Claims.Device.Actions.AddFlags);
-        }
         public static bool CanAddDeviceFlag(this Device d, DeviceFlag flag)
         {
-            // Shortcut
-            if (!d.CanAddDeviceFlags())
-                return false;
-
             // Already has Device Flag?
             if (d.DeviceFlagAssignments.Any(fa => !fa.RemovedDate.HasValue && fa.DeviceFlagId == flag.Id))
                 return false;
 
-            return true;
+            var (_, permission) = DeviceFlagService.GetDeviceFlag(flag.Id);
+
+            return permission.CanAssign();
         }
-        public static DeviceFlagAssignment OnAddDeviceFlag(this Device d, DiscoDataContext Database, DeviceFlag flag, User AddingUser, string Comments)
+        public static DeviceFlagAssignment OnAddDeviceFlag(this Device d, DiscoDataContext database, DeviceFlag flag, string comments)
         {
             if (!d.CanAddDeviceFlag(flag))
                 throw new InvalidOperationException("Adding device flag is denied");
 
-            return d.OnAddDeviceFlagUnsafe(Database, flag, AddingUser, Comments);
+            return d.OnAddDeviceFlagUnsafe(database, flag, UserService.CurrentUser, comments);
         }
 
-        public static DeviceFlagAssignment OnAddDeviceFlagUnsafe(this Device d, DiscoDataContext Database, DeviceFlag flag, User AddingUser, string Comments)
+        public static DeviceFlagAssignment OnAddDeviceFlagUnsafe(this Device d, DiscoDataContext database, DeviceFlag flag, User addingUser, string comments)
         {
-            flag = Database.DeviceFlags.First(f => f.Id == flag.Id);
-            d = Database.Devices.First(de => de.SerialNumber == d.SerialNumber);
-            AddingUser = Database.Users.First(user => user.UserId == AddingUser.UserId);
+            flag = database.DeviceFlags.First(f => f.Id == flag.Id);
+            d = database.Devices.First(de => de.SerialNumber == d.SerialNumber);
+            addingUser = database.Users.First(user => user.UserId == addingUser.UserId);
 
             var fa = new DeviceFlagAssignment()
             {
                 DeviceFlag = flag,
                 Device = d,
                 AddedDate = DateTime.Now,
-                AddedUser = AddingUser,
-                AddedUserId = AddingUser.UserId,
-                Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim()
+                AddedUser = addingUser,
+                AddedUserId = addingUser.UserId,
+                Comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim()
             };
 
-            Database.DeviceFlagAssignments.Add(fa);
+            database.DeviceFlagAssignments.Add(fa);
 
             if (!string.IsNullOrWhiteSpace(flag.OnAssignmentExpression))
             {
                 try
                 {
-                    Database.SaveChanges();
-                    var expressionResult = fa.EvaluateOnAssignmentExpression(Database, AddingUser, fa.AddedDate);
+                    database.SaveChanges();
+                    var expressionResult = fa.EvaluateOnAssignmentExpression(database, addingUser, fa.AddedDate);
                     if (!string.IsNullOrWhiteSpace(expressionResult))
                     {
                         fa.OnAssignmentExpressionResult = expressionResult;
-                        Database.SaveChanges();
+                        database.SaveChanges();
                     }
                 }
                 catch (Exception ex)

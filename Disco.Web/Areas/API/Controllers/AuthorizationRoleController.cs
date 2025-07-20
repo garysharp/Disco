@@ -78,14 +78,16 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        private void UpdateClaims(AuthorizationRole AuthorizationRole, string[] ClaimKeys)
+        private void UpdateClaims(AuthorizationRole AuthorizationRole, string[] claimKeys)
         {
-            var proposedClaims = Claims.BuildClaims(ClaimKeys);
+            claimKeys = claimKeys ?? Array.Empty<string>();
+
+            var proposedClaims = Claims.BuildClaims(claimKeys);
 
             var currentToken = RoleToken.FromAuthorizationRole(AuthorizationRole);
             var currentClaimKeys = Claims.GetClaimKeys(currentToken.Claims);
-            var removedClaims = currentClaimKeys.Except(ClaimKeys).ToArray();
-            var addedClaims = ClaimKeys.Except(currentClaimKeys).ToArray();
+            var removedClaims = currentClaimKeys.Except(claimKeys).ToArray();
+            var addedClaims = claimKeys.Except(currentClaimKeys).ToArray();
 
             AuthorizationRole.SetClaims(proposedClaims);
             UserService.UpdateAuthorizationRole(Database, AuthorizationRole);

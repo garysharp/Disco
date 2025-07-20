@@ -308,6 +308,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_SearchSubjects
         {
             public readonly string term = "term";
+            public readonly string includeAuthorizationRoles = "includeAuthorizationRoles";
         }
         static readonly ActionParamsClass_SearchGroupSubjects s_params_SearchGroupSubjects = new ActionParamsClass_SearchGroupSubjects();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -324,6 +325,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Subject
         {
             public readonly string Id = "Id";
+            public readonly string includeAuthorizationRoles = "includeAuthorizationRoles";
         }
         static readonly ActionParamsClass_SyncActiveDirectoryManagedGroup s_params_SyncActiveDirectoryManagedGroup = new ActionParamsClass_SyncActiveDirectoryManagedGroup();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -587,14 +589,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term);
+        partial void SearchSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string term, bool includeAuthorizationRoles);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SearchSubjects(string term)
+        public override System.Web.Mvc.ActionResult SearchSubjects(string term, bool includeAuthorizationRoles)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "term", term);
-            SearchSubjectsOverride(callInfo, term);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "includeAuthorizationRoles", includeAuthorizationRoles);
+            SearchSubjectsOverride(callInfo, term, includeAuthorizationRoles);
             return callInfo;
         }
 
@@ -611,14 +614,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+        partial void SubjectOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id, bool includeAuthorizationRoles);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Subject(string Id)
+        public override System.Web.Mvc.ActionResult Subject(string Id, bool includeAuthorizationRoles)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Subject);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
-            SubjectOverride(callInfo, Id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "includeAuthorizationRoles", includeAuthorizationRoles);
+            SubjectOverride(callInfo, Id, includeAuthorizationRoles);
             return callInfo;
         }
 

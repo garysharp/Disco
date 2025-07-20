@@ -12,7 +12,7 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class UserFlagAssignmentController : AuthorizedDatabaseController
     {
         const string pComments = "comments";
-
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             try
@@ -21,7 +21,9 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentOutOfRangeException(nameof(id));
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException(nameof(key));
-                var userFlagAssignment = Database.UserFlagAssignments.FirstOrDefault(a => a.Id == id);
+                var userFlagAssignment = Database.UserFlagAssignments
+                    .Include(a => a.UserFlag)
+                    .FirstOrDefault(a => a.Id == id);
                 if (userFlagAssignment != null)
                 {
                     switch (key.ToLower())
@@ -52,7 +54,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
-        [DiscoAuthorizeAny(Claims.User.Actions.EditFlags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateComments(int id, string Comments = null, bool? redirect = null)
         {
             return Update(id, pComments, Comments, redirect);
@@ -60,19 +62,19 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Update Properties
-        private void UpdateComments(UserFlagAssignment userFlagAssignment, string Comments)
+        private void UpdateComments(UserFlagAssignment userFlagAssignment, string comments)
         {
-            if (!userFlagAssignment.CanEditComments())
+            if (!userFlagAssignment.CanEdit())
                 throw new InvalidOperationException("Editing comments for user flags is denied");
 
-            userFlagAssignment.OnEditComments(Comments);
+            userFlagAssignment.OnEdit(comments);
             Database.SaveChanges();
         }
         #endregion
 
         #region Actions
 
-        [DiscoAuthorizeAny(Claims.User.Actions.AddFlags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AddUser(int id, string UserId, string Comments)
         {
             Database.Configuration.LazyLoadingEnabled = true;
@@ -86,32 +88,30 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentException("Invalid User Id", nameof(UserId));
 
             if (!user.CanAddUserFlag(userFlag))
-                throw new InvalidOperationException("Adding user flag is denied");
+                return Unauthorized("Adding user flag is denied");
 
-            var addingUser = Database.Users.Find(CurrentUser.UserId);
-
-            var userFlagAssignment = user.OnAddUserFlag(Database, userFlag, addingUser, Comments);
+            var userFlagAssignment = user.OnAddUserFlag(Database, userFlag, Comments);
 
             Database.SaveChanges();
 
             return Redirect($"{Url.Action(MVC.User.Show(user.UserId))}#UserDetailTab-Flags");
         }
 
-        [DiscoAuthorizeAny(Claims.User.Actions.RemoveFlags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult RemoveUser(int id)
         {
             Database.Configuration.LazyLoadingEnabled = true;
 
-            var userFlagAssignment = Database.UserFlagAssignments.FirstOrDefault(a => a.Id == id);
+            var userFlagAssignment = Database.UserFlagAssignments
+                .Include(a => a.UserFlag)
+                .FirstOrDefault(a => a.Id == id);
             if (userFlagAssignment == null)
                 throw new ArgumentException("Invalid User Flag Assignment Id", nameof(id));
 
             if (!userFlagAssignment.CanRemove())
-                throw new InvalidOperationException("Removing user flag assignment is denied");
+                return Unauthorized("Removing user flag assignment is denied");
 
-            var removingUser = Database.Users.Find(CurrentUser.UserId);
-
-            userFlagAssignment.OnRemove(Database, removingUser);
+            userFlagAssignment.OnRemove(Database);
             Database.SaveChanges();
 
             return Redirect($"{Url.Action(MVC.User.Show(userFlagAssignment.UserId))}#UserDetailTab-Flags");

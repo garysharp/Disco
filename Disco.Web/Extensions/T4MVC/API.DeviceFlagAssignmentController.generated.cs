@@ -143,8 +143,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_AddDevice
         {
             public readonly string id = "id";
-            public readonly string DeviceSerialNumber = "DeviceSerialNumber";
-            public readonly string Comments = "Comments";
+            public readonly string deviceSerialNumber = "deviceSerialNumber";
+            public readonly string comments = "comments";
         }
         static readonly ActionParamsClass_RemoveDevice s_params_RemoveDevice = new ActionParamsClass_RemoveDevice();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -203,16 +203,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void AddDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DeviceSerialNumber, string Comments);
+        partial void AddDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string deviceSerialNumber, string comments);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AddDevice(int id, string DeviceSerialNumber, string Comments)
+        public override System.Web.Mvc.ActionResult AddDevice(int id, string deviceSerialNumber, string comments)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddDevice);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceSerialNumber", DeviceSerialNumber);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
-            AddDeviceOverride(callInfo, id, DeviceSerialNumber, Comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceSerialNumber", deviceSerialNumber);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
+            AddDeviceOverride(callInfo, id, deviceSerialNumber, comments);
             return callInfo;
         }
 

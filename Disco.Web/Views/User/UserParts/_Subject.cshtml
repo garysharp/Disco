@@ -236,12 +236,13 @@
                                 </script>
                             }
                         }
-                        @if (Model.User.CanAddUserFlags() && Model.AvailableUserFlags != null && Model.AvailableUserFlags.Count > 0)
+                        @if (Model.AvailableUserFlags != null && Model.AvailableUserFlags.Count > 0)
                         {
-                            @Html.ActionLinkSmallButton("Add Flag", MVC.API.UserFlagAssignment.AddUser(), "User_Show_Details_Actions_AddFlag_Button")
+                            <button id="User_Show_Details_Actions_AddFlag_Button" type="button" class="button small">Add Flag</button>
                             <div id="User_Show_Details_Actions_AddFlag_Dialog" class="dialog" title="Add User Flag">
                                 @using (Html.BeginForm(MVC.API.UserFlagAssignment.AddUser()))
                                 {
+                                    @Html.AntiForgeryToken()
                                     <input id="User_Show_Details_Actions_AddFlag_Dialog_Id" type="hidden" name="id" />
                                     <input id="User_Show_Details_Actions_AddFlag_Dialog_UserId" type="hidden" name="UserId" value="@Model.User.UserId" />
                                     <div class="flagPicker">
@@ -265,7 +266,6 @@
                                 $(function () {
                                     const button = $('#User_Show_Details_Actions_AddFlag_Button');
                                     let buttonDialog = null;
-                                    const buttonLink = button.attr('href');
 
                                     let flagPicker = null;
                                     let flagAddId = null;
@@ -285,7 +285,7 @@
                                         flagAddComments.focus().select();
                                     }
 
-                                    button.attr('href', '#').click(function (e) {
+                                    button.click(function (e) {
                                         e.preventDefault();
 
                                         if (!buttonDialog) {
@@ -302,10 +302,9 @@
                                                     },
                                                     "Add Flag": function () {
                                                         if (!!flagAddId.val()) {
-                                                            const $this = $(this);
-                                                            $this.dialog("disable");
-                                                            $this.dialog("option", "buttons", null);
-                                                            buttonDialog.find('form').submit();
+                                                            buttonDialog
+                                                                .dialog("option", "buttons", null)
+                                                                .find('form').submit();
                                                         } else {
                                                             alert('Select a User Flag');
                                                         }
@@ -437,20 +436,22 @@
                                                             <span class="User_Show_AssignedDevices_CurrentAssignment_Assigned">@CommonHelpers.FriendlyDate(assignment.AssignedDate)</span>
                                                         </td>
                                                     </tr>
-                                                    @if (Authorization.Has(Claims.Device.ShowFlagAssignments) &&
-                                                        assignment.Device.DeviceFlagAssignments.Any(a => a.RemovedDate.HasValue))
+                                                    @if (assignment.Device.DeviceFlagAssignments.CanShowAny())
                                                     {
                                                         <tr>
                                                             <td colspan="2">
                                                                 <div class="User_Show_Assigned_Devices_CurrentAssignment_Flags">
                                                                     @foreach (var flag in assignment.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
                                                                     {
-                                                                        <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
-                                                                            <span class="details">
-                                                                                <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                                                                {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
-                                                                            </span>
-                                                                        </i>
+                                                                        if (flag.Item2.permission.CanShow())
+                                                                        {
+                                                                            <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw d-@(flag.Item2.flag.IconColour)">
+                                                                                <span class="details">
+                                                                                    <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
+                                                                                    {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                                                                </span>
+                                                                            </i>
+                                                                        }
                                                                     }
                                                                     <script type="text/javascript">
                                                                         $(function () {

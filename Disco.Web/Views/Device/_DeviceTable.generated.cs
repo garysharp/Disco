@@ -175,35 +175,35 @@ WriteLiteral("                            ");
 
             
             #line 35 "..\..\Views\Device\_DeviceTable.cshtml"
-                             if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+                             if (item.DeviceFlagAssignments.CanShowAny())
                             {
-                                
-            
-            #line default
-            #line hidden
-            
-            #line 37 "..\..\Views\Device\_DeviceTable.cshtml"
-                                 if (item.DeviceFlagAssignments != null && item.DeviceFlagAssignments.Count > 0)
-                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <div");
+WriteLiteral("                                <div");
 
 WriteLiteral(" class=\"flags\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 40 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 38 "..\..\Views\Device\_DeviceTable.cshtml"
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 38 "..\..\Views\Device\_DeviceTable.cshtml"
+                                     foreach (var flag in item.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                    {
                                         
             
             #line default
             #line hidden
             
             #line 40 "..\..\Views\Device\_DeviceTable.cshtml"
-                                         foreach (var flag in item.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                         if (flag.Item2.permission.CanShow())
                                         {
 
             
@@ -211,26 +211,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1953), Tuple.Create("\"", 2023)
-, Tuple.Create(Tuple.Create("", 1961), Tuple.Create("flag", 1961), true)
-, Tuple.Create(Tuple.Create(" ", 1965), Tuple.Create("fa", 1966), true)
-, Tuple.Create(Tuple.Create(" ", 1968), Tuple.Create("fa-", 1969), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1901), Tuple.Create("\"", 1981)
+, Tuple.Create(Tuple.Create("", 1909), Tuple.Create("flag", 1909), true)
+, Tuple.Create(Tuple.Create(" ", 1913), Tuple.Create("fa", 1914), true)
+, Tuple.Create(Tuple.Create(" ", 1916), Tuple.Create("fa-", 1917), true)
             
             #line 42 "..\..\Views\Device\_DeviceTable.cshtml"
-, Tuple.Create(Tuple.Create("", 1972), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
+, Tuple.Create(Tuple.Create("", 1920), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
             
             #line default
             #line hidden
-, 1972), false)
-, Tuple.Create(Tuple.Create(" ", 1990), Tuple.Create("fa-fw", 1991), true)
-, Tuple.Create(Tuple.Create(" ", 1996), Tuple.Create("d-", 1997), true)
+, 1920), false)
+, Tuple.Create(Tuple.Create(" ", 1943), Tuple.Create("fa-fw", 1944), true)
+, Tuple.Create(Tuple.Create(" ", 1949), Tuple.Create("d-", 1950), true)
             
             #line 42 "..\..\Views\Device\_DeviceTable.cshtml"
-             , Tuple.Create(Tuple.Create("", 1999), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+                  , Tuple.Create(Tuple.Create("", 1952), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
             
             #line default
             #line hidden
-, 1999), false)
+, 1952), false)
 );
 
 WriteLiteral(">\r\n                                                <span");
@@ -245,7 +245,7 @@ WriteLiteral(">");
 
             
             #line 44 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                  Write(flag.Item2.Name);
+                                                                  Write(flag.Item2.flag.Name);
 
             
             #line default
@@ -254,7 +254,7 @@ WriteLiteral("</span>");
 
             
             #line 44 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                                               if (flag.Item1.Comments != null)
+                                                                                                    if (flag.Item1.Comments != null)
                                                     {
             
             #line default
@@ -302,17 +302,18 @@ WriteLiteral("</span>\r\n                                                </span>
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                    </div>\r\n");
-
             
-            #line 50 "..\..\Views\Device\_DeviceTable.cshtml"
-                                }
+            #line 48 "..\..\Views\Device\_DeviceTable.cshtml"
+                                         
+                                    }
+
             
             #line default
             #line hidden
+WriteLiteral("                                </div>\r\n");
+
             
-            #line 50 "..\..\Views\Device\_DeviceTable.cshtml"
-                                 
+            #line 51 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
 
             
@@ -627,46 +628,27 @@ WriteLiteral("        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-    $(function () {
-        var userTable = $('table.deviceTable');
-
-        userTable.each(function () {
-            var $this = $(this);
-
-            if (!$this.data('deviceTable_Flags')) {
-                $this.tooltip({
-                    items: 'i.flag',
-                    content: function () {
-                        var $this = $(this);
-                        return $this.children('.details').html();
-                    },
-                    tooltipClass: 'FlagAssignment_Tooltip',
-                    position: {
-                        my: ""right top"",
-                        at: ""right bottom"",
-                        collision: ""flipfit flip""
-                    },
-                    hade: {
-                        effect: ''
-                    },
-                    close: function (e, ui) {
-                        ui.tooltip.hover(
-                            function () {
-                                $(this).stop(true).fadeTo(100, 1);
-                            },
-                            function () {
-                                $(this).fadeOut(100, function () { $(this).remove(); });
-                            });
-                    }
-                });
-
-                $this.data('deviceTable_Flags', true)
-            }
-        });
-    });
-        </script>
-");
+WriteLiteral(">\r\n            $(function () {\r\n                var userTable = $(\'table.deviceTa" +
+"ble\');\r\n\r\n                userTable.each(function () {\r\n                    var " +
+"$this = $(this);\r\n\r\n                    if (!$this.data(\'deviceTable_Flags\')) {\r" +
+"\n                        $this.tooltip({\r\n                            items: \'i." +
+"flag\',\r\n                            content: function () {\r\n                    " +
+"            var $this = $(this);\r\n                                return $this.c" +
+"hildren(\'.details\').html();\r\n                            },\r\n                   " +
+"         tooltipClass: \'FlagAssignment_Tooltip\',\r\n                            po" +
+"sition: {\r\n                                my: \"right top\",\r\n                   " +
+"             at: \"right bottom\",\r\n                                collision: \"fl" +
+"ipfit flip\"\r\n                            },\r\n                            hade: {" +
+"\r\n                                effect: \'\'\r\n                            },\r\n  " +
+"                          close: function (e, ui) {\r\n                           " +
+"     ui.tooltip.hover(\r\n                                    function () {\r\n     " +
+"                                   $(this).stop(true).fadeTo(100, 1);\r\n         " +
+"                           },\r\n                                    function () {" +
+"\r\n                                        $(this).fadeOut(100, function () { $(t" +
+"his).remove(); });\r\n                                    });\r\n                   " +
+"         }\r\n                        });\r\n\r\n                        $this.data(\'d" +
+"eviceTable_Flags\', true)\r\n                    }\r\n                });\r\n          " +
+"  });\r\n        </script>\r\n");
 
             
             #line 158 "..\..\Views\Device\_DeviceTable.cshtml"

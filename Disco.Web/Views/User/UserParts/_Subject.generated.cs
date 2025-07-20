@@ -893,26 +893,22 @@ WriteLiteral("                        ");
 
             
             #line 239 "..\..\Views\User\UserParts\_Subject.cshtml"
-                         if (Model.User.CanAddUserFlags() && Model.AvailableUserFlags != null && Model.AvailableUserFlags.Count > 0)
+                         if (Model.AvailableUserFlags != null && Model.AvailableUserFlags.Count > 0)
                         {
-                            
-            
-            #line default
-            #line hidden
-            
-            #line 241 "..\..\Views\User\UserParts\_Subject.cshtml"
-                       Write(Html.ActionLinkSmallButton("Add Flag", MVC.API.UserFlagAssignment.AddUser(), "User_Show_Details_Actions_AddFlag_Button"));
 
             
             #line default
             #line hidden
-            
-            #line 241 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                                     
+WriteLiteral("                            <button");
 
-            
-            #line default
-            #line hidden
+WriteLiteral(" id=\"User_Show_Details_Actions_AddFlag_Button\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(">Add Flag</button>\r\n");
+
 WriteLiteral("                            <div");
 
 WriteLiteral(" id=\"User_Show_Details_Actions_AddFlag_Dialog\"");
@@ -933,6 +929,20 @@ WriteLiteral(">\r\n");
             #line 243 "..\..\Views\User\UserParts\_Subject.cshtml"
                                  using (Html.BeginForm(MVC.API.UserFlagAssignment.AddUser()))
                                 {
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 245 "..\..\Views\User\UserParts\_Subject.cshtml"
+                               Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 245 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                            
 
             
             #line default
@@ -955,14 +965,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"UserId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 16008), Tuple.Create("\"", 16034)
+WriteAttribute("value", Tuple.Create(" value=\"", 16023), Tuple.Create("\"", 16049)
             
-            #line 246 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                  , Tuple.Create(Tuple.Create("", 16016), Tuple.Create<System.Object, System.Int32>(Model.User.UserId
+            #line 247 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                  , Tuple.Create(Tuple.Create("", 16031), Tuple.Create<System.Object, System.Int32>(Model.User.UserId
             
             #line default
             #line hidden
-, 16016), false)
+, 16031), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -984,13 +994,13 @@ WriteLiteral(" autocomplete=\"off\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 249 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 249 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 250 "..\..\Views\User\UserParts\_Subject.cshtml"
                                          foreach (var userFlag in Model.AvailableUserFlags.OrderBy(jq => jq.Name))
                                         {
 
@@ -1004,7 +1014,7 @@ WriteLiteral(" class=\"flag\"");
 WriteLiteral(" data-userflagid=\"");
 
             
-            #line 251 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 252 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                            Write(userFlag.Id);
 
             
@@ -1015,7 +1025,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-userflagname=\"");
 
             
-            #line 251 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 252 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                              Write(userFlag.Name);
 
             
@@ -1025,32 +1035,32 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                                                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 16599), Tuple.Create("\"", 16666)
-, Tuple.Create(Tuple.Create("", 16607), Tuple.Create("fa", 16607), true)
-, Tuple.Create(Tuple.Create(" ", 16609), Tuple.Create("fa-", 16610), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 16614), Tuple.Create("\"", 16681)
+, Tuple.Create(Tuple.Create("", 16622), Tuple.Create("fa", 16622), true)
+, Tuple.Create(Tuple.Create(" ", 16624), Tuple.Create("fa-", 16625), true)
             
-            #line 252 "..\..\Views\User\UserParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 16613), Tuple.Create<System.Object, System.Int32>(userFlag.Icon
-            
-            #line default
-            #line hidden
-, 16613), false)
-, Tuple.Create(Tuple.Create(" ", 16629), Tuple.Create("fa-fw", 16630), true)
-, Tuple.Create(Tuple.Create(" ", 16635), Tuple.Create("fa-lg", 16636), true)
-, Tuple.Create(Tuple.Create(" ", 16641), Tuple.Create("d-", 16642), true)
-            
-            #line 252 "..\..\Views\User\UserParts\_Subject.cshtml"
-               , Tuple.Create(Tuple.Create("", 16644), Tuple.Create<System.Object, System.Int32>(userFlag.IconColour
+            #line 253 "..\..\Views\User\UserParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 16628), Tuple.Create<System.Object, System.Int32>(userFlag.Icon
             
             #line default
             #line hidden
-, 16644), false)
+, 16628), false)
+, Tuple.Create(Tuple.Create(" ", 16644), Tuple.Create("fa-fw", 16645), true)
+, Tuple.Create(Tuple.Create(" ", 16650), Tuple.Create("fa-lg", 16651), true)
+, Tuple.Create(Tuple.Create(" ", 16656), Tuple.Create("d-", 16657), true)
+            
+            #line 253 "..\..\Views\User\UserParts\_Subject.cshtml"
+               , Tuple.Create(Tuple.Create("", 16659), Tuple.Create<System.Object, System.Int32>(userFlag.IconColour
+            
+            #line default
+            #line hidden
+, 16659), false)
 );
 
 WriteLiteral("></i>");
 
             
-            #line 252 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 253 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                       Write(userFlag.Name);
 
             
@@ -1059,7 +1069,7 @@ WriteLiteral("></i>");
 WriteLiteral("\r\n                                            </div>\r\n");
 
             
-            #line 254 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 255 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         }
 
             
@@ -1083,7 +1093,7 @@ WriteLiteral("></textarea>\r\n                                        </div>\r\n
 "                 </div>\r\n");
 
             
-            #line 262 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 263 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 }
 
             
@@ -1097,72 +1107,69 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(">\r\n                                $(function () {\r\n                             " +
 "       const button = $(\'#User_Show_Details_Actions_AddFlag_Button\');\r\n         " +
-"                           let buttonDialog = null;\r\n                           " +
-"         const buttonLink = button.attr(\'href\');\r\n\r\n                            " +
-"        let flagPicker = null;\r\n                                    let flagAddI" +
-"d = null;\r\n                                    let flagAddComments = null;\r\n    " +
-"                                let details = null;\r\n\r\n                         " +
-"           function flagSelected() {\r\n                                        co" +
-"nst flag = $(this);\r\n\r\n                                        flagPicker.childr" +
-"en().removeClass(\'selected\');\r\n                                        flag.addC" +
-"lass(\'selected\');\r\n\r\n                                        flagAddId.val(flag." +
-"attr(\'data-userflagid\'));\r\n\r\n                                        details.sho" +
-"w();\r\n\r\n                                        flagAddComments.focus().select()" +
-";\r\n                                    }\r\n\r\n                                    " +
-"button.attr(\'href\', \'#\').click(function (e) {\r\n                                 " +
-"       e.preventDefault();\r\n\r\n                                        if (!butto" +
-"nDialog) {\r\n                                            buttonDialog = $(\'#User_" +
-"Show_Details_Actions_AddFlag_Dialog\');\r\n                                        " +
-"    buttonDialog.dialog({\r\n                                                width" +
-": 600,\r\n                                                height: 410,\r\n          " +
-"                                      resizable: false,\r\n                       " +
-"                         modal: true,\r\n                                         " +
-"       autoOpen: false,\r\n                                                buttons" +
-": {\r\n                                                    Cancel: function () {\r\n" +
-"                                                        $(this).dialog(\"close\");" +
-"\r\n                                                    },\r\n                      " +
-"                              \"Add Flag\": function () {\r\n                       " +
-"                                 if (!!flagAddId.val()) {\r\n                     " +
-"                                       const $this = $(this);\r\n                 " +
-"                                           $this.dialog(\"disable\");\r\n           " +
-"                                                 $this.dialog(\"option\", \"buttons" +
-"\", null);\r\n                                                            buttonDia" +
-"log.find(\'form\').submit();\r\n                                                    " +
-"    } else {\r\n                                                            alert(" +
-"\'Select a User Flag\');\r\n                                                        " +
-"}\r\n                                                    }\r\n                      " +
-"                          }\r\n                                            });\r\n\r\n" +
-"                                            flagAddId = $(\'#User_Show_Details_Ac" +
-"tions_AddFlag_Dialog_Id\');\r\n                                            flagAddC" +
-"omments = buttonDialog.find(\'#User_Show_Details_Actions_AddFlag_Dialog_Comments\'" +
-");\r\n                                            flagPicker = buttonDialog.find(\'" +
-".flagPicker\');\r\n                                            details = buttonDial" +
-"og.find(\'.details\');\r\n\r\n                                            $(\'#User_Sho" +
-"w_Details_Actions_AddFlag_Dialog_Filter\').on(\'keyup\', function (e) {\r\n          " +
-"                                      const filter = $(e.currentTarget).val().to" +
-"LowerCase();\r\n                                                if (filter) {\r\n   " +
-"                                                 flagPicker.children(\'div.flag\')" +
-".each(function () {\r\n                                                        con" +
-"st $this = $(this);\r\n                                                        if " +
-"($this.attr(\'data-userflagname\').toLowerCase().indexOf(filter) >= 0) {\r\n        " +
-"                                                    $this.css(\'display\', \'block\'" +
-");\r\n                                                        } else {\r\n          " +
-"                                                  $this.css(\'display\', \'none\');\r" +
-"\n                                                        }\r\n                    " +
-"                                });\r\n                                           " +
-"     } else {\r\n                                                    flagPicker.ch" +
-"ildren(\'div.flag\').each(function () { $(this).css(\'display\', \'block\'); });\r\n    " +
-"                                            }\r\n                                 " +
-"           });\r\n\r\n                                            flagPicker.on(\'cli" +
-"ck\', \'div.flag\', flagSelected);\r\n                                        }\r\n\r\n  " +
-"                                      $(\'#User_Show_Details_Actions_AddFlag_Dial" +
-"og_Filter\').val(\'\');\r\n                                        buttonDialog.dialo" +
-"g(\'open\');\r\n                                        return false;\r\n             " +
-"                       });\r\n                                });\r\n               " +
-"             </script>\r\n");
+"                           let buttonDialog = null;\r\n\r\n                         " +
+"           let flagPicker = null;\r\n                                    let flagA" +
+"ddId = null;\r\n                                    let flagAddComments = null;\r\n " +
+"                                   let details = null;\r\n\r\n                      " +
+"              function flagSelected() {\r\n                                       " +
+" const flag = $(this);\r\n\r\n                                        flagPicker.chi" +
+"ldren().removeClass(\'selected\');\r\n                                        flag.a" +
+"ddClass(\'selected\');\r\n\r\n                                        flagAddId.val(fl" +
+"ag.attr(\'data-userflagid\'));\r\n\r\n                                        details." +
+"show();\r\n\r\n                                        flagAddComments.focus().selec" +
+"t();\r\n                                    }\r\n\r\n                                 " +
+"   button.click(function (e) {\r\n                                        e.preven" +
+"tDefault();\r\n\r\n                                        if (!buttonDialog) {\r\n   " +
+"                                         buttonDialog = $(\'#User_Show_Details_Ac" +
+"tions_AddFlag_Dialog\');\r\n                                            buttonDialo" +
+"g.dialog({\r\n                                                width: 600,\r\n       " +
+"                                         height: 410,\r\n                         " +
+"                       resizable: false,\r\n                                      " +
+"          modal: true,\r\n                                                autoOpen" +
+": false,\r\n                                                buttons: {\r\n          " +
+"                                          Cancel: function () {\r\n               " +
+"                                         $(this).dialog(\"close\");\r\n             " +
+"                                       },\r\n                                     " +
+"               \"Add Flag\": function () {\r\n                                      " +
+"                  if (!!flagAddId.val()) {\r\n                                    " +
+"                        buttonDialog\r\n                                          " +
+"                      .dialog(\"option\", \"buttons\", null)\r\n                      " +
+"                                          .find(\'form\').submit();\r\n             " +
+"                                           } else {\r\n                           " +
+"                                 alert(\'Select a User Flag\');\r\n                 " +
+"                                       }\r\n                                      " +
+"              }\r\n                                                }\r\n            " +
+"                                });\r\n\r\n                                         " +
+"   flagAddId = $(\'#User_Show_Details_Actions_AddFlag_Dialog_Id\');\r\n             " +
+"                               flagAddComments = buttonDialog.find(\'#User_Show_D" +
+"etails_Actions_AddFlag_Dialog_Comments\');\r\n                                     " +
+"       flagPicker = buttonDialog.find(\'.flagPicker\');\r\n                         " +
+"                   details = buttonDialog.find(\'.details\');\r\n\r\n                 " +
+"                           $(\'#User_Show_Details_Actions_AddFlag_Dialog_Filter\')" +
+".on(\'keyup\', function (e) {\r\n                                                con" +
+"st filter = $(e.currentTarget).val().toLowerCase();\r\n                           " +
+"                     if (filter) {\r\n                                            " +
+"        flagPicker.children(\'div.flag\').each(function () {\r\n                    " +
+"                                    const $this = $(this);\r\n                    " +
+"                                    if ($this.attr(\'data-userflagname\').toLowerC" +
+"ase().indexOf(filter) >= 0) {\r\n                                                 " +
+"           $this.css(\'display\', \'block\');\r\n                                     " +
+"                   } else {\r\n                                                   " +
+"         $this.css(\'display\', \'none\');\r\n                                        " +
+"                }\r\n                                                    });\r\n    " +
+"                                            } else {\r\n                          " +
+"                          flagPicker.children(\'div.flag\').each(function () { $(t" +
+"his).css(\'display\', \'block\'); });\r\n                                             " +
+"   }\r\n                                            });\r\n\r\n                       " +
+"                     flagPicker.on(\'click\', \'div.flag\', flagSelected);\r\n        " +
+"                                }\r\n\r\n                                        $(\'" +
+"#User_Show_Details_Actions_AddFlag_Dialog_Filter\').val(\'\');\r\n                   " +
+"                     buttonDialog.dialog(\'open\');\r\n                             " +
+"           return false;\r\n                                    });\r\n             " +
+"                   });\r\n                            </script>\r\n");
 
             
-            #line 346 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 345 "..\..\Views\User\UserParts\_Subject.cshtml"
                         }
 
             
@@ -1171,13 +1178,13 @@ WriteLiteral(">\r\n                                $(function () {\r\n          
 WriteLiteral("                    </div>\r\n                </div>\r\n            </td>\r\n");
 
             
-            #line 350 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 349 "..\..\Views\User\UserParts\_Subject.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 350 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 349 "..\..\Views\User\UserParts\_Subject.cshtml"
              if (Authorization.Has(Claims.User.ShowAssignments))
             {
 
@@ -1195,13 +1202,13 @@ WriteLiteral(" id=\"User_Show_AssignedDevices_Active\"");
 WriteLiteral(">\r\n                            <h3>Current Device Assignments</h3>\r\n");
 
             
-            #line 356 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 355 "..\..\Views\User\UserParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 356 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 355 "..\..\Views\User\UserParts\_Subject.cshtml"
                              if (currentDeviceAssignments.Count > 0)
                             {
                                 foreach (var assignment in currentDeviceAssignments)
@@ -1217,7 +1224,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment clearfix\"");
 WriteLiteral(" data-deviceserialnumber=\"");
 
             
-            #line 360 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 359 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                           Write(assignment.DeviceSerialNumber);
 
             
@@ -1228,13 +1235,13 @@ WriteLiteral("\"");
 WriteLiteral(">\r\n");
 
             
-            #line 361 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 360 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 361 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 360 "..\..\Views\User\UserParts\_Subject.cshtml"
                                          if (Authorization.Has(Claims.Device.Show))
                                         {
 
@@ -1243,14 +1250,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 23450), Tuple.Create("\"", 23517)
+WriteAttribute("href", Tuple.Create(" href=\"", 23264), Tuple.Create("\"", 23331)
             
-            #line 363 "..\..\Views\User\UserParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 23457), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
+            #line 362 "..\..\Views\User\UserParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 23271), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Show(assignment.Device.SerialNumber))
             
             #line default
             #line hidden
-, 23457), false)
+, 23271), false)
 );
 
 WriteLiteral(">\r\n                                                <img");
@@ -1259,20 +1266,20 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 23649), Tuple.Create("\"", 23770)
+WriteAttribute("src", Tuple.Create(" src=\"", 23463), Tuple.Create("\"", 23584)
             
-            #line 364 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                     , Tuple.Create(Tuple.Create("", 23655), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+            #line 363 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                     , Tuple.Create(Tuple.Create("", 23469), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 23655), false)
+, 23469), false)
 );
 
 WriteLiteral(" />\r\n                                            </a>\r\n");
 
             
-            #line 366 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 365 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         }
                                         else
                                         {
@@ -1286,20 +1293,20 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 24082), Tuple.Create("\"", 24203)
+WriteAttribute("src", Tuple.Create(" src=\"", 23896), Tuple.Create("\"", 24017)
             
-            #line 369 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                 , Tuple.Create(Tuple.Create("", 24088), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
+            #line 368 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                 , Tuple.Create(Tuple.Create("", 23902), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(assignment.Device.DeviceModel.Id, assignment.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 24088), false)
+, 23902), false)
 );
 
 WriteLiteral(" />\r\n");
 
             
-            #line 370 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 369 "..\..\Views\User\UserParts\_Subject.cshtml"
                                         }
 
             
@@ -1327,13 +1334,13 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_SerialNumber\
 WriteLiteral(" data-clipboard>\r\n");
 
             
-            #line 380 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 379 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                 
             
             #line default
             #line hidden
             
-            #line 380 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 379 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                  if (Authorization.Has(Claims.Device.Show))
                                                                 {
                                                                     
@@ -1341,14 +1348,14 @@ WriteLiteral(" data-clipboard>\r\n");
             #line default
             #line hidden
             
-            #line 382 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 381 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                Write(Html.ActionLink(assignment.Device.SerialNumber, MVC.Device.Show(assignment.Device.SerialNumber)));
 
             
             #line default
             #line hidden
             
-            #line 382 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 381 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                                                                      
                                                                 }
                                                                 else
@@ -1358,14 +1365,14 @@ WriteLiteral(" data-clipboard>\r\n");
             #line default
             #line hidden
             
-            #line 386 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 385 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                Write(assignment.Device.SerialNumber);
 
             
             #line default
             #line hidden
             
-            #line 386 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 385 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                    
                                                                 }
 
@@ -1375,13 +1382,13 @@ WriteLiteral(" data-clipboard>\r\n");
 WriteLiteral("                                                            </span>\r\n");
 
             
-            #line 389 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 388 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                             
             
             #line default
             #line hidden
             
-            #line 389 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 388 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                              if (!string.IsNullOrWhiteSpace(assignment.Device.ComputerName))
                                                             {
 
@@ -1397,7 +1404,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_ComputerName\
 WriteLiteral(" data-clipboard>");
 
             
-            #line 391 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 390 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                                                         Write(assignment.Device.ComputerName);
 
             
@@ -1408,7 +1415,7 @@ WriteLiteral("</span>)");
 WriteLiteral("\r\n");
 
             
-            #line 392 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 391 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                             }
 
             
@@ -1418,13 +1425,13 @@ WriteLiteral("                                                        </td>\r\n 
 "                                  </tr>\r\n");
 
             
-            #line 395 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 394 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     
             
             #line default
             #line hidden
             
-            #line 395 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 394 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                      if (!string.IsNullOrEmpty(assignment.Device.AssetNumber))
                                                     {
 
@@ -1441,7 +1448,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Asset\"");
 WriteLiteral(" data-clipboard>");
 
             
-            #line 400 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 399 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                                           Write(assignment.Device.AssetNumber);
 
             
@@ -1451,7 +1458,7 @@ WriteLiteral("</span>\r\n                                                       
 "                                                   </tr>\r\n");
 
             
-            #line 403 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 402 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
 
             
@@ -1460,7 +1467,7 @@ WriteLiteral("</span>\r\n                                                       
 WriteLiteral("                                                    ");
 
             
-            #line 404 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 403 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                      if (assignment.Device.DeviceModelId.HasValue)
                                                     {
 
@@ -1479,7 +1486,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Model\"");
 WriteLiteral(">");
 
             
-            #line 411 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 410 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                            Write(assignment.Device.DeviceModel.ToString());
 
             
@@ -1489,7 +1496,7 @@ WriteLiteral("</span>\r\n                                                       
 "                                                   </tr>\r\n");
 
             
-            #line 414 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 413 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
 
             
@@ -1507,7 +1514,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Profile\"");
 WriteLiteral(">");
 
             
-            #line 420 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 419 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                          Write(assignment.Device.DeviceProfile.ToString());
 
             
@@ -1517,13 +1524,13 @@ WriteLiteral("</span>\r\n                                                       
 "                                           </tr>\r\n");
 
             
-            #line 423 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 422 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     
             
             #line default
             #line hidden
             
-            #line 423 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 422 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                      if (assignment.Device.DeviceBatchId.HasValue)
                                                     {
 
@@ -1542,7 +1549,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Batch\"");
 WriteLiteral(">");
 
             
-            #line 430 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 429 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                            Write(assignment.Device.DeviceBatch.ToString());
 
             
@@ -1552,7 +1559,7 @@ WriteLiteral("</span>\r\n                                                       
 "                                                   </tr>\r\n");
 
             
-            #line 433 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 432 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
 
             
@@ -1568,7 +1575,7 @@ WriteLiteral(" class=\"User_Show_AssignedDevices_CurrentAssignment_Assigned\"");
 WriteLiteral(">");
 
             
-            #line 437 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 436 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                                                                           Write(CommonHelpers.FriendlyDate(assignment.AssignedDate));
 
             
@@ -1578,15 +1585,14 @@ WriteLiteral("</span>\r\n                                                       
 "                                           </tr>\r\n");
 
             
-            #line 440 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 439 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     
             
             #line default
             #line hidden
             
-            #line 440 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                     if (Authorization.Has(Claims.Device.ShowFlagAssignments) &&
-                                                        assignment.Device.DeviceFlagAssignments.Any(a => a.RemovedDate.HasValue))
+            #line 439 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                     if (assignment.Device.DeviceFlagAssignments.CanShowAny())
                                                     {
 
             
@@ -1604,50 +1610,52 @@ WriteLiteral(" class=\"User_Show_Assigned_Devices_CurrentAssignment_Flags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 446 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 444 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                     
             
             #line default
             #line hidden
             
-            #line 446 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 444 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                      foreach (var flag in assignment.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
                                                                     {
+                                                                        if (flag.Item2.permission.CanShow())
+                                                                        {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                                        <i");
+WriteLiteral("                                                                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 30837), Tuple.Create("\"", 30907)
-, Tuple.Create(Tuple.Create("", 30845), Tuple.Create("flag", 30845), true)
-, Tuple.Create(Tuple.Create(" ", 30849), Tuple.Create("fa", 30850), true)
-, Tuple.Create(Tuple.Create(" ", 30852), Tuple.Create("fa-", 30853), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 30707), Tuple.Create("\"", 30787)
+, Tuple.Create(Tuple.Create("", 30715), Tuple.Create("flag", 30715), true)
+, Tuple.Create(Tuple.Create(" ", 30719), Tuple.Create("fa", 30720), true)
+, Tuple.Create(Tuple.Create(" ", 30722), Tuple.Create("fa-", 30723), true)
             
             #line 448 "..\..\Views\User\UserParts\_Subject.cshtml"
-             , Tuple.Create(Tuple.Create("", 30856), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
+                 , Tuple.Create(Tuple.Create("", 30726), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
             
             #line default
             #line hidden
-, 30856), false)
-, Tuple.Create(Tuple.Create(" ", 30874), Tuple.Create("fa-fw", 30875), true)
-, Tuple.Create(Tuple.Create(" ", 30880), Tuple.Create("d-", 30881), true)
+, 30726), false)
+, Tuple.Create(Tuple.Create(" ", 30749), Tuple.Create("fa-fw", 30750), true)
+, Tuple.Create(Tuple.Create(" ", 30755), Tuple.Create("d-", 30756), true)
             
             #line 448 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                        , Tuple.Create(Tuple.Create("", 30883), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+                                                 , Tuple.Create(Tuple.Create("", 30758), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
             
             #line default
             #line hidden
-, 30883), false)
+, 30758), false)
 );
 
-WriteLiteral(">\r\n                                                                            <s" +
-"pan");
+WriteLiteral(">\r\n                                                                              " +
+"  <span");
 
 WriteLiteral(" class=\"details\"");
 
 WriteLiteral(">\r\n                                                                              " +
-"  <span");
+"      <span");
 
 WriteLiteral(" class=\"name\"");
 
@@ -1655,7 +1663,7 @@ WriteLiteral(">");
 
             
             #line 450 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                              Write(flag.Item2.Name);
+                                                                                                  Write(flag.Item2.flag.Name);
 
             
             #line default
@@ -1664,8 +1672,8 @@ WriteLiteral("</span>");
 
             
             #line 450 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                           if (flag.Item1.Comments != null)
-                                                                                {
+                                                                                                                                    if (flag.Item1.Comments != null)
+                                                                                    {
             
             #line default
             #line hidden
@@ -1677,7 +1685,7 @@ WriteLiteral(">");
 
             
             #line 451 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                   Write(flag.Item1.Comments.ToHtmlComment());
+                                                                                                       Write(flag.Item1.Comments.ToHtmlComment());
 
             
             #line default
@@ -1686,7 +1694,7 @@ WriteLiteral("</span>");
 
             
             #line 451 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                                   }
+                                                                                                                                                       }
             
             #line default
             #line hidden
@@ -1698,17 +1706,18 @@ WriteLiteral(">");
 
             
             #line 451 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                                                   Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
+                                                                                                                                                                       Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
 
             
             #line default
             #line hidden
 WriteLiteral("</span>\r\n                                                                        " +
-"    </span>\r\n                                                                   " +
-"     </i>\r\n");
+"        </span>\r\n                                                               " +
+"             </i>\r\n");
 
             
             #line 454 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                        }
                                                                     }
 
             
@@ -1761,7 +1770,7 @@ WriteLiteral(">\r\n                                                             
 "           </tr>\r\n");
 
             
-            #line 488 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 489 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
 
             
@@ -1772,7 +1781,7 @@ WriteLiteral("                                                </tbody>\r\n      
 "                                   </div>\r\n");
 
             
-            #line 493 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 494 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 }
                             }
                             else
@@ -1788,7 +1797,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Current Device Assignments</span>\r\n");
 
             
-            #line 498 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 499 "..\..\Views\User\UserParts\_Subject.cshtml"
                             }
 
             
@@ -1798,7 +1807,7 @@ WriteLiteral("                        </div>\r\n                    </div>\r\n  
 "\r\n");
 
             
-            #line 502 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 503 "..\..\Views\User\UserParts\_Subject.cshtml"
             }
 
             

@@ -32,22 +32,22 @@
                             {@Html.ActionLink(item.Id, MVC.Device.Show(item.Id))}
                         else
                         {@item.Id}
-                            @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+                            @if (item.DeviceFlagAssignments.CanShowAny())
                             {
-                                @if (item.DeviceFlagAssignments != null && item.DeviceFlagAssignments.Count > 0)
-                                {
-                                    <div class="flags">
-                                        @foreach (var flag in item.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                <div class="flags">
+                                    @foreach (var flag in item.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
+                                    {
+                                        @if (flag.Item2.permission.CanShow())
                                         {
-                                            <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
+                                            <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw d-@(flag.Item2.flag.IconColour)">
                                                 <span class="details">
-                                                    <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
+                                                    <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
                                                     {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
                                                 </span>
                                             </i>
                                         }
-                                    </div>
-                                }
+                                    }
+                                </div>
                             }
                         </td>
                         <td>
@@ -117,43 +117,43 @@
             </tbody>
         </table>
         <script type="text/javascript">
-    $(function () {
-        var userTable = $('table.deviceTable');
+            $(function () {
+                var userTable = $('table.deviceTable');
 
-        userTable.each(function () {
-            var $this = $(this);
+                userTable.each(function () {
+                    var $this = $(this);
 
-            if (!$this.data('deviceTable_Flags')) {
-                $this.tooltip({
-                    items: 'i.flag',
-                    content: function () {
-                        var $this = $(this);
-                        return $this.children('.details').html();
-                    },
-                    tooltipClass: 'FlagAssignment_Tooltip',
-                    position: {
-                        my: "right top",
-                        at: "right bottom",
-                        collision: "flipfit flip"
-                    },
-                    hade: {
-                        effect: ''
-                    },
-                    close: function (e, ui) {
-                        ui.tooltip.hover(
-                            function () {
-                                $(this).stop(true).fadeTo(100, 1);
+                    if (!$this.data('deviceTable_Flags')) {
+                        $this.tooltip({
+                            items: 'i.flag',
+                            content: function () {
+                                var $this = $(this);
+                                return $this.children('.details').html();
                             },
-                            function () {
-                                $(this).fadeOut(100, function () { $(this).remove(); });
-                            });
+                            tooltipClass: 'FlagAssignment_Tooltip',
+                            position: {
+                                my: "right top",
+                                at: "right bottom",
+                                collision: "flipfit flip"
+                            },
+                            hade: {
+                                effect: ''
+                            },
+                            close: function (e, ui) {
+                                ui.tooltip.hover(
+                                    function () {
+                                        $(this).stop(true).fadeTo(100, 1);
+                                    },
+                                    function () {
+                                        $(this).fadeOut(100, function () { $(this).remove(); });
+                                    });
+                            }
+                        });
+
+                        $this.data('deviceTable_Flags', true)
                     }
                 });
-
-                $this.data('deviceTable_Flags', true)
-            }
-        });
-    });
+            });
         </script>
     }
     else

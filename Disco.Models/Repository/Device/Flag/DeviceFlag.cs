@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Disco.Models.Services.Authorization;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disco.Models.Repository
 {
@@ -27,11 +29,20 @@ namespace Disco.Models.Repository
         [DataType(DataType.MultilineText)]
         public string OnUnassignmentExpression { get; set; }
 
+        [Column("Permissions")]
+        public string PermissionsJson { get; set; }
+        [NotMapped]
+        public FlagPermission Permissions
+        {
+            get => FlagPermission.FromFlag(this);
+            set => PermissionsJson = value?.ToJson();
+        }
+
+        public int? DefaultRemoveDays { get; set; }
+
         public virtual IList<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
 
         public override string ToString()
-        {
-            return Name;
-        }
+            => Name;
     }
 }

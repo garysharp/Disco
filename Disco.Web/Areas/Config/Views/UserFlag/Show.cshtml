@@ -15,6 +15,7 @@
     var canExportAll = Model.TotalAssignmentCount > 0 && Authorization.Has(Claims.Config.UserFlag.Export);
 
     var hideAdvanced =
+        Model.Permission.IsDefault() &&
         Model.UserFlag.UserDevicesLinkedGroup == null &&
         Model.UserFlag.UsersLinkedGroup == null &&
         Model.UserFlag.OnAssignmentExpression == null &&
@@ -231,6 +232,340 @@
         }
         <tr class="Config_HideAdvanced_Item">
             <th>
+                Assignment Permission<br />
+                Override:
+            </th>
+            <td>
+                @if (!Model.Permission.IsDefault())
+                {
+                    var permission = Model.Permission;
+                    <div>
+                        @if (permission.Inherit)
+                        {
+                            <span><i class="fa fa-check-square-o"></i> Inheriting from Authorization Roles</span>
+                        }
+                        else
+                        {
+                            <span><i class="fa fa-square-o"></i> Authorization Roles are Ignored</span>
+                        }
+                    </div>
+                    if (!permission.HasSubjects())
+                    {
+                        <span class="smallMessage">There are no users/groups associated with this permission override</span>
+                    }
+                    else
+                    {
+                        if (permission.IsSimple())
+                        {
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Users/Groups/Roles</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var subjectId in permission.CanShowSubjectIds)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @{
+                                                    int roleId;
+                                                    if (subjectId.StartsWith("[") && int.TryParse(subjectId.Trim('[', ']'), out roleId))
+                                                    {
+                                                        <span>@Disco.Services.Users.UserService.GetAuthorizationRoleName(roleId) @subjectId</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@subjectId</span>
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <div class="info-box">
+                                <p class="fa-p">
+                                    <i class="fa fa-fw fa-info-circle"></i> All users/groups/roles can view, assign, edit assignments, and remove assignments for this flag.
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            var subjects = permission.AllSubjects();
+                            <table class="tableData">
+                                <thead>
+                                    <tr>
+                                        <th>Users/Groups/Roles</th>
+                                        <th>View</th>
+                                        <th>Assign</th>
+                                        <th>Edit</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var subjectId in subjects.OrderBy(s => s))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <i class="fa"></i> @{
+                                                    int roleId;
+                                                    if (subjectId.StartsWith("[") && int.TryParse(subjectId.Trim('[', ']'), out roleId))
+                                                    {
+                                                        <span>@Disco.Services.Users.UserService.GetAuthorizationRoleName(roleId) @subjectId</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@subjectId</span>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (permission.CanShowSubjectIds.Contains(subjectId))
+                                                {
+                                                    <i class="fa fa-fw fa-check"></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (permission.CanAssignSubjectIds.Contains(subjectId))
+                                                {
+                                                    <i class="fa fa-fw fa-check"></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (permission.CanEditSubjectIds.Contains(subjectId))
+                                                {
+                                                    <i class="fa fa-fw fa-check"></i>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (permission.CanRemoveSubjectIds.Contains(subjectId))
+                                                {
+                                                    <i class="fa fa-fw fa-check"></i>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                    }
+                }
+                @if (canConfig)
+                {
+                    var permission = Model.Permission;
+                    <button id="Config_Flag_Permission_Edit" class="button small">@(permission.IsDefault() ? "Override" : "Edit") Permission</button>
+
+                    <div id="Config_Flag_Permissions" class="dialog" title="Flag Assignment Permission Override">
+                        @using (Html.BeginForm(MVC.API.UserFlag.Permission(Model.UserFlag.Id)))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="IsOverride" value="true" />
+                            <div id="Config_Flag_Permissions_Inherit_Container">
+                                <label>
+                                    <input id="Config_Flag_Permissions_Inherit" type="checkbox" name="Inherit" value="true" @(permission.Inherit ? "checked" : null) /> Inherit Authorization from Authorization Roles
+                                </label>
+                            </div>
+                            <div class="tableDataContainer">
+                                <table class="tableData">
+                                    <thead>
+                                        <tr>
+                                            <th>User/Group/Role</th>
+                                            <th>View</th>
+                                            <th>Assign</th>
+                                            <th>Edit</th>
+                                            <th>Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var subjects = permission.AllSubjects();
+
+                                            foreach (var subjectId in subjects.OrderBy(s => s))
+                                            {
+                                                <tr data-subjectid="@subjectId">
+                                                    <td><i class="fa type"></i> <span>@subjectId</span><i class="fa fa-times-circle remove"></i></td>
+                                                    <td>
+                                                        <input type="checkbox" name="CanShow" value="@subjectId" @(permission.CanShowSubjectIds.Contains(subjectId) ? " checked" : null) />
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" name="CanAssign" value="@subjectId" @(permission.CanAssignSubjectIds.Contains(subjectId) ? " checked" : null) />
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" name="CanEdit" value="@subjectId" @(permission.CanEditSubjectIds.Contains(subjectId) ? " checked" : null) />
+                                                    </td>
+                                                    <td>
+                                                        <input type="checkbox" name="CanRemove" value="@subjectId" @(permission.CanRemoveSubjectIds.Contains(subjectId) ? " checked" : null) />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <input type="text" id="Config_Flag_Permissions_Subject_Input" placeholder="Search Users/Groups" data-autocompleteurl="@(Url.Action(MVC.API.System.SearchSubjects(null, includeAuthorizationRoles: true)))" />
+                                <button type="button" id="Config_Flag_Permissions_Subject_Add" class="button small" data-subjecturl="@Url.Action(MVC.API.System.Subject(null, includeAuthorizationRoles: true))">Add</button>
+                            </div>
+                        }
+                    </div>
+                    <script>
+                        $(function () {
+                            let $dialog = null;
+                            let originalSubjects = null;
+                            let originalInherit = null;
+                            $('#Config_Flag_Permission_Edit').on('click', async function () {
+                                if (!$dialog) {
+                                    $dialog = $('#Config_Flag_Permissions');
+                                    const $tbody = $dialog.find('tbody');
+                                    const $inherit = $dialog.find('#Config_Flag_Permissions_Inherit');
+                                    const $input = $dialog.find('#Config_Flag_Permissions_Subject_Input');
+                                    const $add = $dialog.find('#Config_Flag_Permissions_Subject_Add');
+
+                                    $dialog.dialog({
+                                        resizable: false,
+                                        modal: true,
+                                        autoOpen: false,
+                                        width: 550,
+                                        height: 420,
+                                        buttons: {
+                                            Cancel: function () {
+                                                $(this).dialog('close');
+                                                $tbody.html(originalSubjects);
+                                                $inherit.prop('checked', originalInherit);
+                                            },
+                                            'Remove Override': function () {
+                                                const $this = $(this);
+                                                $(this).dialog('option', 'buttons', null);
+                                                $this.find('input[name="IsOverride"]').val('false');
+                                                $this.find('form').trigger('submit');
+                                            },
+                                            'Save Changes': function () {
+                                                $(this).dialog('option', 'buttons', null);
+                                                $(this).find('form').trigger('submit');
+                                            }
+                                        }
+                                    });
+
+                                    $tbody.on('click', 'i.remove', function () {
+                                        $(this).closest('tr').remove();
+                                    });
+
+                                    $input
+                                        .autocomplete({
+                                            source: $input.attr('data-autocompleteurl'),
+                                            minLength: 2,
+                                            focus: function (e, ui) {
+                                                $input.val(ui.item.Id);
+                                                return false;
+                                            },
+                                            select: function (e, ui) {
+                                                $input.val(ui.item.Id).blur();
+                                                $add.trigger('click');
+                                                $input.val('');
+                                                return false;
+                                            }
+                                        }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                            return $("<li></li>")
+                                                .data('item.autocomplete', item)
+                                                .append('<a><strong>' + item.Name + '</strong><br>' + item.Id + ' (' + item.Type + ')</a>')
+                                                .appendTo(ul);
+                                        };
+
+                                    $add.on('click', async function () {
+                                        const value = $input.val();
+                                        if (!value) {
+                                            $input.focus();
+                                            return;
+                                        }
+                                        const existing = $tbody.find('tr').filter(function () {
+                                            return $(this).attr('data-subjectid') === value;
+                                        });
+                                        if (existing.length !== 0) {
+                                            $input.val('');
+                                            $input.focus();
+                                            return;
+                                        }
+
+                                        const body = new FormData();
+                                        body.append('id', value);
+                                        const response = await fetch($add.attr('data-subjecturl'), {
+                                            body: body,
+                                            method: 'POST'
+                                        });
+
+                                        if (!response.ok) {
+                                            alert('Unable to lookup User/Group/Role: ' + response.statusText);
+                                            $input.focus();
+                                            return;
+                                        }
+
+                                        const subject = await response.json();
+
+                                        if (!subject) {
+                                            alert('Invalid User/Group');
+                                            $input.focus();
+                                            return;
+                                        }
+
+                                        const $record = $('<tr><td><i class="fa type"></i> <span></span><i class="fa fa-times-circle remove"></i></td><td><input type="checkbox" name="CanShow" checked /></td><td><input type="checkbox" name="CanAssign" checked /></td><td><input type="checkbox" name="CanEdit" checked /></td><td><input type="checkbox" name="CanRemove" checked /></td></tr>');
+                                        $record.attr('data-subjectid', subject.Id);
+                                        $record.find('span').text(subject.Name + ' ' + subject.Id);
+                                        $record.find('i.type').addClass(subject.Type === 'role' ? 'fa-lock' : subject.IsGroup ? 'fa-users' : 'fa-user');
+                                        $record.find('input').val(subject.Id);
+                                        $tbody.append($record);
+                                        $input.val('');
+                                        $input.focus();
+                                    });
+
+                                    const $records = $tbody.find('tr');
+                                    for (var i = 0; i < $records.length; i++) {
+                                        const $record = $($records[i]);
+                                        const body = new FormData();
+                                        body.append('id', $record.attr('data-subjectid'));
+                                        const response = await fetch($add.attr('data-subjecturl'), {
+                                            body: body,
+                                            method: 'POST'
+                                        });
+                                        if (response.ok) {
+                                            const subject = await response.json();
+                                            if (subject) {
+                                                $record.find('span').text(subject.Name + ' ' + subject.Id);
+                                                $record.find('i.type').addClass(subject.Type === 'role' ? 'fa-lock' : subject.IsGroup ? 'fa-users' : 'fa-user');
+                                                continue;
+                                            }
+                                        }
+                                        $record.remove();
+                                    }
+                                    originalInherit = $inherit.prop('checked');
+                                    originalSubjects = $tbody.html();
+                                    $dialog.dialog('open');
+                                } else {
+                                    $dialog.dialog('open');
+                                }
+                            });
+                        });
+                    </script>
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i> Flag actions are normally authorized globally by
+                        @if (Authorization.Has(Claims.DiscoAdminAccount))
+                        {
+                            <span><a href="@Url.Action(MVC.Config.AuthorizationRole.Index(null))">Authorization Roles</a>.</span>
+                        }
+                        else
+                        {
+                            <span>Authorization Roles.</span>
+                        }
+                        Overriding individual flag permissions allows for targeted authorization.
+                    </p>
+                </div>
+            </td>
+        </tr>
+        <tr class="Config_HideAdvanced_Item">
+            <th>
                 On Assignment<br />Expression:
             </th>
             <td>
@@ -369,7 +704,6 @@
                 </div>
             </td>
         </tr>
-
         <tr class="Config_HideAdvanced_Item">
             <th>
                 Linked Groups:

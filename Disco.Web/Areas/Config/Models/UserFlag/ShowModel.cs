@@ -1,4 +1,5 @@
-﻿using Disco.Models.UI.Config.UserFlag;
+﻿using Disco.Models.Repository;
+using Disco.Models.UI.Config.UserFlag;
 using Disco.Services.Users.UserFlags;
 using System.Collections.Generic;
 
@@ -16,5 +17,7 @@ namespace Disco.Web.Areas.Config.Models.UserFlag
 
         public IEnumerable<KeyValuePair<string, string>> Icons { get; set; }
         public IEnumerable<KeyValuePair<string, string>> ThemeColours { get; set; }
+
+        public FlagPermission Permission { get; set; }
     }
 }

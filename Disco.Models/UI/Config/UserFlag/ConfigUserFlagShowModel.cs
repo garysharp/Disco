@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Disco.Models.Repository;
+using System.Collections.Generic;
 
 namespace Disco.Models.UI.Config.UserFlag
 {
@@ -11,5 +12,7 @@ namespace Disco.Models.UI.Config.UserFlag
 
         IEnumerable<KeyValuePair<string, string>> Icons { get; set; }
         IEnumerable<KeyValuePair<string, string>> ThemeColours { get; set; }
+
+        FlagPermission Permission { get; set; }
     }
 }

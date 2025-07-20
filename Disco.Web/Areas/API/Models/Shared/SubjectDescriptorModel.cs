@@ -1,4 +1,5 @@
-﻿using Disco.Services.Interop.ActiveDirectory;
+﻿using Disco.Models.Repository;
+using Disco.Services.Interop.ActiveDirectory;
 
 namespace Disco.Web.Areas.API.Models.Shared
 {
@@ -43,5 +44,19 @@ namespace Disco.Web.Areas.API.Models.Shared
 
             return item;
         }
+
+        public static SubjectDescriptorModel FromAuthorizationRole(int roleId, string roleName)
+        {
+            return new SubjectDescriptorModel()
+            {
+                Id = $"[{roleId}]",
+                Name = roleName,
+                Type = "role",
+                IsGroup = true
+            };
+        }
+
+        public static SubjectDescriptorModel FromAuthorizationRole(AuthorizationRole role)
+            => FromAuthorizationRole(role.Id, role.Name);
     }
 }

@@ -61,6 +61,7 @@ namespace Disco.Web.Controllers
                 .Include(u => u.DeviceUserAssignments.Select(dua => dua.Device.DeviceDetails))
                 .Include(u => u.UserAttachments.Select(ua => ua.TechUser))
                 .Include(u => u.UserAttachments.Select(ua => ua.DocumentTemplate))
+                .Include(u => u.UserFlagAssignments.Select(ufa => ufa.UserFlag))
                 .Include(u => u.UserFlagAssignments.Select(ufa => ufa.AddedUser))
                 .Include(u => u.UserFlagAssignments.Select(ufa => ufa.RemovedUser))
                 .Include(u => u.UserDetails)
@@ -84,15 +85,7 @@ namespace Disco.Web.Controllers
                 m.Jobs.Fill(Database, Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.UserId == id).OrderByDescending(j => j.Id), true);
             }
 
-            if (Authorization.Has(Claims.User.ShowFlagAssignments))
-            {
-                var usedFlags = m.User.UserFlagAssignments
-                    .Where(a => !a.RemovedDate.HasValue)
-                    .Select(a => a.UserFlagId)
-                    .Distinct().ToList();
-
-                m.AvailableUserFlags = UserFlagService.GetUserFlags().Where(f => !usedFlags.Contains(f.Id)).ToList();
-            }
+            m.AvailableUserFlags = UserFlagService.GetAvailableUserFlags(m.User).ToList();
 
             try
             {

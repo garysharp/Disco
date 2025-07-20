@@ -13,17 +13,20 @@
     }
 }
 <div id="User_Show" data-userid="@Model.User.UserId">
-    @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+    @if (Model.User.UserFlagAssignments.CanShowAny())
     {
         <div id="User_Show_Flags">
             @foreach (var flag in Model.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
             {
-                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw fa-lg d-@(flag.Item2.IconColour)">
-                    <span class="details">
-                        <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                        {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
-                    </span>
-                </i>
+                if (flag.Item2.permission.CanShow())
+                {
+                    <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw fa-lg d-@(flag.Item2.flag.IconColour)">
+                        <span class="details">
+                            <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
+                            {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
+                        </span>
+                    </i>
+                }
             }
         </div>
         <script type="text/javascript">
@@ -106,7 +109,7 @@
         {
             @Html.Partial(MVC.User.Views.UserParts._Resources, Model)
         }
-        @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+        @if (Authorization.Has(Claims.User.ShowFlagAssignments) || Model.User.UserFlagAssignments.CanShowAny())
         {
             @Html.Partial(MVC.User.Views.UserParts._Flags, Model)
         }

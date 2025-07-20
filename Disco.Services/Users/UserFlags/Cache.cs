@@ -8,7 +8,7 @@ namespace Disco.Services.Users.UserFlags
 {
     internal class Cache
     {
-        private ConcurrentDictionary<int, UserFlag> _Cache;
+        private ConcurrentDictionary<int, (UserFlag flag, FlagPermission permission)> cache;
 
         public Cache(DiscoDataContext Database)
         {
@@ -26,36 +26,30 @@ namespace Disco.Services.Users.UserFlags
             var flags = Database.UserFlags.ToList();
 
             // Add Queues to In-Memory Cache
-            _Cache = new ConcurrentDictionary<int, UserFlag>(flags.Select(f => new KeyValuePair<int, UserFlag>(f.Id, f)));
+            cache = new ConcurrentDictionary<int, (UserFlag, FlagPermission)>(flags.Select(f => new KeyValuePair<int, (UserFlag, FlagPermission)>(f.Id, (f, f.Permissions))));
         }
 
-        public UserFlag GetUserFlag(int UserFlagId)
+        public (UserFlag flag, FlagPermission permission) GetUserFlag(int UserFlagId)
         {
-            if (_Cache.TryGetValue(UserFlagId, out var item))
+            if (cache.TryGetValue(UserFlagId, out var item))
                 return item;
             else
-                return null;
+                return (null, null);
         }
-        public List<UserFlag> GetUserFlags()
+        public List<(UserFlag flag, FlagPermission permission)> GetUserFlags()
         {
-            return _Cache.Values.ToList();
+            return cache.Values.ToList();
         }
 
         public void AddOrUpdate(UserFlag UserFlag)
         {
-            _Cache.AddOrUpdate(UserFlag.Id, UserFlag, (key, existingItem) => UserFlag);
+            var value = (UserFlag, UserFlag.Permissions);
+            cache.AddOrUpdate(UserFlag.Id, value, (key, existingItem) => value);
         }
 
-        public UserFlag Remove(int UserFlagId)
+        public void Remove(int UserFlagId)
         {
-            if (_Cache.TryRemove(UserFlagId, out var item))
-                return item;
-            else
-                return null;
-        }
-        public UserFlag Remove(UserFlag UserFlag)
-        {
-            return Remove(UserFlag.Id);
+            cache.TryRemove(UserFlagId, out _);
         }
     }
 }

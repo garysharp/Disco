@@ -1,6 +1,5 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services;
-using Disco.Services.Authorization;
 using Disco.Services.Web;
 using System;
 using System.Data.Entity;
@@ -12,7 +11,7 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class DeviceFlagAssignmentController : AuthorizedDatabaseController
     {
         const string pComments = "comments";
-
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             try
@@ -21,7 +20,9 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new ArgumentOutOfRangeException(nameof(id));
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException(nameof(key));
-                var assignment = Database.DeviceFlagAssignments.FirstOrDefault(a => a.Id == id);
+                var assignment = Database.DeviceFlagAssignments
+                    .Include(a => a.DeviceFlag)
+                    .FirstOrDefault(a => a.Id == id);
                 if (assignment != null)
                 {
                     switch (key.ToLower())
@@ -52,7 +53,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
-        [DiscoAuthorizeAny(Claims.Device.Actions.EditFlags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateComments(int id, string Comments = null, bool? redirect = null)
         {
             return Update(id, pComments, Comments, redirect);
@@ -60,20 +61,19 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Update Properties
-        private void UpdateComments(DeviceFlagAssignment assignment, string Comments)
+        private void UpdateComments(DeviceFlagAssignment assignment, string comments)
         {
-            if (!assignment.CanEditComments())
+            if (!assignment.CanEdit())
                 throw new InvalidOperationException("Editing comments for device flags is denied");
 
-            assignment.OnEditComments(Comments);
+            assignment.OnEdit(comments);
             Database.SaveChanges();
         }
         #endregion
 
         #region Actions
-
-        [DiscoAuthorizeAny(Claims.Device.Actions.AddFlags)]
-        public virtual ActionResult AddDevice(int id, string DeviceSerialNumber, string Comments)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult AddDevice(int id, string deviceSerialNumber, string comments)
         {
             Database.Configuration.LazyLoadingEnabled = true;
 
@@ -81,37 +81,35 @@ namespace Disco.Web.Areas.API.Controllers
             if (flag == null)
                 throw new ArgumentException("Invalid Device Flag Id", nameof(id));
 
-            var device = Database.Devices.Include(u => u.DeviceFlagAssignments).FirstOrDefault(d => d.SerialNumber == DeviceSerialNumber);
+            var device = Database.Devices.Include(u => u.DeviceFlagAssignments).FirstOrDefault(d => d.SerialNumber == deviceSerialNumber);
             if (device == null)
-                throw new ArgumentException("Invalid Device Serial Number", nameof(DeviceSerialNumber));
+                throw new ArgumentException("Invalid Device Serial Number", nameof(deviceSerialNumber));
 
             if (!device.CanAddDeviceFlag(flag))
-                throw new InvalidOperationException("Adding device flag is denied");
+                return Unauthorized("Adding device flag is denied");
 
-            var addingUser = Database.Users.Find(CurrentUser.UserId);
-
-            var assignment = device.OnAddDeviceFlag(Database, flag, addingUser, Comments);
+            var assignment = device.OnAddDeviceFlag(Database, flag, comments);
 
             Database.SaveChanges();
 
             return Redirect($"{Url.Action(MVC.Device.Show(device.SerialNumber))}#DeviceDetailTab-Flags");
         }
 
-        [DiscoAuthorizeAny(Claims.Device.Actions.RemoveFlags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult RemoveDevice(int id)
         {
             Database.Configuration.LazyLoadingEnabled = true;
 
-            var assignment = Database.DeviceFlagAssignments.FirstOrDefault(a => a.Id == id);
+            var assignment = Database.DeviceFlagAssignments
+                .Include(a => a.DeviceFlag)
+                .FirstOrDefault(a => a.Id == id);
             if (assignment == null)
                 throw new ArgumentException("Invalid Device Flag Assignment Id", nameof(id));
 
             if (!assignment.CanRemove())
-                throw new InvalidOperationException("Removing device flag assignment is denied");
+                return Unauthorized("Removing device flag assignment is denied");
 
-            var removingUser = Database.Users.Find(CurrentUser.UserId);
-
-            assignment.OnRemove(Database, removingUser);
+            assignment.OnRemove(Database);
             Database.SaveChanges();
 
             return Redirect($"{Url.Action(MVC.Device.Show(assignment.DeviceSerialNumber))}#DeviceDetailTab-Flags");

@@ -8,7 +8,7 @@ namespace Disco.Services.Devices.DeviceFlags
 {
     internal class Cache
     {
-        private ConcurrentDictionary<int, DeviceFlag> _Cache;
+        private ConcurrentDictionary<int, (DeviceFlag, FlagPermission permission)> cache;
 
         public Cache(DiscoDataContext Database)
         {
@@ -26,36 +26,30 @@ namespace Disco.Services.Devices.DeviceFlags
             var flags = Database.DeviceFlags.ToList();
 
             // Add Queues to In-Memory Cache
-            _Cache = new ConcurrentDictionary<int, DeviceFlag>(flags.Select(f => new KeyValuePair<int, DeviceFlag>(f.Id, f)));
+            cache = new ConcurrentDictionary<int, (DeviceFlag, FlagPermission permission)>(flags.Select(f => new KeyValuePair<int, (DeviceFlag, FlagPermission permission)>(f.Id, (f, f.Permissions))));
         }
 
-        public DeviceFlag GetDeviceFlag(int deviceFlagId)
+        public (DeviceFlag flag, FlagPermission permission) GetDeviceFlag(int deviceFlagId)
         {
-            if (_Cache.TryGetValue(deviceFlagId, out var item))
+            if (cache.TryGetValue(deviceFlagId, out var item))
                 return item;
             else
-                return null;
+                return (null, null);
         }
-        public List<DeviceFlag> GetDeviceFlags()
+        public List<(DeviceFlag flag, FlagPermission permission)> GetDeviceFlags()
         {
-            return _Cache.Values.ToList();
+            return cache.Values.ToList();
         }
 
         public void AddOrUpdate(DeviceFlag flag)
         {
-            _Cache.AddOrUpdate(flag.Id, flag, (key, existingItem) => flag);
+            var value = (flag, flag.Permissions);
+            cache.AddOrUpdate(flag.Id, value, (key, existingItem) => value);
         }
 
-        public DeviceFlag Remove(int deviceFlagId)
+        public void Remove(int deviceFlagId)
         {
-            if (_Cache.TryRemove(deviceFlagId, out var item))
-                return item;
-            else
-                return null;
-        }
-        public DeviceFlag Remove(DeviceFlag deviceFlag)
-        {
-            return Remove(deviceFlag.Id);
+            cache.TryRemove(deviceFlagId, out _);
         }
     }
 }

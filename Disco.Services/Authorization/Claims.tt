@@ -66,17 +66,17 @@ namespace Disco.Services.Authorization
 
         static Claims()
         {
-#region Role Claim Dictionary
+            #region Role Claim Dictionary
             _roleClaims = new Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>>()
             {
 <#WriteAccessHashes(permissionRoot);#>
             };
-#endregion
+            #endregion
 
-#region Role Claim Navigator
+            #region Role Claim Navigator
             _claimNavigator =
 <#WriteNavigator(permissionRoot);#>;
-#endregion
+            #endregion
         }
 
         public static ClaimNavigatorItem RoleClaimNavigator
@@ -84,31 +84,36 @@ namespace Disco.Services.Authorization
             get { return _claimNavigator; }
         }
 
-        internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey) {
+        internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return claimDef;
             throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
         }
 
-        public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey) {
+        public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return claimDef.Item1;
             throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
         }
 
-        public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey) {
+        public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return claimDef.Item2;
             throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
         }
 
-        public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey) {
+        public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return Tuple.Create(claimDef.Item3, claimDef.Item4, claimDef.Item5);
             throw new ArgumentException("Unknown Claim Key", "ClaimKey");
         }
 
-        public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys){
+        public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys)
+        {
             var c = new RoleClaims();
             foreach (var claimKey in ClaimKeys)
                 c.Set(claimKey, true);
@@ -122,23 +127,26 @@ namespace Disco.Services.Authorization
             return _roleClaims.Where(rc => rc.Value.Item1(claims)).Select(rc => rc.Key).ToList();
         }
 
-        public static RoleClaims AdministratorClaims() {
+        public static RoleClaims AdministratorClaims()
+        {
             var c = new RoleClaims();
-#region Set All Administrator Claims
+            #region Set All Administrator Claims
 <#WriteAdministratorClaims(permissionRoot);#>
-#endregion
+            #endregion
             return c;
         }
 
-        public static RoleClaims ComputerAccountClaims() {
-            return new RoleClaims() {
+        public static RoleClaims ComputerAccountClaims()
+        {
+            return new RoleClaims()
+            {
                 ComputerAccount = true
             };
         }
 
-#region Role Claim Constants
+        #region Role Claim Constants
 <#WritePermissionConsts(permissionRoot);#>
-#endregion
+        #endregion
     }
     public static class ClaimExtensions
     {

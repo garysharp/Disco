@@ -256,19 +256,20 @@
                                     </div>
                                 }
                             }
-                            @if (Authorization.Has(Claims.Device.ShowFlagAssignments) &&
-                                Model.Job.Device.DeviceFlagAssignments != null &&
-                                Model.Job.Device.DeviceFlagAssignments.Any(a => !a.RemovedDate.HasValue))
+                            @if (Model.Job.Device.DeviceFlagAssignments.CanShowAny())
                             {
                                 <div id="Job_Show_Device_Flags">
                                     @foreach (var flag in Model.Job.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
                                     {
-                                        <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
-                                            <span class="details">
-                                                <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                                {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
-                                            </span>
-                                        </i>
+                                        if (flag.Item2.permission.CanShow())
+                                        {
+                                            <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw d-@(flag.Item2.flag.IconColour)">
+                                                <span class="details">
+                                                    <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
+                                                    {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                                </span>
+                                            </i>
+                                        }
                                     }
                                     <script type="text/javascript">
                                         $(function () {
@@ -506,17 +507,20 @@
                     if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
                     {<div id="Job_Show_User_EmailAddress" title="Email Address">Email: <a href="mailto:@(Model.Job.User.EmailAddress)" data-clipboard="@Model.Job.User.DisplayName &lt;@Model.Job.User.EmailAddress&gt;">@Model.Job.User.EmailAddress</a></div>}
             }
-                    @if (Authorization.Has(Claims.User.ShowFlagAssignments))
+                    @if (Model.Job.User.UserFlagAssignments.CanShowAny())
                     {
                         <div id="Job_Show_User_Flags">
                             @foreach (var flag in Model.Job.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
                             {
-                                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw d-@(flag.Item2.IconColour)">
-                                    <span class="details">
-                                        <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                                        {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
-                                    </span>
-                                </i>
+                                if (flag.Item2.permission.CanShow())
+                                {
+                                    <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw d-@(flag.Item2.flag.IconColour)">
+                                        <span class="details">
+                                            <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
+                                            {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId)</span>
+                                        </span>
+                                    </i>
+                                }
                             }
                             <script type="text/javascript">
                                 $(function () {

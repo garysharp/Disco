@@ -237,7 +237,7 @@
                 <div id="Config_AuthRoles_Claims_Tree">
                 </div>
                 <div>
-                    <button type="button" id="Config_AuthRoles_Claims_SaveChanges" class="button small disabled" data-saveurl="@Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id))">Save Changes</button>@AjaxHelpers.AjaxLoader()
+                    <button type="button" typeof="button" id="Config_AuthRoles_Claims_SaveChanges" class="button small disabled" data-saveurl="@Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id))">Save Changes</button>@AjaxHelpers.AjaxLoader()
                 </div>
                 <script id="Config_AuthRoles_Claims_NodesJson" type="application/json">
                     @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes))
@@ -286,7 +286,7 @@
                                             saveButton.addClass('disabled');
                                             ajaxLoading.next('.ajaxOk').show().delay('fast').fadeOut('slow');
                                         } else {
-                                            alert('Unable to save changes:\n' + response);
+                                            alert('Unable to save changes:\n' + response.statusText);
                                         }
                                     } catch (e) {
                                         alert('Error: ' + e);

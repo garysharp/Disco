@@ -4,6 +4,7 @@ using Disco.Services.Authorization;
 using Disco.Services.Expressions;
 using Disco.Services.Logging;
 using Disco.Services.Users;
+using Disco.Services.Users.UserFlags;
 using System;
 using System.Collections;
 using System.Linq;
@@ -14,16 +15,18 @@ namespace Disco.Services
     {
 
         #region Edit Comments
-        public static bool CanEditComments(this UserFlagAssignment fa)
+        public static bool CanEdit(this UserFlagAssignment fa)
         {
-            return UserService.CurrentAuthorization.Has(Claims.User.Actions.EditFlags);
+            var (_, permission) = UserFlagService.GetUserFlag(fa.UserFlagId);
+
+            return permission.CanEdit();
         }
-        public static void OnEditComments(this UserFlagAssignment fa, string Comments)
+        public static void OnEdit(this UserFlagAssignment fa, string comments)
         {
-            if (!fa.CanEditComments())
+            if (!fa.CanEdit())
                 throw new InvalidOperationException("Editing comments for user flags is denied");
 
-            fa.Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim();
+            fa.Comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim();
         }
         #endregion
 
@@ -33,34 +36,36 @@ namespace Disco.Services
             if (fa.RemovedDate.HasValue)
                 return false;
 
-            return UserService.CurrentAuthorization.Has(Claims.User.Actions.RemoveFlags);
+            var (_, permission) = UserFlagService.GetUserFlag(fa.UserFlagId);
+
+            return permission.CanRemove();
         }
-        public static void OnRemove(this UserFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
+        public static void OnRemove(this UserFlagAssignment fa, DiscoDataContext database)
         {
             if (!fa.CanRemove())
                 throw new InvalidOperationException("Removing user flags is denied");
 
-            fa.OnRemoveUnsafe(Database, RemovingUser);
+            fa.OnRemoveUnsafe(database, UserService.CurrentUser);
         }
 
-        public static void OnRemoveUnsafe(this UserFlagAssignment fa, DiscoDataContext Database, User RemovingUser)
+        public static void OnRemoveUnsafe(this UserFlagAssignment fa, DiscoDataContext database, User removingUser)
         {
-            fa = Database.UserFlagAssignments.First(a => a.Id == fa.Id);
-            RemovingUser = Database.Users.First(u => u.UserId == RemovingUser.UserId);
+            fa = database.UserFlagAssignments.First(a => a.Id == fa.Id);
+            removingUser = database.Users.First(u => u.UserId == removingUser.UserId);
 
             fa.RemovedDate = DateTime.Now;
-            fa.RemovedUserId = RemovingUser.UserId;
+            fa.RemovedUserId = removingUser.UserId;
 
             if (!string.IsNullOrWhiteSpace(fa.UserFlag.OnUnassignmentExpression))
             {
                 try
                 {
-                    Database.SaveChanges();
-                    var expressionResult = fa.EvaluateOnUnassignmentExpression(Database, RemovingUser, fa.AddedDate);
+                    database.SaveChanges();
+                    var expressionResult = fa.EvaluateOnUnassignmentExpression(database, removingUser, fa.AddedDate);
                     if (!string.IsNullOrWhiteSpace(expressionResult))
                     {
                         fa.OnUnassignmentExpressionResult = expressionResult;
-                        Database.SaveChanges();
+                        database.SaveChanges();
                     }
                 }
                 catch (Exception ex)
@@ -72,58 +77,52 @@ namespace Disco.Services
         #endregion
 
         #region Add
-        public static bool CanAddUserFlags(this User u)
-        {
-            return UserService.CurrentAuthorization.Has(Claims.User.Actions.AddFlags);
-        }
         public static bool CanAddUserFlag(this User u, UserFlag flag)
         {
-            // Shortcut
-            if (!u.CanAddUserFlags())
-                return false;
-
             // Already has User Flag?
             if (u.UserFlagAssignments.Any(fa => !fa.RemovedDate.HasValue && fa.UserFlagId == flag.Id))
                 return false;
 
-            return true;
+            var (_, permission) = UserFlagService.GetUserFlag(flag.Id);
+
+            return permission.CanAssign();
         }
-        public static UserFlagAssignment OnAddUserFlag(this User u, DiscoDataContext Database, UserFlag flag, User AddingUser, string Comments)
+        public static UserFlagAssignment OnAddUserFlag(this User u, DiscoDataContext database, UserFlag flag, string comments)
         {
             if (!u.CanAddUserFlag(flag))
                 throw new InvalidOperationException("Adding user flag is denied");
 
-            return u.OnAddUserFlagUnsafe(Database, flag, AddingUser, Comments);
+            return u.OnAddUserFlagUnsafe(database, flag, UserService.CurrentUser, comments);
         }
 
-        public static UserFlagAssignment OnAddUserFlagUnsafe(this User u, DiscoDataContext Database, UserFlag flag, User AddingUser, string Comments)
+        public static UserFlagAssignment OnAddUserFlagUnsafe(this User u, DiscoDataContext database, UserFlag flag, User addingUser, string comments)
         {
-            flag = Database.UserFlags.First(f => f.Id == flag.Id);
-            u = Database.Users.First(user => user.UserId == u.UserId);
-            AddingUser = Database.Users.First(user => user.UserId == AddingUser.UserId);
+            flag = database.UserFlags.First(f => f.Id == flag.Id);
+            u = database.Users.First(user => user.UserId == u.UserId);
+            addingUser = database.Users.First(user => user.UserId == addingUser.UserId);
 
             var fa = new UserFlagAssignment()
             {
                 UserFlag = flag,
                 User = u,
                 AddedDate = DateTime.Now,
-                AddedUser = AddingUser,
-                AddedUserId = AddingUser.UserId,
-                Comments = string.IsNullOrWhiteSpace(Comments) ? null : Comments.Trim()
+                AddedUser = addingUser,
+                AddedUserId = addingUser.UserId,
+                Comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim()
             };
 
-            Database.UserFlagAssignments.Add(fa);
+            database.UserFlagAssignments.Add(fa);
 
             if (!string.IsNullOrWhiteSpace(flag.OnAssignmentExpression))
             {
                 try
                 {
-                    Database.SaveChanges();
-                    var expressionResult = fa.EvaluateOnAssignmentExpression(Database, AddingUser, fa.AddedDate);
+                    database.SaveChanges();
+                    var expressionResult = fa.EvaluateOnAssignmentExpression(database, addingUser, fa.AddedDate);
                     if (!string.IsNullOrWhiteSpace(expressionResult))
                     {
                         fa.OnAssignmentExpressionResult = expressionResult;
-                        Database.SaveChanges();
+                        database.SaveChanges();
                     }
                 }
                 catch (Exception ex)

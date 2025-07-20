@@ -18,7 +18,7 @@ namespace Disco.Services.Authorization
 
         static Claims()
         {
-#region Role Claim Dictionary
+            #region Role Claim Dictionary
             _roleClaims = new Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>>()
             {
                 { "Config.DeviceCertificate.DownloadCertificates", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceCertificate.DownloadCertificates, (c, v) => c.Config.DeviceCertificate.DownloadCertificates = v, "Download Certificates", "Can download certificates", false) },
@@ -242,9 +242,9 @@ namespace Disco.Services.Authorization
                 { "ComputerAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.ComputerAccount, (c, v) => c.ComputerAccount = v, "Computer Account", "Represents a computer account", true) },
                 { "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco Administrator Account", "Represents a Disco ICT Administrator account", true) }
             };
-#endregion
+            #endregion
 
-#region Role Claim Navigator
+            #region Role Claim Navigator
             _claimNavigator =
                 new ClaimNavigatorItem("Claims", "Permissions", "Top-level node for all permissions", false, new List<IClaimNavigatorItem>() {
                     new ClaimNavigatorItem("Config", "Configuration", "Permissions related to Disco ICT Configuration", false, new List<IClaimNavigatorItem>() {
@@ -524,7 +524,7 @@ namespace Disco.Services.Authorization
                     new ClaimNavigatorItem("ComputerAccount", true),
                     new ClaimNavigatorItem("DiscoAdminAccount", true)
                 });
-#endregion
+            #endregion
         }
 
         public static ClaimNavigatorItem RoleClaimNavigator
@@ -532,31 +532,36 @@ namespace Disco.Services.Authorization
             get { return _claimNavigator; }
         }
 
-        internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey) {
+        internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return claimDef;
             throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
         }
 
-        public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey) {
+        public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return claimDef.Item1;
             throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
         }
 
-        public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey) {
+        public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return claimDef.Item2;
             throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
         }
 
-        public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey) {
+        public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey)
+        {
             if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
                 return Tuple.Create(claimDef.Item3, claimDef.Item4, claimDef.Item5);
             throw new ArgumentException("Unknown Claim Key", "ClaimKey");
         }
 
-        public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys){
+        public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys)
+        {
             var c = new RoleClaims();
             foreach (var claimKey in ClaimKeys)
                 c.Set(claimKey, true);
@@ -570,9 +575,10 @@ namespace Disco.Services.Authorization
             return _roleClaims.Where(rc => rc.Value.Item1(claims)).Select(rc => rc.Key).ToList();
         }
 
-        public static RoleClaims AdministratorClaims() {
+        public static RoleClaims AdministratorClaims()
+        {
             var c = new RoleClaims();
-#region Set All Administrator Claims
+            #region Set All Administrator Claims
             c.Config.DeviceCertificate.DownloadCertificates = true;
             c.Config.Enrolment.Configure = true;
             c.Config.Enrolment.DownloadBootstrapper = true;
@@ -792,17 +798,19 @@ namespace Disco.Services.Authorization
             c.User.ShowFlagAssignments = true;
             c.User.ShowJobs = true;
             c.DiscoAdminAccount = true;
-#endregion
+            #endregion
             return c;
         }
 
-        public static RoleClaims ComputerAccountClaims() {
-            return new RoleClaims() {
+        public static RoleClaims ComputerAccountClaims()
+        {
+            return new RoleClaims()
+            {
                 ComputerAccount = true
             };
         }
 
-#region Role Claim Constants
+        #region Role Claim Constants
 
         /// <summary>Configuration
         /// <para>Permissions related to Disco ICT Configuration</para>
@@ -2099,7 +2107,7 @@ namespace Disco.Services.Authorization
         /// <para>Represents a Disco ICT Administrator account</para>
         /// </summary>
         public const string DiscoAdminAccount = "DiscoAdminAccount";
-#endregion
+        #endregion
     }
     public static class ClaimExtensions
     {

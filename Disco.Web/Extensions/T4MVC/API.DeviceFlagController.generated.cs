@@ -155,6 +155,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Permission()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Permission);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DeviceFlagController Actions { get { return MVC.API.DeviceFlag; } }
@@ -187,6 +193,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Export = "Export";
             public readonly string ExportRetrieve = "ExportRetrieve";
             public readonly string SaveExport = "SaveExport";
+            public readonly string Permission = "Permission";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -208,6 +215,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Export = "Export";
             public const string ExportRetrieve = "ExportRetrieve";
             public const string SaveExport = "SaveExport";
+            public const string Permission = "Permission";
         }
 
 
@@ -365,6 +373,15 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_SaveExport
         {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_Permission s_params_Permission = new ActionParamsClass_Permission();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Permission PermissionParams { get { return s_params_Permission; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Permission
+        {
+            public readonly string id = "id";
             public readonly string model = "model";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -603,6 +620,19 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SaveExport);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             SaveExportOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void PermissionOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, Disco.Web.Areas.API.Models.Shared.FlagPermissionModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Permission(int id, Disco.Web.Areas.API.Models.Shared.FlagPermissionModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Permission);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            PermissionOverride(callInfo, id, model);
             return callInfo;
         }
 

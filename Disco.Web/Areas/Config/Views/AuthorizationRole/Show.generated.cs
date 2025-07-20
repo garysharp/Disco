@@ -656,6 +656,8 @@ WriteLiteral(">\r\n                </div>\r\n                <div>\r\n          
 
 WriteLiteral(" type=\"button\"");
 
+WriteLiteral(" typeof=\"button\"");
+
 WriteLiteral(" id=\"Config_AuthRoles_Claims_SaveChanges\"");
 
 WriteLiteral(" class=\"button small disabled\"");
@@ -664,7 +666,7 @@ WriteLiteral(" data-saveurl=\"");
 
             
             #line 240 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                                                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
+                                                                                                                                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
 
             
             #line default
@@ -675,7 +677,7 @@ WriteLiteral(">Save Changes</button>");
 
             
             #line 240 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                                                                                                                                                         Write(AjaxHelpers.AjaxLoader());
+                                                                                                                                                                                                                                         Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
@@ -728,13 +730,13 @@ WriteLiteral("\r\n                </script>\r\n                <script>\r\n     
 "dClass(\'disabled\');\r\n                                            ajaxLoading.nex" +
 "t(\'.ajaxOk\').show().delay(\'fast\').fadeOut(\'slow\');\r\n                            " +
 "            } else {\r\n                                            alert(\'Unable " +
-"to save changes:\\n\' + response);\r\n                                        }\r\n   " +
-"                                 } catch (e) {\r\n                                " +
-"        alert(\'Error: \' + e);\r\n                                    }\r\n          " +
-"                          ajaxLoading.hide();\r\n                                }" +
-"\r\n                            });\r\n                        });\r\n                " +
-"    })();\r\n                </script>\r\n            </td>\r\n        </tr>\r\n    </ta" +
-"ble>\r\n</div>\r\n<div");
+"to save changes:\\n\' + response.statusText);\r\n                                   " +
+"     }\r\n                                    } catch (e) {\r\n                     " +
+"                   alert(\'Error: \' + e);\r\n                                    }\r" +
+"\n                                    ajaxLoading.hide();\r\n                      " +
+"          }\r\n                            });\r\n                        });\r\n     " +
+"               })();\r\n                </script>\r\n            </td>\r\n        </tr" +
+">\r\n    </table>\r\n</div>\r\n<div");
 
 WriteLiteral(" class=\"actionBar\"");
 

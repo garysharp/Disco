@@ -1,15 +1,8 @@
 ﻿@model Disco.Web.Models.Device.ShowModel
 @using Disco.Services.Devices.DeviceFlags;
 @{
-    Authorization.Require(Claims.Device.ShowFlagAssignments);
-
-    var hasRemove = Authorization.Has(Claims.Device.Actions.RemoveFlags);
-    var hasEdit = Authorization.Has(Claims.Device.Actions.EditFlags);
-
-    var hasDeviceFlagShow = Authorization.Has(Claims.Config.DeviceFlag.Show);
-    var activeAssignmentCount = Model.Device.DeviceFlagAssignments == null ? 0 : Model.Device.DeviceFlagAssignments.Count(a => !a.RemovedDate.HasValue);
-
-    var flagAssignments = Model.Device.DeviceFlagAssignments.Select(a => Tuple.Create(a, DeviceFlagService.GetDeviceFlag(a.DeviceFlagId))).ToList();
+    var flagAssignments = Model.Device.DeviceFlagAssignments.Select(a => Tuple.Create(a, DeviceFlagService.GetDeviceFlag(a.DeviceFlagId))).Where(a => a.Item2.permission.CanShow()).ToList();
+    var activeAssignmentCount = flagAssignments.Count(a => !a.Item1.RemovedDate.HasValue);
 }
 <div id="DeviceDetailTab-Flags" class="DevicePart">
     @if (flagAssignments.Count > 0)
@@ -25,14 +18,14 @@
             {
                 <tr data-deviceflagassignmentid="@fa.Item1.Id" data-flagassignmentaddeddate="@(fa.Item1.AddedDate.ToString("s"))" class="@(!fa.Item1.RemovedDate.HasValue ? "added" : "removed")">
                     <td class="name">
-                        <i class="fa fa-@(fa.Item2.Icon) fa-fw fa-lg d-@(fa.Item2.IconColour)"></i>
-                        @if (hasDeviceFlagShow)
+                        <i class="fa fa-@(fa.Item2.flag.Icon) fa-fw fa-lg d-@(fa.Item2.flag.IconColour)"></i>
+                        @if (Authorization.Has(Claims.Config.DeviceFlag.Show))
                         {
-                            @Html.ActionLink(fa.Item2.Name, MVC.Config.DeviceFlag.Index(fa.Item2.Id))
+                            @Html.ActionLink(fa.Item2.flag.Name, MVC.Config.DeviceFlag.Index(fa.Item2.flag.Id))
                         }
                         else
                         {
-                            @fa.Item2.Name
+                            @fa.Item2.flag.Name
                         }
                     </td>
                     <td class="added">
@@ -43,7 +36,7 @@
                         }
                     </td>
                     <td class="comments">
-                        @if (hasEdit)
+                        @if (fa.Item2.permission.CanEdit())
                         {
                             <div class="editable"><i class="fa fa-fw fa-edit" title="Edit Comments"></i></div>
                         }
@@ -77,6 +70,7 @@
         <div id="Device_Show_Flags_Actions_Remove_Dialog" class="dialog" title="Remove this flag from the device?">
             @using (Html.BeginForm(MVC.API.DeviceFlagAssignment.RemoveDevice()))
             {
+                @Html.AntiForgeryToken()
                 <input id="Device_Show_Flags_Actions_Remove_Dialog_Id" type="hidden" name="id" value="" />
                 <p>
                     <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
@@ -86,6 +80,7 @@
         <div id="Device_Show_Flags_Actions_EditComments_Dialog" class="dialog" title="Edit the Comments">
             @using (Html.BeginForm(MVC.API.DeviceFlagAssignment.UpdateComments()))
             {
+                @Html.AntiForgeryToken()
                 <input id="Device_Show_Flags_Actions_EditComments_Dialog_Id" type="hidden" name="id" value="" />
                 <input type="hidden" name="redirect" value="true" />
                 <h4>Comments:</h4>

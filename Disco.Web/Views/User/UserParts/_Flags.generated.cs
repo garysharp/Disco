@@ -52,15 +52,8 @@ namespace Disco.Web.Views.User.UserParts
             
             #line 3 "..\..\Views\User\UserParts\_Flags.cshtml"
   
-    Authorization.Require(Claims.User.ShowFlagAssignments);
-
-    var hasRemove = Authorization.Has(Claims.User.Actions.RemoveFlags);
-    var hasEdit = Authorization.Has(Claims.User.Actions.EditFlags);
-
-    var hasUserFlagShow = Authorization.Has(Claims.Config.UserFlag.Show);
-    var activeAssignmentCount = Model.User.UserFlagAssignments == null ? 0 : Model.User.UserFlagAssignments.Count(a => !a.RemovedDate.HasValue);
-
-    var flagAssignments = Model.User.UserFlagAssignments.Select(a => Tuple.Create(a, UserFlagService.GetUserFlag(a.UserFlagId))).ToList();
+    var flagAssignments = Model.User.UserFlagAssignments.Select(a => Tuple.Create(a, UserFlagService.GetUserFlag(a.UserFlagId))).Where(g => g.Item2.permission.CanShow()).ToList();
+    var activeAssignmentCount = flagAssignments.Count(a => !a.Item1.RemovedDate.HasValue);
 
             
             #line default
@@ -74,13 +67,13 @@ WriteLiteral(" class=\"UserPart\"");
 WriteLiteral(">\r\n");
 
             
-            #line 15 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Flags.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 15 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 8 "..\..\Views\User\UserParts\_Flags.cshtml"
      if (flagAssignments.Count > 0)
     {
 
@@ -110,13 +103,13 @@ WriteLiteral(" class=\"removed\"");
 WriteLiteral(">Removed</th>\r\n            </tr>\r\n");
 
             
-            #line 24 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 17 "..\..\Views\User\UserParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 24 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 17 "..\..\Views\User\UserParts\_Flags.cshtml"
              foreach (var fa in flagAssignments.OrderByDescending(a => a.Item1.AddedDate))
             {
 
@@ -128,7 +121,7 @@ WriteLiteral("                <tr");
 WriteLiteral(" data-userflagassignmentid=\"");
 
             
-            #line 26 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 19 "..\..\Views\User\UserParts\_Flags.cshtml"
                                           Write(fa.Item1.Id);
 
             
@@ -139,7 +132,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-flagassignmentaddeddate=\"");
 
             
-            #line 26 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 19 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                                                        Write(fa.Item1.AddedDate.ToString("s"));
 
             
@@ -147,14 +140,14 @@ WriteLiteral(" data-flagassignmentaddeddate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1240), Tuple.Create("\"", 1303)
+WriteAttribute("class", Tuple.Create(" class=\"", 943), Tuple.Create("\"", 1006)
             
-            #line 26 "..\..\Views\User\UserParts\_Flags.cshtml"
-                                                        , Tuple.Create(Tuple.Create("", 1248), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
+            #line 19 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                                         , Tuple.Create(Tuple.Create("", 951), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
             
             #line default
             #line hidden
-, 1248), false)
+, 951), false)
 );
 
 WriteLiteral(">\r\n                    <td");
@@ -163,54 +156,54 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1372), Tuple.Create("\"", 1439)
-, Tuple.Create(Tuple.Create("", 1380), Tuple.Create("fa", 1380), true)
-, Tuple.Create(Tuple.Create(" ", 1382), Tuple.Create("fa-", 1383), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1075), Tuple.Create("\"", 1152)
+, Tuple.Create(Tuple.Create("", 1083), Tuple.Create("fa", 1083), true)
+, Tuple.Create(Tuple.Create(" ", 1085), Tuple.Create("fa-", 1086), true)
             
-            #line 28 "..\..\Views\User\UserParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1386), Tuple.Create<System.Object, System.Int32>(fa.Item2.Icon
-            
-            #line default
-            #line hidden
-, 1386), false)
-, Tuple.Create(Tuple.Create(" ", 1402), Tuple.Create("fa-fw", 1403), true)
-, Tuple.Create(Tuple.Create(" ", 1408), Tuple.Create("fa-lg", 1409), true)
-, Tuple.Create(Tuple.Create(" ", 1414), Tuple.Create("d-", 1415), true)
-            
-            #line 28 "..\..\Views\User\UserParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1417), Tuple.Create<System.Object, System.Int32>(fa.Item2.IconColour
+            #line 21 "..\..\Views\User\UserParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 1089), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.Icon
             
             #line default
             #line hidden
-, 1417), false)
+, 1089), false)
+, Tuple.Create(Tuple.Create(" ", 1110), Tuple.Create("fa-fw", 1111), true)
+, Tuple.Create(Tuple.Create(" ", 1116), Tuple.Create("fa-lg", 1117), true)
+, Tuple.Create(Tuple.Create(" ", 1122), Tuple.Create("d-", 1123), true)
+            
+            #line 21 "..\..\Views\User\UserParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 1125), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.IconColour
+            
+            #line default
+            #line hidden
+, 1125), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 29 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 22 "..\..\Views\User\UserParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 29 "..\..\Views\User\UserParts\_Flags.cshtml"
-                         if (hasUserFlagShow)
+            #line 22 "..\..\Views\User\UserParts\_Flags.cshtml"
+                         if (Authorization.Has(Claims.Config.UserFlag.Show))
                         {
                             
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\User\UserParts\_Flags.cshtml"
-                       Write(Html.ActionLink(fa.Item2.Name, MVC.Config.UserFlag.Index(fa.Item2.Id)));
+            #line 24 "..\..\Views\User\UserParts\_Flags.cshtml"
+                       Write(Html.ActionLink(fa.Item2.flag.Name, MVC.Config.UserFlag.Index(fa.Item2.flag.Id)));
 
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\User\UserParts\_Flags.cshtml"
-                                                                                                   
+            #line 24 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                                                                                             
                         }
                         else
                         {
@@ -219,15 +212,15 @@ WriteLiteral("></i>\r\n");
             #line default
             #line hidden
             
-            #line 35 "..\..\Views\User\UserParts\_Flags.cshtml"
-                       Write(fa.Item2.Name);
+            #line 28 "..\..\Views\User\UserParts\_Flags.cshtml"
+                       Write(fa.Item2.flag.Name);
 
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Views\User\UserParts\_Flags.cshtml"
-                                          
+            #line 28 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                               
                         }
 
             
@@ -242,7 +235,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 39 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 32 "..\..\Views\User\UserParts\_Flags.cshtml"
                    Write(CommonHelpers.FriendlyDateAndUser(fa.Item1.AddedDate, fa.Item1.AddedUser));
 
             
@@ -251,13 +244,13 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n");
 
             
-            #line 40 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 33 "..\..\Views\User\UserParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 40 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 33 "..\..\Views\User\UserParts\_Flags.cshtml"
                          if (fa.Item1.OnAssignmentExpressionResult != null)
                         {
 
@@ -271,7 +264,7 @@ WriteLiteral(" class=\"expressionResult\"");
 WriteLiteral(">");
 
             
-            #line 42 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 35 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                      Write(fa.Item1.OnAssignmentExpressionResult);
 
             
@@ -280,7 +273,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 43 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 36 "..\..\Views\User\UserParts\_Flags.cshtml"
                         }
 
             
@@ -293,14 +286,14 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">\r\n");
 
             
-            #line 46 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 39 "..\..\Views\User\UserParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 46 "..\..\Views\User\UserParts\_Flags.cshtml"
-                         if (hasEdit)
+            #line 39 "..\..\Views\User\UserParts\_Flags.cshtml"
+                         if (fa.Item2.permission.CanEdit())
                         {
 
             
@@ -319,7 +312,7 @@ WriteLiteral(" title=\"Edit Comments\"");
 WriteLiteral("></i></div>\r\n");
 
             
-            #line 49 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 42 "..\..\Views\User\UserParts\_Flags.cshtml"
                         }
 
             
@@ -328,7 +321,7 @@ WriteLiteral("></i></div>\r\n");
 WriteLiteral("                        ");
 
             
-            #line 50 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 43 "..\..\Views\User\UserParts\_Flags.cshtml"
                          if (fa.Item1.Comments == null)
                         {
 
@@ -342,7 +335,7 @@ WriteLiteral(" class=\"comments smallMessage\"");
 WriteLiteral(">[no comments]</div>\r\n");
 
             
-            #line 53 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 46 "..\..\Views\User\UserParts\_Flags.cshtml"
                         }
                         else
                         {
@@ -357,7 +350,7 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 56 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 49 "..\..\Views\User\UserParts\_Flags.cshtml"
                                              Write(fa.Item1.Comments.ToHtmlComment());
 
             
@@ -372,7 +365,7 @@ WriteLiteral(" class=\"commentsRaw\"");
 WriteLiteral(">");
 
             
-            #line 57 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 50 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                 Write(fa.Item1.Comments);
 
             
@@ -381,7 +374,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 58 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 51 "..\..\Views\User\UserParts\_Flags.cshtml"
                         }
 
             
@@ -389,27 +382,27 @@ WriteLiteral("</div>\r\n");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2954), Tuple.Create("\"", 3017)
-, Tuple.Create(Tuple.Create("", 2962), Tuple.Create("removed", 2962), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2735), Tuple.Create("\"", 2798)
+, Tuple.Create(Tuple.Create("", 2743), Tuple.Create("removed", 2743), true)
             
-            #line 60 "..\..\Views\User\UserParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 2969), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
+            #line 53 "..\..\Views\User\UserParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 2750), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
             
             #line default
             #line hidden
-, 2969), false)
+, 2750), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 61 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 54 "..\..\Views\User\UserParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 61 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 54 "..\..\Views\User\UserParts\_Flags.cshtml"
                          if (fa.Item1.RemovedDate.HasValue)
                         {
                             
@@ -417,14 +410,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 56 "..\..\Views\User\UserParts\_Flags.cshtml"
                        Write(CommonHelpers.FriendlyDateAndUser(fa.Item1.RemovedDate.Value, fa.Item1.RemovedUser));
 
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 56 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                                                                                 
                             if (fa.Item1.OnUnassignmentExpressionResult != null)
                             {
@@ -439,7 +432,7 @@ WriteLiteral(" class=\"expressionResult\"");
 WriteLiteral(">");
 
             
-            #line 66 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 59 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                          Write(fa.Item1.OnUnassignmentExpressionResult);
 
             
@@ -448,7 +441,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 67 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 60 "..\..\Views\User\UserParts\_Flags.cshtml"
                             }
                         }
                         else if (fa.Item1.CanRemove())
@@ -466,7 +459,7 @@ WriteLiteral(" class=\"button small remove\"");
 WriteLiteral(">Remove</a>\r\n");
 
             
-            #line 72 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 65 "..\..\Views\User\UserParts\_Flags.cshtml"
                         }
 
             
@@ -475,7 +468,7 @@ WriteLiteral(">Remove</a>\r\n");
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 75 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 68 "..\..\Views\User\UserParts\_Flags.cshtml"
             }
 
             
@@ -494,15 +487,29 @@ WriteLiteral(" title=\"Remove this flag from the user?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 78 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 71 "..\..\Views\User\UserParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 78 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 71 "..\..\Views\User\UserParts\_Flags.cshtml"
              using (Html.BeginForm(MVC.API.UserFlagAssignment.RemoveUser()))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 73 "..\..\Views\User\UserParts\_Flags.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 73 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                        
 
             
             #line default
@@ -526,7 +533,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n                </p>\r\n");
 
             
-            #line 84 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 78 "..\..\Views\User\UserParts\_Flags.cshtml"
             }
 
             
@@ -545,15 +552,29 @@ WriteLiteral(" title=\"Edit the Comments\"");
 WriteLiteral(">\r\n");
 
             
-            #line 87 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 81 "..\..\Views\User\UserParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 87 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 81 "..\..\Views\User\UserParts\_Flags.cshtml"
              using (Html.BeginForm(MVC.API.UserFlagAssignment.UpdateComments()))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 83 "..\..\Views\User\UserParts\_Flags.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 83 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                        
 
             
             #line default
@@ -593,7 +614,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                </p>\r\n");
 
             
-            #line 95 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 90 "..\..\Views\User\UserParts\_Flags.cshtml"
             }
 
             
@@ -651,7 +672,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var userFlags 
 ";\r\n            });\r\n        </script>\r\n");
 
             
-            #line 174 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 169 "..\..\Views\User\UserParts\_Flags.cshtml"
     }
     else
     {
@@ -666,7 +687,7 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">This user has no associated flags</div>\r\n");
 
             
-            #line 178 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 173 "..\..\Views\User\UserParts\_Flags.cshtml"
     }
 
             
@@ -676,7 +697,7 @@ WriteLiteral("    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a
 "b-Flags\">Flags [");
 
             
-            #line 180 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 175 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                                               Write(activeAssignmentCount);
 
             

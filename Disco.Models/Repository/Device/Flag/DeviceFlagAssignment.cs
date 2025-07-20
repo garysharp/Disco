@@ -19,26 +19,28 @@ namespace Disco.Models.Repository
         public string AddedUserId { get; set; }
         public DateTime? RemovedDate { get; set; }
         public string RemovedUserId { get; set; }
+        public DateTime? RemoveDate { get; set; }
+        public string RemoveUserId { get; set; }
 
         public string Comments { get; set; }
 
         public string OnAssignmentExpressionResult { get; set; }
         public string OnUnassignmentExpressionResult { get; set; }
 
-        [ForeignKey(nameof(DeviceFlagId)), InverseProperty("DeviceFlagAssignments")]
+        [ForeignKey(nameof(DeviceFlagId)), InverseProperty(nameof(Repository.DeviceFlag.DeviceFlagAssignments))]
         public virtual DeviceFlag DeviceFlag { get; set; }
 
-        [ForeignKey(nameof(DeviceSerialNumber)), InverseProperty("DeviceFlagAssignments")]
+        [ForeignKey(nameof(DeviceSerialNumber)), InverseProperty(nameof(Repository.Device.DeviceFlagAssignments))]
         public virtual Device Device { get; set; }
 
-        [ForeignKey("AddedUserId")]
+        [ForeignKey(nameof(AddedUserId))]
         public virtual User AddedUser { get; set; }
-        [ForeignKey("RemovedUserId")]
+        [ForeignKey(nameof(RemovedUserId))]
         public virtual User RemovedUser { get; set; }
+        [ForeignKey(nameof(RemoveUserId))]
+        public virtual User RemoveUser { get; set; }
 
         public override string ToString()
-        {
-            return $"Device Flag Id: {DeviceFlagId}; Device Serial Number: {DeviceSerialNumber}; Added: {AddedDate:s}";
-        }
+            => $"Device Flag Id: {DeviceFlagId}; Device Serial Number: {DeviceSerialNumber}; Added: {AddedDate:s}";
     }
 }

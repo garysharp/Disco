@@ -6,6 +6,7 @@ using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
 using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.Shared;
 using Disco.Web.Areas.Config.Models.UserFlag;
 using Disco.Web.Extensions;
 using System;
@@ -467,6 +468,24 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Export.Create(savedExport.Id));
         }
 
+        [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Permission(int id, FlagPermissionModel model = null)
+        {
+            var userFlag = Database.UserFlags.Find(id);
+
+            if (userFlag == null)
+                return NotFound();
+
+            if (model == null || !model.IsOverride)
+                userFlag.Permissions = null;
+            else
+                userFlag.Permissions = model.ToFlagPermission(userFlag);
+
+            UserFlagService.Update(Database, userFlag);
+
+            return RedirectToAction(MVC.Config.UserFlag.Index(userFlag.Id));
+        }
         #endregion
     }
 }

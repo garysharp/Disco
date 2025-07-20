@@ -4,7 +4,9 @@ using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Messaging;
+using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -320,38 +322,64 @@ namespace Disco.Web.Areas.API.Controllers
             };
         }
 
-        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult SearchSubjects(string term)
+        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure, Claims.Config.UserFlag.Configure, Claims.Config.DeviceFlag.Configure)]
+        public virtual ActionResult SearchSubjects(string term, bool includeAuthorizationRoles = false)
         {
-            var groupResults = ActiveDirectory.SearchADGroups(term).Cast<IADObject>();
-            var userResults = ActiveDirectory.SearchADUserAccounts(term, true).Cast<IADObject>();
+            var groupResults = ActiveDirectory.SearchADGroups(term).Select(r => SubjectDescriptorModel.FromActiveDirectoryObject(r));
+            var userResults = ActiveDirectory.SearchADUserAccounts(term, true).Select(r => SubjectDescriptorModel.FromActiveDirectoryObject(r));
 
-            var results = groupResults.Concat(userResults).OrderBy(r => r.SamAccountName)
-                .Select(r => Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(r)).ToList();
+            IEnumerable<SubjectDescriptorModel> roleResults;
+            if (includeAuthorizationRoles)
+            {
+                roleResults = Database.AuthorizationRoles.AsNoTracking().Where(r => r.Name.Contains(term))
+                    .ToList()
+                    .Select(r => SubjectDescriptorModel.FromAuthorizationRole(r));
+            }
+            else
+                roleResults = Enumerable.Empty<SubjectDescriptorModel>();
+
+            var results = groupResults.Concat(userResults).Concat(roleResults)
+                .OrderBy(r => r.Id).ToList();
 
             return Json(results, JsonRequestBehavior.AllowGet);
         }
 
-        [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure)]
+        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.DeviceProfile.Configure, Claims.Config.DocumentTemplate.Configure, Claims.Config.Plugin.Configure, Claims.Config.UserFlag.Configure, Claims.Config.DeviceFlag.Configure)]
         public virtual ActionResult SearchGroupSubjects(string term)
         {
             var groupResults = ActiveDirectory.SearchADGroups(term).Cast<IADObject>();
 
             var results = groupResults.OrderBy(r => r.SamAccountName)
-                .Select(r => Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(r)).ToList();
+                .Select(r => SubjectDescriptorModel.FromActiveDirectoryObject(r)).ToList();
 
             return Json(results, JsonRequestBehavior.AllowGet);
         }
 
-        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult Subject(string Id)
+        [DiscoAuthorizeAny(Claims.DiscoAdminAccount, Claims.Config.JobQueue.Configure, Claims.Config.UserFlag.Configure, Claims.Config.DeviceFlag.Configure)]
+        public virtual ActionResult Subject(string Id, bool includeAuthorizationRoles = false)
         {
+            if (string.IsNullOrWhiteSpace(Id))
+                return Json(null, JsonRequestBehavior.AllowGet);
+
+            if (Id.StartsWith("[", StringComparison.Ordinal))
+            {
+                if (includeAuthorizationRoles && int.TryParse(Id.Trim('[', ']'), out var roleId))
+                {
+                    var roleName = UserService.GetAuthorizationRoleName(roleId);
+                    if (roleName != null)
+                    {
+                        return Json(SubjectDescriptorModel.FromAuthorizationRole(roleId, roleName), JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+
             var subject = ActiveDirectory.RetrieveADObject(Id, Quick: true);
 
             if (subject == null)
                 return Json(null, JsonRequestBehavior.AllowGet);
             else
-                return Json(Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
+                return Json(SubjectDescriptorModel.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
         }
 
         [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure, Claims.Config.DeviceFlag.Configure, Claims.Config.DeviceProfile.Configure, Claims.Config.DocumentTemplate.Configure)]

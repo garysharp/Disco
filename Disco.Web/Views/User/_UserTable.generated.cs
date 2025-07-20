@@ -173,35 +173,29 @@ WriteLiteral("                            ");
 
             
             #line 45 "..\..\Views\User\_UserTable.cshtml"
-                             if (Authorization.Has(Claims.User.ShowFlagAssignments))
+                             if (item.UserFlagAssignments.CanShowAny())
                             {
-                                
-            
-            #line default
-            #line hidden
-            
-            #line 47 "..\..\Views\User\_UserTable.cshtml"
-                                 if (item.UserFlagAssignments != null && item.UserFlagAssignments.Count > 0)
-                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <div");
+WriteLiteral("                                <div");
 
 WriteLiteral(" class=\"flags\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 50 "..\..\Views\User\_UserTable.cshtml"
-                                        
+            #line 48 "..\..\Views\User\_UserTable.cshtml"
+                                    
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\User\_UserTable.cshtml"
-                                         foreach (var flag in item.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+            #line 48 "..\..\Views\User\_UserTable.cshtml"
+                                     foreach (var flag in item.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
+                                    {
+                                        if (flag.Item2.permission.CanShow())
                                         {
 
             
@@ -209,26 +203,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2064), Tuple.Create("\"", 2134)
-, Tuple.Create(Tuple.Create("", 2072), Tuple.Create("flag", 2072), true)
-, Tuple.Create(Tuple.Create(" ", 2076), Tuple.Create("fa", 2077), true)
-, Tuple.Create(Tuple.Create(" ", 2079), Tuple.Create("fa-", 2080), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2015), Tuple.Create("\"", 2095)
+, Tuple.Create(Tuple.Create("", 2023), Tuple.Create("flag", 2023), true)
+, Tuple.Create(Tuple.Create(" ", 2027), Tuple.Create("fa", 2028), true)
+, Tuple.Create(Tuple.Create(" ", 2030), Tuple.Create("fa-", 2031), true)
             
             #line 52 "..\..\Views\User\_UserTable.cshtml"
-, Tuple.Create(Tuple.Create("", 2083), Tuple.Create<System.Object, System.Int32>(flag.Item2.Icon
+, Tuple.Create(Tuple.Create("", 2034), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
             
             #line default
             #line hidden
-, 2083), false)
-, Tuple.Create(Tuple.Create(" ", 2101), Tuple.Create("fa-fw", 2102), true)
-, Tuple.Create(Tuple.Create(" ", 2107), Tuple.Create("d-", 2108), true)
+, 2034), false)
+, Tuple.Create(Tuple.Create(" ", 2057), Tuple.Create("fa-fw", 2058), true)
+, Tuple.Create(Tuple.Create(" ", 2063), Tuple.Create("d-", 2064), true)
             
             #line 52 "..\..\Views\User\_UserTable.cshtml"
-             , Tuple.Create(Tuple.Create("", 2110), Tuple.Create<System.Object, System.Int32>(flag.Item2.IconColour
+                  , Tuple.Create(Tuple.Create("", 2066), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
             
             #line default
             #line hidden
-, 2110), false)
+, 2066), false)
 );
 
 WriteLiteral(">\r\n                                                <span");
@@ -243,7 +237,7 @@ WriteLiteral(">");
 
             
             #line 54 "..\..\Views\User\_UserTable.cshtml"
-                                                                  Write(flag.Item2.Name);
+                                                                  Write(flag.Item2.flag.Name);
 
             
             #line default
@@ -252,7 +246,7 @@ WriteLiteral("</span>");
 
             
             #line 54 "..\..\Views\User\_UserTable.cshtml"
-                                                                                               if (flag.Item1.Comments != null)
+                                                                                                    if (flag.Item1.Comments != null)
                                                     {
             
             #line default
@@ -297,20 +291,15 @@ WriteLiteral("</span>\r\n                                                </span>
             
             #line 58 "..\..\Views\User\_UserTable.cshtml"
                                         }
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                                    </div>\r\n");
+                                    }
 
             
-            #line 60 "..\..\Views\User\_UserTable.cshtml"
-                                }
-            
             #line default
             #line hidden
+WriteLiteral("                                </div>\r\n");
+
             
-            #line 60 "..\..\Views\User\_UserTable.cshtml"
-                                 
+            #line 61 "..\..\Views\User\_UserTable.cshtml"
                             }
 
             

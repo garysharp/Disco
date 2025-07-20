@@ -154,7 +154,7 @@ namespace Disco.Services.Users
             AuthorizationLog.LogRoleCreated(role, CurrentUserId);
 
             // Add to Cache
-            RoleCache.AddRole(role);
+            RoleCache.AddOrUpdateRole(role);
 
             // Flush User Cache
             Cache.FlushCache();
@@ -164,7 +164,7 @@ namespace Disco.Services.Users
         public static void DeleteAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
         {
             if (Role == null)
-                throw new ArgumentNullException("Role");
+                throw new ArgumentNullException(nameof(Role));
 
             Database.AuthorizationRoles.Remove(Role);
             Database.SaveChanges();
@@ -180,17 +180,25 @@ namespace Disco.Services.Users
         public static void UpdateAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
         {
             if (Role == null)
-                throw new ArgumentNullException("Role");
+                throw new ArgumentNullException(nameof(Role));
             if (Database == null)
-                throw new ArgumentNullException("Database");
+                throw new ArgumentNullException(nameof(Database));
 
             Database.SaveChanges();
 
             // Update Role Cache
-            RoleCache.UpdateRole(Role);
+            RoleCache.AddOrUpdateRole(Role);
 
             // Flush User Cache
             Cache.FlushCache();
+        }
+
+        public static string GetAuthorizationRoleName(int roleId)
+        {
+            var role = RoleCache.GetRoleToken(roleId);
+            if (role == null)
+                return "Unknown authorization role";
+            return role.Role.Name;
         }
 
         public static IEnumerable<string> AdministratorSubjectIds

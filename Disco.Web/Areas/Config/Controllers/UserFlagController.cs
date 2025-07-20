@@ -46,6 +46,9 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.ThemeColours = UIHelpers.ThemeColours;
                 }
 
+                var (flag, permission) = UserFlagService.GetUserFlag(m.UserFlag.Id);
+                m.Permission = permission;
+
                 // UI Extensions
                 UIExtensions.ExecuteExtensions<ConfigUserFlagShowModel>(ControllerContext, m);
 
@@ -122,7 +125,7 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new ExportModel()
             {
                 Options = Database.DiscoConfiguration.UserFlags.LastExportOptions,
-                UserFlags = UserFlagService.GetUserFlags(),
+                UserFlags = UserFlagService.GetUserFlags().Select(f => f.flag).ToList(),
             };
 
             m.Fields = ExportFieldsModel.Create(m.Options, UserFlagExportOptions.DefaultOptions(), nameof(UserFlagExportOptions.CurrentOnly));

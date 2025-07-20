@@ -227,6 +227,7 @@
     <Compile Include="Areas\API\Models\Job\DeviceHeldLocationModel.cs" />
     <Compile Include="Areas\API\Models\Shared\SubjectDescriptorModel.cs" />
     <Compile Include="Areas\API\Models\System\DomainOrganisationalUnitsModel.cs" />
+    <Compile Include="Areas\API\Models\Shared\FlagPermissionModel.cs" />
     <Compile Include="Areas\API\Views\_ViewStart.generated.cs">
       <DependentUpon>_ViewStart.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>

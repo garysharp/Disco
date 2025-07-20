@@ -19,17 +19,20 @@
             });
         </script>
     </div>
-    @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+    @if (Model.Device.DeviceFlagAssignments.CanShowAny())
     {
         <div id="Device_Show_Flags">
             @foreach (var flag in Model.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
             {
-                <i class="flag fa fa-@(flag.Item2.Icon) fa-fw fa-lg d-@(flag.Item2.IconColour)">
-                    <span class="details">
-                        <span class="name">@flag.Item2.Name</span>@if (flag.Item1.Comments != null)
-                        {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
-                    </span>
-                </i>
+                if (flag.Item2.permission.CanShow())
+                {
+                    <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw fa-lg d-@(flag.Item2.flag.IconColour)">
+                        <span class="details">
+                            <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
+                            {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
+                        </span>
+                    </i>
+                }
             }
         </div>
         <script type="text/javascript">
@@ -116,7 +119,7 @@
         {
             @Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model)
         }
-        @if (Authorization.Has(Claims.Device.ShowFlagAssignments))
+        @if (Authorization.Has(Claims.Device.ShowFlagAssignments) || Model.Device.DeviceFlagAssignments.CanShowAny())
         {
             @Html.Partial(MVC.Device.Views.DeviceParts._Flags, Model)
         }
