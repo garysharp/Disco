@@ -81,23 +81,23 @@ namespace Disco.Web
             var breadCrumbs = new List<Tuple<string, ActionResult>>();
             if (title1 != null)
             {
-                breadCrumbs.Add(new Tuple<string, ActionResult>(title1, link1));
+                breadCrumbs.Add(Tuple.Create(title1, link1));
             }
             if (title2 != null)
             {
-                breadCrumbs.Add(new Tuple<string, ActionResult>(title2, link2));
+                breadCrumbs.Add(Tuple.Create(title2, link2));
             }
             if (title3 != null)
             {
-                breadCrumbs.Add(new Tuple<string, ActionResult>(title3, link3));
+                breadCrumbs.Add(Tuple.Create(title3, link3));
             }
             if (title4 != null)
             {
-                breadCrumbs.Add(new Tuple<string, ActionResult>(title4, link4));
+                breadCrumbs.Add(Tuple.Create(title4, link4));
             }
             if (title5 != null)
             {
-                breadCrumbs.Add(new Tuple<string, ActionResult>(title5, link5));
+                breadCrumbs.Add(Tuple.Create(title5, link5));
             }
 
             return breadCrumbs;

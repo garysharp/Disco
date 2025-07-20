@@ -11,7 +11,7 @@
     var hasJobQueueShow = Authorization.Has(Claims.Config.JobQueue.Show);
 
     var queues = JobQueueService.GetQueues();
-    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).ToList();
+    var queueHistory = Model.Job.JobQueues.Select(jq => Tuple.Create(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).ToList();
 }
 @if (queueHistory.Count > 0)
 {

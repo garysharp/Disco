@@ -519,7 +519,7 @@ namespace Disco.Services.Plugins
                 var fileDateCheck = File.GetLastWriteTime(resourcePath);
                 if (fileDateCheck == resourceHash.Item2)
 #endif
-                    return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+                    return Tuple.Create(resourcePath, resourceHash.Item1);
             }
 
             if (!File.Exists(resourcePath))
@@ -532,12 +532,12 @@ namespace Disco.Services.Plugins
                 using (SHA256 sha = SHA256.Create())
                 {
                     byte[] hash = sha.ComputeHash(fileBytes);
-                    resourceHash = new Tuple<string, DateTime>(HttpServerUtility.UrlTokenEncode(hash), fileDate);
+                    resourceHash = Tuple.Create(HttpServerUtility.UrlTokenEncode(hash), fileDate);
                 }
             }
             WebResourceHashes[resourceKey] = resourceHash;
 
-            return new Tuple<string, string>(resourcePath, resourceHash.Item1);
+            return Tuple.Create(resourcePath, resourceHash.Item1);
         }
         public string WebResourceUrl(string Resource)
         {

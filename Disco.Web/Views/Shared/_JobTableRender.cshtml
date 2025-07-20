@@ -71,7 +71,7 @@
                             <td class="status">
                                 @if (statusItem.ActiveJobQueues != null)
                                 {<div class="queues">
-                                    @foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
+                                    @foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => Tuple.Create(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
                                     {
                                         <i class="fa fa-@(jqToken.Item2.JobQueue.Icon) fa-fw d-@(jqToken.Item2.JobQueue.IconColour)" title="@(jqToken.Item2.JobQueue.Name) [@(jqToken.Item1.Priority)]"></i>
                                     }

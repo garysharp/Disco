@@ -62,7 +62,7 @@ namespace Disco.Web.Views.Job.JobParts
     var hasJobQueueShow = Authorization.Has(Claims.Config.JobQueue.Show);
 
     var queues = JobQueueService.GetQueues();
-    var queueHistory = Model.Job.JobQueues.Select(jq => new Tuple<JobQueueJob, JobQueueToken>(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).ToList();
+    var queueHistory = Model.Job.JobQueues.Select(jq => Tuple.Create(jq, queues.First(q => q.JobQueue.Id == jq.JobQueueId))).ToList();
 
             
             #line default
@@ -138,14 +138,14 @@ WriteLiteral(" data-jobqueuejobaddeddate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1371), Tuple.Create("\"", 1434)
+WriteAttribute("class", Tuple.Create(" class=\"", 1346), Tuple.Create("\"", 1409)
             
             #line 28 "..\..\Views\Job\JobParts\Queues.cshtml"
-                                          , Tuple.Create(Tuple.Create("", 1379), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? "added" : "removed"
+                                          , Tuple.Create(Tuple.Create("", 1354), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? "added" : "removed"
             
             #line default
             #line hidden
-, 1379), false)
+, 1354), false)
 );
 
 WriteLiteral(">\r\n                <td");
@@ -154,26 +154,26 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">\r\n                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1495), Tuple.Create("\"", 1580)
-, Tuple.Create(Tuple.Create("", 1503), Tuple.Create("fa", 1503), true)
-, Tuple.Create(Tuple.Create(" ", 1505), Tuple.Create("fa-", 1506), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1470), Tuple.Create("\"", 1555)
+, Tuple.Create(Tuple.Create("", 1478), Tuple.Create("fa", 1478), true)
+, Tuple.Create(Tuple.Create(" ", 1480), Tuple.Create("fa-", 1481), true)
             
             #line 30 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 1509), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Icon
+, Tuple.Create(Tuple.Create("", 1484), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Icon
             
             #line default
             #line hidden
-, 1509), false)
-, Tuple.Create(Tuple.Create(" ", 1534), Tuple.Create("fa-fw", 1535), true)
-, Tuple.Create(Tuple.Create(" ", 1540), Tuple.Create("fa-lg", 1541), true)
-, Tuple.Create(Tuple.Create(" ", 1546), Tuple.Create("d-", 1547), true)
+, 1484), false)
+, Tuple.Create(Tuple.Create(" ", 1509), Tuple.Create("fa-fw", 1510), true)
+, Tuple.Create(Tuple.Create(" ", 1515), Tuple.Create("fa-lg", 1516), true)
+, Tuple.Create(Tuple.Create(" ", 1521), Tuple.Create("d-", 1522), true)
             
             #line 30 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 1549), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.IconColour
+, Tuple.Create(Tuple.Create("", 1524), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.IconColour
             
             #line default
             #line hidden
-, 1549), false)
+, 1524), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -236,28 +236,28 @@ WriteLiteral("                    ");
             #line hidden
 WriteLiteral("                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2043), Tuple.Create("\"", 2115)
-, Tuple.Create(Tuple.Create("", 2051), Tuple.Create("fa", 2051), true)
-, Tuple.Create(Tuple.Create(" ", 2053), Tuple.Create("d-priority-", 2054), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 2018), Tuple.Create("\"", 2090)
+, Tuple.Create(Tuple.Create("", 2026), Tuple.Create("fa", 2026), true)
+, Tuple.Create(Tuple.Create(" ", 2028), Tuple.Create("d-priority-", 2029), true)
             
             #line 41 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 2065), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString().ToLower()
+, Tuple.Create(Tuple.Create("", 2040), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString().ToLower()
             
             #line default
             #line hidden
-, 2065), false)
+, 2040), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2116), Tuple.Create("\"", 2179)
+WriteAttribute("title", Tuple.Create(" title=\"", 2091), Tuple.Create("\"", 2154)
             
             #line 41 "..\..\Views\Job\JobParts\Queues.cshtml"
-                            , Tuple.Create(Tuple.Create("", 2124), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString()
+                            , Tuple.Create(Tuple.Create("", 2099), Tuple.Create<System.Object, System.Int32>(jq.Item2.JobQueue.Priority.ToString()
             
             #line default
             #line hidden
-, 2124), false)
-, Tuple.Create(Tuple.Create(" ", 2164), Tuple.Create("Queue", 2165), true)
-, Tuple.Create(Tuple.Create(" ", 2170), Tuple.Create("Priority", 2171), true)
+, 2099), false)
+, Tuple.Create(Tuple.Create(" ", 2139), Tuple.Create("Queue", 2140), true)
+, Tuple.Create(Tuple.Create(" ", 2145), Tuple.Create("Priority", 2146), true)
 );
 
 WriteLiteral("></i>\r\n");
@@ -381,15 +381,15 @@ WriteLiteral(">");
             #line hidden
 WriteLiteral("</div>\r\n                </td>\r\n                <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3039), Tuple.Create("\"", 3102)
-, Tuple.Create(Tuple.Create("", 3047), Tuple.Create("removed", 3047), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3014), Tuple.Create("\"", 3077)
+, Tuple.Create(Tuple.Create("", 3022), Tuple.Create("removed", 3022), true)
             
             #line 60 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 3054), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? " na" : null
+, Tuple.Create(Tuple.Create("", 3029), Tuple.Create<System.Object, System.Int32>(!jq.Item1.RemovedDate.HasValue ? " na" : null
             
             #line default
             #line hidden
-, 3054), false)
+, 3029), false)
 );
 
 WriteLiteral(">\r\n");
@@ -507,17 +507,17 @@ WriteLiteral("                        <a");
 
 WriteLiteral(" href=\"#\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4103), Tuple.Create("\"", 4204)
-, Tuple.Create(Tuple.Create("", 4111), Tuple.Create("button", 4111), true)
-, Tuple.Create(Tuple.Create(" ", 4117), Tuple.Create("small", 4118), true)
-, Tuple.Create(Tuple.Create(" ", 4123), Tuple.Create("remove", 4124), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4078), Tuple.Create("\"", 4179)
+, Tuple.Create(Tuple.Create("", 4086), Tuple.Create("button", 4086), true)
+, Tuple.Create(Tuple.Create(" ", 4092), Tuple.Create("small", 4093), true)
+, Tuple.Create(Tuple.Create(" ", 4098), Tuple.Create("remove", 4099), true)
             
             #line 80 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4130), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanCloseJobNormallyAfterRemoved() ? "canCloseNormally" : null
+, Tuple.Create(Tuple.Create(" ", 4105), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanCloseJobNormallyAfterRemoved() ? "canCloseNormally" : null
             
             #line default
             #line hidden
-, 4131), false)
+, 4106), false)
 );
 
 WriteLiteral(">Remove</a>\r\n");
@@ -546,29 +546,29 @@ WriteLiteral(">In Progress</span>\r\n");
             #line hidden
 WriteLiteral("                </td>\r\n                <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4426), Tuple.Create("\"", 4571)
-, Tuple.Create(Tuple.Create("", 4434), Tuple.Create("sla", 4434), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4401), Tuple.Create("\"", 4546)
+, Tuple.Create(Tuple.Create("", 4409), Tuple.Create("sla", 4409), true)
             
             #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4437), Tuple.Create<System.Object, System.Int32>(overdue ? "overdue" : null
+, Tuple.Create(Tuple.Create(" ", 4412), Tuple.Create<System.Object, System.Int32>(overdue ? "overdue" : null
             
             #line default
             #line hidden
-, 4438), false)
+, 4413), false)
             
             #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4467), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditSla() ? "canEditSLA" : null
+, Tuple.Create(Tuple.Create(" ", 4442), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditSla() ? "canEditSLA" : null
             
             #line default
             #line hidden
-, 4468), false)
+, 4443), false)
             
             #line 87 "..\..\Views\Job\JobParts\Queues.cshtml"
-                            , Tuple.Create(Tuple.Create(" ", 4514), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditPriority() ? "canEditPriority" : null
+                            , Tuple.Create(Tuple.Create(" ", 4489), Tuple.Create<System.Object, System.Int32>(jq.Item1.CanEditPriority() ? "canEditPriority" : null
             
             #line default
             #line hidden
-, 4515), false)
+, 4490), false)
 );
 
 WriteLiteral(" data-priority=\"");
@@ -626,28 +626,28 @@ WriteLiteral("></i>\r\n");
             #line hidden
 WriteLiteral("                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4945), Tuple.Create("\"", 5008)
-, Tuple.Create(Tuple.Create("", 4953), Tuple.Create("fa", 4953), true)
-, Tuple.Create(Tuple.Create(" ", 4955), Tuple.Create("d-priority-", 4956), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4920), Tuple.Create("\"", 4983)
+, Tuple.Create(Tuple.Create("", 4928), Tuple.Create("fa", 4928), true)
+, Tuple.Create(Tuple.Create(" ", 4930), Tuple.Create("d-priority-", 4931), true)
             
             #line 92 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 4967), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString().ToLower()
+, Tuple.Create(Tuple.Create("", 4942), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString().ToLower()
             
             #line default
             #line hidden
-, 4967), false)
+, 4942), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5009), Tuple.Create("\"", 5061)
+WriteAttribute("title", Tuple.Create(" title=\"", 4984), Tuple.Create("\"", 5036)
             
             #line 92 "..\..\Views\Job\JobParts\Queues.cshtml"
-               , Tuple.Create(Tuple.Create("", 5017), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString()
+               , Tuple.Create(Tuple.Create("", 4992), Tuple.Create<System.Object, System.Int32>(jq.Item1.Priority.ToString()
             
             #line default
             #line hidden
-, 5017), false)
-, Tuple.Create(Tuple.Create(" ", 5048), Tuple.Create("Job", 5049), true)
-, Tuple.Create(Tuple.Create(" ", 5052), Tuple.Create("Priority", 5053), true)
+, 4992), false)
+, Tuple.Create(Tuple.Create(" ", 5023), Tuple.Create("Job", 5024), true)
+, Tuple.Create(Tuple.Create(" ", 5027), Tuple.Create("Priority", 5028), true)
 );
 
 WriteLiteral("></i>\r\n");
@@ -1038,14 +1038,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 8844), Tuple.Create("\"", 8867)
+WriteAttribute("value", Tuple.Create(" value=\"", 8819), Tuple.Create("\"", 8842)
             
             #line 167 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 8852), Tuple.Create<System.Object, System.Int32>(priorityItem
+, Tuple.Create(Tuple.Create("", 8827), Tuple.Create<System.Object, System.Int32>(priorityItem
             
             #line default
             #line hidden
-, 8852), false)
+, 8827), false)
 );
 
 WriteLiteral(">");

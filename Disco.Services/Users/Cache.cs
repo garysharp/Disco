@@ -157,7 +157,7 @@ namespace Disco.Services.Users
         {
             var cache = _Cache;
 
-            var record = new Tuple<User, AuthorizationToken, DateTime>(Record.Item1, Record.Item2, DateTime.Now.AddTicks(CacheTimeoutTicks));
+            var record = Tuple.Create(Record.Item1, Record.Item2, DateTime.Now.AddTicks(CacheTimeoutTicks));
             if (cache.ContainsKey(UserId))
             {
                 if (cache.TryGetValue(UserId, out var oldRecord))

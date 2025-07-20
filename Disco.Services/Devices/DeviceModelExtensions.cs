@@ -112,7 +112,7 @@ namespace Disco.Services
                         // Obtain the Device Model with the in-scope DataContext
                         // - Overhead acknowledged, but reasonable given the infrequency of occurrence
                         deviceModel = DeviceModelsSet.FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);
-                        return new Tuple<DeviceModel, bool>(deviceModel, true);
+                        return Tuple.Create(deviceModel, true);
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace Disco.Services
                     deviceModel.ModelType = ModelType;
             }
 
-            return new Tuple<DeviceModel, bool>(deviceModel, false);
+            return Tuple.Create(deviceModel, false);
         }
 
     }

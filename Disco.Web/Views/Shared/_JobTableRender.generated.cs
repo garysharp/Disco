@@ -497,7 +497,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 74 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                     foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => new Tuple<JobTableStatusQueueItemModel, Disco.Services.Jobs.JobQueues.JobQueueToken>(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
+                                     foreach (var jqToken in ((JobTableStatusItemModel)item).ActiveJobQueues.Select(jqj => Tuple.Create(jqj, Disco.Services.Jobs.JobQueues.JobQueueService.GetQueue(jqj.QueueId))))
                                     {
 
             
@@ -505,44 +505,44 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3875), Tuple.Create("\"", 3964)
-, Tuple.Create(Tuple.Create("", 3883), Tuple.Create("fa", 3883), true)
-, Tuple.Create(Tuple.Create(" ", 3885), Tuple.Create("fa-", 3886), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3803), Tuple.Create("\"", 3892)
+, Tuple.Create(Tuple.Create("", 3811), Tuple.Create("fa", 3811), true)
+, Tuple.Create(Tuple.Create(" ", 3813), Tuple.Create("fa-", 3814), true)
             
             #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 3889), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Icon
+, Tuple.Create(Tuple.Create("", 3817), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Icon
             
             #line default
             #line hidden
-, 3889), false)
-, Tuple.Create(Tuple.Create(" ", 3919), Tuple.Create("fa-fw", 3920), true)
-, Tuple.Create(Tuple.Create(" ", 3925), Tuple.Create("d-", 3926), true)
+, 3817), false)
+, Tuple.Create(Tuple.Create(" ", 3847), Tuple.Create("fa-fw", 3848), true)
+, Tuple.Create(Tuple.Create(" ", 3853), Tuple.Create("d-", 3854), true)
             
             #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
-                , Tuple.Create(Tuple.Create("", 3928), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.IconColour
+                , Tuple.Create(Tuple.Create("", 3856), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.IconColour
             
             #line default
             #line hidden
-, 3928), false)
+, 3856), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3965), Tuple.Create("\"", 4031)
+WriteAttribute("title", Tuple.Create(" title=\"", 3893), Tuple.Create("\"", 3959)
             
             #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                                             , Tuple.Create(Tuple.Create("", 3973), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Name
+                                                             , Tuple.Create(Tuple.Create("", 3901), Tuple.Create<System.Object, System.Int32>(jqToken.Item2.JobQueue.Name
             
             #line default
             #line hidden
-, 3973), false)
-, Tuple.Create(Tuple.Create(" ", 4003), Tuple.Create("[", 4004), true)
+, 3901), false)
+, Tuple.Create(Tuple.Create(" ", 3931), Tuple.Create("[", 3932), true)
             
             #line 76 "..\..\Views\Shared\_JobTableRender.cshtml"
-                                                                                             , Tuple.Create(Tuple.Create("", 4005), Tuple.Create<System.Object, System.Int32>(jqToken.Item1.Priority
+                                                                                             , Tuple.Create(Tuple.Create("", 3933), Tuple.Create<System.Object, System.Int32>(jqToken.Item1.Priority
             
             #line default
             #line hidden
-, 4005), false)
-, Tuple.Create(Tuple.Create("", 4030), Tuple.Create("]", 4030), true)
+, 3933), false)
+, Tuple.Create(Tuple.Create("", 3958), Tuple.Create("]", 3958), true)
 );
 
 WriteLiteral("></i>\r\n");
@@ -565,17 +565,17 @@ WriteLiteral("                                </div>");
             #line hidden
 WriteLiteral("                                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4153), Tuple.Create("\"", 4200)
-, Tuple.Create(Tuple.Create("", 4161), Tuple.Create("fa", 4161), true)
-, Tuple.Create(Tuple.Create(" ", 4163), Tuple.Create("fa-square", 4164), true)
-, Tuple.Create(Tuple.Create(" ", 4173), Tuple.Create("jobStatus", 4174), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4081), Tuple.Create("\"", 4128)
+, Tuple.Create(Tuple.Create("", 4089), Tuple.Create("fa", 4089), true)
+, Tuple.Create(Tuple.Create(" ", 4091), Tuple.Create("fa-square", 4092), true)
+, Tuple.Create(Tuple.Create(" ", 4101), Tuple.Create("jobStatus", 4102), true)
             
             #line 79 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create(" ", 4183), Tuple.Create<System.Object, System.Int32>(item.StatusId
+, Tuple.Create(Tuple.Create(" ", 4111), Tuple.Create<System.Object, System.Int32>(item.StatusId
             
             #line default
             #line hidden
-, 4184), false)
+, 4112), false)
 );
 
 WriteLiteral("></i>&nbsp;");
@@ -701,14 +701,14 @@ WriteLiteral(" class=\"type\"");
 
 WriteLiteral("><span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4895), Tuple.Create("\"", 4927)
+WriteAttribute("title", Tuple.Create(" title=\"", 4823), Tuple.Create("\"", 4855)
             
             #line 89 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 4903), Tuple.Create<System.Object, System.Int32>(item.JobTypeDescription
+, Tuple.Create(Tuple.Create("", 4831), Tuple.Create<System.Object, System.Int32>(item.JobTypeDescription
             
             #line default
             #line hidden
-, 4903), false)
+, 4831), false)
 );
 
 WriteLiteral(">");
@@ -776,14 +776,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("<span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5467), Tuple.Create("\"", 5503)
+WriteAttribute("title", Tuple.Create(" title=\"", 5395), Tuple.Create("\"", 5431)
             
             #line 97 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 5475), Tuple.Create<System.Object, System.Int32>(item.DeviceModelDescription
+, Tuple.Create(Tuple.Create("", 5403), Tuple.Create<System.Object, System.Int32>(item.DeviceModelDescription
             
             #line default
             #line hidden
-, 5475), false)
+, 5403), false)
 );
 
 WriteLiteral(">");
@@ -924,14 +924,14 @@ WriteLiteral(" class=\"technician\"");
 
 WriteLiteral("><span");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6471), Tuple.Create("\"", 6510)
+WriteAttribute("title", Tuple.Create(" title=\"", 6399), Tuple.Create("\"", 6438)
             
             #line 113 "..\..\Views\Shared\_JobTableRender.cshtml"
-, Tuple.Create(Tuple.Create("", 6479), Tuple.Create<System.Object, System.Int32>(item.OpenedTechUserDisplayName
+, Tuple.Create(Tuple.Create("", 6407), Tuple.Create<System.Object, System.Int32>(item.OpenedTechUserDisplayName
             
             #line default
             #line hidden
-, 6479), false)
+, 6407), false)
 );
 
 WriteLiteral(">");

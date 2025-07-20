@@ -24,11 +24,11 @@ namespace Disco.Web.Models.InitialConfig
             try
             {
                 // Try and Resolve 'disco'
-                DiscoDnsTestResult = new Tuple<IPHostEntry, Exception>(Dns.GetHostEntry("disco"), null);
+                DiscoDnsTestResult = Tuple.Create(Dns.GetHostEntry("disco"), (Exception)null);
             }
             catch (Exception ex)
             {
-                DiscoDnsTestResult = new Tuple<IPHostEntry, Exception>(null, ex);
+                DiscoDnsTestResult = Tuple.Create((IPHostEntry)null, ex);
             }
             #endregion
 

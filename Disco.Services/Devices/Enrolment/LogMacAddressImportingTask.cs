@@ -86,7 +86,7 @@ namespace Disco.Services.Devices.Enrolment
                 Dictionary<string, Tuple<string, string>> addresses = new Dictionary<string, Tuple<string, string>>();
 
                 foreach (var result in results.OrderBy(r => r.Timestamp))
-                    addresses[((string)result.Arguments[1]).ToLower()] = new Tuple<string, string>((string)result.Arguments[4], (string)result.Arguments[5]);
+                    addresses[((string)result.Arguments[1]).ToLower()] = Tuple.Create((string)result.Arguments[4], (string)result.Arguments[5]);
 
                 Status.UpdateStatus(75, $"Importing {addresses.Count} details");
 

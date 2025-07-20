@@ -75,14 +75,14 @@ namespace Disco.Services.Expressions
         public Tuple<string, bool, object> Evaluate(object ExpressionContext, IDictionary Variables)
         {
             if (Count == 0)
-                return new Tuple<string, bool, object>(string.Empty, false, null);
+                return Tuple.Create(string.Empty, false, (object)null);
 
             if (!IsDynamic)
             {
                 if (Count != 1)
                     throw new InvalidOperationException("Non-dynamic expressions should only have one part");
                 if (this[0] is TextExpressionPart textPart)
-                    return new Tuple<string, bool, object>(textPart.RawSource, false, null);
+                    return Tuple.Create(textPart.RawSource, false, (object)null);
                 else
                     throw new InvalidOperationException("Non-dynamic expressions should have a single TextExpressionPart component");
             }
@@ -115,7 +115,7 @@ namespace Disco.Services.Expressions
                     }
                 }
             }
-            return new Tuple<string, bool, object>(resultValue.ToString(), resultError, resultObject);
+            return Tuple.Create(resultValue.ToString(), resultError, resultObject);
         }
         public static Expression TokenizeSingleDynamic(string Name, string ExpressionSource, int Ordinal)
         {

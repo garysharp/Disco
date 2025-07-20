@@ -6,7 +6,7 @@ namespace Disco.ClientBootstrapper
     public partial class FormStatus : Form, IStatus
     {
 
-        private delegate void dUpdateStatus(string Heading, string SubHeading, string Message, Nullable<bool> ShowProgress, Nullable<int> Progress);
+        private delegate void dUpdateStatus(string Heading, string SubHeading, string Message, bool? ShowProgress, int? Progress);
         private dUpdateStatus mUpdateStatus;
 
         public FormStatus()
@@ -28,7 +28,7 @@ namespace Disco.ClientBootstrapper
             Program.ExitApplication();
         }
 
-        public void UpdateStatus(string Heading, string SubHeading, string Message, Nullable<bool> ShowProgress = null, Nullable<int> Progress = null)
+        public void UpdateStatus(string Heading, string SubHeading, string Message, bool? ShowProgress = null, int? Progress = null)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Disco.ClientBootstrapper
             }
             catch (Exception) { }
         }
-        private void UpdateStatusDo(string Heading, string SubHeading, string Message, Nullable<bool> ShowProgress, Nullable<int> Progress)
+        private void UpdateStatusDo(string Heading, string SubHeading, string Message, bool? ShowProgress, int? Progress)
         {
             if (Heading != null)
                 if (this.labelHeading.Text != Heading)

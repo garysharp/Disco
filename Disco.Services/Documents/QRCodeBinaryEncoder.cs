@@ -145,7 +145,7 @@ namespace Disco.Services.Documents
                 byte[] dataBytes = new byte[numDataBytesInBlock];
                 bits.toBytes(8 * dataBytesOffset, dataBytes, 0, numDataBytesInBlock);
                 byte[] ecBytes = generateECBytes(dataBytes, numEcBytesInBlock);
-                blocks.Add(new Tuple<byte[], byte[]>(dataBytes, ecBytes));
+                blocks.Add(Tuple.Create(dataBytes, ecBytes));
 
                 maxNumDataBytes = Math.Max(maxNumDataBytes, numDataBytesInBlock);
                 maxNumEcBytes = Math.Max(maxNumEcBytes, ecBytes.Length);

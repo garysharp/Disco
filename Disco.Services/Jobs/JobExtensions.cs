@@ -204,7 +204,7 @@ namespace Disco.Services
         public static Tuple<string, string> Status(this Job j)
         {
             var statusId = j.CalculateStatusId();
-            return new Tuple<string, string>(statusId, JobStatusDescription(statusId, j));
+            return Tuple.Create(statusId, JobStatusDescription(statusId, j));
         }
 
         public static List<DocumentTemplate> AvailableDocumentTemplates(this Job j, DiscoDataContext Database, User User, DateTime TimeStamp)

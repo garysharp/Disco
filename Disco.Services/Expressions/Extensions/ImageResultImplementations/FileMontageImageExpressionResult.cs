@@ -208,7 +208,7 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                 }
             }
 
-            return new Tuple<int, int, double>(bestColumnCount, bestRowCount, bestItemRatio);
+            return Tuple.Create(bestColumnCount, bestRowCount, bestItemRatio);
         }
 
 

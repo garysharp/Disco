@@ -74,7 +74,7 @@ namespace Disco.Services.Logging
 
         private List<Tuple<string, DateTime>> RelevantLogFiles(DiscoDataContext Database)
         {
-            List<Tuple<string, DateTime>> relevantFiles = new List<Tuple<string, DateTime>>();
+            var relevantFiles = new List<Tuple<string, DateTime>>();
             var logDirectoryBase = LogContext.LogFileBasePath(Database);
             var logDirectoryBaseInfo = new DirectoryInfo(logDirectoryBase);
             var endDate = End.HasValue ? End.Value : DateTime.Now;
@@ -92,7 +92,7 @@ namespace Disco.Services.Logging
                     {
                         var fileName = LogContext.LogFilePath(Database, queryDate, false);
                         if (File.Exists(fileName))
-                            relevantFiles.Add(new Tuple<string, DateTime>(fileName, LogFileDate(fileName).Value));
+                            relevantFiles.Add(Tuple.Create(fileName, LogFileDate(fileName).Value));
 
                         queryDate = queryDate.AddDays(1);
                     }
@@ -118,7 +118,7 @@ namespace Disco.Services.Logging
                 {
                     foreach (var logFile in logFiles)
                     {
-                        relevantFiles.Add(new Tuple<string, DateTime>(logFile, LogFileDate(logFile).Value));
+                        relevantFiles.Add(Tuple.Create(logFile, LogFileDate(logFile).Value));
                     }
                 }
                 else
@@ -130,7 +130,7 @@ namespace Disco.Services.Logging
                         {
                             if (fileNameDate.Value < endDate)
                             {
-                                relevantFiles.Add(new Tuple<string, DateTime>(logFile, fileNameDate.Value));
+                                relevantFiles.Add(Tuple.Create(logFile, fileNameDate.Value));
                             }
                             else
                             {

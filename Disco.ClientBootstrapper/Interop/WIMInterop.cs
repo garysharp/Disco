@@ -139,7 +139,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             CreateFileAccessPrivate fileAccess = GetMappedFileAccess(access);
             if (fileAccess == CreateFileAccessPrivate.Read && (!File.Exists(imageFilePath) || (CreateFileMode.OpenExisting != mode)))
             {
-                throw new System.UnauthorizedAccessException("Read access can be specified only with OpenExisting mode or OpenAlways mode when the .wim file does not exist.");
+                throw new UnauthorizedAccessException("Read access can be specified only with OpenExisting mode or OpenAlways mode when the .wim file does not exist.");
             }
 
             //
@@ -150,9 +150,9 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 m_ImageContainerHandle = NativeMethods.CreateFile(imageFilePath, (uint)fileAccess, (uint)mode);
                 m_WindowsImageFilePath = imageFilePath;
             }
-            catch (System.DllNotFoundException ex)
+            catch (DllNotFoundException ex)
             {
-                throw new System.DllNotFoundException(string.Format(
+                throw new DllNotFoundException(string.Format(
                                   "Unable to load WIM libraries. Make sure the correct DLLs are present (Wimgapi.dll and Xmlrw.dll)."), ex.InnerException);
             }
 
@@ -171,7 +171,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 //
                 //Throw an exception
                 //
-                throw new System.InvalidOperationException($"Unable to open  the .wim file {imageFilePath}.");
+                throw new InvalidOperationException($"Unable to open  the .wim file {imageFilePath}.");
             }
 
             //
@@ -684,7 +684,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Everything failed; throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to open/create .wim file {imageFile}. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to open/create .wim file {imageFile}. Error = {rc}");
                 }
 
                 return windowsImageHandle;
@@ -719,7 +719,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to close image handle. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to close image handle. Error = {rc}");
                 }
             }
 
@@ -754,7 +754,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to set temporary path. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to set temporary path. Error = {rc}");
                 }
             }
 
@@ -791,7 +791,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to load image. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to load image. Error = {rc}");
                 }
 
                 return hWim;
@@ -829,7 +829,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Failed to capture image from {path}. Error = {rc}");
+                    throw new InvalidOperationException($"Failed to capture image from {path}. Error = {rc}");
                 }
                 return hImage;
             }
@@ -869,7 +869,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to get image count. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to get image count. Error = {rc}");
                 }
 
                 return count;
@@ -966,19 +966,19 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                                                          temporaryPath);
                     rc = Marshal.GetLastWin32Error();
                 }
-                catch (System.StackOverflowException)
+                catch (StackOverflowException)
                 {
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to mount image {windowsImageFileName} to {mountPath}.");
+                    throw new InvalidOperationException($"Unable to mount image {windowsImageFileName} to {mountPath}.");
                 }
                 if (status == false)
                 {
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to mount image {windowsImageFileName} to {mountPath}. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to mount image {windowsImageFileName} to {mountPath}. Error = {rc}");
                 }
             }
 
@@ -1015,7 +1015,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to apply image to {applicationPath}. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to apply image to {applicationPath}. Error = {rc}");
                 }
             }
 
@@ -1055,7 +1055,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to get image information. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to get image information. Error = {rc}");
                 }
                 string s = Marshal.PtrToStringUni(info);
 
@@ -1103,7 +1103,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to set image information. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to set image information. Error = {rc}");
                 }
             }
 
@@ -1139,12 +1139,12 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     status = WimUnmountImage(mountPath, wimdowsImageFileName, (uint)imageIndex, commitChanges);
                     rc = Marshal.GetLastWin32Error();
                 }
-                catch (System.StackOverflowException ex)
+                catch (StackOverflowException ex)
                 {
                     //
                     //Throw an exception
                     //
-                    throw new System.StackOverflowException($"Unable to unmount image {wimdowsImageFileName} from {mountPath}.",
+                    throw new StackOverflowException($"Unable to unmount image {wimdowsImageFileName} from {mountPath}.",
                                                                           ex.InnerException);
                 }
                 if (status == false)
@@ -1152,7 +1152,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException($"Unable to unmount image {wimdowsImageFileName} from {mountPath}. Error = {rc}");
+                    throw new InvalidOperationException($"Unable to unmount image {wimdowsImageFileName} from {mountPath}. Error = {rc}");
                 }
             }
 
@@ -1208,7 +1208,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException("Unable to register message callback.");
+                    throw new InvalidOperationException("Unable to register message callback.");
                 }
             }
 
@@ -1240,7 +1240,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     // Throw an exception
                     //
-                    throw new System.InvalidOperationException("Unable to unregister message callback.");
+                    throw new InvalidOperationException("Unable to unregister message callback.");
                 }
             }
 
@@ -1344,7 +1344,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
         }
 
         //[CLSCompliant(false)]
-        [FlagsAttribute]
+        [Flags]
         private
         enum
         CreateFileAccessPrivate : uint
