@@ -16,7 +16,7 @@ namespace Disco.Models.Services.Searching
 
         public string Id { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return string.Format("{0} ({1})", Id, ComputerName); } }
+        public string Description { get { return $"{Id} ({ComputerName})"; } }
         public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string AssetNumber { get; set; }
@@ -27,7 +27,7 @@ namespace Disco.Models.Services.Searching
                 if (AssignedUserId != null)
                 {
                     if (AssignedUserDisplayName != null)
-                        return string.Format("{0} ({1})", AssignedUserDisplayName, AssignedUserId);
+                        return $"{AssignedUserDisplayName} ({AssignedUserId})";
                     else
                         return AssignedUserId;
                 }

@@ -292,7 +292,7 @@ namespace Disco.Services.Plugins
             var routeValues = new RouteValueDictionary(new { PluginId = Manifest.Id, res = Resource });
             string pluginActionUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, HostController.Request.RequestContext, false);
 
-            pluginActionUrl += string.Format("?v={0}", resourcePath.Item2);
+            pluginActionUrl += $"?v={resourcePath.Item2}";
 
             if (Download.HasValue && Download.Value)
             {

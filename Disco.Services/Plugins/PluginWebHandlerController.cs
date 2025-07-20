@@ -173,7 +173,7 @@ namespace Disco.Services.Plugins
                 var filters = methodInfo.GetCustomAttributes<FilterAttribute>(true).OfType<IAuthorizationFilter>().ToList();
 
                 foreach (var authorizer in filters.OfType<DiscoAuthorizeBaseAttribute>())
-                    authorizer.AuthorizeResource = string.Format("[Plugin]::{0}::{1}", controllerDescription.Manifest.Id, methodInfo.Name);
+                    authorizer.AuthorizeResource = $"[Plugin]::{controllerDescription.Manifest.Id}::{methodInfo.Name}";
 
                 return filters.ToArray();
             }

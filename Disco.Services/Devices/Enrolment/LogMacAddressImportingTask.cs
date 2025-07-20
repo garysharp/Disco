@@ -81,14 +81,14 @@ namespace Disco.Services.Devices.Enrolment
                 };
                 var results = logRetriever.Query(database);
 
-                Status.UpdateStatus(50, string.Format("Passing {0} logs", results.Count));
+                Status.UpdateStatus(50, $"Passing {results.Count} logs");
 
                 Dictionary<string, Tuple<string, string>> addresses = new Dictionary<string, Tuple<string, string>>();
 
                 foreach (var result in results.OrderBy(r => r.Timestamp))
                     addresses[((string)result.Arguments[1]).ToLower()] = new Tuple<string, string>((string)result.Arguments[4], (string)result.Arguments[5]);
 
-                Status.UpdateStatus(75, string.Format("Importing {0} details", addresses.Count));
+                Status.UpdateStatus(75, $"Importing {addresses.Count} details");
 
                 var devices = database.Devices.Include("DeviceDetails").ToList();
 

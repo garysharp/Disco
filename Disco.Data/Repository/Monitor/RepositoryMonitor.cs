@@ -110,7 +110,7 @@ namespace Disco.Data.Repository.Monitor
                     eventType = RepositoryMonitorEventType.Unchanged;
                     break;
                 default:
-                    throw new NotSupportedException(string.Format("Database Entry State not supported: {0}", entryState.State.ToString()));
+                    throw new NotSupportedException($"Database Entry State not supported: {entryState.State.ToString()}");
             }
 
             entityType = EntityTypeFromProxy(entryState.Entity.GetType());

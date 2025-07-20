@@ -16,7 +16,7 @@ namespace Disco.Services.Plugins
             var manifest = (PluginManifest)ExecutionContext.JobDetail.JobDataMap["PluginManifest"];
             var UninstallData = (bool)ExecutionContext.JobDetail.JobDataMap["UninstallData"];
 
-            Status.UpdateStatus(25, string.Format("Uninstalling Plugin: {0} [{1}]", manifest.Name, manifest.Id), "Queuing plugin for uninstall");
+            Status.UpdateStatus(25, $"Uninstalling Plugin: {manifest.Name} [{manifest.Id}]", "Queuing plugin for uninstall");
 
             PluginsLog.LogUninstalling(manifest, UninstallData);
 

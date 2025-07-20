@@ -59,7 +59,7 @@ namespace Disco.Services.Interop.VicEduDept
                     wReq.Proxy = new WebProxy(); // Empty Proxy Config
                 wReq.Method = WebRequestMethods.Http.Post;
                 wReq.ContentType = "application/x-www-form-urlencoded";
-                wReq.UserAgent = string.Format("Disco/{0}", DiscoBIVersion);
+                wReq.UserAgent = $"Disco/{DiscoBIVersion}";
                 using (var wrStream = wReq.GetRequestStream())
                 {
                     using (var wrStreamWriter = new StreamWriter(wrStream))

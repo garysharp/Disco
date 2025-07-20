@@ -73,7 +73,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var dNSName = SearchResult.Value<string>("dNSHostName");
             if (dNSName == null)
-                dNSName = string.Format("{0}.{1}", sAMAccountName.TrimEnd('$'), SearchResult.Domain.Name);
+                dNSName = $"{sAMAccountName.TrimEnd('$')}.{SearchResult.Domain.Name}";
 
             var userAccountControl = (ADUserAccountControlFlags)SearchResult.Value<int>("userAccountControl");
             var isCriticalSystemObject = SearchResult.Value<bool>("isCriticalSystemObject");
@@ -123,7 +123,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var dNSName = properties.Value<string>("dNSHostName");
             if (dNSName == null)
-                dNSName = string.Format("{0}.{1}", sAMAccountName.TrimEnd('$'), directoryEntry.Domain.Name);
+                dNSName = $"{sAMAccountName.TrimEnd('$')}.{directoryEntry.Domain.Name}";
 
             var userAccountControl = (ADUserAccountControlFlags)properties.Value<int>("userAccountControl");
             var isCriticalSystemObject = properties.Value<bool>("isCriticalSystemObject");
@@ -208,10 +208,10 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void DeleteAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account [{DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (!WritableDomainController.IsWritable)
-                throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Delete Account) requires a writable domain controller.", Name));
+                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Delete Account) requires a writable domain controller.");
 
             using (ADDirectoryEntry entry = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
             {
@@ -226,7 +226,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         private void SetNetbootGUID(ADDomainController WritableDomainController, Guid updatedNetbootGUID)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (NetbootGUID != updatedNetbootGUID)
             {
@@ -247,7 +247,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetDescription(ADDomainController WritableDomainController, string Description)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (this.Description != Description)
             {
@@ -320,7 +320,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void DisableAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (!IsDisabled)
             {
@@ -348,7 +348,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void EnableAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (IsDisabled)
             {
@@ -376,7 +376,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public bool UpdateNetbootGUID(ADDomainController WritableDomainController, string UUID, string MACAddress)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             Guid netbootGUID = Guid.Empty;
 
@@ -414,7 +414,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             Guid NetbootGUIDFromMACAddress;
             if (flag)
             {
-                Guid guid = new Guid(string.Format("00000000-0000-0000-0000-{0}", strippedMACAddress));
+                Guid guid = new Guid($"00000000-0000-0000-0000-{strippedMACAddress}");
                 NetbootGUIDFromMACAddress = guid;
             }
             else
@@ -427,7 +427,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void MoveOrganisationalUnit(ADDomainController WritableDomainController, string NewOrganisationUnit)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             var parentDistinguishedName = ParentDistinguishedName;
 
@@ -438,7 +438,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     NewOrganisationUnit = Domain.DefaultComputerContainer;
 
                 if (!NewOrganisationUnit.EndsWith(Domain.DistinguishedName, StringComparison.OrdinalIgnoreCase))
-                    throw new InvalidOperationException(string.Format("Unable to move AD Account from one domain [{0}] to another [{1}].", DistinguishedName, NewOrganisationUnit));
+                    throw new InvalidOperationException($"Unable to move AD Account from one domain [{DistinguishedName}] to another [{NewOrganisationUnit}].");
 
                 using (ADDirectoryEntry ou = WritableDomainController.RetrieveDirectoryEntry(NewOrganisationUnit))
                 {

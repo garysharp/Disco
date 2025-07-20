@@ -75,7 +75,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -223,7 +223,7 @@ namespace Disco.Web.Areas.API.Controllers
                     // DataStore Failed - Use Generic Images
                     if (m.ModelType != null)
                     {
-                        var modelTypePath = Server.MapPath(string.Format("~/ClientSource/Style/Images/DeviceTypes/{0}.png", m.ModelType));
+                        var modelTypePath = Server.MapPath($"~/ClientSource/Style/Images/DeviceTypes/{m.ModelType}.png");
                         if (System.IO.File.Exists(modelTypePath))
                         {
                             return File(modelTypePath, "image/png");
@@ -295,7 +295,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 

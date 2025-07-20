@@ -118,7 +118,7 @@ namespace Disco.Services.Devices.Importing
                 {
                     string deviceSerialNumber = DeviceSerialNumberImportField.ParseRawDeviceSerialNumber(dataReader.GetString(deviceSerialNumberIndex));
 
-                    Status.UpdateStatus(((double)dataReader.Index / Context.RecordCount) * 100, string.Format("Parsing: {0}", deviceSerialNumber));
+                    Status.UpdateStatus(((double)dataReader.Index / Context.RecordCount) * 100, $"Parsing: {deviceSerialNumber}");
 
                     Device existingDevice = null;
                     if (DeviceSerialNumberImportField.IsDeviceSerialNumberValid(deviceSerialNumber))

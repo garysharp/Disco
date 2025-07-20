@@ -76,7 +76,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -165,7 +165,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -381,7 +381,7 @@ namespace Disco.Web.Areas.API.Controllers
             var timeStamp = DateTime.Now;
             var pdf = package.GeneratePdfPackageBulk(Database, UserService.CurrentUser, timeStamp, InsertBlankPage, dataIds);
 
-            return File(pdf, "application/pdf", string.Format("{0}_Bulk_{1:yyyyMMdd-HHmmss}.pdf", package.Id, timeStamp));
+            return File(pdf, "application/pdf", $"{package.Id}_Bulk_{timeStamp:yyyyMMdd-HHmmss}.pdf");
         }
 
         public virtual ActionResult Generate(string id, string TargetId)
@@ -455,7 +455,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 

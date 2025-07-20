@@ -71,7 +71,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -139,7 +139,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -199,7 +199,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -295,7 +295,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
-                    throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
+                    throw new ArgumentException($"Subjects not found: {string.Join(", ", invalidSubjects)}", "Subjects");
 
                 var proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
 
@@ -364,7 +364,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion

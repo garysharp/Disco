@@ -86,15 +86,15 @@ namespace Disco.ClientBootstrapper
         {
             try
             {
-                string AppErrorPath = string.Format("{0}{1}", System.Reflection.Assembly.GetExecutingAssembly().Location, ".errors.txt");
+                string AppErrorPath = $"{System.Reflection.Assembly.GetExecutingAssembly().Location}.errors.txt";
                 System.Text.StringBuilder ErrorMessage = new System.Text.StringBuilder();
                 ErrorMessage.AppendLine();
                 ErrorMessage.AppendLine(DateTime.Now.ToLongDateString());
                 ErrorMessage.AppendLine(DateTime.Now.ToLongTimeString());
-                ErrorMessage.AppendLine(string.Format("Type: {0}", ex.GetType().FullName));
-                ErrorMessage.AppendLine(string.Format("Message: {0}", ex.Message));
-                ErrorMessage.AppendLine(string.Format("Source: {0}", ex.Source));
-                ErrorMessage.AppendLine(string.Format("Stack: {0}", ex.StackTrace));
+                ErrorMessage.AppendLine($"Type: {ex.GetType().FullName}");
+                ErrorMessage.AppendLine($"Message: {ex.Message}");
+                ErrorMessage.AppendLine($"Source: {ex.Source}");
+                ErrorMessage.AppendLine($"Stack: {ex.StackTrace}");
                 System.IO.File.AppendAllText(AppErrorPath, ErrorMessage.ToString());
             }
             catch (Exception) { }

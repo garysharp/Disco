@@ -17,7 +17,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public string DistinguishedName { get; private set; }
         public SecurityIdentifier SecurityIdentifier { get; private set; }
 
-        public string Id { get { return string.Format(@"{0}\{1}", Domain.NetBiosName, SamAccountName); } }
+        public string Id { get { return $@"{Domain.NetBiosName}\{SamAccountName}"; } }
         public string SamAccountName { get; private set; }
 
         public string Name { get; private set; }

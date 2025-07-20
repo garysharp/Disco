@@ -126,7 +126,7 @@ namespace Disco.Web
                 {
                     int jobId;
                     if (int.TryParse(match.Groups[2].Value, out jobId))
-                        return string.Format("<a href=\"{2}\" title=\"Job {1}\">{0}</a>", match.Value, jobId, urlHelper.Action(MVC.Job.Show(jobId)));
+                        return $"<a href=\"{urlHelper.Action(MVC.Job.Show(jobId))}\" title=\"Job {jobId}\">{match.Value}</a>";
                     else
                         return match.Value;
                 });
@@ -149,7 +149,7 @@ namespace Disco.Web
                         if (!ActiveDirectory.IsValidDomainAccountId(userId))
                             return match.Value;
 
-                        return string.Format("<a href=\"{2}\" title=\"User {1}\">{0}</a>", match.Value, ActiveDirectory.FriendlyAccountId(userId), urlHelper.Action(MVC.User.Show(userId)));
+                        return $"<a href=\"{urlHelper.Action(MVC.User.Show(userId))}\" title=\"User {ActiveDirectory.FriendlyAccountId(userId)}\">{match.Value}</a>";
                     }
                     catch (Exception)
                     {
@@ -166,7 +166,7 @@ namespace Disco.Web
                     if (string.IsNullOrWhiteSpace(deviceSerialNumber))
                         return match.Value;
 
-                    return string.Format("<a href=\"{2}\" title=\"Device {1}\">{0}</a>", match.Value, deviceSerialNumber, urlHelper.Action(MVC.Device.Show(deviceSerialNumber)));
+                    return $"<a href=\"{urlHelper.Action(MVC.Device.Show(deviceSerialNumber))}\" title=\"Device {deviceSerialNumber}\">{match.Value}</a>";
                 });
             }
             catch (Exception)

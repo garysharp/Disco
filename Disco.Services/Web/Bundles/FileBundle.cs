@@ -30,7 +30,7 @@ namespace Disco.Services.Web.Bundles
             get
             {
 #if DEBUG
-                return string.Format("{0}?v={1}", Url, FileHash);
+                return $"{Url}?v={FileHash}";
 #else
                 return _VersionUrl;
 #endif
@@ -53,7 +53,7 @@ namespace Disco.Services.Web.Bundles
             var fileInfo = new FileInfo(File);
 
             if (!fileInfo.Exists)
-                throw new FileNotFoundException(string.Format("Not Found: {0}", File), File);
+                throw new FileNotFoundException($"Not Found: {File}", File);
 
             this.Url = Url;
             this.File = File;
@@ -78,7 +78,7 @@ namespace Disco.Services.Web.Bundles
 
             //this.Version = fileInfo.LastWriteTimeUtc.Ticks;
 
-            _VersionUrl = string.Format("{0}?v={1}", this.Url, FileHash);
+            _VersionUrl = $"{this.Url}?v={FileHash}";
         }
 
         private void UpdateFileHash()

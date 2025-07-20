@@ -69,7 +69,7 @@ namespace Disco.Services.Plugins
                         packageManifest = PluginManifest.FromPluginManifestFile(packageManifestStream);
                     }
 
-                    Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", packageManifest.Name, packageManifest.Id, packageManifest.Version.ToString(4), packageManifest.Author), "Initializing Install Environment");
+                    Status.UpdateStatus(20, $"{packageManifest.Name} [{packageManifest.Id} v{packageManifest.Version.ToString(4)}] by {packageManifest.Author}", "Initializing Install Environment");
 
                     PluginsLog.LogInstalling(packageManifest);
                     
@@ -80,7 +80,7 @@ namespace Disco.Services.Plugins
 
                         // Ensure not already installed
                         if (Plugins.GetPlugins().FirstOrDefault(p => p.Id == packageManifest.Id) != null)
-                            throw new InvalidOperationException(string.Format("The '{0} [{1}]' Plugin is already installed, please uninstall any existing versions before trying again", packageManifest.Name, packageManifest.Id));
+                            throw new InvalidOperationException($"The '{packageManifest.Name} [{packageManifest.Id}]' Plugin is already installed, please uninstall any existing versions before trying again");
 
                         using (DiscoDataContext database = new DiscoDataContext())
                         {
@@ -90,7 +90,7 @@ namespace Disco.Services.Plugins
                             var libraryIncompatibility = PluginLibrary.LoadManifest(database).LoadIncompatibilityData();
                             PluginIncompatibility incompatibility;
                             if (!libraryIncompatibility.IsCompatible(packageManifest.Id, packageManifest.Version, out incompatibility))
-                                throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, incompatibility.Reason));
+                                throw new InvalidOperationException($"The plugin [{packageManifest.Id} v{packageManifest.VersionFormatted}] is not compatible: {incompatibility.Reason}");
 
                             // Force Delete of Existing Folder
                             if (Directory.Exists(packagePath))
@@ -116,7 +116,7 @@ namespace Disco.Services.Plugins
                             // Extract Package Contents
                             foreach (var packageEntry in packageArchive.Entries)
                             {
-                                Status.UpdateStatus(30 + (countExtractedFiles++ * extractFileInterval), string.Format("Extracting File: {0}", packageEntry.FullName));
+                                Status.UpdateStatus(30 + (countExtractedFiles++ * extractFileInterval), $"Extracting File: {packageEntry.FullName}");
 
                                 // Determine Extraction Path
                                 var packageEntryTarget = Path.Combine(packagePath, packageEntry.FullName);
@@ -153,7 +153,7 @@ namespace Disco.Services.Plugins
                             ScheduledTasks.InitializeScheduledTasks(database, new List<Assembly>() { packageManifest.PluginAssembly });
 
                             PluginsLog.LogInstalled(packageManifest);
-                            Status.SetFinishedUrl(string.Format("/Config/Plugins/{0}", System.Web.HttpUtility.UrlEncode(packageManifest.Id)));
+                            Status.SetFinishedUrl($"/Config/Plugins/{System.Web.HttpUtility.UrlEncode(packageManifest.Id)}");
                             Status.UpdateStatus(100, "Plugin Installation Completed");
                         }
                     }

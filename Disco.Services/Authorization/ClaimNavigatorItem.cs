@@ -76,7 +76,7 @@ namespace Disco.Services.Authorization
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}={2}", Name, Key, Value);
+            return $"{Name}: {Key}={Value}";
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Disco.Web.Extensions
     {
         public static string ToJavascriptDate(this DateTime d)
         {
-            return string.Format("new Date({0}, {1}, {2}, {3}, {4}, {5})", d.Year, d.Month - 1, d.Day, d.Hour, d.Minute, d.Second);
+            return $"new Date({d.Year}, {d.Month - 1}, {d.Day}, {d.Hour}, {d.Minute}, {d.Second})";
         }
         public static string ToJavascriptDate(this DateTime? d, DateTime? DefaultDate = null)
         {

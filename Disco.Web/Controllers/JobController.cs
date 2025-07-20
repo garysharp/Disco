@@ -69,7 +69,7 @@ namespace Disco.Web.Controllers
             if (queueToken == null)
                 throw new ArgumentException("Invalid Job Queue Id", "id");
 
-            var m = new Models.Job.ListModel() { Title = string.Format("Queue: {0}", queueToken.JobQueue.Name) };
+            var m = new Models.Job.ListModel() { Title = $"Queue: {queueToken.JobQueue.Name}" };
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.ActiveJobQueues.Any(jqj => jqj.QueueId == queueToken.JobQueue.Id)));
 
             // UI Extensions
@@ -326,7 +326,7 @@ namespace Disco.Web.Controllers
                 .FirstOrDefault(j => j.Id == id.Value);
 
             if (m.Job == null)
-                throw new ArgumentException(string.Format("Unknown Job: [{0}]", id), "id");
+                throw new ArgumentException($"Unknown Job: [{id}]", "id");
 
             // Validate Authorization
             switch (m.Job.JobTypeId)
@@ -695,14 +695,14 @@ namespace Disco.Web.Controllers
                             else
                             {
                                 model.JobDetailsSupported = false;
-                                model.JobDetailsNotSupportedMessage = string.Format("Plugin '{0} ({1})' (Warranty Provider for '{2}') doesn't support Job Details", providerInstance.Manifest.Name, providerInstance.Manifest.Id, providerInstance.WarrantyProviderId);
+                                model.JobDetailsNotSupportedMessage = $"Plugin '{providerInstance.Manifest.Name} ({providerInstance.Manifest.Id})' (Warranty Provider for '{providerInstance.WarrantyProviderId}') doesn't support Job Details";
                                 return View(model);
                             }
                         }
                     }
 
                     model.JobDetailsSupported = false;
-                    model.JobDetailsNotSupportedMessage = string.Format("Warranty Provider '{0}' is not integrated with Disco ICT", job.JobMetaWarranty.ExternalName);
+                    model.JobDetailsNotSupportedMessage = $"Warranty Provider '{job.JobMetaWarranty.ExternalName}' is not integrated with Disco ICT";
                     return View(model);
                 }
                 else
@@ -874,14 +874,14 @@ namespace Disco.Web.Controllers
                             else
                             {
                                 model.JobDetailsSupported = false;
-                                model.JobDetailsNotSupportedMessage = string.Format("Plugin '{0} ({1})' (Repair Provider for '{2}') doesn't support Job Details", providerInstance.Manifest.Name, providerInstance.Manifest.Id, providerInstance.ProviderId);
+                                model.JobDetailsNotSupportedMessage = $"Plugin '{providerInstance.Manifest.Name} ({providerInstance.Manifest.Id})' (Repair Provider for '{providerInstance.ProviderId}') doesn't support Job Details";
                                 return View(model);
                             }
                         }
                     }
 
                     model.JobDetailsSupported = false;
-                    model.JobDetailsNotSupportedMessage = string.Format("Repair Provider '{0}' is not integrated with Disco ICT", job.JobMetaNonWarranty.RepairerName);
+                    model.JobDetailsNotSupportedMessage = $"Repair Provider '{job.JobMetaNonWarranty.RepairerName}' is not integrated with Disco ICT";
                     return View(model);
                 }
                 else

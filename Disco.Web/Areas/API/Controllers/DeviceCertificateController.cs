@@ -16,7 +16,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 throw new Exception("Invalid Device Certificate Id");
             }
-            return File(wc.Content, "application/x-pkcs12", string.Format("{0}.pfx", wc.Name));
+            return File(wc.Content, "application/x-pkcs12", $"{wc.Name}.pfx");
         }
 
     }

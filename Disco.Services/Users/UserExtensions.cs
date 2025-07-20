@@ -18,7 +18,7 @@ namespace Disco.Services
 
         public static string ToStringFriendly(this User u)
         {
-            return string.Format("{0} ({1})", u.DisplayName, u.FriendlyId());
+            return $"{u.DisplayName} ({u.FriendlyId()})";
         }
 
         public static string FriendlyId(this User u)

@@ -15,7 +15,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceModel
         public override string ToString()
         {
             if (string.IsNullOrEmpty(Name))
-                return string.Format("{0} {1}", Manufacturer, Model);
+                return $"{Manufacturer} {Model}";
             else
                 return Name;
         }

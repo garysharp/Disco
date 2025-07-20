@@ -178,7 +178,7 @@ namespace Disco.Services.Jobs.JobLists
 
         private void NotificationError(Exception ex)
         {
-            SystemLog.LogException(string.Format("Disco.Services.Jobs.JobLists.ManagedJobList: [{0}]", Name), ex);
+            SystemLog.LogException($"Disco.Services.Jobs.JobLists.ManagedJobList: [{Name}]", ex);
         }
 
         private void JobNotification(RepositoryMonitorEvent e)

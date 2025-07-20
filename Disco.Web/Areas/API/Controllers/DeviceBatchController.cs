@@ -116,7 +116,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
@@ -267,7 +267,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -534,7 +534,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -595,7 +595,7 @@ namespace Disco.Web.Areas.API.Controllers
                     start = bi.PurchaseDate,
                     end = bi.WarrantyValidUntil,
                     caption = bi.DefaultModelDescription,
-                    title = string.Format("{0} [{1} x{2}]", bi.Name, bi.DefaultModelDescription, bi.DeviceCount),
+                    title = $"{bi.Name} [{bi.DefaultModelDescription} x{bi.DeviceCount}]",
                     textColor = "#000",
                     description = bi.Comments ?? string.Empty,
                     color = ColorTranslator.ToHtml(color),

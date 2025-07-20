@@ -55,7 +55,7 @@ namespace Disco.Models.Repository
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                return string.Format("{0}: {1}", Id, PurchaseDate.ToLongDateString());
+                return $"{Id}: {PurchaseDate.ToLongDateString()}";
             }
             return Name;
         }

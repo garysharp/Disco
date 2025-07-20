@@ -55,7 +55,7 @@ namespace Disco.Services
 
             var deviceModelImagesDataStore = DataStore.CreateLocation(configCache, "DeviceModelImages");
 
-            return Path.Combine(deviceModelImagesDataStore, string.Format("{0}.png", deviceModel.Id));
+            return Path.Combine(deviceModelImagesDataStore, $"{deviceModel.Id}.png");
         }
 
         public static string ImageHash(this DeviceModel deviceModel)

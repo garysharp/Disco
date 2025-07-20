@@ -51,15 +51,15 @@ namespace Disco.Services.Interop.DiscoServices
                             .ToList()
                             .ForEach(a =>
                             {
-                                formData.Add(new StringContent(a.Attachment.Filename), string.Format("Attachments[{0}].Filename", a.Index));
-                                formData.Add(new StringContent(a.Attachment.MimeType), string.Format("Attachments[{0}].MimeType", a.Index));
-                                formData.Add(new StringContent(a.Attachment.Timestamp.ToISO8601()), string.Format("Attachments[{0}].CreatedDate", a.Index));
+                                formData.Add(new StringContent(a.Attachment.Filename), $"Attachments[{a.Index}].Filename");
+                                formData.Add(new StringContent(a.Attachment.MimeType), $"Attachments[{a.Index}].MimeType");
+                                formData.Add(new StringContent(a.Attachment.Timestamp.ToISO8601()), $"Attachments[{a.Index}].CreatedDate");
                                 if (a.Attachment.DocumentTemplateId != null)
-                                    formData.Add(new StringContent(a.Attachment.DocumentTemplateId), string.Format("Attachments[{0}].DocumentTemplateId", a.Index));
+                                    formData.Add(new StringContent(a.Attachment.DocumentTemplateId), $"Attachments[{a.Index}].DocumentTemplateId");
                                 if (a.Attachment.Comments != null)
-                                    formData.Add(new StringContent(a.Attachment.Comments), string.Format("Attachments[{0}].Comments", a.Index));
+                                    formData.Add(new StringContent(a.Attachment.Comments), $"Attachments[{a.Index}].Comments");
 
-                                formData.Add(new ByteArrayContent(File.ReadAllBytes(a.Filename)), string.Format("Attachments[{0}].File", a.Index), a.Attachment.Filename);
+                                formData.Add(new ByteArrayContent(File.ReadAllBytes(a.Filename)), $"Attachments[{a.Index}].File", a.Attachment.Filename);
                             });
                     }
 

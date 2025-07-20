@@ -67,7 +67,7 @@ namespace Disco.Web.Models.InitialConfig
                     }
                     catch (Exception ex)
                     {
-                        return new ValidationResult(string.Format("Unable to Create Directory '{0}'; [{1}] {2}", info.FullName, ex.GetType().Name, ex.Message));
+                        return new ValidationResult($"Unable to Create Directory '{info.FullName}'; [{ex.GetType().Name}] {ex.Message}");
                     }
                 }
             }

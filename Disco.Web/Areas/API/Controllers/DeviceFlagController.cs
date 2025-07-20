@@ -131,7 +131,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]

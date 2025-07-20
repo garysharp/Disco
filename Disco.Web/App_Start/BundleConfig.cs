@@ -42,7 +42,7 @@ namespace Disco.Web
             // Scripts - Modules
 #if DEBUG
             foreach (FileInfo f in new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ClientSource/Scripts/Modules")).EnumerateFiles("*.js", SearchOption.TopDirectoryOnly))
-                BundleTable.Add(new FileBundle(string.Format("~/ClientScripts/Modules/{0}", f.Name.Substring(0, f.Name.Length - 3)), f.FullName));
+                BundleTable.Add(new FileBundle($"~/ClientScripts/Modules/{f.Name.Substring(0, f.Name.Length - 3)}", f.FullName));
 #else
             foreach (FileInfo f in new DirectoryInfo(HttpContext.Current.Server.MapPath("~/ClientSource/Scripts/Modules")).EnumerateFiles("*.min.js", SearchOption.TopDirectoryOnly))
                             BundleTable.Add(new FileBundle(string.Format("~/ClientScripts/Modules/{0}", f.Name.Substring(0, f.Name.Length - 7)), f.FullName));

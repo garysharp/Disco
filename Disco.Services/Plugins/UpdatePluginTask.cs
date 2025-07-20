@@ -187,8 +187,8 @@ namespace Disco.Services.Plugins
                 if (string.IsNullOrEmpty(packageTempFilePath))
                 {
                     // Download Update
-                    Status.UpdateStatus(0, string.Format("Downloading Plugin Package: {0}", pluginName), "Connecting...");
-                    packageTempFilePath = Path.Combine(pluginPackagesLocation, string.Format("{0}.discoPlugin", pluginId));
+                    Status.UpdateStatus(0, $"Downloading Plugin Package: {pluginName}", "Connecting...");
+                    packageTempFilePath = Path.Combine(pluginPackagesLocation, $"{pluginId}.discoPlugin");
 
                     if (File.Exists(packageTempFilePath))
                         File.Delete(packageTempFilePath);
@@ -238,7 +238,7 @@ namespace Disco.Services.Plugins
                     if (updateManifest.Version < existingManifest.Version)
                         throw new InvalidOperationException("Older versions cannot update existing plugins");
 
-                Status.UpdateStatus(20, string.Format("{0} [{1} v{2}] by {3}", updateManifest.Name, updateManifest.Id, updateManifest.Version.ToString(4), updateManifest.Author), "Initializing Update Environment");
+                Status.UpdateStatus(20, $"{updateManifest.Name} [{updateManifest.Id} v{updateManifest.Version.ToString(4)}] by {updateManifest.Author}", "Initializing Update Environment");
 
                 using (DiscoDataContext database = new DiscoDataContext())
                 {
@@ -246,9 +246,9 @@ namespace Disco.Services.Plugins
                     var incompatibilityLibrary = PluginLibrary.LoadManifest(database).LoadIncompatibilityData();
                     PluginIncompatibility incompatibility;
                     if (!incompatibilityLibrary.IsCompatible(updateManifest.Id, updateManifest.Version, out incompatibility))
-                        throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", updateManifest.Id, updateManifest.VersionFormatted, incompatibility.Reason));
+                        throw new InvalidOperationException($"The plugin [{updateManifest.Id} v{updateManifest.VersionFormatted}] is not compatible: {incompatibility.Reason}");
 
-                    var updatePluginPath = Path.Combine(database.DiscoConfiguration.PluginsLocation, string.Format("{0}.discoPlugin", updateManifest.Id));
+                    var updatePluginPath = Path.Combine(database.DiscoConfiguration.PluginsLocation, $"{updateManifest.Id}.discoPlugin");
                     File.Move(packageTempFilePath, updatePluginPath);
 
                     if (existingManifest != null)

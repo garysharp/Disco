@@ -121,7 +121,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -375,7 +375,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
@@ -407,7 +407,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -467,7 +467,7 @@ namespace Disco.Web.Areas.API.Controllers
                     var featureManifest = Plugins.GetPluginFeature(certificateProviderId, typeof(CertificateProviderFeature));
                     if (featureManifest == null)
                     {
-                        throw new Exception(string.Format("Invalid Certificate Provider Plugin Id: [{0}]", certificateProviderId));
+                        throw new Exception($"Invalid Certificate Provider Plugin Id: [{certificateProviderId}]");
                     }
                     else
                     {
@@ -503,7 +503,7 @@ namespace Disco.Web.Areas.API.Controllers
                     var featureManifest = Plugins.GetPluginFeature(certificateAuthorityProviderId, typeof(CertificateAuthorityProviderFeature));
                     if (featureManifest == null)
                     {
-                        throw new Exception(string.Format("Invalid Certificate Authority Provider Plugin Id: [{0}]", certificateAuthorityProviderId));
+                        throw new Exception($"Invalid Certificate Authority Provider Plugin Id: [{certificateAuthorityProviderId}]");
                     }
                     else
                     {
@@ -539,7 +539,7 @@ namespace Disco.Web.Areas.API.Controllers
                     var featureManifest = Plugins.GetPluginFeature(wirelessProfileProviderId, typeof(WirelessProfileProviderFeature));
                     if (featureManifest == null)
                     {
-                        throw new Exception(string.Format("Invalid Wireless Profile Provider Plugin Id: [{0}]", wirelessProfileProviderId));
+                        throw new Exception($"Invalid Wireless Profile Provider Plugin Id: [{wirelessProfileProviderId}]");
                     }
                     else
                     {
@@ -728,7 +728,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -758,7 +758,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -792,7 +792,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 

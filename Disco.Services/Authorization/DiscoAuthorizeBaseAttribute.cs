@@ -65,10 +65,10 @@ namespace Disco.Services.Authorization
                 var controllerName = FilterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
                 var actionName = FilterContext.ActionDescriptor.ActionName;
 
-                authResource = string.Format("{0}::{1}", controllerName, actionName);
+                authResource = $"{controllerName}::{actionName}";
             }
 
-            return string.Format("{0} [{1}]", authResource, url);
+            return $"{authResource} [{url}]";
         }
     }
 }

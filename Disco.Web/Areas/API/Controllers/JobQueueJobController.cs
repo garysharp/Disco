@@ -50,7 +50,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Job Queue Job Id");
                 }
                 if (redirect.HasValue && redirect.Value)
-                    return Redirect(string.Format("{0}#jobDetailTab-Queues", Url.Action(MVC.Job.Show(jobQueueJob.JobId))));
+                    return Redirect($"{Url.Action(MVC.Job.Show(jobQueueJob.JobId))}#jobDetailTab-Queues");
                 else
                     return Json("OK", JsonRequestBehavior.AllowGet);
             }
@@ -59,7 +59,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new Exception("Invalid Job Queue Job Id");
                 }
                 if (redirect.HasValue && redirect.Value)
-                    return Redirect(string.Format("{0}#jobDetailTab-Queues", Url.Action(MVC.Job.Show(jobQueueJob.JobId))));
+                    return Redirect($"{Url.Action(MVC.Job.Show(jobQueueJob.JobId))}#jobDetailTab-Queues");
                 else
                     return Json("OK", JsonRequestBehavior.AllowGet);
             }
@@ -113,7 +113,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         } 
         #endregion
@@ -195,7 +195,7 @@ namespace Disco.Web.Areas.API.Controllers
             var jobQueueJob = job.OnAddQueue(Database, jobQueueToken.JobQueue, CurrentUser, Comment, SLAExpires, Priority);
             Database.SaveChanges();
 
-            return Redirect(string.Format("{0}#jobDetailTab-Queues", Url.Action(MVC.Job.Show(job.Id))));
+            return Redirect($"{Url.Action(MVC.Job.Show(job.Id))}#jobDetailTab-Queues");
         }
 
         [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyQueues, Claims.Job.Actions.RemoveOwnQueues)]
@@ -223,7 +223,7 @@ namespace Disco.Web.Areas.API.Controllers
                 Database.SaveChanges();
             }
 
-            return Redirect(string.Format("{0}#jobDetailTab-Queues", Url.Action(MVC.Job.Show(job.Id))));
+            return Redirect($"{Url.Action(MVC.Job.Show(job.Id))}#jobDetailTab-Queues");
         }
 
         #endregion

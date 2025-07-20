@@ -58,7 +58,7 @@ namespace Disco.Web.Models.InitialConfig
                     wReq.KeepAlive = false;
                     // End Added: 2013-02-08 G#
                     wReq.Method = WebRequestMethods.Http.Get;
-                    wReq.UserAgent = string.Format("Disco/{0} (Initial Config; Org: {1})", DiscoApplication.Version, DiscoApplication.OrganisationName);
+                    wReq.UserAgent = $"Disco/{DiscoApplication.Version} (Initial Config; Org: {DiscoApplication.OrganisationName})";
                     using (HttpWebResponse wRes = (HttpWebResponse)wReq.GetResponse())
                     {
                         if (wRes.StatusCode == HttpStatusCode.OK)
@@ -67,7 +67,7 @@ namespace Disco.Web.Models.InitialConfig
                         }
                         else
                         {
-                            DiscoIctComAuWebResult = new Exception(string.Format("Server returned response: [{0}] {1}", wRes.StatusCode, wRes.StatusDescription));
+                            DiscoIctComAuWebResult = new Exception($"Server returned response: [{wRes.StatusCode}] {wRes.StatusDescription}");
                         }
                     }
                 }

@@ -56,10 +56,10 @@ namespace Disco.Services.Plugins.Features.UIExtension
                 page.WriteLiteral("\n<div id=\"layout_uiExtensions\">");
                 foreach (var uiExtResult in uiExtResults)
                 {
-                    string extensionDescription = HttpUtility.HtmlEncode(string.Format("{0} @ {1} v{2}", uiExtResult.Source.Id, uiExtResult.Source.PluginManifest.Id, uiExtResult.Source.PluginManifest.Version.ToString(4)));
-                    page.WriteLiteral(string.Format("\n<!-- BEGIN UI EXTENSION: {0} -->\n", extensionDescription));
+                    string extensionDescription = HttpUtility.HtmlEncode($"{uiExtResult.Source.Id} @ {uiExtResult.Source.PluginManifest.Id} v{uiExtResult.Source.PluginManifest.Version.ToString(4)}");
+                    page.WriteLiteral($"\n<!-- BEGIN UI EXTENSION: {extensionDescription} -->\n");
                     uiExtResult.ExecuteResult(page);
-                    page.WriteLiteral(string.Format("\n<!-- END UI EXTENSION: {0} -->", extensionDescription));
+                    page.WriteLiteral($"\n<!-- END UI EXTENSION: {extensionDescription} -->");
                 }
                 page.WriteLiteral("\n</div>");
                 page.WriteLiteral("\n<!-- END: Disco ICT UI Extensions -->");

@@ -57,7 +57,7 @@ namespace Disco.Services.Logging
                     var module = LogContext.LogModules.Values.FirstOrDefault(m => m.ModuleName.Equals(name, StringComparison.OrdinalIgnoreCase));
 
                     if (module == null)
-                        throw new ArgumentException(string.Format("Invalid Module Name specified: {0}", name), "ModuleNames");
+                        throw new ArgumentException($"Invalid Module Name specified: {name}", "ModuleNames");
 
                     yield return NotificationsModulePrefix + module.ModuleName;
                 }

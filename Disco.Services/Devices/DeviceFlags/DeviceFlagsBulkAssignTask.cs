@@ -32,7 +32,7 @@ namespace Disco.Services.Devices.DeviceFlags
                 if (flag == null)
                     throw new Exception("Invalid Device Flag Id");
 
-                Status.UpdateStatus(0, string.Format("Bulk Assigning Devices to Device Flag: {0}", flag.Name), "Preparing to start");
+                Status.UpdateStatus(0, $"Bulk Assigning Devices to Device Flag: {flag.Name}", "Preparing to start");
 
                 // Load Technician
                 var technician = Database.Users.FirstOrDefault(user => user.UserId == technicianUserId);
@@ -48,7 +48,7 @@ namespace Disco.Services.Devices.DeviceFlags
                 var missingDevices = deviceSerialNumbers.Where(sn => !devices.Any(u => string.Equals(sn, u.SerialNumber, StringComparison.OrdinalIgnoreCase))).ToList();
                 if (missingDevices.Count > 0)
                 {
-                    throw new InvalidOperationException(string.Format("Bulk assignment aborted, invalid Serial Numbers: {0}", string.Join(", ", missingDevices)));
+                    throw new InvalidOperationException($"Bulk assignment aborted, invalid Serial Numbers: {string.Join(", ", missingDevices)}");
                 }
                 devices = devices.OrderBy(d => d.SerialNumber).ToList();
 

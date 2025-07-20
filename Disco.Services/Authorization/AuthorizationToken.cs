@@ -169,9 +169,9 @@ namespace Disco.Services.Authorization
                     filename = filename.Substring(filename.IndexOf("\\Disco\\Disco.") + 7);
 
                 var method = frame.GetMethod();
-                var resource = string.Format("{0}::{1}", method.DeclaringType.FullName, method.Name);
+                var resource = $"{method.DeclaringType.FullName}::{method.Name}";
                 if (!string.IsNullOrEmpty(filename))
-                    resource = string.Format("{0} [{1}]", resource, filename);
+                    resource = $"{resource} [{filename}]";
 
                 return resource;
             }

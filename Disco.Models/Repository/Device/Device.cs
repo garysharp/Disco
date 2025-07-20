@@ -73,7 +73,7 @@ namespace Disco.Models.Repository
         public override string ToString()
         {
             if (DeviceModel != null)
-                return string.Format("{0} - {1}", DeviceModel, SerialNumber);
+                return $"{DeviceModel} - {SerialNumber}";
             else
                 return SerialNumber;
         }

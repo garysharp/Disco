@@ -13,7 +13,7 @@ namespace Disco.Web.Models.Job
         {
             get
             {
-                return string.Format("{0} ({1})", Title, JobTable.Items.Count());
+                return $"{Title} ({JobTable.Items.Count()})";
             }
         }
     }

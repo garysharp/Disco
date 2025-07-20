@@ -240,7 +240,7 @@ namespace Disco.Web.Controllers
                 .FirstOrDefault(d => d.SerialNumber == id);
 
             if (m.Device == null)
-                throw new ArgumentException(string.Format("Unknown Device: [{0}]", id), "id");
+                throw new ArgumentException($"Unknown Device: [{id}]", "id");
 
             // No Necessary - Yet...
             //if (!string.IsNullOrWhiteSpace(m.Device.ComputerName))

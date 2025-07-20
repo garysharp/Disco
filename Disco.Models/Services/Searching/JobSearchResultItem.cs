@@ -14,7 +14,7 @@ namespace Disco.Models.Services.Searching
 
         public virtual string Id { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return string.Format("{0} ({1}; {2})", Id, UserId, DeviceSerialNumber); } }
+        public string Description { get { return $"{Id} ({UserId}; {DeviceSerialNumber})"; } }
         public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string DeviceSerialNumber { get; set; }

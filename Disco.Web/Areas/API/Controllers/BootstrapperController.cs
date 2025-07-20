@@ -25,7 +25,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             catch (Exception ex)
             {
-                return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         public virtual ActionResult MacSshPassword(string MacSshPassword)
@@ -45,7 +45,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             catch (Exception ex)
             {
-                return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 

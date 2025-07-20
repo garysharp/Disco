@@ -296,7 +296,7 @@ namespace Disco.Data.Repository
         private static void UpdateDeviceModelDuplicates(this DiscoDataContext Database)
         {
             var deviceModels = Database.DeviceModels.ToList();
-            var duplicateModels = deviceModels.GroupBy(g => string.Format("{0}|{1}", g.Manufacturer, g.Model)).Where(g => g.Count() > 1);
+            var duplicateModels = deviceModels.GroupBy(g => $"{g.Manufacturer}|{g.Model}").Where(g => g.Count() > 1);
             foreach (var duplicateModel in duplicateModels)
             {
                 var primaryModel = duplicateModel.OrderBy(dm => dm.Id).First();
@@ -310,9 +310,9 @@ namespace Disco.Data.Repository
                     if (!redundantModel.Description.EndsWith("** REDUNDANT **"))
                     {
                         if (redundantModel.Description.Length > 484)
-                            redundantModel.Description = string.Format("{0} ** REDUNDANT **", redundantModel.Description.Substring(0, 484));
+                            redundantModel.Description = $"{redundantModel.Description.Substring(0, 484)} ** REDUNDANT **";
                         else
-                            redundantModel.Description = string.Format("{0} ** REDUNDANT **", redundantModel.Description);
+                            redundantModel.Description = $"{redundantModel.Description} ** REDUNDANT **";
                     }
                 }
             }
@@ -425,7 +425,7 @@ DELETE [Users] WHERE [Id]=@IdExisting;";
                 var dataStoreLocation = Database.ConfigurationItems.Where(ci => ci.Scope == "System" && ci.Key == "DataStoreLocation").Select(ci => ci.Value).FirstOrDefault();
                 if (!string.IsNullOrWhiteSpace(dataStoreLocation) && System.IO.Directory.Exists(dataStoreLocation))
                 {
-                    string filePrefix = string.Format("{0}_", netBiosName);
+                    string filePrefix = $"{netBiosName}_";
 
                     var userAttachmentsDirectory = System.IO.Path.Combine(dataStoreLocation, "UserAttachments");
                     if (System.IO.Directory.Exists(userAttachmentsDirectory))

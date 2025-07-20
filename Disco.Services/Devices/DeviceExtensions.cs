@@ -32,14 +32,14 @@ namespace Disco.Services
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(string.Format("An error occurred rendering the computer name: [{0}] {1}", ex.GetType().Name, ex.Message), ex.InnerException);
+                throw new InvalidOperationException($"An error occurred rendering the computer name: [{ex.GetType().Name}] {ex.Message}", ex.InnerException);
             }
             if (rendered == null || rendered.Length > 24)
             {
                 throw new InvalidOperationException("The rendered computer name would be invalid or longer than 24 characters");
             }
 
-            return string.Format(@"{0}\{1}", Domain.NetBiosName, rendered);
+            return $@"{Domain.NetBiosName}\{rendered}";
         }
         public static List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
@@ -250,7 +250,7 @@ namespace Disco.Services
         public static string Status(this Device Device)
         {
             if (Device.DecommissionedDate.HasValue)
-                return string.Format("Decommissioned ({0})", Device.DecommissionReason.ReasonMessage());
+                return $"Decommissioned ({Device.DecommissionReason.ReasonMessage()})";
 
             if (!Device.EnrolledDate.HasValue)
                 return "Not Enrolled";

@@ -32,7 +32,7 @@ namespace Disco.Services.Users.UserFlags
                 if (userFlag == null)
                     throw new Exception("Invalid User Flag Id");
 
-                Status.UpdateStatus(0, string.Format("Bulk Assigning Users to User Flag: {0}", userFlag.Name), "Preparing to start");
+                Status.UpdateStatus(0, $"Bulk Assigning Users to User Flag: {userFlag.Name}", "Preparing to start");
 
                 // Load Technician
                 var technician = Database.Users.FirstOrDefault(user => user.UserId == TechnicianUserId);
@@ -56,7 +56,7 @@ namespace Disco.Services.Users.UserFlags
                     for (int index = 0; index < missingUserIds.Count; index++)
                     {
                         var userId = missingUserIds[index];
-                        Status.UpdateStatus(20 + (index * ((double)30 / missingUserIds.Count)), string.Format("Loading user from Active Directory: {0}", userId));
+                        Status.UpdateStatus(20 + (index * ((double)30 / missingUserIds.Count)), $"Loading user from Active Directory: {userId}");
                         try
                         {
                             users.Add(UserService.GetUser(userId, Database, true));
@@ -68,7 +68,7 @@ namespace Disco.Services.Users.UserFlags
                     }
 
                     if (invalidUsersIds.Count > 0)
-                        throw new InvalidOperationException(string.Format("Bulk assignment aborted, invalid User Ids: {0}", string.Join(", ", invalidUsersIds)));
+                        throw new InvalidOperationException($"Bulk assignment aborted, invalid User Ids: {string.Join(", ", invalidUsersIds)}");
                 }
                 users = users.OrderBy(u => u.UserId).ToList();
 

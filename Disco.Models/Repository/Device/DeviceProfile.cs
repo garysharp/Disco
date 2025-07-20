@@ -52,7 +52,7 @@ namespace Disco.Models.Repository
             {
                 return Name;
             }
-            return string.Format("{0} ({1})", Name, ShortName);
+            return $"{Name} ({ShortName})";
         }
 
         [StringLength(200)]

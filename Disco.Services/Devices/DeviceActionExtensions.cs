@@ -156,7 +156,7 @@ namespace Disco.Services
                     if (j.CanDelete())
                         j.OnDelete(Database);
                     else
-                        throw new InvalidOperationException(string.Format("Deletion of Device is Denied (See Job# {0})", j.Id));
+                        throw new InvalidOperationException($"Deletion of Device is Denied (See Job# {j.Id})");
                 }
                 else
                 {
@@ -169,8 +169,7 @@ namespace Disco.Services
                         JobId = j.Id,
                         TechUserId = UserService.CurrentUser.UserId,
                         Timestamp = DateTime.Now,
-                        Comments = string.Format("# Device Deleted\r\n\r\nSerial Number: **{0}**\r\nComputer Name: **{1}**\r\nModel: **{2}**\r\nProfile: **{3}**",
-                                                    d.SerialNumber, d.DeviceDomainId, d.DeviceModel, d.DeviceProfile)
+                        Comments = $"# Device Deleted\r\n\r\nSerial Number: **{d.SerialNumber}**\r\nComputer Name: **{d.DeviceDomainId}**\r\nModel: **{d.DeviceModel}**\r\nProfile: **{d.DeviceProfile}**"
                     };
                     Database.JobLogs.Add(jobLog);
                 }

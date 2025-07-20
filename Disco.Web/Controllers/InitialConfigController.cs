@@ -150,11 +150,11 @@ namespace Disco.Web.Controllers
 
                     if (sqlException != null)
                     {
-                        ModelState.AddModelError(string.Empty, string.Format("Unable to create or migrate the database to the latest version: [{0}] {1}", sqlException.GetType().Name, sqlException.Message));
+                        ModelState.AddModelError(string.Empty, $"Unable to create or migrate the database to the latest version: [{sqlException.GetType().Name}] {sqlException.Message}");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, string.Format("Unable to create or migrate the database to the latest version: [{0}] {1}", innermostException.GetType().Name, innermostException.Message));
+                        ModelState.AddModelError(string.Empty, $"Unable to create or migrate the database to the latest version: [{innermostException.GetType().Name}] {innermostException.Message}");
                     }
                 }
 
@@ -232,7 +232,7 @@ namespace Disco.Web.Controllers
                         }
                         catch (Exception ex)
                         {
-                            ModelState.AddModelError(string.Empty, string.Format("Unable to extract File Store template: [{0}] {1}", ex.GetType().Name, ex.Message));
+                            ModelState.AddModelError(string.Empty, $"Unable to extract File Store template: [{ex.GetType().Name}] {ex.Message}");
                         }
                     }
 
@@ -313,7 +313,7 @@ namespace Disco.Web.Controllers
                 var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
-                    throw new ArgumentException(string.Format("Subjects not found: {0}", string.Join(", ", invalidSubjects)), "Subjects");
+                    throw new ArgumentException($"Subjects not found: {string.Join(", ", invalidSubjects)}", "Subjects");
 
                 proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
                 var currentSubjects = UserService.AdministratorSubjectIds;

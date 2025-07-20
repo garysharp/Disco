@@ -306,7 +306,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -1476,7 +1476,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -1519,7 +1519,7 @@ namespace Disco.Web.Areas.API.Controllers
                             JobId = job.Id,
                             TechUserId = CurrentUser.UserId,
                             Timestamp = DateTime.Now,
-                            Comments = string.Format("# Added Flag\r\n**{0}**\r\n{1}", flagStatus.Item1, string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)
+                            Comments = $"# Added Flag\r\n**{flagStatus.Item1}**\r\n{(string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)}"
                         };
                         Database.JobLogs.Add(jobLog);
 
@@ -1542,7 +1542,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -1573,7 +1573,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -1604,7 +1604,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -2192,9 +2192,9 @@ namespace Disco.Web.Areas.API.Controllers
                 if (locRef.References != null && locRef.References.Count > 0)
                 {
                     if (locRef.References.Count == 1)
-                        reference = string.Format("Job {0}", locRef.References[0].JobId);
+                        reference = $"Job {locRef.References[0].JobId}";
                     else
-                        reference = string.Format("{0} jobs", locRef.References.Count);
+                        reference = $"{locRef.References.Count} jobs";
                 }
 
                 return new Models.Job.DeviceHeldLocationModel()

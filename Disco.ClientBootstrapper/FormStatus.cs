@@ -14,7 +14,7 @@ namespace Disco.ClientBootstrapper
             InitializeComponent();
 
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            this.labelVersion.Text = string.Format("v{0}", version.ToString(3));
+            this.labelVersion.Text = $"v{version.ToString(3)}";
 
             this.FormClosed += new FormClosedEventHandler(FormStatus_FormClosed);
 

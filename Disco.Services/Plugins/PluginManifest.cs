@@ -68,7 +68,7 @@ namespace Disco.Services.Plugins
             get
             {
                 var v = Version;
-                return string.Format("{0}.{1}.{2:0000}.{3:0000}", v.Major, v.Minor, v.Build, v.Revision);
+                return $"{v.Major}.{v.Minor}.{v.Build:0000}.{v.Revision:0000}";
             }
         }
 
@@ -242,7 +242,7 @@ namespace Disco.Services.Plugins
             var pluginAttributes = pluginType.GetCustomAttribute<PluginAttribute>(false);
 
             if (pluginAttributes == null)
-                throw new ArgumentException(string.Format("Plugin found [{0}], but no PluginAttribute found", pluginType.Name), "pluginAssembly");
+                throw new ArgumentException($"Plugin found [{pluginType.Name}], but no PluginAttribute found", "pluginAssembly");
 
             var pluginId = pluginAttributes.Id;
             var pluginName = pluginAttributes.Name;
@@ -328,19 +328,19 @@ namespace Disco.Services.Plugins
                 var assemblyFullPath = Path.Combine(PluginLocation, AssemblyPath);
 
                 if (!File.Exists(assemblyFullPath))
-                    throw new FileNotFoundException(string.Format("Plugin Assembly [{0}] not found at: {1}", Id, assemblyFullPath), assemblyFullPath);
+                    throw new FileNotFoundException($"Plugin Assembly [{Id}] not found at: {assemblyFullPath}", assemblyFullPath);
 
                 if (PluginAssembly == null)
                     PluginAssembly = Assembly.LoadFile(assemblyFullPath);
 
                 if (PluginAssembly == null)
-                    throw new InvalidOperationException(string.Format("Unable to load Plugin Assembly [{0}] at: {1}", Id, assemblyFullPath));
+                    throw new InvalidOperationException($"Unable to load Plugin Assembly [{Id}] at: {assemblyFullPath}");
 
                 PluginsLog.LogInitializingPluginAssembly(PluginAssembly);
 
                 // Check Manifest/Assembly Versions Match
                 if (Version != PluginAssembly.GetName().Version)
-                    throw new InvalidOperationException(string.Format("The plugin [{0}] manifest version [{1}] doesn't match the plugin assembly [{2} : {3}]", Id, Version, assemblyFullPath, PluginAssembly.GetName().Version));
+                    throw new InvalidOperationException($"The plugin [{Id}] manifest version [{Version}] doesn't match the plugin assembly [{assemblyFullPath} : {PluginAssembly.GetName().Version}]");
 
                 if (Type == null)
                     Type = PluginAssembly.GetType(TypeName, true, true);
@@ -442,7 +442,7 @@ namespace Disco.Services.Plugins
         {
             get
             {
-                return string.Format("/Config/Plugins/{0}", HttpUtility.UrlEncode(Id));
+                return $"/Config/Plugins/{HttpUtility.UrlEncode(Id)}";
             }
         }
         [JsonIgnore]
@@ -471,7 +471,7 @@ namespace Disco.Services.Plugins
             {
                 var attributeDenied = WebHandlerAuthorizers.FirstOrDefault(a => !a.IsAuthorized(HostController.HttpContext));
                 if (attributeDenied != null)
-                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage(), string.Format("[Plugin]::{0}::[Handler]", Id));
+                    throw new AccessDeniedException(attributeDenied.HandleUnauthorizedMessage(), $"[Plugin]::{Id}::[Handler]");
             }
 
             var handler = (PluginWebHandler)Activator.CreateInstance(WebHandlerType);
@@ -487,7 +487,7 @@ namespace Disco.Services.Plugins
         {
             get
             {
-                return string.Format("/Plugin/{0}", HttpUtility.UrlEncode(Id));
+                return $"/Plugin/{HttpUtility.UrlEncode(Id)}";
             }
         }
         public string WebActionUrl(string Action)
@@ -513,7 +513,7 @@ namespace Disco.Services.Plugins
             var resourcePath = Path.Combine(PluginLocation, "WebResources", Resource.Replace(@"/", @"\"));
 
             Tuple<string, DateTime> resourceHash;
-            string resourceKey = string.Format("{0}://{1}", Name, Resource);
+            string resourceKey = $"{Name}://{Resource}";
             if (WebResourceHashes.TryGetValue(resourceKey, out resourceHash))
             {
 #if DEBUG
@@ -524,7 +524,7 @@ namespace Disco.Services.Plugins
             }
 
             if (!File.Exists(resourcePath))
-                throw new FileNotFoundException(string.Format("Resource [{0}] not found", Resource), resourcePath);
+                throw new FileNotFoundException($"Resource [{Resource}] not found", resourcePath);
 
             var fileDate = System.IO.File.GetLastWriteTime(resourcePath);
             var fileBytes = System.IO.File.ReadAllBytes(resourcePath);
@@ -548,7 +548,7 @@ namespace Disco.Services.Plugins
                 new RouteValueDictionary(new Dictionary<string, object>() { { "PluginId", Id }, { "res", Resource } }),
                 RouteTable.Routes, HttpContext.Current.Request.RequestContext, false);
 
-            url += string.Format("?v={0}", resourcePath.Item2);
+            url += $"?v={resourcePath.Item2}";
 
             return url;
         }
@@ -577,7 +577,7 @@ namespace Disco.Services.Plugins
 
         public override string ToString()
         {
-            return string.Format("{0} [{1} v{2}]", Name, Id, VersionFormatted);
+            return $"{Name} [{Id} v{VersionFormatted}]";
         }
     }
 }

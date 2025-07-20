@@ -53,7 +53,7 @@ namespace Disco.Services.Web
                     var resource = accessDeniedException.Resource;
                     var httpContext = HttpContext.Current;
                     if (httpContext != null && httpContext.Request != null)
-                        resource = string.Format("{0} [{1}]", resource, httpContext.Request.RawUrl);
+                        resource = $"{resource} [{httpContext.Request.RawUrl}]";
 
                     AuthorizationLog.LogAccessDenied(UserService.CurrentUserId ?? "[Anonymous]", resource, accessDeniedException.Message);
                 }

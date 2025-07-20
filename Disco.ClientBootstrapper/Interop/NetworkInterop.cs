@@ -211,12 +211,12 @@ namespace Disco.ClientBootstrapper.Interop
                         {
                             if (inlineWirelessProfile.AddProfile(wlanHandle, na.Guid))
                             {
-                                Program.Status.UpdateStatus(null, null, string.Format("Added Wireless Profile: {0}", inlineWirelessProfile.ProfileName));
+                                Program.Status.UpdateStatus(null, null, $"Added Wireless Profile: {inlineWirelessProfile.ProfileName}");
                                 Program.SleepThread(500, false);
                             }
                             else
                             {
-                                Program.Status.UpdateStatus(null, null, string.Format("Unable to add Wireless Profile: {0}", inlineWirelessProfile.ProfileName));
+                                Program.Status.UpdateStatus(null, null, $"Unable to add Wireless Profile: {inlineWirelessProfile.ProfileName}");
                                 Program.SleepThread(5000, false);
                             }
                         }

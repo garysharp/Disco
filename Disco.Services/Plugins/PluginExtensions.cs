@@ -152,7 +152,7 @@ namespace Disco.Services.Plugins
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, res = Resource });
             string pluginActionUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, RequestContext, false);
 
-            pluginActionUrl += string.Format("?v={0}", resourcePath.Item2);
+            pluginActionUrl += $"?v={resourcePath.Item2}";
 
             if (Download)
                 pluginActionUrl += "&Download=true";
@@ -297,7 +297,7 @@ namespace Disco.Services.Plugins
             var routeValues = new RouteValueDictionary(new { PluginId = manifest.Id, res = Resource });
             string pluginResourceUrl = UrlHelper.GenerateUrl("Plugin_Resources", null, null, routeValues, RouteTable.Routes, RequestContext, false);
 
-            pluginResourceUrl += string.Format("?v={0}", resourcePath.Item2);
+            pluginResourceUrl += $"?v={resourcePath.Item2}";
 
             HtmlString pluginResourceUrlHtml = new HtmlString(pluginResourceUrl);
 

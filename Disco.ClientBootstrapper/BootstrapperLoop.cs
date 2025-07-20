@@ -217,11 +217,11 @@ namespace Disco.ClientBootstrapper
             {
                 if (na.IsWireless)
                 {
-                    info.AppendLine(string.Format("{0}: {1}", na.NetConnectionID, na.WirelessConnectionStatusMeaning(na.WirelessConnectionStatus)));
+                    info.AppendLine($"{na.NetConnectionID}: {na.WirelessConnectionStatusMeaning(na.WirelessConnectionStatus)}");
                 }
                 else
                 {
-                    info.AppendLine(string.Format("{0}: {1}", na.NetConnectionID, na.ConnectionStatusMeaning(na.ConnectionStatus)));
+                    info.AppendLine($"{na.NetConnectionID}: {na.ConnectionStatusMeaning(na.ConnectionStatus)}");
                 }
             }
             statusUI.UpdateStatus(null, null, info.ToString());
@@ -232,7 +232,7 @@ namespace Disco.ClientBootstrapper
         {
             if (!string.IsNullOrWhiteSpace(e.Data))
             {
-                System.Diagnostics.Debug.WriteLine(string.Format("OUTPUT: {0}", e.Data));
+                System.Diagnostics.Debug.WriteLine($"OUTPUT: {e.Data}");
                 var data = e.Data.Substring(1).Split(new char[] { ',' });
                 switch (e.Data[0])
                 {

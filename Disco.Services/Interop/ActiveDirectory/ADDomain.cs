@@ -59,7 +59,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var dc = Domain.FindDomainController();
 
-            string ldapPath = string.Format("LDAP://{0}/", dc.Name);
+            string ldapPath = $"LDAP://{dc.Name}/";
 
             using (var adRootDSE = new DirectoryEntry(ldapPath + "RootDSE"))
             {
@@ -74,7 +74,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             using (var configSearchRoot = new DirectoryEntry(ldapPath + "CN=Partitions," + ConfigurationNamingContext))
             {
-                var configSearchFilter = string.Format("(&(objectcategory=Crossref)(dnsRoot={0})(netBIOSName=*))", Name);
+                var configSearchFilter = $"(&(objectcategory=Crossref)(dnsRoot={Name})(netBIOSName=*))";
 
                 using (var configSearcher = new DirectorySearcher(configSearchRoot, configSearchFilter, new string[] { "NetBIOSName" }, System.DirectoryServices.SearchScope.OneLevel))
                 {
@@ -233,7 +233,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 throw new ArgumentNullException("DistinguishedName");
 
             if (!DistinguishedName.EndsWith(this.DistinguishedName, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, Name), "DistinguishedName");
+                throw new ArgumentException($"The Distinguished Name ({DistinguishedName}) isn't a member of this domain [{Name}]", "DistinguishedName");
 
             var dc = GetAvailableDomainController();
 
@@ -309,12 +309,12 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                     // Set offline for DomainControllerUnavailableMinutes
                     domainController.IsAvailable = false;
-                    SystemLog.LogWarning(string.Format("A domain controller [{0}] is offline. It will be retried after {1}. Error: {2} [{3}]", domainController.Name, domainController.AvailableWhen.Value.ToShortTimeString(), ex.Message, ex.GetType().Name));
+                    SystemLog.LogWarning($"A domain controller [{domainController.Name}] is offline. It will be retried after {domainController.AvailableWhen.Value.ToShortTimeString()}. Error: {ex.Message} [{ex.GetType().Name}]");
                 }
             } while (exceptionCount < SearchExceptionRetryMax);
 
             throw new AggregateException(
-                new Exception[] { new Exception(string.Format("Unable to perform Active Directory Search after {0} attempts", exceptionCount)) }
+                new Exception[] { new Exception($"Unable to perform Active Directory Search after {exceptionCount} attempts") }
                 .Concat(exceptions));
         }
 
@@ -335,14 +335,14 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             get
             {
-                return string.Format("CN=Computers,{0}", DistinguishedName);
+                return $"CN=Computers,{DistinguishedName}";
             }
         }
 
         public string FriendlyDistinguishedNamePath(string DistinguishedName)
         {
             if (!DistinguishedName.EndsWith(this.DistinguishedName, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Distinguished Name [{0}] doesn't exist within this domain [{1}]", DistinguishedName, this.DistinguishedName));
+                throw new ArgumentException($"The Distinguished Name [{DistinguishedName}] doesn't exist within this domain [{this.DistinguishedName}]");
 
             StringBuilder name = new StringBuilder();
 
@@ -365,7 +365,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", Name, NetBiosName);
+            return $"{Name} [{NetBiosName}]";
         }
 
         public override bool Equals(object obj)

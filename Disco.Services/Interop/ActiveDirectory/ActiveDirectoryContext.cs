@@ -139,7 +139,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             ADDomain domain;
             if (!TryGetDomainFromDistinguishedName(DistinguishedName, out domain))
-                throw new ArgumentException(string.Format("The distinguished name is from an unknown domain: [{0}]", DistinguishedName), "DistinguishedName");
+                throw new ArgumentException($"The distinguished name is from an unknown domain: [{DistinguishedName}]", "DistinguishedName");
             return domain;
         }
 
@@ -152,7 +152,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             ADDomain domain;
             if (!TryGetDomainByNetBiosName(NetBiosName, out domain))
-                throw new ArgumentException(string.Format("The domain for specified NetBios name is unknown [{0}]", NetBiosName), "NetBiosName");
+                throw new ArgumentException($"The domain for specified NetBios name is unknown [{NetBiosName}]", "NetBiosName");
             return domain;
         }
 
@@ -165,7 +165,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             ADDomain domain;
             if (!TryGetDomainByName(Name, out domain))
-                throw new ArgumentException(string.Format("The domain for specified DNS name is unknown [{0}]", Name), "Name");
+                throw new ArgumentException($"The domain for specified DNS name is unknown [{Name}]", "Name");
             return domain;
         }
 
@@ -178,7 +178,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             ADDomain domain;
             if (!TryGetDomainFromSecurityIdentifier(SecurityIdentifier, out domain))
-                throw new ArgumentException(string.Format("The domain for specified Security Identifier is unknown [{0}]", SecurityIdentifier.ToString()), "SecurityIdentifier");
+                throw new ArgumentException($"The domain for specified Security Identifier is unknown [{SecurityIdentifier.ToString()}]", "SecurityIdentifier");
             return domain;
         }
 
@@ -190,7 +190,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             var slashIndex = Id.IndexOf('\\');
 
             if (slashIndex < 0)
-                throw new ArgumentException(string.Format("The Id must include the Domain [{0}]", Id), "Id");
+                throw new ArgumentException($"The Id must include the Domain [{Id}]", "Id");
 
             return TryGetDomainByNetBiosName(Id.Substring(0, slashIndex), out Domain);
         }
@@ -202,7 +202,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             var slashIndex = Id.IndexOf('\\');
 
             if (slashIndex < 0)
-                throw new ArgumentException(string.Format("The Id must include the Domain [{0}]", Id), "Id");
+                throw new ArgumentException($"The Id must include the Domain [{Id}]", "Id");
 
             return GetDomainByNetBiosName(Id.Substring(0, slashIndex));
         }

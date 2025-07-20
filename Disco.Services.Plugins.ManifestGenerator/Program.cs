@@ -101,7 +101,7 @@ namespace Disco.Services.Plugins.ManifestGenerator
 
         static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            Console.WriteLine("CurrentDomain_AssemblyResolve: {0} - {1}", args.Name, args.RequestingAssembly.FullName);
+            Console.WriteLine($"CurrentDomain_AssemblyResolve: {args.Name} - {args.RequestingAssembly.FullName}");
 
             foreach (var loadedAssembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -114,7 +114,7 @@ namespace Disco.Services.Plugins.ManifestGenerator
 
         static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
         {
-            Console.WriteLine("CurrentDomain_AssemblyLoad: {0} - {1}", args.LoadedAssembly.FullName, args.LoadedAssembly.Location);
+            Console.WriteLine($"CurrentDomain_AssemblyLoad: {args.LoadedAssembly.FullName} - {args.LoadedAssembly.Location}");
         }
 
         static void BuildZipPackage(ZipArchive package, string relativePath, DirectoryInfo directory, List<string> excludedFiles)

@@ -87,7 +87,7 @@ namespace Disco.Web.Areas.Services.Controllers
                         }
                     }
             }
-            throw new MissingMethodException(string.Format("Unknown Feature: {0}", feature));
+            throw new MissingMethodException($"Unknown Feature: {feature}");
         }
 
         [Authorize]
@@ -136,7 +136,7 @@ namespace Disco.Web.Areas.Services.Controllers
                         return Json(enrolResponse);
                     }
             }
-            throw new MissingMethodException(string.Format("Unknown Feature: {0}", feature));
+            throw new MissingMethodException($"Unknown Feature: {feature}");
         }
 
         public virtual ActionResult ClientError(string SessionId, string DeviceIdentifier, string JsonException)

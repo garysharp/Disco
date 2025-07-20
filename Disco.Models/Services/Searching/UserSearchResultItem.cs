@@ -17,7 +17,7 @@ namespace Disco.Models.Services.Searching
         public string Id { get; set; }
         public string FriendlyId { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return string.Format("{0} ({1})", DisplayName, Id); } }
+        public string Description { get { return $"{DisplayName} ({Id})"; } }
         public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string DisplayName { get; set; }

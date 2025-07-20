@@ -397,7 +397,7 @@ namespace Disco.BI.Interop.Pdf
                     TechUserId = CreatorUser.UserId,
                     Timestamp = DateTime.Now
                 };
-                jl.Comments = string.Format("# Document Generated\r\n**{0}** [{1}]", dt.Description, dt.Id);
+                jl.Comments = $"# Document Generated\r\n**{dt.Description}** [{dt.Id}]";
                 Database.JobLogs.Add(jl);
             }
 

@@ -67,7 +67,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
             {
                 if (model.Types != null && model.SubTypes != null)
                 {
-                    var typeId = string.Format("{0}_", model.Types);
+                    var typeId = $"{model.Types}_";
                     model.SubTypes = model.SubTypes.Where(m => model.Types.Contains(m.Substring(0, m.IndexOf("_")))).ToList();
                 }
             }

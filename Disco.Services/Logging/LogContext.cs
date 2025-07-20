@@ -158,7 +158,7 @@ namespace Disco.Services.Logging
             {
                 Directory.CreateDirectory(logDirectory);
             }
-            var logFileName = string.Format("DiscoLog_{0:yyy-MM-dd}.sdf", Date);
+            var logFileName = $"DiscoLog_{Date:yyy-MM-dd}.sdf";
             return Path.Combine(logDirectory, logFileName);
         }
 
@@ -286,10 +286,10 @@ namespace Disco.Services.Logging
                     }
                 }
                 else
-                    throw new InvalidOperationException(string.Format("Unknown Log Event Type Called: {0} (for Module: {1})", EventTypeId, ModuleId));
+                    throw new InvalidOperationException($"Unknown Log Event Type Called: {EventTypeId} (for Module: {ModuleId})");
             }
             else
-                throw new InvalidOperationException(string.Format("Unknown Log Module Called: {0}", ModuleId));
+                throw new InvalidOperationException($"Unknown Log Module Called: {ModuleId}");
         }
 
     }

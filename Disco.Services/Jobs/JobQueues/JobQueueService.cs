@@ -109,7 +109,7 @@ namespace Disco.Services.Jobs.JobQueues
                 throw new InvalidOperationException("The Job Queue cannot be deleted because it contains jobs");
 
             // Delete History
-            Status.UpdateStatus(0, string.Format("Removing '{0}' [{1}] Job Queue", queue.Name, queue.Id), "Starting");
+            Status.UpdateStatus(0, $"Removing '{queue.Name}' [{queue.Id}] Job Queue", "Starting");
             var jobQueueJobs = Database.JobQueueJobs.Include("Job").Where(jsj => jsj.JobQueueId == queue.Id).ToList();
             if (jobQueueJobs.Count > 0)
             {
@@ -118,7 +118,7 @@ namespace Disco.Services.Jobs.JobQueues
                 {
                     var jqj = jobQueueJobs[jqjIndex];
 
-                    Status.UpdateStatus(jqjIndex * progressInterval, string.Format("Merging history into job #{0} logs", jqj.JobId));
+                    Status.UpdateStatus(jqjIndex * progressInterval, $"Merging history into job #{jqj.JobId} logs");
 
                     // Write Logs
                     Database.JobLogs.Add(new JobLog()
@@ -133,7 +133,7 @@ namespace Disco.Services.Jobs.JobQueues
                         JobId = jqj.JobId,
                         TechUserId = jqj.RemovedUserId,
                         Timestamp = jqj.RemovedDate.Value,
-                        Comments = string.Format("# Removed from Queue\r\n**{0}**\r\n{1}", queue.Name, string.IsNullOrWhiteSpace(jqj.RemovedComment) ? "<no comment>" : jqj.RemovedComment)
+                        Comments = $"# Removed from Queue\r\n**{queue.Name}**\r\n{(string.IsNullOrWhiteSpace(jqj.RemovedComment) ? "<no comment>" : jqj.RemovedComment)}"
                     });
 
                     // Delete JQJ
@@ -152,7 +152,7 @@ namespace Disco.Services.Jobs.JobQueues
             // Remove from Cache
             _cache.RemoveQueue(JobQueueId);
 
-            Status.Finished(string.Format("Successfully Deleted Job Queue: '{0}' [{1}]", queue.Name, queue.Id));
+            Status.Finished($"Successfully Deleted Job Queue: '{queue.Name}' [{queue.Id}]");
         }
         #endregion
 

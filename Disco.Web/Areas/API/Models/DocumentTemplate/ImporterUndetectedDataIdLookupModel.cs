@@ -13,7 +13,7 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
             return new ImporterUndetectedDataIdLookupModel
             {
                 value = item.Id,
-                label = string.Format("{0} - {1} - {2}", item.Id, item.ComputerName, item.DeviceModelDescription)
+                label = $"{item.Id} - {item.ComputerName} - {item.DeviceModelDescription}"
             };
         }
         public static ImporterUndetectedDataIdLookupModel FromSearchResultItem(JobTableItemModel item)
@@ -21,7 +21,7 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
             return new ImporterUndetectedDataIdLookupModel
             {
                 value = item.JobId.ToString(),
-                label = string.Format("{0} ({1}; {2})", item.JobId, item.DeviceSerialNumber, item.UserDisplayName)
+                label = $"{item.JobId} ({item.DeviceSerialNumber}; {item.UserDisplayName})"
             };
         }
         public static ImporterUndetectedDataIdLookupModel FromSearchResultItem(UserSearchResultItem item)
@@ -29,7 +29,7 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
             return new ImporterUndetectedDataIdLookupModel
             {
                 value = item.Id,
-                label = string.Format("{0} - {1}", item.Id, item.DisplayName)
+                label = $"{item.Id} - {item.DisplayName}"
             };
         }
 

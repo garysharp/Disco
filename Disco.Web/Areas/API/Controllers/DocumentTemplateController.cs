@@ -104,7 +104,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Disco.Web.Areas.API.Controllers
             var filename = documentTemplate.RepositoryFilename(Database);
             if (System.IO.File.Exists(filename))
             {
-                return File(filename, DocumentTemplate.PdfMimeType, string.Format("{0}.pdf", documentTemplate.Id));
+                return File(filename, DocumentTemplate.PdfMimeType, $"{documentTemplate.Id}.pdf");
             }
             else
             {
@@ -151,7 +151,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -235,7 +235,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -269,7 +269,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -302,7 +302,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -498,7 +498,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult ImporterThumbnail(string SessionId, int PageNumber)
         {
             var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(Database, "Cache\\DocumentDropBox_SessionPages");
-            var filename = System.IO.Path.Combine(dataStoreSessionPagesCacheLocation, string.Format("{0}-{1}", SessionId, PageNumber));
+            var filename = System.IO.Path.Combine(dataStoreSessionPagesCacheLocation, $"{SessionId}-{PageNumber}");
             if (System.IO.File.Exists(filename))
                 return File(filename, "image/png");
             else
@@ -1318,7 +1318,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json(string.Format("Error: {0}", ex.Message), JsonRequestBehavior.AllowGet);
+                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
         }
 

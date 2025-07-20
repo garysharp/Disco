@@ -171,7 +171,7 @@ namespace Disco.Services.Logging
         public static void CompressDirectory(string DirectoryPath)
         {
             if (DirectoryPath.Length > 250)
-                throw new InvalidOperationException(string.Format("Directory Path to Long (>250) to Compress: {0}", DirectoryPath));
+                throw new InvalidOperationException($"Directory Path to Long (>250) to Compress: {DirectoryPath}");
 
             DirectoryInfo dirInfo = new DirectoryInfo(DirectoryPath);
             if (dirInfo.Exists)
@@ -192,7 +192,7 @@ namespace Disco.Services.Logging
             }
             else
             {
-                throw new InvalidOperationException(string.Format("Directory doesn't exist: {0}", DirectoryPath));
+                throw new InvalidOperationException($"Directory doesn't exist: {DirectoryPath}");
             }
         }
 

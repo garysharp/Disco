@@ -27,7 +27,7 @@ namespace Disco.Services.Plugins
         {
             get
             {
-                return string.Format("Unknown Plugin Id: [{0}]", _pluginRequested);
+                return $"Unknown Plugin Id: [{_pluginRequested}]";
             }
         }
     }

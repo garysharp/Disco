@@ -48,7 +48,7 @@ namespace Disco.Data.Repository
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    throw new SecurityException(string.Format("Unable to write to the Registry Location: HKML\\{0}[DatabaseConnectionString]", DiscoRegistryKey), ex);
+                    throw new SecurityException($"Unable to write to the Registry Location: HKML\\{DiscoRegistryKey}[DatabaseConnectionString]", ex);
                 }
             }
         }

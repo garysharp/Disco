@@ -41,7 +41,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 .FirstOrDefault(g => g.Configuration.GroupId.Equals(ManagedGroup.Configuration.GroupId, StringComparison.OrdinalIgnoreCase));
 
             if (existingGroup != null)
-                throw new ArgumentException(string.Format("[{0}] cannot manage this group [{1}] because is already managed by [{2}]", ManagedGroup.Key, ManagedGroup.Configuration.GroupId, existingGroup.Key), "ManagedGroup");
+                throw new ArgumentException($"[{ManagedGroup.Key}] cannot manage this group [{ManagedGroup.Configuration.GroupId}] because is already managed by [{existingGroup.Key}]", "ManagedGroup");
 
             managedGroups.AddOrUpdate(key, ManagedGroup, (itemKey, item) =>
             {
@@ -93,9 +93,9 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             var group = ActiveDirectory.RetrieveADGroup(GroupId, "isCriticalSystemObject");
             if (group == null)
-                throw new ArgumentException(string.Format("The group [{0}] wasn't found", GroupId), "DevicesLinkedGroup");
+                throw new ArgumentException($"The group [{GroupId}] wasn't found", "DevicesLinkedGroup");
             if (group.GetPropertyValue<bool>("isCriticalSystemObject"))
-                throw new ArgumentException(string.Format("The group [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", group.DistinguishedName), "DevicesLinkedGroup");
+                throw new ArgumentException($"The group [{group.DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", "DevicesLinkedGroup");
 
             GroupId = group.Id;
 
@@ -103,7 +103,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 .Where(g => g.Key != IgnoreManagedGroupKey)
                 .FirstOrDefault(g => g.Configuration.GroupId.Equals(GroupId, StringComparison.OrdinalIgnoreCase));
             if (otherManagedGroup != null)
-                throw new ArgumentException(string.Format("Cannot manage this group [{0}] because is already managed by [{1}]", GroupId, otherManagedGroup.Key), "DevicesLinkedGroup");
+                throw new ArgumentException($"Cannot manage this group [{GroupId}] because is already managed by [{otherManagedGroup.Key}]", "DevicesLinkedGroup");
 
             return GroupId;
         }
@@ -160,7 +160,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     var scopeAccounts = ActiveDirectory.Context.SearchScope("(|(objectCategory=computer)(objectCategory=person))", adSearchLoadProperties);
                     foreach (var scopeAccount in scopeAccounts)
                     {
-                        var id = string.Format(@"{0}\{1}", scopeAccount.Domain.NetBiosName, scopeAccount.Value<string>("sAMAccountName"));
+                        var id = $@"{scopeAccount.Domain.NetBiosName}\{scopeAccount.Value<string>("sAMAccountName")}";
                         accountDNCache[id] = scopeAccount.Value<string>("distinguishedName");
                     }
                 }
@@ -182,7 +182,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                                 return null;
                             }
 
-                            var ldapFilter = string.Format("(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={0}))", memberUsername);
+                            var ldapFilter = $"(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={memberUsername}))";
 
                             var adSearchResult = memberDomain.SearchEntireDomain(ldapFilter, adSearchLoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
                             if (adSearchResult != null)
@@ -234,7 +234,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                             using (var adGroupEntry = ActiveDirectory.Context.RetrieveDirectoryEntry(adGroup.DistinguishedName, new string[] { "member", "isCriticalSystemObject" }))
                             {
                                 if (adGroupEntry.Entry.Properties.Value<bool>("isCriticalSystemObject"))
-                                    throw new InvalidOperationException(string.Format("This group [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", adGroup.DistinguishedName));
+                                    throw new InvalidOperationException($"This group [{adGroup.DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
                                 var adGroupEntryMembers = adGroupEntry.Entry.Properties["member"];
                                 foreach (var item in actionItems)
@@ -291,7 +291,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 {
                     Status.UpdateStatus(
                         ((double)30 / managedGroups.Count) * index, // 0 -> 30
-                        string.Format("Determining Group Members: {0} [{1}]", g.GroupDescription, g.Configuration.GroupId));
+                        $"Determining Group Members: {g.GroupDescription} [{g.Configuration.GroupId}]");
                     return Tuple.Create(
                         g,
                         g.DetermineMembers(Database).Select(m =>
@@ -316,7 +316,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     var scopeAccounts = ActiveDirectory.Context.SearchScope("(|(objectCategory=computer)(objectCategory=person))", adSearchLoadProperties);
                     foreach (var scopeAccount in scopeAccounts)
                     {
-                        var id = string.Format(@"{0}\{1}", scopeAccount.Domain.NetBiosName, scopeAccount.Value<string>("sAMAccountName"));
+                        var id = $@"{scopeAccount.Domain.NetBiosName}\{scopeAccount.Value<string>("sAMAccountName")}";
                         accountDNCache[id] = Tuple.Create(scopeAccount.Value<string>("distinguishedName"), scopeAccount.Value<string>("displayName") ?? scopeAccount.Value<string>("name"));
                     }
                 }
@@ -325,7 +325,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 {
                     Status.UpdateStatus(
                         30 + (((double)30 / actionGroups.Count) * index), // 30 -> 60
-                        string.Format("Resolving {0} Group Members: {1} [{2}]", g.Item2.Count, g.Item1.GroupDescription, g.Item1.Configuration.GroupId));
+                        $"Resolving {g.Item2.Count} Group Members: {g.Item1.GroupDescription} [{g.Item1.Configuration.GroupId}]");
 
                     // Resolve Member Ids to AD Distinguished Names
                     //   Discard non-existent users
@@ -344,7 +344,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                                         return null;
                                     }
 
-                                    var ldapFilter = string.Format("(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={0}))", memberUsername);
+                                    var ldapFilter = $"(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={memberUsername}))";
 
                                     var adSearchResult = memberDomain.SearchEntireDomain(ldapFilter, adSearchLoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
                                     if (adSearchResult != null)
@@ -379,15 +379,15 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                 Status.UpdateStatus(
                         60 + (((double)40 / actionGroups.Count) * actionGroups.IndexOf(actionGroup)), // 60 -> 100
-                        string.Format("Synchronizing {0} Group Members: {1} [{2}]", actionGroup.Item2.Count, actionGroup.Item1.GroupDescription, actionGroup.Item1.Configuration.GroupId));
+                        $"Synchronizing {actionGroup.Item2.Count} Group Members: {actionGroup.Item1.GroupDescription} [{actionGroup.Item1.Configuration.GroupId}]");
 
                 using (var adGroupEntry = ActiveDirectory.Context.RetrieveDirectoryEntry(adGroup.DistinguishedName, new string[] { "isCriticalSystemObject", "description", "member" }))
                 {
                     if (adGroupEntry.Entry.Properties.Value<bool>("isCriticalSystemObject"))
-                        throw new InvalidOperationException(string.Format("This group [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", adGroup.DistinguishedName));
+                        throw new InvalidOperationException($"This group [{adGroup.DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
                     // Update Description
-                    var groupDescription = string.Format("Disco ICT: {0}", actionGroup.Item1.GroupDescription);
+                    var groupDescription = $"Disco ICT: {actionGroup.Item1.GroupDescription}";
                     if (adGroupEntry.Entry.Properties.Value<string>("description") != groupDescription)
                     {
                         var adGroupEntryDescription = adGroupEntry.Entry.Properties["description"];

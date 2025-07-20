@@ -130,7 +130,7 @@ namespace Disco.Services.Tasks
                 {
                     var existingGuid = _RunningTasks.Where(t => t.IsRunning && t.TaskType == taskType).Select(t => t.SessionId).FirstOrDefault();
                     if (existingGuid != null)
-                        throw new InvalidOperationException(string.Format("This Single-Instance Task is already running, SessionId: {0}", existingGuid));
+                        throw new InvalidOperationException($"This Single-Instance Task is already running, SessionId: {existingGuid}");
                 }
                 _RunningTasks.Add(taskStatus);
             }

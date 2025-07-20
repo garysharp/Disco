@@ -17,7 +17,7 @@ namespace Disco.Web.Areas.API.Models.DeviceModel
                 Id = dc.Id,
                 Description = dc.Description,
                 Cost = dc.Cost.ToString("C"),
-                JobSubTypes = dc.JobSubTypes.Select(j => string.Format("{0}_{1}", j.JobTypeId, j.Id)).ToList()
+                JobSubTypes = dc.JobSubTypes.Select(j => $"{j.JobTypeId}_{j.Id}").ToList()
             };
 
         }

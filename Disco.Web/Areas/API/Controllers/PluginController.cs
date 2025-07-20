@@ -85,7 +85,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (Plugins.PluginInstalled(libraryItem.Id))
                 throw new InvalidOperationException("This plugin is already installed");
 
-            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, string.Format("{0}.discoPlugin", libraryItem.Id));
+            var tempPluginLocation = Path.Combine(Database.DiscoConfiguration.PluginPackagesLocation, $"{libraryItem.Id}.discoPlugin");
 
             var status = InstallPluginTask.InstallPlugin(libraryItem.LatestCompatibleRelease(libraryIncompatibility).DownloadUrl, tempPluginLocation, true);
 

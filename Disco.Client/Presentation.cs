@@ -26,7 +26,7 @@ namespace Disco.Client
         }
         public static void UpdateStatus(string SubHeading, string Message, bool ShowProgress, int Progress)
         {
-            Console.WriteLine("#{0},{1},{2},{3}", SubHeading.EscapeMessage(), Message.EscapeMessage(), ShowProgress.ToString(), Progress.ToString());
+            Console.WriteLine($"#{SubHeading.EscapeMessage()},{Message.EscapeMessage()},{ShowProgress.ToString()},{Progress.ToString()}");
         }
         public static void TryDelay(int Milliseconds)
         {
@@ -90,7 +90,7 @@ namespace Disco.Client
 
         public static void RegisterBootstrapperPostActions(ShutdownActions ShutdownAction, bool Uninstall)
         {
-            Console.WriteLine("!{0},{1}", Enum.GetName(typeof(ShutdownActions), ShutdownAction), Uninstall ? "UninstallBootstrapper" : "DontUninstallBootstrapper");
+            Console.WriteLine($"!{Enum.GetName(typeof(ShutdownActions), ShutdownAction)},{(Uninstall ? "UninstallBootstrapper" : "DontUninstallBootstrapper")}");
         }
         public enum ShutdownActions
         {

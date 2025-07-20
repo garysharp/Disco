@@ -39,7 +39,7 @@ namespace Disco.Services.Interop.DiscoServices
 
         public static string FormatVersion(Version Version)
         {
-            return string.Format("{0}.{1}.{2:0000}.{3:0000}", Version.Major, Version.Minor, Version.Build, Version.Revision);
+            return $"{Version.Major}.{Version.Minor}.{Version.Build:0000}.{Version.Revision:0000}";
         }
 
         public static string HashDeploymentData(DiscoDataContext Database, string Data)
@@ -79,7 +79,7 @@ namespace Disco.Services.Interop.DiscoServices
 
             request.ContentType = "application/json; charset=utf-8; encoding=gzip";
             request.Method = WebRequestMethods.Http.Post;
-            request.UserAgent = string.Format("Disco/{0} (Update)", discoVersion);
+            request.UserAgent = $"Disco/{discoVersion} (Update)";
 
             using (var requestStream = request.GetRequestStream())
             {
@@ -117,13 +117,13 @@ namespace Disco.Services.Interop.DiscoServices
                     Database.DiscoConfiguration.UpdateLastCheckResponse = updateResult;
                     Database.SaveChanges();
 
-                    Status.SetFinishedMessage(string.Format("The update server reported Version {0} is the latest.", updateResult.LatestVersion));
+                    Status.SetFinishedMessage($"The update server reported Version {updateResult.LatestVersion} is the latest.");
 
                     return updateResult;
                 }
                 else
                 {
-                    Status.SetTaskException(new WebException(string.Format("Server responded with: [{0}] {1}", response.StatusCode, response.StatusDescription)));
+                    Status.SetTaskException(new WebException($"Server responded with: [{response.StatusCode}] {response.StatusDescription}"));
                     return null;
                 }
             }
@@ -216,7 +216,7 @@ namespace Disco.Services.Interop.DiscoServices
                     DeviceIdentifier = HashDeploymentData(Database, j.DeviceSerialNumber),
                     UserIdentifier = HashDeploymentData(Database, j.UserId),
                     TechnicianIdentifier = HashDeploymentData(Database, j.JobTechnicianId),
-                    DeviceModel = string.Format("{0};{1}", j.DeviceModelManufacturer, j.DeviceModelModel),
+                    DeviceModel = $"{j.DeviceModelManufacturer};{j.DeviceModelModel}",
                     Repairer = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairer : j.Repairer,
                     RepairerLogged = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerLoggedDate : j.RepairerLoggedDate,
                     RepairerCompleted = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerCompletedDate : j.RepairerCompletedDate

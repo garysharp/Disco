@@ -65,7 +65,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 throw new ArgumentNullException("DistinguishedName");
 
             if (!DistinguishedName.EndsWith(Domain.DistinguishedName, StringComparison.OrdinalIgnoreCase))
-                throw new ArgumentException(string.Format("The Distinguished Name ({0}) isn't a member of this domain [{1}]", DistinguishedName, Domain.Name), "DistinguishedName");
+                throw new ArgumentException($"The Distinguished Name ({DistinguishedName}) isn't a member of this domain [{Domain.Name}]", "DistinguishedName");
 
             var entry = new DirectoryEntry(string.Format(LdapPathTemplate, Name, ADHelpers.EscapeDistinguishedName(DistinguishedName)));
 
@@ -225,7 +225,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (SecurityIdentifier == null)
                 throw new ArgumentNullException("SecurityIdentifier");
             if (!SecurityIdentifier.IsEqualDomainSid(Domain.SecurityIdentifier))
-                throw new ArgumentException(string.Format("The specified Security Identifier [{0}] does not belong to this domain [{1}]", SecurityIdentifier.ToString(), Domain.Name), "SecurityIdentifier");
+                throw new ArgumentException($"The specified Security Identifier [{SecurityIdentifier.ToString()}] does not belong to this domain [{Domain.Name}]", "SecurityIdentifier");
 
             var sidBinaryString = SecurityIdentifier.ToBinaryString();
 
@@ -373,12 +373,12 @@ namespace Disco.Services.Interop.ActiveDirectory
                     using (var deOU = RetrieveDirectoryEntry(OrganisationalUnit, new string[] { "distinguishedName" }))
                     {
                         if (deOU == null)
-                            throw new Exception(string.Format("OU's Directory Entry couldn't be found at [{0}]", OrganisationalUnit));
+                            throw new Exception($"OU's Directory Entry couldn't be found at [{OrganisationalUnit}]");
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(string.Format("An error occurred while trying to locate the specified OU: {0}", OrganisationalUnit), "OrganisationalUnit", ex);
+                    throw new ArgumentException($"An error occurred while trying to locate the specified OU: {OrganisationalUnit}", "OrganisationalUnit", ex);
                 }
             }
 
@@ -386,14 +386,8 @@ namespace Disco.Services.Interop.ActiveDirectory
                 MachineAccount.DeleteAccount(this);
 
             string tempFileName = System.IO.Path.GetTempFileName();
-            string argumentOU = (!string.IsNullOrWhiteSpace(OrganisationalUnit)) ? string.Format(" /MACHINEOU \"{0}\"", OrganisationalUnit) : string.Empty;
-            string arguments = string.Format("/PROVISION /DOMAIN \"{0}\" /DCNAME \"{1}\" /MACHINE \"{2}\"{3} /REUSE /SAVEFILE \"{4}\"",
-                Domain.Name,
-                Name,
-                ComputerSamAccountName,
-                argumentOU,
-                tempFileName
-            );
+            string argumentOU = (!string.IsNullOrWhiteSpace(OrganisationalUnit)) ? $" /MACHINEOU \"{OrganisationalUnit}\"" : string.Empty;
+            string arguments = $"/PROVISION /DOMAIN \"{Domain.Name}\" /DCNAME \"{Name}\" /MACHINE \"{ComputerSamAccountName}\"{argumentOU} /REUSE /SAVEFILE \"{tempFileName}\"";
             ProcessStartInfo commandStarter = new ProcessStartInfo("DJOIN.EXE", arguments)
             {
                 CreateNoWindow = true,
@@ -403,7 +397,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 RedirectStandardError = true,
                 UseShellExecute = false
             };
-            diagnosticInfo.AppendFormat("{0} {1}", "DJOIN.EXE", arguments);
+            diagnosticInfo.AppendFormat($"DJOIN.EXE {arguments}");
             diagnosticInfo.AppendLine();
 
             string stdOutput;

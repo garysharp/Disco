@@ -22,7 +22,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
             if (!File.Exists(Filename))
             {
-                DocumentsLog.LogImportWarning(SessionId, string.Format("File not found: {0}", Filename));
+                DocumentsLog.LogImportWarning(SessionId, $"File not found: {Filename}");
                 throw new FileNotFoundException("Document Not Found", Filename);
             }
 
@@ -135,7 +135,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
                             foreach (var documentPage in unassignedPages)
                             {
-                                DocumentsLog.LogImportProgress(SessionId, (int)(90 + (unassignedPages.IndexOf(documentPage) * progressInterval)), string.Format("Processing Undetected Pages {0} of {1}", unassignedPages.IndexOf(documentPage) + 1, unassignedPages.Count));
+                                DocumentsLog.LogImportProgress(SessionId, (int)(90 + (unassignedPages.IndexOf(documentPage) * progressInterval)), $"Processing Undetected Pages {unassignedPages.IndexOf(documentPage) + 1} of {unassignedPages.Count}");
 
                                 using (var pdfSharpDocumentOutput = new PdfDocument())
                                 {

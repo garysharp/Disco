@@ -35,7 +35,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             changeCount = ActiveDirectory.Context.ManagedGroups.SyncManagedGroups(managedGroups, Status);
 
             Status.LogInformation($"Synchronised Active Directory Managed Groups, {changeCount:N0} changes made");
-            Status.SetFinishedMessage(string.Format("Made {0} Changes to Active Directory Groups", changeCount));
+            Status.SetFinishedMessage($"Made {changeCount} Changes to Active Directory Groups");
         }
 
         public static ScheduledTaskStatus ScheduleSync(ADManagedGroup ManagedGroup)

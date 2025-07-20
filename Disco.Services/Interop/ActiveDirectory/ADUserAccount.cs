@@ -19,7 +19,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public string DistinguishedName { get; private set; }
         public SecurityIdentifier SecurityIdentifier { get; private set; }
 
-        public string Id { get { return string.Format(@"{0}\{1}", Domain.NetBiosName, SamAccountName); } }
+        public string Id { get { return $@"{Domain.NetBiosName}\{SamAccountName}"; } }
         public string SamAccountName { get; private set; }
 
         public string Name { get; private set; }
@@ -250,10 +250,10 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void DeleteAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account [{0}] is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account [{DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (!WritableDomainController.IsWritable)
-                throw new InvalidOperationException(string.Format("The domain controller [{0}] is not writable. This action (Delete Account) requires a writable domain controller.", Name));
+                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Delete Account) requires a writable domain controller.");
 
             using (ADDirectoryEntry entry = WritableDomainController.RetrieveDirectoryEntry(DistinguishedName))
             {
@@ -268,7 +268,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void DisableAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (!IsDisabled)
             {
@@ -296,7 +296,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void EnableAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (IsDisabled)
             {
@@ -324,7 +324,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetDisplayName(ADDomainController WritableDomainController, string DisplayName)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (this.DisplayName != DisplayName)
             {
@@ -357,7 +357,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetSurname(ADDomainController WritableDomainController, string Surname)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (this.Surname != Surname)
             {
@@ -390,7 +390,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetGivenName(ADDomainController WritableDomainController, string GivenName)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (this.GivenName != GivenName)
             {
@@ -423,7 +423,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetEmail(ADDomainController WritableDomainController, string Email)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (this.Email != Email)
             {
@@ -456,7 +456,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public void SetPhone(ADDomainController WritableDomainController, string Phone)
         {
             if (IsCriticalSystemObject)
-                throw new InvalidOperationException(string.Format("This account {0} is a Critical System Active Directory Object and Disco ICT refuses to modify it", DistinguishedName));
+                throw new InvalidOperationException($"This account {DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (this.Phone != Phone)
             {

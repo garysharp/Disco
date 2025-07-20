@@ -44,7 +44,7 @@ namespace Disco.Services.Web.Bundles
             var bundle = GetBundleFor(BundleUrl);
 
             if (bundle == null)
-                throw new ArgumentException(string.Format("Unknown Bundle Url: {0}", BundleUrl), "BundleUrl");
+                throw new ArgumentException($"Unknown Bundle Url: {BundleUrl}", "BundleUrl");
 
             return VirtualPathUtility.ToAbsolute(bundle.VersionUrl);
         }
@@ -53,16 +53,16 @@ namespace Disco.Services.Web.Bundles
             var bundle = GetBundleFor(BundleUrl);
 
             if (bundle == null)
-                throw new ArgumentException(string.Format("Unknown Bundle Url: {0}", BundleUrl), "BundleUrl");
+                throw new ArgumentException($"Unknown Bundle Url: {BundleUrl}", "BundleUrl");
 
             var bundleUrl = VirtualPathUtility.ToAbsolute(bundle.VersionUrl);
 
             switch (bundle.ContentType)
             {
                 case "text/css":
-                    return string.Format("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />", bundleUrl);
+                    return $"<link href=\"{bundleUrl}\" rel=\"stylesheet\" type=\"text/css\" />";
                 case "text/javascript":
-                    return string.Format("<script src=\"{0}\" type=\"text/javascript\"></script>", bundleUrl);
+                    return $"<script src=\"{bundleUrl}\" type=\"text/javascript\"></script>";
                 default:
                     throw new ArgumentException("Unsupported Bundle Content Type", "BundleUrl");
             }

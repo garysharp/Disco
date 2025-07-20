@@ -52,7 +52,7 @@ namespace Disco.Services.Documents.AttachmentImport
                     if (retryCount < 18)
                     {
                         context.JobDetail.JobDataMap["RetryCount"] = ++retryCount;
-                        DocumentsLog.LogImportWarning(sessionId, string.Format("{0}; Will try again in 10 Seconds", ex.Message));
+                        DocumentsLog.LogImportWarning(sessionId, $"{ex.Message}; Will try again in 10 Seconds");
                         // Reschedule Job for 10 seconds
                         var trig = new SimpleTriggerImpl(Guid.NewGuid().ToString(), new DateTimeOffset(DateTime.Now.AddSeconds(10)));
                         context.Scheduler.RescheduleJob(context.Trigger.Key, trig);

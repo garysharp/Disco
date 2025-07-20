@@ -23,7 +23,7 @@ namespace Disco.Services.Plugins
 
         public override sealed string ToString()
         {
-            return string.Format("{0} ({1}) - v{2}", Manifest.Name, Manifest.Id, Manifest.Version.ToString(4));
+            return $"{Manifest.Name} ({Manifest.Id}) - v{Manifest.Version.ToString(4)}";
         }
     }
 }

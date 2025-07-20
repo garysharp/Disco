@@ -35,7 +35,7 @@ namespace Disco.Services.Plugins
             lock (_PluginLock)
             {
                 if (_PluginManifests.ContainsKey(Manifest.Id))
-                    throw new InvalidOperationException(string.Format("The '{0} [{1}]' Plugin is already installed, please uninstall any existing versions before trying again", Manifest.Name, Manifest.Id));
+                    throw new InvalidOperationException($"The '{Manifest.Name} [{Manifest.Id}]' Plugin is already installed, please uninstall any existing versions before trying again");
 
                 // Add Plugin Manifest to Environment
                 _PluginManifests[Manifest.Id] = Manifest;
@@ -256,7 +256,7 @@ namespace Disco.Services.Plugins
             if (FeatureCategoryDisplayNames.TryGetValue(FeatureCategoryType, out displayName))
                 return displayName;
             else
-                throw new InvalidOperationException(string.Format("Unknown Plugin Feature Category Type: [{0}]", FeatureCategoryType.Name));
+                throw new InvalidOperationException($"Unknown Plugin Feature Category Type: [{FeatureCategoryType.Name}]");
         }
 
         public static void InitalizePlugins(DiscoDataContext Database)
@@ -295,10 +295,10 @@ namespace Disco.Services.Plugins
                                         if (pluginManifest != null)
                                         {
                                             if (loadedPlugins.ContainsKey(pluginManifest.Id))
-                                                throw new InvalidOperationException(string.Format("The plugin [{0}] is already initialized", pluginManifest.Id));
+                                                throw new InvalidOperationException($"The plugin [{pluginManifest.Id}] is already initialized");
 
                                             // Check for Update
-                                            string updatePackagePath = Path.Combine(pluginDirectoryRoot.FullName, string.Format("{0}.discoPlugin", pluginManifest.Id));
+                                            string updatePackagePath = Path.Combine(pluginDirectoryRoot.FullName, $"{pluginManifest.Id}.discoPlugin");
                                             if (File.Exists(updatePackagePath))
                                             {
                                                 // Update Plugin
@@ -310,12 +310,12 @@ namespace Disco.Services.Plugins
                                                 // Check Version Compatibility
                                                 var pluginIncompatible = compatibilityData.Value.IncompatiblePlugins.FirstOrDefault(i => i.PluginId.Equals(pluginManifest.Id, StringComparison.OrdinalIgnoreCase) && pluginManifest.Version == i.Version);
                                                 if (pluginIncompatible != null)
-                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", pluginManifest.Id, pluginManifest.VersionFormatted, pluginIncompatible.Reason));
+                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] is not compatible: {pluginIncompatible.Reason}");
 
                                                 if (pluginManifest.HostVersionMin != null && pluginManifest.HostVersionMin > hostVersion)
-                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco ICT (Requires v{2} or greater)", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMin.ToString()));
+                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] does not support this version of Disco ICT (Requires v{pluginManifest.HostVersionMin.ToString()} or greater)");
                                                 if (pluginManifest.HostVersionMax != null && pluginManifest.HostVersionMax < hostVersion)
-                                                    throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] does not support this version of Disco ICT (Support expired as of v{2})", pluginManifest.Id, pluginManifest.VersionFormatted, pluginManifest.HostVersionMax.ToString()));
+                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] does not support this version of Disco ICT (Support expired as of v{pluginManifest.HostVersionMax.ToString()})");
 
                                                 RegisterPluginAssemblyReferences(pluginManifest);
 
@@ -429,7 +429,7 @@ namespace Disco.Services.Plugins
                         PluginLibraryIncompatibility = PluginLibrary.LoadManifest(Database).LoadIncompatibilityData();
                     var pluginIncompatibility = PluginLibraryIncompatibility.IncompatiblePlugins.FirstOrDefault(i => i.PluginId.Equals(packageManifest.Id, StringComparison.OrdinalIgnoreCase) && packageManifest.Version == i.Version);
                     if (pluginIncompatibility != null)
-                        throw new InvalidOperationException(string.Format("The plugin [{0} v{1}] is not compatible: {2}", packageManifest.Id, packageManifest.VersionFormatted, pluginIncompatibility.Reason));
+                        throw new InvalidOperationException($"The plugin [{packageManifest.Id} v{packageManifest.VersionFormatted}] is not compatible: {pluginIncompatibility.Reason}");
 
                     string packagePath = Path.Combine(Database.DiscoConfiguration.PluginsLocation, packageManifest.Id);
 
@@ -554,7 +554,7 @@ namespace Disco.Services.Plugins
                     }
                     catch (Exception ex)
                     {
-                        PluginsLog.LogPluginException(string.Format("Resolving Plugin Reference Assembly: '{0}' [{1}]; Requested by: '{2}' [{3}]; Disco.Plugins.DiscoPlugins.CurrentDomain_AssemblyResolve()", args.Name, assemblyPath, args.RequestingAssembly.FullName, args.RequestingAssembly.Location), ex);
+                        PluginsLog.LogPluginException($"Resolving Plugin Reference Assembly: '{args.Name}' [{assemblyPath}]; Requested by: '{args.RequestingAssembly.FullName}' [{args.RequestingAssembly.Location}]; Disco.Plugins.DiscoPlugins.CurrentDomain_AssemblyResolve()", ex);
                     }
                 }
             }

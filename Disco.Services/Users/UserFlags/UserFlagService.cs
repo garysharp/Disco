@@ -100,7 +100,7 @@ namespace Disco.Services.Users.UserFlags
             Interop.ActiveDirectory.ActiveDirectory.Context.ManagedGroups.Remove(UserFlagUsersManagedGroup.GetKey(flag));
 
             // Delete Assignments
-            Status.UpdateStatus(0, string.Format("Removing '{0}' [{1}] User Flag", flag.Name, flag.Id), "Starting");
+            Status.UpdateStatus(0, $"Removing '{flag.Name}' [{flag.Id}] User Flag", "Starting");
             List<UserFlagAssignment> flagAssignments = Database.UserFlagAssignments.Where(fa => fa.UserFlagId == flag.Id).ToList();
             if (flagAssignments.Count > 0)
             {
@@ -117,7 +117,7 @@ namespace Disco.Services.Users.UserFlags
             // Remove from Cache
             _cache.Remove(UserFlagId);
 
-            Status.Finished(string.Format("Successfully Deleted User Flag: '{0}' [{1}]", flag.Name, flag.Id));
+            Status.Finished($"Successfully Deleted User Flag: '{flag.Name}' [{flag.Id}]");
         }
         #endregion
 
@@ -140,7 +140,7 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((user, index) =>
                     {
-                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {user.ToString()}");
 
                         return user.OnAddUserFlag(Database, UserFlag, Technician, comments);
                     }).ToList();
@@ -151,7 +151,7 @@ namespace Disco.Services.Users.UserFlags
                     return chunkResults;
                 }).Where(fa => fa != null).ToList();
 
-                Status.SetFinishedMessage(string.Format("{0} Users/s Added; {1} User/s Skipped", addUsers.Count, (Users.Count - addUsers.Count)));
+                Status.SetFinishedMessage($"{addUsers.Count} Users/s Added; {(Users.Count - addUsers.Count)} User/s Skipped");
 
                 return addedUserAssignments;
             }
@@ -186,7 +186,7 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((flagAssignment, index) =>
                     {
-                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Removing Flag: {0}", flagAssignment.User.ToString()));
+                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Removing Flag: {flagAssignment.User.ToString()}");
 
                         flagAssignment.OnRemoveUnsafe(Database, Technician);
                         
@@ -206,7 +206,7 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((user, index) =>
                     {
-                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+                        Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {user.ToString()}");
 
                         return user.OnAddUserFlag(Database, UserFlag, Technician, comments);
                     }).ToList();
@@ -217,7 +217,7 @@ namespace Disco.Services.Users.UserFlags
                     return chunkResults;
                 }).ToList();
 
-                Status.SetFinishedMessage(string.Format("{0} Users/s Added; {1} User/s Removed; {2} User/s Skipped", addUsers.Count, removeAssignments.Count, (Users.Count - addUsers.Count)));
+                Status.SetFinishedMessage($"{addUsers.Count} Users/s Added; {removeAssignments.Count} User/s Removed; {(Users.Count - addUsers.Count)} User/s Skipped");
 
                 return addedUserAssignments;
             }

@@ -41,7 +41,7 @@ namespace Disco.ClientBootstrapper.Interop
                         {
                             if (Path.GetFileNameWithoutExtension(certFile).ToLower().Contains("temp"))
                                 _tempCerts.Add(cert.SerialNumber);
-                            Program.Status.UpdateStatus(null, null, string.Format("Added Root Certificate: {0}", cert.ShortSubjectName()));
+                            Program.Status.UpdateStatus(null, null, $"Added Root Certificate: {cert.ShortSubjectName()}");
                             Program.SleepThread(500, false);
                         }
                     }
@@ -66,7 +66,7 @@ namespace Disco.ClientBootstrapper.Interop
                         {
                             if (Path.GetFileNameWithoutExtension(certFile).ToLower().Contains("temp"))
                                 _tempCerts.Add(cert.SerialNumber);
-                            Program.Status.UpdateStatus(null, null, string.Format("Added Intermediate Certificate: {0}", cert.ShortSubjectName()));
+                            Program.Status.UpdateStatus(null, null, $"Added Intermediate Certificate: {cert.ShortSubjectName()}");
                             Program.SleepThread(500, false);
                         }
                     }
@@ -91,7 +91,7 @@ namespace Disco.ClientBootstrapper.Interop
                         {
                             if (Path.GetFileNameWithoutExtension(certFile).ToLower().Contains("temp"))
                                 _tempCerts.Add(cert.SerialNumber);
-                            Program.Status.UpdateStatus(null, null, string.Format("Added Host Certificate: {0}", cert.ShortSubjectName()));
+                            Program.Status.UpdateStatus(null, null, $"Added Host Certificate: {cert.ShortSubjectName()}");
                             Program.SleepThread(500, false);
                         }
                     }

@@ -63,10 +63,10 @@ namespace Disco.Services.Interop.DiscoServices
                         return new PluginIncompatibility() { PluginId = r.PluginId, Version = rVersion, Reason = "This plugin release is blocked by Disco ICT Online Services" };
 
                     if (r.HostMinVersion != null && hostVersion < Version.Parse(r.HostMinVersion))
-                        return new PluginIncompatibility() { PluginId = r.PluginId, Version = rVersion, Reason = string.Format("This plugin requires v{0} or newer", r.HostMinVersion) };
+                        return new PluginIncompatibility() { PluginId = r.PluginId, Version = rVersion, Reason = $"This plugin requires v{r.HostMinVersion} or newer" };
 
                     if (r.HostMaxVersion != null && hostVersion > Version.Parse(r.HostMaxVersion))
-                        return new PluginIncompatibility() { PluginId = r.PluginId, Version = rVersion, Reason = string.Format("This plugin requires v{0} or older", r.HostMaxVersion) };
+                        return new PluginIncompatibility() { PluginId = r.PluginId, Version = rVersion, Reason = $"This plugin requires v{r.HostMaxVersion} or older" };
 
                     return null;
                 }).Where(i => i != null).ToList()

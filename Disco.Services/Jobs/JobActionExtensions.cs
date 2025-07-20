@@ -135,7 +135,7 @@ namespace Disco.Services
                 JobId = j.Id,
                 TechUserId = Technician.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("# Waiting on User Action\r\n{0}", string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)
+                Comments = $"# Waiting on User Action\r\n{(string.IsNullOrWhiteSpace(Reason) ? "<no reason provided>" : Reason)}"
             };
             Database.JobLogs.Add(jobLog);
         }
@@ -162,7 +162,7 @@ namespace Disco.Services
                 JobId = j.Id,
                 TechUserId = Technician.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("# User Action Resolved\r\n{0}", string.IsNullOrWhiteSpace(Resolution) ? "<no comment provided>" : Resolution)
+                Comments = $"# User Action Resolved\r\n{(string.IsNullOrWhiteSpace(Resolution) ? "<no comment provided>" : Resolution)}"
             };
             Database.JobLogs.Add(jobLog);
         }
@@ -238,7 +238,7 @@ namespace Disco.Services
                     JobId = j.Id,
                     TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
-                    Comments = string.Format("# Warranty Claim Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", warrantyProvider.Manifest.Name, Address.Name, providerRef, FaultDescription)
+                    Comments = $"# Warranty Claim Submitted\r\nProvider: **{warrantyProvider.Manifest.Name}**\r\nAddress: **{Address.Name}**\r\nReference: **{providerRef}**\r\n___\r\n```{FaultDescription}```"
                 };
                 Database.JobLogs.Add(jobLog);
 
@@ -271,7 +271,7 @@ namespace Disco.Services
                 JobId = j.Id,
                 TechUserId = TechUser.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("# Manual Warranty Claim Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", ManualProviderName, Address.Name, ManualProviderReference ?? "<none>", FaultDescription)
+                Comments = $"# Manual Warranty Claim Submitted\r\nProvider: **{ManualProviderName}**\r\nAddress: **{Address.Name}**\r\nReference: **{ManualProviderReference ?? "<none>"}**\r\n___\r\n```{FaultDescription}```"
             };
             Database.JobLogs.Add(jobLog);
         }
@@ -350,7 +350,7 @@ namespace Disco.Services
                 JobId = j.Id,
                 TechUserId = techUser.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("# Job Type Converted\r\nFrom: **{0}**\r\nTo: **{1}**", Database.JobTypes.Find(JobType.JobTypeIds.HWar), Database.JobTypes.Find(JobType.JobTypeIds.HNWar))
+                Comments = $"# Job Type Converted\r\nFrom: **{Database.JobTypes.Find(JobType.JobTypeIds.HWar)}**\r\nTo: **{Database.JobTypes.Find(JobType.JobTypeIds.HNWar)}**"
             };
             Database.JobLogs.Add(jobLog);
 
@@ -468,7 +468,7 @@ namespace Disco.Services
                     JobId = j.Id,
                     TechUserId = TechUser.UserId,
                     Timestamp = DateTime.Now,
-                    Comments = string.Format("# Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", repairProvider.Manifest.Name, Address.Name, providerRef, RepairDescription)
+                    Comments = $"# Repair Request Submitted\r\nProvider: **{repairProvider.Manifest.Name}**\r\nAddress: **{Address.Name}**\r\nReference: **{providerRef}**\r\n___\r\n```{RepairDescription}```"
                 };
                 Database.JobLogs.Add(jobLog);
 
@@ -501,7 +501,7 @@ namespace Disco.Services
                 JobId = j.Id,
                 TechUserId = TechUser.UserId,
                 Timestamp = DateTime.Now,
-                Comments = string.Format("# Manual Repair Request Submitted\r\nProvider: **{0}**\r\nAddress: **{1}**\r\nReference: **{2}**\r\n___\r\n```{3}```", ManualProviderName, Address.Name, ManualProviderReference ?? "<none>", FaultDescription)
+                Comments = $"# Manual Repair Request Submitted\r\nProvider: **{ManualProviderName}**\r\nAddress: **{Address.Name}**\r\nReference: **{ManualProviderReference ?? "<none>"}**\r\n___\r\n```{FaultDescription}```"
             };
             Database.JobLogs.Add(jobLog);
         }

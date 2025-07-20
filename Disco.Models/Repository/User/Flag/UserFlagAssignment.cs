@@ -38,7 +38,7 @@ namespace Disco.Models.Repository
 
         public override string ToString()
         {
-            return string.Format("User Flag Id: {0}; User Id: {1}; Added: {2:s}", UserFlagId, UserId, AddedDate);
+            return $"User Flag Id: {UserFlagId}; User Id: {UserId}; Added: {AddedDate:s}";
         }
     }
 }

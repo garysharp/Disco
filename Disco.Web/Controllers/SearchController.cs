@@ -88,7 +88,7 @@ namespace Disco.Web.Controllers
                                 break;
                             }
                         }
-                        m.FriendlyTerm = string.Format("Device Model: {0}", term);
+                        m.FriendlyTerm = $"Device Model: {term}";
                         m.Success = false;
                         m.ErrorMessage = "Invalid Device Model Id";
                         break;
@@ -105,7 +105,7 @@ namespace Disco.Web.Controllers
                                 break;
                             }
                         }
-                        m.FriendlyTerm = string.Format("Device Profile: {0}", term);
+                        m.FriendlyTerm = $"Device Profile: {term}";
                         m.Success = false;
                         m.ErrorMessage = "Invalid Device Profile Id";
                         break;
@@ -122,7 +122,7 @@ namespace Disco.Web.Controllers
                                 break;
                             }
                         }
-                        m.FriendlyTerm = string.Format("Device Batch: {0}", term);
+                        m.FriendlyTerm = $"Device Batch: {term}";
                         m.Success = false;
                         m.ErrorMessage = "Invalid Device Batch Id";
                         break;
@@ -239,7 +239,7 @@ namespace Disco.Web.Controllers
                             var flag = Database.UserFlags.Find(userFlagId);
                             if (flag != null)
                             {
-                                m.FriendlyTerm = string.Format("User Flag: {0}", flag.ToString());
+                                m.FriendlyTerm = $"User Flag: {flag.ToString()}";
                                 m.Users = Services.Searching.Search.SearchUserFlag(Database, flag.Id);
                                 break;
                             }
@@ -256,7 +256,7 @@ namespace Disco.Web.Controllers
                             var flag = Database.DeviceFlags.Find(deviceFlagId);
                             if (flag != null)
                             {
-                                m.FriendlyTerm = string.Format("Device Flag: {0}", flag.ToString());
+                                m.FriendlyTerm = $"Device Flag: {flag.ToString()}";
                                 m.Devices = Services.Searching.Search.SearchDeviceFlag(Database, flag.Id);
                                 break;
                             }

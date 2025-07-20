@@ -33,7 +33,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 UpdateLastNetworkLogonDates(database, Status);
                 Status.UpdateStatus(95, "Updating Database", "Writing last network logon dates to the Database");
                 changeCount = database.SaveChanges();
-                Status.Finished(string.Format("{0} Device last network logon dates updated", changeCount), "/Config/SystemConfig");
+                Status.Finished($"{changeCount} Device last network logon dates updated", "/Config/SystemConfig");
             }
 
             Status.LogInformation($"Updated LastNetworkLogon Device Property for Device/s, {changeCount:N0} changes");
@@ -144,7 +144,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                 // Update Status
                 double progress = 5 + (queryIndex * (90 / scopedQueries.Count));
-                status.UpdateStatus(progress, string.Format("Querying Domain [{0}] using controller [{1}]", domain.NetBiosName, domainController.Name), string.Format("Searching: {0}", searchRoot));
+                status.UpdateStatus(progress, $"Querying Domain [{domain.NetBiosName}] using controller [{domainController.Name}]", $"Searching: {searchRoot}");
 
                 // Perform Query
                 var directoryResults = domainController.SearchInternal(searchRoot, ldapFilter, ldapProperties, null);
@@ -163,7 +163,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                     if (highedValue > 0)
                     {
-                        var computerName = string.Format(@"{0}\{1}", domain.NetBiosName, samAccountName.TrimEnd('$'));
+                        var computerName = $@"{domain.NetBiosName}\{samAccountName.TrimEnd('$')}";
                         var lastLogon = new DateTime((DateTime.FromFileTime(highedValue).Ticks / 10000000L) * 10000000L);
                         return Tuple.Create(computerName, lastLogon);
                     }

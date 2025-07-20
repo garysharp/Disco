@@ -37,9 +37,9 @@ namespace Disco.Services.Plugins
             get
             {
                 if (string.IsNullOrEmpty(_pluginRequested))
-                    return string.Format("Invalid Category Type [{0}]", _categoryType.Name);
+                    return $"Invalid Category Type [{_categoryType.Name}]";
                 else
-                    return string.Format("Plugin [{1}] is not of the correct Category Type [{0}]", _categoryType.Name, _pluginRequested);
+                    return $"Plugin [{_pluginRequested}] is not of the correct Category Type [{_categoryType.Name}]";
             }
         }
 

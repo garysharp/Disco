@@ -22,12 +22,12 @@ namespace Disco.Web.Extensions
         {
             var selectItems = default(List<SelectListItem>);
             if (!SelectedId.HasValue)
-                selectItems = organisationAddressess.Select(wpd => new SelectListItem { Value = wpd.Id.Value.ToString(), Text = string.Format("{0} ({1})", wpd.Name, wpd.ShortName) }).ToList();
+                selectItems = organisationAddressess.Select(wpd => new SelectListItem { Value = wpd.Id.Value.ToString(), Text = $"{wpd.Name} ({wpd.ShortName})" }).ToList();
             else
-                selectItems = organisationAddressess.Select(wpd => new SelectListItem { Value = wpd.Id.Value.ToString(), Text = string.Format("{0} ({1})", wpd.Name, wpd.ShortName), Selected = (SelectedId.Equals(wpd.Id)) }).ToList();
+                selectItems = organisationAddressess.Select(wpd => new SelectListItem { Value = wpd.Id.Value.ToString(), Text = $"{wpd.Name} ({wpd.ShortName})", Selected = (SelectedId.Equals(wpd.Id)) }).ToList();
 
             if (IncludeInstructionFirst)
-                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = String.Format("<{0}>", InstructionMessage), Selected = !SelectedId.HasValue });
+                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = $"<{InstructionMessage}>", Selected = !SelectedId.HasValue });
 
             return selectItems;
         }

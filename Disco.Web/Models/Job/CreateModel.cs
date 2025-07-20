@@ -132,7 +132,7 @@ namespace Disco.Web.Models.Job
                 if (SubTypes != null)
                 {
                     var subTypes = SubTypes;
-                    return JobTypes.SelectMany(jt => jt.JobSubTypes).Where(m => subTypes.Contains(String.Format("{0}_{1}", m.JobTypeId, m.Id))).ToList();
+                    return JobTypes.SelectMany(jt => jt.JobSubTypes).Where(m => subTypes.Contains($"{m.JobTypeId}_{m.Id}")).ToList();
                 }
                 return null;
             }
@@ -146,7 +146,7 @@ namespace Disco.Web.Models.Job
 
             if (!string.IsNullOrEmpty(model.Type) && model.SubTypes != null)
             {
-                var typeId = string.Format("{0}_", model.Type);
+                var typeId = $"{model.Type}_";
                 model.SubTypes = model.SubTypes.Where(m => m.StartsWith(typeId)).ToList();
                 if (model.SubTypes.Count == 0)
                 {

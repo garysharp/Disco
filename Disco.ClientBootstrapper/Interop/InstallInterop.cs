@@ -105,7 +105,7 @@ namespace Disco.ClientBootstrapper.Interop
             {
                 using (var scriptsIniStreamWriter = new StreamWriter(scriptsIniStream, Encoding.Unicode))
                 {
-                    scriptsIniStreamWriter.Write(string.Format("[Startup]{0}0CmdLine={1}{0}0Parameters=/AllowUninstall", Environment.NewLine, BootstrapperCmdLinePath));
+                    scriptsIniStreamWriter.Write($"[Startup]{Environment.NewLine}0CmdLine={BootstrapperCmdLinePath}{Environment.NewLine}0Parameters=/AllowUninstall");
                     scriptsIniStreamWriter.Flush();
                 }
             }
@@ -193,7 +193,7 @@ namespace Disco.ClientBootstrapper.Interop
             if (InstallLocation.EndsWith(".wim", StringComparison.OrdinalIgnoreCase))
             {
                 // Offline File System (WIM)
-                Program.Status.UpdateStatus("Installing Bootstrapper (Offline)", "Installing", string.Format("Install Location: {0}", InstallLocation));
+                Program.Status.UpdateStatus("Installing Bootstrapper (Offline)", "Installing", $"Install Location: {InstallLocation}");
                 Program.SleepThread(1000, false);
 
                 // Mount WIM
@@ -204,7 +204,7 @@ namespace Disco.ClientBootstrapper.Interop
                         WimImageId = "1";
                     if (!int.TryParse(WimImageId, out wimImageIndex))
                     {
-                        Program.Status.UpdateStatus(null, "Analysing WIM", string.Format("Looking for Image Name: {0}", WimImageId));
+                        Program.Status.UpdateStatus(null, "Analysing WIM", $"Looking for Image Name: {WimImageId}");
                         Program.SleepThread(500, false);
                         for (int i = 0; i < wim.ImageCount; i++)
                         {
@@ -215,7 +215,7 @@ namespace Disco.ClientBootstrapper.Interop
                             if (wimImageInfoName != null && wimImageInfoName.InnerText.Equals(WimImageId, StringComparison.OrdinalIgnoreCase))
                             {
                                 wimImageIndex = i + 1;
-                                Program.Status.UpdateStatus(null, "Analysing WIM", string.Format("Found Image Id '{0}' at Index {1}", WimImageId, wimImageIndex));
+                                Program.Status.UpdateStatus(null, "Analysing WIM", $"Found Image Id '{WimImageId}' at Index {wimImageIndex}");
                                 Program.SleepThread(500, false);
                                 break;
                             }
@@ -224,7 +224,7 @@ namespace Disco.ClientBootstrapper.Interop
                 }
                 if (wimImageIndex == 0)
                 {
-                    Program.Status.UpdateStatus(null, "Error", string.Format("Unable to load WIM Image Id: {0}", WimImageId));
+                    Program.Status.UpdateStatus(null, "Error", $"Unable to load WIM Image Id: {WimImageId}");
                     Program.SleepThread(5000, false);
                     return;
                 }
@@ -245,7 +245,7 @@ namespace Disco.ClientBootstrapper.Interop
                 try
                 {
                     // Mount WIM
-                    Program.Status.UpdateStatus(null, "Mounting WIM", string.Format("Mounting WIM Image to '{0}'", wimMountPath));
+                    Program.Status.UpdateStatus(null, "Mounting WIM", $"Mounting WIM Image to '{wimMountPath}'");
                     Program.SleepThread(500, false);
                     m_MessageCallback = new WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback(WimImageEventMessagePump);
                     Interop.WIMInterop.WindowsImageContainer.NativeMethods.RegisterCallback(m_MessageCallback);
@@ -254,7 +254,7 @@ namespace Disco.ClientBootstrapper.Interop
 
                     // Load Local Machine Registry
                     var wimHivePath = Path.Combine(wimMountPath, "Windows\\System32\\config\\SOFTWARE");
-                    Program.Status.UpdateStatus(null, "Mounting Offline Registry Hive", string.Format("Mounting Offline Registry Hive at '{0}'", wimHivePath));
+                    Program.Status.UpdateStatus(null, "Mounting Offline Registry Hive", $"Mounting Offline Registry Hive at '{wimHivePath}'");
                     Program.SleepThread(500, false);
                     using (var wimReg = new RegistryInterop(RegistryInterop.RegistryHives.HKEY_LOCAL_MACHINE, "DiscoClientBootstrapperWimHive", wimHivePath))
                     {
@@ -268,7 +268,7 @@ namespace Disco.ClientBootstrapper.Interop
                         }
 
                         // Unload Local Machine Registry
-                        Program.Status.UpdateStatus(null, "Unmounting Offline Registry Hive", string.Format("Unmounting Offline Registry Hive at '{0}'", wimHivePath));
+                        Program.Status.UpdateStatus(null, "Unmounting Offline Registry Hive", $"Unmounting Offline Registry Hive at '{wimHivePath}'");
                         Program.SleepThread(500, false);
                         wimReg.Unload();
                     }
@@ -281,7 +281,7 @@ namespace Disco.ClientBootstrapper.Interop
                 finally
                 {
                     // Unmount WIM
-                    Program.Status.UpdateStatus(null, "Unmounting WIM", string.Format("Unmounting WIM Image at '{0}'", wimMountPath));
+                    Program.Status.UpdateStatus(null, "Unmounting WIM", $"Unmounting WIM Image at '{wimMountPath}'");
                     Program.SleepThread(500, false);
                     Interop.WIMInterop.WindowsImageContainer.NativeMethods.DismountImage(wimMountPath, InstallLocation, wimImageIndex, wimCommitChanges);
 
@@ -300,7 +300,7 @@ namespace Disco.ClientBootstrapper.Interop
             else
             {
                 // Online File System
-                Program.Status.UpdateStatus("Installing Bootstrapper (Online)", "Installing", string.Format("Install Location: {0}", InstallLocation), true, -1);
+                Program.Status.UpdateStatus("Installing Bootstrapper (Online)", "Installing", $"Install Location: {InstallLocation}", true, -1);
                 Program.SleepThread(1000, false);
                 string rootFileSystemLocation = Path.GetPathRoot(InstallLocation);
                 RegistryKey rootRegistryLocation = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
@@ -339,7 +339,7 @@ namespace Disco.ClientBootstrapper.Interop
                         timeRemainingMessage = "Calculating, please wait...";
 
                     var progress = eventArgs.WideParameter.ToInt32();
-                    Program.Status.UpdateStatus(null, null, string.Format("Time remaining: {0}", timeRemainingMessage), true, progress);
+                    Program.Status.UpdateStatus(null, null, $"Time remaining: {timeRemainingMessage}", true, progress);
                     
                     break;
                 default:

@@ -57,7 +57,7 @@ namespace Disco.Services.Plugins
                 return i;
             }
             else
-                throw new InvalidOperationException(string.Format("The feature [{0}] cannot be cast into type [{1}]", Type.Name, typeof(CategoryType).Name));
+                throw new InvalidOperationException($"The feature [{Type.Name}] cannot be cast into type [{typeof(CategoryType).Name}]");
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Disco.Services.Plugins
             var featureAttribute = (PluginFeatureAttribute)featureType.GetCustomAttributes(typeof(PluginFeatureAttribute), false).FirstOrDefault();
 
             if (featureAttribute == null)
-                throw new ArgumentException(string.Format("Plugin Feature found [{0}], but no PluginFeatureAttribute found", featureType.Name), "featureType");
+                throw new ArgumentException($"Plugin Feature found [{featureType.Name}], but no PluginFeatureAttribute found", "featureType");
 
             var featureId = featureAttribute.Id;
             var featureName = featureAttribute.Name;
@@ -80,19 +80,19 @@ namespace Disco.Services.Plugins
             var featureCategoryType = featureType.BaseType;
 
             if (featureCategoryType == null)
-                throw new ArgumentException(string.Format("Plugin Feature found [{0}], but has no Base Type to determine its Category", featureType.Name), "featureType");
+                throw new ArgumentException($"Plugin Feature found [{featureType.Name}], but has no Base Type to determine its Category", "featureType");
 
             // Handle Generic-Type Features (Only use base-feature, not generic parameters)
             if (featureCategoryType.IsGenericType)
                 featureCategoryType = featureCategoryType.GetGenericTypeDefinition();
 
             if (featureCategoryType == typeof(PluginFeature) || !typeof(PluginFeature).IsAssignableFrom(featureCategoryType))
-                throw new ArgumentException(string.Format("Plugin Feature found [{0}], but its Base Type is not a valid Feature Category Type (Base Feature or not assignable)", featureType.Name), "featureType");
+                throw new ArgumentException($"Plugin Feature found [{featureType.Name}], but its Base Type is not a valid Feature Category Type (Base Feature or not assignable)", "featureType");
 
             var featureCategoryAttribute = (PluginFeatureCategoryAttribute)featureCategoryType.GetCustomAttributes(typeof(PluginFeatureCategoryAttribute), false).FirstOrDefault();
 
             if (featureCategoryAttribute == null)
-                throw new ArgumentException(string.Format("Plugin Feature found [{0}], but its Base Type is not a valid Feature Category Type (no attribute)", featureType.Name), "featureType");
+                throw new ArgumentException($"Plugin Feature found [{featureType.Name}], but its Base Type is not a valid Feature Category Type (no attribute)", "featureType");
 
             return new PluginFeatureManifest()
             {
