@@ -124,10 +124,10 @@ namespace Disco.Services.Tasks
             Log(EventTypeIds.ScheduledTasksWarning, ScheduledTaskName, SessionId, Message);
         }
 
-        protected override List<Logging.Models.LogEventType> LoadEventTypes()
+        protected override List<LogEventType> LoadEventTypes()
         {
-            return new System.Collections.Generic.List<LogEventType>
-			{
+            return new List<LogEventType>
+            {
 				new LogEventType
 				{
 					Id = (int)EventTypeIds.InitializingScheduledTasks, 

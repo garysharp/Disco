@@ -176,10 +176,10 @@ namespace Disco.Services.Plugins
             Log(WarningOrMessage, LogData);
         }
 
-        protected override List<Logging.Models.LogEventType> LoadEventTypes()
+        protected override List<LogEventType> LoadEventTypes()
         {
-            return new System.Collections.Generic.List<LogEventType>
-			{
+            return new List<LogEventType>
+            {
 				new LogEventType
 				{
 					Id = (int)EventTypeIds.InitializingPlugins, 

@@ -22,7 +22,7 @@ namespace Disco.Web.Controllers
         }
 
         [NonAction]
-        public virtual System.Web.Mvc.ActionResult Show(string id)
+        public virtual ActionResult Show(string id)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
 

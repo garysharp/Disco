@@ -2,6 +2,6 @@
 {
     public interface ConfigDeviceBatchCreateModel : BaseUIModel
     {
-        Models.Repository.DeviceBatch DeviceBatch { get; set; }
+        Repository.DeviceBatch DeviceBatch { get; set; }
     }
 }

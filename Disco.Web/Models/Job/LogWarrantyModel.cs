@@ -26,7 +26,7 @@ namespace Disco.Web.Models.Job
         [Required]
         public int JobId { get; set; }
         [Required(ErrorMessage = "Please specify a Repair Address")]
-        public Nullable<int> OrganisationAddressId { get; set; }
+        public int? OrganisationAddressId { get; set; }
         [Required(ErrorMessage = "Please specify a Warranty Provider")]
         public string WarrantyProviderId { get; set; }
         [Required(ErrorMessage = "A fault description is required"), DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]

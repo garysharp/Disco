@@ -19,7 +19,7 @@ namespace Disco.Services.Logging.Models
         public string FormattedTimestamp { get; set; }
         public bool UseDisplay { get; set; }
 
-        public static LogLiveEvent Create(LogBase logModule, Models.LogEventType eventType, DateTime Timestamp, string jsonArguments)
+        public static LogLiveEvent Create(LogBase logModule, LogEventType eventType, DateTime Timestamp, string jsonArguments)
         {
             object[] Arguments = null;
             if (jsonArguments != null)
@@ -29,9 +29,9 @@ namespace Disco.Services.Logging.Models
             return Create(logModule, eventType, Timestamp, Arguments);
         }
 
-        public static LogLiveEvent Create(LogBase logModule, Models.LogEventType eventType, DateTime Timestamp, params object[] Arguments)
+        public static LogLiveEvent Create(LogBase logModule, LogEventType eventType, DateTime Timestamp, params object[] Arguments)
         {
-            return new Models.LogLiveEvent()
+            return new LogLiveEvent()
             {
                 ModuleId = logModule.ModuleId,
                 ModuleName = logModule.ModuleName,

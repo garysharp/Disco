@@ -19,7 +19,7 @@ namespace Disco.Services.Plugins.Features.UIExtension.Results
             model = Model;
         }
 
-        public override void ExecuteResult<T>(System.Web.Mvc.WebViewPage<T> page)
+        public override void ExecuteResult<T>(WebViewPage<T> page)
         {
             WebViewPage partialView = Activator.CreateInstance(viewType) as WebViewPage;
             if (partialView == null)

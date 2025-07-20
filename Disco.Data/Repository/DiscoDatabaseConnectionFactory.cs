@@ -59,7 +59,7 @@ namespace Disco.Data.Repository
             this.SqlCeConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
         }
 
-        public System.Data.Common.DbConnection CreateConnection(string nameOrConnectionString)
+        public DbConnection CreateConnection(string nameOrConnectionString)
         {
             if (nameOrConnectionString == "Disco.Data.Repository.DiscoDataContext")
             {

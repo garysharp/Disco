@@ -4,6 +4,6 @@ namespace Disco.Models.UI.Config.DocumentTemplate
 {
     public interface ConfigDocumentTemplateUndetectedPagesModel : BaseUIModel
     {
-        List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        List<Repository.DocumentTemplate> DocumentTemplates { get; set; }
     }
 }

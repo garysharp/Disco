@@ -198,7 +198,7 @@ namespace Disco.ClientBootstrapper.Interop
 
                 // Mount WIM
                 int wimImageIndex = 0;
-                using (var wim = new Interop.WIMInterop.WindowsImageContainer(InstallLocation, WIMInterop.WindowsImageContainer.CreateFileMode.OpenExisting, WIMInterop.WindowsImageContainer.CreateFileAccess.Write))
+                using (var wim = new WIMInterop.WindowsImageContainer(InstallLocation, WIMInterop.WindowsImageContainer.CreateFileMode.OpenExisting, WIMInterop.WindowsImageContainer.CreateFileAccess.Write))
                 {
                     if (WimImageId == null)
                         WimImageId = "1";
@@ -241,13 +241,13 @@ namespace Disco.ClientBootstrapper.Interop
                 Directory.CreateDirectory(wimTempMountPath);
 
                 bool wimCommitChanges = true;
-                Interop.WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback m_MessageCallback = null;
+                WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback m_MessageCallback = null;
                 try
                 {
                     // Mount WIM
                     Program.Status.UpdateStatus(null, "Mounting WIM", string.Format("Mounting WIM Image to '{0}'", wimMountPath));
                     Program.SleepThread(500, false);
-                    m_MessageCallback = new Interop.WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback(WimImageEventMessagePump);
+                    m_MessageCallback = new WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback(WimImageEventMessagePump);
                     Interop.WIMInterop.WindowsImageContainer.NativeMethods.RegisterCallback(m_MessageCallback);
 
                     Interop.WIMInterop.WindowsImageContainer.NativeMethods.MountImage(wimMountPath, InstallLocation, wimImageIndex, wimTempMountPath);
@@ -256,7 +256,7 @@ namespace Disco.ClientBootstrapper.Interop
                     var wimHivePath = Path.Combine(wimMountPath, "Windows\\System32\\config\\SOFTWARE");
                     Program.Status.UpdateStatus(null, "Mounting Offline Registry Hive", string.Format("Mounting Offline Registry Hive at '{0}'", wimHivePath));
                     Program.SleepThread(500, false);
-                    using (var wimReg = new Interop.RegistryInterop(RegistryInterop.RegistryHives.HKEY_LOCAL_MACHINE, "DiscoClientBootstrapperWimHive", wimHivePath))
+                    using (var wimReg = new RegistryInterop(RegistryInterop.RegistryHives.HKEY_LOCAL_MACHINE, "DiscoClientBootstrapperWimHive", wimHivePath))
                     {
                         using (RegistryKey rootRegistryLocation = Registry.LocalMachine.OpenSubKey("DiscoClientBootstrapperWimHive", true))
                         {
@@ -322,11 +322,11 @@ namespace Disco.ClientBootstrapper.Interop
         )
         {
             uint status = (uint)Interop.WIMInterop.WindowsImageContainer.NativeMethods.WIMMessage.WIM_MSG_SUCCESS;
-            Interop.WIMInterop.DefaultImageEventArgs eventArgs = new Interop.WIMInterop.DefaultImageEventArgs(wParam, lParam, UserData);
+            WIMInterop.DefaultImageEventArgs eventArgs = new WIMInterop.DefaultImageEventArgs(wParam, lParam, UserData);
 
             //System.Diagnostics.Debug.WriteLine(MessageId);
 
-            switch ((Interop.WIMInterop.WindowsImageContainer.ImageEventMessage)MessageId)
+            switch ((WIMInterop.WindowsImageContainer.ImageEventMessage)MessageId)
             {
 
                 case Interop.WIMInterop.WindowsImageContainer.ImageEventMessage.Progress:

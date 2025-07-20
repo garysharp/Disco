@@ -10,18 +10,18 @@ namespace Disco.Models.UI.Device
     {
         Repository.Device Device { get; set; }
 
-        List<Repository.DeviceProfile> DeviceProfiles { get; set; }
+        List<DeviceProfile> DeviceProfiles { get; set; }
         HashSet<int> DecommissionedDeviceProfileIds { get; set; }
         OrganisationAddress DeviceProfileDefaultOrganisationAddress { get; set; }
 
-        List<Repository.DeviceBatch> DeviceBatches { get; set; }
+        List<DeviceBatch> DeviceBatches { get; set; }
         HashSet<int> DecommissionedDeviceBatchIds { get; set; }
 
         JobTableModel Jobs { get; set; }
 
-        List<Repository.DeviceCertificate> Certificates { get; set; }
+        List<DeviceCertificate> Certificates { get; set; }
 
-        List<Repository.DocumentTemplate> DocumentTemplates { get; set; }
+        List<DocumentTemplate> DocumentTemplates { get; set; }
         List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
 
         List<DeviceFlag> AvailableDeviceFlags { get; set; }

@@ -14,7 +14,7 @@ namespace Disco.Web.Areas.Config.Controllers
         [DiscoAuthorize(Claims.Config.Plugin.Show), HttpGet]
         public virtual ActionResult Index()
         {
-            Models.Plugins.IndexViewModel vm = new Models.Plugins.IndexViewModel()
+            IndexViewModel vm = new IndexViewModel()
                 {
                     PluginManifests = Plugins.GetPlugins(),
                     PluginLibrary = PluginLibrary.LoadManifest(Database)
@@ -80,7 +80,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
             else
             {
-                var model = new Models.Plugins.InstallModel()
+                var model = new InstallModel()
                 {
                     Library = library
                 };

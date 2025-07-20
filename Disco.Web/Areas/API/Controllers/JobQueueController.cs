@@ -20,7 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pDefaultSLAExpiry = "defaultslaexpiry";
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
+        public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.JobQueue.Configure);
 
@@ -77,37 +77,37 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult UpdateName(int id, string QueueName = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateName(int id, string QueueName = null, bool? redirect = null)
         {
             return Update(id, pName, QueueName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult UpdateDescription(int id, string Description = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult UpdatePriority(int id, string Priority = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdatePriority(int id, string Priority = null, bool? redirect = null)
         {
             return Update(id, pPriority, Priority, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult UpdateDefaultSLAExpiry(int id, string DefaultSLAExpiry = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateDefaultSLAExpiry(int id, string DefaultSLAExpiry = null, bool? redirect = null)
         {
             return Update(id, pDefaultSLAExpiry, DefaultSLAExpiry, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult UpdateIcon(int id, string Icon = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateIcon(int id, string Icon = null, bool? redirect = null)
         {
             return Update(id, pIcon, Icon, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
-        public virtual ActionResult UpdateIconColour(int id, string IconColour = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateIconColour(int id, string IconColour = null, bool? redirect = null)
         {
             return Update(id, pIconColour, IconColour, redirect);
         }
@@ -249,7 +249,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             JobQueuePriority priority;
 
-            if (!Enum.TryParse<JobQueuePriority>(Priority, out priority))
+            if (!Enum.TryParse(Priority, out priority))
                 throw new ArgumentException("Invalid Priority Value", "Priority");
 
             jobQueue.Priority = priority;
@@ -312,7 +312,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        private void UpdateJobSubTypes(Disco.Models.Repository.JobQueue jobQueue, List<string> JobSubTypes)
+        private void UpdateJobSubTypes(JobQueue jobQueue, List<string> JobSubTypes)
         {
             Database.Configuration.LazyLoadingEnabled = true;
 
@@ -326,7 +326,7 @@ namespace Disco.Web.Areas.API.Controllers
             // Add New
             if (JobSubTypes != null && JobSubTypes.Count > 0)
             {
-                var subTypes = new List<Disco.Models.Repository.JobSubType>();
+                var subTypes = new List<JobSubType>();
                 foreach (var stId in JobSubTypes)
                 {
                     var typeId = stId.Substring(0, stId.IndexOf("_"));
@@ -342,7 +342,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Actions
         [DiscoAuthorize(Claims.Config.JobQueue.Delete)]
-        public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
+        public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
             {

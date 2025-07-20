@@ -2,6 +2,6 @@
 {
     public interface ConfigAuthorizationRoleCreateModel : BaseUIModel
     {
-        Models.Repository.AuthorizationRole AuthorizationRole { get; set; }
+        Repository.AuthorizationRole AuthorizationRole { get; set; }
     }
 }

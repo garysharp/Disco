@@ -104,12 +104,12 @@ namespace Disco.Services.Interop.ActiveDirectory
             var domain = Context.GetDomainFromId(Id);
             return domain.GetAvailableDomainController().RetrieveADMachineAccount(Id, AdditionalProperties);
         }
-        public static ADMachineAccount RetrieveADMachineAccount(string Id, System.Guid? NetbootGUID, params string[] AdditionalProperties)
+        public static ADMachineAccount RetrieveADMachineAccount(string Id, Guid? NetbootGUID, params string[] AdditionalProperties)
         {
             var domain = Context.GetDomainFromId(Id);
             return domain.GetAvailableDomainController().RetrieveADMachineAccount(Id, NetbootGUID, AdditionalProperties);
         }
-        public static ADMachineAccount RetrieveADMachineAccount(string Id, System.Guid? UUIDNetbootGUID, System.Guid? MacAddressNetbootGUID, params string[] AdditionalProperties)
+        public static ADMachineAccount RetrieveADMachineAccount(string Id, Guid? UUIDNetbootGUID, Guid? MacAddressNetbootGUID, params string[] AdditionalProperties)
         {
             var domain = Context.GetDomainFromId(Id);
             return domain.GetAvailableDomainController().RetrieveADMachineAccount(Id, UUIDNetbootGUID, MacAddressNetbootGUID, AdditionalProperties);

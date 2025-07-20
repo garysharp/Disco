@@ -2,7 +2,7 @@
 {
     public interface ConfigDeviceBatchShowModelMembership : BaseUIModel
     {
-        Disco.Models.Repository.DeviceModel DeviceModel { get; set; }
+        Repository.DeviceModel DeviceModel { get; set; }
         int DeviceCount { get; set; }
         int DeviceDecommissionedCount { get; set; }
     }

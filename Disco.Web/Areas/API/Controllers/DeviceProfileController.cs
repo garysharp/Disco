@@ -247,7 +247,7 @@ namespace Disco.Web.Areas.API.Controllers
                 ComputerNameTemplate = ComputerNameTemplate,
             };
 
-            TestComputerNameTemplateModel.TestComputerNameTemplateResultModel evaluateDevice(Disco.Models.Repository.Device device)
+            TestComputerNameTemplateModel.TestComputerNameTemplateResultModel evaluateDevice(Device device)
             {
                 var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null, device);
                 var deviceResult = new TestComputerNameTemplateModel.TestComputerNameTemplateResultModel()

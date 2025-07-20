@@ -8,7 +8,7 @@ namespace Disco.Services.Logging.Persistance
 
         static LogPersistContext()
         {
-            Database.SetInitializer<LogPersistContext>(new LogPersistContextInitializer());
+            Database.SetInitializer(new LogPersistContextInitializer());
         }
 
         public DbSet<Models.LogModule> Modules { get; set; }

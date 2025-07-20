@@ -16,15 +16,15 @@ namespace Disco.Services.Plugins
         #region Model Binding from Controller
         public static bool TryUpdateModel<TModel>(this Controller controller, TModel model) where TModel : class
         {
-            return controller.TryUpdateModel<TModel>(model, null, controller.ValueProvider);
+            return controller.TryUpdateModel(model, null, controller.ValueProvider);
         }
         public static bool TryUpdateModel<TModel>(this Controller controller, TModel model, IValueProvider valueProvider) where TModel : class
         {
-            return controller.TryUpdateModel<TModel>(model, null, valueProvider);
+            return controller.TryUpdateModel(model, null, valueProvider);
         }
         public static bool TryUpdateModel<TModel>(this Controller controller, TModel model, string prefix) where TModel : class
         {
-            return controller.TryUpdateModel<TModel>(model, prefix, controller.ValueProvider);
+            return controller.TryUpdateModel(model, prefix, controller.ValueProvider);
         }
         public static bool TryUpdateModel<TModel>(this Controller controller, TModel model, string prefix, IValueProvider valueProvider) where TModel : class
         {
@@ -250,7 +250,7 @@ namespace Disco.Services.Plugins
         private static MvcForm FormHelper<T>(this WebViewPage<T> ViewPage, string formAction, FormMethod method, IDictionary<string, object> htmlAttributes)
         {
             TagBuilder builder = new TagBuilder("form");
-            builder.MergeAttributes<string, object>(htmlAttributes);
+            builder.MergeAttributes(htmlAttributes);
             builder.MergeAttribute("action", formAction);
             builder.MergeAttribute("method", HtmlHelper.GetFormMethodString(method), true);
             bool flag = ViewPage.ViewContext.ClientValidationEnabled && !ViewPage.ViewContext.UnobtrusiveJavaScriptEnabled;

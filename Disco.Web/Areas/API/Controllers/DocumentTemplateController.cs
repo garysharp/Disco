@@ -509,8 +509,8 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult ImporterUndetectedFiles()
         {
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
-            var undetectedDirectory = new System.IO.DirectoryInfo(undetectedLocation);
-            var m = undetectedDirectory.GetFiles("*.pdf").Select(f => new Models.DocumentTemplate.ImporterUndetectedFilesModel()
+            var undetectedDirectory = new DirectoryInfo(undetectedLocation);
+            var m = undetectedDirectory.GetFiles("*.pdf").Select(f => new ImporterUndetectedFilesModel()
             {
                 Id = System.IO.Path.GetFileNameWithoutExtension(f.Name),
                 Timestamp = f.CreationTime.ToFullDateTime(),
@@ -554,7 +554,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 if (searchScope != null)
                 {
-                    Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel[] results;
+                    ImporterUndetectedDataIdLookupModel[] results;
                     switch (searchScope)
                     {
                         case DocumentTemplate.DocumentTemplateScopes.Device:

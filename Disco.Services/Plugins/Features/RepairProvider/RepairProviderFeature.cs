@@ -12,7 +12,7 @@ namespace Disco.Services.Plugins.Features.RepairProvider
     public abstract class RepairProviderFeature : PluginFeature
     {
         /// <summary>
-        /// The repairer identifier. Used to link this provider to any <see cref="Disco.Models.Repository.RepairerName"/>. This identifier is used to automatically set the RepairerName when a job is submitted using this plugin.
+        /// The repairer identifier. Used to link this provider to any <see cref="Models.Repository.RepairerName"/>. This identifier is used to automatically set the RepairerName when a job is submitted using this plugin.
         /// </summary>
         public abstract string ProviderId { get; }
         
@@ -45,7 +45,7 @@ namespace Disco.Services.Plugins.Features.RepairProvider
         /// <summary>
         /// Called when the plugin should submit the job to the external party.
         /// </summary>
-        /// <returns>A reference number/identifier from the external party which is stored in <see cref="Disco.Models.Repository.RepairerReference"/></returns>
+        /// <returns>A reference number/identifier from the external party which is stored in <see cref="Models.Repository.RepairerReference"/></returns>
         public abstract string SubmitJob(DiscoDataContext Database, Job Job, OrganisationAddress Address, User TechUser, string RepairDescription, Dictionary<string, string> ProviderProperties);
 
         #endregion

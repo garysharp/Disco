@@ -77,7 +77,7 @@ namespace Disco.Services.Plugins
 
         public HtmlString PartialCompiled<ViewType>(object Model) where ViewType : WebViewPage
         {
-            using (System.IO.StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
+            using (StringWriter writer = new StringWriter(CultureInfo.CurrentCulture))
             {
                 RenderPartialCompiled<ViewType>(writer, Model);
 

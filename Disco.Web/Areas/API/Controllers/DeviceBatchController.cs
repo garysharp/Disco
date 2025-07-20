@@ -513,7 +513,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Delete)]
-        public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
+        public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
             {

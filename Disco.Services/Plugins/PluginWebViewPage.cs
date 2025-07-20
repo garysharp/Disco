@@ -2,7 +2,7 @@
 
 namespace Disco.Services.Plugins
 {
-    public abstract class PluginWebViewPage<T> : Disco.Services.Web.WebViewPage<T>
+    public abstract class PluginWebViewPage<T> : Web.WebViewPage<T>
     {
         private Lazy<WebPageHelper<T>> _plugin;
 

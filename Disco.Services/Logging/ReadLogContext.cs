@@ -28,9 +28,9 @@ namespace Disco.Services.Logging
             return true;
         }
 
-        public List<Models.LogLiveEvent> Query(DiscoDataContext Database)
+        public List<LogLiveEvent> Query(DiscoDataContext Database)
         {
-            List<Models.LogLiveEvent> results = new List<LogLiveEvent>();
+            List<LogLiveEvent> results = new List<LogLiveEvent>();
 
             // Validate Options
             Validate();

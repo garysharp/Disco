@@ -21,14 +21,14 @@ namespace Disco.Services.Extensions
         public static ReadOnlyCollection<KeyValuePair<string, string>> NoticeboardThemes { get; private set; }
 
         /// <summary>
-        /// Returns a randomly selected Icon using <see cref="System.Random"/>.
+        /// Returns a randomly selected Icon using <see cref="Random"/>.
         /// </summary>
         public static string RandomIcon()
         {
             return RandomIcon(null);
         }
         /// <summary>
-        /// Returns a randomly selected Icon using <see cref="System.Random"/>.
+        /// Returns a randomly selected Icon using <see cref="Random"/>.
         /// </summary>
         /// <param name="Except">A list of Icons which will be ignored (if all are excluded, a random one will be returned)</param>
         public static string RandomIcon(IEnumerable<string> Except)
@@ -44,14 +44,14 @@ namespace Disco.Services.Extensions
         }
 
         /// <summary>
-        /// Returns a randomly selected Theme Colour using <see cref="System.Random"/>.
+        /// Returns a randomly selected Theme Colour using <see cref="Random"/>.
         /// </summary>
         public static string RandomThemeColour()
         {
             return RandomThemeColour(null);
         }
         /// <summary>
-        /// Returns a randomly selected Theme Colour using <see cref="System.Random"/>.
+        /// Returns a randomly selected Theme Colour using <see cref="Random"/>.
         /// </summary>
         /// <param name="Except">A list of Theme Colours which will be ignored (if all are excluded, a random one will be returned)</param>
         public static string RandomThemeColour(IEnumerable<string> Except)

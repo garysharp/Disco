@@ -37,7 +37,7 @@ namespace Disco.Models.Services.Jobs.JobLists
         public string StatusDescription { get; set; }
         public string StatusId { get; set; }
         public string DeviceHeldLocation { get; set; }
-        public Disco.Models.Repository.Job.UserManagementFlags? Flags { get; set; }
+        public Repository.Job.UserManagementFlags? Flags { get; set; }
         public DateTime LastActivityDate { get; set; }
     }
 }

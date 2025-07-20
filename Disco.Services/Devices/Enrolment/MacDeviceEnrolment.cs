@@ -143,7 +143,7 @@ namespace Disco.Services.Devices.Enrolment
                 EnrolmentLog.LogSessionFinished(sessionId);
                 MacSecureEnrol = response;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 EnrolmentLog.LogSessionError(sessionId, ex);
                 throw ex;

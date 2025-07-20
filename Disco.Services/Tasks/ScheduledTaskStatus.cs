@@ -80,7 +80,7 @@ namespace Disco.Services.Tasks
         #endregion
 
         #region Events
-        public delegate void UpdatedEvent(ScheduledTaskStatus sender, KeyValuePair<string, object>[] ChangedProperties);
+        public delegate void UpdatedEvent(ScheduledTaskStatus sender, ChangedItem[] ChangedProperties);
         public delegate void CancelingEvent(ScheduledTaskStatus sender);
         public event UpdatedEvent Updated;
         public event CancelingEvent Canceling;

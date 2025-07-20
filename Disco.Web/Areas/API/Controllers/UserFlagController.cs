@@ -24,7 +24,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pOnUnassignmentExpression = "onunassignmentexpression";
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
+        public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.UserFlag.Configure);
 
@@ -81,25 +81,25 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateName(int id, string FlagName = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateName(int id, string FlagName = null, bool? redirect = null)
         {
             return Update(id, pName, FlagName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateDescription(int id, string Description = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateIcon(int id, string Icon = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateIcon(int id, string Icon = null, bool? redirect = null)
         {
             return Update(id, pIcon, Icon, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateIconColour(int id, string IconColour = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateIconColour(int id, string IconColour = null, bool? redirect = null)
         {
             return Update(id, pIconColour, IconColour, redirect);
         }
@@ -349,7 +349,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Actions
         [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.Config.UserFlag.Delete)]
-        public virtual ActionResult Delete(int id, Nullable<bool> redirect = false)
+        public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
             {

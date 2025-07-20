@@ -15,7 +15,7 @@ namespace Disco.Web
 
         public static HtmlHelper GetPageHelper(this System.Web.WebPages.Html.HtmlHelper html)
         {
-            return ((System.Web.Mvc.WebViewPage)WebPageContext.Current.Page).Html;
+            return ((WebViewPage)WebPageContext.Current.Page).Html;
         }
 
         #region T4MVC Disco Extensions
@@ -66,7 +66,7 @@ namespace Disco.Web
         }
         public static MvcHtmlString OrganisationLogoUrl(this UrlHelper urlHelper, int Width = 256, int Height = 256)
         {
-            var config = new Disco.Data.Configuration.SystemConfiguration(null);
+            var config = new Data.Configuration.SystemConfiguration(null);
             return new MvcHtmlString(urlHelper.Action(MVC.API.System.OrganisationLogo(Width, Height, config.OrganisationLogoHash)));
         }
         #endregion

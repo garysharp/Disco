@@ -26,7 +26,7 @@ namespace Disco.Web.Areas.Config.Controllers
             {
                 // Show
                 var m = Database.UserFlags.Where(f => f.Id == id.Value).Select(f =>
-                    new Models.UserFlag.ShowModel()
+                    new ShowModel()
                     {
                         UserFlag = f,
                         CurrentAssignmentCount = f.UserFlagAssignments.Count(a => !a.RemovedDate.HasValue),
@@ -57,7 +57,7 @@ namespace Disco.Web.Areas.Config.Controllers
             else
             {
                 // List Index
-                var m = new Models.UserFlag.IndexModel()
+                var m = new IndexModel()
                 {
                     UserFlags = Database.UserFlags
                         .Select(uf => new
@@ -81,7 +81,7 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult Create()
         {
             // Default Queue
-            var m = new Models.UserFlag.CreateModel()
+            var m = new CreateModel()
             {
                 UserFlag = new UserFlag()
                 {
@@ -97,7 +97,7 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure), HttpPost]
-        public virtual ActionResult Create(Models.UserFlag.CreateModel model)
+        public virtual ActionResult Create(CreateModel model)
         {
             if (ModelState.IsValid)
             {

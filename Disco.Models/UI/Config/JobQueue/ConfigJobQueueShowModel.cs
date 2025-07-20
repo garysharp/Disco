@@ -13,7 +13,7 @@ namespace Disco.Models.UI.Config.JobQueue
         IEnumerable<KeyValuePair<string, string>> Icons { get; set; }
         IEnumerable<KeyValuePair<string, string>> ThemeColours { get; set; }
 
-        List<Disco.Models.Repository.JobType> JobTypes { get; set; }
+        List<Repository.JobType> JobTypes { get; set; }
 
         bool CanDelete { get; set; }
     }

@@ -8,7 +8,7 @@ namespace Disco.Services.Authorization
 {
     public class ClaimNavigatorItem : IClaimNavigatorItem
     {
-        private Func<Roles.RoleClaims, bool> accessor { get; set; }
+        private Func<RoleClaims, bool> accessor { get; set; }
         
         public string Key { get; private set; }
         public string Name { get; private set; }

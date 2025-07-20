@@ -60,7 +60,7 @@ namespace Disco.Services.Documents
                 return "Documents";
             }
         }
-        private static void Log(DocumentsLog.EventTypeIds EventTypeId, params object[] Args)
+        private static void Log(EventTypeIds EventTypeId, params object[] Args)
         {
             DocumentsLog.Current.Log((int)EventTypeId, Args);
         }

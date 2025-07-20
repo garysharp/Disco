@@ -68,17 +68,17 @@ namespace Disco.Services.Authorization
         /// <summary>
         /// Checks if token contains at least one of the claims requested.
         /// </summary>
-        /// <param name="ClaimKeys">Claim Keys from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKeys">Claim Keys from <see cref="Claims"/></param>
         /// <returns>true if the token satisfies the claim request, otherwise false.</returns>
         public bool HasAny(params string[] ClaimKeys)
         {
             return HasAny((IEnumerable<string>)ClaimKeys);
         }
-        
+
         /// <summary>
         /// Checks if token contains at least one of the claims requested.
         /// </summary>
-        /// <param name="ClaimKeys">Claim Keys from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKeys">Claim Keys from <see cref="Claims"/></param>
         /// <returns>true if the token satisfies the claim request, otherwise false.</returns>
         public bool HasAny(IEnumerable<string> ClaimKeys)
         {
@@ -88,7 +88,7 @@ namespace Disco.Services.Authorization
         /// <summary>
         /// Checks if token contains all the claims requested.
         /// </summary>
-        /// <param name="ClaimKeys">Claim Keys from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKeys">Claim Keys from <see cref="Claims"/></param>
         /// <returns>true if the token satisfies the claim request, otherwise false.</returns>
         public bool HasAll(params string[] ClaimKeys)
         {
@@ -97,7 +97,7 @@ namespace Disco.Services.Authorization
         /// <summary>
         /// Checks if token contains all the claims requested.
         /// </summary>
-        /// <param name="ClaimKeys">Claim Keys from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKeys">Claim Keys from <see cref="Claims"/></param>
         /// <returns>true if the token satisfies the claim request, otherwise false.</returns>
         public bool HasAll(IEnumerable<string> ClaimKeys)
         {
@@ -107,7 +107,7 @@ namespace Disco.Services.Authorization
         /// <summary>
         /// Checks if token contains the claim requested.
         /// </summary>
-        /// <param name="ClaimKey">Claim Key from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKey">Claim Key from <see cref="Claims"/></param>
         /// <returns>true if the token satisfies the claim request, otherwise false.</returns>
         public bool Has(string ClaimKey)
         {
@@ -127,9 +127,9 @@ namespace Disco.Services.Authorization
         }
 
         /// <summary>
-        /// Validates the token contains the claim required. An <see cref="Disco.Services.Authorization.AccessDeniedException"/> is thrown if the requirements are not met.
+        /// Validates the token contains the claim required. An <see cref="AccessDeniedException"/> is thrown if the requirements are not met.
         /// </summary>
-        /// <param name="ClaimKey">Claim Key from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKey">Claim Key from <see cref="Claims"/></param>
         public void Require(string ClaimKey)
         {
             if (!Has(ClaimKey))
@@ -137,19 +137,19 @@ namespace Disco.Services.Authorization
         }
 
         /// <summary>
-        /// Validates the token contains all the claims required. An <see cref="Disco.Services.Authorization.AccessDeniedException"/> is thrown if the requirements are not met.
+        /// Validates the token contains all the claims required. An <see cref="AccessDeniedException"/> is thrown if the requirements are not met.
         /// </summary>
-        /// <param name="ClaimKeys">Claim Keys from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKeys">Claim Keys from <see cref="Claims"/></param>
         public void RequireAll(params string[] ClaimKeys)
         {
             if (!HasAll(ClaimKeys))
                 throw new AccessDeniedException(BuildRequireAllMessage(ClaimKeys), GetRequireResource());
         }
-        
+
         /// <summary>
-        /// Validates the token contains at least one of the claims required. An <see cref="Disco.Services.Authorization.AccessDeniedException"/> is thrown if the requirements are not met.
+        /// Validates the token contains at least one of the claims required. An <see cref="AccessDeniedException"/> is thrown if the requirements are not met.
         /// </summary>
-        /// <param name="ClaimKeys">Claim Keys from <see cref="Disco.Services.Authorization.Claims"/></param>
+        /// <param name="ClaimKeys">Claim Keys from <see cref="Claims"/></param>
         public void RequireAny(params string[] ClaimKeys)
         {
             if (!HasAny(ClaimKeys))

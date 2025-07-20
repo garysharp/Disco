@@ -67,7 +67,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
         public CertificateProvidersLog()
         {
         }
-        private static void Log(CertificateProvidersLog.EventTypeIds EventTypeId, params object[] Args)
+        private static void Log(EventTypeIds EventTypeId, params object[] Args)
         {
             CertificateProvidersLog.Current.Log((int)EventTypeId, Args);
         }

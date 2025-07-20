@@ -68,7 +68,7 @@ namespace Disco.Services.Devices.Enrolment
         public EnrolmentLog()
         {
         }
-        private static void Log(EnrolmentLog.EventTypeIds EventTypeId, params object[] Args)
+        private static void Log(EventTypeIds EventTypeId, params object[] Args)
         {
             EnrolmentLog.Current.Log((int)EventTypeId, Args);
         }

@@ -34,7 +34,7 @@ namespace Disco.Services.Authorization
             Current.Log((int)EventTypeId, Args);
         }
 
-        protected override List<Logging.Models.LogEventType> LoadEventTypes()
+        protected override List<LogEventType> LoadEventTypes()
         {
             List<LogEventType> eventTypes = new List<LogEventType>() {
                 new LogEventType() {

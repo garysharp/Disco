@@ -4,7 +4,7 @@ namespace Disco.Models.UI.Config.DeviceModel
 {
     public interface ConfigDeviceModelShowModel : BaseUIModel, ConfigSharedDeviceGroupDocumentTemplateBulkGenerate
     {
-        Disco.Models.Repository.DeviceModel DeviceModel { get; set; }
+        Repository.DeviceModel DeviceModel { get; set; }
 
         ConfigDeviceModelComponentsModel DeviceComponentsModel { get; set; }
 

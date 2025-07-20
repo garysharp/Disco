@@ -16,7 +16,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pSla = "sla";
         const string pPriority = "priority";
 
-        public virtual ActionResult Update(int id, string key, string value = null, Nullable<bool> redirect = null)
+        public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             try
             {
@@ -65,28 +65,28 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Update Shortcut Methods
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnyComments, Claims.Job.Properties.JobQueueProperties.EditOwnComments)]
-        public virtual ActionResult UpdateAddedComment(int id, string AddedComment = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateAddedComment(int id, string AddedComment = null, bool? redirect = null)
         {
             return Update(id, pAddedComment, AddedComment, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnyComments, Claims.Job.Properties.JobQueueProperties.EditOwnComments)]
-        public virtual ActionResult UpdateRemovedComment(int id, string RemovedComment = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateRemovedComment(int id, string RemovedComment = null, bool? redirect = null)
         {
             return Update(id, pRemovedComment, RemovedComment, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnySLA, Claims.Job.Properties.JobQueueProperties.EditOwnSLA)]
-        public virtual ActionResult UpdateSla(int id, string SLA = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateSla(int id, string SLA = null, bool? redirect = null)
         {
             return Update(id, pSla, SLA, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnyPriority, Claims.Job.Properties.JobQueueProperties.EditOwnPriority)]
-        public virtual ActionResult UpdatePriority(int id, string Priority = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdatePriority(int id, string Priority = null, bool? redirect = null)
         {
             return Update(id, pPriority, Priority, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnySLA, Claims.Job.Properties.JobQueueProperties.EditOwnSLA,
             Claims.Job.Properties.JobQueueProperties.EditAnyPriority, Claims.Job.Properties.JobQueueProperties.EditOwnPriority)]
-        public virtual ActionResult UpdateSlaAndPriority(int id, string Sla = null, string Priority = null, Nullable<bool> redirect = null)
+        public virtual ActionResult UpdateSlaAndPriority(int id, string Sla = null, string Priority = null, bool? redirect = null)
         {
             try
             {
@@ -166,7 +166,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             JobQueuePriority priority;
 
-            if (!Enum.TryParse<JobQueuePriority>(Priority, out priority))
+            if (!Enum.TryParse(Priority, out priority))
                 throw new ArgumentException("Invalid Priority Value", "Priority");
 
             jobQueueJob.OnEditPriority(priority);

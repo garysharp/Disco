@@ -73,14 +73,14 @@ namespace Disco.Web.Areas.Config.Controllers
                 m.CertificateAuthorityProviders = Plugins.GetPluginFeatures(typeof(CertificateAuthorityProviderFeature));
                 m.WirelessProfileProviders = Plugins.GetPluginFeatures(typeof(WirelessProfileProviderFeature));
 
-                var DistributionValues = Enum.GetValues(typeof(Disco.Models.Repository.DeviceProfile.DistributionTypes));
+                var DistributionValues = Enum.GetValues(typeof(DeviceProfile.DistributionTypes));
                 m.DeviceProfileDistributionTypes = new List<SelectListItem>();
                 foreach (int value in DistributionValues)
                 {
                     m.DeviceProfileDistributionTypes.Add(new SelectListItem()
                     {
                         Value = value.ToString(),
-                        Text = Enum.GetName(typeof(Disco.Models.Repository.DeviceProfile.DistributionTypes), value),
+                        Text = Enum.GetName(typeof(DeviceProfile.DistributionTypes), value),
                         Selected = ((int)m.DeviceProfile.DistributionType == value)
                     });
                 }
@@ -163,7 +163,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 DefaultAddDeviceOffline = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId
             };
             m.DeviceProfilesAndNone = m.DeviceProfiles.ToList();
-            m.DeviceProfilesAndNone.Insert(0, new Disco.Models.Repository.DeviceProfile() { Id = 0, Name = "<No Default>" });
+            m.DeviceProfilesAndNone.Insert(0, new DeviceProfile() { Id = 0, Name = "<No Default>" });
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDeviceProfileDefaultsModel>(this.ControllerContext, m);

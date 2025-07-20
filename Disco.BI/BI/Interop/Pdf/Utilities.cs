@@ -17,7 +17,7 @@ namespace Disco.BI.Interop.Pdf
         public static Stream JoinPdfs(bool InsertBlankPages, List<Stream> Pdfs)
         {
             if (Pdfs.Count == 0)
-                throw new System.ArgumentNullException(nameof(Pdfs));
+                throw new ArgumentNullException(nameof(Pdfs));
 
             // Only One PDF - Possible Reference Bug v's Memory/Speed (Returning Param Memory Stream)
             if (Pdfs.Count == 1)

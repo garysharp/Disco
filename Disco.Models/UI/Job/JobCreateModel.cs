@@ -21,8 +21,8 @@ namespace Disco.Models.UI.Job
         int? QuickLogTaskTimeMinutes { get; set; }
         int? QuickLogTaskTimeMinutesOther { get; set; }
 
-        Disco.Models.Repository.Device Device { get; set; }
-        Disco.Models.Repository.User User { get; set; }
-        List<Disco.Models.Repository.JobType> JobTypes { get; set; }
+        Repository.Device Device { get; set; }
+        Repository.User User { get; set; }
+        List<Repository.JobType> JobTypes { get; set; }
     }
 }

@@ -8,7 +8,7 @@
         int? Address { get; set; }
         string AddressName { get; set; }
         string Description { get; set; }
-        Models.Repository.DeviceProfile.DistributionTypes DistributionType { get; set; }
+        Repository.DeviceProfile.DistributionTypes DistributionType { get; set; }
 
         int DeviceCount { get; set; }
         int DeviceDecommissionedCount { get; set; }

@@ -15,7 +15,7 @@ namespace Disco.Web.Areas.API.Controllers
         [HttpPost]
         public virtual ActionResult TestCallback(CallbackModel model)
         {
-            return this.PrecompiledPartialView<API.Views.Activation._ActivateCallback>(model);
+            return this.PrecompiledPartialView<Views.Activation._ActivateCallback>(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]

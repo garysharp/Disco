@@ -83,7 +83,7 @@ namespace Disco.Web.Areas.Config.Controllers
             // Default Queue
             var m = new Models.JobQueue.CreateModel()
             {
-                JobQueue = new Disco.Models.Repository.JobQueue()
+                JobQueue = new JobQueue()
                 {
                     Icon = JobQueueService.RandomUnusedIcon(),
                     IconColour = JobQueueService.RandomUnusedThemeColour(),

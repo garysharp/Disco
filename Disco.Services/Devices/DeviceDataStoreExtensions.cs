@@ -51,7 +51,7 @@ namespace Disco.Services
 
         public static string ImageFilePath(this DeviceModel deviceModel)
         {
-            var configCache = new Disco.Data.Configuration.SystemConfiguration(null);
+            var configCache = new Data.Configuration.SystemConfiguration(null);
 
             var deviceModelImagesDataStore = DataStore.CreateLocation(configCache, "DeviceModelImages");
 

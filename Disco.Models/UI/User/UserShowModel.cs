@@ -8,7 +8,7 @@ namespace Disco.Models.UI.User
 {
     public interface UserShowModel : BaseUIModel
     {
-        Disco.Models.Repository.User User { get; set; }
+        Repository.User User { get; set; }
         JobTableModel Jobs { get; set; }
         List<DocumentTemplate> DocumentTemplates { get; set; }
         List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }

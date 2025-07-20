@@ -17,7 +17,7 @@ namespace Disco.Services.Expressions.Extensions
         }
         public static FileImageExpressionResult ImageFromDataStoreFile(string RelativeFilePath)
         {
-            var configCache = new Disco.Data.Configuration.SystemConfiguration(null);
+            var configCache = new Data.Configuration.SystemConfiguration(null);
             string DataStoreLocation = configCache.DataStoreLocation;
             string AbsoluteFilePath = System.IO.Path.Combine(DataStoreLocation, RelativeFilePath);
             return new FileImageExpressionResult(AbsoluteFilePath);

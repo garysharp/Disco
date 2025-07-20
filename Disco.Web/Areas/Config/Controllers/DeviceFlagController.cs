@@ -56,7 +56,7 @@ namespace Disco.Web.Areas.Config.Controllers
             else
             {
                 // List Index
-                var m = new Models.DeviceFlag.IndexModel()
+                var m = new IndexModel()
                 {
                     DeviceFlags = Database.DeviceFlags
                         .Select(uf => new
