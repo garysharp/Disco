@@ -11,808 +11,796 @@ using System.Linq;
 
 namespace Disco.Services.Authorization
 {
-	public static class Claims
-	{
-		private static Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>> _roleClaims;
-		private static ClaimNavigatorItem _claimNavigator;
+    public static class Claims
+    {
+        private static Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>> _roleClaims;
+        private static ClaimNavigatorItem _claimNavigator;
 
-		static Claims()
+        static Claims()
         {
 #region Role Claim Dictionary
             _roleClaims = new Dictionary<string, Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>>()
-			{
-				{ "Config.DeviceCertificate.DownloadCertificates", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceCertificate.DownloadCertificates, (c, v) => c.Config.DeviceCertificate.DownloadCertificates = v, "Download Certificates", "Can download certificates", false) },
-				{ "Config.Enrolment.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.Configure, (c, v) => c.Config.Enrolment.Configure = v, "Configure Enrolment", "Can configure device enrolment", false) },
-				{ "Config.Enrolment.DownloadBootstrapper", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.DownloadBootstrapper, (c, v) => c.Config.Enrolment.DownloadBootstrapper = v, "Download Bootstrapper", "Can download the Device Bootstrapper", false) },
-				{ "Config.Enrolment.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.Show, (c, v) => c.Config.Enrolment.Show = v, "Show Enrolment", "Can show device enrolment", false) },
-				{ "Config.Enrolment.ShowStatus", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.ShowStatus, (c, v) => c.Config.Enrolment.ShowStatus = v, "Show Enrolment Status", "Can show the enrolment status", false) },
-				{ "Config.DeviceBatch.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Configure, (c, v) => c.Config.DeviceBatch.Configure = v, "Configure Device Batches", "Can configure device batches", false) },
-				{ "Config.DeviceBatch.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Create, (c, v) => c.Config.DeviceBatch.Create = v, "Create Device Batches", "Can create device batches", false) },
-				{ "Config.DeviceBatch.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Delete, (c, v) => c.Config.DeviceBatch.Delete = v, "Delete Device Batches", "Can delete device batches", false) },
-				{ "Config.DeviceBatch.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Show, (c, v) => c.Config.DeviceBatch.Show = v, "Show Device Batches", "Can show device batches", false) },
-				{ "Config.DeviceBatch.ShowTimeline", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.ShowTimeline, (c, v) => c.Config.DeviceBatch.ShowTimeline = v, "Show Timeline", "Can show device batch timeline", false) },
-				{ "Config.DeviceFlag.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Configure, (c, v) => c.Config.DeviceFlag.Configure = v, "Configure Device Flags", "Can configure device flags", false) },
-				{ "Config.DeviceFlag.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Create, (c, v) => c.Config.DeviceFlag.Create = v, "Create Device Flags", "Can create device flags", false) },
-				{ "Config.DeviceFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Delete, (c, v) => c.Config.DeviceFlag.Delete = v, "Delete Device Flags", "Can delete device flags", false) },
-				{ "Config.DeviceFlag.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Export, (c, v) => c.Config.DeviceFlag.Export = v, "Export Device Flag Assignments", "Can export user device assignments", false) },
-				{ "Config.DeviceFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Show, (c, v) => c.Config.DeviceFlag.Show = v, "Show Device Flags", "Can show device flags", false) },
-				{ "Config.DeviceModel.ConfigureComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.ConfigureComponents, (c, v) => c.Config.DeviceModel.ConfigureComponents = v, "Configure Device Model Components", "Can configure device model components", false) },
-				{ "Config.DeviceModel.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Configure, (c, v) => c.Config.DeviceModel.Configure = v, "Configure Device Models", "Can configure device models", false) },
-				{ "Config.DeviceModel.CreateCustom", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.CreateCustom, (c, v) => c.Config.DeviceModel.CreateCustom = v, "Create Custom Device Models", "Can create custom device models", false) },
-				{ "Config.DeviceModel.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Delete, (c, v) => c.Config.DeviceModel.Delete = v, "Delete Device Models", "Can delete device models", false) },
-				{ "Config.DeviceModel.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Show, (c, v) => c.Config.DeviceModel.Show = v, "Show Device Models", "Can show device models", false) },
-				{ "Config.DeviceProfile.ConfigureComputerNameTemplate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.ConfigureComputerNameTemplate, (c, v) => c.Config.DeviceProfile.ConfigureComputerNameTemplate = v, "Configure Computer Name Templates", "Can configure computer name templates for device profiles", false) },
-				{ "Config.DeviceProfile.ConfigureDefaults", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.ConfigureDefaults, (c, v) => c.Config.DeviceProfile.ConfigureDefaults = v, "Configure Default Device Profiles", "Can configure default device profiles", false) },
-				{ "Config.DeviceProfile.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Configure, (c, v) => c.Config.DeviceProfile.Configure = v, "Configure Device Profiles", "Can configure device profiles", false) },
-				{ "Config.DeviceProfile.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Create, (c, v) => c.Config.DeviceProfile.Create = v, "Create Device Profiles", "Can create device profiles", false) },
-				{ "Config.DeviceProfile.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Delete, (c, v) => c.Config.DeviceProfile.Delete = v, "Delete Device Profiles", "Can delete device profiles", false) },
-				{ "Config.DeviceProfile.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Show, (c, v) => c.Config.DeviceProfile.Show = v, "Show Device Profiles", "Can show device profiles", false) },
-				{ "Config.DocumentTemplate.BulkGenerate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.BulkGenerate, (c, v) => c.Config.DocumentTemplate.BulkGenerate = v, "Bulk Generate Document Templates", "Can bulk generate document templates", false) },
-				{ "Config.DocumentTemplate.ConfigureFilterExpression", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ConfigureFilterExpression, (c, v) => c.Config.DocumentTemplate.ConfigureFilterExpression = v, "Configure Advanced Expression", "Can configure filter, generate and import expressions for document templates", false) },
-				{ "Config.DocumentTemplate.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Configure, (c, v) => c.Config.DocumentTemplate.Configure = v, "Configure Document Templates", "Can configure document templates", false) },
-				{ "Config.DocumentTemplate.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Create, (c, v) => c.Config.DocumentTemplate.Create = v, "Create Document Templates", "Can create document templates", false) },
-				{ "Config.DocumentTemplate.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Delete, (c, v) => c.Config.DocumentTemplate.Delete = v, "Delete Document Templates", "Can delete document templates", false) },
-				{ "Config.DocumentTemplate.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Export, (c, v) => c.Config.DocumentTemplate.Export = v, "Export Attachment Instances", "Can export document attachment instances", false) },
-				{ "Config.DocumentTemplate.UndetectedPages", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.UndetectedPages, (c, v) => c.Config.DocumentTemplate.UndetectedPages = v, "Process Undetected Pages", "Can show and assign imported documents which were not undetected", false) },
-				{ "Config.DocumentTemplate.ShowStatus", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ShowStatus, (c, v) => c.Config.DocumentTemplate.ShowStatus = v, "Show Document Template Import Status", "Can show the document template import status", false) },
-				{ "Config.DocumentTemplate.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Show, (c, v) => c.Config.DocumentTemplate.Show = v, "Show Document Templates", "Can show document templates", false) },
-				{ "Config.DocumentTemplate.Upload", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Upload, (c, v) => c.Config.DocumentTemplate.Upload = v, "Upload Document Templates", "Can upload document templates", false) },
-				{ "Config.Logging.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Logging.Show, (c, v) => c.Config.Logging.Show = v, "Show Logging", "Can show logging", false) },
-				{ "Config.Plugin.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Configure, (c, v) => c.Config.Plugin.Configure = v, "Configure Plugins", "Can configure plugins", false) },
-				{ "Config.Plugin.InstallLocal", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.InstallLocal, (c, v) => c.Config.Plugin.InstallLocal = v, "Install/Update Local Plugins", "Can install and update locally uploaded plugins", false) },
-				{ "Config.Plugin.Install", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Install, (c, v) => c.Config.Plugin.Install = v, "Install/Update Plugins", "Can install and update plugins", false) },
-				{ "Config.Plugin.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Show, (c, v) => c.Config.Plugin.Show = v, "Show Plugins", "Can show plugins", false) },
-				{ "Config.Plugin.Uninstall", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Uninstall, (c, v) => c.Config.Plugin.Uninstall = v, "Uninstall Plugins", "Can uninstall plugins", false) },
-				{ "Config.System.ConfigureActiveDirectory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureActiveDirectory, (c, v) => c.Config.System.ConfigureActiveDirectory = v, "Configure Active Directory Settings", "Can configure the Active Directory interoperability settings", false) },
-				{ "Config.System.ConfigureEmail", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureEmail, (c, v) => c.Config.System.ConfigureEmail = v, "Configure Email Settings", "Can configure the email settings", false) },
-				{ "Config.System.ConfigureProxy", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureProxy, (c, v) => c.Config.System.ConfigureProxy = v, "Configure Proxy Settings", "Can configure the proxy settings", false) },
-				{ "Config.System.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.Show, (c, v) => c.Config.System.Show = v, "Show System Configuration", "Can show the system configuration", false) },
-				{ "Config.Organisation.ConfigureAddresses", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureAddresses, (c, v) => c.Config.Organisation.ConfigureAddresses = v, "Configure Addresses", "Can configure organisation addresses", false) },
-				{ "Config.Organisation.ConfigureLogo", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureLogo, (c, v) => c.Config.Organisation.ConfigureLogo = v, "Configure Logo", "Can configure the organisation logo", false) },
-				{ "Config.Organisation.ConfigureMultiSiteMode", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureMultiSiteMode, (c, v) => c.Config.Organisation.ConfigureMultiSiteMode = v, "Configure Multi-Site Mode", "Can configure multi-site mode", false) },
-				{ "Config.Organisation.ConfigureName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureName, (c, v) => c.Config.Organisation.ConfigureName = v, "Configure Name", "Can configure the organisation name", false) },
-				{ "Config.Organisation.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.Show, (c, v) => c.Config.Organisation.Show = v, "Show Organisation Details", "Can show the organisation details", false) },
-				{ "Config.JobPreferences.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobPreferences.Configure, (c, v) => c.Config.JobPreferences.Configure = v, "Configure Job Preferences", "Can configure job preferences", false) },
-				{ "Config.JobPreferences.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobPreferences.Show, (c, v) => c.Config.JobPreferences.Show = v, "Show Job Preferences", "Can show job preferences", false) },
-				{ "Config.JobQueue.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Configure, (c, v) => c.Config.JobQueue.Configure = v, "Configure Job Queues", "Can configure job queues", false) },
-				{ "Config.JobQueue.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Create, (c, v) => c.Config.JobQueue.Create = v, "Create Job Queues", "Can create job queues", false) },
-				{ "Config.JobQueue.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Delete, (c, v) => c.Config.JobQueue.Delete = v, "Delete Job Queues", "Can delete job queues", false) },
-				{ "Config.JobQueue.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Show, (c, v) => c.Config.JobQueue.Show = v, "Show Job Queues", "Can show job queues", false) },
-				{ "Config.UserFlag.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Configure, (c, v) => c.Config.UserFlag.Configure = v, "Configure User Flags", "Can configure user flags", false) },
-				{ "Config.UserFlag.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Create, (c, v) => c.Config.UserFlag.Create = v, "Create User Flags", "Can create user flags", false) },
-				{ "Config.UserFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Delete, (c, v) => c.Config.UserFlag.Delete = v, "Delete User Flags", "Can delete user flags", false) },
-				{ "Config.UserFlag.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Export, (c, v) => c.Config.UserFlag.Export = v, "Export User Flag Assignments", "Can export user flag assignments", false) },
-				{ "Config.UserFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Show, (c, v) => c.Config.UserFlag.Show = v, "Show User Flags", "Can show user flags", false) },
-				{ "Config.ManageSavedExports", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.ManageSavedExports, (c, v) => c.Config.ManageSavedExports = v, "Managed Saved Exports", "Can manage saved exports", false) },
-				{ "Config.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Show, (c, v) => c.Config.Show = v, "Show Configuration", "Can show the configuration menu", false) },
-				{ "Job.Lists.AllOpen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AllOpen, (c, v) => c.Job.Lists.AllOpen = v, "All Open List", "Can show list", false) },
-				{ "Job.Lists.AwaitingFinanceAgreementBreach", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceAgreementBreach, (c, v) => c.Job.Lists.AwaitingFinanceAgreementBreach = v, "Awaiting Finance Agreement Breach List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
-				{ "Job.Lists.AwaitingFinanceCharge", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceCharge, (c, v) => c.Job.Lists.AwaitingFinanceCharge = v, "Awaiting Finance Charge List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
-				{ "Job.Lists.AwaitingFinanceInsuranceProcessing", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceInsuranceProcessing, (c, v) => c.Job.Lists.AwaitingFinanceInsuranceProcessing = v, "Awaiting Finance Insurance Processing List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
-				{ "Job.Lists.AwaitingFinance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinance, (c, v) => c.Job.Lists.AwaitingFinance = v, "Awaiting Finance List", "Can show list", false) },
-				{ "Job.Lists.AwaitingFinancePayment", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinancePayment, (c, v) => c.Job.Lists.AwaitingFinancePayment = v, "Awaiting Finance Payment List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
-				{ "Job.Lists.AwaitingTechnicianAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingTechnicianAction, (c, v) => c.Job.Lists.AwaitingTechnicianAction = v, "Awaiting Technician Action List", "Can show list", false) },
-				{ "Job.Lists.AwaitingUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingUserAction, (c, v) => c.Job.Lists.AwaitingUserAction = v, "Awaiting User Action List", "Can show list", false) },
-				{ "Job.Lists.DevicesAwaitingRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.DevicesAwaitingRepair, (c, v) => c.Job.Lists.DevicesAwaitingRepair = v, "Devices Awaiting Repair List", "Can show list", false) },
-				{ "Job.Lists.DevicesReadyForReturn", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.DevicesReadyForReturn, (c, v) => c.Job.Lists.DevicesReadyForReturn = v, "Devices Ready For Return List", "Can show list", false) },
-				{ "Job.Lists.JobQueueLists", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.JobQueueLists, (c, v) => c.Job.Lists.JobQueueLists = v, "Job Queue Lists", "Can show job queue lists", false) },
-				{ "Job.Lists.Locations", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.Locations, (c, v) => c.Job.Lists.Locations = v, "Locations List", "Can show list", false) },
-				{ "Job.Lists.LongRunningJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.LongRunningJobs, (c, v) => c.Job.Lists.LongRunningJobs = v, "Long Running Jobs List", "Can show list", false) },
-				{ "Job.Lists.MyJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.MyJobs, (c, v) => c.Job.Lists.MyJobs = v, "My Jobs List", "Can show list", false) },
-				{ "Job.Lists.MyJobsOrphaned", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.MyJobsOrphaned, (c, v) => c.Job.Lists.MyJobsOrphaned = v, "My Jobs List (Includes No Queue)", "Can show list", false) },
-				{ "Job.Lists.RecentlyClosed", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.RecentlyClosed, (c, v) => c.Job.Lists.RecentlyClosed = v, "Recently Closed List", "Can show list", false) },
-				{ "Job.Lists.StaleJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.StaleJobs, (c, v) => c.Job.Lists.StaleJobs = v, "Stale Jobs List", "Can show list", false) },
-				{ "Job.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddAttachments, (c, v) => c.Job.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to jobs", false) },
-				{ "Job.Actions.AddLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddLogs, (c, v) => c.Job.Actions.AddLogs = v, "Add Logs", "Can add job logs", false) },
-				{ "Job.Actions.AddAnyQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddAnyQueues, (c, v) => c.Job.Actions.AddAnyQueues = v, "Add to Any Queues", "Can add to any job queues", false) },
-				{ "Job.Actions.AddOwnQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddOwnQueues, (c, v) => c.Job.Actions.AddOwnQueues = v, "Add to Own Queues", "Can add to own job queues", false) },
-				{ "Job.Actions.Close", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Close, (c, v) => c.Job.Actions.Close = v, "Close Jobs", "Can close jobs", false) },
-				{ "Job.Actions.ConvertHWarToHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ConvertHWarToHNWar, (c, v) => c.Job.Actions.ConvertHWarToHNWar = v, "Convert HWar Jobs To HNWar", "Can convert warranty jobs to non-warranty jobs", false) },
-				{ "Job.Actions.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Create, (c, v) => c.Job.Actions.Create = v, "Create Jobs", "Can create jobs", false) },
-				{ "Job.Actions.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Delete, (c, v) => c.Job.Actions.Delete = v, "Delete Jobs", "Can delete jobs", false) },
-				{ "Job.Actions.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Export, (c, v) => c.Job.Actions.Export = v, "Export Jobs", "Can export jobs in a bulk format", false) },
-				{ "Job.Actions.ForceClose", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ForceClose, (c, v) => c.Job.Actions.ForceClose = v, "Force Close Jobs", "Can force close jobs", false) },
-				{ "Job.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.GenerateDocuments, (c, v) => c.Job.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for jobs", false) },
-				{ "Job.Actions.LogInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogInsurance, (c, v) => c.Job.Actions.LogInsurance = v, "Lodge Insurance", "Can lodge insurance for non-warranty jobs", false) },
-				{ "Job.Actions.LogRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogRepair, (c, v) => c.Job.Actions.LogRepair = v, "Lodge Repair", "Can lodge repair for non-warranty jobs", false) },
-				{ "Job.Actions.LogWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogWarranty, (c, v) => c.Job.Actions.LogWarranty = v, "Lodge Warranty", "Can lodge warranty for jobs", false) },
-				{ "Job.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyAttachments, (c, v) => c.Job.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from jobs", false) },
-				{ "Job.Actions.RemoveAnyLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyLogs, (c, v) => c.Job.Actions.RemoveAnyLogs = v, "Remove Any Logs", "Can remove any job logs", false) },
-				{ "Job.Actions.RemoveAnyQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyQueues, (c, v) => c.Job.Actions.RemoveAnyQueues = v, "Remove from Any Queues", "Can remove from any job queues", false) },
-				{ "Job.Actions.RemoveOwnQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveOwnQueues, (c, v) => c.Job.Actions.RemoveOwnQueues = v, "Remove from Own Queues", "Can remove from own job queues", false) },
-				{ "Job.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveOwnAttachments, (c, v) => c.Job.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from jobs", false) },
-				{ "Job.Actions.RemoveOwnLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveOwnLogs, (c, v) => c.Job.Actions.RemoveOwnLogs = v, "Remove Own Logs", "Can remove own job logs", false) },
-				{ "Job.Actions.Reopen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Reopen, (c, v) => c.Job.Actions.Reopen = v, "Reopen Jobs", "Can reopen jobs", false) },
-				{ "Job.Actions.UpdateSubTypes", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.UpdateSubTypes, (c, v) => c.Job.Actions.UpdateSubTypes = v, "Update Sub Types", "Can update sub types for jobs", false) },
-				{ "Job.Properties.WarrantyProperties.ExternalCompletedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalCompletedDate, (c, v) => c.Job.Properties.WarrantyProperties.ExternalCompletedDate = v, "External Completed Date Property", "Can update property", false) },
-				{ "Job.Properties.WarrantyProperties.ExternalLoggedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalLoggedDate, (c, v) => c.Job.Properties.WarrantyProperties.ExternalLoggedDate = v, "External Logged Date Property", "Can update property", false) },
-				{ "Job.Properties.WarrantyProperties.ExternalName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalName, (c, v) => c.Job.Properties.WarrantyProperties.ExternalName = v, "External Name Property", "Can update property", false) },
-				{ "Job.Properties.WarrantyProperties.ExternalReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalReference, (c, v) => c.Job.Properties.WarrantyProperties.ExternalReference = v, "External Reference Property", "Can update property", false) },
-				{ "Job.Properties.WarrantyProperties.ProviderDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ProviderDetails, (c, v) => c.Job.Properties.WarrantyProperties.ProviderDetails = v, "Provider Details", "Can access warranty provider details", false) },
-				{ "Job.Properties.WarrantyProperties.WarrantyCompleted", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.WarrantyCompleted, (c, v) => c.Job.Properties.WarrantyProperties.WarrantyCompleted = v, "Warranty Completed Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.AccountingChargeAdded", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AccountingChargeAdded, (c, v) => c.Job.Properties.NonWarrantyProperties.AccountingChargeAdded = v, "Accounting Charge Added Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.AccountingChargePaid", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AccountingChargePaid, (c, v) => c.Job.Properties.NonWarrantyProperties.AccountingChargePaid = v, "Accounting Charge Paid Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.AccountingChargeRequired", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AccountingChargeRequired, (c, v) => c.Job.Properties.NonWarrantyProperties.AccountingChargeRequired = v, "Accounting Charge Required Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.AddComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AddComponents, (c, v) => c.Job.Properties.NonWarrantyProperties.AddComponents = v, "Add Components", "Can add job components (NOTE: Requires Edit Components)", false) },
-				{ "Job.Properties.NonWarrantyProperties.EditComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.EditComponents, (c, v) => c.Job.Properties.NonWarrantyProperties.EditComponents = v, "Edit Components", "Can edit and remove job components", false) },
-				{ "Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, (c, v) => c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent = v, "Insurance Claim Form Sent Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.InsuranceDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InsuranceDetails, (c, v) => c.Job.Properties.NonWarrantyProperties.InsuranceDetails = v, "Insurance Detail Properties", "Can update insurance detail properties", false) },
-				{ "Job.Properties.NonWarrantyProperties.InvoiceReceived", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InvoiceReceived, (c, v) => c.Job.Properties.NonWarrantyProperties.InvoiceReceived = v, "Invoice Received Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.IsInsuranceClaim", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim, (c, v) => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim = v, "Is Insurance Claim Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = v, "Purchase Order Raised Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = v, "Purchase Order Reference Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.PurchaseOrderSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = v, "Purchase Order Sent Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.RepairProviderDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairProviderDetails, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairProviderDetails = v, "Repair Provider Details", "Can access repair provider details", false) },
-				{ "Job.Properties.NonWarrantyProperties.RepairerCompletedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate = v, "Repairer Completed Date Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.RepairerLoggedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate = v, "Repairer Logged Date Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.RepairerName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerName, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerName = v, "Repairer Name Property", "Can update property", false) },
-				{ "Job.Properties.NonWarrantyProperties.RepairerReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerReference, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerReference = v, "Repairer Reference Property", "Can update property", false) },
-				{ "Job.Properties.JobQueueProperties.EditAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditAnyComments, (c, v) => c.Job.Properties.JobQueueProperties.EditAnyComments = v, "Edit Any Comments", "Can edit any job queue comments", false) },
-				{ "Job.Properties.JobQueueProperties.EditAnyPriority", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditAnyPriority, (c, v) => c.Job.Properties.JobQueueProperties.EditAnyPriority = v, "Edit Any Priority", "Can edit any job queue Priority", false) },
-				{ "Job.Properties.JobQueueProperties.EditAnySLA", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditAnySLA, (c, v) => c.Job.Properties.JobQueueProperties.EditAnySLA = v, "Edit Any SLA", "Can edit any job queue SLA", false) },
-				{ "Job.Properties.JobQueueProperties.EditOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditOwnComments, (c, v) => c.Job.Properties.JobQueueProperties.EditOwnComments = v, "Edit Own Comments", "Can edit own job queue comments", false) },
-				{ "Job.Properties.JobQueueProperties.EditOwnPriority", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditOwnPriority, (c, v) => c.Job.Properties.JobQueueProperties.EditOwnPriority = v, "Edit Own Priority", "Can edit own job queue Priority", false) },
-				{ "Job.Properties.JobQueueProperties.EditOwnSLA", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditOwnSLA, (c, v) => c.Job.Properties.JobQueueProperties.EditOwnSLA = v, "Edit Own SLA", "Can edit own job queue SLA", false) },
-				{ "Job.Properties.DeviceHeldLocation", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceHeldLocation, (c, v) => c.Job.Properties.DeviceHeldLocation = v, "Device Held Location Property", "Can update property", false) },
-				{ "Job.Properties.DeviceHeld", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceHeld, (c, v) => c.Job.Properties.DeviceHeld = v, "Device Held Property", "Can update property", false) },
-				{ "Job.Properties.DeviceReadyForReturn", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceReadyForReturn, (c, v) => c.Job.Properties.DeviceReadyForReturn = v, "Device Ready For Return Property", "Can update property", false) },
-				{ "Job.Properties.DeviceReturned", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceReturned, (c, v) => c.Job.Properties.DeviceReturned = v, "Device Returned Property", "Can update property", false) },
-				{ "Job.Properties.ExpectedClosedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.ExpectedClosedDate, (c, v) => c.Job.Properties.ExpectedClosedDate = v, "Expected Closed Date Property", "Can update property", false) },
-				{ "Job.Properties.Flags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.Flags, (c, v) => c.Job.Properties.Flags = v, "Flags Property", "Can update property", false) },
-				{ "Job.Properties.NotWaitingForUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NotWaitingForUserAction, (c, v) => c.Job.Properties.NotWaitingForUserAction = v, "Not Waiting For User Action Property", "Can update property", false) },
-				{ "Job.Properties.WaitingForUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WaitingForUserAction, (c, v) => c.Job.Properties.WaitingForUserAction = v, "Waiting For User Action Property", "Can update property", false) },
-				{ "Job.Types.CreateHMisc", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHMisc, (c, v) => c.Job.Types.CreateHMisc = v, "Create Hardware - Miscellaneous Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.CreateHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHNWar, (c, v) => c.Job.Types.CreateHNWar = v, "Create Hardware - Non-Warranty Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.CreateHWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHWar, (c, v) => c.Job.Types.CreateHWar = v, "Create Hardware - Warranty Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.CreateSApp", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSApp, (c, v) => c.Job.Types.CreateSApp = v, "Create Software - Application Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.CreateSOS", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSOS, (c, v) => c.Job.Types.CreateSOS = v, "Create Software - Operating System Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.CreateSImg", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSImg, (c, v) => c.Job.Types.CreateSImg = v, "Create Software - Reimage Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.CreateUMgmt", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateUMgmt, (c, v) => c.Job.Types.CreateUMgmt = v, "Create User Management Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
-				{ "Job.Types.ShowHMisc", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHMisc, (c, v) => c.Job.Types.ShowHMisc = v, "Show Hardware - Miscellaneous Jobs", "Can show jobs of this type", false) },
-				{ "Job.Types.ShowHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHNWar, (c, v) => c.Job.Types.ShowHNWar = v, "Show Hardware - Non-Warranty Jobs", "Can show jobs of this type", false) },
-				{ "Job.Types.ShowHWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHWar, (c, v) => c.Job.Types.ShowHWar = v, "Show Hardware - Warranty Jobs", "Can show jobs of this type", false) },
-				{ "Job.Types.ShowSApp", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowSApp, (c, v) => c.Job.Types.ShowSApp = v, "Show Software - Application Jobs", "Can show jobs of this type", false) },
-				{ "Job.Types.ShowSOS", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowSOS, (c, v) => c.Job.Types.ShowSOS = v, "Show Software - Operating System Jobs", "Can show jobs of this type", false) },
-				{ "Job.Types.ShowSImg", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowSImg, (c, v) => c.Job.Types.ShowSImg = v, "Show Software - Reimage Jobs", "Can show jobs of this type", false) },
-				{ "Job.Types.ShowUMgmt", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowUMgmt, (c, v) => c.Job.Types.ShowUMgmt = v, "Show User Management Jobs", "Can show jobs of this type", false) },
-				{ "Job.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Search, (c, v) => c.Job.Search = v, "Search Jobs", "Can search jobs", false) },
-				{ "Job.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowAttachments, (c, v) => c.Job.ShowAttachments = v, "Show Attachments", "Can show job attachments", false) },
-				{ "Job.ShowDailyChart", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowDailyChart, (c, v) => c.Job.ShowDailyChart = v, "Show Daily Opened & Closed", "Can show daily opened & closed chart", false) },
-				{ "Job.ShowFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowFlags, (c, v) => c.Job.ShowFlags = v, "Show Flags", "Can show job flags", false) },
-				{ "Job.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Show, (c, v) => c.Job.Show = v, "Show Jobs", "Can show jobs", false) },
-				{ "Job.ShowJobsQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowJobsQueues, (c, v) => c.Job.ShowJobsQueues = v, "Show Jobs Queues", "Can show jobs queues", false) },
-				{ "Job.ShowLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowLogs, (c, v) => c.Job.ShowLogs = v, "Show Logs", "Can show job logs", false) },
-				{ "Job.ShowNonWarrantyComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyComponents, (c, v) => c.Job.ShowNonWarrantyComponents = v, "Show Non-Warranty Components", "Can show non-warranty job components", false) },
-				{ "Job.ShowNonWarrantyFinance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyFinance, (c, v) => c.Job.ShowNonWarrantyFinance = v, "Show Non-Warranty Finance", "Can show non-warranty job finance", false) },
-				{ "Job.ShowNonWarrantyInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyInsurance, (c, v) => c.Job.ShowNonWarrantyInsurance = v, "Show Non-Warranty Insurance", "Can show non-warranty job insurance", false) },
-				{ "Job.ShowNonWarrantyRepairs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyRepairs, (c, v) => c.Job.ShowNonWarrantyRepairs = v, "Show Non-Warranty Repairs", "Can show non-warranty job repairs", false) },
-				{ "Job.ShowWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowWarranty, (c, v) => c.Job.ShowWarranty = v, "Show Warranty", "Can show job warranty", false) },
-				{ "Device.Properties.AssetNumber", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.AssetNumber, (c, v) => c.Device.Properties.AssetNumber = v, "Asset Number Property", "Can update property", false) },
-				{ "Device.Properties.Details", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Details, (c, v) => c.Device.Properties.Details = v, "Detail Properties", "Can update detail properties", false) },
-				{ "Device.Properties.DeviceBatch", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceBatch, (c, v) => c.Device.Properties.DeviceBatch = v, "Device Batch Property", "Can update property", false) },
-				{ "Device.Properties.DeviceProfile", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceProfile, (c, v) => c.Device.Properties.DeviceProfile = v, "Device Profile Property", "Can update property", false) },
-				{ "Device.Properties.Location", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Location, (c, v) => c.Device.Properties.Location = v, "Location Property", "Can update property", false) },
-				{ "Device.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddAttachments, (c, v) => c.Device.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to devices", false) },
-				{ "Device.Actions.AddComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddComments, (c, v) => c.Device.Actions.AddComments = v, "Add Comments", "Can add device comments", false) },
-				{ "Device.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddFlags, (c, v) => c.Device.Actions.AddFlags = v, "Add Device Flags", "Can add device flags", false) },
-				{ "Device.Actions.AllowUnauthenticatedEnrol", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AllowUnauthenticatedEnrol, (c, v) => c.Device.Actions.AllowUnauthenticatedEnrol = v, "Allow Unauthenticated Enrol", "Can allow devices to enrol without authentication", false) },
-				{ "Device.Actions.AssignUser", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AssignUser, (c, v) => c.Device.Actions.AssignUser = v, "Assign User", "Can update the user assignment of devices", false) },
-				{ "Device.Actions.Decommission", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Decommission, (c, v) => c.Device.Actions.Decommission = v, "Decommission", "Can decommission devices", false) },
-				{ "Device.Actions.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Delete, (c, v) => c.Device.Actions.Delete = v, "Delete", "Can delete devices", false) },
-				{ "Device.Actions.EditFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.EditFlags, (c, v) => c.Device.Actions.EditFlags = v, "Edit Device Flags", "Can edit device flags", false) },
-				{ "Device.Actions.EnrolDevices", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.EnrolDevices, (c, v) => c.Device.Actions.EnrolDevices = v, "Enrol Devices", "Can add devices offline and enrol devices with the Bootstrapper", false) },
-				{ "Device.Actions.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Export, (c, v) => c.Device.Actions.Export = v, "Export Devices", "Can export devices in a bulk format", false) },
-				{ "Device.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.GenerateDocuments, (c, v) => c.Device.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for jobs", false) },
-				{ "Device.Actions.Import", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Import, (c, v) => c.Device.Actions.Import = v, "Import Devices", "Can bulk import devices", false) },
-				{ "Device.Actions.Recommission", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Recommission, (c, v) => c.Device.Actions.Recommission = v, "Recommission", "Can recommission devices", false) },
-				{ "Device.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveAnyAttachments, (c, v) => c.Device.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from devices", false) },
-				{ "Device.Actions.RemoveAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveAnyComments, (c, v) => c.Device.Actions.RemoveAnyComments = v, "Remove Any Comments", "Can remove any device comments", false) },
-				{ "Device.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveFlags, (c, v) => c.Device.Actions.RemoveFlags = v, "Remove Device Flags", "Can remove device flags", false) },
-				{ "Device.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveOwnAttachments, (c, v) => c.Device.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from devices", false) },
-				{ "Device.Actions.RemoveOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveOwnComments, (c, v) => c.Device.Actions.RemoveOwnComments = v, "Remove Own Comments", "Can remove own device comments", false) },
-				{ "Device.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Search, (c, v) => c.Device.Search = v, "Search Devices", "Can search devices", false) },
-				{ "Device.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowAssignmentHistory, (c, v) => c.Device.ShowAssignmentHistory = v, "Show Assignment History", "Can show the assignment history for devices", false) },
-				{ "Device.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowAttachments, (c, v) => c.Device.ShowAttachments = v, "Show Attachments", "Can show device attachments", false) },
-				{ "Device.ShowCertificates", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowCertificates, (c, v) => c.Device.ShowCertificates = v, "Show Certificates", "Can show certificates associated with devices", false) },
-				{ "Device.ShowComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowComments, (c, v) => c.Device.ShowComments = v, "Show Comments", "Can show device comments", false) },
-				{ "Device.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowDetails, (c, v) => c.Device.ShowDetails = v, "Show Details", "Can show details associated with devices", false) },
-				{ "Device.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowFlagAssignments, (c, v) => c.Device.ShowFlagAssignments = v, "Show Device Flag Assignments", "Can show flags associated with devices", false) },
-				{ "Device.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Show, (c, v) => c.Device.Show = v, "Show Devices", "Can show devices", false) },
-				{ "Device.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowJobs, (c, v) => c.Device.ShowJobs = v, "Show Devices Jobs", "Can show jobs associated with devices", false) },
-				{ "User.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddAttachments, (c, v) => c.User.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to users", false) },
-				{ "User.Actions.AddComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddComments, (c, v) => c.User.Actions.AddComments = v, "Add Comments", "Can add user comments", false) },
-				{ "User.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddFlags, (c, v) => c.User.Actions.AddFlags = v, "Add User Flags", "Can add user flags", false) },
-				{ "User.Actions.EditFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.EditFlags, (c, v) => c.User.Actions.EditFlags = v, "Edit User Flags", "Can edit user flags", false) },
-				{ "User.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.GenerateDocuments, (c, v) => c.User.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for users", false) },
-				{ "User.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyAttachments, (c, v) => c.User.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from users", false) },
-				{ "User.Actions.RemoveAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyComments, (c, v) => c.User.Actions.RemoveAnyComments = v, "Remove Any Comments", "Can remove any user comments", false) },
-				{ "User.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnAttachments, (c, v) => c.User.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from users", false) },
-				{ "User.Actions.RemoveOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnComments, (c, v) => c.User.Actions.RemoveOwnComments = v, "Remove Own Comments", "Can remove own user comments", false) },
-				{ "User.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveFlags, (c, v) => c.User.Actions.RemoveFlags = v, "Remove User Flags", "Can remove user flags", false) },
-				{ "User.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Search, (c, v) => c.User.Search = v, "Search Users", "Can search users", false) },
-				{ "User.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAttachments, (c, v) => c.User.ShowAttachments = v, "Show Attachments", "Can show user attachments", false) },
-				{ "User.ShowComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowComments, (c, v) => c.User.ShowComments = v, "Show Comments", "Can show user comments", false) },
-				{ "User.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignmentHistory, (c, v) => c.User.ShowAssignmentHistory = v, "Show Device Assignment History", "Can show the device assignment history for users", false) },
-				{ "User.ShowAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignments, (c, v) => c.User.ShowAssignments = v, "Show Device Assignments", "Can show the current device assignments users", false) },
-				{ "User.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Show, (c, v) => c.User.Show = v, "Show Users", "Can show users", false) },
-				{ "User.ShowAuthorization", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAuthorization, (c, v) => c.User.ShowAuthorization = v, "Show Users Authorization", "Can show authorization permissions associated with users", false) },
-				{ "User.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowDetails, (c, v) => c.User.ShowDetails = v, "Show Users Details", "Can show users contact and personal details", false) },
-				{ "User.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowFlagAssignments, (c, v) => c.User.ShowFlagAssignments = v, "Show Users Flag Assignments", "Can show flags associated with users", false) },
-				{ "User.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowJobs, (c, v) => c.User.ShowJobs = v, "Show Users Jobs", "Can show jobs associated with users", false) },
-				{ "ComputerAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.ComputerAccount, (c, v) => c.ComputerAccount = v, "Computer Account", "Represents a computer account", true) },
-				{ "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco Administrator Account", "Represents a Disco ICT Administrator account", true) }
-			};
+            {
+                { "Config.DeviceCertificate.DownloadCertificates", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceCertificate.DownloadCertificates, (c, v) => c.Config.DeviceCertificate.DownloadCertificates = v, "Download Certificates", "Can download certificates", false) },
+                { "Config.Enrolment.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.Configure, (c, v) => c.Config.Enrolment.Configure = v, "Configure Enrolment", "Can configure device enrolment", false) },
+                { "Config.Enrolment.DownloadBootstrapper", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.DownloadBootstrapper, (c, v) => c.Config.Enrolment.DownloadBootstrapper = v, "Download Bootstrapper", "Can download the Device Bootstrapper", false) },
+                { "Config.Enrolment.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.Show, (c, v) => c.Config.Enrolment.Show = v, "Show Enrolment", "Can show device enrolment", false) },
+                { "Config.Enrolment.ShowStatus", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Enrolment.ShowStatus, (c, v) => c.Config.Enrolment.ShowStatus = v, "Show Enrolment Status", "Can show the enrolment status", false) },
+                { "Config.DeviceBatch.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Configure, (c, v) => c.Config.DeviceBatch.Configure = v, "Configure Device Batches", "Can configure device batches", false) },
+                { "Config.DeviceBatch.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Create, (c, v) => c.Config.DeviceBatch.Create = v, "Create Device Batches", "Can create device batches", false) },
+                { "Config.DeviceBatch.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Delete, (c, v) => c.Config.DeviceBatch.Delete = v, "Delete Device Batches", "Can delete device batches", false) },
+                { "Config.DeviceBatch.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.Show, (c, v) => c.Config.DeviceBatch.Show = v, "Show Device Batches", "Can show device batches", false) },
+                { "Config.DeviceBatch.ShowTimeline", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceBatch.ShowTimeline, (c, v) => c.Config.DeviceBatch.ShowTimeline = v, "Show Timeline", "Can show device batch timeline", false) },
+                { "Config.DeviceFlag.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Configure, (c, v) => c.Config.DeviceFlag.Configure = v, "Configure Device Flags", "Can configure device flags", false) },
+                { "Config.DeviceFlag.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Create, (c, v) => c.Config.DeviceFlag.Create = v, "Create Device Flags", "Can create device flags", false) },
+                { "Config.DeviceFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Delete, (c, v) => c.Config.DeviceFlag.Delete = v, "Delete Device Flags", "Can delete device flags", false) },
+                { "Config.DeviceFlag.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Export, (c, v) => c.Config.DeviceFlag.Export = v, "Export Device Flag Assignments", "Can export user device assignments", false) },
+                { "Config.DeviceFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceFlag.Show, (c, v) => c.Config.DeviceFlag.Show = v, "Show Device Flags", "Can show device flags", false) },
+                { "Config.DeviceModel.ConfigureComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.ConfigureComponents, (c, v) => c.Config.DeviceModel.ConfigureComponents = v, "Configure Device Model Components", "Can configure device model components", false) },
+                { "Config.DeviceModel.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Configure, (c, v) => c.Config.DeviceModel.Configure = v, "Configure Device Models", "Can configure device models", false) },
+                { "Config.DeviceModel.CreateCustom", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.CreateCustom, (c, v) => c.Config.DeviceModel.CreateCustom = v, "Create Custom Device Models", "Can create custom device models", false) },
+                { "Config.DeviceModel.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Delete, (c, v) => c.Config.DeviceModel.Delete = v, "Delete Device Models", "Can delete device models", false) },
+                { "Config.DeviceModel.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceModel.Show, (c, v) => c.Config.DeviceModel.Show = v, "Show Device Models", "Can show device models", false) },
+                { "Config.DeviceProfile.ConfigureComputerNameTemplate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.ConfigureComputerNameTemplate, (c, v) => c.Config.DeviceProfile.ConfigureComputerNameTemplate = v, "Configure Computer Name Templates", "Can configure computer name templates for device profiles", false) },
+                { "Config.DeviceProfile.ConfigureDefaults", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.ConfigureDefaults, (c, v) => c.Config.DeviceProfile.ConfigureDefaults = v, "Configure Default Device Profiles", "Can configure default device profiles", false) },
+                { "Config.DeviceProfile.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Configure, (c, v) => c.Config.DeviceProfile.Configure = v, "Configure Device Profiles", "Can configure device profiles", false) },
+                { "Config.DeviceProfile.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Create, (c, v) => c.Config.DeviceProfile.Create = v, "Create Device Profiles", "Can create device profiles", false) },
+                { "Config.DeviceProfile.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Delete, (c, v) => c.Config.DeviceProfile.Delete = v, "Delete Device Profiles", "Can delete device profiles", false) },
+                { "Config.DeviceProfile.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DeviceProfile.Show, (c, v) => c.Config.DeviceProfile.Show = v, "Show Device Profiles", "Can show device profiles", false) },
+                { "Config.DocumentTemplate.BulkGenerate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.BulkGenerate, (c, v) => c.Config.DocumentTemplate.BulkGenerate = v, "Bulk Generate Document Templates", "Can bulk generate document templates", false) },
+                { "Config.DocumentTemplate.ConfigureFilterExpression", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ConfigureFilterExpression, (c, v) => c.Config.DocumentTemplate.ConfigureFilterExpression = v, "Configure Advanced Expression", "Can configure filter, generate and import expressions for document templates", false) },
+                { "Config.DocumentTemplate.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Configure, (c, v) => c.Config.DocumentTemplate.Configure = v, "Configure Document Templates", "Can configure document templates", false) },
+                { "Config.DocumentTemplate.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Create, (c, v) => c.Config.DocumentTemplate.Create = v, "Create Document Templates", "Can create document templates", false) },
+                { "Config.DocumentTemplate.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Delete, (c, v) => c.Config.DocumentTemplate.Delete = v, "Delete Document Templates", "Can delete document templates", false) },
+                { "Config.DocumentTemplate.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Export, (c, v) => c.Config.DocumentTemplate.Export = v, "Export Attachment Instances", "Can export document attachment instances", false) },
+                { "Config.DocumentTemplate.UndetectedPages", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.UndetectedPages, (c, v) => c.Config.DocumentTemplate.UndetectedPages = v, "Process Undetected Pages", "Can show and assign imported documents which were not undetected", false) },
+                { "Config.DocumentTemplate.ShowStatus", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.ShowStatus, (c, v) => c.Config.DocumentTemplate.ShowStatus = v, "Show Document Template Import Status", "Can show the document template import status", false) },
+                { "Config.DocumentTemplate.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Show, (c, v) => c.Config.DocumentTemplate.Show = v, "Show Document Templates", "Can show document templates", false) },
+                { "Config.DocumentTemplate.Upload", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.DocumentTemplate.Upload, (c, v) => c.Config.DocumentTemplate.Upload = v, "Upload Document Templates", "Can upload document templates", false) },
+                { "Config.Logging.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Logging.Show, (c, v) => c.Config.Logging.Show = v, "Show Logging", "Can show logging", false) },
+                { "Config.Plugin.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Configure, (c, v) => c.Config.Plugin.Configure = v, "Configure Plugins", "Can configure plugins", false) },
+                { "Config.Plugin.InstallLocal", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.InstallLocal, (c, v) => c.Config.Plugin.InstallLocal = v, "Install/Update Local Plugins", "Can install and update locally uploaded plugins", false) },
+                { "Config.Plugin.Install", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Install, (c, v) => c.Config.Plugin.Install = v, "Install/Update Plugins", "Can install and update plugins", false) },
+                { "Config.Plugin.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Show, (c, v) => c.Config.Plugin.Show = v, "Show Plugins", "Can show plugins", false) },
+                { "Config.Plugin.Uninstall", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Plugin.Uninstall, (c, v) => c.Config.Plugin.Uninstall = v, "Uninstall Plugins", "Can uninstall plugins", false) },
+                { "Config.System.ConfigureActiveDirectory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureActiveDirectory, (c, v) => c.Config.System.ConfigureActiveDirectory = v, "Configure Active Directory Settings", "Can configure the Active Directory interoperability settings", false) },
+                { "Config.System.ConfigureEmail", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureEmail, (c, v) => c.Config.System.ConfigureEmail = v, "Configure Email Settings", "Can configure the email settings", false) },
+                { "Config.System.ConfigureProxy", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.ConfigureProxy, (c, v) => c.Config.System.ConfigureProxy = v, "Configure Proxy Settings", "Can configure the proxy settings", false) },
+                { "Config.System.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.System.Show, (c, v) => c.Config.System.Show = v, "Show System Configuration", "Can show the system configuration", false) },
+                { "Config.Organisation.ConfigureAddresses", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureAddresses, (c, v) => c.Config.Organisation.ConfigureAddresses = v, "Configure Addresses", "Can configure organisation addresses", false) },
+                { "Config.Organisation.ConfigureLogo", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureLogo, (c, v) => c.Config.Organisation.ConfigureLogo = v, "Configure Logo", "Can configure the organisation logo", false) },
+                { "Config.Organisation.ConfigureMultiSiteMode", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureMultiSiteMode, (c, v) => c.Config.Organisation.ConfigureMultiSiteMode = v, "Configure Multi-Site Mode", "Can configure multi-site mode", false) },
+                { "Config.Organisation.ConfigureName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.ConfigureName, (c, v) => c.Config.Organisation.ConfigureName = v, "Configure Name", "Can configure the organisation name", false) },
+                { "Config.Organisation.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Organisation.Show, (c, v) => c.Config.Organisation.Show = v, "Show Organisation Details", "Can show the organisation details", false) },
+                { "Config.JobPreferences.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobPreferences.Configure, (c, v) => c.Config.JobPreferences.Configure = v, "Configure Job Preferences", "Can configure job preferences", false) },
+                { "Config.JobPreferences.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobPreferences.Show, (c, v) => c.Config.JobPreferences.Show = v, "Show Job Preferences", "Can show job preferences", false) },
+                { "Config.JobQueue.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Configure, (c, v) => c.Config.JobQueue.Configure = v, "Configure Job Queues", "Can configure job queues", false) },
+                { "Config.JobQueue.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Create, (c, v) => c.Config.JobQueue.Create = v, "Create Job Queues", "Can create job queues", false) },
+                { "Config.JobQueue.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Delete, (c, v) => c.Config.JobQueue.Delete = v, "Delete Job Queues", "Can delete job queues", false) },
+                { "Config.JobQueue.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.JobQueue.Show, (c, v) => c.Config.JobQueue.Show = v, "Show Job Queues", "Can show job queues", false) },
+                { "Config.UserFlag.Configure", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Configure, (c, v) => c.Config.UserFlag.Configure = v, "Configure User Flags", "Can configure user flags", false) },
+                { "Config.UserFlag.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Create, (c, v) => c.Config.UserFlag.Create = v, "Create User Flags", "Can create user flags", false) },
+                { "Config.UserFlag.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Delete, (c, v) => c.Config.UserFlag.Delete = v, "Delete User Flags", "Can delete user flags", false) },
+                { "Config.UserFlag.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Export, (c, v) => c.Config.UserFlag.Export = v, "Export User Flag Assignments", "Can export user flag assignments", false) },
+                { "Config.UserFlag.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.UserFlag.Show, (c, v) => c.Config.UserFlag.Show = v, "Show User Flags", "Can show user flags", false) },
+                { "Config.ManageSavedExports", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.ManageSavedExports, (c, v) => c.Config.ManageSavedExports = v, "Managed Saved Exports", "Can manage saved exports", false) },
+                { "Config.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Config.Show, (c, v) => c.Config.Show = v, "Show Configuration", "Can show the configuration menu", false) },
+                { "Job.Lists.AllOpen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AllOpen, (c, v) => c.Job.Lists.AllOpen = v, "All Open List", "Can show list", false) },
+                { "Job.Lists.AwaitingFinanceAgreementBreach", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceAgreementBreach, (c, v) => c.Job.Lists.AwaitingFinanceAgreementBreach = v, "Awaiting Finance Agreement Breach List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
+                { "Job.Lists.AwaitingFinanceCharge", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceCharge, (c, v) => c.Job.Lists.AwaitingFinanceCharge = v, "Awaiting Finance Charge List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
+                { "Job.Lists.AwaitingFinanceInsuranceProcessing", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinanceInsuranceProcessing, (c, v) => c.Job.Lists.AwaitingFinanceInsuranceProcessing = v, "Awaiting Finance Insurance Processing List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
+                { "Job.Lists.AwaitingFinance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinance, (c, v) => c.Job.Lists.AwaitingFinance = v, "Awaiting Finance List", "Can show list", false) },
+                { "Job.Lists.AwaitingFinancePayment", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingFinancePayment, (c, v) => c.Job.Lists.AwaitingFinancePayment = v, "Awaiting Finance Payment List", "Can show list (NOTE: Requires Awaiting Finance List)", false) },
+                { "Job.Lists.AwaitingTechnicianAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingTechnicianAction, (c, v) => c.Job.Lists.AwaitingTechnicianAction = v, "Awaiting Technician Action List", "Can show list", false) },
+                { "Job.Lists.AwaitingUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.AwaitingUserAction, (c, v) => c.Job.Lists.AwaitingUserAction = v, "Awaiting User Action List", "Can show list", false) },
+                { "Job.Lists.DevicesAwaitingRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.DevicesAwaitingRepair, (c, v) => c.Job.Lists.DevicesAwaitingRepair = v, "Devices Awaiting Repair List", "Can show list", false) },
+                { "Job.Lists.DevicesReadyForReturn", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.DevicesReadyForReturn, (c, v) => c.Job.Lists.DevicesReadyForReturn = v, "Devices Ready For Return List", "Can show list", false) },
+                { "Job.Lists.JobQueueLists", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.JobQueueLists, (c, v) => c.Job.Lists.JobQueueLists = v, "Job Queue Lists", "Can show job queue lists", false) },
+                { "Job.Lists.Locations", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.Locations, (c, v) => c.Job.Lists.Locations = v, "Locations List", "Can show list", false) },
+                { "Job.Lists.LongRunningJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.LongRunningJobs, (c, v) => c.Job.Lists.LongRunningJobs = v, "Long Running Jobs List", "Can show list", false) },
+                { "Job.Lists.MyJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.MyJobs, (c, v) => c.Job.Lists.MyJobs = v, "My Jobs List", "Can show list", false) },
+                { "Job.Lists.MyJobsOrphaned", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.MyJobsOrphaned, (c, v) => c.Job.Lists.MyJobsOrphaned = v, "My Jobs List (Includes No Queue)", "Can show list", false) },
+                { "Job.Lists.RecentlyClosed", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.RecentlyClosed, (c, v) => c.Job.Lists.RecentlyClosed = v, "Recently Closed List", "Can show list", false) },
+                { "Job.Lists.StaleJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Lists.StaleJobs, (c, v) => c.Job.Lists.StaleJobs = v, "Stale Jobs List", "Can show list", false) },
+                { "Job.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddAttachments, (c, v) => c.Job.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to jobs", false) },
+                { "Job.Actions.AddLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddLogs, (c, v) => c.Job.Actions.AddLogs = v, "Add Logs", "Can add job logs", false) },
+                { "Job.Actions.AddAnyQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddAnyQueues, (c, v) => c.Job.Actions.AddAnyQueues = v, "Add to Any Queues", "Can add to any job queues", false) },
+                { "Job.Actions.AddOwnQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.AddOwnQueues, (c, v) => c.Job.Actions.AddOwnQueues = v, "Add to Own Queues", "Can add to own job queues", false) },
+                { "Job.Actions.Close", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Close, (c, v) => c.Job.Actions.Close = v, "Close Jobs", "Can close jobs", false) },
+                { "Job.Actions.ConvertHWarToHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ConvertHWarToHNWar, (c, v) => c.Job.Actions.ConvertHWarToHNWar = v, "Convert HWar Jobs To HNWar", "Can convert warranty jobs to non-warranty jobs", false) },
+                { "Job.Actions.Create", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Create, (c, v) => c.Job.Actions.Create = v, "Create Jobs", "Can create jobs", false) },
+                { "Job.Actions.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Delete, (c, v) => c.Job.Actions.Delete = v, "Delete Jobs", "Can delete jobs", false) },
+                { "Job.Actions.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Export, (c, v) => c.Job.Actions.Export = v, "Export Jobs", "Can export jobs in a bulk format", false) },
+                { "Job.Actions.ForceClose", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.ForceClose, (c, v) => c.Job.Actions.ForceClose = v, "Force Close Jobs", "Can force close jobs", false) },
+                { "Job.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.GenerateDocuments, (c, v) => c.Job.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for jobs", false) },
+                { "Job.Actions.LogInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogInsurance, (c, v) => c.Job.Actions.LogInsurance = v, "Lodge Insurance", "Can lodge insurance for non-warranty jobs", false) },
+                { "Job.Actions.LogRepair", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogRepair, (c, v) => c.Job.Actions.LogRepair = v, "Lodge Repair", "Can lodge repair for non-warranty jobs", false) },
+                { "Job.Actions.LogWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.LogWarranty, (c, v) => c.Job.Actions.LogWarranty = v, "Lodge Warranty", "Can lodge warranty for jobs", false) },
+                { "Job.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyAttachments, (c, v) => c.Job.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from jobs", false) },
+                { "Job.Actions.RemoveAnyLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyLogs, (c, v) => c.Job.Actions.RemoveAnyLogs = v, "Remove Any Logs", "Can remove any job logs", false) },
+                { "Job.Actions.RemoveAnyQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveAnyQueues, (c, v) => c.Job.Actions.RemoveAnyQueues = v, "Remove from Any Queues", "Can remove from any job queues", false) },
+                { "Job.Actions.RemoveOwnQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveOwnQueues, (c, v) => c.Job.Actions.RemoveOwnQueues = v, "Remove from Own Queues", "Can remove from own job queues", false) },
+                { "Job.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveOwnAttachments, (c, v) => c.Job.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from jobs", false) },
+                { "Job.Actions.RemoveOwnLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.RemoveOwnLogs, (c, v) => c.Job.Actions.RemoveOwnLogs = v, "Remove Own Logs", "Can remove own job logs", false) },
+                { "Job.Actions.Reopen", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.Reopen, (c, v) => c.Job.Actions.Reopen = v, "Reopen Jobs", "Can reopen jobs", false) },
+                { "Job.Actions.UpdateSubTypes", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Actions.UpdateSubTypes, (c, v) => c.Job.Actions.UpdateSubTypes = v, "Update Sub Types", "Can update sub types for jobs", false) },
+                { "Job.Properties.WarrantyProperties.ExternalCompletedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalCompletedDate, (c, v) => c.Job.Properties.WarrantyProperties.ExternalCompletedDate = v, "External Completed Date Property", "Can update property", false) },
+                { "Job.Properties.WarrantyProperties.ExternalLoggedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalLoggedDate, (c, v) => c.Job.Properties.WarrantyProperties.ExternalLoggedDate = v, "External Logged Date Property", "Can update property", false) },
+                { "Job.Properties.WarrantyProperties.ExternalName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalName, (c, v) => c.Job.Properties.WarrantyProperties.ExternalName = v, "External Name Property", "Can update property", false) },
+                { "Job.Properties.WarrantyProperties.ExternalReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ExternalReference, (c, v) => c.Job.Properties.WarrantyProperties.ExternalReference = v, "External Reference Property", "Can update property", false) },
+                { "Job.Properties.WarrantyProperties.ProviderDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.ProviderDetails, (c, v) => c.Job.Properties.WarrantyProperties.ProviderDetails = v, "Provider Details", "Can access warranty provider details", false) },
+                { "Job.Properties.WarrantyProperties.WarrantyCompleted", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WarrantyProperties.WarrantyCompleted, (c, v) => c.Job.Properties.WarrantyProperties.WarrantyCompleted = v, "Warranty Completed Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.AccountingChargeAdded", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AccountingChargeAdded, (c, v) => c.Job.Properties.NonWarrantyProperties.AccountingChargeAdded = v, "Accounting Charge Added Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.AccountingChargePaid", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AccountingChargePaid, (c, v) => c.Job.Properties.NonWarrantyProperties.AccountingChargePaid = v, "Accounting Charge Paid Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.AccountingChargeRequired", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AccountingChargeRequired, (c, v) => c.Job.Properties.NonWarrantyProperties.AccountingChargeRequired = v, "Accounting Charge Required Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.AddComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.AddComponents, (c, v) => c.Job.Properties.NonWarrantyProperties.AddComponents = v, "Add Components", "Can add job components (NOTE: Requires Edit Components)", false) },
+                { "Job.Properties.NonWarrantyProperties.EditComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.EditComponents, (c, v) => c.Job.Properties.NonWarrantyProperties.EditComponents = v, "Edit Components", "Can edit and remove job components", false) },
+                { "Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent, (c, v) => c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent = v, "Insurance Claim Form Sent Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.InsuranceDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InsuranceDetails, (c, v) => c.Job.Properties.NonWarrantyProperties.InsuranceDetails = v, "Insurance Detail Properties", "Can update insurance detail properties", false) },
+                { "Job.Properties.NonWarrantyProperties.InvoiceReceived", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.InvoiceReceived, (c, v) => c.Job.Properties.NonWarrantyProperties.InvoiceReceived = v, "Invoice Received Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.IsInsuranceClaim", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim, (c, v) => c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim = v, "Is Insurance Claim Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = v, "Purchase Order Raised Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.PurchaseOrderReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = v, "Purchase Order Reference Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.PurchaseOrderSent", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent, (c, v) => c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = v, "Purchase Order Sent Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.RepairProviderDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairProviderDetails, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairProviderDetails = v, "Repair Provider Details", "Can access repair provider details", false) },
+                { "Job.Properties.NonWarrantyProperties.RepairerCompletedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate = v, "Repairer Completed Date Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.RepairerLoggedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate = v, "Repairer Logged Date Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.RepairerName", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerName, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerName = v, "Repairer Name Property", "Can update property", false) },
+                { "Job.Properties.NonWarrantyProperties.RepairerReference", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NonWarrantyProperties.RepairerReference, (c, v) => c.Job.Properties.NonWarrantyProperties.RepairerReference = v, "Repairer Reference Property", "Can update property", false) },
+                { "Job.Properties.JobQueueProperties.EditAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditAnyComments, (c, v) => c.Job.Properties.JobQueueProperties.EditAnyComments = v, "Edit Any Comments", "Can edit any job queue comments", false) },
+                { "Job.Properties.JobQueueProperties.EditAnyPriority", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditAnyPriority, (c, v) => c.Job.Properties.JobQueueProperties.EditAnyPriority = v, "Edit Any Priority", "Can edit any job queue Priority", false) },
+                { "Job.Properties.JobQueueProperties.EditAnySLA", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditAnySLA, (c, v) => c.Job.Properties.JobQueueProperties.EditAnySLA = v, "Edit Any SLA", "Can edit any job queue SLA", false) },
+                { "Job.Properties.JobQueueProperties.EditOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditOwnComments, (c, v) => c.Job.Properties.JobQueueProperties.EditOwnComments = v, "Edit Own Comments", "Can edit own job queue comments", false) },
+                { "Job.Properties.JobQueueProperties.EditOwnPriority", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditOwnPriority, (c, v) => c.Job.Properties.JobQueueProperties.EditOwnPriority = v, "Edit Own Priority", "Can edit own job queue Priority", false) },
+                { "Job.Properties.JobQueueProperties.EditOwnSLA", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.JobQueueProperties.EditOwnSLA, (c, v) => c.Job.Properties.JobQueueProperties.EditOwnSLA = v, "Edit Own SLA", "Can edit own job queue SLA", false) },
+                { "Job.Properties.DeviceHeldLocation", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceHeldLocation, (c, v) => c.Job.Properties.DeviceHeldLocation = v, "Device Held Location Property", "Can update property", false) },
+                { "Job.Properties.DeviceHeld", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceHeld, (c, v) => c.Job.Properties.DeviceHeld = v, "Device Held Property", "Can update property", false) },
+                { "Job.Properties.DeviceReadyForReturn", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceReadyForReturn, (c, v) => c.Job.Properties.DeviceReadyForReturn = v, "Device Ready For Return Property", "Can update property", false) },
+                { "Job.Properties.DeviceReturned", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.DeviceReturned, (c, v) => c.Job.Properties.DeviceReturned = v, "Device Returned Property", "Can update property", false) },
+                { "Job.Properties.ExpectedClosedDate", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.ExpectedClosedDate, (c, v) => c.Job.Properties.ExpectedClosedDate = v, "Expected Closed Date Property", "Can update property", false) },
+                { "Job.Properties.Flags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.Flags, (c, v) => c.Job.Properties.Flags = v, "Flags Property", "Can update property", false) },
+                { "Job.Properties.NotWaitingForUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.NotWaitingForUserAction, (c, v) => c.Job.Properties.NotWaitingForUserAction = v, "Not Waiting For User Action Property", "Can update property", false) },
+                { "Job.Properties.WaitingForUserAction", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Properties.WaitingForUserAction, (c, v) => c.Job.Properties.WaitingForUserAction = v, "Waiting For User Action Property", "Can update property", false) },
+                { "Job.Types.CreateHMisc", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHMisc, (c, v) => c.Job.Types.CreateHMisc = v, "Create Hardware - Miscellaneous Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.CreateHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHNWar, (c, v) => c.Job.Types.CreateHNWar = v, "Create Hardware - Non-Warranty Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.CreateHWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateHWar, (c, v) => c.Job.Types.CreateHWar = v, "Create Hardware - Warranty Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.CreateSApp", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSApp, (c, v) => c.Job.Types.CreateSApp = v, "Create Software - Application Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.CreateSOS", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSOS, (c, v) => c.Job.Types.CreateSOS = v, "Create Software - Operating System Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.CreateSImg", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateSImg, (c, v) => c.Job.Types.CreateSImg = v, "Create Software - Reimage Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.CreateUMgmt", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.CreateUMgmt, (c, v) => c.Job.Types.CreateUMgmt = v, "Create User Management Jobs", "Can create jobs of this type (Requires: Create Jobs)", false) },
+                { "Job.Types.ShowHMisc", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHMisc, (c, v) => c.Job.Types.ShowHMisc = v, "Show Hardware - Miscellaneous Jobs", "Can show jobs of this type", false) },
+                { "Job.Types.ShowHNWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHNWar, (c, v) => c.Job.Types.ShowHNWar = v, "Show Hardware - Non-Warranty Jobs", "Can show jobs of this type", false) },
+                { "Job.Types.ShowHWar", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowHWar, (c, v) => c.Job.Types.ShowHWar = v, "Show Hardware - Warranty Jobs", "Can show jobs of this type", false) },
+                { "Job.Types.ShowSApp", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowSApp, (c, v) => c.Job.Types.ShowSApp = v, "Show Software - Application Jobs", "Can show jobs of this type", false) },
+                { "Job.Types.ShowSOS", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowSOS, (c, v) => c.Job.Types.ShowSOS = v, "Show Software - Operating System Jobs", "Can show jobs of this type", false) },
+                { "Job.Types.ShowSImg", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowSImg, (c, v) => c.Job.Types.ShowSImg = v, "Show Software - Reimage Jobs", "Can show jobs of this type", false) },
+                { "Job.Types.ShowUMgmt", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Types.ShowUMgmt, (c, v) => c.Job.Types.ShowUMgmt = v, "Show User Management Jobs", "Can show jobs of this type", false) },
+                { "Job.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Search, (c, v) => c.Job.Search = v, "Search Jobs", "Can search jobs", false) },
+                { "Job.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowAttachments, (c, v) => c.Job.ShowAttachments = v, "Show Attachments", "Can show job attachments", false) },
+                { "Job.ShowDailyChart", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowDailyChart, (c, v) => c.Job.ShowDailyChart = v, "Show Daily Opened & Closed", "Can show daily opened & closed chart", false) },
+                { "Job.ShowFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowFlags, (c, v) => c.Job.ShowFlags = v, "Show Flags", "Can show job flags", false) },
+                { "Job.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.Show, (c, v) => c.Job.Show = v, "Show Jobs", "Can show jobs", false) },
+                { "Job.ShowJobsQueues", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowJobsQueues, (c, v) => c.Job.ShowJobsQueues = v, "Show Jobs Queues", "Can show jobs queues", false) },
+                { "Job.ShowLogs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowLogs, (c, v) => c.Job.ShowLogs = v, "Show Logs", "Can show job logs", false) },
+                { "Job.ShowNonWarrantyComponents", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyComponents, (c, v) => c.Job.ShowNonWarrantyComponents = v, "Show Non-Warranty Components", "Can show non-warranty job components", false) },
+                { "Job.ShowNonWarrantyFinance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyFinance, (c, v) => c.Job.ShowNonWarrantyFinance = v, "Show Non-Warranty Finance", "Can show non-warranty job finance", false) },
+                { "Job.ShowNonWarrantyInsurance", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyInsurance, (c, v) => c.Job.ShowNonWarrantyInsurance = v, "Show Non-Warranty Insurance", "Can show non-warranty job insurance", false) },
+                { "Job.ShowNonWarrantyRepairs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowNonWarrantyRepairs, (c, v) => c.Job.ShowNonWarrantyRepairs = v, "Show Non-Warranty Repairs", "Can show non-warranty job repairs", false) },
+                { "Job.ShowWarranty", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Job.ShowWarranty, (c, v) => c.Job.ShowWarranty = v, "Show Warranty", "Can show job warranty", false) },
+                { "Device.Properties.AssetNumber", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.AssetNumber, (c, v) => c.Device.Properties.AssetNumber = v, "Asset Number Property", "Can update property", false) },
+                { "Device.Properties.Details", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Details, (c, v) => c.Device.Properties.Details = v, "Detail Properties", "Can update detail properties", false) },
+                { "Device.Properties.DeviceBatch", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceBatch, (c, v) => c.Device.Properties.DeviceBatch = v, "Device Batch Property", "Can update property", false) },
+                { "Device.Properties.DeviceProfile", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.DeviceProfile, (c, v) => c.Device.Properties.DeviceProfile = v, "Device Profile Property", "Can update property", false) },
+                { "Device.Properties.Location", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Properties.Location, (c, v) => c.Device.Properties.Location = v, "Location Property", "Can update property", false) },
+                { "Device.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddAttachments, (c, v) => c.Device.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to devices", false) },
+                { "Device.Actions.AddComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddComments, (c, v) => c.Device.Actions.AddComments = v, "Add Comments", "Can add device comments", false) },
+                { "Device.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AddFlags, (c, v) => c.Device.Actions.AddFlags = v, "Add Device Flags", "Can add device flags", false) },
+                { "Device.Actions.AllowUnauthenticatedEnrol", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AllowUnauthenticatedEnrol, (c, v) => c.Device.Actions.AllowUnauthenticatedEnrol = v, "Allow Unauthenticated Enrol", "Can allow devices to enrol without authentication", false) },
+                { "Device.Actions.AssignUser", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.AssignUser, (c, v) => c.Device.Actions.AssignUser = v, "Assign User", "Can update the user assignment of devices", false) },
+                { "Device.Actions.Decommission", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Decommission, (c, v) => c.Device.Actions.Decommission = v, "Decommission", "Can decommission devices", false) },
+                { "Device.Actions.Delete", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Delete, (c, v) => c.Device.Actions.Delete = v, "Delete", "Can delete devices", false) },
+                { "Device.Actions.EditFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.EditFlags, (c, v) => c.Device.Actions.EditFlags = v, "Edit Device Flags", "Can edit device flags", false) },
+                { "Device.Actions.EnrolDevices", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.EnrolDevices, (c, v) => c.Device.Actions.EnrolDevices = v, "Enrol Devices", "Can add devices offline and enrol devices with the Bootstrapper", false) },
+                { "Device.Actions.Export", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Export, (c, v) => c.Device.Actions.Export = v, "Export Devices", "Can export devices in a bulk format", false) },
+                { "Device.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.GenerateDocuments, (c, v) => c.Device.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for jobs", false) },
+                { "Device.Actions.Import", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Import, (c, v) => c.Device.Actions.Import = v, "Import Devices", "Can bulk import devices", false) },
+                { "Device.Actions.Recommission", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.Recommission, (c, v) => c.Device.Actions.Recommission = v, "Recommission", "Can recommission devices", false) },
+                { "Device.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveAnyAttachments, (c, v) => c.Device.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from devices", false) },
+                { "Device.Actions.RemoveAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveAnyComments, (c, v) => c.Device.Actions.RemoveAnyComments = v, "Remove Any Comments", "Can remove any device comments", false) },
+                { "Device.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveFlags, (c, v) => c.Device.Actions.RemoveFlags = v, "Remove Device Flags", "Can remove device flags", false) },
+                { "Device.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveOwnAttachments, (c, v) => c.Device.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from devices", false) },
+                { "Device.Actions.RemoveOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Actions.RemoveOwnComments, (c, v) => c.Device.Actions.RemoveOwnComments = v, "Remove Own Comments", "Can remove own device comments", false) },
+                { "Device.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Search, (c, v) => c.Device.Search = v, "Search Devices", "Can search devices", false) },
+                { "Device.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowAssignmentHistory, (c, v) => c.Device.ShowAssignmentHistory = v, "Show Assignment History", "Can show the assignment history for devices", false) },
+                { "Device.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowAttachments, (c, v) => c.Device.ShowAttachments = v, "Show Attachments", "Can show device attachments", false) },
+                { "Device.ShowCertificates", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowCertificates, (c, v) => c.Device.ShowCertificates = v, "Show Certificates", "Can show certificates associated with devices", false) },
+                { "Device.ShowComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowComments, (c, v) => c.Device.ShowComments = v, "Show Comments", "Can show device comments", false) },
+                { "Device.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowDetails, (c, v) => c.Device.ShowDetails = v, "Show Details", "Can show details associated with devices", false) },
+                { "Device.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowFlagAssignments, (c, v) => c.Device.ShowFlagAssignments = v, "Show Device Flag Assignments", "Can show flags associated with devices", false) },
+                { "Device.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.Show, (c, v) => c.Device.Show = v, "Show Devices", "Can show devices", false) },
+                { "Device.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.Device.ShowJobs, (c, v) => c.Device.ShowJobs = v, "Show Devices Jobs", "Can show jobs associated with devices", false) },
+                { "User.Actions.AddAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddAttachments, (c, v) => c.User.Actions.AddAttachments = v, "Add Attachments", "Can add attachments to users", false) },
+                { "User.Actions.AddComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddComments, (c, v) => c.User.Actions.AddComments = v, "Add Comments", "Can add user comments", false) },
+                { "User.Actions.AddFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.AddFlags, (c, v) => c.User.Actions.AddFlags = v, "Add User Flags", "Can add user flags", false) },
+                { "User.Actions.EditFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.EditFlags, (c, v) => c.User.Actions.EditFlags = v, "Edit User Flags", "Can edit user flags", false) },
+                { "User.Actions.GenerateDocuments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.GenerateDocuments, (c, v) => c.User.Actions.GenerateDocuments = v, "Generate Documents", "Can generate documents for users", false) },
+                { "User.Actions.RemoveAnyAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyAttachments, (c, v) => c.User.Actions.RemoveAnyAttachments = v, "Remove Any Attachments", "Can remove any attachments from users", false) },
+                { "User.Actions.RemoveAnyComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveAnyComments, (c, v) => c.User.Actions.RemoveAnyComments = v, "Remove Any Comments", "Can remove any user comments", false) },
+                { "User.Actions.RemoveOwnAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnAttachments, (c, v) => c.User.Actions.RemoveOwnAttachments = v, "Remove Own Attachments", "Can remove own attachments from users", false) },
+                { "User.Actions.RemoveOwnComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveOwnComments, (c, v) => c.User.Actions.RemoveOwnComments = v, "Remove Own Comments", "Can remove own user comments", false) },
+                { "User.Actions.RemoveFlags", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Actions.RemoveFlags, (c, v) => c.User.Actions.RemoveFlags = v, "Remove User Flags", "Can remove user flags", false) },
+                { "User.Search", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Search, (c, v) => c.User.Search = v, "Search Users", "Can search users", false) },
+                { "User.ShowAttachments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAttachments, (c, v) => c.User.ShowAttachments = v, "Show Attachments", "Can show user attachments", false) },
+                { "User.ShowComments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowComments, (c, v) => c.User.ShowComments = v, "Show Comments", "Can show user comments", false) },
+                { "User.ShowAssignmentHistory", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignmentHistory, (c, v) => c.User.ShowAssignmentHistory = v, "Show Device Assignment History", "Can show the device assignment history for users", false) },
+                { "User.ShowAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAssignments, (c, v) => c.User.ShowAssignments = v, "Show Device Assignments", "Can show the current device assignments users", false) },
+                { "User.Show", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.Show, (c, v) => c.User.Show = v, "Show Users", "Can show users", false) },
+                { "User.ShowAuthorization", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowAuthorization, (c, v) => c.User.ShowAuthorization = v, "Show Users Authorization", "Can show authorization permissions associated with users", false) },
+                { "User.ShowDetails", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowDetails, (c, v) => c.User.ShowDetails = v, "Show Users Details", "Can show users contact and personal details", false) },
+                { "User.ShowFlagAssignments", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowFlagAssignments, (c, v) => c.User.ShowFlagAssignments = v, "Show Users Flag Assignments", "Can show flags associated with users", false) },
+                { "User.ShowJobs", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.User.ShowJobs, (c, v) => c.User.ShowJobs = v, "Show Users Jobs", "Can show jobs associated with users", false) },
+                { "ComputerAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.ComputerAccount, (c, v) => c.ComputerAccount = v, "Computer Account", "Represents a computer account", true) },
+                { "DiscoAdminAccount", new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(c => c.DiscoAdminAccount, (c, v) => c.DiscoAdminAccount = v, "Disco Administrator Account", "Represents a Disco ICT Administrator account", true) }
+            };
 #endregion
 
 #region Role Claim Navigator
-			_claimNavigator =
-				new ClaimNavigatorItem("Claims", "Permissions", "Top-level node for all permissions", false, new List<IClaimNavigatorItem>() {
-				    new ClaimNavigatorItem("Config", "Configuration", "Permissions related to Disco ICT Configuration", false, new List<IClaimNavigatorItem>() {
-				        new ClaimNavigatorItem("Config.DeviceBatch", "Device Batches", "Permissions related to Device Batches", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.DeviceBatch.Configure", false),
-				            new ClaimNavigatorItem("Config.DeviceBatch.Create", false),
-				            new ClaimNavigatorItem("Config.DeviceBatch.Delete", false),
-				            new ClaimNavigatorItem("Config.DeviceBatch.Show", false),
-				            new ClaimNavigatorItem("Config.DeviceBatch.ShowTimeline", false)
-				        }),
-				        new ClaimNavigatorItem("Config.DeviceCertificate", "Device Certificates", "Permissions related to Device Certificates", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.DeviceCertificate.DownloadCertificates", false)
-				        }),
-				        new ClaimNavigatorItem("Config.DeviceFlag", "Device Flags", "Permissions related to Device Flags", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.DeviceFlag.Configure", false),
-				            new ClaimNavigatorItem("Config.DeviceFlag.Create", false),
-				            new ClaimNavigatorItem("Config.DeviceFlag.Delete", false),
-				            new ClaimNavigatorItem("Config.DeviceFlag.Export", false),
-				            new ClaimNavigatorItem("Config.DeviceFlag.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.DeviceModel", "Device Models", "Permissions related to Device Models", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.DeviceModel.ConfigureComponents", false),
-				            new ClaimNavigatorItem("Config.DeviceModel.Configure", false),
-				            new ClaimNavigatorItem("Config.DeviceModel.CreateCustom", false),
-				            new ClaimNavigatorItem("Config.DeviceModel.Delete", false),
-				            new ClaimNavigatorItem("Config.DeviceModel.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.DeviceProfile", "Device Profiles", "Permissions related to Device Profiles", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.DeviceProfile.ConfigureComputerNameTemplate", false),
-				            new ClaimNavigatorItem("Config.DeviceProfile.ConfigureDefaults", false),
-				            new ClaimNavigatorItem("Config.DeviceProfile.Configure", false),
-				            new ClaimNavigatorItem("Config.DeviceProfile.Create", false),
-				            new ClaimNavigatorItem("Config.DeviceProfile.Delete", false),
-				            new ClaimNavigatorItem("Config.DeviceProfile.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.DocumentTemplate", "Document Templates", "Permissions related to Document Templates", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.DocumentTemplate.BulkGenerate", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.ConfigureFilterExpression", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Configure", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Create", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Delete", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Export", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.UndetectedPages", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.ShowStatus", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Show", false),
-				            new ClaimNavigatorItem("Config.DocumentTemplate.Upload", false)
-				        }),
-				        new ClaimNavigatorItem("Config.Enrolment", "Enrolment", "Permissions related to Device Enrolment", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.Enrolment.Configure", false),
-				            new ClaimNavigatorItem("Config.Enrolment.DownloadBootstrapper", false),
-				            new ClaimNavigatorItem("Config.Enrolment.Show", false),
-				            new ClaimNavigatorItem("Config.Enrolment.ShowStatus", false)
-				        }),
-				        new ClaimNavigatorItem("Config.JobPreferences", "Job Preferences", "Permissions related to Job Preferences", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.JobPreferences.Configure", false),
-				            new ClaimNavigatorItem("Config.JobPreferences.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.JobQueue", "Job Queues", "Permissions related to Job Queues", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.JobQueue.Configure", false),
-				            new ClaimNavigatorItem("Config.JobQueue.Create", false),
-				            new ClaimNavigatorItem("Config.JobQueue.Delete", false),
-				            new ClaimNavigatorItem("Config.JobQueue.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.Logging", "Logging", "Permissions related to Logging", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.Logging.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.Organisation", "Organisation Details", "Permissions related to the Organisation Details", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.Organisation.ConfigureAddresses", false),
-				            new ClaimNavigatorItem("Config.Organisation.ConfigureLogo", false),
-				            new ClaimNavigatorItem("Config.Organisation.ConfigureMultiSiteMode", false),
-				            new ClaimNavigatorItem("Config.Organisation.ConfigureName", false),
-				            new ClaimNavigatorItem("Config.Organisation.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.Plugin", "Plugin", "Permissions related to Plugins", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.Plugin.Configure", false),
-				            new ClaimNavigatorItem("Config.Plugin.InstallLocal", false),
-				            new ClaimNavigatorItem("Config.Plugin.Install", false),
-				            new ClaimNavigatorItem("Config.Plugin.Show", false),
-				            new ClaimNavigatorItem("Config.Plugin.Uninstall", false)
-				        }),
-				        new ClaimNavigatorItem("Config.System", "System", "Permissions related to System Configuration", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.System.ConfigureActiveDirectory", false),
-				            new ClaimNavigatorItem("Config.System.ConfigureEmail", false),
-				            new ClaimNavigatorItem("Config.System.ConfigureProxy", false),
-				            new ClaimNavigatorItem("Config.System.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.UserFlag", "User Flags", "Permissions related to User Flags", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Config.UserFlag.Configure", false),
-				            new ClaimNavigatorItem("Config.UserFlag.Create", false),
-				            new ClaimNavigatorItem("Config.UserFlag.Delete", false),
-				            new ClaimNavigatorItem("Config.UserFlag.Export", false),
-				            new ClaimNavigatorItem("Config.UserFlag.Show", false)
-				        }),
-				        new ClaimNavigatorItem("Config.ManageSavedExports", false),
-				        new ClaimNavigatorItem("Config.Show", false)
-				    }),
-				    new ClaimNavigatorItem("Job", "Job", "Permissions related to Jobs", false, new List<IClaimNavigatorItem>() {
-				        new ClaimNavigatorItem("Job.Actions", "Actions", "Permissions related to Job Actions", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Job.Actions.AddAttachments", false),
-				            new ClaimNavigatorItem("Job.Actions.AddLogs", false),
-				            new ClaimNavigatorItem("Job.Actions.AddAnyQueues", false),
-				            new ClaimNavigatorItem("Job.Actions.AddOwnQueues", false),
-				            new ClaimNavigatorItem("Job.Actions.Close", false),
-				            new ClaimNavigatorItem("Job.Actions.ConvertHWarToHNWar", false),
-				            new ClaimNavigatorItem("Job.Actions.Create", false),
-				            new ClaimNavigatorItem("Job.Actions.Delete", false),
-				            new ClaimNavigatorItem("Job.Actions.Export", false),
-				            new ClaimNavigatorItem("Job.Actions.ForceClose", false),
-				            new ClaimNavigatorItem("Job.Actions.GenerateDocuments", false),
-				            new ClaimNavigatorItem("Job.Actions.LogInsurance", false),
-				            new ClaimNavigatorItem("Job.Actions.LogRepair", false),
-				            new ClaimNavigatorItem("Job.Actions.LogWarranty", false),
-				            new ClaimNavigatorItem("Job.Actions.RemoveAnyAttachments", false),
-				            new ClaimNavigatorItem("Job.Actions.RemoveAnyLogs", false),
-				            new ClaimNavigatorItem("Job.Actions.RemoveAnyQueues", false),
-				            new ClaimNavigatorItem("Job.Actions.RemoveOwnQueues", false),
-				            new ClaimNavigatorItem("Job.Actions.RemoveOwnAttachments", false),
-				            new ClaimNavigatorItem("Job.Actions.RemoveOwnLogs", false),
-				            new ClaimNavigatorItem("Job.Actions.Reopen", false),
-				            new ClaimNavigatorItem("Job.Actions.UpdateSubTypes", false)
-				        }),
-				        new ClaimNavigatorItem("Job.Properties", "Job Properties", "Permissions related to Job Properties", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Job.Properties.JobQueueProperties", "Job Queue Properties", "Permissions related to Job Queue Job Properties", false, new List<IClaimNavigatorItem>() {
-				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnyComments", false),
-				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnyPriority", false),
-				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnySLA", false),
-				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditOwnComments", false),
-				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditOwnPriority", false),
-				                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditOwnSLA", false)
-				            }),
-				            new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties", "Non Warranty Properties", "Permissions related to Non-Warranty Job Properties", false, new List<IClaimNavigatorItem>() {
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AccountingChargeAdded", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AccountingChargePaid", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AccountingChargeRequired", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AddComponents", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.EditComponents", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.InsuranceDetails", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.InvoiceReceived", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.IsInsuranceClaim", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderReference", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderSent", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairProviderDetails", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerCompletedDate", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerLoggedDate", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerName", false),
-				                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerReference", false)
-				            }),
-				            new ClaimNavigatorItem("Job.Properties.WarrantyProperties", "Warranty Properties", "Permissions related to Warranty Job Properties", false, new List<IClaimNavigatorItem>() {
-				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalCompletedDate", false),
-				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalLoggedDate", false),
-				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalName", false),
-				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalReference", false),
-				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ProviderDetails", false),
-				                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.WarrantyCompleted", false)
-				            }),
-				            new ClaimNavigatorItem("Job.Properties.DeviceHeldLocation", false),
-				            new ClaimNavigatorItem("Job.Properties.DeviceHeld", false),
-				            new ClaimNavigatorItem("Job.Properties.DeviceReadyForReturn", false),
-				            new ClaimNavigatorItem("Job.Properties.DeviceReturned", false),
-				            new ClaimNavigatorItem("Job.Properties.ExpectedClosedDate", false),
-				            new ClaimNavigatorItem("Job.Properties.Flags", false),
-				            new ClaimNavigatorItem("Job.Properties.NotWaitingForUserAction", false),
-				            new ClaimNavigatorItem("Job.Properties.WaitingForUserAction", false)
-				        }),
-				        new ClaimNavigatorItem("Job.Lists", "Lists", "Permissions related to Job Lists", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Job.Lists.AllOpen", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingFinanceAgreementBreach", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingFinanceCharge", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingFinanceInsuranceProcessing", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingFinance", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingFinancePayment", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingTechnicianAction", false),
-				            new ClaimNavigatorItem("Job.Lists.AwaitingUserAction", false),
-				            new ClaimNavigatorItem("Job.Lists.DevicesAwaitingRepair", false),
-				            new ClaimNavigatorItem("Job.Lists.DevicesReadyForReturn", false),
-				            new ClaimNavigatorItem("Job.Lists.JobQueueLists", false),
-				            new ClaimNavigatorItem("Job.Lists.Locations", false),
-				            new ClaimNavigatorItem("Job.Lists.LongRunningJobs", false),
-				            new ClaimNavigatorItem("Job.Lists.MyJobs", false),
-				            new ClaimNavigatorItem("Job.Lists.MyJobsOrphaned", false),
-				            new ClaimNavigatorItem("Job.Lists.RecentlyClosed", false),
-				            new ClaimNavigatorItem("Job.Lists.StaleJobs", false)
-				        }),
-				        new ClaimNavigatorItem("Job.Types", "Types", "Permissions related to Job Types", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Job.Types.CreateHMisc", false),
-				            new ClaimNavigatorItem("Job.Types.CreateHNWar", false),
-				            new ClaimNavigatorItem("Job.Types.CreateHWar", false),
-				            new ClaimNavigatorItem("Job.Types.CreateSApp", false),
-				            new ClaimNavigatorItem("Job.Types.CreateSOS", false),
-				            new ClaimNavigatorItem("Job.Types.CreateSImg", false),
-				            new ClaimNavigatorItem("Job.Types.CreateUMgmt", false),
-				            new ClaimNavigatorItem("Job.Types.ShowHMisc", false),
-				            new ClaimNavigatorItem("Job.Types.ShowHNWar", false),
-				            new ClaimNavigatorItem("Job.Types.ShowHWar", false),
-				            new ClaimNavigatorItem("Job.Types.ShowSApp", false),
-				            new ClaimNavigatorItem("Job.Types.ShowSOS", false),
-				            new ClaimNavigatorItem("Job.Types.ShowSImg", false),
-				            new ClaimNavigatorItem("Job.Types.ShowUMgmt", false)
-				        }),
-				        new ClaimNavigatorItem("Job.Search", false),
-				        new ClaimNavigatorItem("Job.ShowAttachments", false),
-				        new ClaimNavigatorItem("Job.ShowDailyChart", false),
-				        new ClaimNavigatorItem("Job.ShowFlags", false),
-				        new ClaimNavigatorItem("Job.Show", false),
-				        new ClaimNavigatorItem("Job.ShowJobsQueues", false),
-				        new ClaimNavigatorItem("Job.ShowLogs", false),
-				        new ClaimNavigatorItem("Job.ShowNonWarrantyComponents", false),
-				        new ClaimNavigatorItem("Job.ShowNonWarrantyFinance", false),
-				        new ClaimNavigatorItem("Job.ShowNonWarrantyInsurance", false),
-				        new ClaimNavigatorItem("Job.ShowNonWarrantyRepairs", false),
-				        new ClaimNavigatorItem("Job.ShowWarranty", false)
-				    }),
-				    new ClaimNavigatorItem("Device", "Device", "Permissions related to Devices", false, new List<IClaimNavigatorItem>() {
-				        new ClaimNavigatorItem("Device.Actions", "Actions", "Permissions related to Device Actions", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Device.Actions.AddAttachments", false),
-				            new ClaimNavigatorItem("Device.Actions.AddComments", false),
-				            new ClaimNavigatorItem("Device.Actions.AddFlags", false),
-				            new ClaimNavigatorItem("Device.Actions.AllowUnauthenticatedEnrol", false),
-				            new ClaimNavigatorItem("Device.Actions.AssignUser", false),
-				            new ClaimNavigatorItem("Device.Actions.Decommission", false),
-				            new ClaimNavigatorItem("Device.Actions.Delete", false),
-				            new ClaimNavigatorItem("Device.Actions.EditFlags", false),
-				            new ClaimNavigatorItem("Device.Actions.EnrolDevices", false),
-				            new ClaimNavigatorItem("Device.Actions.Export", false),
-				            new ClaimNavigatorItem("Device.Actions.GenerateDocuments", false),
-				            new ClaimNavigatorItem("Device.Actions.Import", false),
-				            new ClaimNavigatorItem("Device.Actions.Recommission", false),
-				            new ClaimNavigatorItem("Device.Actions.RemoveAnyAttachments", false),
-				            new ClaimNavigatorItem("Device.Actions.RemoveAnyComments", false),
-				            new ClaimNavigatorItem("Device.Actions.RemoveFlags", false),
-				            new ClaimNavigatorItem("Device.Actions.RemoveOwnAttachments", false),
-				            new ClaimNavigatorItem("Device.Actions.RemoveOwnComments", false)
-				        }),
-				        new ClaimNavigatorItem("Device.Properties", "Device Properties", "Permissions related to Device Properties", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("Device.Properties.AssetNumber", false),
-				            new ClaimNavigatorItem("Device.Properties.Details", false),
-				            new ClaimNavigatorItem("Device.Properties.DeviceBatch", false),
-				            new ClaimNavigatorItem("Device.Properties.DeviceProfile", false),
-				            new ClaimNavigatorItem("Device.Properties.Location", false)
-				        }),
-				        new ClaimNavigatorItem("Device.Search", false),
-				        new ClaimNavigatorItem("Device.ShowAssignmentHistory", false),
-				        new ClaimNavigatorItem("Device.ShowAttachments", false),
-				        new ClaimNavigatorItem("Device.ShowCertificates", false),
-				        new ClaimNavigatorItem("Device.ShowComments", false),
-				        new ClaimNavigatorItem("Device.ShowDetails", false),
-				        new ClaimNavigatorItem("Device.ShowFlagAssignments", false),
-				        new ClaimNavigatorItem("Device.Show", false),
-				        new ClaimNavigatorItem("Device.ShowJobs", false)
-				    }),
-				    new ClaimNavigatorItem("User", "User", "Permissions related to Users", false, new List<IClaimNavigatorItem>() {
-				        new ClaimNavigatorItem("User.Actions", "Actions", "Permissions related to User Actions", false, new List<IClaimNavigatorItem>() {
-				            new ClaimNavigatorItem("User.Actions.AddAttachments", false),
-				            new ClaimNavigatorItem("User.Actions.AddComments", false),
-				            new ClaimNavigatorItem("User.Actions.AddFlags", false),
-				            new ClaimNavigatorItem("User.Actions.EditFlags", false),
-				            new ClaimNavigatorItem("User.Actions.GenerateDocuments", false),
-				            new ClaimNavigatorItem("User.Actions.RemoveAnyAttachments", false),
-				            new ClaimNavigatorItem("User.Actions.RemoveAnyComments", false),
-				            new ClaimNavigatorItem("User.Actions.RemoveOwnAttachments", false),
-				            new ClaimNavigatorItem("User.Actions.RemoveOwnComments", false),
-				            new ClaimNavigatorItem("User.Actions.RemoveFlags", false)
-				        }),
-				        new ClaimNavigatorItem("User.Search", false),
-				        new ClaimNavigatorItem("User.ShowAttachments", false),
-				        new ClaimNavigatorItem("User.ShowComments", false),
-				        new ClaimNavigatorItem("User.ShowAssignmentHistory", false),
-				        new ClaimNavigatorItem("User.ShowAssignments", false),
-				        new ClaimNavigatorItem("User.Show", false),
-				        new ClaimNavigatorItem("User.ShowAuthorization", false),
-				        new ClaimNavigatorItem("User.ShowDetails", false),
-				        new ClaimNavigatorItem("User.ShowFlagAssignments", false),
-				        new ClaimNavigatorItem("User.ShowJobs", false)
-				    }),
-				    new ClaimNavigatorItem("ComputerAccount", true),
-				    new ClaimNavigatorItem("DiscoAdminAccount", true)
-				});
+            _claimNavigator =
+                new ClaimNavigatorItem("Claims", "Permissions", "Top-level node for all permissions", false, new List<IClaimNavigatorItem>() {
+                    new ClaimNavigatorItem("Config", "Configuration", "Permissions related to Disco ICT Configuration", false, new List<IClaimNavigatorItem>() {
+                        new ClaimNavigatorItem("Config.DeviceBatch", "Device Batches", "Permissions related to Device Batches", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.DeviceBatch.Configure", false),
+                            new ClaimNavigatorItem("Config.DeviceBatch.Create", false),
+                            new ClaimNavigatorItem("Config.DeviceBatch.Delete", false),
+                            new ClaimNavigatorItem("Config.DeviceBatch.Show", false),
+                            new ClaimNavigatorItem("Config.DeviceBatch.ShowTimeline", false)
+                        }),
+                        new ClaimNavigatorItem("Config.DeviceCertificate", "Device Certificates", "Permissions related to Device Certificates", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.DeviceCertificate.DownloadCertificates", false)
+                        }),
+                        new ClaimNavigatorItem("Config.DeviceFlag", "Device Flags", "Permissions related to Device Flags", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.DeviceFlag.Configure", false),
+                            new ClaimNavigatorItem("Config.DeviceFlag.Create", false),
+                            new ClaimNavigatorItem("Config.DeviceFlag.Delete", false),
+                            new ClaimNavigatorItem("Config.DeviceFlag.Export", false),
+                            new ClaimNavigatorItem("Config.DeviceFlag.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.DeviceModel", "Device Models", "Permissions related to Device Models", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.DeviceModel.ConfigureComponents", false),
+                            new ClaimNavigatorItem("Config.DeviceModel.Configure", false),
+                            new ClaimNavigatorItem("Config.DeviceModel.CreateCustom", false),
+                            new ClaimNavigatorItem("Config.DeviceModel.Delete", false),
+                            new ClaimNavigatorItem("Config.DeviceModel.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.DeviceProfile", "Device Profiles", "Permissions related to Device Profiles", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.DeviceProfile.ConfigureComputerNameTemplate", false),
+                            new ClaimNavigatorItem("Config.DeviceProfile.ConfigureDefaults", false),
+                            new ClaimNavigatorItem("Config.DeviceProfile.Configure", false),
+                            new ClaimNavigatorItem("Config.DeviceProfile.Create", false),
+                            new ClaimNavigatorItem("Config.DeviceProfile.Delete", false),
+                            new ClaimNavigatorItem("Config.DeviceProfile.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.DocumentTemplate", "Document Templates", "Permissions related to Document Templates", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.DocumentTemplate.BulkGenerate", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.ConfigureFilterExpression", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.Configure", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.Create", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.Delete", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.Export", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.UndetectedPages", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.ShowStatus", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.Show", false),
+                            new ClaimNavigatorItem("Config.DocumentTemplate.Upload", false)
+                        }),
+                        new ClaimNavigatorItem("Config.Enrolment", "Enrolment", "Permissions related to Device Enrolment", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.Enrolment.Configure", false),
+                            new ClaimNavigatorItem("Config.Enrolment.DownloadBootstrapper", false),
+                            new ClaimNavigatorItem("Config.Enrolment.Show", false),
+                            new ClaimNavigatorItem("Config.Enrolment.ShowStatus", false)
+                        }),
+                        new ClaimNavigatorItem("Config.JobPreferences", "Job Preferences", "Permissions related to Job Preferences", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.JobPreferences.Configure", false),
+                            new ClaimNavigatorItem("Config.JobPreferences.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.JobQueue", "Job Queues", "Permissions related to Job Queues", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.JobQueue.Configure", false),
+                            new ClaimNavigatorItem("Config.JobQueue.Create", false),
+                            new ClaimNavigatorItem("Config.JobQueue.Delete", false),
+                            new ClaimNavigatorItem("Config.JobQueue.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.Logging", "Logging", "Permissions related to Logging", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.Logging.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.Organisation", "Organisation Details", "Permissions related to the Organisation Details", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.Organisation.ConfigureAddresses", false),
+                            new ClaimNavigatorItem("Config.Organisation.ConfigureLogo", false),
+                            new ClaimNavigatorItem("Config.Organisation.ConfigureMultiSiteMode", false),
+                            new ClaimNavigatorItem("Config.Organisation.ConfigureName", false),
+                            new ClaimNavigatorItem("Config.Organisation.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.Plugin", "Plugin", "Permissions related to Plugins", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.Plugin.Configure", false),
+                            new ClaimNavigatorItem("Config.Plugin.InstallLocal", false),
+                            new ClaimNavigatorItem("Config.Plugin.Install", false),
+                            new ClaimNavigatorItem("Config.Plugin.Show", false),
+                            new ClaimNavigatorItem("Config.Plugin.Uninstall", false)
+                        }),
+                        new ClaimNavigatorItem("Config.System", "System", "Permissions related to System Configuration", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.System.ConfigureActiveDirectory", false),
+                            new ClaimNavigatorItem("Config.System.ConfigureEmail", false),
+                            new ClaimNavigatorItem("Config.System.ConfigureProxy", false),
+                            new ClaimNavigatorItem("Config.System.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.UserFlag", "User Flags", "Permissions related to User Flags", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Config.UserFlag.Configure", false),
+                            new ClaimNavigatorItem("Config.UserFlag.Create", false),
+                            new ClaimNavigatorItem("Config.UserFlag.Delete", false),
+                            new ClaimNavigatorItem("Config.UserFlag.Export", false),
+                            new ClaimNavigatorItem("Config.UserFlag.Show", false)
+                        }),
+                        new ClaimNavigatorItem("Config.ManageSavedExports", false),
+                        new ClaimNavigatorItem("Config.Show", false)
+                    }),
+                    new ClaimNavigatorItem("Job", "Job", "Permissions related to Jobs", false, new List<IClaimNavigatorItem>() {
+                        new ClaimNavigatorItem("Job.Actions", "Actions", "Permissions related to Job Actions", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Job.Actions.AddAttachments", false),
+                            new ClaimNavigatorItem("Job.Actions.AddLogs", false),
+                            new ClaimNavigatorItem("Job.Actions.AddAnyQueues", false),
+                            new ClaimNavigatorItem("Job.Actions.AddOwnQueues", false),
+                            new ClaimNavigatorItem("Job.Actions.Close", false),
+                            new ClaimNavigatorItem("Job.Actions.ConvertHWarToHNWar", false),
+                            new ClaimNavigatorItem("Job.Actions.Create", false),
+                            new ClaimNavigatorItem("Job.Actions.Delete", false),
+                            new ClaimNavigatorItem("Job.Actions.Export", false),
+                            new ClaimNavigatorItem("Job.Actions.ForceClose", false),
+                            new ClaimNavigatorItem("Job.Actions.GenerateDocuments", false),
+                            new ClaimNavigatorItem("Job.Actions.LogInsurance", false),
+                            new ClaimNavigatorItem("Job.Actions.LogRepair", false),
+                            new ClaimNavigatorItem("Job.Actions.LogWarranty", false),
+                            new ClaimNavigatorItem("Job.Actions.RemoveAnyAttachments", false),
+                            new ClaimNavigatorItem("Job.Actions.RemoveAnyLogs", false),
+                            new ClaimNavigatorItem("Job.Actions.RemoveAnyQueues", false),
+                            new ClaimNavigatorItem("Job.Actions.RemoveOwnQueues", false),
+                            new ClaimNavigatorItem("Job.Actions.RemoveOwnAttachments", false),
+                            new ClaimNavigatorItem("Job.Actions.RemoveOwnLogs", false),
+                            new ClaimNavigatorItem("Job.Actions.Reopen", false),
+                            new ClaimNavigatorItem("Job.Actions.UpdateSubTypes", false)
+                        }),
+                        new ClaimNavigatorItem("Job.Properties", "Job Properties", "Permissions related to Job Properties", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Job.Properties.JobQueueProperties", "Job Queue Properties", "Permissions related to Job Queue Job Properties", false, new List<IClaimNavigatorItem>() {
+                                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnyComments", false),
+                                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnyPriority", false),
+                                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditAnySLA", false),
+                                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditOwnComments", false),
+                                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditOwnPriority", false),
+                                new ClaimNavigatorItem("Job.Properties.JobQueueProperties.EditOwnSLA", false)
+                            }),
+                            new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties", "Non Warranty Properties", "Permissions related to Non-Warranty Job Properties", false, new List<IClaimNavigatorItem>() {
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AccountingChargeAdded", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AccountingChargePaid", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AccountingChargeRequired", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.AddComponents", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.EditComponents", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.InsuranceDetails", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.InvoiceReceived", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.IsInsuranceClaim", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderRaised", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderReference", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.PurchaseOrderSent", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairProviderDetails", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerCompletedDate", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerLoggedDate", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerName", false),
+                                new ClaimNavigatorItem("Job.Properties.NonWarrantyProperties.RepairerReference", false)
+                            }),
+                            new ClaimNavigatorItem("Job.Properties.WarrantyProperties", "Warranty Properties", "Permissions related to Warranty Job Properties", false, new List<IClaimNavigatorItem>() {
+                                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalCompletedDate", false),
+                                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalLoggedDate", false),
+                                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalName", false),
+                                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ExternalReference", false),
+                                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.ProviderDetails", false),
+                                new ClaimNavigatorItem("Job.Properties.WarrantyProperties.WarrantyCompleted", false)
+                            }),
+                            new ClaimNavigatorItem("Job.Properties.DeviceHeldLocation", false),
+                            new ClaimNavigatorItem("Job.Properties.DeviceHeld", false),
+                            new ClaimNavigatorItem("Job.Properties.DeviceReadyForReturn", false),
+                            new ClaimNavigatorItem("Job.Properties.DeviceReturned", false),
+                            new ClaimNavigatorItem("Job.Properties.ExpectedClosedDate", false),
+                            new ClaimNavigatorItem("Job.Properties.Flags", false),
+                            new ClaimNavigatorItem("Job.Properties.NotWaitingForUserAction", false),
+                            new ClaimNavigatorItem("Job.Properties.WaitingForUserAction", false)
+                        }),
+                        new ClaimNavigatorItem("Job.Lists", "Lists", "Permissions related to Job Lists", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Job.Lists.AllOpen", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingFinanceAgreementBreach", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingFinanceCharge", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingFinanceInsuranceProcessing", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingFinance", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingFinancePayment", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingTechnicianAction", false),
+                            new ClaimNavigatorItem("Job.Lists.AwaitingUserAction", false),
+                            new ClaimNavigatorItem("Job.Lists.DevicesAwaitingRepair", false),
+                            new ClaimNavigatorItem("Job.Lists.DevicesReadyForReturn", false),
+                            new ClaimNavigatorItem("Job.Lists.JobQueueLists", false),
+                            new ClaimNavigatorItem("Job.Lists.Locations", false),
+                            new ClaimNavigatorItem("Job.Lists.LongRunningJobs", false),
+                            new ClaimNavigatorItem("Job.Lists.MyJobs", false),
+                            new ClaimNavigatorItem("Job.Lists.MyJobsOrphaned", false),
+                            new ClaimNavigatorItem("Job.Lists.RecentlyClosed", false),
+                            new ClaimNavigatorItem("Job.Lists.StaleJobs", false)
+                        }),
+                        new ClaimNavigatorItem("Job.Types", "Types", "Permissions related to Job Types", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Job.Types.CreateHMisc", false),
+                            new ClaimNavigatorItem("Job.Types.CreateHNWar", false),
+                            new ClaimNavigatorItem("Job.Types.CreateHWar", false),
+                            new ClaimNavigatorItem("Job.Types.CreateSApp", false),
+                            new ClaimNavigatorItem("Job.Types.CreateSOS", false),
+                            new ClaimNavigatorItem("Job.Types.CreateSImg", false),
+                            new ClaimNavigatorItem("Job.Types.CreateUMgmt", false),
+                            new ClaimNavigatorItem("Job.Types.ShowHMisc", false),
+                            new ClaimNavigatorItem("Job.Types.ShowHNWar", false),
+                            new ClaimNavigatorItem("Job.Types.ShowHWar", false),
+                            new ClaimNavigatorItem("Job.Types.ShowSApp", false),
+                            new ClaimNavigatorItem("Job.Types.ShowSOS", false),
+                            new ClaimNavigatorItem("Job.Types.ShowSImg", false),
+                            new ClaimNavigatorItem("Job.Types.ShowUMgmt", false)
+                        }),
+                        new ClaimNavigatorItem("Job.Search", false),
+                        new ClaimNavigatorItem("Job.ShowAttachments", false),
+                        new ClaimNavigatorItem("Job.ShowDailyChart", false),
+                        new ClaimNavigatorItem("Job.ShowFlags", false),
+                        new ClaimNavigatorItem("Job.Show", false),
+                        new ClaimNavigatorItem("Job.ShowJobsQueues", false),
+                        new ClaimNavigatorItem("Job.ShowLogs", false),
+                        new ClaimNavigatorItem("Job.ShowNonWarrantyComponents", false),
+                        new ClaimNavigatorItem("Job.ShowNonWarrantyFinance", false),
+                        new ClaimNavigatorItem("Job.ShowNonWarrantyInsurance", false),
+                        new ClaimNavigatorItem("Job.ShowNonWarrantyRepairs", false),
+                        new ClaimNavigatorItem("Job.ShowWarranty", false)
+                    }),
+                    new ClaimNavigatorItem("Device", "Device", "Permissions related to Devices", false, new List<IClaimNavigatorItem>() {
+                        new ClaimNavigatorItem("Device.Actions", "Actions", "Permissions related to Device Actions", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Device.Actions.AddAttachments", false),
+                            new ClaimNavigatorItem("Device.Actions.AddComments", false),
+                            new ClaimNavigatorItem("Device.Actions.AddFlags", false),
+                            new ClaimNavigatorItem("Device.Actions.AllowUnauthenticatedEnrol", false),
+                            new ClaimNavigatorItem("Device.Actions.AssignUser", false),
+                            new ClaimNavigatorItem("Device.Actions.Decommission", false),
+                            new ClaimNavigatorItem("Device.Actions.Delete", false),
+                            new ClaimNavigatorItem("Device.Actions.EditFlags", false),
+                            new ClaimNavigatorItem("Device.Actions.EnrolDevices", false),
+                            new ClaimNavigatorItem("Device.Actions.Export", false),
+                            new ClaimNavigatorItem("Device.Actions.GenerateDocuments", false),
+                            new ClaimNavigatorItem("Device.Actions.Import", false),
+                            new ClaimNavigatorItem("Device.Actions.Recommission", false),
+                            new ClaimNavigatorItem("Device.Actions.RemoveAnyAttachments", false),
+                            new ClaimNavigatorItem("Device.Actions.RemoveAnyComments", false),
+                            new ClaimNavigatorItem("Device.Actions.RemoveFlags", false),
+                            new ClaimNavigatorItem("Device.Actions.RemoveOwnAttachments", false),
+                            new ClaimNavigatorItem("Device.Actions.RemoveOwnComments", false)
+                        }),
+                        new ClaimNavigatorItem("Device.Properties", "Device Properties", "Permissions related to Device Properties", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("Device.Properties.AssetNumber", false),
+                            new ClaimNavigatorItem("Device.Properties.Details", false),
+                            new ClaimNavigatorItem("Device.Properties.DeviceBatch", false),
+                            new ClaimNavigatorItem("Device.Properties.DeviceProfile", false),
+                            new ClaimNavigatorItem("Device.Properties.Location", false)
+                        }),
+                        new ClaimNavigatorItem("Device.Search", false),
+                        new ClaimNavigatorItem("Device.ShowAssignmentHistory", false),
+                        new ClaimNavigatorItem("Device.ShowAttachments", false),
+                        new ClaimNavigatorItem("Device.ShowCertificates", false),
+                        new ClaimNavigatorItem("Device.ShowComments", false),
+                        new ClaimNavigatorItem("Device.ShowDetails", false),
+                        new ClaimNavigatorItem("Device.ShowFlagAssignments", false),
+                        new ClaimNavigatorItem("Device.Show", false),
+                        new ClaimNavigatorItem("Device.ShowJobs", false)
+                    }),
+                    new ClaimNavigatorItem("User", "User", "Permissions related to Users", false, new List<IClaimNavigatorItem>() {
+                        new ClaimNavigatorItem("User.Actions", "Actions", "Permissions related to User Actions", false, new List<IClaimNavigatorItem>() {
+                            new ClaimNavigatorItem("User.Actions.AddAttachments", false),
+                            new ClaimNavigatorItem("User.Actions.AddComments", false),
+                            new ClaimNavigatorItem("User.Actions.AddFlags", false),
+                            new ClaimNavigatorItem("User.Actions.EditFlags", false),
+                            new ClaimNavigatorItem("User.Actions.GenerateDocuments", false),
+                            new ClaimNavigatorItem("User.Actions.RemoveAnyAttachments", false),
+                            new ClaimNavigatorItem("User.Actions.RemoveAnyComments", false),
+                            new ClaimNavigatorItem("User.Actions.RemoveOwnAttachments", false),
+                            new ClaimNavigatorItem("User.Actions.RemoveOwnComments", false),
+                            new ClaimNavigatorItem("User.Actions.RemoveFlags", false)
+                        }),
+                        new ClaimNavigatorItem("User.Search", false),
+                        new ClaimNavigatorItem("User.ShowAttachments", false),
+                        new ClaimNavigatorItem("User.ShowComments", false),
+                        new ClaimNavigatorItem("User.ShowAssignmentHistory", false),
+                        new ClaimNavigatorItem("User.ShowAssignments", false),
+                        new ClaimNavigatorItem("User.Show", false),
+                        new ClaimNavigatorItem("User.ShowAuthorization", false),
+                        new ClaimNavigatorItem("User.ShowDetails", false),
+                        new ClaimNavigatorItem("User.ShowFlagAssignments", false),
+                        new ClaimNavigatorItem("User.ShowJobs", false)
+                    }),
+                    new ClaimNavigatorItem("ComputerAccount", true),
+                    new ClaimNavigatorItem("DiscoAdminAccount", true)
+                });
 #endregion
         }
 
-		public static ClaimNavigatorItem RoleClaimNavigator
-		{
-			get { return _claimNavigator; }
-		}
+        public static ClaimNavigatorItem RoleClaimNavigator
+        {
+            get { return _claimNavigator; }
+        }
 
-		internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
+        internal static Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> GetClaimDefinition(string ClaimKey) {
+            if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
+                return claimDef;
+            throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
+        }
 
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
-                throw new ArgumentException("Unknown Claim Key", "ClaimKey");
+        public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey) {
+            if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
+                return claimDef.Item1;
+            throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
+        }
 
-            return new Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool>(claimDef.Item1, claimDef.Item2, claimDef.Item3, claimDef.Item4, claimDef.Item5);
-		}
+        public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey) {
+            if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
+                return claimDef.Item2;
+            throw new ArgumentException("Unknown Claim Key", nameof(ClaimKey));
+        }
 
-		public static Func<RoleClaims, bool> GetClaimAccessor(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
+        public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey) {
+            if (_roleClaims.TryGetValue(ClaimKey, out var claimDef))
+                return Tuple.Create(claimDef.Item3, claimDef.Item4, claimDef.Item5);
+            throw new ArgumentException("Unknown Claim Key", "ClaimKey");
+        }
 
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
-                throw new ArgumentException("Unknown Claim Key", "ClaimKey");
+        public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys){
+            var c = new RoleClaims();
+            foreach (var claimKey in ClaimKeys)
+                c.Set(claimKey, true);
 
-            return claimDef.Item1;
-		}
+            return c;
+        }
 
-		public static Action<RoleClaims, bool> GetClaimSetter(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
-
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
-                throw new ArgumentException("Unknown Claim Key", "ClaimKey");
-
-            return claimDef.Item2;
-		}
-
-		public static Tuple<string, string, bool> GetClaimDetails(string ClaimKey) {
-			Tuple<Func<RoleClaims, bool>, Action<RoleClaims, bool>, string, string, bool> claimDef;
-
-            if (!_roleClaims.TryGetValue(ClaimKey, out claimDef))
-                throw new ArgumentException("Unknown Claim Key", "ClaimKey");
-
-            return new Tuple<string, string, bool>(claimDef.Item3, claimDef.Item4, claimDef.Item5);
-		}
-
-		public static RoleClaims BuildClaims(IEnumerable<string> ClaimKeys){
-			var c = new RoleClaims();
-			foreach (var claimKey in ClaimKeys)
-				c.Set(claimKey, true);
-
-			return c;
-		}
-
-		public static List<string> GetClaimKeys(RoleClaims Claims)
+        public static List<string> GetClaimKeys(RoleClaims Claims)
         {
             var claims = Claims;
             return _roleClaims.Where(rc => rc.Value.Item1(claims)).Select(rc => rc.Key).ToList();
         }
 
-		public static RoleClaims AdministratorClaims() {
-			var c = new RoleClaims();
+        public static RoleClaims AdministratorClaims() {
+            var c = new RoleClaims();
 #region Set All Administrator Claims
-			c.Config.DeviceCertificate.DownloadCertificates = true;
-			c.Config.Enrolment.Configure = true;
-			c.Config.Enrolment.DownloadBootstrapper = true;
-			c.Config.Enrolment.Show = true;
-			c.Config.Enrolment.ShowStatus = true;
-			c.Config.DeviceBatch.Configure = true;
-			c.Config.DeviceBatch.Create = true;
-			c.Config.DeviceBatch.Delete = true;
-			c.Config.DeviceBatch.Show = true;
-			c.Config.DeviceBatch.ShowTimeline = true;
-			c.Config.DeviceFlag.Configure = true;
-			c.Config.DeviceFlag.Create = true;
-			c.Config.DeviceFlag.Delete = true;
-			c.Config.DeviceFlag.Export = true;
-			c.Config.DeviceFlag.Show = true;
-			c.Config.DeviceModel.ConfigureComponents = true;
-			c.Config.DeviceModel.Configure = true;
-			c.Config.DeviceModel.CreateCustom = true;
-			c.Config.DeviceModel.Delete = true;
-			c.Config.DeviceModel.Show = true;
-			c.Config.DeviceProfile.ConfigureComputerNameTemplate = true;
-			c.Config.DeviceProfile.ConfigureDefaults = true;
-			c.Config.DeviceProfile.Configure = true;
-			c.Config.DeviceProfile.Create = true;
-			c.Config.DeviceProfile.Delete = true;
-			c.Config.DeviceProfile.Show = true;
-			c.Config.DocumentTemplate.BulkGenerate = true;
-			c.Config.DocumentTemplate.ConfigureFilterExpression = true;
-			c.Config.DocumentTemplate.Configure = true;
-			c.Config.DocumentTemplate.Create = true;
-			c.Config.DocumentTemplate.Delete = true;
-			c.Config.DocumentTemplate.Export = true;
-			c.Config.DocumentTemplate.UndetectedPages = true;
-			c.Config.DocumentTemplate.ShowStatus = true;
-			c.Config.DocumentTemplate.Show = true;
-			c.Config.DocumentTemplate.Upload = true;
-			c.Config.Logging.Show = true;
-			c.Config.Plugin.Configure = true;
-			c.Config.Plugin.InstallLocal = true;
-			c.Config.Plugin.Install = true;
-			c.Config.Plugin.Show = true;
-			c.Config.Plugin.Uninstall = true;
-			c.Config.System.ConfigureActiveDirectory = true;
-			c.Config.System.ConfigureEmail = true;
-			c.Config.System.ConfigureProxy = true;
-			c.Config.System.Show = true;
-			c.Config.Organisation.ConfigureAddresses = true;
-			c.Config.Organisation.ConfigureLogo = true;
-			c.Config.Organisation.ConfigureMultiSiteMode = true;
-			c.Config.Organisation.ConfigureName = true;
-			c.Config.Organisation.Show = true;
-			c.Config.JobPreferences.Configure = true;
-			c.Config.JobPreferences.Show = true;
-			c.Config.JobQueue.Configure = true;
-			c.Config.JobQueue.Create = true;
-			c.Config.JobQueue.Delete = true;
-			c.Config.JobQueue.Show = true;
-			c.Config.UserFlag.Configure = true;
-			c.Config.UserFlag.Create = true;
-			c.Config.UserFlag.Delete = true;
-			c.Config.UserFlag.Export = true;
-			c.Config.UserFlag.Show = true;
-			c.Config.ManageSavedExports = true;
-			c.Config.Show = true;
-			c.Job.Lists.AllOpen = true;
-			c.Job.Lists.AwaitingFinanceAgreementBreach = true;
-			c.Job.Lists.AwaitingFinanceCharge = true;
-			c.Job.Lists.AwaitingFinanceInsuranceProcessing = true;
-			c.Job.Lists.AwaitingFinance = true;
-			c.Job.Lists.AwaitingFinancePayment = true;
-			c.Job.Lists.AwaitingTechnicianAction = true;
-			c.Job.Lists.AwaitingUserAction = true;
-			c.Job.Lists.DevicesAwaitingRepair = true;
-			c.Job.Lists.DevicesReadyForReturn = true;
-			c.Job.Lists.JobQueueLists = true;
-			c.Job.Lists.Locations = true;
-			c.Job.Lists.LongRunningJobs = true;
-			c.Job.Lists.MyJobs = true;
-			c.Job.Lists.MyJobsOrphaned = true;
-			c.Job.Lists.RecentlyClosed = true;
-			c.Job.Lists.StaleJobs = true;
-			c.Job.Actions.AddAttachments = true;
-			c.Job.Actions.AddLogs = true;
-			c.Job.Actions.AddAnyQueues = true;
-			c.Job.Actions.AddOwnQueues = true;
-			c.Job.Actions.Close = true;
-			c.Job.Actions.ConvertHWarToHNWar = true;
-			c.Job.Actions.Create = true;
-			c.Job.Actions.Delete = true;
-			c.Job.Actions.Export = true;
-			c.Job.Actions.ForceClose = true;
-			c.Job.Actions.GenerateDocuments = true;
-			c.Job.Actions.LogInsurance = true;
-			c.Job.Actions.LogRepair = true;
-			c.Job.Actions.LogWarranty = true;
-			c.Job.Actions.RemoveAnyAttachments = true;
-			c.Job.Actions.RemoveAnyLogs = true;
-			c.Job.Actions.RemoveAnyQueues = true;
-			c.Job.Actions.RemoveOwnQueues = true;
-			c.Job.Actions.RemoveOwnAttachments = true;
-			c.Job.Actions.RemoveOwnLogs = true;
-			c.Job.Actions.Reopen = true;
-			c.Job.Actions.UpdateSubTypes = true;
-			c.Job.Properties.WarrantyProperties.ExternalCompletedDate = true;
-			c.Job.Properties.WarrantyProperties.ExternalLoggedDate = true;
-			c.Job.Properties.WarrantyProperties.ExternalName = true;
-			c.Job.Properties.WarrantyProperties.ExternalReference = true;
-			c.Job.Properties.WarrantyProperties.ProviderDetails = true;
-			c.Job.Properties.WarrantyProperties.WarrantyCompleted = true;
-			c.Job.Properties.NonWarrantyProperties.AccountingChargeAdded = true;
-			c.Job.Properties.NonWarrantyProperties.AccountingChargePaid = true;
-			c.Job.Properties.NonWarrantyProperties.AccountingChargeRequired = true;
-			c.Job.Properties.NonWarrantyProperties.AddComponents = true;
-			c.Job.Properties.NonWarrantyProperties.EditComponents = true;
-			c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent = true;
-			c.Job.Properties.NonWarrantyProperties.InsuranceDetails = true;
-			c.Job.Properties.NonWarrantyProperties.InvoiceReceived = true;
-			c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim = true;
-			c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = true;
-			c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = true;
-			c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = true;
-			c.Job.Properties.NonWarrantyProperties.RepairProviderDetails = true;
-			c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate = true;
-			c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate = true;
-			c.Job.Properties.NonWarrantyProperties.RepairerName = true;
-			c.Job.Properties.NonWarrantyProperties.RepairerReference = true;
-			c.Job.Properties.JobQueueProperties.EditAnyComments = true;
-			c.Job.Properties.JobQueueProperties.EditAnyPriority = true;
-			c.Job.Properties.JobQueueProperties.EditAnySLA = true;
-			c.Job.Properties.JobQueueProperties.EditOwnComments = true;
-			c.Job.Properties.JobQueueProperties.EditOwnPriority = true;
-			c.Job.Properties.JobQueueProperties.EditOwnSLA = true;
-			c.Job.Properties.DeviceHeldLocation = true;
-			c.Job.Properties.DeviceHeld = true;
-			c.Job.Properties.DeviceReadyForReturn = true;
-			c.Job.Properties.DeviceReturned = true;
-			c.Job.Properties.ExpectedClosedDate = true;
-			c.Job.Properties.Flags = true;
-			c.Job.Properties.NotWaitingForUserAction = true;
-			c.Job.Properties.WaitingForUserAction = true;
-			c.Job.Types.CreateHMisc = true;
-			c.Job.Types.CreateHNWar = true;
-			c.Job.Types.CreateHWar = true;
-			c.Job.Types.CreateSApp = true;
-			c.Job.Types.CreateSOS = true;
-			c.Job.Types.CreateSImg = true;
-			c.Job.Types.CreateUMgmt = true;
-			c.Job.Types.ShowHMisc = true;
-			c.Job.Types.ShowHNWar = true;
-			c.Job.Types.ShowHWar = true;
-			c.Job.Types.ShowSApp = true;
-			c.Job.Types.ShowSOS = true;
-			c.Job.Types.ShowSImg = true;
-			c.Job.Types.ShowUMgmt = true;
-			c.Job.Search = true;
-			c.Job.ShowAttachments = true;
-			c.Job.ShowDailyChart = true;
-			c.Job.ShowFlags = true;
-			c.Job.Show = true;
-			c.Job.ShowJobsQueues = true;
-			c.Job.ShowLogs = true;
-			c.Job.ShowNonWarrantyComponents = true;
-			c.Job.ShowNonWarrantyFinance = true;
-			c.Job.ShowNonWarrantyInsurance = true;
-			c.Job.ShowNonWarrantyRepairs = true;
-			c.Job.ShowWarranty = true;
-			c.Device.Properties.AssetNumber = true;
-			c.Device.Properties.Details = true;
-			c.Device.Properties.DeviceBatch = true;
-			c.Device.Properties.DeviceProfile = true;
-			c.Device.Properties.Location = true;
-			c.Device.Actions.AddAttachments = true;
-			c.Device.Actions.AddComments = true;
-			c.Device.Actions.AddFlags = true;
-			c.Device.Actions.AllowUnauthenticatedEnrol = true;
-			c.Device.Actions.AssignUser = true;
-			c.Device.Actions.Decommission = true;
-			c.Device.Actions.Delete = true;
-			c.Device.Actions.EditFlags = true;
-			c.Device.Actions.EnrolDevices = true;
-			c.Device.Actions.Export = true;
-			c.Device.Actions.GenerateDocuments = true;
-			c.Device.Actions.Import = true;
-			c.Device.Actions.Recommission = true;
-			c.Device.Actions.RemoveAnyAttachments = true;
-			c.Device.Actions.RemoveAnyComments = true;
-			c.Device.Actions.RemoveFlags = true;
-			c.Device.Actions.RemoveOwnAttachments = true;
-			c.Device.Actions.RemoveOwnComments = true;
-			c.Device.Search = true;
-			c.Device.ShowAssignmentHistory = true;
-			c.Device.ShowAttachments = true;
-			c.Device.ShowCertificates = true;
-			c.Device.ShowComments = true;
-			c.Device.ShowDetails = true;
-			c.Device.ShowFlagAssignments = true;
-			c.Device.Show = true;
-			c.Device.ShowJobs = true;
-			c.User.Actions.AddAttachments = true;
-			c.User.Actions.AddComments = true;
-			c.User.Actions.AddFlags = true;
-			c.User.Actions.EditFlags = true;
-			c.User.Actions.GenerateDocuments = true;
-			c.User.Actions.RemoveAnyAttachments = true;
-			c.User.Actions.RemoveAnyComments = true;
-			c.User.Actions.RemoveOwnAttachments = true;
-			c.User.Actions.RemoveOwnComments = true;
-			c.User.Actions.RemoveFlags = true;
-			c.User.Search = true;
-			c.User.ShowAttachments = true;
-			c.User.ShowComments = true;
-			c.User.ShowAssignmentHistory = true;
-			c.User.ShowAssignments = true;
-			c.User.Show = true;
-			c.User.ShowAuthorization = true;
-			c.User.ShowDetails = true;
-			c.User.ShowFlagAssignments = true;
-			c.User.ShowJobs = true;
-			c.DiscoAdminAccount = true;
+            c.Config.DeviceCertificate.DownloadCertificates = true;
+            c.Config.Enrolment.Configure = true;
+            c.Config.Enrolment.DownloadBootstrapper = true;
+            c.Config.Enrolment.Show = true;
+            c.Config.Enrolment.ShowStatus = true;
+            c.Config.DeviceBatch.Configure = true;
+            c.Config.DeviceBatch.Create = true;
+            c.Config.DeviceBatch.Delete = true;
+            c.Config.DeviceBatch.Show = true;
+            c.Config.DeviceBatch.ShowTimeline = true;
+            c.Config.DeviceFlag.Configure = true;
+            c.Config.DeviceFlag.Create = true;
+            c.Config.DeviceFlag.Delete = true;
+            c.Config.DeviceFlag.Export = true;
+            c.Config.DeviceFlag.Show = true;
+            c.Config.DeviceModel.ConfigureComponents = true;
+            c.Config.DeviceModel.Configure = true;
+            c.Config.DeviceModel.CreateCustom = true;
+            c.Config.DeviceModel.Delete = true;
+            c.Config.DeviceModel.Show = true;
+            c.Config.DeviceProfile.ConfigureComputerNameTemplate = true;
+            c.Config.DeviceProfile.ConfigureDefaults = true;
+            c.Config.DeviceProfile.Configure = true;
+            c.Config.DeviceProfile.Create = true;
+            c.Config.DeviceProfile.Delete = true;
+            c.Config.DeviceProfile.Show = true;
+            c.Config.DocumentTemplate.BulkGenerate = true;
+            c.Config.DocumentTemplate.ConfigureFilterExpression = true;
+            c.Config.DocumentTemplate.Configure = true;
+            c.Config.DocumentTemplate.Create = true;
+            c.Config.DocumentTemplate.Delete = true;
+            c.Config.DocumentTemplate.Export = true;
+            c.Config.DocumentTemplate.UndetectedPages = true;
+            c.Config.DocumentTemplate.ShowStatus = true;
+            c.Config.DocumentTemplate.Show = true;
+            c.Config.DocumentTemplate.Upload = true;
+            c.Config.Logging.Show = true;
+            c.Config.Plugin.Configure = true;
+            c.Config.Plugin.InstallLocal = true;
+            c.Config.Plugin.Install = true;
+            c.Config.Plugin.Show = true;
+            c.Config.Plugin.Uninstall = true;
+            c.Config.System.ConfigureActiveDirectory = true;
+            c.Config.System.ConfigureEmail = true;
+            c.Config.System.ConfigureProxy = true;
+            c.Config.System.Show = true;
+            c.Config.Organisation.ConfigureAddresses = true;
+            c.Config.Organisation.ConfigureLogo = true;
+            c.Config.Organisation.ConfigureMultiSiteMode = true;
+            c.Config.Organisation.ConfigureName = true;
+            c.Config.Organisation.Show = true;
+            c.Config.JobPreferences.Configure = true;
+            c.Config.JobPreferences.Show = true;
+            c.Config.JobQueue.Configure = true;
+            c.Config.JobQueue.Create = true;
+            c.Config.JobQueue.Delete = true;
+            c.Config.JobQueue.Show = true;
+            c.Config.UserFlag.Configure = true;
+            c.Config.UserFlag.Create = true;
+            c.Config.UserFlag.Delete = true;
+            c.Config.UserFlag.Export = true;
+            c.Config.UserFlag.Show = true;
+            c.Config.ManageSavedExports = true;
+            c.Config.Show = true;
+            c.Job.Lists.AllOpen = true;
+            c.Job.Lists.AwaitingFinanceAgreementBreach = true;
+            c.Job.Lists.AwaitingFinanceCharge = true;
+            c.Job.Lists.AwaitingFinanceInsuranceProcessing = true;
+            c.Job.Lists.AwaitingFinance = true;
+            c.Job.Lists.AwaitingFinancePayment = true;
+            c.Job.Lists.AwaitingTechnicianAction = true;
+            c.Job.Lists.AwaitingUserAction = true;
+            c.Job.Lists.DevicesAwaitingRepair = true;
+            c.Job.Lists.DevicesReadyForReturn = true;
+            c.Job.Lists.JobQueueLists = true;
+            c.Job.Lists.Locations = true;
+            c.Job.Lists.LongRunningJobs = true;
+            c.Job.Lists.MyJobs = true;
+            c.Job.Lists.MyJobsOrphaned = true;
+            c.Job.Lists.RecentlyClosed = true;
+            c.Job.Lists.StaleJobs = true;
+            c.Job.Actions.AddAttachments = true;
+            c.Job.Actions.AddLogs = true;
+            c.Job.Actions.AddAnyQueues = true;
+            c.Job.Actions.AddOwnQueues = true;
+            c.Job.Actions.Close = true;
+            c.Job.Actions.ConvertHWarToHNWar = true;
+            c.Job.Actions.Create = true;
+            c.Job.Actions.Delete = true;
+            c.Job.Actions.Export = true;
+            c.Job.Actions.ForceClose = true;
+            c.Job.Actions.GenerateDocuments = true;
+            c.Job.Actions.LogInsurance = true;
+            c.Job.Actions.LogRepair = true;
+            c.Job.Actions.LogWarranty = true;
+            c.Job.Actions.RemoveAnyAttachments = true;
+            c.Job.Actions.RemoveAnyLogs = true;
+            c.Job.Actions.RemoveAnyQueues = true;
+            c.Job.Actions.RemoveOwnQueues = true;
+            c.Job.Actions.RemoveOwnAttachments = true;
+            c.Job.Actions.RemoveOwnLogs = true;
+            c.Job.Actions.Reopen = true;
+            c.Job.Actions.UpdateSubTypes = true;
+            c.Job.Properties.WarrantyProperties.ExternalCompletedDate = true;
+            c.Job.Properties.WarrantyProperties.ExternalLoggedDate = true;
+            c.Job.Properties.WarrantyProperties.ExternalName = true;
+            c.Job.Properties.WarrantyProperties.ExternalReference = true;
+            c.Job.Properties.WarrantyProperties.ProviderDetails = true;
+            c.Job.Properties.WarrantyProperties.WarrantyCompleted = true;
+            c.Job.Properties.NonWarrantyProperties.AccountingChargeAdded = true;
+            c.Job.Properties.NonWarrantyProperties.AccountingChargePaid = true;
+            c.Job.Properties.NonWarrantyProperties.AccountingChargeRequired = true;
+            c.Job.Properties.NonWarrantyProperties.AddComponents = true;
+            c.Job.Properties.NonWarrantyProperties.EditComponents = true;
+            c.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent = true;
+            c.Job.Properties.NonWarrantyProperties.InsuranceDetails = true;
+            c.Job.Properties.NonWarrantyProperties.InvoiceReceived = true;
+            c.Job.Properties.NonWarrantyProperties.IsInsuranceClaim = true;
+            c.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised = true;
+            c.Job.Properties.NonWarrantyProperties.PurchaseOrderReference = true;
+            c.Job.Properties.NonWarrantyProperties.PurchaseOrderSent = true;
+            c.Job.Properties.NonWarrantyProperties.RepairProviderDetails = true;
+            c.Job.Properties.NonWarrantyProperties.RepairerCompletedDate = true;
+            c.Job.Properties.NonWarrantyProperties.RepairerLoggedDate = true;
+            c.Job.Properties.NonWarrantyProperties.RepairerName = true;
+            c.Job.Properties.NonWarrantyProperties.RepairerReference = true;
+            c.Job.Properties.JobQueueProperties.EditAnyComments = true;
+            c.Job.Properties.JobQueueProperties.EditAnyPriority = true;
+            c.Job.Properties.JobQueueProperties.EditAnySLA = true;
+            c.Job.Properties.JobQueueProperties.EditOwnComments = true;
+            c.Job.Properties.JobQueueProperties.EditOwnPriority = true;
+            c.Job.Properties.JobQueueProperties.EditOwnSLA = true;
+            c.Job.Properties.DeviceHeldLocation = true;
+            c.Job.Properties.DeviceHeld = true;
+            c.Job.Properties.DeviceReadyForReturn = true;
+            c.Job.Properties.DeviceReturned = true;
+            c.Job.Properties.ExpectedClosedDate = true;
+            c.Job.Properties.Flags = true;
+            c.Job.Properties.NotWaitingForUserAction = true;
+            c.Job.Properties.WaitingForUserAction = true;
+            c.Job.Types.CreateHMisc = true;
+            c.Job.Types.CreateHNWar = true;
+            c.Job.Types.CreateHWar = true;
+            c.Job.Types.CreateSApp = true;
+            c.Job.Types.CreateSOS = true;
+            c.Job.Types.CreateSImg = true;
+            c.Job.Types.CreateUMgmt = true;
+            c.Job.Types.ShowHMisc = true;
+            c.Job.Types.ShowHNWar = true;
+            c.Job.Types.ShowHWar = true;
+            c.Job.Types.ShowSApp = true;
+            c.Job.Types.ShowSOS = true;
+            c.Job.Types.ShowSImg = true;
+            c.Job.Types.ShowUMgmt = true;
+            c.Job.Search = true;
+            c.Job.ShowAttachments = true;
+            c.Job.ShowDailyChart = true;
+            c.Job.ShowFlags = true;
+            c.Job.Show = true;
+            c.Job.ShowJobsQueues = true;
+            c.Job.ShowLogs = true;
+            c.Job.ShowNonWarrantyComponents = true;
+            c.Job.ShowNonWarrantyFinance = true;
+            c.Job.ShowNonWarrantyInsurance = true;
+            c.Job.ShowNonWarrantyRepairs = true;
+            c.Job.ShowWarranty = true;
+            c.Device.Properties.AssetNumber = true;
+            c.Device.Properties.Details = true;
+            c.Device.Properties.DeviceBatch = true;
+            c.Device.Properties.DeviceProfile = true;
+            c.Device.Properties.Location = true;
+            c.Device.Actions.AddAttachments = true;
+            c.Device.Actions.AddComments = true;
+            c.Device.Actions.AddFlags = true;
+            c.Device.Actions.AllowUnauthenticatedEnrol = true;
+            c.Device.Actions.AssignUser = true;
+            c.Device.Actions.Decommission = true;
+            c.Device.Actions.Delete = true;
+            c.Device.Actions.EditFlags = true;
+            c.Device.Actions.EnrolDevices = true;
+            c.Device.Actions.Export = true;
+            c.Device.Actions.GenerateDocuments = true;
+            c.Device.Actions.Import = true;
+            c.Device.Actions.Recommission = true;
+            c.Device.Actions.RemoveAnyAttachments = true;
+            c.Device.Actions.RemoveAnyComments = true;
+            c.Device.Actions.RemoveFlags = true;
+            c.Device.Actions.RemoveOwnAttachments = true;
+            c.Device.Actions.RemoveOwnComments = true;
+            c.Device.Search = true;
+            c.Device.ShowAssignmentHistory = true;
+            c.Device.ShowAttachments = true;
+            c.Device.ShowCertificates = true;
+            c.Device.ShowComments = true;
+            c.Device.ShowDetails = true;
+            c.Device.ShowFlagAssignments = true;
+            c.Device.Show = true;
+            c.Device.ShowJobs = true;
+            c.User.Actions.AddAttachments = true;
+            c.User.Actions.AddComments = true;
+            c.User.Actions.AddFlags = true;
+            c.User.Actions.EditFlags = true;
+            c.User.Actions.GenerateDocuments = true;
+            c.User.Actions.RemoveAnyAttachments = true;
+            c.User.Actions.RemoveAnyComments = true;
+            c.User.Actions.RemoveOwnAttachments = true;
+            c.User.Actions.RemoveOwnComments = true;
+            c.User.Actions.RemoveFlags = true;
+            c.User.Search = true;
+            c.User.ShowAttachments = true;
+            c.User.ShowComments = true;
+            c.User.ShowAssignmentHistory = true;
+            c.User.ShowAssignments = true;
+            c.User.Show = true;
+            c.User.ShowAuthorization = true;
+            c.User.ShowDetails = true;
+            c.User.ShowFlagAssignments = true;
+            c.User.ShowJobs = true;
+            c.DiscoAdminAccount = true;
 #endregion
-			return c;
-		}
+            return c;
+        }
 
-		public static RoleClaims ComputerAccountClaims() {
-			return new RoleClaims() {
-				ComputerAccount = true
-			};
-		}
+        public static RoleClaims ComputerAccountClaims() {
+            return new RoleClaims() {
+                ComputerAccount = true
+            };
+        }
 
 #region Role Claim Constants
 
@@ -2112,9 +2100,9 @@ namespace Disco.Services.Authorization
         /// </summary>
         public const string DiscoAdminAccount = "DiscoAdminAccount";
 #endregion
-	}
-	public static class ClaimExtensions
-	{
+    }
+    public static class ClaimExtensions
+    {
         public static bool Has(this RoleClaims c, string ClaimKey)
         {
             Func<RoleClaims, bool> claimFunc = Claims.GetClaimAccessor(ClaimKey);
@@ -2122,17 +2110,17 @@ namespace Disco.Services.Authorization
             return claimFunc(c);
         }
 
-		public static void Set(this RoleClaims c, string ClaimKey, bool Value)
+        public static void Set(this RoleClaims c, string ClaimKey, bool Value)
         {
             var claimDefinition = Claims.GetClaimDefinition(ClaimKey);
 
-			if (!claimDefinition.Item5)
-				claimDefinition.Item2(c, Value);
+            if (!claimDefinition.Item5)
+                claimDefinition.Item2(c, Value);
         }
 
-		public static void SetClaims(this AuthorizationRole role, RoleClaims Claims)
+        public static void SetClaims(this AuthorizationRole role, RoleClaims Claims)
         {
             role.ClaimsJson = Newtonsoft.Json.JsonConvert.SerializeObject(Claims);
         }
-	}
+    }
 }

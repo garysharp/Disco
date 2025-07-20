@@ -11,8 +11,6 @@ namespace Disco.Services.Documents
         public static byte[] Encode(string content, ErrorCorrectionLevel ecLevel, out int width, out int height)
         {
             var code = Encoder.encode(content, ecLevel, null);
-
-            var array = code.Matrix.Array;
             width = code.Matrix.Width;
             height = code.Matrix.Height;
 
@@ -140,11 +138,9 @@ namespace Disco.Services.Documents
             for (int i = 0; i < numRSBlocks; ++i)
             {
 
-                int numDataBytesInBlock;
-                int numEcBytesInBlock;
                 getNumDataBytesAndNumECBytesForBlockID(
                     numTotalBytes, numDataBytes, numRSBlocks, i,
-                    out numDataBytesInBlock, out numEcBytesInBlock);
+                    out var numDataBytesInBlock, out var numEcBytesInBlock);
 
                 byte[] dataBytes = new byte[numDataBytesInBlock];
                 bits.toBytes(8 * dataBytesOffset, dataBytes, 0, numDataBytesInBlock);

@@ -512,9 +512,8 @@ namespace Disco.Services.Plugins
 
             var resourcePath = Path.Combine(PluginLocation, "WebResources", Resource.Replace(@"/", @"\"));
 
-            Tuple<string, DateTime> resourceHash;
             string resourceKey = $"{Name}://{Resource}";
-            if (WebResourceHashes.TryGetValue(resourceKey, out resourceHash))
+            if (WebResourceHashes.TryGetValue(resourceKey, out var resourceHash))
             {
 #if DEBUG
                 var fileDateCheck = System.IO.File.GetLastWriteTime(resourcePath);

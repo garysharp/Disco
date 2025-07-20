@@ -88,8 +88,7 @@ namespace Disco.Services
             {
                 foreach (var certificateProviderId in dp.CertificateProviders.Split(','))
                 {
-                    PluginFeatureManifest featureManifest = null;
-                    if (Plugins.Plugins.TryGetPluginFeature(certificateProviderId.Trim(), typeof(CertificateProviderFeature), out featureManifest))
+                    if (Plugins.Plugins.TryGetPluginFeature(certificateProviderId.Trim(), typeof(CertificateProviderFeature), out var featureManifest))
                     {
                         yield return featureManifest;
                     }
@@ -103,8 +102,7 @@ namespace Disco.Services
             {
                 foreach (var certificateAuthorityProviderId in dp.CertificateAuthorityProviders.Split(','))
                 {
-                    PluginFeatureManifest featureManifest = null;
-                    if (Plugins.Plugins.TryGetPluginFeature(certificateAuthorityProviderId.Trim(), typeof(CertificateAuthorityProviderFeature), out featureManifest))
+                    if (Plugins.Plugins.TryGetPluginFeature(certificateAuthorityProviderId.Trim(), typeof(CertificateAuthorityProviderFeature), out var featureManifest))
                     {
                         yield return featureManifest;
                     }
@@ -118,8 +116,7 @@ namespace Disco.Services
             {
                 foreach (var wirelessProfileProviderId in dp.WirelessProfileProviders.Split(','))
                 {
-                    PluginFeatureManifest featureManifest = null;
-                    if (Plugins.Plugins.TryGetPluginFeature(wirelessProfileProviderId.Trim(), typeof(WirelessProfileProviderFeature), out featureManifest))
+                    if (Plugins.Plugins.TryGetPluginFeature(wirelessProfileProviderId.Trim(), typeof(WirelessProfileProviderFeature), out var featureManifest))
                     {
                         yield return featureManifest;
                     }

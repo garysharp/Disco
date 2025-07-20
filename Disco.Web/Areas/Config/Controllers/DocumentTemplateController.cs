@@ -61,11 +61,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 m.TemplateExpressions = m.DocumentTemplate.ExtractPdfExpressions(Database);
                 m.UpdateModel(Database);
 
-                DocumentTemplateDevicesManagedGroup devicesManagedGroup;
-                if (DocumentTemplateDevicesManagedGroup.TryGetManagedGroup(m.DocumentTemplate, out devicesManagedGroup))
+                if (DocumentTemplateDevicesManagedGroup.TryGetManagedGroup(m.DocumentTemplate, out var devicesManagedGroup))
                     m.DevicesLinkedGroup = devicesManagedGroup;
-                DocumentTemplateUsersManagedGroup usersManagedGroup;
-                if (DocumentTemplateUsersManagedGroup.TryGetManagedGroup(m.DocumentTemplate, out usersManagedGroup))
+                if (DocumentTemplateUsersManagedGroup.TryGetManagedGroup(m.DocumentTemplate, out var usersManagedGroup))
                     m.UsersLinkedGroup = usersManagedGroup;
 
                 m.BulkGenerateDownloadId = bulkGenerateId;

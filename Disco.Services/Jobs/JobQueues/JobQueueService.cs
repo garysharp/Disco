@@ -14,7 +14,7 @@ namespace Disco.Services.Jobs.JobQueues
 {
     public static class JobQueueService
     {
-        private const string _cacheHttpRequestKey = "Disco_UserQueuesToken_{0}";
+        private const string _cacheHttpRequestKey = "Disco_UserQueuesToken";
         private static Cache _cache;
 
         public static void Initialize(DiscoDataContext Database)
@@ -168,21 +168,19 @@ namespace Disco.Services.Jobs.JobQueues
         }
         public static ReadOnlyCollection<JobQueueToken> UsersQueues(AuthorizationToken UserAuthorization)
         {
-            string cacheKey = string.Format(_cacheHttpRequestKey, UserAuthorization.User.UserId);
             ReadOnlyCollection<JobQueueToken> tokens = null;
 
             // Check for ASP.NET
             if (HttpContext.Current != null)
-            {
                 tokens = (ReadOnlyCollection<JobQueueToken>)HttpContext.Current.Items[_cacheHttpRequestKey];
-            }
 
             if (tokens == null)
             {
                 var subjectIds = (new string[] { UserAuthorization.User.UserId }).Concat(UserAuthorization.GroupMembership);
                 tokens = _cache.GetQueuesForSubject(subjectIds);
 
-                HttpContext.Current.Items[_cacheHttpRequestKey] = tokens;
+                if (HttpContext.Current != null)
+                    HttpContext.Current.Items[_cacheHttpRequestKey] = tokens;
             }
 
             return tokens;

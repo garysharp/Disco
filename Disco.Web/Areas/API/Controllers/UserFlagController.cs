@@ -313,8 +313,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (UserFlag.UsersLinkedGroup != null)
                 {
                     // Sync Group
-                    UserFlagUsersManagedGroup managedGroup;
-                    if (UserFlagUsersManagedGroup.TryGetManagedGroup(UserFlag, out managedGroup))
+                    if (UserFlagUsersManagedGroup.TryGetManagedGroup(UserFlag, out var managedGroup))
                     {
                         return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
                     }
@@ -335,8 +334,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (UserFlag.UserDevicesLinkedGroup != null)
                 {
                     // Sync Group
-                    UserFlagUserDevicesManagedGroup managedGroup;
-                    if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(UserFlag, out managedGroup))
+                    if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(UserFlag, out var managedGroup))
                     {
                         return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
                     }

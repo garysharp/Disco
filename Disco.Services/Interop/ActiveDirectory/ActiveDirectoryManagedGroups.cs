@@ -51,9 +51,8 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public bool Remove(string Key)
         {
-            ADManagedGroup item;
 
-            if (managedGroups.TryRemove(Key, out item))
+            if (managedGroups.TryRemove(Key, out var item))
             {
                 item.Dispose();
                 return true;
@@ -123,8 +122,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 .GroupBy(a => a.ManagedGroup)
                 .Where(g =>
                 {
-                    ADManagedGroup item;
-                    if (managedGroups.TryGetValue(g.Key.Key, out item))
+                    if (managedGroups.TryGetValue(g.Key.Key, out var item))
                         return item == g.Key;
                     else
                         return false;
@@ -171,12 +169,9 @@ namespace Disco.Services.Interop.ActiveDirectory
                     //   Discard non-existent users
                     var actionItems = actionGroup.Item2.Select(a =>
                     {
-                        string distinguishedName;
-                        if (!accountDNCache.TryGetValue(a.MemberId, out distinguishedName))
+                        if (!accountDNCache.TryGetValue(a.MemberId, out var distinguishedName))
                         {
-                            string memberUsername;
-                            ADDomain memberDomain;
-                            if (!ActiveDirectory.IsValidDomainAccountId(a.MemberId, out memberUsername, out memberDomain))
+                            if (!ActiveDirectory.IsValidDomainAccountId(a.MemberId, out var memberUsername, out var memberDomain))
                             {
                                 accountDNCache[a.MemberId] = null; // Add to cache (avoid retries)
                                 return null;
@@ -333,12 +328,9 @@ namespace Disco.Services.Interop.ActiveDirectory
                         g.Item1,
                         g.Item2.Select(a =>
                             {
-                                Tuple<string, string> definition;
-                                if (!accountDNCache.TryGetValue(a.MemberId, out definition))
+                                if (!accountDNCache.TryGetValue(a.MemberId, out var definition))
                                 {
-                                    string memberUsername;
-                                    ADDomain memberDomain;
-                                    if (!ActiveDirectory.IsValidDomainAccountId(a.MemberId, out memberUsername, out memberDomain))
+                                    if (!ActiveDirectory.IsValidDomainAccountId(a.MemberId, out var memberUsername, out var memberDomain))
                                     {
                                         accountDNCache[a.MemberId] = null; // Add to cache (avoid retries)
                                         return null;

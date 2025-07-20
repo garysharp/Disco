@@ -76,9 +76,8 @@ namespace Disco.Services.Jobs.JobQueues
         public JobQueueToken UpdateQueue(JobQueue JobQueue)
         {
             var token = JobQueueToken.FromJobQueue(JobQueue);
-            JobQueueToken existingToken;
 
-            if (_Cache.TryGetValue(JobQueue.Id, out existingToken))
+            if (_Cache.TryGetValue(JobQueue.Id, out var existingToken))
             {
                 if (_Cache.TryUpdate(JobQueue.Id, token, existingToken))
                 {
@@ -103,8 +102,7 @@ namespace Disco.Services.Jobs.JobQueues
         }
         public bool RemoveQueue(int JobQueueId)
         {
-            JobQueueToken token;
-            if (_Cache.TryRemove(JobQueueId, out token))
+            if (_Cache.TryRemove(JobQueueId, out _))
             {
                 CalculateSubjectCache();
                 return true;
@@ -116,8 +114,7 @@ namespace Disco.Services.Jobs.JobQueues
         }
         public JobQueueToken GetQueue(int JobQueueId)
         {
-            JobQueueToken token;
-            if (_Cache.TryGetValue(JobQueueId, out token))
+            if (_Cache.TryGetValue(JobQueueId, out var token))
                 return token;
             else
                 return null;
@@ -128,8 +125,7 @@ namespace Disco.Services.Jobs.JobQueues
         }
         private IEnumerable<JobQueueToken> GetQueuesForSubject(string SubjectId)
         {
-            List<JobQueueToken> tokens;
-            if (_SubjectCache.TryGetValue(SubjectId, out tokens))
+            if (_SubjectCache.TryGetValue(SubjectId, out var tokens))
                 return tokens;
             else
                 return Enumerable.Empty<JobQueueToken>();

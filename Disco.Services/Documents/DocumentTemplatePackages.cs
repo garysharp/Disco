@@ -35,8 +35,7 @@ namespace Disco.Services.Documents
 
         public static DocumentTemplatePackage GetPackage(string Id)
         {
-            DocumentTemplatePackage package;
-            if (cache.TryGetValue(Id, out package))
+            if (cache.TryGetValue(Id, out var package))
                 return package;
             else
                 return null;
@@ -142,11 +141,10 @@ namespace Disco.Services.Documents
 
         public static DocumentTemplatePackage UpdatePackage(DocumentTemplatePackage Package)
         {
-            DocumentTemplatePackage existingPackage;
 
             if (string.IsNullOrWhiteSpace(Package.Id))
                 throw new ArgumentNullException(nameof(Package), "The Package Id is required");
-            if (!cache.TryGetValue(Package.Id, out existingPackage)) // Name Unique
+            if (!cache.TryGetValue(Package.Id, out var existingPackage)) // Name Unique
                 throw new ArgumentException("The Package Id does not exist", nameof(Package));
             if (string.IsNullOrWhiteSpace(Package.Description))
                 throw new ArgumentNullException(nameof(Package), "The Package Description is required");
@@ -162,8 +160,7 @@ namespace Disco.Services.Documents
 
         public static void RemovePackage(string Id)
         {
-            DocumentTemplatePackage existingPackage;
-            if (cache.TryRemove(Id, out existingPackage))
+            if (cache.TryRemove(Id, out _))
             {
                 PersistCache();
             }

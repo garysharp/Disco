@@ -220,8 +220,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             if (!string.IsNullOrEmpty(DeviceProfileId))
             {
-                int pId;
-                if (int.TryParse(DeviceProfileId, out pId))
+                if (int.TryParse(DeviceProfileId, out var pId))
                 {
                     var p = Database.DeviceProfiles.Find(pId);
                     if (p != null)
@@ -248,8 +247,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             if (!string.IsNullOrEmpty(DeviceBatchId))
             {
-                int bId;
-                if (int.TryParse(DeviceBatchId, out bId))
+                if (int.TryParse(DeviceBatchId, out var bId))
                 {
                     var b = Database.DeviceBatches.Find(bId);
                     if (b != null)
@@ -306,8 +304,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
         private void UpdateAllowUnauthenticatedEnrol(Device device, string AllowUnauthenticatedEnrol)
         {
-            bool bAllowUnauthenticatedEnrol;
-            if (string.IsNullOrEmpty(AllowUnauthenticatedEnrol) || !bool.TryParse(AllowUnauthenticatedEnrol, out bAllowUnauthenticatedEnrol))
+            if (string.IsNullOrEmpty(AllowUnauthenticatedEnrol) || !bool.TryParse(AllowUnauthenticatedEnrol, out var bAllowUnauthenticatedEnrol))
             {
                 throw new Exception("Invalid AllowUnauthenticatedEnrol Value");
             }

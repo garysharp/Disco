@@ -31,8 +31,7 @@ namespace Disco.Services.Users.UserFlags
 
         public UserFlag GetUserFlag(int UserFlagId)
         {
-            UserFlag item;
-            if (_Cache.TryGetValue(UserFlagId, out item))
+            if (_Cache.TryGetValue(UserFlagId, out var item))
                 return item;
             else
                 return null;
@@ -49,8 +48,7 @@ namespace Disco.Services.Users.UserFlags
 
         public UserFlag Remove(int UserFlagId)
         {
-            UserFlag item;
-            if (_Cache.TryRemove(UserFlagId, out item))
+            if (_Cache.TryRemove(UserFlagId, out var item))
                 return item;
             else
                 return null;

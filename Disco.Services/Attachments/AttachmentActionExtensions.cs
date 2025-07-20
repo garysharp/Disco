@@ -245,8 +245,7 @@ namespace Disco.Services
         {
             string thumbnailFilePath = attachment.RepositoryThumbnailFilename(Database);
 
-            Image thumbnail;
-            if (attachment.GenerateThumbnail(AttachmentStream, out thumbnail))
+            if (attachment.GenerateThumbnail(AttachmentStream, out var thumbnail))
             {
                 thumbnail.SaveJpg(90, thumbnailFilePath);
             }
@@ -260,8 +259,7 @@ namespace Disco.Services
 
             using (var attachmentStream = File.OpenRead(attachment.RepositoryFilename(Database)))
             {
-                Image thumbnail;
-                if (attachment.GenerateThumbnail(attachmentStream, out thumbnail))
+                if (attachment.GenerateThumbnail(attachmentStream, out var thumbnail))
                 {
                     thumbnail.SaveJpg(90, thumbnailFilePath);
                 }

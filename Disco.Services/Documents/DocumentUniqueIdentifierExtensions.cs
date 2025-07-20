@@ -24,7 +24,6 @@ namespace Disco.Services
             if (Data == null)
                 throw new ArgumentNullException(nameof(Data));
 
-            byte[] result;
 
             if (Data.Length == 0)
             {
@@ -33,7 +32,7 @@ namespace Disco.Services
             }
 
             // Try Numeric Encode
-            if (TryBinaryNumericEncode(Data, out result))
+            if (TryBinaryNumericEncode(Data, out var result))
             {
                 return result;
             }
@@ -88,8 +87,7 @@ namespace Disco.Services
             //              Z = number of leading zeros
             //              Y = number component < 0x0FFFFFFF (268,435,455)
 
-            uint number;
-            if (uint.TryParse(Data, out number) && number <= 0x0FFFFFFF)
+            if (uint.TryParse(Data, out var number) && number <= 0x0FFFFFFF)
             {
                 Result = new byte[4];
                 int leadingZeros = 0;
@@ -250,12 +248,10 @@ namespace Disco.Services
             //              A,B,C = character component in
             //                      alpha encoded format
 
-            short number;
-            byte[] chars;
             if (Data.Length == 7 &&
-                short.TryParse(Data.Substring(3), out number) &&
+                short.TryParse(Data.Substring(3), out var number) &&
                 number <= 9999 &&
-                TryBinaryAlphaEncode(Data.Substring(0, 3), out chars))
+                TryBinaryAlphaEncode(Data.Substring(0, 3), out var chars))
             {
                 Result = new byte[4];
                 Result[0] = (byte)(0x80 | (number >> 8));

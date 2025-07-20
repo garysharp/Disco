@@ -296,8 +296,7 @@ namespace Disco.BI.Interop.Pdf
                 }
                 else
                 {
-                    Expression fieldExpression = null;
-                    if (expressionCache.TryGetValue(pdfFieldKey, out fieldExpression))
+                    if (expressionCache.TryGetValue(pdfFieldKey, out var fieldExpression))
                     {
                         if (fieldExpression.IsDynamic)
                         {

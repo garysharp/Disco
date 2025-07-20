@@ -105,8 +105,7 @@ namespace Disco.Client.Interop
                     {
                         foreach (var thumbprint in RemoveThumbprints)
                         {
-                            List<X509Certificate2> certificates;
-                            if (existingThumbprints.TryGetValue(thumbprint, out certificates) && !addedThumbprints.Contains(thumbprint))
+                            if (existingThumbprints.TryGetValue(thumbprint, out var certificates) && !addedThumbprints.Contains(thumbprint))
                             {
                                 foreach (var certificate in certificates)
                                 {

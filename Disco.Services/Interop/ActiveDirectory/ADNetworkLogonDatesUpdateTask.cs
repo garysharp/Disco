@@ -59,10 +59,8 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (!string.IsNullOrEmpty(Device.DeviceDomainId) && Device.DeviceDomainId.Contains('\\'))
             {
                 var context = ActiveDirectory.Context;
-                string deviceSamAccountName;
-                ADDomain deviceDomain;
 
-                ActiveDirectory.ParseDomainAccountId(Device.DeviceDomainId + "$", out deviceSamAccountName, out deviceDomain);
+                ActiveDirectory.ParseDomainAccountId(Device.DeviceDomainId + "$", out var deviceSamAccountName, out var deviceDomain);
 
                 var ldapFilter = string.Format(ldapFilterTemplate, ADHelpers.EscapeLdapQuery(deviceSamAccountName));
                 IEnumerable<ADDomainController> domainControllers;
@@ -177,8 +175,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             foreach (Device device in Database.Devices.Where(device => device.DeviceDomainId != null))
             {
-                DateTime lastLogonDate;
-                if (queryResults.TryGetValue(device.DeviceDomainId.ToUpper(), out lastLogonDate))
+                if (queryResults.TryGetValue(device.DeviceDomainId.ToUpper(), out var lastLogonDate))
                 {
                     if (!device.LastNetworkLogonDate.HasValue)
                         device.LastNetworkLogonDate = lastLogonDate;

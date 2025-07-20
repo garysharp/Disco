@@ -58,16 +58,15 @@ namespace Disco.ClientBootstrapper.Interop
         public RegistryInterop(RegistryHives hive, string subKey, string filePath)
         {
             int token = 0;
-            int retval = 0;
 
             TOKEN_PRIVILEGES TP = new TOKEN_PRIVILEGES();
             TOKEN_PRIVILEGES TP2 = new TOKEN_PRIVILEGES();
             LUID RestoreLuid = new LUID();
             LUID BackupLuid = new LUID();
 
-            retval = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref token);
-            retval = LookupPrivilegeValue(null, SE_RESTORE_NAME, ref RestoreLuid);
-            retval = LookupPrivilegeValue(null, SE_BACKUP_NAME, ref BackupLuid);
+            OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref token);
+            LookupPrivilegeValue(null, SE_RESTORE_NAME, ref RestoreLuid);
+            LookupPrivilegeValue(null, SE_BACKUP_NAME, ref BackupLuid);
             TP.PrivilegeCount = 1;
             TP.Attributes = SE_PRIVILEGE_ENABLED;
             TP.Luid = RestoreLuid;
@@ -75,8 +74,8 @@ namespace Disco.ClientBootstrapper.Interop
             TP2.Attributes = SE_PRIVILEGE_ENABLED;
             TP2.Luid = BackupLuid;
 
-            retval = AdjustTokenPrivileges(token, 0, ref TP, 1024, 0, 0);
-            retval = AdjustTokenPrivileges(token, 0, ref TP2, 1024, 0, 0);
+            AdjustTokenPrivileges(token, 0, ref TP, 1024, 0, 0);
+            AdjustTokenPrivileges(token, 0, ref TP2, 1024, 0, 0);
 
             uint regHive = (uint)hive;
 

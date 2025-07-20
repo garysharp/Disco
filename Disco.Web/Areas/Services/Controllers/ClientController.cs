@@ -37,8 +37,7 @@ namespace Disco.Web.Areas.Services.Controllers
                         // Ensure supported version
                         if (Request.UserAgent.StartsWith(@"Disco-Client/", StringComparison.OrdinalIgnoreCase))
                         {
-                            Version clientVersion;
-                            if (Version.TryParse(Request.UserAgent.Substring(13), out clientVersion))
+                            if (Version.TryParse(Request.UserAgent.Substring(13), out var clientVersion))
                             {
                                 if (clientVersion < new Version(2, 2))
                                 {
@@ -110,8 +109,7 @@ namespace Disco.Web.Areas.Services.Controllers
                         // Ensure supported version
                         if (Request.UserAgent.StartsWith(@"Disco-Client/", StringComparison.OrdinalIgnoreCase))
                         {
-                            Version clientVersion;
-                            if (Version.TryParse(Request.UserAgent.Substring(13), out clientVersion))
+                            if (Version.TryParse(Request.UserAgent.Substring(13), out var clientVersion))
                             {
                                 if (clientVersion < new Version(2, 2))
                                 {

@@ -92,10 +92,9 @@ namespace Disco.Services.Devices.Enrolment
 
                 var devices = database.Devices.Include("DeviceDetails").ToList();
 
-                Tuple<string, string> addressResult;
                 foreach (var device in devices)
                 {
-                    if (addresses.TryGetValue(device.SerialNumber.ToLower(), out addressResult))
+                    if (addresses.TryGetValue(device.SerialNumber.ToLower(), out var addressResult))
                     {
                         if (!string.IsNullOrEmpty(addressResult.Item1))
                             device.DeviceDetails.LanMacAddress(device, addressResult.Item1);

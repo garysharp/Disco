@@ -124,8 +124,7 @@ namespace Disco.Web
                 // Job Matches
                 markdown = htmlCommentJobRegex.Value.Replace(markdown, match =>
                 {
-                    int jobId;
-                    if (int.TryParse(match.Groups[2].Value, out jobId))
+                    if (int.TryParse(match.Groups[2].Value, out var jobId))
                         return $"<a href=\"{urlHelper.Action(MVC.Job.Show(jobId))}\" title=\"Job {jobId}\">{match.Value}</a>";
                     else
                         return match.Value;

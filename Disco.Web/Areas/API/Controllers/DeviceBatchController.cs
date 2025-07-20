@@ -295,8 +295,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentNullException("PurchaseDate", "A Device Batch Purchase Date is required");
             else
             {
-                DateTime ecd;
-                if (DateTime.TryParse(PurchaseDate, out ecd))
+                if (DateTime.TryParse(PurchaseDate, out var ecd))
                 {
                     deviceBatch.PurchaseDate = ecd.Date;
                 }
@@ -329,8 +328,7 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceBatch.UnitCost = null;
             else
             {
-                decimal unitCost;
-                if (decimal.TryParse(UnitCost, out unitCost))
+                if (decimal.TryParse(UnitCost, out var unitCost))
                 {
                     deviceBatch.UnitCost = unitCost;
                 }
@@ -347,8 +345,7 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceBatch.UnitQuantity = null;
             else
             {
-                int unitQuantity;
-                if (int.TryParse(UnitQuantity, out unitQuantity))
+                if (int.TryParse(UnitQuantity, out var unitQuantity))
                 {
                     deviceBatch.UnitQuantity = unitQuantity;
                 }
@@ -363,8 +360,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             if (!string.IsNullOrEmpty(DefaultDeviceModelId))
             {
-                int bId;
-                if (int.TryParse(DefaultDeviceModelId, out bId))
+                if (int.TryParse(DefaultDeviceModelId, out var bId))
                 {
                     var dm = Database.DeviceModels.Find(bId);
                     if (dm != null)
@@ -394,8 +390,7 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceBatch.WarrantyValidUntil = null;
             else
             {
-                DateTime ecd;
-                if (DateTime.TryParse(WarrantyValidUntil, out ecd))
+                if (DateTime.TryParse(WarrantyValidUntil, out var ecd))
                 {
                     deviceBatch.WarrantyValidUntil = ecd.Date;
                 }
@@ -420,8 +415,7 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceBatch.InsuredDate = null;
             else
             {
-                DateTime ecd;
-                if (DateTime.TryParse(InsuredDate, out ecd))
+                if (DateTime.TryParse(InsuredDate, out var ecd))
                 {
                     deviceBatch.InsuredDate = ecd.Date;
                 }
@@ -446,8 +440,7 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceBatch.InsuredUntil = null;
             else
             {
-                DateTime ecd;
-                if (DateTime.TryParse(InsuredUntil, out ecd))
+                if (DateTime.TryParse(InsuredUntil, out var ecd))
                 {
                     deviceBatch.InsuredUntil = ecd.Date;
                 }

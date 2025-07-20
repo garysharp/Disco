@@ -23,12 +23,11 @@ namespace Disco.Web.Models.InitialConfig
             {
                 var branches = FileStoreLocation.ToUpper().Split(Path.DirectorySeparatorChar);
                 var branchesCase = FileStoreLocation.Split(Path.DirectorySeparatorChar);
-                FileStoreDirectoryModel branchModel;
                 FileStoreDirectoryModel branchParent = DirectoryModel;
                 for (int i = 0; i < branches.Length; i++)
                 {
                     var branch = branches[i];
-                    if (branchParent.SubDirectories.TryGetValue(branch, out branchModel))
+                    if (branchParent.SubDirectories.TryGetValue(branch, out var branchModel))
                     {
                         branchModel.ExpandSubDirectories();
                     }

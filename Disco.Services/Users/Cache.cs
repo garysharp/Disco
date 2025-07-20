@@ -143,13 +143,12 @@ namespace Disco.Services.Users
         {
             var cache = _Cache;
 
-            Tuple<User, AuthorizationToken, DateTime> record;
-            if (cache.TryGetValue(UserId, out record))
+            if (cache.TryGetValue(UserId, out var record))
             {
                 if (record.Item3 > DateTime.Now)
                     return record;
                 else
-                    cache.TryRemove(UserId, out record);
+                    cache.TryRemove(UserId, out _);
             }
             return null;
         }
@@ -158,11 +157,10 @@ namespace Disco.Services.Users
         {
             var cache = _Cache;
 
-            Tuple<User, AuthorizationToken, DateTime> record = new Tuple<User, AuthorizationToken, DateTime>(Record.Item1, Record.Item2, DateTime.Now.AddTicks(CacheTimeoutTicks));
+            var record = new Tuple<User, AuthorizationToken, DateTime>(Record.Item1, Record.Item2, DateTime.Now.AddTicks(CacheTimeoutTicks));
             if (cache.ContainsKey(UserId))
             {
-                Tuple<User, AuthorizationToken, DateTime> oldRecord;
-                if (cache.TryGetValue(UserId, out oldRecord))
+                if (cache.TryGetValue(UserId, out var oldRecord))
                 {
                     cache.TryUpdate(UserId, record, oldRecord);
                     return record;
@@ -174,8 +172,7 @@ namespace Disco.Services.Users
 
         internal static bool InvalidateRecord(string UserId)
         {
-            Tuple<User, AuthorizationToken, DateTime> userRecord;
-            return _Cache.TryRemove(UserId, out userRecord);
+            return _Cache.TryRemove(UserId, out _);
         }
 
         internal static void CleanStaleCache()
@@ -185,11 +182,10 @@ namespace Disco.Services.Users
             var userIds = cache.Keys.ToArray();
             foreach (string userId in userIds)
             {
-                Tuple<User, AuthorizationToken, DateTime> record;
-                if (cache.TryGetValue(userId, out record))
+                if (cache.TryGetValue(userId, out var record))
                 {
                     if (record.Item3 <= DateTime.Now)
-                        cache.TryRemove(userId, out record);
+                        cache.TryRemove(userId, out _);
                 }
             }
         }

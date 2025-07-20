@@ -55,8 +55,7 @@ namespace Disco.Services.Devices.Importing.Fields
             }
             else
             {
-                DecommissionReasons valueReason;
-                if (!decommissionReasonsMap.Value.TryGetValue(value.Trim(), out valueReason))
+                if (!decommissionReasonsMap.Value.TryGetValue(value.Trim(), out var valueReason))
                 {
                     rawValue = value.Trim();
                     return Error("Cannot parse the value as a Decommission Reason");

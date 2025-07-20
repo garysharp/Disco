@@ -247,9 +247,8 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdatePriority(JobQueue jobQueue, string Priority)
         {
-            JobQueuePriority priority;
 
-            if (!Enum.TryParse(Priority, out priority))
+            if (!Enum.TryParse<JobQueuePriority>(Priority, out var priority))
                 throw new ArgumentException("Invalid Priority Value", "Priority");
 
             jobQueue.Priority = priority;
@@ -262,9 +261,8 @@ namespace Disco.Web.Areas.API.Controllers
 
             if (!string.IsNullOrEmpty(DefaultSLAExpiry))
             {
-                int intValue;
 
-                if (!int.TryParse(DefaultSLAExpiry, out intValue))
+                if (!int.TryParse(DefaultSLAExpiry, out var intValue))
                     throw new ArgumentException("Invalid Default SLA Expiry Value", "DefaultSLAPriority");
 
                 if (intValue < 0)

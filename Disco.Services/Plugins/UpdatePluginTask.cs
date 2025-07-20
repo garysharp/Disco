@@ -96,7 +96,6 @@ namespace Disco.Services.Plugins
         public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext Database)
         {
             string pluginsLocation = Database.DiscoConfiguration.PluginsLocation;
-            string pluginsStorageLocation = Database.DiscoConfiguration.PluginStorageLocation;
 
             List<PluginManifest> installedPluginManifests = new List<PluginManifest>();
 
@@ -245,8 +244,7 @@ namespace Disco.Services.Plugins
                 {
                     // Check for Compatibility
                     var incompatibilityLibrary = PluginLibrary.LoadManifest(database).LoadIncompatibilityData();
-                    PluginIncompatibility incompatibility;
-                    if (!incompatibilityLibrary.IsCompatible(updateManifest.Id, updateManifest.Version, out incompatibility))
+                    if (!incompatibilityLibrary.IsCompatible(updateManifest.Id, updateManifest.Version, out var incompatibility))
                         throw new InvalidOperationException($"The plugin [{updateManifest.Id} v{updateManifest.VersionFormatted}] is not compatible: {incompatibility.Reason}");
 
                     var updatePluginPath = Path.Combine(database.DiscoConfiguration.PluginsLocation, $"{updateManifest.Id}.discoPlugin");

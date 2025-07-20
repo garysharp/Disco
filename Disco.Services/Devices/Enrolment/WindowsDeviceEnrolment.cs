@@ -374,11 +374,10 @@ namespace Disco.Services.Devices.Enrolment
                             else
                                 device.DeviceDomainId = $@"{domain.NetBiosName}\{Request.ComputerName}";
 
-                        string offlineProvisionDiagnosicInfo;
                         EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, device.SerialNumber, device.DeviceDomainId);
                         adMachineAccount = domainController.Value.RetrieveADMachineAccount(device.DeviceDomainId);
 
-                        response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out offlineProvisionDiagnosicInfo);
+                        response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out var offlineProvisionDiagnosicInfo);
 
                         EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
 
@@ -415,8 +414,7 @@ namespace Disco.Services.Devices.Enrolment
                             domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(device.DeviceProfile.OrganisationalUnit);
 
                         var calculatedComputerName = device.ComputerNameRender(Database, domain);
-                        string calculatedAccountUsername;
-                        ActiveDirectory.ParseDomainAccountId(calculatedComputerName, out calculatedAccountUsername);
+                        ActiveDirectory.ParseDomainAccountId(calculatedComputerName, out string calculatedAccountUsername);
 
                         if (!Request.ComputerName.Equals(calculatedAccountUsername, StringComparison.OrdinalIgnoreCase))
                         {
@@ -428,9 +426,8 @@ namespace Disco.Services.Devices.Enrolment
                             response.ComputerName = calculatedAccountUsername;
 
                             // Create New Account
-                            string offlineProvisionDiagnosicInfo;
 
-                            response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out offlineProvisionDiagnosicInfo);
+                            response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out var offlineProvisionDiagnosicInfo);
 
                             EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
 
@@ -510,8 +507,7 @@ namespace Disco.Services.Devices.Enrolment
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 90, "Provisioning Certificates");
 
-                    List<DeviceCertificate> provisionedCertificates;
-                    var provisionResult = device.ProvisionCertificates(Database, Request, out provisionedCertificates);
+                    var provisionResult = device.ProvisionCertificates(Database, Request, out var provisionedCertificates);
 
                     if (provisionedCertificates != null && provisionedCertificates.Count > 0)
                     {

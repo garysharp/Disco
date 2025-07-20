@@ -88,8 +88,7 @@ namespace Disco.Services.Plugins
 
                             // Check for Compatibility
                             var libraryIncompatibility = PluginLibrary.LoadManifest(database).LoadIncompatibilityData();
-                            PluginIncompatibility incompatibility;
-                            if (!libraryIncompatibility.IsCompatible(packageManifest.Id, packageManifest.Version, out incompatibility))
+                            if (!libraryIncompatibility.IsCompatible(packageManifest.Id, packageManifest.Version, out var incompatibility))
                                 throw new InvalidOperationException($"The plugin [{packageManifest.Id} v{packageManifest.VersionFormatted}] is not compatible: {incompatibility.Reason}");
 
                             // Force Delete of Existing Folder

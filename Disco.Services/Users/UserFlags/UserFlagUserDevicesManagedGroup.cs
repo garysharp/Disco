@@ -57,10 +57,9 @@ namespace Disco.Services.Users.UserFlags
 
         public static bool TryGetManagedGroup(UserFlag UserFlag, out UserFlagUserDevicesManagedGroup ManagedGroup)
         {
-            ADManagedGroup managedGroup;
             string key = GetKey(UserFlag);
 
-            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out managedGroup))
+            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out var managedGroup))
             {
                 ManagedGroup = (UserFlagUserDevicesManagedGroup)managedGroup;
                 return true;

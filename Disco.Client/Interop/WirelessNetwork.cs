@@ -17,16 +17,13 @@ namespace Disco.Client.Interop
         {
             try
             {
-                IntPtr wlanHandle;
-                uint wlanServiceVersion;
 
-                if (WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out wlanServiceVersion, out wlanHandle) == WlanApi.ERROR_SUCCESS)
+                if (WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out var wlanServiceVersion, out var wlanHandle) == WlanApi.ERROR_SUCCESS)
                 {
                     try
                     {
-                        IntPtr wlanInterfacesPtr;
 
-                        if (WlanApi.WlanEnumInterfaces(wlanHandle, IntPtr.Zero, out wlanInterfacesPtr) == WlanApi.ERROR_SUCCESS)
+                        if (WlanApi.WlanEnumInterfaces(wlanHandle, IntPtr.Zero, out var wlanInterfacesPtr) == WlanApi.ERROR_SUCCESS)
                         {
                             try
                             {
@@ -69,12 +66,10 @@ namespace Disco.Client.Interop
         {
             try
             {
-                IntPtr wlanHandle;
-                uint wlanServiceVersion;
                 uint interopResult;
 
                 // Connect to wireless service
-                interopResult = WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out wlanServiceVersion, out wlanHandle);
+                interopResult = WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out var wlanServiceVersion, out var wlanHandle);
                 if (interopResult == WlanApi.ERROR_SERVICE_NOT_ACTIVE)
                 {
                     // Indicates the Wlan service has not been started on the client
@@ -109,10 +104,9 @@ namespace Disco.Client.Interop
         private static List<WirelessProfile> GetWirelessProfiles(IntPtr wlanHandle)
         {
             uint interopResult;
-            IntPtr wlanInterfacesPtr;
 
             // Enumerate wireless interfaces
-            interopResult = WlanApi.WlanEnumInterfaces(wlanHandle, IntPtr.Zero, out wlanInterfacesPtr);
+            interopResult = WlanApi.WlanEnumInterfaces(wlanHandle, IntPtr.Zero, out var wlanInterfacesPtr);
             if (interopResult != WlanApi.ERROR_SUCCESS)
             {
                 throw new Exception($"Unable to list interfaces with the local wireless service. WlanEnumInterfaces returned: {interopResult}");
@@ -124,9 +118,8 @@ namespace Disco.Client.Interop
 
                 foreach (var wlanInterface in wlanInterfaces.InterfaceInfo)
                 {
-                    IntPtr wlanProfilesPtr;
                     // Enumerate wireless profiles for interface
-                    interopResult = WlanApi.WlanGetProfileList(wlanHandle, wlanInterface.InterfaceGuid, IntPtr.Zero, out wlanProfilesPtr);
+                    interopResult = WlanApi.WlanGetProfileList(wlanHandle, wlanInterface.InterfaceGuid, IntPtr.Zero, out var wlanProfilesPtr);
                     if (interopResult != WlanApi.ERROR_SUCCESS)
                     {
                         throw new Exception($"Unable to list wireless profiles for the {wlanInterface.InterfaceGuid} interface with the local wireless service. WlanGetProfileList returned: {interopResult}");
@@ -165,12 +158,10 @@ namespace Disco.Client.Interop
 
             try
             {
-                IntPtr wlanHandle;
-                uint wlanServiceVersion;
                 uint interopResult;
 
                 // Connect to wireless service
-                interopResult = WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out wlanServiceVersion, out wlanHandle);
+                interopResult = WlanApi.WlanOpenHandle(WlanApi.WLAN_API_VERSION_2_0, IntPtr.Zero, out var wlanServiceVersion, out var wlanHandle);
                 if (interopResult == WlanApi.ERROR_SERVICE_NOT_ACTIVE)
                 {
                     // Indicates the Wlan service has not been started on the client
@@ -243,9 +234,8 @@ namespace Disco.Client.Interop
                                     }
                                     else
                                     {
-                                        uint pdwReasonCode;
                                         Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nAdding Wireless Profile '{addProfile.Name}' on '{adapter.NetConnectionID}'", true, -1, 1000);
-                                        interopResult = WlanApi.WlanSetProfile(wlanHandle, adapter.ConnectionIdentifier, 0, addProfile.ProfileXml, null, true, IntPtr.Zero, out pdwReasonCode);
+                                        interopResult = WlanApi.WlanSetProfile(wlanHandle, adapter.ConnectionIdentifier, 0, addProfile.ProfileXml, null, true, IntPtr.Zero, out var pdwReasonCode);
 
                                         if (interopResult != WlanApi.ERROR_SUCCESS)
                                         {
@@ -285,11 +275,8 @@ namespace Disco.Client.Interop
                                         else
                                         {
                                             // Load profile
-                                            IntPtr pstrProfileXml;
-                                            uint pdwFlags;
-                                            IntPtr pdwGrantAccess;
 
-                                            interopResult = WlanApi.WlanGetProfile(wlanHandle, adapter.ConnectionIdentifier, profileName, IntPtr.Zero, out pstrProfileXml, out pdwFlags, out pdwGrantAccess);
+                                            interopResult = WlanApi.WlanGetProfile(wlanHandle, adapter.ConnectionIdentifier, profileName, IntPtr.Zero, out var pstrProfileXml, out var pdwFlags, out var pdwGrantAccess);
 
                                             if (interopResult == WlanApi.ERROR_SUCCESS)
                                             {
@@ -312,10 +299,9 @@ namespace Disco.Client.Interop
                                                     if (!XNode.DeepEquals(originalProfileXml, transformedProfileXml))
                                                     {
                                                         // Set Profile
-                                                        uint pdwReasonCode;
                                                         Presentation.UpdateStatus("Enrolling Device", $"Configuring Wireless Profiles\r\nModifying Wireless Profile '{profileName}' on '{adapter.NetConnectionID}'", true, -1, 1000);
                                                         transformProfileXml = transformedProfileXml.ToString(SaveOptions.None);
-                                                        interopResult = WlanApi.WlanSetProfile(wlanHandle, adapter.ConnectionIdentifier, 0, transformProfileXml, null, true, IntPtr.Zero, out pdwReasonCode);
+                                                        interopResult = WlanApi.WlanSetProfile(wlanHandle, adapter.ConnectionIdentifier, 0, transformProfileXml, null, true, IntPtr.Zero, out var pdwReasonCode);
 
                                                         if (interopResult != WlanApi.ERROR_SUCCESS)
                                                         {

@@ -121,8 +121,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 case "member":
                     return Members.OfType<T>();
                 default:
-                    object[] adProperty;
-                    if (LoadedProperties.TryGetValue(PropertyName, out adProperty))
+                    if (LoadedProperties.TryGetValue(PropertyName, out var adProperty))
                         return adProperty.OfType<T>();
                     else
                         return Enumerable.Empty<T>();

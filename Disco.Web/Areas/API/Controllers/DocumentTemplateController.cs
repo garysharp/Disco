@@ -404,8 +404,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                bool ff = default(bool);
-                if (bool.TryParse(FlattenForm, out ff))
+                if (bool.TryParse(FlattenForm, out var ff))
                     documentTemplate.FlattenForm = ff;
                 else
                     throw new Exception("Invalid Boolean Format");
@@ -421,8 +420,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                bool value = default(bool);
-                if (bool.TryParse(IsHidden, out value))
+                if (bool.TryParse(IsHidden, out var value))
                     documentTemplate.IsHidden = value;
                 else
                     throw new Exception("Invalid Boolean Format");

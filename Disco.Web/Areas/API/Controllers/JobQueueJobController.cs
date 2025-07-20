@@ -142,8 +142,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             if (!string.IsNullOrEmpty(Sla))
             {
-                DateTime SLADate;
-                if (DateTime.TryParse(Sla, out SLADate))
+                if (DateTime.TryParse(Sla, out var SLADate))
                 {
                     jobQueueJob.OnEditSla(SLADate);
                     Database.SaveChanges();
@@ -164,9 +163,8 @@ namespace Disco.Web.Areas.API.Controllers
             if (!jobQueueJob.CanEditPriority())
                 throw new InvalidOperationException("Editing Priority for job queue job is Denied");
 
-            JobQueuePriority priority;
 
-            if (!Enum.TryParse(Priority, out priority))
+            if (!Enum.TryParse<JobQueuePriority>(Priority, out var priority))
                 throw new ArgumentException("Invalid Priority Value", "Priority");
 
             jobQueueJob.OnEditPriority(priority);

@@ -49,9 +49,8 @@ namespace Disco.Data.Repository.Monitor
 
         private static Type EntityTypeFromProxy(Type EntityProxyType)
         {
-            Type EntityType;
 
-            if (entityProxyTypeCache.TryGetValue(EntityProxyType, out EntityType))
+            if (entityProxyTypeCache.TryGetValue(EntityProxyType, out var EntityType))
                 return EntityType;
 
             EntityType = EntityProxyType;

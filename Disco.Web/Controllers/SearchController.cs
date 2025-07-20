@@ -17,8 +17,7 @@ namespace Disco.Web.Controllers
         public virtual ActionResult Query(string term, string limit = null, bool searchDetails = false, bool includeDecommissioned = false)
         {
             term = term.Trim();
-            int termInt;
-            if (!int.TryParse(term, out termInt))
+            if (!int.TryParse(term, out var termInt))
                 termInt = -1;
 
             var m = new Models.Search.QueryModel() { Term = term };
@@ -77,8 +76,7 @@ namespace Disco.Web.Controllers
                 {
                     case "devicemodel":
                         Authorization.Require(Claims.Device.Search);
-                        int deviceModelId;
-                        if (int.TryParse(term, out deviceModelId))
+                        if (int.TryParse(term, out var deviceModelId))
                         {
                             var vm = Database.DeviceModels.Find(deviceModelId);
                             if (vm != null)
@@ -94,8 +92,7 @@ namespace Disco.Web.Controllers
                         break;
                     case "deviceprofile":
                         Authorization.Require(Claims.Device.Search);
-                        int deviceProfileId;
-                        if (int.TryParse(term, out deviceProfileId))
+                        if (int.TryParse(term, out var deviceProfileId))
                         {
                             var dp = Database.DeviceProfiles.Find(deviceProfileId);
                             if (dp != null)
@@ -111,8 +108,7 @@ namespace Disco.Web.Controllers
                         break;
                     case "devicebatch":
                         Authorization.Require(Claims.Device.Search);
-                        int deviceBatchId;
-                        if (int.TryParse(term, out deviceBatchId))
+                        if (int.TryParse(term, out var deviceBatchId))
                         {
                             var db = Database.DeviceBatches.Find(deviceBatchId);
                             if (db != null)
@@ -233,8 +229,7 @@ namespace Disco.Web.Controllers
                         }
                     case "userflag":
                         Authorization.RequireAll(Claims.User.Search, Claims.User.ShowFlagAssignments);
-                        int userFlagId;
-                        if (int.TryParse(term, out userFlagId))
+                        if (int.TryParse(term, out var userFlagId))
                         {
                             var flag = Database.UserFlags.Find(userFlagId);
                             if (flag != null)
@@ -250,8 +245,7 @@ namespace Disco.Web.Controllers
                         break;
                     case "deviceflag":
                         Authorization.RequireAll(Claims.Device.Search, Claims.Device.ShowFlagAssignments);
-                        int deviceFlagId;
-                        if (int.TryParse(term, out deviceFlagId))
+                        if (int.TryParse(term, out var deviceFlagId))
                         {
                             var flag = Database.DeviceFlags.Find(deviceFlagId);
                             if (flag != null)

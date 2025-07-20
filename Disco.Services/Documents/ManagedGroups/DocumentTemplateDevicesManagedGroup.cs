@@ -109,10 +109,9 @@ namespace Disco.Services.Documents.ManagedGroups
 
         public static bool TryGetManagedGroup(DocumentTemplate DocumentTemplate, out DocumentTemplateDevicesManagedGroup ManagedGroup)
         {
-            ADManagedGroup managedGroup;
             string key = GetKey(DocumentTemplate);
 
-            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out managedGroup))
+            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out var managedGroup))
             {
                 ManagedGroup = (DocumentTemplateDevicesManagedGroup)managedGroup;
                 return true;
@@ -230,8 +229,7 @@ namespace Disco.Services.Documents.ManagedGroups
         {
             var attachment = (DeviceAttachment)e.Entity;
 
-            string deviceAccountId;
-            if (DeviceContainsAttachment(e.Database, attachment.DeviceSerialNumber, out deviceAccountId))
+            if (DeviceContainsAttachment(e.Database, attachment.DeviceSerialNumber, out var deviceAccountId))
                 AddMember(attachment.DeviceSerialNumber, (database) => new string[] { deviceAccountId });
         }
         private void ProcessDeviceAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, string> e)
@@ -240,8 +238,7 @@ namespace Disco.Services.Documents.ManagedGroups
 
             RemoveMember(deviceSerialNumber, (database) =>
             {
-                string deviceAccountId;
-                if (!DeviceContainsAttachment(database, deviceSerialNumber, out deviceAccountId) && deviceAccountId != null)
+                if (!DeviceContainsAttachment(database, deviceSerialNumber, out var deviceAccountId) && deviceAccountId != null)
                     return new string[] { deviceAccountId };
                 else
                     return null;
@@ -279,9 +276,7 @@ namespace Disco.Services.Documents.ManagedGroups
         {
             var attachment = (JobAttachment)e.Entity;
 
-            string deviceAccountId;
-            string deviceSerialNumber;
-            if (JobsContainAttachment(e.Database, attachment.JobId, out deviceAccountId, out deviceSerialNumber))
+            if (JobsContainAttachment(e.Database, attachment.JobId, out var deviceAccountId, out var deviceSerialNumber))
                 AddMember(deviceSerialNumber, (database) => new string[] { deviceAccountId });
         }
         private void ProcessJobAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, int> e)
@@ -293,8 +288,7 @@ namespace Disco.Services.Documents.ManagedGroups
             {
                 RemoveMember(deviceSerialNumber, (database) =>
                 {
-                    string deviceAccountId;
-                    if (!JobsContainAttachment(database, jobId, out deviceAccountId, out deviceSerialNumber) &&
+                    if (!JobsContainAttachment(database, jobId, out var deviceAccountId, out deviceSerialNumber) &&
                             deviceSerialNumber != null && deviceAccountId != null)
                         return new string[] { deviceAccountId };
                     else
@@ -335,8 +329,7 @@ namespace Disco.Services.Documents.ManagedGroups
         {
             var attachment = (UserAttachment)e.Entity;
 
-            List<Tuple<string, string>> devices;
-            if (DeviceUserContainAttachment(e.Database, attachment.UserId, out devices) && devices != null)
+            if (DeviceUserContainAttachment(e.Database, attachment.UserId, out var devices) && devices != null)
                 devices.ForEach(d => AddMember(d.Item2, (database) => new string[] { d.Item1 }));
         }
         private void ProcessUserAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, string> e)
@@ -345,8 +338,7 @@ namespace Disco.Services.Documents.ManagedGroups
 
             RemoveMember(userId, (database) =>
             {
-                List<Tuple<string, string>> devices;
-                if (!DeviceUserContainAttachment(database, userId, out devices) && devices != null)
+                if (!DeviceUserContainAttachment(database, userId, out var devices) && devices != null)
                     return devices.Select(d => d.Item1);
                 else
                     return null;

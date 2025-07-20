@@ -264,8 +264,7 @@ namespace Disco.Data.Repository
                 foreach (var configurationItem in configurationItems)
                 {
                     int profileId = int.Parse(configurationItem.Scope.Substring(configurationItem.Scope.IndexOf(":") + 1));
-                    DeviceProfile dp;
-                    if (deviceProfiles.TryGetValue(profileId, out dp))
+                    if (deviceProfiles.TryGetValue(profileId, out var dp))
                     {
                         switch (configurationItem.Key)
                         {
@@ -273,7 +272,7 @@ namespace Disco.Data.Repository
                                 dp.ComputerNameTemplate = configurationItem.Value;
                                 break;
                             case "DistributionType":
-                                dp.DistributionType = (DeviceProfile.DistributionTypes)(int.Parse(configurationItem.Value));
+                                dp.DistributionType = (DeviceProfile.DistributionTypes)int.Parse(configurationItem.Value);
                                 break;
                             case "OrganisationalUnit":
                                 dp.OrganisationalUnit = configurationItem.Value;

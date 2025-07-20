@@ -195,8 +195,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 case "userAccountControl":
                     return new int[] { (int)UserAccountControl }.OfType<T>();
                 default:
-                    object[] adProperty;
-                    if (LoadedProperties.TryGetValue(PropertyName, out adProperty))
+                    if (LoadedProperties.TryGetValue(PropertyName, out var adProperty))
                         return adProperty.OfType<T>();
                     else
                         return Enumerable.Empty<T>();

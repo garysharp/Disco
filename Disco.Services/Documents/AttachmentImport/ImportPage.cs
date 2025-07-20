@@ -298,8 +298,7 @@ namespace Disco.Services.Documents.AttachmentImport
 
                 if (qrCodeResult != null && qrCodeResult.ResultPoints.Length == 4)
                 {
-                    float thumbnailScale;
-                    var thumbnailOffset = renderedImage.CalculateResize(renderedThumbnail.Width, renderedThumbnail.Height, out thumbnailScale);
+                    var thumbnailOffset = renderedImage.CalculateResize(renderedThumbnail.Width, renderedThumbnail.Height, out var thumbnailScale);
                     thumbnailScale = thumbnailScale / qrCodeResultScale;
 
                     using (Graphics thumbnailGraphics = Graphics.FromImage(renderedThumbnail))

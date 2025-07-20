@@ -53,14 +53,13 @@ namespace Disco.Services.Jobs
 
         public override Task OnConnected()
         {
-            int jobId;
             string jobIdParam;
 
             jobIdParam = Context.QueryString["JobId"];
 
             if (string.IsNullOrWhiteSpace(jobIdParam))
                 throw new ArgumentNullException("JobId");
-            if (!int.TryParse(jobIdParam, out jobId))
+            if (!int.TryParse(jobIdParam, out var jobId))
                 throw new ArgumentException("An integer was expected", "JobId");
 
             var userAuth = UserService.GetAuthorization(Context.User.Identity.Name);

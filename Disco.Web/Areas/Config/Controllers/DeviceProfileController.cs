@@ -39,11 +39,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (m.DeviceProfile.DefaultOrganisationAddress.HasValue)
                     m.DefaultOrganisationAddress = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(m.DeviceProfile.DefaultOrganisationAddress.Value);
 
-                DeviceProfileAssignedUsersManagedGroup assignedUsersManagedGroup;
-                if (DeviceProfileAssignedUsersManagedGroup.TryGetManagedGroup(m.DeviceProfile, out assignedUsersManagedGroup))
+                if (DeviceProfileAssignedUsersManagedGroup.TryGetManagedGroup(m.DeviceProfile, out var assignedUsersManagedGroup))
                     m.AssignedUsersLinkedGroup = assignedUsersManagedGroup;
-                DeviceProfileDevicesManagedGroup devicesManagedGroup;
-                if (DeviceProfileDevicesManagedGroup.TryGetManagedGroup(m.DeviceProfile, out devicesManagedGroup))
+                if (DeviceProfileDevicesManagedGroup.TryGetManagedGroup(m.DeviceProfile, out var devicesManagedGroup))
                     m.DevicesLinkedGroup = devicesManagedGroup;
 
                 // Ensure Specified OU Exists

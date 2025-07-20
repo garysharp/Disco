@@ -24,8 +24,7 @@ namespace Disco.Services.Devices.Importing.Fields
 
         public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
         {
-            int? intValue;
-            if (DataReader.TryGetNullableInt(ColumnIndex, out intValue))
+            if (DataReader.TryGetNullableInt(ColumnIndex, out var intValue))
             {
                 if (!intValue.HasValue)
                 {

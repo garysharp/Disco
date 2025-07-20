@@ -198,8 +198,7 @@ namespace Disco.Services.Jobs.Noticeboards
                     .ToDictionary(dsn => dsn,
                     dsn =>
                     {
-                        IHeldDeviceItem item;
-                        items.TryGetValue(dsn, out item);
+                        items.TryGetValue(dsn, out var item);
                         return item;
                     });
 

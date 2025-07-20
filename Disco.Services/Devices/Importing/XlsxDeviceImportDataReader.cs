@@ -102,8 +102,7 @@ namespace Disco.Services.Devices.Importing
             return rawData.Select(r => r[ColumnIndex])
                 .All(c =>
                 {
-                    int? value;
-                    return TryGetNullableInt(c, out value);
+                    return TryGetNullableInt(c, out var value);
                 });
         }
 
@@ -112,8 +111,7 @@ namespace Disco.Services.Devices.Importing
             return rawData.Select(r => r[ColumnIndex])
                 .All(c =>
                 {
-                    int? value;
-                    return TryGetNullableInt(c, out value) && value.HasValue;
+                    return TryGetNullableInt(c, out var value) && value.HasValue;
                 });
         }
 
@@ -122,8 +120,7 @@ namespace Disco.Services.Devices.Importing
             return rawData.Select(r => r[ColumnIndex])
                 .All(c =>
                 {
-                    bool? value;
-                    return TryGetNullableBool(c, out value);
+                    return TryGetNullableBool(c, out var value);
                 });
         }
 
@@ -132,8 +129,7 @@ namespace Disco.Services.Devices.Importing
             return rawData.Select(r => r[ColumnIndex])
                 .All(c =>
                 {
-                    DateTime? value;
-                    return TryGetNullableDateTime(c, out value);
+                    return TryGetNullableDateTime(c, out var value);
                 });
         }
 
@@ -167,8 +163,7 @@ namespace Disco.Services.Devices.Importing
             {
                 stringValue = stringValue.Trim();
 
-                DateTime valueDateTime;
-                if (DateTime.TryParse(stringValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal, out valueDateTime))
+                if (DateTime.TryParse(stringValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal, out var valueDateTime))
                 {
                     value = valueDateTime;
                     return true;
@@ -247,8 +242,7 @@ namespace Disco.Services.Devices.Importing
             }
             else
             {
-                int intValue;
-                if (int.TryParse(stringValue, out intValue))
+                if (int.TryParse(stringValue, out var intValue))
                 {
                     value = intValue;
                     return true;

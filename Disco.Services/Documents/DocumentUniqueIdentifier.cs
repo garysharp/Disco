@@ -312,28 +312,17 @@ namespace Disco.Services.Documents
 
         public static DocumentUniqueIdentifier Parse(DiscoDataContext Database, byte[] UniqueIdentifier)
         {
-            DocumentUniqueIdentifier identifier;
-            if (TryParse(Database, UniqueIdentifier, out identifier))
-            {
+            if (TryParse(Database, UniqueIdentifier, out var identifier))
                 return identifier;
-            }
-            else
-            {
-                throw new FormatException("Invalid Document Unique Identifier");
-            }
+            throw new FormatException("Invalid Document Unique Identifier");
         }
 
         public static DocumentUniqueIdentifier Parse(DiscoDataContext Database, string UniqueIdentifier)
         {
-            DocumentUniqueIdentifier identifier;
-            if (TryParse(Database, UniqueIdentifier, out identifier))
-            {
+            if (TryParse(Database, UniqueIdentifier, out var identifier))
                 return identifier;
-            }
-            else
-            {
-                throw new FormatException("Invalid Document Unique Identifier");
-            }
+            throw new FormatException("Invalid Document Unique Identifier");
+
         }
 
         public static bool TryParse(DiscoDataContext Database, string UniqueIdentifier, out DocumentUniqueIdentifier Identifier)
@@ -417,7 +406,7 @@ namespace Disco.Services.Documents
                     // Has document template id flag
                     if ((flags & 0x8) == 0x8)
                     {
-                        documentTemplateId = DocumentUniqueIdentifierExtensions.BinaryDecode(Data, position, out position);
+                        documentTemplateId = DocumentUniqueIdentifierExtensions.BinaryDecode(Data, position, out _);
                     }
 
                     AttachmentTypes? attachmentType = null;

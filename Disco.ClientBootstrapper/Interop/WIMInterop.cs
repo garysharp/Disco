@@ -684,7 +684,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 IntPtr windowsImageHandle = IntPtr.Zero;
                 int rc = -1;
 
-                windowsImageHandle = NativeMethods.WimCreateFile(imageFile, access, mode, 0, 0, out creationResult);
+                windowsImageHandle = NativeMethods.WimCreateFile(imageFile, access, mode, 0, 0, out _);
                 rc = Marshal.GetLastWin32Error();
                 if (windowsImageHandle == IntPtr.Zero)
                 {
@@ -1062,7 +1062,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 IntPtr info = IntPtr.Zero, sizeOfInfo = IntPtr.Zero;
                 bool status;
 
-                status = NativeMethods.WimGetImageInformation(handle, out info, out sizeOfInfo);
+                status = NativeMethods.WimGetImageInformation(handle, out info, out _);
                 int rc = Marshal.GetLastWin32Error();
 
                 if (status == false)
@@ -1221,7 +1221,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             void
             RegisterCallback(MessageCallback callback)
             {
-                uint callbackZeroBasedIndex = NativeMethods.WimRegisterMessageCallback(IntPtr.Zero, callback, IntPtr.Zero);
+                NativeMethods.WimRegisterMessageCallback(IntPtr.Zero, callback, IntPtr.Zero);
                 int rc = Marshal.GetLastWin32Error();
                 if (rc != 0)
                 {
@@ -1254,7 +1254,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             UnregisterMessageCallback(MessageCallback registeredCallback)
             {
                 bool status = NativeMethods.WimUnregisterMessageCallback(IntPtr.Zero, registeredCallback);
-                int rc = Marshal.GetLastWin32Error();
+                _ = Marshal.GetLastWin32Error();
                 if (status != true)
                 {
                     //

@@ -514,8 +514,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             if (!string.IsNullOrEmpty(ExpectedClosedDate))
             {
-                DateTime ecd;
-                if (DateTime.TryParse(ExpectedClosedDate, out ecd))
+                if (DateTime.TryParse(ExpectedClosedDate, out var ecd))
                 {
                     ecd = job.ValidateDateAfterOpened(ecd);
                     job.ExpectedClosedDate = ecd;
@@ -574,8 +573,7 @@ namespace Disco.Web.Areas.API.Controllers
                     flags = 0;
                     foreach (var fs in Flags.Split(','))
                     {
-                        long fi;
-                        if (!long.TryParse(fs, out fi))
+                        if (!long.TryParse(fs, out var fi))
                             throw new Exception("Invalid Int64 Format");
                         else
                             flags = flags | fi;
@@ -614,8 +612,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 throw new Exception("This property can only be set for Hardware NonWarranty Jobs");
             }
-            bool bIsInsuranceClaim;
-            if (string.IsNullOrEmpty(IsInsuranceClaim) || !bool.TryParse(IsInsuranceClaim, out bIsInsuranceClaim))
+            if (string.IsNullOrEmpty(IsInsuranceClaim) || !bool.TryParse(IsInsuranceClaim, out var bIsInsuranceClaim))
             {
                 throw new Exception("Invalid IsInsuranceClaim Value");
             }
@@ -660,8 +657,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(AccountingChargeRequiredDate, out d))
+                if (DateTime.TryParse(AccountingChargeRequiredDate, out var d))
                 {
                     d = job.ValidateDateAfterOpened(d);
                     job.JobMetaNonWarranty.AccountingChargeRequiredDate = d;
@@ -694,8 +690,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(AccountingChargeAddedDate, out d))
+                if (DateTime.TryParse(AccountingChargeAddedDate, out var d))
                 {
                     d = job.ValidateDateAfterOpened(d);
                     job.JobMetaNonWarranty.AccountingChargeAddedDate = d;
@@ -728,8 +723,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(AccountingChargePaidDate, out d))
+                if (DateTime.TryParse(AccountingChargePaidDate, out var d))
                 {
                     d = job.ValidateDateAfterOpened(d);
                     job.JobMetaNonWarranty.AccountingChargePaidDate = d;
@@ -762,8 +756,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(PurchaseOrderRaisedDate, out d))
+                if (DateTime.TryParse(PurchaseOrderRaisedDate, out var d))
                 {
                     d = job.ValidateDateAfterOpened(d);
                     job.JobMetaNonWarranty.PurchaseOrderRaisedDate = d;
@@ -805,8 +798,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(PurchaseOrderSentDate, out d))
+                if (DateTime.TryParse(PurchaseOrderSentDate, out var d))
                 {
                     d = job.ValidateDateAfterOpened(d);
                     job.JobMetaNonWarranty.PurchaseOrderSentDate = d;
@@ -839,8 +831,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(InvoiceReceivedDate, out d))
+                if (DateTime.TryParse(InvoiceReceivedDate, out var d))
                 {
                     d = job.ValidateDateAfterOpened(d);
                     job.JobMetaNonWarranty.InvoiceReceivedDate = d;
@@ -898,8 +889,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    DateTime d;
-                    if (DateTime.TryParse(RepairerLoggedDate, out d))
+                    if (DateTime.TryParse(RepairerLoggedDate, out var d))
                     {
                         job.JobMetaNonWarranty.RepairerLoggedDate = d;
                     }
@@ -949,8 +939,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    DateTime d;
-                    if (DateTime.TryParse(RepairerCompletedDate, out d))
+                    if (DateTime.TryParse(RepairerCompletedDate, out var d))
                     {
                         job.JobMetaNonWarranty.RepairerCompletedDate = d;
                     }
@@ -987,8 +976,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    DateTime d;
-                    if (DateTime.TryParse(ClaimFormSentDate, out d))
+                    if (DateTime.TryParse(ClaimFormSentDate, out var d))
                     {
                         d = job.ValidateDateAfterOpened(d);
                         job.JobMetaInsurance.ClaimFormSentDate = d;
@@ -1023,8 +1011,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime dt;
-                if (!DateTime.TryParse(DateOfPurchase, out dt))
+                if (!DateTime.TryParse(DateOfPurchase, out var dt))
                 {
                     throw new Exception("Invalid DateTime Value");
                 }
@@ -1104,8 +1091,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime dt;
-                if (!DateTime.TryParse(PoliceNotifiedDate, out dt))
+                if (!DateTime.TryParse(PoliceNotifiedDate, out var dt))
                 {
                     throw new Exception("Invalid DateTime Value");
                 }
@@ -1141,8 +1127,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new Exception("This property can only be set for Hardware NonWarranty Jobs");
             }
 
-            bool b;
-            if (string.IsNullOrEmpty(PoliceNotified) || !bool.TryParse(PoliceNotified, out b))
+            if (string.IsNullOrEmpty(PoliceNotified) || !bool.TryParse(PoliceNotified, out var b))
             {
                 throw new Exception("Invalid Boolean Value");
             }
@@ -1165,8 +1150,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(PropertyLastSeenDate, out d))
+                if (DateTime.TryParse(PropertyLastSeenDate, out var d))
                 {
                     job.JobMetaInsurance.PropertyLastSeenDate = d;
                 }
@@ -1262,8 +1246,7 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new Exception("This property can only be set for Hardware NonWarranty Jobs");
             }
 
-            bool b;
-            if (string.IsNullOrEmpty(ThirdPartyCaused) || !bool.TryParse(ThirdPartyCaused, out b))
+            if (string.IsNullOrEmpty(ThirdPartyCaused) || !bool.TryParse(ThirdPartyCaused, out var b))
             {
                 throw new Exception("Invalid Boolean Value");
             }
@@ -1324,8 +1307,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(LossOrDamageDate, out d))
+                if (DateTime.TryParse(LossOrDamageDate, out var d))
                 {
                     job.JobMetaInsurance.LossOrDamageDate = d;
                 }
@@ -1372,8 +1354,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(ExternalLoggedDate, out d))
+                if (DateTime.TryParse(ExternalLoggedDate, out var d))
                 {
                     job.JobMetaWarranty.ExternalLoggedDate = d;
                 }
@@ -1424,8 +1405,7 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    DateTime d;
-                    if (DateTime.TryParse(ExternalCompletedDate, out d))
+                    if (DateTime.TryParse(ExternalCompletedDate, out var d))
                     {
                         job.JobMetaWarranty.ExternalCompletedDate = d;
                     }
@@ -1495,8 +1475,7 @@ namespace Disco.Web.Areas.API.Controllers
 
                 var flag = Flag.Value;
                 var validFlags = job.ValidFlags();
-                Tuple<string, bool> flagStatus;
-                if (validFlags.TryGetValue((flag < 0 ? flag * -1 : flag), out flagStatus))
+                if (validFlags.TryGetValue(flag < 0 ? flag * -1 : flag, out var flagStatus))
                 {
                     if (flag < 0)
                     { // Remove Flag
@@ -2067,12 +2046,11 @@ namespace Disco.Web.Areas.API.Controllers
             var j = Database.Jobs.Find(id);
             if (j != null)
             {
-                decimal cost = 0;
                 if (string.IsNullOrEmpty(Description))
                     Description = "?";
                 if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
                     Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-                decimal.TryParse(Cost, out cost);
+                decimal.TryParse(Cost, out var cost);
 
                 var jc = new JobComponent()
                 {
@@ -2095,13 +2073,12 @@ namespace Disco.Web.Areas.API.Controllers
             var jc = Database.JobComponents.Find(id);
             if (jc != null)
             {
-                decimal cost = 0;
 
                 if (string.IsNullOrEmpty(Description))
                     Description = "?";
                 if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
                     Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-                decimal.TryParse(Cost, out cost);
+                decimal.TryParse(Cost, out var cost);
 
                 jc.Description = Description;
                 jc.Cost = cost;

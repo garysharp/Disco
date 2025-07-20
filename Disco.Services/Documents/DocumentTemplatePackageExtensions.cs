@@ -91,11 +91,10 @@ namespace Disco.Services
                 try
                 {
                     object er = compiledExpression.EvaluateFirst<object>(Data, evaluatorVariables);
-                    if (er is bool)
+                    if (er is bool erBool)
                     {
-                        return (bool)er;
+                        return erBool;
                     }
-                    bool erBool;
                     if (bool.TryParse(er.ToString(), out erBool))
                     {
                         return erBool;

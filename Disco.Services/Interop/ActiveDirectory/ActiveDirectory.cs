@@ -79,8 +79,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
 
-            ADDomain searchDomain;
-            var term = RelevantSearchTerm(Term, out searchDomain);
+            var term = RelevantSearchTerm(Term, out var searchDomain);
 
             if (string.IsNullOrWhiteSpace(term))
                 return Enumerable.Empty<ADUserAccount>();
@@ -139,8 +138,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
 
-            ADDomain searchDomain;
-            var term = RelevantSearchTerm(Term, out searchDomain);
+            var term = RelevantSearchTerm(Term, out var searchDomain);
 
             if (string.IsNullOrWhiteSpace(term))
                 return Enumerable.Empty<ADGroup>();
@@ -200,10 +198,8 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public static string ParseDomainAccountId(string AccountId, string AccountDomain)
         {
-            string accountUsername;
-            ADDomain domain;
 
-            return ParseDomainAccountId(AccountId, AccountDomain, out accountUsername, out domain);
+            return ParseDomainAccountId(AccountId, AccountDomain, out _, out _);
         }
         public static string ParseDomainAccountId(string AccountId, out string AccountUsername)
         {
@@ -211,9 +207,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public static string ParseDomainAccountId(string AccountId, string AccountDomain, out string AccountUsername)
         {
-            ADDomain domain;
-
-            return ParseDomainAccountId(AccountId, AccountDomain, out AccountUsername, out domain);
+            return ParseDomainAccountId(AccountId, AccountDomain, out AccountUsername, out _);
         }
         public static string ParseDomainAccountId(string AccountId, out ADDomain Domain)
         {
@@ -221,9 +215,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public static string ParseDomainAccountId(string AccountId, string AccountDomain, out ADDomain Domain)
         {
-            string accountUsername;
-
-            return ParseDomainAccountId(AccountId, AccountDomain, out accountUsername, out Domain);
+            return ParseDomainAccountId(AccountId, AccountDomain, out _, out Domain);
         }
         public static string ParseDomainAccountId(string AccountId, out string AccountUsername, out ADDomain Domain)
         {
@@ -258,22 +250,15 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public static bool IsValidDomainAccountId(string AccountId)
         {
-            string accountUsername;
-            ADDomain domain;
-
-            return IsValidDomainAccountId(AccountId, out accountUsername, out domain);
+            return IsValidDomainAccountId(AccountId, out _, out _);
         }
         public static bool IsValidDomainAccountId(string AccountId, out string AccountUsername)
         {
-            ADDomain domain;
-
-            return IsValidDomainAccountId(AccountId, out AccountUsername, out domain);
+            return IsValidDomainAccountId(AccountId, out AccountUsername, out _);
         }
         public static bool IsValidDomainAccountId(string AccountId, out ADDomain Domain)
         {
-            string accountUsername;
-
-            return IsValidDomainAccountId(AccountId, out accountUsername, out Domain);
+            return IsValidDomainAccountId(AccountId, out _, out Domain);
         }
         public static bool IsValidDomainAccountId(string AccountId, out string AccountUsername, out ADDomain Domain)
         {

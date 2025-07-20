@@ -85,8 +85,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                 foreach (var domainGroup in devices.GroupBy(d => d.ComputerDomainName).ToList())
                 {
-                    ADDomain domain;
-                    if (domainGroup.Key != null && ActiveDirectory.Context.TryGetDomainByNetBiosName(domainGroup.Key, out domain))
+                    if (domainGroup.Key != null && ActiveDirectory.Context.TryGetDomainByNetBiosName(domainGroup.Key, out var domain))
                     {
                         var controller = domain.GetAvailableDomainController(RequireWritable: true);
 

@@ -76,10 +76,9 @@ namespace Disco.Services.Devices.ManagedGroups
 
         public static bool TryGetManagedGroup(DeviceProfile DeviceProfile, out DeviceProfileAssignedUsersManagedGroup ManagedGroup)
         {
-            ADManagedGroup managedGroup;
             string key = GetKey(DeviceProfile);
 
-            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out managedGroup))
+            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out var managedGroup))
             {
                 ManagedGroup = (DeviceProfileAssignedUsersManagedGroup)managedGroup;
                 return true;

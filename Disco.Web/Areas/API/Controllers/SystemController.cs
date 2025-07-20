@@ -344,9 +344,8 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure)]
         public virtual ActionResult SyncActiveDirectoryManagedGroup(string id, string redirectUrl = null)
         {
-            ADManagedGroup managedGroup;
 
-            if (!ActiveDirectory.Context.ManagedGroups.TryGetValue(id, out managedGroup))
+            if (!ActiveDirectory.Context.ManagedGroups.TryGetValue(id, out var managedGroup))
                 throw new ArgumentException("Unknown Managed Group Key");
 
             var taskStatus = ADManagedGroupsSyncTask.ScheduleSync(managedGroup);

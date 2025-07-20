@@ -53,11 +53,9 @@ namespace Disco.Data.Configuration
         {
             var cache = Cache(Database);
 
-            ConfigurationCacheScopeType scopeCache;
-            if (cache.TryGetValue(Scope, out scopeCache))
+            if (cache.TryGetValue(Scope, out var scopeCache))
             {
-                ConfigurationCacheItemType item = default(ConfigurationCacheItemType);
-                if (scopeCache.TryGetValue(Key, out item))
+                if (scopeCache.TryGetValue(Key, out var item))
                     return item;
             }
 
@@ -93,8 +91,7 @@ namespace Disco.Data.Configuration
                         Database.ConfigurationItems.Add(configItem);
 
                         // Add Item to Cache
-                        ConfigurationCacheScopeType scopeCache;
-                        if (!cacheStore.TryGetValue(Scope, out scopeCache))
+                        if (!cacheStore.TryGetValue(Scope, out var scopeCache))
                         {
                             scopeCache = new ConfigurationCacheScopeType();
                             cacheStore.TryAdd(Scope, scopeCache);
@@ -134,10 +131,9 @@ namespace Disco.Data.Configuration
                             Database.ConfigurationItems.Remove(configItem);
 
                             // Remove item from Cache
-                            ConfigurationCacheScopeType scopeCache;
-                            if (cacheStore.TryGetValue(Scope, out scopeCache))
+                            if (cacheStore.TryGetValue(Scope, out var scopeCache))
                             {
-                                scopeCache.TryRemove(Key, out item);
+                                scopeCache.TryRemove(Key, out _);
                             }
 
                             return null;
@@ -148,8 +144,7 @@ namespace Disco.Data.Configuration
                             configItem.Value = Value;
 
                             // Update Cache
-                            ConfigurationCacheScopeType scopeCache;
-                            if (cacheStore.TryGetValue(Scope, out scopeCache))
+                            if (cacheStore.TryGetValue(Scope, out var scopeCache))
                             {
                                 scopeCache.TryRemove(Key, out item);
                                 item = new ConfigurationCacheItemType(configItem, ObjectValue);
@@ -167,8 +162,7 @@ namespace Disco.Data.Configuration
         {
             var cache = ConfigurationCache.cacheStore;
 
-            ConfigurationCacheScopeType scopeCache;
-            if (cache.TryGetValue(ExistingItem.Item1.Scope, out scopeCache))
+            if (cache.TryGetValue(ExistingItem.Item1.Scope, out var scopeCache))
             {
                 ConfigurationCacheItemType newItem = new ConfigurationCacheItemType(ExistingItem.Item1, Value);
                 scopeCache.TryUpdate(ExistingItem.Item1.Key, newItem, ExistingItem);
@@ -340,8 +334,7 @@ namespace Disco.Data.Configuration
         {
             var cache = Cache(Database);
 
-            ConfigurationCacheScopeType scopeCache;
-            if (cache.TryGetValue(Scope, out scopeCache))
+            if (cache.TryGetValue(Scope, out var scopeCache))
             {
                 return scopeCache.Keys.ToList();
             }
@@ -365,8 +358,7 @@ namespace Disco.Data.Configuration
                 // Remove item from Cache
                 if (cacheStore != null)
                 {
-                    ConfigurationCacheScopeType scopeCache;
-                    cacheStore.TryRemove(Scope, out scopeCache);
+                    cacheStore.TryRemove(Scope, out var scopeCache);
                 }
             }
         }
@@ -406,10 +398,9 @@ namespace Disco.Data.Configuration
                 // Remove item from Cache
                 if (cacheItem != null)
                 {
-                    ConfigurationCacheScopeType scopeCache;
-                    if (cacheStore.TryGetValue(Scope, out scopeCache))
+                    if (cacheStore.TryGetValue(Scope, out var scopeCache))
                     {
-                        scopeCache.TryRemove(Key, out cacheItem);
+                        scopeCache.TryRemove(Key, out _);
                     }
                 }
             }

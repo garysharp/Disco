@@ -40,8 +40,7 @@ namespace Disco.Services.Devices.Importing.Fields
                 parsedValue = new DateTime((parsedValue.Value.Ticks / 10000000L) * 10000000L);
             }
 
-            string errorMessage;
-            if (parsedValue.HasValue && !CanDecommissionDevice(ExistingDevice, Context, DataReader, out errorMessage))
+            if (parsedValue.HasValue && !CanDecommissionDevice(ExistingDevice, Context, DataReader, out var errorMessage))
                 return Error(errorMessage);
 
             var decommissionReasonIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedReason);

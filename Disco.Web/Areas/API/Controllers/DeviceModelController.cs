@@ -158,8 +158,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                DateTime d;
-                if (DateTime.TryParse(DefaultPurchaseDate, out d))
+                if (DateTime.TryParse(DefaultPurchaseDate, out var d))
                 {
                     deviceModel.DefaultPurchaseDate = d;
                 }
@@ -327,12 +326,11 @@ namespace Disco.Web.Areas.API.Controllers
                 }
             }
 
-            decimal cost = 0;
             if (string.IsNullOrEmpty(Description))
                 Description = "?";
             if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
                 Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-            decimal.TryParse(Cost, out cost);
+            decimal.TryParse(Cost, out var cost);
 
             var dc = new DeviceComponent()
             {
@@ -381,13 +379,12 @@ namespace Disco.Web.Areas.API.Controllers
             var dc = Database.DeviceComponents.Include("JobSubTypes").Where(i => i.Id == id).FirstOrDefault();
             if (dc != null)
             {
-                decimal cost = 0;
 
                 if (string.IsNullOrEmpty(Description))
                     Description = "?";
                 if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
                     Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-                decimal.TryParse(Cost, out cost);
+                decimal.TryParse(Cost, out var cost);
 
                 dc.Description = Description;
                 dc.Cost = cost;

@@ -17,8 +17,7 @@ namespace Disco.Services.Plugins.Features.UIExtension
         private static List<PluginFeatureManifest> GetUIModelRegistrations<UIModel>() where UIModel : BaseUIModel
         {
             Type uiModelType = typeof(UIModel);
-            List<PluginFeatureManifest> modelRegistrations;
-            if (!_registrations.TryGetValue(uiModelType, out modelRegistrations))
+            if (!_registrations.TryGetValue(uiModelType, out var modelRegistrations))
             {
                 lock (_registrations)
                 {

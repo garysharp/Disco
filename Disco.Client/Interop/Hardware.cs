@@ -539,8 +539,7 @@ namespace Disco.Client.Interop
                                     // if serial number is absent attempt using UUID if valid
                                     if (string.IsNullOrWhiteSpace(deviceHardware.SerialNumber))
                                     {
-                                        Guid uuidGuid;
-                                        if (Guid.TryParse(deviceHardware.UUID, out uuidGuid) && uuidGuid != Guid.Empty)
+                                        if (Guid.TryParse(deviceHardware.UUID, out var uuidGuid) && uuidGuid != Guid.Empty)
                                         {
                                             deviceHardware.SerialNumber = $"UUID{uuidGuid:N}";
                                         }

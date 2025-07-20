@@ -113,8 +113,7 @@ namespace Disco.Services.Devices.Importing
             if (columnsByType == null)
                 throw new ArgumentNullException(nameof(columnsByType));
 
-            DeviceImportColumn column;
-            if (columnsByType.TryGetValue(FieldType, out column))
+            if (columnsByType.TryGetValue(FieldType, out var column))
             {
                 return column.Index;
             }

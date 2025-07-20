@@ -41,11 +41,9 @@ namespace Disco.Web.Areas.Config.Controllers
                     DeviceDecommissionedCount = dG.Count(d => d.DecommissionedDate.HasValue)
                 }).ToArray().Cast<ConfigDeviceBatchShowModelMembership>().ToList();
 
-                DeviceBatchAssignedUsersManagedGroup assignedUsersManagedGroup;
-                if (DeviceBatchAssignedUsersManagedGroup.TryGetManagedGroup(m.DeviceBatch, out assignedUsersManagedGroup))
+                if (DeviceBatchAssignedUsersManagedGroup.TryGetManagedGroup(m.DeviceBatch, out var assignedUsersManagedGroup))
                     m.AssignedUsersLinkedGroup = assignedUsersManagedGroup;
-                DeviceBatchDevicesManagedGroup devicesManagedGroup;
-                if (DeviceBatchDevicesManagedGroup.TryGetManagedGroup(m.DeviceBatch, out devicesManagedGroup))
+                if (DeviceBatchDevicesManagedGroup.TryGetManagedGroup(m.DeviceBatch, out var devicesManagedGroup))
                     m.DevicesLinkedGroup = devicesManagedGroup;
 
                 m.CanDelete = m.DeviceBatch.CanDelete(Database);

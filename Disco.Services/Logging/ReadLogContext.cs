@@ -103,8 +103,7 @@ namespace Disco.Services.Logging
             List<string> logYears = new List<string>();
             foreach (var directoryName in logDirectoryBaseInfo.GetDirectories())
             {
-                int directoryYear;
-                if (int.TryParse(directoryName.Name, out directoryYear))
+                if (int.TryParse(directoryName.Name, out _))
                 {
                     logYears.Add(directoryName.Name);
                 }

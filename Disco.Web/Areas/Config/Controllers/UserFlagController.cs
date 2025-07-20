@@ -36,11 +36,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (m == null)
                     throw new ArgumentException("Invalid User Flag Id");
 
-                UserFlagUsersManagedGroup assignedUsersManagedGroup;
-                if (UserFlagUsersManagedGroup.TryGetManagedGroup(m.UserFlag, out assignedUsersManagedGroup))
+                if (UserFlagUsersManagedGroup.TryGetManagedGroup(m.UserFlag, out var assignedUsersManagedGroup))
                     m.UsersLinkedGroup = assignedUsersManagedGroup;
-                UserFlagUserDevicesManagedGroup assignedUserDevicesManagedGroup;
-                if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(m.UserFlag, out assignedUserDevicesManagedGroup))
+                if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(m.UserFlag, out var assignedUserDevicesManagedGroup))
                     m.UserDevicesLinkedGroup = assignedUserDevicesManagedGroup;
 
                 if (Authorization.Has(Claims.Config.UserFlag.Configure))

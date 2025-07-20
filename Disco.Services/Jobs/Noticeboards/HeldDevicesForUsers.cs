@@ -27,8 +27,7 @@ namespace Disco.Services.Jobs.Noticeboards
                     .ToDictionary(userId => userId,
                     userId =>
                     {
-                        IHeldDeviceItem item;
-                        items.TryGetValue(userId, out item);
+                        items.TryGetValue(userId, out var item);
                         return item;
                     });
 

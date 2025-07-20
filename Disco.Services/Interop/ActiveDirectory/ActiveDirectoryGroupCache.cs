@@ -104,30 +104,28 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         private Tuple<ADGroup, DateTime> TryDistinguishedNameCache(string DistinguishedName)
         {
-            Tuple<ADGroup, DateTime> groupRecord;
-            if (distinguishedNameCache.TryGetValue(DistinguishedName, out groupRecord))
+            if (distinguishedNameCache.TryGetValue(DistinguishedName, out var groupRecord))
             {
                 if (groupRecord.Item2 > DateTime.Now)
                     return groupRecord;
                 else
                 {
                     if (distinguishedNameCache.TryRemove(DistinguishedName, out groupRecord))
-                        securityIdentifierCache.TryRemove(groupRecord.Item1.SecurityIdentifier, out groupRecord);
+                        securityIdentifierCache.TryRemove(groupRecord.Item1.SecurityIdentifier, out _);
                 }
             }
             return null;
         }
         private Tuple<ADGroup, DateTime> TrySecurityIdentifierCache(SecurityIdentifier SecurityIdentifier)
         {
-            Tuple<ADGroup, DateTime> groupRecord;
-            if (securityIdentifierCache.TryGetValue(SecurityIdentifier, out groupRecord))
+            if (securityIdentifierCache.TryGetValue(SecurityIdentifier, out var groupRecord))
             {
                 if (groupRecord.Item2 > DateTime.Now)
                     return groupRecord;
                 else
                 {
                     if (securityIdentifierCache.TryRemove(SecurityIdentifier, out groupRecord))
-                        distinguishedNameCache.TryRemove(groupRecord.Item1.DistinguishedName, out groupRecord);
+                        distinguishedNameCache.TryRemove(groupRecord.Item1.DistinguishedName, out _);
                 }
             }
             return null;
@@ -191,12 +189,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             var dnKeys = distinguishedNameCache.Keys.ToArray();
             foreach (var dnKey in dnKeys)
             {
-                Tuple<ADGroup, DateTime> groupRecord;
-                if (distinguishedNameCache.TryGetValue(dnKey, out groupRecord))
+                if (distinguishedNameCache.TryGetValue(dnKey, out var groupRecord))
                 {
                     if (groupRecord.Item2 <= now)
                     {
-                        distinguishedNameCache.TryRemove(dnKey, out groupRecord);
+                        distinguishedNameCache.TryRemove(dnKey, out _);
                     }
                 }
             }
@@ -205,12 +202,11 @@ namespace Disco.Services.Interop.ActiveDirectory
             var siKeys = securityIdentifierCache.Keys.ToArray();
             foreach (var siKey in siKeys)
             {
-                Tuple<ADGroup, DateTime> groupRecord;
-                if (securityIdentifierCache.TryGetValue(siKey, out groupRecord))
+                if (securityIdentifierCache.TryGetValue(siKey, out var groupRecord))
                 {
                     if (groupRecord.Item2 <= now)
                     {
-                        securityIdentifierCache.TryRemove(siKey, out groupRecord);
+                        securityIdentifierCache.TryRemove(siKey, out _);
                     }
                 }
             }

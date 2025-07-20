@@ -442,8 +442,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdateDistributionType(DeviceProfile deviceProfile, string DistributionType)
         {
-            int iDt;
-            if (int.TryParse(DistributionType, out iDt))
+            if (int.TryParse(DistributionType, out var iDt))
             {
                 deviceProfile.DistributionType = (DeviceProfile.DistributionTypes)iDt;
                 Database.SaveChanges();
@@ -581,8 +580,7 @@ namespace Disco.Web.Areas.API.Controllers
             else
             {
                 // Validate
-                int daoId;
-                if (int.TryParse(DefaultOrganisationAddress, out daoId))
+                if (int.TryParse(DefaultOrganisationAddress, out var daoId))
                 {
                     var oa = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(daoId);
                     if (oa != null)
@@ -606,8 +604,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdateEnforceComputerNameConvention(DeviceProfile deviceProfile, string EnforceComputerNameConvention)
         {
-            bool bValue;
-            if (bool.TryParse(EnforceComputerNameConvention, out bValue))
+            if (bool.TryParse(EnforceComputerNameConvention, out var bValue))
             {
                 deviceProfile.EnforceComputerNameConvention = bValue;
 
@@ -619,8 +616,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdateEnforceOrganisationalUnit(DeviceProfile deviceProfile, string EnforceOrganisationalUnit)
         {
-            bool bValue;
-            if (bool.TryParse(EnforceOrganisationalUnit, out bValue))
+            if (bool.TryParse(EnforceOrganisationalUnit, out var bValue))
             {
                 deviceProfile.EnforceOrganisationalUnit = bValue;
 
@@ -632,8 +628,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdateProvisionADAccount(DeviceProfile deviceProfile, string ProvisionADAccount)
         {
-            bool bValue;
-            if (bool.TryParse(ProvisionADAccount, out bValue))
+            if (bool.TryParse(ProvisionADAccount, out var bValue))
             {
                 deviceProfile.ProvisionADAccount = bValue;
 
@@ -645,8 +640,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdateAssignedUserLocalAdmin(DeviceProfile deviceProfile, string AssignedUserLocalAdmin)
         {
-            bool bValue;
-            if (bool.TryParse(AssignedUserLocalAdmin, out bValue))
+            if (bool.TryParse(AssignedUserLocalAdmin, out var bValue))
             {
                 deviceProfile.AssignedUserLocalAdmin = bValue;
 
@@ -658,8 +652,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         private void UpdateAllowUntrustedReimageJobEnrolment(DeviceProfile deviceProfile, string AllowUntrustedReimageJobEnrolment)
         {
-            bool bValue;
-            if (bool.TryParse(AllowUntrustedReimageJobEnrolment, out bValue))
+            if (bool.TryParse(AllowUntrustedReimageJobEnrolment, out var bValue))
             {
                 deviceProfile.AllowUntrustedReimageJobEnrolment = bValue;
 

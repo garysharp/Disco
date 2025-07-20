@@ -311,8 +311,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             // Link Children
             foreach (var ouChildren in indexedChildren)
             {
-                ADOrganisationalUnit ouParent;
-                if (indexedOrganisationalUnits.TryGetValue(ouChildren.Key, out ouParent))
+                if (indexedOrganisationalUnits.TryGetValue(ouChildren.Key, out var ouParent))
                 {
                     ouParent.Children = ouChildren.Value.OrderBy(o => o.Name).ToList();
                 }

@@ -34,7 +34,7 @@ namespace Disco.ClientBootstrapper.Interop
             Name = (string)wmiObject.GetPropertyValue("Name");
             NetConnectionID = (string)wmiObject.GetPropertyValue("NetConnectionID");
             Speed = (UInt64)wmiObject.GetPropertyValue("Speed");
-            var connectionStatus = ConnectionStatus;
+            _ = ConnectionStatus;
             IsWireless = true;
             try
             {
@@ -53,19 +53,17 @@ namespace Disco.ClientBootstrapper.Interop
                 if (IsWireless)
                 {
                     IntPtr handle = IntPtr.Zero;
-                    uint negotiatedVersion;
                     try
                     {
-                        if (NetworkInterop.WlanOpenHandle(1, IntPtr.Zero, out negotiatedVersion, ref handle) != 0)
+                        if (NetworkInterop.WlanOpenHandle(1, IntPtr.Zero, out var negotiatedVersion, ref handle) != 0)
                             throw new NotSupportedException("This network adapter does not support Wireless");
 
                         IntPtr ptr = new IntPtr();
 
-                        uint dataSize;
 
                         var interfaceGuid = Guid;
 
-                        if (NetworkInterop.WlanQueryInterface(handle, ref interfaceGuid, NetworkInterop.WLAN_INTF_OPCODE.wlan_intf_opcode_interface_state, IntPtr.Zero, out dataSize, ref ptr, IntPtr.Zero) != 0)
+                        if (NetworkInterop.WlanQueryInterface(handle, ref interfaceGuid, NetworkInterop.WLAN_INTF_OPCODE.wlan_intf_opcode_interface_state, IntPtr.Zero, out var dataSize, ref ptr, IntPtr.Zero) != 0)
                             throw new NotSupportedException("This network adapter does not support Wireless");
 
                         LastWirelessConnectionStatus = Marshal.ReadInt32(ptr);

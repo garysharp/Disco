@@ -72,8 +72,7 @@ namespace Disco.Services.Logging
             foreach (var module in LogModules)
             {
                 // Update/Insert Module
-                Models.LogModule dbModule;
-                if (existingModules.TryGetValue(module.Key, out dbModule))
+                if (existingModules.TryGetValue(module.Key, out var dbModule))
                 {
                     // Update
                     if (dbModule.Name != module.Value.ModuleName)
@@ -96,8 +95,7 @@ namespace Disco.Services.Logging
                 Dictionary<int, Models.LogEventType> existingEventTypes = (dbModule.EventTypes == null) ? new Dictionary<int, Models.LogEventType>() : dbModule.EventTypes.ToDictionary(et => et.Id);
                 foreach (var eventType in module.Value.EventTypes)
                 {
-                    Models.LogEventType dbEventType;
-                    if (existingEventTypes.TryGetValue(eventType.Key, out dbEventType))
+                    if (existingEventTypes.TryGetValue(eventType.Key, out var dbEventType))
                     {
                         // Update
                         if (dbEventType.Name != eventType.Value.Name)
@@ -253,11 +251,9 @@ namespace Disco.Services.Logging
 
         public void Log(int ModuleId, int EventTypeId, params object[] Args)
         {
-            LogBase logModule;
-            if (LogModules.TryGetValue(ModuleId, out logModule))
+            if (LogModules.TryGetValue(ModuleId, out var logModule))
             {
-                Models.LogEventType eventType;
-                if (logModule.EventTypes.TryGetValue(EventTypeId, out eventType))
+                if (logModule.EventTypes.TryGetValue(EventTypeId, out var eventType))
                 {
                     var eventTimestamp = DateTime.Now;
                     if (eventType.UseLive)

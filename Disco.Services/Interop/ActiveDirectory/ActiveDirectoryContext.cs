@@ -137,8 +137,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public ADDomain GetDomainFromDistinguishedName(string DistinguishedName)
         {
-            ADDomain domain;
-            if (!TryGetDomainFromDistinguishedName(DistinguishedName, out domain))
+            if (!TryGetDomainFromDistinguishedName(DistinguishedName, out var domain))
                 throw new ArgumentException($"The distinguished name is from an unknown domain: [{DistinguishedName}]", "DistinguishedName");
             return domain;
         }
@@ -150,8 +149,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public ADDomain GetDomainByNetBiosName(string NetBiosName)
         {
-            ADDomain domain;
-            if (!TryGetDomainByNetBiosName(NetBiosName, out domain))
+            if (!TryGetDomainByNetBiosName(NetBiosName, out var domain))
                 throw new ArgumentException($"The domain for specified NetBios name is unknown [{NetBiosName}]", "NetBiosName");
             return domain;
         }
@@ -163,8 +161,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public ADDomain GetDomainByName(string Name)
         {
-            ADDomain domain;
-            if (!TryGetDomainByName(Name, out domain))
+            if (!TryGetDomainByName(Name, out var domain))
                 throw new ArgumentException($"The domain for specified DNS name is unknown [{Name}]", "Name");
             return domain;
         }
@@ -176,8 +173,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public ADDomain GetDomainFromSecurityIdentifier(SecurityIdentifier SecurityIdentifier)
         {
-            ADDomain domain;
-            if (!TryGetDomainFromSecurityIdentifier(SecurityIdentifier, out domain))
+            if (!TryGetDomainFromSecurityIdentifier(SecurityIdentifier, out var domain))
                 throw new ArgumentException($"The domain for specified Security Identifier is unknown [{SecurityIdentifier.ToString()}]", "SecurityIdentifier");
             return domain;
         }
@@ -328,8 +324,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                     .Distinct()
                     .Select(c =>
                     {
-                        ADDomain d;
-                        if (TryGetDomainFromDistinguishedName(c, out d))
+                        if (TryGetDomainFromDistinguishedName(c, out var d))
                             return Tuple.Create(d, c);
                         else
                             return null;

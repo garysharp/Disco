@@ -39,21 +39,20 @@ namespace Disco.ClientBootstrapper.Interop
             // End Removed 2012-11-23 G#
 
             // Added 2012-11-23 G# - Migrate to Win32 PInvoke Shutdown
-            bool result;
             TokPriv1Luid tp;
 
             IntPtr hproc = GetCurrentProcess();
             IntPtr htok = IntPtr.Zero;
 
-            result = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
+            OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
 
             tp.Count = 1;
             tp.Luid = 0;
             tp.Attr = SE_PRIVILEGE_ENABLED;
 
-            result = LookupPrivilegeValue(null, SE_SHUTDOWN_NAME, ref tp.Luid);
-            result = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
-            result = ExitWindowsEx(flag, 0);
+            LookupPrivilegeValue(null, SE_SHUTDOWN_NAME, ref tp.Luid);
+            AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+            ExitWindowsEx(flag, 0);
             // End Added 2012-11-23 G#
         }
 

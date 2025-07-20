@@ -49,9 +49,7 @@ namespace Disco.Services.Plugins
         {
             if (_PluginManifests == null)
                 throw new InvalidOperationException("Plugins have not been initialized");
-
-            PluginManifest manifest;
-            return _PluginManifests.TryGetValue(PluginId, out manifest);
+            return _PluginManifests.TryGetValue(PluginId, out _);
         }
 
         public static PluginManifest GetPlugin(string PluginId, Type ContainsCategoryType)
@@ -59,8 +57,7 @@ namespace Disco.Services.Plugins
             if (_PluginManifests == null)
                 throw new InvalidOperationException("Plugins have not been initialized");
 
-            PluginManifest manifest;
-            if (_PluginManifests.TryGetValue(PluginId, out manifest))
+            if (_PluginManifests.TryGetValue(PluginId, out var manifest))
             {
                 if (ContainsCategoryType == null)
                     return manifest;
@@ -87,8 +84,7 @@ namespace Disco.Services.Plugins
             if (_PluginManifests == null)
                 return false;
 
-            PluginManifest manifest;
-            if (_PluginManifests.TryGetValue(PluginId, out manifest))
+            if (_PluginManifests.TryGetValue(PluginId, out var manifest))
             {
                 if (ContainsCategoryType == null)
                 {
@@ -123,8 +119,7 @@ namespace Disco.Services.Plugins
             if (_PluginAssemblyManifests == null)
                 throw new InvalidOperationException("Plugins have not been initialized");
 
-            PluginManifest manifest;
-            if (_PluginAssemblyManifests.TryGetValue(PluginAssembly, out manifest))
+            if (_PluginAssemblyManifests.TryGetValue(PluginAssembly, out var manifest))
             {
                 return manifest;
             }
@@ -135,19 +130,14 @@ namespace Disco.Services.Plugins
         }
         public static bool TryGetPlugin(Assembly PluginAssembly, out PluginManifest PluginManifest)
         {
-            PluginManifest = null;
-
-            if (_PluginAssemblyManifests == null)
-                return false;
-
-            PluginManifest manifest;
-            if (_PluginAssemblyManifests.TryGetValue(PluginAssembly, out manifest))
+            if (_PluginAssemblyManifests?.TryGetValue(PluginAssembly, out var manifest) ?? false)
             {
                 PluginManifest = manifest;
                 return true;
             }
             else
             {
+                PluginManifest = null;
                 return false;
             }
         }
@@ -252,8 +242,7 @@ namespace Disco.Services.Plugins
             if (FeatureCategoryType == null)
                 throw new ArgumentNullException("FeatureType");
 
-            string displayName;
-            if (FeatureCategoryDisplayNames.TryGetValue(FeatureCategoryType, out displayName))
+            if (FeatureCategoryDisplayNames.TryGetValue(FeatureCategoryType, out var displayName))
                 return displayName;
             else
                 throw new InvalidOperationException($"Unknown Plugin Feature Category Type: [{FeatureCategoryType.Name}]");

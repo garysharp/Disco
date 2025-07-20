@@ -122,9 +122,7 @@ namespace Disco.Services.Interop.DiscoServices
 
         public static bool IsCompatible(this PluginLibraryIncompatibility IncompatibilityLibrary, PluginLibraryItemReleaseV2 Release)
         {
-            PluginIncompatibility incompatibility;
-
-            return IsCompatible(IncompatibilityLibrary, Release, out incompatibility);
+            return IsCompatible(IncompatibilityLibrary, Release, out _);
         }
 
         public static bool IsCompatible(this PluginLibraryIncompatibility IncompatibilityLibrary, PluginLibraryItemReleaseV2 Release, out PluginIncompatibility Incompatibility)
@@ -134,9 +132,7 @@ namespace Disco.Services.Interop.DiscoServices
 
         public static bool IsCompatible(this PluginLibraryIncompatibility IncompatibilityLibrary, string PluginId, Version Version)
         {
-            PluginIncompatibility incompatibility;
-
-            return IsCompatible(IncompatibilityLibrary, PluginId, Version, out incompatibility);
+            return IsCompatible(IncompatibilityLibrary, PluginId, Version, out _);
         }
 
         public static bool IsCompatible(this PluginLibraryIncompatibility IncompatibilityLibrary, string PluginId, Version Version, out PluginIncompatibility Incompatibility)

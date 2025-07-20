@@ -235,8 +235,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
         private void UpdateScope(DocumentTemplatePackage Package, string Scope)
         {
-            AttachmentTypes scope;
-            if (!Enum.TryParse(Scope, true, out scope))
+            if (!Enum.TryParse<AttachmentTypes>(Scope, true, out var scope))
                 throw new ArgumentException("Invalid Scope", nameof(Scope));
 
             if (Package.Scope != scope)

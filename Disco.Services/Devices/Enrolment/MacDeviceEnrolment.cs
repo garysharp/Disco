@@ -73,9 +73,8 @@ namespace Disco.Services.Devices.Enrolment
                         foreach (var node in profilerData.OfType<DictionaryNode>())
                         {
                             var nodeItems = ((ArrayNode)node["_items"]);
-                            PNode nodeDataType;
 
-                            if (node.TryGetValue("_dataType", out nodeDataType) && nodeDataType is StringNode)
+                            if (node.TryGetValue("_dataType", out var nodeDataType) && nodeDataType is StringNode)
                             {
                                 switch (((StringNode)nodeDataType).Value)
                                 {

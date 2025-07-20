@@ -705,9 +705,7 @@ namespace Disco.Services
         #region Force Close
         public static bool CanCloseForced(this Job j)
         {
-            List<string> reasons;
-
-            return CanCloseForced(j, out reasons);
+            return CanCloseForced(j, out _);
         }
         public static bool CanCloseForced(this Job j, out List<string> Reasons)
         {

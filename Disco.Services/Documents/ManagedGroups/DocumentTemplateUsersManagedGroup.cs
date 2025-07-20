@@ -104,10 +104,9 @@ namespace Disco.Services.Documents.ManagedGroups
 
         public static bool TryGetManagedGroup(DocumentTemplate DocumentTemplate, out DocumentTemplateUsersManagedGroup ManagedGroup)
         {
-            ADManagedGroup managedGroup;
             string key = GetKey(DocumentTemplate);
 
-            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out managedGroup))
+            if (ActiveDirectory.Context.ManagedGroups.TryGetValue(key, out var managedGroup))
             {
                 ManagedGroup = (DocumentTemplateUsersManagedGroup)managedGroup;
                 return true;
@@ -217,8 +216,7 @@ namespace Disco.Services.Documents.ManagedGroups
         {
             var attachment = (DeviceAttachment)e.Entity;
 
-            string userId;
-            if (DeviceContainsAttachment(e.Database, attachment.DeviceSerialNumber, out userId) && userId != null)
+            if (DeviceContainsAttachment(e.Database, attachment.DeviceSerialNumber, out var userId) && userId != null)
                 AddMember(userId, (database) => new string[] { userId });
         }
         private void ProcessDeviceAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, string> e)
@@ -273,8 +271,7 @@ namespace Disco.Services.Documents.ManagedGroups
         {
             var attachment = (JobAttachment)e.Entity;
 
-            string userId;
-            if (JobsContainAttachment(e.Database, attachment.JobId, out userId) && userId != null)
+            if (JobsContainAttachment(e.Database, attachment.JobId, out var userId) && userId != null)
                 AddMember(userId, (database) => new string[] { userId });
         }
         private void ProcessJobAttachmentRemoveEvent(Tuple<DiscoDataContext, int, string, int> e)

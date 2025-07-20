@@ -43,9 +43,7 @@ namespace Disco.Services.Web.Bundles
                 throw new ArgumentNullException("Url");
             if (string.IsNullOrWhiteSpace(File))
                 throw new ArgumentNullException("File");
-
-            Uri fileUri;
-            if (!Uri.TryCreate(File, UriKind.Absolute, out fileUri))
+            if (!Uri.TryCreate(File, UriKind.Absolute, out _))
             {
                 File = HttpContext.Current.Server.MapPath(File);
             }

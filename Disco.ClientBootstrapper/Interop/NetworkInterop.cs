@@ -196,11 +196,10 @@ namespace Disco.ClientBootstrapper.Interop
             {
 
                 IntPtr wlanHandle = IntPtr.Zero;
-                uint negotiatedVersion;
 
                 try
                 {
-                    if (WlanOpenHandle(1, IntPtr.Zero, out negotiatedVersion, ref wlanHandle) != 0)
+                    if (WlanOpenHandle(1, IntPtr.Zero, out var negotiatedVersion, ref wlanHandle) != 0)
                         throw new NotSupportedException("This device does not support Wireless");
 
                     // Add Profile to Each Wireless Adapter
@@ -241,8 +240,7 @@ namespace Disco.ClientBootstrapper.Interop
                 var pInterfaceGuid = interfaceGuid;
                 var pProfileXml = ProfileXml;
                 uint pFlag = 0;
-                uint failReason;
-                return (WlanSetProfile(WlanHandle, ref pInterfaceGuid, pFlag, pProfileXml, null, true, IntPtr.Zero, out failReason) == 0);
+                return WlanSetProfile(WlanHandle, ref pInterfaceGuid, pFlag, pProfileXml, null, true, IntPtr.Zero, out _) == 0;
             }
         }
 
