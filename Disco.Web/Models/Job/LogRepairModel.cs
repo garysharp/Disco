@@ -50,11 +50,11 @@ namespace Disco.Web.Models.Job
         public Dictionary<string, string> ProviderProperties()
         {
             Dictionary<string, string> p = default(Dictionary<string, string>);
-            if (!string.IsNullOrEmpty(this.ProviderPropertiesJson))
+            if (!string.IsNullOrEmpty(ProviderPropertiesJson))
             {
                 try
                 {
-                    p = JsonConvert.DeserializeObject<Dictionary<string, string>>(this.ProviderPropertiesJson);
+                    p = JsonConvert.DeserializeObject<Dictionary<string, string>>(ProviderPropertiesJson);
                 }
                 catch (Exception)
                 {
@@ -98,7 +98,7 @@ namespace Disco.Web.Models.Job
             }
 
             // Update TechUser's Details [#12]
-            this.TechUser = UserService.GetUser(UserService.CurrentUserId, Database, true);
+            TechUser = UserService.GetUser(UserService.CurrentUserId, Database, true);
 
             RepairProviders = Plugins.GetPluginFeatures(typeof(RepairProviderFeature));
 
@@ -113,16 +113,16 @@ namespace Disco.Web.Models.Job
             if (!string.IsNullOrEmpty(RepairProviderId) && RepairProviderId != "MANUAL")
                 RepairProvider = Plugins.GetPluginFeature(RepairProviderId, typeof(RepairProviderFeature));
 
-            this.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
+            OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
 
-            if (!IsPostBack && !this.OrganisationAddressId.HasValue)
+            if (!IsPostBack && !OrganisationAddressId.HasValue)
             {
                 OrganisationAddressId = Job.Device.DeviceProfile.DefaultOrganisationAddress;
                 if (!OrganisationAddressId.HasValue && OrganisationAddresses.Count == 1)
                     OrganisationAddressId = OrganisationAddresses[0].Id;
             }
-            if (this.OrganisationAddressId.HasValue)
-                this.OrganisationAddress = this.OrganisationAddresses.FirstOrDefault(oa => oa.Id == this.OrganisationAddressId.Value);
+            if (OrganisationAddressId.HasValue)
+                OrganisationAddress = OrganisationAddresses.FirstOrDefault(oa => oa.Id == OrganisationAddressId.Value);
 
             if (!string.IsNullOrEmpty(RepairDescription))
                 RepairDescription = RepairDescription.Trim();

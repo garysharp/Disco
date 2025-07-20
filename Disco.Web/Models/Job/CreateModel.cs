@@ -42,24 +42,24 @@ namespace Disco.Web.Models.Job
 
         public void UpdateModel(DiscoDataContext Database, AuthorizationToken Authorization)
         {
-            if (this.JobTypes == null)
-                this.JobTypes = Database.JobTypes.Include("JobSubTypes.JobQueues").FilterCreatableTypePermissions(Authorization).ToList();
+            if (JobTypes == null)
+                JobTypes = Database.JobTypes.Include("JobSubTypes.JobQueues").FilterCreatableTypePermissions(Authorization).ToList();
 
             if (!string.IsNullOrEmpty(DeviceSerialNumber))
             {
-                this.Device = Database.Devices.Include("DeviceModel").Where(d => d.SerialNumber == DeviceSerialNumber).FirstOrDefault();
-                if (this.Device == null)
+                Device = Database.Devices.Include("DeviceModel").Where(d => d.SerialNumber == DeviceSerialNumber).FirstOrDefault();
+                if (Device == null)
                 {
                     throw new ArgumentException("Invalid Device Serial Number Specified", "DeviceSerialNumber");
                 }
-                if (string.IsNullOrEmpty(this.UserId) && !string.IsNullOrEmpty(this.Device.AssignedUserId))
+                if (string.IsNullOrEmpty(UserId) && !string.IsNullOrEmpty(Device.AssignedUserId))
                 {
-                    this.UserId = this.Device.AssignedUserId;
+                    UserId = Device.AssignedUserId;
                 }
-                if (string.IsNullOrEmpty(this.Type))
-                    this.Type = this.JobTypes.Any(jt => jt.Id == Disco.Models.Repository.JobType.JobTypeIds.HWar) ? Disco.Models.Repository.JobType.JobTypeIds.HWar : this.JobTypes.First().Id;
+                if (string.IsNullOrEmpty(Type))
+                    Type = JobTypes.Any(jt => jt.Id == Disco.Models.Repository.JobType.JobTypeIds.HWar) ? Disco.Models.Repository.JobType.JobTypeIds.HWar : JobTypes.First().Id;
 
-                if (string.IsNullOrEmpty(this.UserId))
+                if (string.IsNullOrEmpty(UserId))
                 {
                     // No User - Remove User Types
                     foreach (var jobType in JobTypes.ToArray())
@@ -94,20 +94,20 @@ namespace Disco.Web.Models.Job
                 }
 
                 // Set Default Job Type for Users
-                if (string.IsNullOrEmpty(this.Type))
-                    this.Type = this.JobTypes.Any(jt => jt.Id == Disco.Models.Repository.JobType.JobTypeIds.SApp) ? Disco.Models.Repository.JobType.JobTypeIds.SApp : this.JobTypes.First().Id;
+                if (string.IsNullOrEmpty(Type))
+                    Type = JobTypes.Any(jt => jt.Id == Disco.Models.Repository.JobType.JobTypeIds.SApp) ? Disco.Models.Repository.JobType.JobTypeIds.SApp : JobTypes.First().Id;
             }
             if (!string.IsNullOrEmpty(UserId))
             {
-                this.User = Database.Users.Find(UserId);
-                if (this.User == null)
+                User = Database.Users.Find(UserId);
+                if (User == null)
                 {
                     throw new ArgumentException("Invalid User Id Specified", "UserId");
                 }
-                if (string.IsNullOrEmpty(this.Type))
-                    this.Type = Disco.Models.Repository.JobType.JobTypeIds.SApp;
+                if (string.IsNullOrEmpty(Type))
+                    Type = Disco.Models.Repository.JobType.JobTypeIds.SApp;
             }
-            if (this.User == null && this.Device == null)
+            if (User == null && Device == null)
             {
                 throw new InvalidOperationException("A Job must reference a Device and/or a User");
             }
@@ -118,9 +118,9 @@ namespace Disco.Web.Models.Job
         {
             get
             {
-                if (!string.IsNullOrEmpty(this.Type))
+                if (!string.IsNullOrEmpty(Type))
                 {
-                    return this.JobTypes.FirstOrDefault(m => m.Id == this.Type);
+                    return JobTypes.FirstOrDefault(m => m.Id == Type);
                 }
                 return null;
             }
@@ -131,8 +131,8 @@ namespace Disco.Web.Models.Job
             {
                 if (SubTypes != null)
                 {
-                    var subTypes = this.SubTypes;
-                    return this.JobTypes.SelectMany(jt => jt.JobSubTypes).Where(m => subTypes.Contains(String.Format("{0}_{1}", m.JobTypeId, m.Id))).ToList();
+                    var subTypes = SubTypes;
+                    return JobTypes.SelectMany(jt => jt.JobSubTypes).Where(m => subTypes.Contains(String.Format("{0}_{1}", m.JobTypeId, m.Id))).ToList();
                 }
                 return null;
             }

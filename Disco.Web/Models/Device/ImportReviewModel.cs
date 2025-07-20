@@ -18,7 +18,7 @@ namespace Disco.Web.Models.Device
 
         public int StatisticImportRecords
         {
-            get { return this.StatisticNewRecords + StatisticModifiedRecords; }
+            get { return StatisticNewRecords + StatisticModifiedRecords; }
         }
 
         public IEnumerable<Tuple<DeviceImportFieldTypes, string>> HeaderTypes { get; set; }

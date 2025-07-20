@@ -65,7 +65,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.BulkGenerateDocumentTemplates = Database.DocumentTemplates.Where(t => !t.IsHidden).ToList();
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceBatchShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceBatchShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.DeviceBatch.Views.Show, m);
             }
@@ -74,7 +74,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 var m = Models.DeviceBatch.IndexModel.Build(Database);
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceBatchIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceBatchIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -90,7 +90,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceBatchCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceBatchCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -115,7 +115,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceBatchCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigDeviceBatchCreateModel>(ControllerContext, model);
 
             return View(model);
         }
@@ -126,7 +126,7 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new Models.DeviceBatch.TimelineModel();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceBatchTimelineModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceBatchTimelineModel>(ControllerContext, m);
 
             return View();
         }

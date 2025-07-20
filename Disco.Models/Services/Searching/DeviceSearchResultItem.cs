@@ -11,12 +11,12 @@ namespace Disco.Models.Services.Searching
 
         public DeviceSearchResultItem()
         {
-            this.LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
+            LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
         }
 
         public string Id { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return string.Format("{0} ({1})", this.Id, this.ComputerName); } }
+        public string Description { get { return string.Format("{0} ({1})", Id, ComputerName); } }
         public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string AssetNumber { get; set; }
@@ -46,23 +46,23 @@ namespace Disco.Models.Services.Searching
 
         private string[] BuildScoreValues()
         {
-            if (this.AssignedUserId == null)
+            if (AssignedUserId == null)
             {
                 return new string[] {
-                    this.Id,
-                    this.AssetNumber,
-                    this.ComputerName
+                    Id,
+                    AssetNumber,
+                    ComputerName
                 };
             }
             else
             {
                 return new string[] {
-                    this.Id,
-                    this.AssetNumber,
-                    this.ComputerName,
-                    this.AssignedUserId.Substring(this.AssignedUserId.IndexOf('\\') + 1),
-                    this.AssignedUserId,
-                    this.AssignedUserDisplayName
+                    Id,
+                    AssetNumber,
+                    ComputerName,
+                    AssignedUserId.Substring(AssignedUserId.IndexOf('\\') + 1),
+                    AssignedUserId,
+                    AssignedUserDisplayName
                 };
             }
         }

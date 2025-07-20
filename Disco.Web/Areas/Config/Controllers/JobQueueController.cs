@@ -55,7 +55,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 }
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigJobQueueShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigJobQueueShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.JobQueue.Views.Show, m);
             }
@@ -71,7 +71,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigJobQueueIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigJobQueueIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -92,7 +92,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigJobQueueCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigJobQueueCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -117,7 +117,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigJobQueueCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigJobQueueCreateModel>(ControllerContext, model);
 
             return View(model);
         }

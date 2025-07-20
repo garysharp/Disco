@@ -67,7 +67,7 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
                 new  KeyValuePair<int, string>(56, "8 Weeks")
             };
 
-            var current = this.LongRunningJobDaysThreshold;
+            var current = LongRunningJobDaysThreshold;
             if (!options.Any(o => o.Key == current))
             {
                 options.Add(new KeyValuePair<int, string>(current, string.Format("{0} Days", current)));
@@ -103,7 +103,7 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
                 new KeyValuePair<int, string>(60 * 24 * 7 * 8, "8 weeks")
             };
 
-            var current = this.StaleJobMinutesThreshold;
+            var current = StaleJobMinutesThreshold;
             if (!options.Any(o => o.Key == current))
             {
                 options.Add(new KeyValuePair<int, string>(current, string.Format("{0} Minutes", current)));

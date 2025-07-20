@@ -55,8 +55,8 @@ namespace Disco.Data.Repository
 
         public DiscoDatabaseConnectionFactory(IDbConnectionFactory Default)
         {
-            this.DefaultConnectionFactory = Default;
-            this.SqlCeConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+            DefaultConnectionFactory = Default;
+            SqlCeConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
         }
 
         public DbConnection CreateConnection(string nameOrConnectionString)

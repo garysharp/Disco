@@ -239,7 +239,7 @@ namespace Disco.ClientBootstrapper.Interop
             public bool AddProfile(IntPtr WlanHandle, Guid interfaceGuid)
             {
                 var pInterfaceGuid = interfaceGuid;
-                var pProfileXml = this.ProfileXml;
+                var pProfileXml = ProfileXml;
                 uint pFlag = 0;
                 uint failReason;
                 return (WlanSetProfile(WlanHandle, ref pInterfaceGuid, pFlag, pProfileXml, null, true, IntPtr.Zero, out failReason) == 0);

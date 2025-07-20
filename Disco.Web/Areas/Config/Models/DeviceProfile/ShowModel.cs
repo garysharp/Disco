@@ -22,15 +22,15 @@ namespace Disco.Web.Areas.Config.Models.DeviceProfile
         {
             get
             {
-                if (string.IsNullOrEmpty(this.DeviceProfile.OrganisationalUnit))
+                if (string.IsNullOrEmpty(DeviceProfile.OrganisationalUnit))
                 {
                     var domain = ActiveDirectory.Context.PrimaryDomain;
                     return domain.FriendlyDistinguishedNamePath(domain.DefaultComputerContainer);
                 }
                 else
                 {
-                    var domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(this.DeviceProfile.OrganisationalUnit);
-                    return domain.FriendlyDistinguishedNamePath(this.DeviceProfile.OrganisationalUnit);
+                    var domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(DeviceProfile.OrganisationalUnit);
+                    return domain.FriendlyDistinguishedNamePath(DeviceProfile.OrganisationalUnit);
                 }
             }
         }

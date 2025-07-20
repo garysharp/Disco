@@ -22,9 +22,9 @@ namespace Disco.ClientBootstrapper
 
         public void Start(CompleteCallback Callback)
         {
-            this.mCompleteCallback = Callback;
-            this.LoopThread = new Thread(new ThreadStart(loopHost));
-            this.LoopThread.Start();
+            mCompleteCallback = Callback;
+            LoopThread = new Thread(new ThreadStart(loopHost));
+            LoopThread.Start();
         }
         private void loopHost()
         {
@@ -33,10 +33,10 @@ namespace Disco.ClientBootstrapper
 
                 //Program.Status.UpdateStatus(null, null, "Testing UI");
                 //Program.SleepThread(5000, false);
-                Interop.InstallInterop.Install(this.InstallLocation, this.WimImageId, this.TempPath);
-                if (this.mCompleteCallback != null)
+                Interop.InstallInterop.Install(InstallLocation, WimImageId, TempPath);
+                if (mCompleteCallback != null)
                 {
-                    this.mCompleteCallback.BeginInvoke(null, null);
+                    mCompleteCallback.BeginInvoke(null, null);
                 }
             }
             catch (Exception ex)

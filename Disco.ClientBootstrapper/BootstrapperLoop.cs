@@ -30,15 +30,15 @@ namespace Disco.ClientBootstrapper
 
         public BootstrapperLoop(IStatus StatusUI, LoopCompleteCallback Callback)
         {
-            this.statusUI = StatusUI;
-            this.mLoopCompleteCallback = Callback;
-            this.errorMessage = new StringBuilder();
+            statusUI = StatusUI;
+            mLoopCompleteCallback = Callback;
+            errorMessage = new StringBuilder();
         }
 
         public void Start()
         {
-            this.LoopThread = new Thread(new ThreadStart(loopHost));
-            this.LoopThread.Start();
+            LoopThread = new Thread(new ThreadStart(loopHost));
+            LoopThread.Start();
         }
 
         private void loopHost()
@@ -133,9 +133,9 @@ namespace Disco.ClientBootstrapper
                 if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                 {
                     // Client Failed
-                    if (this.mLoopCompleteCallback != null)
+                    if (mLoopCompleteCallback != null)
                     {
-                        this.mLoopCompleteCallback.BeginInvoke(null, null);
+                        mLoopCompleteCallback.BeginInvoke(null, null);
                     }
                     return;
                 }
@@ -197,15 +197,15 @@ namespace Disco.ClientBootstrapper
             Interop.CertificateInterop.RemoveTempCerts();
 
             // Pause if Error
-            if (this.errorMessage.Length > 0)
+            if (errorMessage.Length > 0)
             {
                 Program.SleepThread(10000, true);
             }
 
             // End Of Loop
-            if (this.mLoopCompleteCallback != null)
+            if (mLoopCompleteCallback != null)
             {
-                this.mLoopCompleteCallback.BeginInvoke(null, null);
+                mLoopCompleteCallback.BeginInvoke(null, null);
             }
         }
 

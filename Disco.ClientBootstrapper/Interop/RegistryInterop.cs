@@ -80,20 +80,20 @@ namespace Disco.ClientBootstrapper.Interop
 
             uint regHive = (uint)hive;
 
-            this.Hive = hive;
-            this.SubKey = subKey;
+            Hive = hive;
+            SubKey = subKey;
             RegLoadKey(regHive, subKey, filePath);
-            this.IsUnloaded = false;
+            IsUnloaded = false;
         }
 
         public void Unload()
         {
             if (!IsUnloaded)
             {
-                uint regHive = (uint)this.Hive;
-                string subKey = this.SubKey;
+                uint regHive = (uint)Hive;
+                string subKey = SubKey;
                 RegUnLoadKey(regHive, subKey);
-                this.IsUnloaded = true;
+                IsUnloaded = true;
             }
         }
 

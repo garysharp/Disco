@@ -91,7 +91,7 @@ namespace Disco.Web.Areas.Config.Controllers
                     m.BulkGenerateDocumentTemplates = Database.DocumentTemplates.Where(t => !t.IsHidden).ToList();
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceProfileShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceProfileShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.DeviceProfile.Views.Show, m);
             }
@@ -100,7 +100,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 var m = Models.DeviceProfile.IndexModel.Build(Database);
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceProfileIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceProfileIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -121,7 +121,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -148,7 +148,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(ControllerContext, model);
 
             return View(model);
         }
@@ -166,7 +166,7 @@ namespace Disco.Web.Areas.Config.Controllers
             m.DeviceProfilesAndNone.Insert(0, new DeviceProfile() { Id = 0, Name = "<No Default>" });
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceProfileDefaultsModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceProfileDefaultsModel>(ControllerContext, m);
 
             return View(m);
         }

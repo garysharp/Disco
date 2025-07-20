@@ -29,7 +29,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigLoggingIndexModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigLoggingIndexModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -46,7 +46,7 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new Models.Shared.TaskStatusModel() { SessionId = taskStatus.SessionId };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigSharedTaskStatusModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigSharedTaskStatusModel>(ControllerContext, m);
 
             return View(m);
         }

@@ -50,7 +50,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 }
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigUserFlagShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigUserFlagShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.UserFlag.Views.Show, m);
             }
@@ -71,7 +71,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigUserFlagIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigUserFlagIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -91,7 +91,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigUserFlagCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigUserFlagCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -116,7 +116,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigUserFlagCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigUserFlagCreateModel>(ControllerContext, model);
 
             return View(model);
         }

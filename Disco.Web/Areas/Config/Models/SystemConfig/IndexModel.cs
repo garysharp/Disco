@@ -49,28 +49,28 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         {
             get
             {
-                return this.DatabaseConnectionString.Value.DataSource;
+                return DatabaseConnectionString.Value.DataSource;
             }
         }
         public string DatabaseName
         {
             get
             {
-                return this.DatabaseConnectionString.Value.InitialCatalog;
+                return DatabaseConnectionString.Value.InitialCatalog;
             }
         }
         public string DatabaseAuthentication
         {
             get
             {
-                return this.DatabaseConnectionString.Value.IntegratedSecurity ? "Integrated Authentication" : "SQL Authentication";
+                return DatabaseConnectionString.Value.IntegratedSecurity ? "Integrated Authentication" : "SQL Authentication";
             }
         }
         public string DatabaseSqlAuthUsername
         {
             get
             {
-                return this.DatabaseConnectionString.Value.IntegratedSecurity ? null : this.DatabaseConnectionString.Value.UserID;
+                return DatabaseConnectionString.Value.IntegratedSecurity ? null : DatabaseConnectionString.Value.UserID;
             }
         }
         #endregion

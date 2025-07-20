@@ -79,9 +79,9 @@ namespace Disco.Models.Repository
         #region Helper Members
         public decimal JobComponentsTotalCost()
         {
-            if (this.JobComponents != null)
+            if (JobComponents != null)
             {
-                return this.JobComponents.Sum(jc => jc.Cost);
+                return JobComponents.Sum(jc => jc.Cost);
             }
             return decimal.Zero;
         }

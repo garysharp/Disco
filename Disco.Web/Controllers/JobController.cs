@@ -54,7 +54,7 @@ namespace Disco.Web.Controllers
                 m.PendingEnrolments = WindowsDeviceEnrolment.GetPendingEnrolments();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobIndexModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobIndexModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -73,7 +73,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.ActiveJobQueues.Any(jqj => jqj.QueueId == queueToken.JobQueue.Id)));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -85,7 +85,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -98,7 +98,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(ManagedJobList.AwaitingTechnicianActionFilter);
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -114,7 +114,7 @@ namespace Disco.Web.Controllers
                 .OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -130,7 +130,7 @@ namespace Disco.Web.Controllers
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -148,7 +148,7 @@ namespace Disco.Web.Controllers
                 ));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -162,7 +162,7 @@ namespace Disco.Web.Controllers
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -176,7 +176,7 @@ namespace Disco.Web.Controllers
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -190,7 +190,7 @@ namespace Disco.Web.Controllers
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -204,7 +204,7 @@ namespace Disco.Web.Controllers
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -221,7 +221,7 @@ namespace Disco.Web.Controllers
                 ).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -241,7 +241,7 @@ namespace Disco.Web.Controllers
             m.JobTable.Fill(Database, Disco.Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id), true);
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -257,7 +257,7 @@ namespace Disco.Web.Controllers
             m.JobTable.ShowType = false;
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -271,7 +271,7 @@ namespace Disco.Web.Controllers
             m.JobTable = ManagedJobList.OpenJobsTable(q => q.Where(j => j.OpenedDate < longRunningThreshold).OrderBy(j => j.JobId));
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -287,7 +287,7 @@ namespace Disco.Web.Controllers
             m.JobTable.ShowDates = false;
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobListModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);
 
             return View(Views.List, m);
         }
@@ -393,7 +393,7 @@ namespace Disco.Web.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobShowModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobShowModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -414,7 +414,7 @@ namespace Disco.Web.Controllers
             m.RegenerateCommentsOnTypeChange = isTypeDynamic;
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<JobCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<JobCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -426,7 +426,7 @@ namespace Disco.Web.Controllers
             if (!ModelState.IsValid)
             {
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<JobCreateModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<JobCreateModel>(ControllerContext, m);
 
                 return View(m);
             }

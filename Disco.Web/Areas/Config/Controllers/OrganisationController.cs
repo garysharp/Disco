@@ -22,7 +22,7 @@ namespace Disco.Web.Areas.Config.Controllers
             viewModel.OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigOrganisationIndexModel>(this.ControllerContext, viewModel);
+            UIExtensions.ExecuteExtensions<ConfigOrganisationIndexModel>(ControllerContext, viewModel);
 
             return View(viewModel);
         }

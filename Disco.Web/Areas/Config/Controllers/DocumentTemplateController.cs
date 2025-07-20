@@ -43,7 +43,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -72,7 +72,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 m.BulkGenerateDownloadFilename = bulkGenerateFilename;
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.DocumentTemplate.Views.Show, m);
             }
@@ -99,7 +99,7 @@ namespace Disco.Web.Areas.Config.Controllers
             m.DocumentTemplatesSelected = m.Package.GetDocumentTemplates(m.DocumentTemplates);
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowPackageModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateShowPackageModel>(ControllerContext, m);
 
             return View(MVC.Config.DocumentTemplate.Views.ShowPackage, m);
         }
@@ -110,7 +110,7 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new ImportStatusModel();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateImportStatusModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateImportStatusModel>(ControllerContext, m);
 
             return View();
         }
@@ -124,7 +124,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateUndetectedPagesModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateUndetectedPagesModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -136,7 +136,7 @@ namespace Disco.Web.Areas.Config.Controllers
             m.UpdateModel(Database);
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -174,7 +174,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreateModel>(ControllerContext, model);
 
             return View(model);
         }
@@ -185,7 +185,7 @@ namespace Disco.Web.Areas.Config.Controllers
             var m = new CreatePackageModel();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreatePackageModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreatePackageModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -210,7 +210,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreatePackageModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigDocumentTemplateCreatePackageModel>(ControllerContext, model);
 
             return View(model);
         }

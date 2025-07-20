@@ -11,10 +11,10 @@ namespace Disco.Web.Areas.Config.Models.Plugins
 
         public PluginConfigurationViewModel(PluginConfigurationHandler.PluginConfigurationHandlerGetResponse response)
         {
-            this.Manifest = response.Manifest;
+            Manifest = response.Manifest;
 
-            this.PluginViewType = response.ViewType;
-            this.PluginViewModel = response.Model;
+            PluginViewType = response.ViewType;
+            PluginViewModel = response.Model;
         }
     }
 }

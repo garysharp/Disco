@@ -13,12 +13,12 @@ namespace Disco.Models.Services.Jobs.JobLists
         {
             get
             {
-                return this.JobId.ToString();
+                return JobId.ToString();
             }
             set
             {
                 base.Id = value;
-                this.JobId = int.Parse(value);
+                JobId = int.Parse(value);
             }
         }
 #pragma warning restore 618

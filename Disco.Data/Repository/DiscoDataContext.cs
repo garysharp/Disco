@@ -11,7 +11,7 @@ namespace Disco.Data.Repository
 
         public DiscoDataContext()
         {
-            this._Configuration = new Lazy<Configuration.SystemConfiguration>(() => new Configuration.SystemConfiguration(this));
+            _Configuration = new Lazy<Configuration.SystemConfiguration>(() => new Configuration.SystemConfiguration(this));
         }
 
         public virtual DbSet<ConfigurationItem> ConfigurationItems { get; set; }
@@ -60,7 +60,7 @@ namespace Disco.Data.Repository
         {
             get
             {
-                return this._Configuration.Value;
+                return _Configuration.Value;
             }
         }
 

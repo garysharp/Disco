@@ -13,24 +13,24 @@ namespace Disco.Models.Services.Documents
         public DocumentState(int SequenceNumber)
         {
             this.SequenceNumber = SequenceNumber;
-            this.FieldCache = new Hashtable();
-            this.ScopeCache = new Hashtable();
-            this.DocumentCache = new Hashtable();
+            FieldCache = new Hashtable();
+            ScopeCache = new Hashtable();
+            DocumentCache = new Hashtable();
         }
 
         public void FlushFieldCache()
         {
-            FlushDictionary(this.FieldCache);
+            FlushDictionary(FieldCache);
         }
         public void FlushScopeCache()
         {
             FlushFieldCache();
-            FlushDictionary(this.ScopeCache);
+            FlushDictionary(ScopeCache);
         }
         public void FlushDocumentCache()
         {
             FlushScopeCache();
-            FlushDictionary(this.DocumentCache);
+            FlushDictionary(DocumentCache);
         }
         private static void FlushDictionary(Hashtable d)
         {

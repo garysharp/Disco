@@ -53,11 +53,11 @@ namespace Disco.Models.Repository
 
         public override string ToString()
         {
-            if (string.IsNullOrWhiteSpace(this.Name))
+            if (string.IsNullOrWhiteSpace(Name))
             {
-                return string.Format("{0}: {1}", this.Id, this.PurchaseDate.ToLongDateString());
+                return string.Format("{0}: {1}", Id, PurchaseDate.ToLongDateString());
             }
-            return this.Name;
+            return Name;
         }
     }
 }

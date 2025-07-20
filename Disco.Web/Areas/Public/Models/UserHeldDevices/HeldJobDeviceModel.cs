@@ -21,27 +21,27 @@ namespace Disco.Web.Areas.Public.Models.UserHeldDevices
         {
             var uhdm = new UserHeldDeviceModel()
                 {
-                    UserId = this.UserId,
-                    UserDisplayName = this.UserDisplayName,
-                    ReadyForReturn = this.ReadyForReturn,
-                    WaitingForUserAction = this.WaitingForUserAction,
-                    DeviceProfileId = this.DeviceProfileId,
-                    DeviceAddress = (this.DeviceAddressId.HasValue ? Database.DiscoConfiguration.OrganisationAddresses.GetAddress(this.DeviceAddressId.Value)?.ShortName : string.Empty)
+                    UserId = UserId,
+                    UserDisplayName = UserDisplayName,
+                    ReadyForReturn = ReadyForReturn,
+                    WaitingForUserAction = WaitingForUserAction,
+                    DeviceProfileId = DeviceProfileId,
+                    DeviceAddress = (DeviceAddressId.HasValue ? Database.DiscoConfiguration.OrganisationAddresses.GetAddress(DeviceAddressId.Value)?.ShortName : string.Empty)
                 };
             var n = DateTime.Now;
-            if (!this.ReadyForReturn && this.EstimatedReturnTime.HasValue && this.EstimatedReturnTime.Value > n)
+            if (!ReadyForReturn && EstimatedReturnTime.HasValue && EstimatedReturnTime.Value > n)
             {
-                uhdm.EstimatedReturnTime = this.EstimatedReturnTime.FromNow();
+                uhdm.EstimatedReturnTime = EstimatedReturnTime.FromNow();
             }
-            if (this.ReadyForReturn)
+            if (ReadyForReturn)
             {
-                uhdm.ReadyForReturnSince = this.ReadyForReturnSince.FromNow();
-                uhdm.IsAlert = (this.ReadyForReturnSince.Value < DateTime.Now.AddDays(-3));
+                uhdm.ReadyForReturnSince = ReadyForReturnSince.FromNow();
+                uhdm.IsAlert = (ReadyForReturnSince.Value < DateTime.Now.AddDays(-3));
             }
-            if (this.WaitingForUserAction)
+            if (WaitingForUserAction)
             {
-                uhdm.WaitingForUserActionSince = this.WaitingForUserActionSince.FromNow();
-                uhdm.IsAlert = (this.WaitingForUserActionSince.Value < n.AddDays(-6));
+                uhdm.WaitingForUserActionSince = WaitingForUserActionSince.FromNow();
+                uhdm.IsAlert = (WaitingForUserActionSince.Value < n.AddDays(-6));
             }
             return uhdm;
         }

@@ -73,32 +73,32 @@ namespace Disco.Models.Repository
         {
             var changed = false;
 
-            if (!this.UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))
+            if (!UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("User Id's do not match", nameof(u));
 
-            if (this.Surname != u.Surname)
+            if (Surname != u.Surname)
             {
-                this.Surname = u.Surname;
+                Surname = u.Surname;
                 changed = true;
             }
-            if (this.GivenName != u.GivenName)
+            if (GivenName != u.GivenName)
             {
-                this.GivenName = u.GivenName;
+                GivenName = u.GivenName;
                 changed = true;
             }
-            if (this.DisplayName != u.DisplayName)
+            if (DisplayName != u.DisplayName)
             {
-                this.DisplayName = u.DisplayName;
+                DisplayName = u.DisplayName;
                 changed = true;
             }
-            if (this.EmailAddress != u.EmailAddress)
+            if (EmailAddress != u.EmailAddress)
             {
-                this.EmailAddress = u.EmailAddress;
+                EmailAddress = u.EmailAddress;
                 changed = true;
             }
-            if (this.PhoneNumber != u.PhoneNumber)
+            if (PhoneNumber != u.PhoneNumber)
             {
-                this.PhoneNumber = u.PhoneNumber;
+                PhoneNumber = u.PhoneNumber;
                 changed = true;
             }
 

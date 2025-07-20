@@ -49,7 +49,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 }
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceFlagShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceFlagShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.DeviceFlag.Views.Show, m);
             }
@@ -70,7 +70,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigDeviceFlagIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigDeviceFlagIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -90,7 +90,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceFlagCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigDeviceFlagCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -115,7 +115,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigDeviceFlagCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigDeviceFlagCreateModel>(ControllerContext, model);
 
             return View(model);
         }

@@ -13,7 +13,7 @@ namespace Disco.Data.Configuration.Modules
         {
             get
             {
-                var v = this.Get(1);
+                var v = Get(1);
                 if (v > 0)
                     return v;
                 else
@@ -24,21 +24,21 @@ namespace Disco.Data.Configuration.Modules
                 if (value < 1)
                     throw new ArgumentOutOfRangeException("value", "Expected >= 1");
 
-                this.Set(value);
+                Set(value);
             }
         }
         public int DefaultAddDeviceOfflineDeviceProfileId
         {
             get
             {
-                return this.Get(0);
+                return Get(0);
             }
             set
             {
                 if (value < 0)
                     throw new ArgumentOutOfRangeException("value", "Expected >= 0");
 
-                this.Set(value);
+                Set(value);
             }
         }
 

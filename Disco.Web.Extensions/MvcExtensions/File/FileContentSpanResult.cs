@@ -28,7 +28,7 @@ namespace Disco.Web.Extensions
 
         protected override void WriteFile(HttpResponseBase response)
         {
-            response.OutputStream.Write(this.FileBuffer, Start, Length);
+            response.OutputStream.Write(FileBuffer, Start, Length);
         }
     }
 }

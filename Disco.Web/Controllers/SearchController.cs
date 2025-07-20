@@ -269,7 +269,7 @@ namespace Disco.Web.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<SearchQueryModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<SearchQueryModel>(ControllerContext, m);
 
             return View(m);
         }

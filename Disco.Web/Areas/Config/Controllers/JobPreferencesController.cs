@@ -26,7 +26,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigJobPreferencesIndexModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigJobPreferencesIndexModel>(ControllerContext, m);
 
             return View(m);
         }

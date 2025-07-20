@@ -48,11 +48,11 @@ namespace Disco.Models.Repository
 
         public override string ToString()
         {
-            if (string.IsNullOrEmpty(this.ShortName))
+            if (string.IsNullOrEmpty(ShortName))
             {
-                return this.Name;
+                return Name;
             }
-            return string.Format("{0} ({1})", this.Name, this.ShortName);
+            return string.Format("{0} ({1})", Name, ShortName);
         }
 
         [StringLength(200)]

@@ -30,7 +30,7 @@ namespace Disco.Models.Repository
 
         public override string ToString()
         {
-            return this.Description;
+            return Description;
         }
     }
 }

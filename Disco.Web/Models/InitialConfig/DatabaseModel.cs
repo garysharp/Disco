@@ -11,9 +11,9 @@ namespace Disco.Web.Models.InitialConfig
         public DatabaseModel()
         {
             // Set Defaults
-            this.Server = "(local)";
-            this.DatabaseName = "Disco";
-            this.AuthMethod = "SSPI";
+            Server = "(local)";
+            DatabaseName = "Disco";
+            AuthMethod = "SSPI";
         }
 
         public static DatabaseModel FromConnectionString(string ConnectionString)
@@ -51,11 +51,11 @@ namespace Disco.Web.Models.InitialConfig
         {
             var csb = new SqlConnectionStringBuilder()
             {
-                DataSource = this.Server,
-                InitialCatalog = this.DatabaseName,
-                IntegratedSecurity = (this.AuthMethod.Equals("SSPI", StringComparison.OrdinalIgnoreCase)),
-                UserID = (this.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? this.Auth_SQL_Username : string.Empty,
-                Password = (this.AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? this.Auth_SQL_Password : string.Empty,
+                DataSource = Server,
+                InitialCatalog = DatabaseName,
+                IntegratedSecurity = (AuthMethod.Equals("SSPI", StringComparison.OrdinalIgnoreCase)),
+                UserID = (AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? Auth_SQL_Username : string.Empty,
+                Password = (AuthMethod.Equals("SQL", StringComparison.OrdinalIgnoreCase)) ? Auth_SQL_Password : string.Empty,
                 ApplicationName = "Disco ICT WebApp",
                 MultipleActiveResultSets = true,
                 Pooling = true

@@ -9,12 +9,12 @@ namespace Disco.Models.Services.Searching
 
         public JobSearchResultItem()
         {
-            this.LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
+            LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
         }
 
         public virtual string Id { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return string.Format("{0} ({1}; {2})", this.Id, this.UserId, this.DeviceSerialNumber); } }
+        public string Description { get { return string.Format("{0} ({1}; {2})", Id, UserId, DeviceSerialNumber); } }
         public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string DeviceSerialNumber { get; set; }
@@ -25,21 +25,21 @@ namespace Disco.Models.Services.Searching
 
         private string[] BuildScoreValues()
         {
-            if (this.UserId == null)
+            if (UserId == null)
             {
                 return new string[] {
-                    this.Id,
-                    this.DeviceSerialNumber
+                    Id,
+                    DeviceSerialNumber
                 };
             }
             else
             {
                 return new string[] {
-                    this.Id,
-                    this.UserId.Substring(this.UserId.IndexOf('\\') + 1),
-                    this.UserId,
-                    this.UserDisplayName,
-                    this.DeviceSerialNumber
+                    Id,
+                    UserId.Substring(UserId.IndexOf('\\') + 1),
+                    UserId,
+                    UserDisplayName,
+                    DeviceSerialNumber
                 };
             }
         }

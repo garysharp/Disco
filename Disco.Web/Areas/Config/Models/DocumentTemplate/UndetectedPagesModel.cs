@@ -18,7 +18,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
                 list.Add(new SelectListItem() { Selected = false, Value = "--DEVICE", Text = "<Generic Device Document>" });
                 list.Add(new SelectListItem() { Selected = true, Value = "--JOB", Text = "<Generic Job Document>" });
                 list.Add(new SelectListItem() { Selected = false, Value = "--USER", Text = "<Generic User Document>" });
-                list.AddRange(this.DocumentTemplates.ToSelectListItems());
+                list.AddRange(DocumentTemplates.ToSelectListItems());
                 return list;
             }
         }

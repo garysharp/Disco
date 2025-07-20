@@ -27,28 +27,28 @@ namespace Disco.ClientBootstrapper.Interop
 
         private void UpdateFromWmi(ManagementObject wmiObject)
         {
-            this.WmiPath = (string)wmiObject.GetPropertyValue("__PATH");
-            this.Index = (UInt32)wmiObject.GetPropertyValue("Index");
-            this.Guid = Guid.Parse((string)wmiObject.GetPropertyValue("GUID"));
-            this.MACAddress = (string)wmiObject.GetPropertyValue("MACAddress");
-            this.Name = (string)wmiObject.GetPropertyValue("Name");
-            this.NetConnectionID = (string)wmiObject.GetPropertyValue("NetConnectionID");
-            this.Speed = (UInt64)wmiObject.GetPropertyValue("Speed");
+            WmiPath = (string)wmiObject.GetPropertyValue("__PATH");
+            Index = (UInt32)wmiObject.GetPropertyValue("Index");
+            Guid = Guid.Parse((string)wmiObject.GetPropertyValue("GUID"));
+            MACAddress = (string)wmiObject.GetPropertyValue("MACAddress");
+            Name = (string)wmiObject.GetPropertyValue("Name");
+            NetConnectionID = (string)wmiObject.GetPropertyValue("NetConnectionID");
+            Speed = (UInt64)wmiObject.GetPropertyValue("Speed");
             var connectionStatus = ConnectionStatus;
-            this.IsWireless = true;
+            IsWireless = true;
             try
             {
                 var wirelessConnectionStatus = WirelessConnectionStatus;
             }
             catch (Exception) {
-                this.IsWireless = false;
+                IsWireless = false;
             };
         }
 
         public int WirelessConnectionStatus
         {
             get {
-                if (this.IsWireless)
+                if (IsWireless)
                 {
                     IntPtr handle = IntPtr.Zero;
                     uint negotiatedVersion;
@@ -61,17 +61,17 @@ namespace Disco.ClientBootstrapper.Interop
 
                         uint dataSize;
 
-                        var interfaceGuid = this.Guid;
+                        var interfaceGuid = Guid;
 
                         if (NetworkInterop.WlanQueryInterface(handle, ref interfaceGuid, NetworkInterop.WLAN_INTF_OPCODE.wlan_intf_opcode_interface_state, IntPtr.Zero, out dataSize, ref ptr, IntPtr.Zero) != 0)
                             throw new NotSupportedException("This network adapter does not support Wireless");
 
-                        this.LastWirelessConnectionStatus = Marshal.ReadInt32(ptr);
+                        LastWirelessConnectionStatus = Marshal.ReadInt32(ptr);
 
 
                         NetworkInterop.WlanFreeMemory(ptr);
 
-                        return this.LastWirelessConnectionStatus;
+                        return LastWirelessConnectionStatus;
                     }
                     finally
                     {
@@ -115,11 +115,11 @@ namespace Disco.ClientBootstrapper.Interop
         {
             get
             {
-                using (var wmiObject = new ManagementObject(this.WmiPath))
+                using (var wmiObject = new ManagementObject(WmiPath))
                 {
-                    this.LastConnectionStatus = (UInt16)wmiObject.GetPropertyValue("NetConnectionStatus");
+                    LastConnectionStatus = (UInt16)wmiObject.GetPropertyValue("NetConnectionStatus");
                 }
-                return this.LastConnectionStatus;
+                return LastConnectionStatus;
             }
         }
         public string ConnectionStatusMeaning(UInt16 status)

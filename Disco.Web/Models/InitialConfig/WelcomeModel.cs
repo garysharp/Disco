@@ -15,7 +15,7 @@ namespace Disco.Web.Models.InitialConfig
         {
             if (_OrganisationNameCache != null)
             {
-                this.OrganisationName = _OrganisationNameCache;
+                OrganisationName = _OrganisationNameCache;
                 return true;
             }
 
@@ -23,8 +23,8 @@ namespace Disco.Web.Models.InitialConfig
 
             if (whoAmIResult != null && !string.IsNullOrWhiteSpace(whoAmIResult.Item2))
             {
-                this.OrganisationName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(whoAmIResult.Item2);
-                _OrganisationNameCache = this.OrganisationName;
+                OrganisationName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(whoAmIResult.Item2);
+                _OrganisationNameCache = OrganisationName;
 
                 return true;
             }

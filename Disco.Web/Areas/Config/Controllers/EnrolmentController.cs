@@ -19,7 +19,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigEnrolmentIndexModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigEnrolmentIndexModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -34,7 +34,7 @@ namespace Disco.Web.Areas.Config.Controllers
             m.DeviceBatches = Database.DeviceBatches.ToList();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigEnrolmentStatusModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigEnrolmentStatusModel>(ControllerContext, m);
 
             return View(m);
         }

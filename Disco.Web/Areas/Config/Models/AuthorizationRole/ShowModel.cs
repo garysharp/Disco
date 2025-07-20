@@ -18,7 +18,7 @@ namespace Disco.Web.Areas.Config.Models.AuthorizationRole
         {
             get
             {
-                var rootNode = FancyTreeNode.FromClaimNavigatorItem(this.ClaimNavigator, false);
+                var rootNode = FancyTreeNode.FromClaimNavigatorItem(ClaimNavigator, false);
                 rootNode.expanded = true;
 
                 return new FancyTreeNode[] {

@@ -43,7 +43,7 @@ namespace Disco.Web.Areas.Config.Controllers
 
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleShowModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleShowModel>(ControllerContext, m);
 
                 return View(MVC.Config.AuthorizationRole.Views.Show, m);
             }
@@ -66,7 +66,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 };
 
                 // UI Extensions
-                UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleIndexModel>(this.ControllerContext, m);
+                UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleIndexModel>(ControllerContext, m);
 
                 return View(m);
             }
@@ -81,7 +81,7 @@ namespace Disco.Web.Areas.Config.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleCreateModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleCreateModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -106,7 +106,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleCreateModel>(this.ControllerContext, model);
+            UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleCreateModel>(ControllerContext, model);
 
             return View(model);
         }

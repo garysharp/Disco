@@ -14,10 +14,10 @@ namespace Disco.Web.Areas.API.Models.Job
 
         public _DateChangeModel SetDateTime(DateTime? date)
         {
-            this.DateTimeFriendly = date.FromNow(null);
-            this.DateTimeISO8601 = date.ToISO8601();
-            this.DateTimeUnixEpoc = date.ToUnixEpoc() ?? -1;
-            this.DateTimeFull = date.ToFullDateTime(null);
+            DateTimeFriendly = date.FromNow(null);
+            DateTimeISO8601 = date.ToISO8601();
+            DateTimeUnixEpoc = date.ToUnixEpoc() ?? -1;
+            DateTimeFull = date.ToFullDateTime(null);
 
             return this;
         }

@@ -480,7 +480,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Never commit changes when destroying this object.
                     //
-                    this.DismountImage(false);
+                    DismountImage(false);
                 }
                 GC.KeepAlive(this);
             }

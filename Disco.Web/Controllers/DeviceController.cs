@@ -29,7 +29,7 @@ namespace Disco.Web.Controllers
             Models.Device.IndexModel m = new Models.Device.IndexModel();
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceIndexModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceIndexModel>(ControllerContext, m);
 
             return View();
         }
@@ -57,7 +57,7 @@ namespace Disco.Web.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceAddOfflineModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceAddOfflineModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -162,7 +162,7 @@ namespace Disco.Web.Controllers
                 m.CompletedImportSessionContext = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id, Remove: true);
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceImportModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceImportModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -184,7 +184,7 @@ namespace Disco.Web.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceImportHeadersModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceImportHeadersModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -210,7 +210,7 @@ namespace Disco.Web.Controllers
             };
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceImportReviewModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceImportReviewModel>(ControllerContext, m);
 
             return View(m);
         }
@@ -328,7 +328,7 @@ namespace Disco.Web.Controllers
             }
 
             // UI Extensions
-            UIExtensions.ExecuteExtensions<DeviceShowModel>(this.ControllerContext, m);
+            UIExtensions.ExecuteExtensions<DeviceShowModel>(ControllerContext, m);
 
             return View(m);
         }

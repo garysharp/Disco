@@ -21,10 +21,10 @@ namespace Disco.Web.Models.InitialConfig
         {
             if (!string.IsNullOrWhiteSpace(FileStoreLocation))
             {
-                var branches = this.FileStoreLocation.ToUpper().Split(Path.DirectorySeparatorChar);
-                var branchesCase = this.FileStoreLocation.Split(Path.DirectorySeparatorChar);
+                var branches = FileStoreLocation.ToUpper().Split(Path.DirectorySeparatorChar);
+                var branchesCase = FileStoreLocation.Split(Path.DirectorySeparatorChar);
                 FileStoreDirectoryModel branchModel;
-                FileStoreDirectoryModel branchParent = this.DirectoryModel;
+                FileStoreDirectoryModel branchParent = DirectoryModel;
                 for (int i = 0; i < branches.Length; i++)
                 {
                     var branch = branches[i];
@@ -154,10 +154,10 @@ namespace Disco.Web.Models.InitialConfig
 
             internal void ExpandSubDirectories()
             {
-                if (this.SubDirectories == null)
+                if (SubDirectories == null)
                 {
-                    this.SubDirectories = new Dictionary<string, FileStoreDirectoryModel>();
-                    if (!this.IsNew)
+                    SubDirectories = new Dictionary<string, FileStoreDirectoryModel>();
+                    if (!IsNew)
                     {
                         var dirInfo = new DirectoryInfo(Path);
                         if (dirInfo.Exists)
@@ -167,13 +167,13 @@ namespace Disco.Web.Models.InitialConfig
                                 if (((subDir.Attributes & FileAttributes.System) != FileAttributes.System) &&
                                     ((subDir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden))
                                 {
-                                    this.SubDirectories.Add(subDir.Name.ToUpper(), FileStoreDirectoryModel.FromInfo(subDir));
+                                    SubDirectories.Add(subDir.Name.ToUpper(), FileStoreDirectoryModel.FromInfo(subDir));
                                 }
                             }
                         }
                         else
                         {
-                            this.IsNew = true;
+                            IsNew = true;
                         }
                     }
                 }

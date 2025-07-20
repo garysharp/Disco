@@ -11,13 +11,13 @@ namespace Disco.Models.Services.Searching
 
         public UserSearchResultItem()
         {
-            this.LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
+            LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
         }
 
         public string Id { get; set; }
         public string FriendlyId { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return string.Format("{0} ({1})", this.DisplayName, this.Id); } }
+        public string Description { get { return string.Format("{0} ({1})", DisplayName, Id); } }
         public string[] ScoreValues { get { return LazyScoreValue.Value; } }
 
         public string DisplayName { get; set; }
@@ -34,9 +34,9 @@ namespace Disco.Models.Services.Searching
         private string[] BuildScoreValues()
         {
             return new string[] {
-                this.Id.Substring(this.Id.IndexOf('\\') + 1),
-                this.Id,
-                this.DisplayName
+                Id.Substring(Id.IndexOf('\\') + 1),
+                Id,
+                DisplayName
             };
         }
     }

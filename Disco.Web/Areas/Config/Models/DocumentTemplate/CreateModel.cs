@@ -49,9 +49,9 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 
         public void UpdateModel(DiscoDataContext Database)
         {
-            if (this.JobTypes == null)
+            if (JobTypes == null)
                 JobTypes = Database.JobTypes.ToList();
-            if (this.JobSubTypes == null)
+            if (JobSubTypes == null)
                 JobSubTypes = Database.JobSubTypes.ToList();
         }
 
