@@ -36,8 +36,8 @@ namespace Disco.Web.Models.InitialConfig
             try
             {
                 // Make Connection String Persistent
-                Disco.Data.Repository.DiscoDatabaseConnectionFactory.SetDiscoDataContextConnectionString(
-                    Disco.Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString, true);
+                Data.Repository.DiscoDatabaseConnectionFactory.SetDiscoDataContextConnectionString(
+                    Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString, true);
                 RegistryDatabaseResult = null;
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace Disco.Web.Models.InitialConfig
                 Dns.GetHostEntry("discoict.com.au");
                 try
                 {
-                    HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("https://discoict.com.au/");
+                    HttpWebRequest wReq = (HttpWebRequest)WebRequest.Create("https://discoict.com.au/");
                     // Added: 2013-02-08 G#
                     // Fix for Proxy Servers which dont support KeepAlive
                     wReq.KeepAlive = false;

@@ -105,7 +105,7 @@ namespace Disco.Services.Interop.DiscoServices
 
             var manifestJson = JsonConvert.SerializeObject(result, Formatting.Indented);
 
-            var manifestFile = PluginLibrary.ManifestFilename(Database);
+            var manifestFile = ManifestFilename(Database);
 
             if (!Directory.Exists(Path.GetDirectoryName(manifestFile)))
                 Directory.CreateDirectory(Path.GetDirectoryName(manifestFile));

@@ -516,7 +516,7 @@ namespace Disco.Services.Plugins
             if (WebResourceHashes.TryGetValue(resourceKey, out var resourceHash))
             {
 #if DEBUG
-                var fileDateCheck = System.IO.File.GetLastWriteTime(resourcePath);
+                var fileDateCheck = File.GetLastWriteTime(resourcePath);
                 if (fileDateCheck == resourceHash.Item2)
 #endif
                     return new Tuple<string, string>(resourcePath, resourceHash.Item1);
@@ -525,8 +525,8 @@ namespace Disco.Services.Plugins
             if (!File.Exists(resourcePath))
                 throw new FileNotFoundException($"Resource [{Resource}] not found", resourcePath);
 
-            var fileDate = System.IO.File.GetLastWriteTime(resourcePath);
-            var fileBytes = System.IO.File.ReadAllBytes(resourcePath);
+            var fileDate = File.GetLastWriteTime(resourcePath);
+            var fileBytes = File.ReadAllBytes(resourcePath);
             if (fileBytes.Length > 0)
             {
                 using (SHA256 sha = SHA256.Create())

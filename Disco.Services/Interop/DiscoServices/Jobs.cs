@@ -46,7 +46,7 @@ namespace Disco.Services.Interop.DiscoServices
                     {
                         Attachments
                             .Select(a => new { Attachment = a, Filename = AttachmentFilenameRetriever(a, Database) })
-                            .Where(a => System.IO.File.Exists(a.Filename))
+                            .Where(a => File.Exists(a.Filename))
                             .Select((a, i) => new { Attachment = a.Attachment, Filename = a.Filename, Index = i })
                             .ToList()
                             .ForEach(a =>

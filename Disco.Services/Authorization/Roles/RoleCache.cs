@@ -199,7 +199,7 @@ namespace Disco.Services.Authorization.Roles
                         claims.User.ShowDetails = true;
                     }
 
-                    role.ClaimsJson = Newtonsoft.Json.JsonConvert.SerializeObject(claims);
+                    role.ClaimsJson = JsonConvert.SerializeObject(claims);
                 }
 
                 Database.SaveChanges();
@@ -217,7 +217,7 @@ namespace Disco.Services.Authorization.Roles
                         claims.Job.Properties.NonWarrantyProperties.RepairProviderDetails = true;
                     }
 
-                    role.ClaimsJson = Newtonsoft.Json.JsonConvert.SerializeObject(claims);
+                    role.ClaimsJson = JsonConvert.SerializeObject(claims);
                 }
 
                 Database.SaveChanges();

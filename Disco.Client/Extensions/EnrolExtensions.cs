@@ -133,7 +133,7 @@ namespace Disco.Client.Extensions
                 Presentation.UpdateStatus("Enrolling Device", $"Configuring the device owner:\r\n{enrolResponse.AssignedUserDescription} ({enrolResponse.AssignedUserDomain}\\{enrolResponse.AssignedUserUsername})", true, -1, 3000);
 
                 if (enrolResponse.AssignedUserIsLocalAdmin)
-                    Interop.LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.AssignedUserSID, enrolResponse.AssignedUserUsername, enrolResponse.AssignedUserDomain);
+                    LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.AssignedUserSID, enrolResponse.AssignedUserUsername, enrolResponse.AssignedUserDomain);
 
                 // Make Windows think this user was the last to logon
                 using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))

@@ -82,7 +82,7 @@ namespace Disco.Services.Interop.DiscoServices
                 };
                 var requestJson = JsonConvert.SerializeObject(body);
 
-                using (var request = new ByteArrayContent(System.Text.Encoding.UTF8.GetBytes(requestJson)))
+                using (var request = new ByteArrayContent(Encoding.UTF8.GetBytes(requestJson)))
                 {
                     request.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 

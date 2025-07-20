@@ -39,7 +39,7 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
         {
             get
             {
-                return CertificateProvidersLog._IsCertificateRetrievalProcessing;
+                return _IsCertificateRetrievalProcessing;
             }
         }
         public override string ModuleDescription
@@ -69,11 +69,11 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
         }
         private static void Log(EventTypeIds EventTypeId, params object[] Args)
         {
-            CertificateProvidersLog.Current.Log((int)EventTypeId, Args);
+            Current.Log((int)EventTypeId, Args);
         }
         public static void LogRetrievalStarting(int CertificateCount, int CertificateIdFrom, int CertificateIdTo)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalStarting, new object[]
+            Log(EventTypeIds.RetrievalStarting, new object[]
             {
                 CertificateCount,
                 CertificateIdFrom,
@@ -82,61 +82,61 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
         }
         public static void LogRetrievalFinished()
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalFinished, new object[0]);
+            Log(EventTypeIds.RetrievalFinished, new object[0]);
         }
         public static void LogRetrievalWarning(string Message)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalWarning, new object[]
+            Log(EventTypeIds.RetrievalWarning, new object[]
             {
                 Message
             });
         }
         public static void LogRetrievalError(string Message)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalError, new object[]
+            Log(EventTypeIds.RetrievalError, new object[]
             {
                 Message
             });
         }
         public static void LogRetrievalCertificateStarting(string CertificateId)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateStarting, CertificateId);
+            Log(EventTypeIds.RetrievalCertificateStarting, CertificateId);
         }
         public static void LogRetrievalCertificateFinished(string CertificateId)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateFinished, CertificateId);
+            Log(EventTypeIds.RetrievalCertificateFinished, CertificateId);
         }
         public static void LogRetrievalCertificateWarning(string CertificateId, string Message)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateWarning, CertificateId, Message);
+            Log(EventTypeIds.RetrievalCertificateWarning, CertificateId, Message);
         }
         public static void LogRetrievalCertificateError(string CertificateId, string Message)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalCertificateError, CertificateId, Message);
+            Log(EventTypeIds.RetrievalCertificateError, CertificateId, Message);
         }
         public static void LogAllocated(string CertificateId, string DeviceSerialNumber)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.Allocated, CertificateId, DeviceSerialNumber);
+            Log(EventTypeIds.Allocated, CertificateId, DeviceSerialNumber);
         }
         public static void LogAllocationFailed(string DeviceSerialNumber)
         {
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.AllocationFailed, DeviceSerialNumber);
+            Log(EventTypeIds.AllocationFailed, DeviceSerialNumber);
         }
         public static void LogDisabledCertificate(DeviceCertificate Certificate, string Reason)
         {
-            CertificateProvidersLog.Log(EventTypeIds.DisabledCertificate, Certificate.Name, Certificate.Id, Reason);
+            Log(EventTypeIds.DisabledCertificate, Certificate.Name, Certificate.Id, Reason);
         }
         public static void LogEnabledCertificate(DeviceCertificate Certificate, string Reason)
         {
-            CertificateProvidersLog.Log(EventTypeIds.EnabledCertificate, Certificate.Name, Certificate.Id, Reason);
+            Log(EventTypeIds.EnabledCertificate, Certificate.Name, Certificate.Id, Reason);
         }
         public static void LogDeletedCertificate(DeviceCertificate Certificate, string Reason)
         {
-            CertificateProvidersLog.Log(EventTypeIds.DeletedCertificate, Certificate.Name, Certificate.Id, Reason);
+            Log(EventTypeIds.DeletedCertificate, Certificate.Name, Certificate.Id, Reason);
         }
         public static void LogUpdatedCertificate(DeviceCertificate Certificate, string Reason)
         {
-            CertificateProvidersLog.Log(EventTypeIds.UpdatedCertificate, Certificate.Name, Certificate.Id, Reason);
+            Log(EventTypeIds.UpdatedCertificate, Certificate.Name, Certificate.Id, Reason);
         }
 
         public static void LogCertificateRetrievalProgress(bool? IsProcessing, int? Progress, string Status)
@@ -144,32 +144,32 @@ namespace Disco.Services.Plugins.Features.CertificateProvider
             bool flag = IsProcessing.HasValue;
             if (flag)
             {
-                CertificateProvidersLog._IsCertificateRetrievalProcessing = IsProcessing.Value;
+                _IsCertificateRetrievalProcessing = IsProcessing.Value;
             }
-            flag = CertificateProvidersLog._IsCertificateRetrievalProcessing;
+            flag = _IsCertificateRetrievalProcessing;
             if (flag)
             {
                 bool flag2 = Status != null;
                 if (flag2)
                 {
-                    CertificateProvidersLog._CertificateRetrievalStatus = Status;
+                    _CertificateRetrievalStatus = Status;
                 }
                 flag2 = Progress.HasValue;
                 if (flag2)
                 {
-                    CertificateProvidersLog._CertificateRetrievalProgress = Progress.Value;
+                    _CertificateRetrievalProgress = Progress.Value;
                 }
             }
             else
             {
-                CertificateProvidersLog._CertificateRetrievalStatus = null;
-                CertificateProvidersLog._CertificateRetrievalProgress = 0;
+                _CertificateRetrievalStatus = null;
+                _CertificateRetrievalProgress = 0;
             }
-            CertificateProvidersLog.Log(CertificateProvidersLog.EventTypeIds.RetrievalProgress, new object[]
+            Log(EventTypeIds.RetrievalProgress, new object[]
             {
-                CertificateProvidersLog._IsCertificateRetrievalProcessing,
-                CertificateProvidersLog._CertificateRetrievalProgress,
-                CertificateProvidersLog._CertificateRetrievalStatus
+                _IsCertificateRetrievalProcessing,
+                _CertificateRetrievalProgress,
+                _CertificateRetrievalStatus
             });
         }
         protected override System.Collections.Generic.List<LogEventType> LoadEventTypes()

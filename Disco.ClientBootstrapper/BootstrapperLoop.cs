@@ -232,7 +232,7 @@ namespace Disco.ClientBootstrapper
         {
             if (!string.IsNullOrWhiteSpace(e.Data))
             {
-                System.Diagnostics.Debug.WriteLine($"OUTPUT: {e.Data}");
+                Debug.WriteLine($"OUTPUT: {e.Data}");
                 var data = e.Data.Substring(1).Split(new char[] { ',' });
                 switch (e.Data[0])
                 {

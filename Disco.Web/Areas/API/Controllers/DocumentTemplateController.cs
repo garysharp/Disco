@@ -496,7 +496,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult ImporterThumbnail(string SessionId, int PageNumber)
         {
             var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(Database, "Cache\\DocumentDropBox_SessionPages");
-            var filename = System.IO.Path.Combine(dataStoreSessionPagesCacheLocation, $"{SessionId}-{PageNumber}");
+            var filename = Path.Combine(dataStoreSessionPagesCacheLocation, $"{SessionId}-{PageNumber}");
             if (System.IO.File.Exists(filename))
                 return File(filename, "image/png");
             else
@@ -510,7 +510,7 @@ namespace Disco.Web.Areas.API.Controllers
             var undetectedDirectory = new DirectoryInfo(undetectedLocation);
             var m = undetectedDirectory.GetFiles("*.pdf").Select(f => new ImporterUndetectedFilesModel()
             {
-                Id = System.IO.Path.GetFileNameWithoutExtension(f.Name),
+                Id = Path.GetFileNameWithoutExtension(f.Name),
                 Timestamp = f.CreationTime.ToFullDateTime(),
                 TimestampUnixEpoc = f.CreationTime.ToUnixEpoc()
             }).ToArray();
@@ -556,13 +556,13 @@ namespace Disco.Web.Areas.API.Controllers
                     switch (searchScope)
                     {
                         case DocumentTemplate.DocumentTemplateScopes.Device:
-                            results = Disco.Services.Searching.Search.SearchDevices(Database, term, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchDevices(Database, term, limitCount).Select(sr => ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.Job:
-                            results = Disco.Services.Searching.Search.SearchJobsTable(Database, term, limitCount, false).Items.Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchJobsTable(Database, term, limitCount, false).Items.Select(sr => ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         case DocumentTemplate.DocumentTemplateScopes.User:
-                            results = Disco.Services.Searching.Search.SearchUsers(Database, term, false, limitCount).Select(sr => Models.DocumentTemplate.ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
+                            results = Disco.Services.Searching.Search.SearchUsers(Database, term, false, limitCount).Select(sr => ImporterUndetectedDataIdLookupModel.FromSearchResultItem(sr)).ToArray();
                             break;
                         default:
                             results = null;
@@ -584,7 +584,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
                 if (Source.HasValue && Source.Value)
                 {
-                    var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
+                    var filename = Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
                     if (System.IO.File.Exists(filename))
                         return File(filename, DocumentTemplate.PdfMimeType);
                     else
@@ -594,7 +594,7 @@ namespace Disco.Web.Areas.API.Controllers
                 {
                     if (Thumbnail.HasValue && Thumbnail.Value)
                     {
-                        var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
+                        var filename = Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
                         if (System.IO.File.Exists(filename))
                             return File(filename, "image/png");
                         else
@@ -602,7 +602,7 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                     else
                     {
-                        var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
+                        var filename = Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
                         if (System.IO.File.Exists(filename))
                             return File(filename, "image/jpeg");
                         else
@@ -617,7 +617,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult ImporterUndetectedAssign(string id, string DocumentTemplateId, string DataId)
         {
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
-            var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
+            var filename = Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
             var identifier = DocumentUniqueIdentifier.Create(Database, DocumentTemplateId, DataId, UserService.CurrentUser.UserId, DateTime.Now, 0);
 
             if (Disco.Services.Documents.AttachmentImport.Importer.ImportPdfAttachment(identifier, Database, filename) != null)
@@ -626,10 +626,10 @@ namespace Disco.Web.Areas.API.Controllers
                 System.IO.File.Delete(filename);
 
                 // Delete Thumbnail/Preview
-                var thumbnailFilename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
+                var thumbnailFilename = Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
                 if (System.IO.File.Exists(thumbnailFilename))
                     System.IO.File.Delete(thumbnailFilename);
-                var previewFilename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
+                var previewFilename = Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
                 if (System.IO.File.Exists(previewFilename))
                     System.IO.File.Delete(previewFilename);
 
@@ -645,17 +645,17 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult ImporterUndetectedDelete(string id)
         {
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
-            var filename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
+            var filename = Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
             if (System.IO.File.Exists(filename))
             {
                 // Delete File
                 System.IO.File.Delete(filename);
 
                 // Delete Thumbnail/Preview
-                var thumbnailFilename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
+                var thumbnailFilename = Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
                 if (System.IO.File.Exists(thumbnailFilename))
                     System.IO.File.Delete(thumbnailFilename);
-                var previewFilename = System.IO.Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
+                var previewFilename = Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
                 if (System.IO.File.Exists(previewFilename))
                     System.IO.File.Delete(previewFilename);
 
@@ -820,7 +820,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddUsers(string userIds)
         {
             if (string.IsNullOrWhiteSpace(userIds))
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var dataIds = userIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
             var results = new List<BulkGenerateUserModel>(dataIds.Count);
@@ -893,7 +893,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddGroupMembers(string groupId)
         {
             if (string.IsNullOrWhiteSpace(groupId))
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = new List<BulkGenerateUserModel>();
             var accountId = ActiveDirectory.ParseDomainAccountId(groupId);
@@ -954,7 +954,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddUserFlag(int flagId)
         {
             if (flagId <= 0)
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1008,7 +1008,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddDeviceProfile(int deviceProfileId)
         {
             if (deviceProfileId <= 0)
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1062,7 +1062,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddDeviceBatch(int deviceBatchId)
         {
             if (deviceBatchId <= 0)
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1116,7 +1116,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddDocumentAttachment(string documentTemplateId, DateTime? threshold)
         {
             if (string.IsNullOrWhiteSpace(documentTemplateId))
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1229,7 +1229,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateGetUserDetailValues(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = Database.UserDetails.Where(d => d.Scope == "Details" && d.Key == key).Select(d => d.Value).Distinct().ToList();
 
@@ -1241,7 +1241,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddUserDetail(string key, string value)
         {
             if (string.IsNullOrWhiteSpace(key))
-                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var results = new List<BulkGenerateUserModel>();
 

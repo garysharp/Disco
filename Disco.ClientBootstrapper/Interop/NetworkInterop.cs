@@ -224,7 +224,7 @@ namespace Disco.ClientBootstrapper.Interop
                 finally
                 {
                     if (wlanHandle != IntPtr.Zero)
-                        NetworkInterop.WlanCloseHandle(wlanHandle, IntPtr.Zero);
+                        WlanCloseHandle(wlanHandle, IntPtr.Zero);
                 }
             }
 
@@ -277,7 +277,7 @@ namespace Disco.ClientBootstrapper.Interop
             WlanGetProfileList(WlanHandle, ref pInterfaceGuid, new IntPtr(), ref ppProfileList);
             WLAN_PROFILE_INFO_LIST wlanProfileInfoList = new WLAN_PROFILE_INFO_LIST(ppProfileList);
 
-            NetworkInterop.WlanFreeMemory(ppProfileList);
+            WlanFreeMemory(ppProfileList);
 
             return wlanProfileInfoList;
         }

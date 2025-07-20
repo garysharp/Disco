@@ -41,7 +41,7 @@ namespace Disco.Services.Plugins
                 _PluginManifests[Manifest.Id] = Manifest;
 
                 // Reinitialize Plugin Host Environment
-                Plugins.ReinitializePluginHostEnvironment();
+                ReinitializePluginHostEnvironment();
             }
         }
 
@@ -335,7 +335,7 @@ namespace Disco.Services.Plugins
                                             catch (UnauthorizedAccessException ex) { lastAccessException = ex; }
                                             if (removeRetryTime < DateTime.Now)
                                                 throw lastAccessException;
-                                            System.Threading.Thread.Sleep(2000);
+                                            Thread.Sleep(2000);
                                         }
 
                                         // Check for Data Removal

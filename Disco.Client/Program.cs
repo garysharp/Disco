@@ -35,14 +35,14 @@ namespace Disco.Client
             Presentation.WriteBanner();
 
             // WhoAmI Phase
-            keepProcessing = Program.WhoAmI();
+            keepProcessing = WhoAmI();
 
             // Enrol Phase
             if (keepProcessing)
-                keepProcessing = Program.Enrol();
+                keepProcessing = Enrol();
 
             // End conversation with Bootstrapper
-            Presentation.WriteFooter(Program.RebootRequired, Program.AllowUninstall, !keepProcessing);
+            Presentation.WriteFooter(RebootRequired, AllowUninstall, !keepProcessing);
         }
 
         public static void SetupEnvironment()
@@ -128,7 +128,7 @@ namespace Disco.Client
                 {
                     // Send Request
                     Presentation.UpdateStatus("Enrolling Device", "Sending the enrolment request to the server.", true, -1);
-                    response = request.Post(Program.IsAuthenticated);
+                    response = request.Post(IsAuthenticated);
 
                     // Process Response
                     Presentation.UpdateStatus("Enrolling Device", "Processing the enrolment response from the server.", true, -1);

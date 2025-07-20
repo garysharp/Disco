@@ -19,7 +19,7 @@ namespace Disco.Services.Expressions.Extensions
         {
             var configCache = new Data.Configuration.SystemConfiguration(null);
             string DataStoreLocation = configCache.DataStoreLocation;
-            string AbsoluteFilePath = System.IO.Path.Combine(DataStoreLocation, RelativeFilePath);
+            string AbsoluteFilePath = Path.Combine(DataStoreLocation, RelativeFilePath);
             return new FileImageExpressionResult(AbsoluteFilePath);
         }
         public static FileImageExpressionResult JobAttachmentFirstImage(Job Job, DiscoDataContext Database)
@@ -94,14 +94,14 @@ namespace Disco.Services.Expressions.Extensions
             if (ImageStream == null)
                 throw new ArgumentNullException("ImageStream");
 
-            return new BitmapImageExpressionResult(Bitmap.FromStream(ImageStream));
+            return new BitmapImageExpressionResult(Image.FromStream(ImageStream));
         }
         public static BitmapImageExpressionResult ImageFromByteArray(byte[] ImageByteArray)
         {
             if (ImageByteArray == null)
                 throw new ArgumentNullException("ImageByteArray");
 
-            return new BitmapImageExpressionResult(Bitmap.FromStream(new MemoryStream(ImageByteArray)));
+            return new BitmapImageExpressionResult(Image.FromStream(new MemoryStream(ImageByteArray)));
         }
         public static BitmapImageExpressionResult DeviceModelImage(DeviceModel DeviceModel)
         {

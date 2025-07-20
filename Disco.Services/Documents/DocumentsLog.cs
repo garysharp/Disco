@@ -62,11 +62,11 @@ namespace Disco.Services.Documents
         }
         private static void Log(EventTypeIds EventTypeId, params object[] Args)
         {
-            DocumentsLog.Current.Log((int)EventTypeId, Args);
+            Current.Log((int)EventTypeId, Args);
         }
         public static void LogImportStarting(string SessionId, string DocumentName)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportStarting, new object[]
+            Log(EventTypeIds.ImportStarting, new object[]
             {
                 SessionId,
                 DocumentName
@@ -74,7 +74,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportProgress(string SessionId, int? Progress, string Status)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportProgress, new object[]
+            Log(EventTypeIds.ImportProgress, new object[]
             {
                 SessionId,
                 Progress,
@@ -83,14 +83,14 @@ namespace Disco.Services.Documents
         }
         public static void LogImportFinished(string SessionId)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportFinished, new object[]
+            Log(EventTypeIds.ImportFinished, new object[]
             {
                 SessionId
             });
         }
         public static void LogImportWarning(string SessionId, string Message)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportWarning, new object[]
+            Log(EventTypeIds.ImportWarning, new object[]
             {
                 SessionId,
                 Message
@@ -98,7 +98,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportError(string SessionId, string Message)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportError, new object[]
+            Log(EventTypeIds.ImportError, new object[]
             {
                 SessionId,
                 Message
@@ -106,7 +106,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportAttachmentExpressionEvaluated(DocumentTemplate template, IAttachmentTarget target, IAttachment attachment, string Result)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportAttachmentExpressionEvaluated, new object[]
+            Log(EventTypeIds.ImportAttachmentExpressionEvaluated, new object[]
             {
                 template.Id,
                 target.AttachmentReferenceId,
@@ -116,7 +116,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageStarting(string SessionId, int PageNumber)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageStarting, new object[]
+            Log(EventTypeIds.ImportPageStarting, new object[]
             {
                 SessionId,
                 PageNumber
@@ -124,7 +124,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageImageUpdate(string SessionId, int PageNumber)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageImageUpdate, new object[]
+            Log(EventTypeIds.ImportPageImageUpdate, new object[]
             {
                 SessionId,
                 PageNumber
@@ -132,7 +132,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageProgress(string SessionId, int PageNumber, int? Progress, string Status)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageProgress, new object[]
+            Log(EventTypeIds.ImportPageProgress, new object[]
             {
                 SessionId,
                 PageNumber,
@@ -142,7 +142,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageDetected(string SessionId, int PageNumber, string DocumentTypeId, string DocumentTypeName, string TargetType, string AssignedId, string AssignedName)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageDetected, new object[]
+            Log(EventTypeIds.ImportPageDetected, new object[]
             {
                 SessionId,
                 PageNumber,
@@ -155,7 +155,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageUndetected(string SessionId, int PageNumber)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageUndetected, new object[]
+            Log(EventTypeIds.ImportPageUndetected, new object[]
             {
                 SessionId,
                 PageNumber
@@ -163,7 +163,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageError(string SessionId, int PageNumber, string Message)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageError, new object[]
+            Log(EventTypeIds.ImportPageError, new object[]
             {
                 SessionId,
                 PageNumber,
@@ -172,7 +172,7 @@ namespace Disco.Services.Documents
         }
         public static void LogImportPageUndetectedStored(string SessionId, int PageNumber)
         {
-            DocumentsLog.Log(DocumentsLog.EventTypeIds.ImportPageUndetectedStored, new object[]
+            Log(EventTypeIds.ImportPageUndetectedStored, new object[]
             {
                 SessionId,
                 PageNumber

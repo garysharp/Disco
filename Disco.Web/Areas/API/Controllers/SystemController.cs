@@ -21,7 +21,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
-            var taskStatus = Disco.Services.Interop.ActiveDirectory.ADNetworkLogonDatesUpdateTask.ScheduleImmediately();
+            var taskStatus = ADNetworkLogonDatesUpdateTask.ScheduleImmediately();
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
@@ -37,7 +37,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.DiscoAdminAccount)]
         public virtual ActionResult UpdateADDeviceDescriptions()
         {
-            var ts = Disco.Services.Interop.ActiveDirectory.ADDeviceDescriptionUpdateTask.ScheduleImmediately();
+            var ts = ADDeviceDescriptionUpdateTask.ScheduleImmediately();
             ts.SetFinishedUrl(Url.Action(MVC.Config.SystemConfig.Index()));
             return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
         }
@@ -56,7 +56,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             else
             {
-                var ts = Disco.Services.Interop.DiscoServices.LicenseValidationTask.ScheduleNow(license);
+                var ts = LicenseValidationTask.ScheduleNow(license);
                 ts.SetFinishedUrl(Url.Action(MVC.Config.SystemConfig.Index()));
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
             }
@@ -65,7 +65,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.System.Show)]
         public virtual ActionResult UpdateCheck()
         {
-            var ts = Disco.Services.Interop.DiscoServices.UpdateQueryTask.ScheduleNow();
+            var ts = UpdateQueryTask.ScheduleNow();
             ts.SetFinishedUrl(Url.Action(MVC.Config.SystemConfig.Index()));
             return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
         }
@@ -111,7 +111,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             using (Stream logoStream = Database.DiscoConfiguration.OrganisationLogo)
             {
-                using (Image logoBitmap = Bitmap.FromStream(logoStream))
+                using (Image logoBitmap = Image.FromStream(logoStream))
                 {
                     return File(logoBitmap.ResizeImage(Width, Height).SavePng(), "image/png");
                 }

@@ -98,7 +98,7 @@ namespace Disco.Services.Devices.ManagedGroups
 
                 if (!string.IsNullOrEmpty(DeviceProfile.AssignedUsersLinkedGroup))
                 {
-                    var config = ADManagedGroup.ConfigurationFromJson(DeviceProfile.AssignedUsersLinkedGroup);
+                    var config = ConfigurationFromJson(DeviceProfile.AssignedUsersLinkedGroup);
 
                     if (config != null && !string.IsNullOrWhiteSpace(config.GroupId))
                     {

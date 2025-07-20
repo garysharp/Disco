@@ -29,7 +29,7 @@ namespace Disco.Web.Models.Job
         public int? OrganisationAddressId { get; set; }
         [Required(ErrorMessage = "Please specify a Repair Provider")]
         public string RepairProviderId { get; set; }
-        [Required(ErrorMessage = "A fault description is required"), DataType(System.ComponentModel.DataAnnotations.DataType.MultilineText)]
+        [Required(ErrorMessage = "A fault description is required"), DataType(DataType.MultilineText)]
         public string RepairDescription { get; set; }
         public List<int> PublishAttachmentIds { get; set; }
         [Required]

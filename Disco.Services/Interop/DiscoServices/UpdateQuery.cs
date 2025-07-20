@@ -69,7 +69,7 @@ namespace Disco.Services.Interop.DiscoServices
 
             var discoVersion = CurrentDiscoVersionFormatted();
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(UpdateUrl());
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(UpdateUrl());
 
             // Fix for Proxy Servers which don't support KeepAlive
             request.KeepAlive = false;
@@ -223,7 +223,7 @@ namespace Disco.Services.Interop.DiscoServices
                 }).ToList();
             }
 
-            m.InstalledPlugins = Disco.Services.Plugins.Plugins.GetPlugins().Select(manifest => new StatisticString() { Key = manifest.Id, Value = manifest.VersionFormatted }).ToList();
+            m.InstalledPlugins = Plugins.Plugins.GetPlugins().Select(manifest => new StatisticString() { Key = manifest.Id, Value = manifest.VersionFormatted }).ToList();
 
             return m;
         }

@@ -194,18 +194,18 @@ namespace Disco.Services.Tasks
         {
             public void Execute(IJobExecutionContext context)
             {
-                lock (ScheduledTasks._RunningTasksLock)
+                lock (_RunningTasksLock)
                 {
                     // Lifetime = 5mins
                     var expiredTime = DateTime.Now.AddMinutes(-1);
-                    var expiredTasks = ScheduledTasks._RunningTasks.Where(
+                    var expiredTasks = _RunningTasks.Where(
                             t => !t.IsRunning &&
                                  !t.NextScheduledTimestamp.HasValue &&
                                  t.FinishedTimestamp < expiredTime
                         ).ToArray();
 
                     foreach (var expiredTask in expiredTasks)
-                        ScheduledTasks._RunningTasks.Remove(expiredTask);
+                        _RunningTasks.Remove(expiredTask);
                 }
             }
             public static void Schedule(IScheduler TaskScheduler)
@@ -219,11 +219,11 @@ namespace Disco.Services.Tasks
                 ITrigger trigger = TriggerBuilder.Create()
                     .StartAt(startAt)
                     .WithSchedule(SimpleScheduleBuilder.RepeatMinutelyForever(10))
-                    .WithIdentity("ScheduledTaskCleanupTrigger", ScheduledTasks.SchedulerGroupName + "_System")
+                    .WithIdentity("ScheduledTaskCleanupTrigger", SchedulerGroupName + "_System")
                     .Build();
 
                 IJobDetail job = JobBuilder.Create<ScheduledTaskCleanup>()
-                        .WithIdentity("ScheduledTaskCleanupJob", ScheduledTasks.SchedulerGroupName + "_System")
+                        .WithIdentity("ScheduledTaskCleanupJob", SchedulerGroupName + "_System")
                         .Build();
 
                 _TaskScheduler.ScheduleJob(job, trigger);

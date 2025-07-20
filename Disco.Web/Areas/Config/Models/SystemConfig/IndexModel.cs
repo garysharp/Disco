@@ -43,7 +43,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         #region Database Connection
         private Lazy<SqlConnectionStringBuilder> DatabaseConnectionString = new Lazy<SqlConnectionStringBuilder>(() =>
         {
-            return new SqlConnectionStringBuilder(Disco.Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString);
+            return new SqlConnectionStringBuilder(Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString);
         });
         public string DatabaseServer
         {

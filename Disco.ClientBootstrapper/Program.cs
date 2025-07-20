@@ -153,11 +153,11 @@ namespace Disco.ClientBootstrapper
                 {
                     if (BootstrapperLoop.LoopThread != null)
                     {
-                        if (BootstrapperLoop.LoopThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+                        if (BootstrapperLoop.LoopThread.ThreadState == ThreadState.WaitSleepJoin)
                         {
                             BootstrapperLoop.LoopThread.Interrupt();
                         }
-                        if (BootstrapperLoop.LoopThread.ThreadState == System.Threading.ThreadState.Running)
+                        if (BootstrapperLoop.LoopThread.ThreadState == ThreadState.Running)
                         {
                             BootstrapperLoop.LoopThread.Abort();
                         }

@@ -36,11 +36,11 @@ namespace Disco.Services.Extensions
             var rnd = new Random();
             if (Except != null)
             {
-                var availableIcons = UIHelpers.Icons.Select(i => i.Key).Except(Except).ToList();
+                var availableIcons = Icons.Select(i => i.Key).Except(Except).ToList();
                 if (availableIcons.Count > 0)
                     return availableIcons[rnd.Next(availableIcons.Count - 1)];
             }
-            return UIHelpers.Icons[rnd.Next(UIHelpers.Icons.Count - 1)].Key;
+            return Icons[rnd.Next(Icons.Count - 1)].Key;
         }
 
         /// <summary>
@@ -59,11 +59,11 @@ namespace Disco.Services.Extensions
             var rnd = new Random();
             if (Except != null)
             {
-                var availableColours = UIHelpers.ThemeColours.Select(i => i.Key).Except(Except).ToList();
+                var availableColours = ThemeColours.Select(i => i.Key).Except(Except).ToList();
                 if (availableColours.Count > 0)
                     return availableColours[rnd.Next(availableColours.Count - 1)];
             }
-            return UIHelpers.ThemeColours[rnd.Next(UIHelpers.ThemeColours.Count - 1)].Key;
+            return ThemeColours[rnd.Next(ThemeColours.Count - 1)].Key;
         }
 
         static UIHelpers()

@@ -74,7 +74,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             return domain.GetAvailableDomainController().RetrieveADUserAccount(User.UserId, AdditionalProperties);
         }
 
-        public static IEnumerable<ADUserAccount> SearchADUserAccounts(string Term, bool Quick, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit, params string[] AdditionalProperties)
+        public static IEnumerable<ADUserAccount> SearchADUserAccounts(string Term, bool Quick, int? ResultLimit = DefaultSearchResultLimit, params string[] AdditionalProperties)
         {
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
@@ -133,7 +133,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             return domain.GetAvailableDomainController().RetrieveADGroupWithSecurityIdentifier(SecurityIdentifier, AdditionalProperties);
         }
 
-        public static IEnumerable<ADGroup> SearchADGroups(string Term, int? ResultLimit = ActiveDirectory.DefaultSearchResultLimit, params string[] AdditionalProperties)
+        public static IEnumerable<ADGroup> SearchADGroups(string Term, int? ResultLimit = DefaultSearchResultLimit, params string[] AdditionalProperties)
         {
             if (string.IsNullOrWhiteSpace(Term))
                 throw new ArgumentNullException("Term");
@@ -279,7 +279,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             else
             {
                 AccountUsername = AccountId.Substring(slashIndex + 1);
-                return ActiveDirectory.Context.TryGetDomainByNetBiosName(AccountId.Substring(0, slashIndex), out Domain);
+                return Context.TryGetDomainByNetBiosName(AccountId.Substring(0, slashIndex), out Domain);
             }
         }
 
@@ -291,7 +291,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         {
             var slashIndex = AccountId.IndexOf('\\');
 
-            if (slashIndex > 0 && AccountId.Substring(0, slashIndex).Equals(ActiveDirectory.Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
+            if (slashIndex > 0 && AccountId.Substring(0, slashIndex).Equals(Context.PrimaryDomain.NetBiosName, StringComparison.OrdinalIgnoreCase))
                 return AccountId.Substring(slashIndex + 1);
             else
                 return AccountId;

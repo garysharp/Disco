@@ -129,7 +129,7 @@ namespace Disco.Services.Documents.ManagedGroups
 
             if (!string.IsNullOrEmpty(Template.DevicesLinkedGroup))
             {
-                var config = ADManagedGroup.ConfigurationFromJson(Template.DevicesLinkedGroup);
+                var config = ConfigurationFromJson(Template.DevicesLinkedGroup);
 
                 if (config != null && !string.IsNullOrWhiteSpace(config.GroupId))
                 {

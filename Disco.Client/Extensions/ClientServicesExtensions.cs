@@ -26,7 +26,7 @@ namespace Disco.Client.Extensions
             else
                 serviceUrl = string.Format(ServicePathUnauthenticatedTemplate, Service.Feature);
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(serviceUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serviceUrl);
             request.UserAgent = $"Disco-Client/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             request.ContentType = "application/json";
             request.Method = WebRequestMethods.Http.Post;

@@ -33,7 +33,7 @@ namespace Disco.Services.Plugins.Features.UIExtension
 
         public static void ExecuteExtensions<UIModel>(ControllerContext context, UIModel model) where UIModel : BaseUIModel
         {
-            var uiExts = UIExtensions.GetRegisteredExtensions<UIModel>();
+            var uiExts = GetRegisteredExtensions<UIModel>();
             Queue<UIExtensionResult> uiExtResults = new Queue<UIExtensionResult>();
             foreach (var uiExt in uiExts)
             {

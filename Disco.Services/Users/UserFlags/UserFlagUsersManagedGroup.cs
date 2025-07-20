@@ -79,7 +79,7 @@ namespace Disco.Services.Users.UserFlags
 
                 if (!string.IsNullOrEmpty(UserFlag.UsersLinkedGroup))
                 {
-                    var config = ADManagedGroup.ConfigurationFromJson(UserFlag.UsersLinkedGroup);
+                    var config = ConfigurationFromJson(UserFlag.UsersLinkedGroup);
 
                     if (config != null && !string.IsNullOrWhiteSpace(config.GroupId))
                     {

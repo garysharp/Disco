@@ -14,14 +14,14 @@ namespace Disco.Web
             // Modified Connection Factory
             System.Data.Entity.Database.DefaultConnectionFactory = new DiscoDatabaseConnectionFactory(System.Data.Entity.Database.DefaultConnectionFactory);
 
-            if (Disco.Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString == null)
+            if (DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString == null)
             {
                 // Database Connection String not configured - Trigger 'Install'
                 return false;
             }
 
             // Migrate Database
-            Disco.Data.Migrations.DiscoDataMigrator.MigrateLatest(true);
+            Data.Migrations.DiscoDataMigrator.MigrateLatest(true);
 
             return true;
         }
@@ -29,7 +29,7 @@ namespace Disco.Web
         public static void InitalizeCoreEnvironment(DiscoDataContext Database)
         {
             // Initialize Logging
-            Disco.Services.Logging.LogContext.Initalize(Database, DiscoApplication.SchedulerFactory);
+            Services.Logging.LogContext.Initalize(Database, DiscoApplication.SchedulerFactory);
 
             // Load Organisation Name
             DiscoApplication.DeploymentId = Database.DiscoConfiguration.DeploymentId;
@@ -37,7 +37,7 @@ namespace Disco.Web
             DiscoApplication.MultiSiteMode = Database.DiscoConfiguration.MultiSiteMode;
 
             // Initialize Active Directory Interop
-            Disco.Services.Interop.ActiveDirectory.ActiveDirectory.Initialize(Database);
+            Services.Interop.ActiveDirectory.ActiveDirectory.Initialize(Database);
 
             // Setup Global Proxy
             DiscoApplication.SetGlobalProxy(Database.DiscoConfiguration.ProxyAddress,
@@ -46,7 +46,7 @@ namespace Disco.Web
                 Database.DiscoConfiguration.ProxyPassword);
 
             // Initialize User Service Interop
-            Disco.Services.Users.UserService.Initialize(Database);
+            Services.Users.UserService.Initialize(Database);
         }
 
         public static void InitalizeNormalEnvironment(DiscoDataContext Database)
@@ -54,25 +54,25 @@ namespace Disco.Web
             InitalizeCoreEnvironment(Database);
 
             // Initialize Expressions
-            Disco.Services.Expressions.Extensions.ImageResultImplementations.QrCodeImageExpressionResult.CCITTG4EncoderCompressDelegate = Disco.BI.Interop.Pdf.Utilities.GetCCITTG4EncoderCompressDelegate();
-            Disco.Services.Expressions.Expression.InitializeExpressions();
+            Services.Expressions.Extensions.ImageResultImplementations.QrCodeImageExpressionResult.CCITTG4EncoderCompressDelegate = BI.Interop.Pdf.Utilities.GetCCITTG4EncoderCompressDelegate();
+            Services.Expressions.Expression.InitializeExpressions();
 
             // Initialize Job Queues
-            Disco.Services.Jobs.JobQueues.JobQueueService.Initialize(Database);
+            Services.Jobs.JobQueues.JobQueueService.Initialize(Database);
 
             // Initialize Flags
-            Disco.Services.Users.UserFlags.UserFlagService.Initialize(Database);
-            Disco.Services.Devices.DeviceFlags.DeviceFlagService.Initialize(Database);
+            Services.Users.UserFlags.UserFlagService.Initialize(Database);
+            Services.Devices.DeviceFlags.DeviceFlagService.Initialize(Database);
 
             // Initialize Satellite Managed Groups (which don't belong to any other component)
-            Disco.Services.Devices.ManagedGroups.DeviceManagedGroups.Initialize(Database);
-            Disco.Services.Documents.ManagedGroups.DocumentTemplateManagedGroups.Initialize(Database);
+            Services.Devices.ManagedGroups.DeviceManagedGroups.Initialize(Database);
+            Services.Documents.ManagedGroups.DocumentTemplateManagedGroups.Initialize(Database);
 
             // Initialize Plugins
-            Disco.Services.Plugins.Plugins.InitalizePlugins(Database);
+            Services.Plugins.Plugins.InitalizePlugins(Database);
 
             // Initialize Scheduled Tasks
-            Disco.Services.Tasks.ScheduledTasks.InitializeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);
+            Services.Tasks.ScheduledTasks.InitializeScheduledTasks(Database, DiscoApplication.SchedulerFactory, true);
 
             // Schedule Immediate Check for Update (if never updated, or last updated over 2 days ago)
             if (Database.DiscoConfiguration.UpdateLastCheckResponse == null ||
@@ -98,7 +98,7 @@ namespace Disco.Web
             InitalizeCoreEnvironment(Database);
 
             // Initialize Scheduled Tasks
-            Disco.Services.Tasks.ScheduledTasks.InitializeScheduledTasks(Database, DiscoApplication.SchedulerFactory, false);
+            Services.Tasks.ScheduledTasks.InitializeScheduledTasks(Database, DiscoApplication.SchedulerFactory, false);
 
             // Import MAC Address Migration
             if (PreviousVersion != null && PreviousVersion < new Version(1, 2, 910, 0))
@@ -128,7 +128,7 @@ namespace Disco.Web
                 }
             }
 
-            Disco.Services.Logging.SystemLog.LogUninitialized();
+            Services.Logging.SystemLog.LogUninitialized();
         }
     }
 }

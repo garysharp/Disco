@@ -124,7 +124,7 @@ namespace Disco.Services.Documents.ManagedGroups
 
             if (!string.IsNullOrEmpty(Template.UsersLinkedGroup))
             {
-                var config = ADManagedGroup.ConfigurationFromJson(Template.UsersLinkedGroup);
+                var config = ConfigurationFromJson(Template.UsersLinkedGroup);
 
                 if (config != null && !string.IsNullOrWhiteSpace(config.GroupId))
                 {

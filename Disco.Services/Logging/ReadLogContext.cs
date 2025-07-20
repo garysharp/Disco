@@ -48,7 +48,7 @@ namespace Disco.Services.Logging
                 {
                     var query = BuildQuery(context, logFile.Item2, results.Count);
                     IEnumerable<LogEvent> queryResults = query; // Run the Query
-                    results.AddRange(queryResults.Select(le => Models.LogLiveEvent.Create(logModules[le.ModuleId], logModules[le.ModuleId].EventTypes[le.EventTypeId], le.Timestamp, le.Arguments)));
+                    results.AddRange(queryResults.Select(le => LogLiveEvent.Create(logModules[le.ModuleId], logModules[le.ModuleId].EventTypes[le.EventTypeId], le.Timestamp, le.Arguments)));
                 }
                 if (Take.HasValue && Take.Value < results.Count)
                     break;

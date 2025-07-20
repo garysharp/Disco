@@ -9,7 +9,7 @@ namespace Disco.Web.Models.InitialConfig
     {
         public FileStoreModel()
         {
-            DirectoryModel = FileStoreModel.FileStoreDirectoryModel.DirectoryRoots();
+            DirectoryModel = FileStoreDirectoryModel.DirectoryRoots();
         }
 
         [Required(), CustomValidation(typeof(FileStoreModel), "DirectoryPermissionRequired")]
@@ -145,7 +145,7 @@ namespace Disco.Web.Models.InitialConfig
                 foreach (var driveInfo in DriveInfo.GetDrives())
                 {
                     if (driveInfo.DriveType == DriveType.Fixed)
-                        root.SubDirectories.Add(driveInfo.Name.Substring(0, 2).ToUpper(), FileStoreDirectoryModel.FromInfo(driveInfo));
+                        root.SubDirectories.Add(driveInfo.Name.Substring(0, 2).ToUpper(), FromInfo(driveInfo));
                 }
 
                 return root;
@@ -166,7 +166,7 @@ namespace Disco.Web.Models.InitialConfig
                                 if (((subDir.Attributes & FileAttributes.System) != FileAttributes.System) &&
                                     ((subDir.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden))
                                 {
-                                    SubDirectories.Add(subDir.Name.ToUpper(), FileStoreDirectoryModel.FromInfo(subDir));
+                                    SubDirectories.Add(subDir.Name.ToUpper(), FromInfo(subDir));
                                 }
                             }
                         }

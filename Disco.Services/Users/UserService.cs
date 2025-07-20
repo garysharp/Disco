@@ -20,7 +20,7 @@ namespace Disco.Services.Users
 
         public static void Initialize(DiscoDataContext Database)
         {
-            Authorization.Roles.RoleCache.Initialize(Database);
+            RoleCache.Initialize(Database);
         }
 
         public static string CurrentUserId
@@ -221,7 +221,7 @@ namespace Disco.Services.Users
                     else
                         Database.Users.Add(adU);
                     Database.SaveChanges();
-                    UserService.InvalidateCachedUser(adU.UserId);
+                    InvalidateCachedUser(adU.UserId);
                 }
             }
 

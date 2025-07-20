@@ -85,7 +85,7 @@ namespace Disco.Client
             string reportJson = JsonConvert.SerializeObject(report);
             string reportResponse;
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(ServicePathTemplate);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ServicePathTemplate);
             request.UserAgent = $"Disco-Client/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             request.ContentType = "application/json";
             request.Method = WebRequestMethods.Http.Post;
@@ -105,7 +105,7 @@ namespace Disco.Client
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine("Error Report Logged to Server; Response: {0}", reportResponse);
+            Debug.WriteLine("Error Report Logged to Server; Response: {0}", reportResponse);
         }
 
         #endregion

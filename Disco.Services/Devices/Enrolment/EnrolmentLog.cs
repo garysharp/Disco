@@ -70,7 +70,7 @@ namespace Disco.Services.Devices.Enrolment
         }
         private static void Log(EventTypeIds EventTypeId, params object[] Args)
         {
-            EnrolmentLog.Current.Log((int)EventTypeId, Args);
+            Current.Log((int)EventTypeId, Args);
         }
         public static void LogSessionStarting(string SessionId, string HostId, EnrolmentTypes EnrolmentType)
         {
@@ -147,11 +147,11 @@ namespace Disco.Services.Devices.Enrolment
         }
         public static void LogSessionDeviceInfo(string SessionId, MacEnrol Request)
         {
-            EnrolmentLog.LogSessionDeviceInfo(SessionId, Request.DeviceSerialNumber, Request.DeviceUUID, Request.DeviceComputerName, Request.DeviceLanMacAddress, Request.DeviceWlanMacAddress, Request.DeviceManufacturer, Request.DeviceModel, Request.DeviceModelType);
+            LogSessionDeviceInfo(SessionId, Request.DeviceSerialNumber, Request.DeviceUUID, Request.DeviceComputerName, Request.DeviceLanMacAddress, Request.DeviceWlanMacAddress, Request.DeviceManufacturer, Request.DeviceModel, Request.DeviceModelType);
         }
         public static void LogSessionDeviceInfo(string SessionId, Enrol Request)
         {
-            EnrolmentLog.LogSessionDeviceInfo(
+            LogSessionDeviceInfo(
                 SessionId,
                 Request.SerialNumber,
                 Request.Hardware.UUID,

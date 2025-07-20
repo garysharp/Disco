@@ -59,7 +59,7 @@ namespace Disco.Services.Web
                 }
                 else
                 {
-                    Disco.Services.Logging.SystemLog.LogException("Global Application Exception Caught", Exception);
+                    Logging.SystemLog.LogException("Global Application Exception Caught", Exception);
                 }
             }
             catch (Exception)

@@ -19,9 +19,9 @@ namespace Disco.Services
             if (SubSubLocationTimestamp.HasValue)
                 SubSubLocation = SubSubLocationTimestamp.Value.ToString(@"yyyy\\MM");
 
-            string storeDirectory = System.IO.Path.Combine(DiscoConfiguration.DataStoreLocation, SubLocation, SubSubLocation);
-            if (!System.IO.Directory.Exists(storeDirectory))
-                System.IO.Directory.CreateDirectory(storeDirectory);
+            string storeDirectory = Path.Combine(DiscoConfiguration.DataStoreLocation, SubLocation, SubSubLocation);
+            if (!Directory.Exists(storeDirectory))
+                Directory.CreateDirectory(storeDirectory);
 
             return storeDirectory;
         }

@@ -113,7 +113,7 @@ namespace Disco.Data.Configuration
         {
             get
             {
-                return System.IO.Path.Combine(DataStoreLocation, "OrganisationLogo.png");
+                return Path.Combine(DataStoreLocation, "OrganisationLogo.png");
             }
         }
         public string OrganisationLogoHash
@@ -135,15 +135,15 @@ namespace Disco.Data.Configuration
                 if (File.Exists(path))
                     return new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 else
-                    return new MemoryStream(Disco.Data.Properties.Resources.EmptyLogo);
+                    return new MemoryStream(Properties.Resources.EmptyLogo);
             }
             set
             {
                 string organisationLogoPath = OrganisationLogoPath;
                 if (value == null)
                 {
-                    if (System.IO.File.Exists(organisationLogoPath))
-                        System.IO.File.Delete(organisationLogoPath);
+                    if (File.Exists(organisationLogoPath))
+                        File.Delete(organisationLogoPath);
                 }
                 else
                 {

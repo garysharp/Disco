@@ -107,7 +107,7 @@ namespace Disco.Web.Controllers
         #region Database
         public virtual ActionResult Database()
         {
-            var cs = Disco.Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString;
+            var cs = DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString;
 
             DatabaseModel m;
 
@@ -128,11 +128,11 @@ namespace Disco.Web.Controllers
 
                 // Try Creating/Migrating
                 connectionString.ConnectTimeout = 5;
-                Disco.Data.Repository.DiscoDatabaseConnectionFactory.SetDiscoDataContextConnectionString(connectionString.ToString(), false);
+                DiscoDatabaseConnectionFactory.SetDiscoDataContextConnectionString(connectionString.ToString(), false);
 
                 try
                 {
-                    Disco.Data.Migrations.DiscoDataMigrator.MigrateLatest(true);
+                    Data.Migrations.DiscoDataMigrator.MigrateLatest(true);
                 }
                 catch (Exception ex)
                 {

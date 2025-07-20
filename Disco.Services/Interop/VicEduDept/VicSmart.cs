@@ -50,7 +50,7 @@ namespace Disco.Services.Interop.VicEduDept
             {
                 var DiscoBIVersion = UpdateQuery.CurrentDiscoVersionFormatted();
 
-                HttpWebRequest wReq = (HttpWebRequest)HttpWebRequest.Create("http://broadband.doe.wan/ipsearch/showresult.php");
+                HttpWebRequest wReq = (HttpWebRequest)WebRequest.Create("http://broadband.doe.wan/ipsearch/showresult.php");
 
                 // Fix for Proxy Servers which don't support KeepAlive
                 wReq.KeepAlive = false;

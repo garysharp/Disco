@@ -414,7 +414,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             if (System.IO.File.Exists(tempFileName))
             {
-                DJoinResult = System.Convert.ToBase64String(System.IO.File.ReadAllBytes(tempFileName));
+                DJoinResult = Convert.ToBase64String(System.IO.File.ReadAllBytes(tempFileName));
                 System.IO.File.Delete(tempFileName);
             }
             if (string.IsNullOrWhiteSpace(DJoinResult))

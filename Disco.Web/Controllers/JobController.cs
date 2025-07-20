@@ -238,7 +238,7 @@ namespace Disco.Web.Controllers
                 closedThreshold = closedThreshold.AddDays(-2);
             if (dateTimeNow.DayOfWeek == DayOfWeek.Tuesday)
                 closedThreshold = closedThreshold.AddDays(-1);
-            m.JobTable.Fill(Database, Disco.Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id), true);
+            m.JobTable.Fill(Database, Services.Searching.Search.BuildJobTableModel(Database).Where(j => j.ClosedDate > closedThreshold).OrderBy(j => j.Id), true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<JobListModel>(ControllerContext, m);

@@ -270,7 +270,7 @@ namespace Disco.Services.Documents.AttachmentImport
             }
 
             // Add PDF Icon overlay
-            using (Image mimeTypeIcon = Disco.Services.Properties.Resources.MimeType_pdf16)
+            using (Image mimeTypeIcon = Properties.Resources.MimeType_pdf16)
             {
                 thumbnail.EmbedIconOverlay(mimeTypeIcon);
             }

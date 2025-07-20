@@ -20,7 +20,7 @@ namespace Disco.Client
         }
         public static void UpdateStatus(string SubHeading, string Message, bool ShowProgress, int Progress, int TryDelay)
         {
-            Presentation.UpdateStatus(SubHeading, Message, ShowProgress, Progress);
+            UpdateStatus(SubHeading, Message, ShowProgress, Progress);
             if (TryDelay > 0)
                 Presentation.TryDelay(TryDelay);
         }

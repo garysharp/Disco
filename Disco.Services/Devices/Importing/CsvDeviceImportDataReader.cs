@@ -53,7 +53,7 @@ namespace Disco.Services.Devices.Importing
         public string GetString(int ColumnIndex)
         {
             if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(CsvDeviceImportDataReader.Read)} must be called before retrieving values");
+                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
 
             var value = currentRow[ColumnIndex];
 
@@ -71,7 +71,7 @@ namespace Disco.Services.Devices.Importing
         public bool TryGetNullableInt(int ColumnIndex, out int? value)
         {
             if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(CsvDeviceImportDataReader.Read)} must be called before retrieving values");
+                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
 
             return TryGetNullableInt(currentRow[ColumnIndex], out value);
         }
@@ -79,7 +79,7 @@ namespace Disco.Services.Devices.Importing
         public bool TryGetNullableBool(int ColumnIndex, out bool? value)
         {
             if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(CsvDeviceImportDataReader.Read)} must be called before retrieving values");
+                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
 
             return TryGetNullableBool(currentRow[ColumnIndex], out value);
         }
@@ -87,7 +87,7 @@ namespace Disco.Services.Devices.Importing
         public bool TryGetNullableDateTime(int ColumnIndex, out DateTime? value)
         {
             if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(CsvDeviceImportDataReader.Read)} must be called before retrieving values");
+                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
 
             return TryGetNullableDateTime(currentRow[ColumnIndex], out value);
         }

@@ -16,8 +16,8 @@ namespace Disco.Web
     {
         public DiscoApplication()
         {
-            base.BeginRequest += new EventHandler(DiscoApplication_BeginRequest);
-            base.Error += new EventHandler(DiscoApplication_Error);
+            BeginRequest += new EventHandler(DiscoApplication_BeginRequest);
+            Error += new EventHandler(DiscoApplication_Error);
         }
 
         protected void Application_Start()
@@ -45,7 +45,7 @@ namespace Disco.Web
                         bool.TryParse(ConfigurationManager.AppSettings["DiscoIgnoreVersionUpdate"], out ignoreVersionUpdate);
                         // Only Update if Plugins are installed
                         if (!ignoreVersionUpdate)
-                            ignoreVersionUpdate = (Disco.Services.Plugins.UpdatePluginTask.OfflineInstalledPlugins(database).Count == 0);
+                            ignoreVersionUpdate = (Services.Plugins.UpdatePluginTask.OfflineInstalledPlugins(database).Count == 0);
                     }
 
                     if (!isVersionUpdate || ignoreVersionUpdate)

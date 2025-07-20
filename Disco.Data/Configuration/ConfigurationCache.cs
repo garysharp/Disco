@@ -22,11 +22,11 @@ namespace Disco.Data.Configuration
 
         private static ConfigurationCacheType Cache(DiscoDataContext Database)
         {
-            if (ConfigurationCache.cacheStore == null)
+            if (cacheStore == null)
             {
                 lock (configChangeLock)
                 {
-                    if (ConfigurationCache.cacheStore == null)
+                    if (cacheStore == null)
                     {
                         if (Database == null)
                             throw new InvalidOperationException("The Configuration must be loaded at least once before a Cache-Only Configuration Context is used");
@@ -46,7 +46,7 @@ namespace Disco.Data.Configuration
                 }
             }
 
-            return ConfigurationCache.cacheStore;
+            return cacheStore;
         }
 
         private static ConfigurationCacheItemType CacheGetItem(DiscoDataContext Database, string Scope, string Key)
@@ -160,7 +160,7 @@ namespace Disco.Data.Configuration
         }
         private static ConfigurationCacheItemType SetItemTypeValue(ConfigurationCacheItemType ExistingItem, object Value)
         {
-            var cache = ConfigurationCache.cacheStore;
+            var cache = cacheStore;
 
             if (cache.TryGetValue(ExistingItem.Item1.Scope, out var scopeCache))
             {

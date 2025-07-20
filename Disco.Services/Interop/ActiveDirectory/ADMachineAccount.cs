@@ -388,7 +388,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 netbootGUID = NetbootGUIDFromMACAddress(MACAddress);
             }
 
-            if (netbootGUID != System.Guid.Empty && netbootGUID != NetbootGUID)
+            if (netbootGUID != Guid.Empty && netbootGUID != NetbootGUID)
             {
                 SetNetbootGUID(WritableDomainController, netbootGUID);
                 return true;
@@ -418,7 +418,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             }
             else
             {
-                NetbootGUIDFromMACAddress = System.Guid.Empty;
+                NetbootGUIDFromMACAddress = Guid.Empty;
             }
             return NetbootGUIDFromMACAddress;
         }

@@ -29,28 +29,28 @@ namespace Disco.Web.Areas.Public.Controllers
                 query = query.Where(j => j.Device.DeviceProfile.DefaultOrganisationAddress == null || !addressIds.Contains(j.Device.DeviceProfile.DefaultOrganisationAddress));
             }
 
-            var m = Disco.Services.Jobs.Noticeboards.HeldDevicesForUsers.GetHeldDevicesForUsers(query);
+            var m = HeldDevicesForUsers.GetHeldDevicesForUsers(query);
 
             return View(m);
         }
 
         public virtual ActionResult ReadyForReturnXml()
         {
-            var readyForReturn = Disco.Services.Jobs.Noticeboards.HeldDevicesForUsers.GetHeldDevicesForUsers(Database)
+            var readyForReturn = HeldDevicesForUsers.GetHeldDevicesForUsers(Database)
                 .Where(j => j.ReadyForReturn && !j.WaitingForUserAction).Cast<HeldDeviceItem>().ToArray();
 
             return new Extensions.XmlResult(readyForReturn);
         }
         public virtual ActionResult WaitingForUserActionXml()
         {
-            var userHeldDevices = Disco.Services.Jobs.Noticeboards.HeldDevicesForUsers.GetHeldDevicesForUsers(Database)
+            var userHeldDevices = HeldDevicesForUsers.GetHeldDevicesForUsers(Database)
                 .Where(j => j.WaitingForUserAction).Cast<HeldDeviceItem>().ToArray();
 
             return new Extensions.XmlResult(userHeldDevices);
         }
         public virtual ActionResult UserHeldDevicesXml()
         {
-            var userHeldDevices = Disco.Services.Jobs.Noticeboards.HeldDevicesForUsers.GetHeldDevicesForUsers(Database)
+            var userHeldDevices = HeldDevicesForUsers.GetHeldDevicesForUsers(Database)
                 .Where(j => !j.ReadyForReturn && !j.WaitingForUserAction).Cast<HeldDeviceItem>().ToArray();
 
             return new Extensions.XmlResult(userHeldDevices);
@@ -68,13 +68,13 @@ namespace Disco.Web.Areas.Public.Controllers
 
         public virtual ActionResult UserHeldDevice(string id)
         {
-            var m = Disco.Services.Jobs.Noticeboards.HeldDevicesForUsers.GetHeldDeviceForUsers(Database, id);
+            var m = HeldDevicesForUsers.GetHeldDeviceForUsers(Database, id);
 
             return Json(m, JsonRequestBehavior.AllowGet);
         }
         public virtual ActionResult UserHeldDevices()
         {
-            var m = Disco.Services.Jobs.Noticeboards.HeldDevicesForUsers.GetHeldDevicesForUsers(Database);
+            var m = HeldDevicesForUsers.GetHeldDevicesForUsers(Database);
 
             return Json(m, JsonRequestBehavior.AllowGet);
         }

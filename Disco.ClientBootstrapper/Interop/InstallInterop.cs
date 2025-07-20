@@ -248,9 +248,9 @@ namespace Disco.ClientBootstrapper.Interop
                     Program.Status.UpdateStatus(null, "Mounting WIM", $"Mounting WIM Image to '{wimMountPath}'");
                     Program.SleepThread(500, false);
                     m_MessageCallback = new WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback(WimImageEventMessagePump);
-                    Interop.WIMInterop.WindowsImageContainer.NativeMethods.RegisterCallback(m_MessageCallback);
+                    WIMInterop.WindowsImageContainer.NativeMethods.RegisterCallback(m_MessageCallback);
 
-                    Interop.WIMInterop.WindowsImageContainer.NativeMethods.MountImage(wimMountPath, InstallLocation, wimImageIndex, wimTempMountPath);
+                    WIMInterop.WindowsImageContainer.NativeMethods.MountImage(wimMountPath, InstallLocation, wimImageIndex, wimTempMountPath);
 
                     // Load Local Machine Registry
                     var wimHivePath = Path.Combine(wimMountPath, "Windows\\System32\\config\\SOFTWARE");
@@ -283,11 +283,11 @@ namespace Disco.ClientBootstrapper.Interop
                     // Unmount WIM
                     Program.Status.UpdateStatus(null, "Unmounting WIM", $"Unmounting WIM Image at '{wimMountPath}'");
                     Program.SleepThread(500, false);
-                    Interop.WIMInterop.WindowsImageContainer.NativeMethods.DismountImage(wimMountPath, InstallLocation, wimImageIndex, wimCommitChanges);
+                    WIMInterop.WindowsImageContainer.NativeMethods.DismountImage(wimMountPath, InstallLocation, wimImageIndex, wimCommitChanges);
 
                     if (m_MessageCallback != null)
                     {
-                        Interop.WIMInterop.WindowsImageContainer.NativeMethods.UnregisterMessageCallback(m_MessageCallback);
+                        WIMInterop.WindowsImageContainer.NativeMethods.UnregisterMessageCallback(m_MessageCallback);
                         m_MessageCallback = null;
                     }
 
@@ -321,7 +321,7 @@ namespace Disco.ClientBootstrapper.Interop
             IntPtr UserData
         )
         {
-            uint status = (uint)Interop.WIMInterop.WindowsImageContainer.NativeMethods.WIMMessage.WIM_MSG_SUCCESS;
+            uint status = (uint)WIMInterop.WindowsImageContainer.NativeMethods.WIMMessage.WIM_MSG_SUCCESS;
             WIMInterop.DefaultImageEventArgs eventArgs = new WIMInterop.DefaultImageEventArgs(wParam, lParam, UserData);
 
             //System.Diagnostics.Debug.WriteLine(MessageId);
@@ -329,8 +329,8 @@ namespace Disco.ClientBootstrapper.Interop
             switch ((WIMInterop.WindowsImageContainer.ImageEventMessage)MessageId)
             {
 
-                case Interop.WIMInterop.WindowsImageContainer.ImageEventMessage.Progress:
-                case Interop.WIMInterop.WindowsImageContainer.ImageEventMessage.MountCleanupProgress:
+                case WIMInterop.WindowsImageContainer.ImageEventMessage.Progress:
+                case WIMInterop.WindowsImageContainer.ImageEventMessage.MountCleanupProgress:
                     var timeRemainingMil = eventArgs.LeftParameter.ToInt32();
                     string timeRemainingMessage;
                     if (timeRemainingMil > 0)

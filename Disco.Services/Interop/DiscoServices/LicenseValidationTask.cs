@@ -104,7 +104,7 @@ namespace Disco.Services.Interop.DiscoServices
             var appVersion = typeof(LicenseValidationTask).Assembly.GetName().Version.ToString(4);
             var updateUrl = $"{DiscoServiceHelpers.ServicesUrl}API/License/V1";
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(updateUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(updateUrl);
 
             // Fix for Proxy Servers which don't support KeepAlive
             request.KeepAlive = false;

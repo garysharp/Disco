@@ -32,7 +32,7 @@ namespace Disco.Services.Jobs.Noticeboards
                     });
 
                 NoticeboardUpdatesHub.HubContext.Clients
-                    .Group(HeldDevicesForUsers.Name)
+                    .Group(Name)
                     .updateHeldDeviceForUser(updates);
             }
         }

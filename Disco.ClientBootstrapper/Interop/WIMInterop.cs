@@ -163,7 +163,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 //Set the temporary path so that we can write to an image. This
                 //cannot be %TEMP% as it does not exist on Windows PE
                 //
-                string tempDirectory = System.Environment.GetEnvironmentVariable("systemdrive");
+                string tempDirectory = Environment.GetEnvironmentVariable("systemdrive");
                 NativeMethods.SetTemporaryPath(m_ImageContainerHandle, tempDirectory);
 
             }
@@ -596,7 +596,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 //Mount the image
                 //
                 m_MountedPath = pathToMountTo;
-                NativeMethods.MountImage(pathToMountTo, m_ParentWindowsImageFilePath, m_Index, System.IO.Path.GetTempPath());
+                NativeMethods.MountImage(pathToMountTo, m_ParentWindowsImageFilePath, m_Index, Path.GetTempPath());
                 m_Mounted = true;
             }
 
@@ -684,7 +684,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 IntPtr windowsImageHandle = IntPtr.Zero;
                 int rc = -1;
 
-                windowsImageHandle = NativeMethods.WimCreateFile(imageFile, access, mode, 0, 0, out _);
+                windowsImageHandle = WimCreateFile(imageFile, access, mode, 0, 0, out _);
                 rc = Marshal.GetLastWin32Error();
                 if (windowsImageHandle == IntPtr.Zero)
                 {
@@ -721,7 +721,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             void
             CloseHandle(IntPtr handle)
             {
-                bool status = NativeMethods.WimCloseHandle(handle);
+                bool status = WimCloseHandle(handle);
                 int rc = Marshal.GetLastWin32Error();
                 if (status == false)
                 {
@@ -757,7 +757,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             void
             SetTemporaryPath(IntPtr handle, string temporaryPath)
             {
-                bool status = NativeMethods.WimSetTemporaryPath(handle, temporaryPath);
+                bool status = WimSetTemporaryPath(handle, temporaryPath);
                 int rc = Marshal.GetLastWin32Error();
                 if (status == false)
                 {
@@ -794,7 +794,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             {
                 //Load the image data based on the .wim handle
                 //
-                IntPtr hWim = NativeMethods.WimLoadImage(handle, (uint)imageIndex);
+                IntPtr hWim = WimLoadImage(handle, (uint)imageIndex);
                 int rc = Marshal.GetLastWin32Error();
                 if (hWim == IntPtr.Zero)
                 {
@@ -832,7 +832,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             IntPtr
             CaptureImage(IntPtr handle, string path)
             {
-                IntPtr hImage = NativeMethods.WimCaptureImage(handle, path, 0);
+                IntPtr hImage = WimCaptureImage(handle, path, 0);
                 int rc = Marshal.GetLastWin32Error();
                 if (hImage == IntPtr.Zero)
                 {
@@ -873,7 +873,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             int
             GetImageCount(IntPtr windowsImageHandle)
             {
-                int count = NativeMethods.WimGetImageCount(windowsImageHandle);
+                int count = WimGetImageCount(windowsImageHandle);
                 int rc = Marshal.GetLastWin32Error();
                 if (count == -1)
                 {
@@ -971,7 +971,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
 
                 try
                 {
-                    status = NativeMethods.WimMountImage(mountPath,
+                    status = WimMountImage(mountPath,
                                                          windowsImageFileName,
                                                          (uint)imageIndex,
                                                          temporaryPath);
@@ -1022,7 +1022,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 //
                 //Call WimApplyImage always with the Index flag for performance reasons.
                 //
-                bool status = NativeMethods.WimApplyImage(imageHandle, applicationPath, NativeMethods.WIM_FLAG_INDEX);
+                bool status = WimApplyImage(imageHandle, applicationPath, WIM_FLAG_INDEX);
                 int rc = Marshal.GetLastWin32Error();
                 if (status == false)
                 {
@@ -1062,7 +1062,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 IntPtr info = IntPtr.Zero, sizeOfInfo = IntPtr.Zero;
                 bool status;
 
-                status = NativeMethods.WimGetImageInformation(handle, out info, out _);
+                status = WimGetImageInformation(handle, out info, out _);
                 int rc = Marshal.GetLastWin32Error();
 
                 if (status == false)
@@ -1112,7 +1112,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 IntPtr xmlBuffer = Marshal.AllocHGlobal(byteBufferSize);
                 Marshal.Copy(byteBuffer, 0, xmlBuffer, byteBufferSize);
 
-                bool status = NativeMethods.WimSetImageInformation(handle, xmlBuffer, (uint)byteBufferSize);
+                bool status = WimSetImageInformation(handle, xmlBuffer, (uint)byteBufferSize);
                 int rc = Marshal.GetLastWin32Error();
                 if (status == false)
                 {
@@ -1153,7 +1153,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
 
                 try
                 {
-                    status = NativeMethods.WimUnmountImage(mountPath, wimdowsImageFileName, (uint)imageIndex, commitChanges);
+                    status = WimUnmountImage(mountPath, wimdowsImageFileName, (uint)imageIndex, commitChanges);
                     rc = Marshal.GetLastWin32Error();
                 }
                 catch (System.StackOverflowException ex)
@@ -1221,7 +1221,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             void
             RegisterCallback(MessageCallback callback)
             {
-                NativeMethods.WimRegisterMessageCallback(IntPtr.Zero, callback, IntPtr.Zero);
+                WimRegisterMessageCallback(IntPtr.Zero, callback, IntPtr.Zero);
                 int rc = Marshal.GetLastWin32Error();
                 if (rc != 0)
                 {
@@ -1253,7 +1253,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             void
             UnregisterMessageCallback(MessageCallback registeredCallback)
             {
-                bool status = NativeMethods.WimUnregisterMessageCallback(IntPtr.Zero, registeredCallback);
+                bool status = WimUnregisterMessageCallback(IntPtr.Zero, registeredCallback);
                 _ = Marshal.GetLastWin32Error();
                 if (status != true)
                 {

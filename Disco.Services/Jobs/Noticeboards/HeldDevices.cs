@@ -178,7 +178,7 @@ namespace Disco.Services.Jobs.Noticeboards
 
 
                 // Notify Held Devices
-                HeldDevices.BroadcastUpdates(Database, deviceSerialNumbers);
+                BroadcastUpdates(Database, deviceSerialNumbers);
 
                 // Notify Held Devices for Users
                 HeldDevicesForUsers.BroadcastUpdates(Database, userIds);
@@ -203,7 +203,7 @@ namespace Disco.Services.Jobs.Noticeboards
                     });
 
                 NoticeboardUpdatesHub.HubContext.Clients
-                    .Group(HeldDevices.Name)
+                    .Group(Name)
                     .updateHeldDevice(updates);
             }
         }
