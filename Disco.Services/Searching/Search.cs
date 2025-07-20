@@ -17,15 +17,14 @@ namespace Disco.Services.Searching
         #region Jobs
         public static List<JobSearchResultItem> SearchJobs(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
-
-            IQueryable<Job> query = default(IQueryable<Job>);
+            var query = (IQueryable<Job>)Database.Jobs;
 
             string userIdTerm = Term.Contains('\\') ? Term : ActiveDirectory.ParseDomainAccountId(Term);
 
             if (int.TryParse(Term, out var termInt))
             {
                 // Term is a Number (int)
-                query = Database.Jobs.Where(j =>
+                query = query.Where(j =>
                         j.Id == termInt ||
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
@@ -34,7 +33,7 @@ namespace Disco.Services.Searching
             }
             else
             {
-                query = Database.Jobs.Where(j =>
+                query = query.Where(j =>
                         j.Device.SerialNumber.Contains(Term) ||
                         j.Device.AssetNumber.Contains(Term) ||
                         j.User.UserId == userIdTerm ||

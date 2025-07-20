@@ -49,7 +49,7 @@ namespace Disco.Web.Models.Job
         public string ProviderPropertiesJson { get; set; }
         public Dictionary<string, string> ProviderProperties()
         {
-            Dictionary<string, string> p = default(Dictionary<string, string>);
+            var p = default(Dictionary<string, string>);
             if (!string.IsNullOrEmpty(ProviderPropertiesJson))
             {
                 try

@@ -59,7 +59,7 @@ namespace Disco.Web.Extensions
 
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<PluginManifest> PluginFeatureDefinitions, PluginManifest SelectedItem)
         {
-            string selectedId = default(string);
+            var selectedId = default(string);
 
             if (SelectedItem != null)
                 selectedId = SelectedItem.Id;

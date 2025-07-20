@@ -9,7 +9,7 @@ namespace Disco.Web.Extensions
     {
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<JobSubType> jobSubTypes, IEnumerable<JobSubType> SelectedItems, bool IncludeQueueIcons = false)
         {
-            List<string> selectedIds = default(List<string>);
+            var selectedIds = default(List<string>);
 
             if (SelectedItems != null)
                 selectedIds = SelectedItems.Select(i => $"{i.JobTypeId}_{i.Id}").ToList();

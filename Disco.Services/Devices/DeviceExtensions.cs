@@ -86,12 +86,12 @@ namespace Disco.Services
 
 
             // Batch
-            DeviceBatch db = default(DeviceBatch);
+            var db = default(DeviceBatch);
             if (d.DeviceBatchId.HasValue)
                 db = Database.DeviceBatches.Find(d.DeviceBatchId.Value);
 
             // Default Device Model
-            DeviceModel dm = default(DeviceModel);
+            var dm = default(DeviceModel);
             if (db != null && db.DefaultDeviceModelId.HasValue)
                 dm = Database.DeviceModels.Find(db.DefaultDeviceModelId); // From Batch
             else
@@ -158,7 +158,7 @@ namespace Disco.Services
 
         public static DeviceUserAssignment AssignDevice(this Device d, DiscoDataContext Database, User u)
         {
-            DeviceUserAssignment newDua = default(DeviceUserAssignment);
+            DeviceUserAssignment newDua = default;
 
             // Mark existing assignments as Unassigned
             foreach (var dua in Database.DeviceUserAssignments.Where(m => m.DeviceSerialNumber == d.SerialNumber && !m.UnassignedDate.HasValue))

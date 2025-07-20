@@ -9,7 +9,7 @@ namespace Disco.Web.Extensions
     {
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<JobType> jobTypes, JobType SelectedItem)
         {
-            string selectedId = default(string);
+            var selectedId = default(string);
 
             if (SelectedItem != null)
                 selectedId = SelectedItem.Id;
@@ -27,7 +27,7 @@ namespace Disco.Web.Extensions
 
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<JobType> jobTypes, IEnumerable<JobType> SelectedItems)
         {
-            List<string> selectedIds = default(List<string>);
+            var selectedIds = default(List<string>);
 
             if (SelectedItems != null)
                 selectedIds = SelectedItems.Select(i => i.Id).ToList();

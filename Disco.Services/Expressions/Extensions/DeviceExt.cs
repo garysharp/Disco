@@ -28,7 +28,7 @@ namespace Disco.Services.Expressions.Extensions
         {
             var objectValue = GetActiveDirectoryObjectValue(Device, PropertyName, Index);
             if (objectValue == null)
-                return default(int);
+                return default;
             else
             {
                 int intValue;

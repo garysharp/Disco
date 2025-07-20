@@ -282,7 +282,7 @@ namespace Disco.Data.Configuration
                 Type valueType = typeof(T);
                 string stringValue;
 
-                if (comparer.Equals(Value, default(T)))
+                if (comparer.Equals(Value, default))
                 {
                     stringValue = null;
                 }

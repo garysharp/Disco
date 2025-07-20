@@ -10,7 +10,7 @@ namespace Disco.Web.Extensions
     {
         public static List<SelectListItem> ToSelectListItems(this IEnumerable<OrganisationAddress> organisationAddressess, OrganisationAddress SelectedItem)
         {
-            int? selectedId = default(int?);
+            var selectedId = default(int?);
 
             if (SelectedItem != null)
                 selectedId = SelectedItem.Id;

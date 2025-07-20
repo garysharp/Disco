@@ -45,7 +45,7 @@ namespace Disco.Services.Expressions
 
         public T EvaluateFirst<T>(object ExpressionContext, IDictionary Variables)
         {
-            T result = default(T);
+            T result = default;
             if (Count > 0)
             {
                 try

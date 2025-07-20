@@ -76,13 +76,10 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                     if (result != null)
                     {
-                        long lastLogonValue = default(long);
-                        long lastLogonTimestampValue = default(long);
+                        var lastLogonValue = result.Value<long>("lastLogon");
+                        var lastLogonTimestampValue = result.Value<long>("lastLogonTimestamp");
 
-                        lastLogonValue = result.Value<long>("lastLogon");
-                        lastLogonTimestampValue = result.Value<long>("lastLogonTimestamp");
-
-                        long highedValue = Math.Max(lastLogonValue, lastLogonTimestampValue);
+                        var highedValue = Math.Max(lastLogonValue, lastLogonTimestampValue);
 
                         if (highedValue > 0)
                             return (DateTime?)new DateTime((DateTime.FromFileTime(highedValue).Ticks / 10000000L) * 10000000L);
@@ -151,8 +148,8 @@ namespace Disco.Services.Interop.ActiveDirectory
                 {
                     var samAccountName = result.Value<string>("sAMAccountName");
 
-                    long lastLogonValue = default(long);
-                    long lastLogonTimestampValue = default(long);
+                    long lastLogonValue = default;
+                    long lastLogonTimestampValue = default;
 
                     lastLogonValue = result.Value<long>("lastLogon");
                     lastLogonTimestampValue = result.Value<long>("lastLogonTimestamp");
