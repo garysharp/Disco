@@ -9,7 +9,7 @@ namespace Disco.Services.Authorization
     public class ClaimNavigatorItem : IClaimNavigatorItem
     {
         private Func<RoleClaims, bool> accessor { get; set; }
-        
+
         public string Key { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
@@ -49,15 +49,15 @@ namespace Disco.Services.Authorization
         public IClaimNavigatorItem BuildClaimTree(RoleClaims RoleClaims)
         {
             return new ClaimNavigatorItem()
-                {
-                    Key = Key,
-                    Name = Name,
-                    Description = Description,
-                    Hidden = Hidden,
-                    accessor = accessor,
-                    Value = accessor == null ? (bool?)null : accessor(RoleClaims),
-                    Children = Children == null ? null : Children.Cast<ClaimNavigatorItem>().Select(c => c.BuildClaimTree(RoleClaims)).ToList()
-                };
+            {
+                Key = Key,
+                Name = Name,
+                Description = Description,
+                Hidden = Hidden,
+                accessor = accessor,
+                Value = accessor == null ? (bool?)null : accessor(RoleClaims),
+                Children = Children == null ? null : Children.Cast<ClaimNavigatorItem>().Select(c => c.BuildClaimTree(RoleClaims)).ToList()
+            };
         }
 
         public IClaimNavigatorItem BuildClaimTree(IEnumerable<RoleClaims> RoleClaims)

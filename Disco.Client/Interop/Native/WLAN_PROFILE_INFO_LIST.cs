@@ -10,7 +10,7 @@ namespace Disco.Client.Interop.Native
         /// The number of wireless profile entries in the ProfileInfo member.
         /// </summary>
         public uint dwNumberOfItems;
-        
+
         /// <summary>
         /// The index of the current item. The index of the first item is 0. The dwIndex member must be less than the dwNumberOfItems member.
         /// This member is not used by the wireless service. Applications can use this member when processing individual profiles in the

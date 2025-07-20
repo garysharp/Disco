@@ -178,7 +178,7 @@ namespace Disco.Services
         public static void DrawImageResized(this Graphics graphics, Image SourceImage, float Scale, float LocationX, float LocationY)
         {
             RectangleF clipBounds = graphics.VisibleClipBounds;
-            
+
             float width = SourceImage.Width * Scale,
                 height = SourceImage.Height * Scale,
                 x = LocationX,

@@ -42,7 +42,7 @@ namespace Disco.Models.Services.Users.Contact
                 return false;
             }
 
-            var result =  match.Value;
+            var result = match.Value;
             var name = default(string);
             if (match.Index > 0)
             {

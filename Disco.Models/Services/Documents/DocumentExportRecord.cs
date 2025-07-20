@@ -11,7 +11,7 @@ namespace Disco.Models.Services.Documents
         public IAttachmentTarget AttachmentTarget { get; set; }
 
         public Device Device { get; set; }
-        
+
         public Job Job { get; set; }
         public string JobStatus { get; set; }
         public string JobTypeDescription { get; set; }

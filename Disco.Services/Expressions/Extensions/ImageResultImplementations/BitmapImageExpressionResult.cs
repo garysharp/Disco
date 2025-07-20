@@ -24,10 +24,10 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
         public override MemoryStream GetImage(out int width, out int height)
         {
             var image = Image;
-            
+
             width = image.Width;
             height = image.Height;
-            
+
             return OutputBitmapImage(image);
         }
     }

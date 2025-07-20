@@ -17,8 +17,8 @@ namespace Disco.Services.Tasks
 
         string FinishedMessage { get; }
         string FinishedUrl { get; }
-        
-        Exception TaskException { get;  }
+
+        Exception TaskException { get; }
 
         void UpdateStatus(byte Progress);
         void UpdateStatus(double Progress);

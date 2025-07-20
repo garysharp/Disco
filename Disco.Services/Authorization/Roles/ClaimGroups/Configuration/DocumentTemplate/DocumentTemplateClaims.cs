@@ -26,7 +26,7 @@
 
         [ClaimDetails("Bulk Generate Document Templates", "Can bulk generate document templates")]
         public bool BulkGenerate { get; set; }
-        
+
         [ClaimDetails("Export Attachment Instances", "Can export document attachment instances")]
         public bool Export { get; set; }
 

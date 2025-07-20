@@ -53,7 +53,8 @@ namespace Disco.Services.Expressions.Extensions.ImageResultImplementations
                     {
                         maxWidth = images.Sum(i => i.Width);
                         maxHeight = images.Max(i => i.Height);
-                    }else if (MontageVerticalLayout)
+                    }
+                    else if (MontageVerticalLayout)
                     {
                         maxWidth = images.Max(i => i.Width);
                         maxHeight = images.Sum(i => i.Height);

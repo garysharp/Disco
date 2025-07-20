@@ -39,7 +39,7 @@ namespace Disco.Models.Repository
                 return DomainUsername;
             }
         }
-        
+
         [NotMapped]
         public string DomainUsername
         {

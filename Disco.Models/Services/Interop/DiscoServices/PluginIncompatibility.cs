@@ -6,7 +6,7 @@ namespace Disco.Models.Services.Interop.DiscoServices
     {
         public string PluginId { get; set; }
         public Version Version { get; set; }
-        
+
         public string Reason { get; set; }
     }
 }

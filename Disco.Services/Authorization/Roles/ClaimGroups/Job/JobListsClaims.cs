@@ -24,7 +24,7 @@
         public bool DevicesReadyForReturn { get; set; }
         [ClaimDetails("Devices Awaiting Repair List", "Can show list")]
         public bool DevicesAwaitingRepair { get; set; }
-        
+
         [ClaimDetails("Awaiting Finance List", "Can show list")]
         public bool AwaitingFinance { get; set; }
 
@@ -36,7 +36,7 @@
         public bool AwaitingFinanceInsuranceProcessing { get; set; }
         [ClaimDetails("Awaiting Finance Agreement Breach List", "Can show list (NOTE: Requires Awaiting Finance List)")]
         public bool AwaitingFinanceAgreementBreach { get; set; }
-        
+
         [ClaimDetails("Awaiting User Action List", "Can show list")]
         public bool AwaitingUserAction { get; set; }
         [ClaimDetails("Recently Closed List", "Can show list")]

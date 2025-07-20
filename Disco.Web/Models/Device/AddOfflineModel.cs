@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Disco.Models.UI.Device;
+﻿using Disco.Models.UI.Device;
+using System.Collections.Generic;
 
 namespace Disco.Web.Models.Device
 {

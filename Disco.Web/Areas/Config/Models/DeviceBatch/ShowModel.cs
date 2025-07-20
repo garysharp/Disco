@@ -10,7 +10,7 @@ namespace Disco.Web.Areas.Config.Models.DeviceBatch
         public Disco.Models.Repository.DeviceBatch DeviceBatch { get; set; }
 
         public Disco.Models.Repository.DeviceModel DefaultDeviceModel { get; set; }
-        
+
         public List<Disco.Models.Repository.DeviceModel> DeviceModels { get; set; }
         public List<ConfigDeviceBatchShowModelMembership> DeviceModelMembers { get; set; }
 

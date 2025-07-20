@@ -14,7 +14,7 @@ namespace Disco.Models.UI.User
         List<DocumentTemplatePackage> DocumentTemplatePackages { get; set; }
 
         List<UserFlag> AvailableUserFlags { get; set; }
-        
+
         IAuthorizationToken AuthorizationToken { get; set; }
         IClaimNavigatorItem ClaimNavigator { get; set; }
         Dictionary<string, string> UserDetails { get; set; }

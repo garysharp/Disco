@@ -92,7 +92,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 if (id < 0)
                     throw new ArgumentOutOfRangeException("id");
-                
+
                 var jobQueueJob = Database.JobQueueJobs.Include("Job").FirstOrDefault(jqj => jqj.Id == id);
                 if (jobQueueJob != null)
                 {
@@ -115,7 +115,7 @@ namespace Disco.Web.Areas.API.Controllers
                 else
                     return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
             }
-        } 
+        }
         #endregion
 
         #region Update Properties
@@ -139,7 +139,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             if (!jobQueueJob.CanEditSla())
                 throw new InvalidOperationException("Editing SLA for job queue job is Denied");
-            
+
             if (!string.IsNullOrEmpty(Sla))
             {
                 DateTime SLADate;

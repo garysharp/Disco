@@ -40,14 +40,16 @@ namespace Disco.ClientBootstrapper.Interop
             {
                 var wirelessConnectionStatus = WirelessConnectionStatus;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 IsWireless = false;
-            };
+            }
         }
 
         public int WirelessConnectionStatus
         {
-            get {
+            get
+            {
                 if (IsWireless)
                 {
                     IntPtr handle = IntPtr.Zero;

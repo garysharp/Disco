@@ -83,7 +83,7 @@ namespace Disco.Services
 
         public static string JobStatusDescription(string StatusId, Job j)
             => JobStatusDescription(StatusId, j?.DeviceHeld, j?.JobMetaWarranty?.ExternalName, j?.JobMetaNonWarranty?.RepairerName);
-        
+
         public static string JobStatusDescription(string StatusId, JobTableStatusItemModel j)
             => JobStatusDescription(StatusId, j?.DeviceHeld, j?.JobMetaWarranty_ExternalName, j?.JobMetaNonWarranty_RepairerName);
 

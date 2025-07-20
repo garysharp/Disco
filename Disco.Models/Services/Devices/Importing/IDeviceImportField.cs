@@ -6,7 +6,7 @@ namespace Disco.Models.Services.Devices.Importing
     {
         DeviceImportFieldTypes FieldType { get; }
         EntityState? FieldAction { get; }
-        
+
         string ErrorMessage { get; }
 
         object RawParsedValue { get; }

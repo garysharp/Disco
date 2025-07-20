@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Disco.Services.Logging;
+﻿using Disco.Services.Logging;
 using Disco.Services.Logging.Models;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Disco.Services.Plugins
@@ -180,249 +180,249 @@ namespace Disco.Services.Plugins
         {
             return new List<LogEventType>
             {
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializingPlugins, 
-					ModuleId = _ModuleId, 
-					Name = "Initializing Plugins", 
-					Format = "Starting plugin discovery and initialization from: {0}", 
-					Severity =  (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializingPluginAssembly, 
-					ModuleId = _ModuleId, 
-					Name = "Initializing Plugin Assembly", 
-					Format = "Initializing Plugin Assembly: [{0}] From '{1}'", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializedPlugin, 
-					ModuleId = _ModuleId, 
-					Name = "Initialized Plugin", 
-					Format = "Initialized Plugin: '{0} (v{1})' [{2}] From '{3}'", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
                 new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializedPluginFeature, 
-					ModuleId = _ModuleId, 
-					Name = "Initialized Plugin Feature", 
-					Format = "Initialized Plugin Feature: '{1}' From '{0}'", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeWarning, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Warning", 
-					Format = "Initialize Warning: {0}", 
-					Severity = (int)LogEventType.Severities.Warning, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeError, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Error", 
-					Format = "Initialize Error: {0}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeException, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Exception", 
-					Format = "Exception: {0}; {1}: {2}; {3}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeExceptionWithInner, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Exception with Inner Exception", 
-					Format = "Exception: {0}; {1}: {2}; {3}; Inner: {4}: {5}; {6}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginException, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Exception", 
-					Format = "Exception: {0}; {1}: {2}; {3}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginExceptionWithInner, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Exception with Inner Exception", 
-					Format = "Exception: {0}; {1}: {2}; {3}; Inner: {4}: {5}; {6}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
+                {
+                    Id = (int)EventTypeIds.InitializingPlugins,
+                    ModuleId = _ModuleId,
+                    Name = "Initializing Plugins",
+                    Format = "Starting plugin discovery and initialization from: {0}",
+                    Severity =  (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
                 new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginWarning, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Warning", 
-					Format = "{0} [{1} v{2}]: {3}", 
-					Severity = (int)LogEventType.Severities.Warning, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
+                {
+                    Id = (int)EventTypeIds.InitializingPluginAssembly,
+                    ModuleId = _ModuleId,
+                    Name = "Initializing Plugin Assembly",
+                    Format = "Initializing Plugin Assembly: [{0}] From '{1}'",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
                 new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginMessage, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Message", 
-					Format = "{0} [{1} v{2}]: {3}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginReferenceAssemblyLoaded, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Reference Assembly Loaded", 
-					Format = "Loaded Plugin Reference Assembly: [{0}] From: '{1}'; Requested by: [{2}]", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginConfigurationLoaded, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Configuration Loaded", 
-					Format = "Plugin Configuration Loaded: [{0}] by [{1}]", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginConfigurationSaved, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Configuration Saved", 
-					Format = "Plugin Configuration Saved: [{0}] by [{1}]", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.PluginWebControllerAccessed, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Web Controller Accessed", 
-					Format = "Plugin Web Controller Accessed: Plugin [{0}], Action [{1}], By [{2}]", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.Installing, 
-					ModuleId = _ModuleId, 
-					Name = "Installing Plugin", 
-					Format = "Installing Plugin: {2} [{0} v{1}]", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.Installed, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Installed", 
-					Format = "Plugin Installed: {2} [{0} v{1}], Location: {3}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.BeforeUpdate, 
-					ModuleId = _ModuleId, 
-					Name = "Updating Plugin", 
-					Format = "Updating Plugin: {1} [{0}], v{3} -> v{4}, Location: {2}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.AfterUpdate, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Updated", 
-					Format = "Plugin Updated: {1} [{0}], v{3} -> v{4}, Location: {2}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.Uninstalling, 
-					ModuleId = _ModuleId, 
-					Name = "Uninstalling Plugin", 
-					Format = "Uninstalling Plugin: {1} [{0} v{3}], Location: {2}, UninstallData: {4}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.Uninstalled, 
-					ModuleId = _ModuleId, 
-					Name = "Plugin Uninstalled", 
-					Format = "Plugin Uninstalled: {1} [{0} v{3}], Location: {2}, UninstallData: {4}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}
-			};
+                {
+                    Id = (int)EventTypeIds.InitializedPlugin,
+                    ModuleId = _ModuleId,
+                    Name = "Initialized Plugin",
+                    Format = "Initialized Plugin: '{0} (v{1})' [{2}] From '{3}'",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializedPluginFeature,
+                    ModuleId = _ModuleId,
+                    Name = "Initialized Plugin Feature",
+                    Format = "Initialized Plugin Feature: '{1}' From '{0}'",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeWarning,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Warning",
+                    Format = "Initialize Warning: {0}",
+                    Severity = (int)LogEventType.Severities.Warning,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeError,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Error",
+                    Format = "Initialize Error: {0}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeException,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Exception",
+                    Format = "Exception: {0}; {1}: {2}; {3}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeExceptionWithInner,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Exception with Inner Exception",
+                    Format = "Exception: {0}; {1}: {2}; {3}; Inner: {4}: {5}; {6}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginException,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Exception",
+                    Format = "Exception: {0}; {1}: {2}; {3}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginExceptionWithInner,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Exception with Inner Exception",
+                    Format = "Exception: {0}; {1}: {2}; {3}; Inner: {4}: {5}; {6}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginWarning,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Warning",
+                    Format = "{0} [{1} v{2}]: {3}",
+                    Severity = (int)LogEventType.Severities.Warning,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginMessage,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Message",
+                    Format = "{0} [{1} v{2}]: {3}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginReferenceAssemblyLoaded,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Reference Assembly Loaded",
+                    Format = "Loaded Plugin Reference Assembly: [{0}] From: '{1}'; Requested by: [{2}]",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginConfigurationLoaded,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Configuration Loaded",
+                    Format = "Plugin Configuration Loaded: [{0}] by [{1}]",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginConfigurationSaved,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Configuration Saved",
+                    Format = "Plugin Configuration Saved: [{0}] by [{1}]",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.PluginWebControllerAccessed,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Web Controller Accessed",
+                    Format = "Plugin Web Controller Accessed: Plugin [{0}], Action [{1}], By [{2}]",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.Installing,
+                    ModuleId = _ModuleId,
+                    Name = "Installing Plugin",
+                    Format = "Installing Plugin: {2} [{0} v{1}]",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.Installed,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Installed",
+                    Format = "Plugin Installed: {2} [{0} v{1}], Location: {3}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.BeforeUpdate,
+                    ModuleId = _ModuleId,
+                    Name = "Updating Plugin",
+                    Format = "Updating Plugin: {1} [{0}], v{3} -> v{4}, Location: {2}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.AfterUpdate,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Updated",
+                    Format = "Plugin Updated: {1} [{0}], v{3} -> v{4}, Location: {2}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.Uninstalling,
+                    ModuleId = _ModuleId,
+                    Name = "Uninstalling Plugin",
+                    Format = "Uninstalling Plugin: {1} [{0} v{3}], Location: {2}, UninstallData: {4}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.Uninstalled,
+                    ModuleId = _ModuleId,
+                    Name = "Plugin Uninstalled",
+                    Format = "Plugin Uninstalled: {1} [{0} v{3}], Location: {2}, UninstallData: {4}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                }
+            };
         }
     }
 }

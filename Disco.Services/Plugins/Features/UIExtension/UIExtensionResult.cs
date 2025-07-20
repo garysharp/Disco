@@ -5,7 +5,7 @@ namespace Disco.Services.Plugins.Features.UIExtension
     public abstract class UIExtensionResult
     {
         public PluginFeatureManifest Source { get; private set; }
-        
+
         public UIExtensionResult(PluginFeatureManifest Source)
         {
             this.Source = Source;

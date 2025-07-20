@@ -69,7 +69,7 @@ namespace Disco.Web.Models.Shared
             List<string> userCustomDetailKeys;
             using (var database = new DiscoDataContext())
                 userCustomDetailKeys = database.UserDetails.Where(d => d.Scope == "Details").Select(d => d.Key).Distinct().OrderBy(k => k).ToList();
-            
+
             if (userCustomDetailKeys.Any())
             {
                 var fieldKey = ((MemberExpression)modelAccessor.Body).Member.Name;

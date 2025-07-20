@@ -28,7 +28,7 @@ namespace Disco.Services.Web
                 ViewData = new ViewDataDictionary<HandleErrorInfo>(model),
                 TempData = filterContext.Controller.TempData
             };
-            
+
             filterContext.Result = result;
             filterContext.ExceptionHandled = true;
             contextResponse.Clear();

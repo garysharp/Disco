@@ -3,8 +3,8 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System;
 using System.Collections.Generic;
-using System.Reactive.Linq;
 using System.Linq;
+using System.Reactive.Linq;
 
 namespace Disco.Services.Tasks
 {

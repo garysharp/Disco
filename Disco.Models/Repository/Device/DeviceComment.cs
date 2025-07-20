@@ -15,10 +15,10 @@ namespace Disco.Models.Repository
         public DateTime Timestamp { get; set; }
         [Required]
         public string Comments { get; set; }
-        
+
         [ForeignKey(nameof(DeviceSerialNumber))]
         public Device Device { get; set; }
-        
+
         [ForeignKey(nameof(TechUserId))]
         public User TechUser { get; set; }
     }

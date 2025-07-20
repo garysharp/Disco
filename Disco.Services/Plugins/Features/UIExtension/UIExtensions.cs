@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Disco.Models.UI;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Web;
 using System.Web.Mvc;
-using Disco.Models.UI;
 
 namespace Disco.Services.Plugins.Features.UIExtension
 {

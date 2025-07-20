@@ -246,7 +246,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual async Task<ActionResult> AttachmentOnlineUploadSession(string id, string domain)
         {
             var userId = ActiveDirectory.ParseDomainAccountId(id, domain);
-            if (!UserService.TryGetUser(userId, Database, false,out var user))
+            if (!UserService.TryGetUser(userId, Database, false, out var user))
                 throw new InvalidOperationException("Unknown User");
 
             try

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Disco.Client.Extensions;
+using Disco.Models.ClientServices;
+using System;
 using System.Linq;
 using System.Net;
-using Disco.Models.ClientServices;
-using Disco.Client.Extensions;
 
 namespace Disco.Client
 {

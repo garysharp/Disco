@@ -24,13 +24,13 @@ namespace Disco.Models.Repository
 
         [Column(Order = 0), Key]
         public string DeviceSerialNumber { get; set; }
-        
+
         [Key, StringLength(100), Column(Order = 2)]
         public string Key { get; set; }
-        
+
         [Column(Order = 1), StringLength(100), Key]
         public string Scope { get; set; }
-        
+
         public string Value { get; set; }
 
         [ForeignKey("DeviceSerialNumber")]

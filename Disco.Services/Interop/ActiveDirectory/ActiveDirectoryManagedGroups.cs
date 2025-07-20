@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
-using Disco.Data.Repository;
 
 namespace Disco.Services.Interop.ActiveDirectory
 {
@@ -468,7 +468,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             {
                 return new ADManagedGroupScheduledActionItem[]
                     {
-                        new ADManagedGroupScheduledActionItem(ManagedGroup, ActionType, InvokingIdentifier) 
+                        new ADManagedGroupScheduledActionItem(ManagedGroup, ActionType, InvokingIdentifier)
                     };
             }
         }

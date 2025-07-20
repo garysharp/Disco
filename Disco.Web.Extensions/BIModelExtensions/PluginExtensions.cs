@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Disco.Services.Plugins;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using Disco.Services.Plugins;
 
 namespace Disco.Web.Extensions
 {

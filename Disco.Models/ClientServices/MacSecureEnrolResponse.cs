@@ -3,7 +3,7 @@
     public class MacSecureEnrolResponse
     {
         public string DeviceComputerName { get; set; }
-        
+
         public string DeviceAssignedUserDomain { get; set; }
         public string DeviceAssignedUserName { get; set; }
         public string DeviceAssignedUserSID { get; set; }

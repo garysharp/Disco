@@ -1,11 +1,11 @@
 ﻿using Disco.Data.Repository;
-using Disco.Models.Services.Authorization;
 using Disco.Models.Repository;
+using Disco.Models.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Disco.Services.Interop.ActiveDirectory;
-using Newtonsoft.Json;
 
 namespace Disco.Services.Authorization.Roles
 {
@@ -156,7 +156,7 @@ namespace Disco.Services.Authorization.Roles
         {
             // Determine roles which need migration from DBv11 -> DBv14
             var affectedRoles_DBv14 = Database.AuthorizationRoles.Where(r => !r.ClaimsJson.Contains("MyJobs")).ToList();
-            
+
             // Determine roles which need migration from DBv14 -> DBv15
             var affectedRoles_DBv15 = Database.AuthorizationRoles.Where(r => !r.ClaimsJson.Contains("RepairProviderDetails")).ToList();
 

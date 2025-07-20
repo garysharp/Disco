@@ -8,7 +8,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         string DistinguishedName { get; }
         SecurityIdentifier SecurityIdentifier { get; }
-        
+
         string Id { get; }
         string SamAccountName { get; }
 

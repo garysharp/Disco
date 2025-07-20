@@ -121,7 +121,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #region Update Shortcut Methods
-        
+
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
         public virtual ActionResult UpdateName(int id, string BatchName = null, bool redirect = false)
         {
@@ -139,7 +139,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return Update(id, pSupplier, Supplier, redirect);
         }
-        
+
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
         public virtual ActionResult UpdatePurchaseDetails(int id, string PurchaseDetails = null, bool redirect = false)
         {
@@ -169,7 +169,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return Update(id, pWarrantyValidUntil, WarrantyValidUntil, redirect);
         }
-        
+
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
         public virtual ActionResult UpdateWarrantyDetails(int id, string WarrantyDetails = null, bool redirect = false)
         {
@@ -193,7 +193,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return Update(id, pInsuredUntil, InsuredUntil, redirect);
         }
-        
+
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
         public virtual ActionResult UpdateInsuranceDetails(int id, string InsuranceDetails = null, bool redirect = false)
         {

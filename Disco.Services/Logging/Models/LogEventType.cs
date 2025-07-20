@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Disco.Services.Logging.Models
 {
     [Table("EventTypes")]
     public class LogEventType
     {
-        [Required, Key, Column(Order=0), DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required, Key, Column(Order = 0), DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ModuleId { get; set; }
         [Required, Key, Column(Order = 1), DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
@@ -17,7 +17,7 @@ namespace Disco.Services.Logging.Models
         public int Severity { get; set; }
         [MaxLength(1024)]
         public string Format { get; set; }
-        
+
         [NotMapped]
         public bool UsePersist { get; set; }
         [NotMapped]

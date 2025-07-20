@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Text;
 using System.Web.Mvc;
-using Newtonsoft.Json;
 
 namespace Disco.Web.Extensions
 {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
 using Disco.Models.UI.Config.DeviceModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Disco.Web.Areas.Config.Models.DeviceModel
 {

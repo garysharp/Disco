@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Disco.Client.Extensions;
+using Disco.Client.Interop;
+using System;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using Disco.Client.Extensions;
-using Disco.Client.Interop;
 
 namespace Disco.Client
 {

@@ -5,7 +5,7 @@ namespace Disco.Services.Web.Bundles
     public class UrlBundle : IBundle
     {
         public bool RemapRequest { get { return false; } }
-        
+
         public string Url { get; private set; }
         public string VersionUrl { get; private set; }
 

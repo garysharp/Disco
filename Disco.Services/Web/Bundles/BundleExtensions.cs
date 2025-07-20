@@ -25,7 +25,7 @@ namespace Disco.Services.Web
 
         public static void BundleDeferred(this HtmlHelper htmlHelper, string BundleUrl)
             => htmlHelper.ViewContext.HttpContext.BundleDeferred(BundleUrl);
-        
+
         public static HtmlString BundleRenderDeferred(this HtmlHelper htmlHelper)
         {
             var deferredBundles = htmlHelper.ViewContext.HttpContext.Items[BundleTable.DeferredKey] as List<string>;

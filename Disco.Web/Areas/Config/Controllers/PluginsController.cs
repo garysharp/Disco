@@ -15,10 +15,10 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult Index()
         {
             IndexViewModel vm = new IndexViewModel()
-                {
-                    PluginManifests = Plugins.GetPlugins(),
-                    PluginLibrary = PluginLibrary.LoadManifest(Database)
-                };
+            {
+                PluginManifests = Plugins.GetPlugins(),
+                PluginLibrary = PluginLibrary.LoadManifest(Database)
+            };
             return View(vm);
         }
 

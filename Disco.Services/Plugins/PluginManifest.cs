@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using Disco.Services.Authorization;
+using Disco.Services.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,11 +11,6 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
-using Disco.Data.Repository;
-using Disco.Services.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Disco.Services.Authorization;
 using System.Web.Routing;
 
 namespace Disco.Services.Plugins

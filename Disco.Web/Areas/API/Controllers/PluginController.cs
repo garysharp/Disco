@@ -124,7 +124,7 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                 }
             }
-            
+
             ScheduledTaskStatus status;
             if (Plugins.PluginInstalled(packageManifest.Id))
                 status = UpdatePluginTask.UpdateLocalPlugin(packageManifest.Id, tempPluginLocation, immediateRestart);

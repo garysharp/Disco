@@ -1,5 +1,5 @@
-﻿using Disco.Models.Services.Authorization;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using Disco.Models.Services.Authorization;
 using Disco.Services.Authorization.Roles;
 using System;
 using System.Collections.Generic;

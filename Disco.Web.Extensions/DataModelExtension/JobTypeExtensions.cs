@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Disco.Models.Repository;
+using System.Collections.Generic;
 using System.Linq;
-using Disco.Models.Repository;
 using System.Web.Mvc;
 
 namespace Disco.Web.Extensions

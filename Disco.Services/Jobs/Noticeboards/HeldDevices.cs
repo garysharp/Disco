@@ -19,7 +19,7 @@ namespace Disco.Services.Jobs.Noticeboards
             "DeviceSerialNumber",
             "UserId",
             "ExpectedClosedDate",
-            "ClosedDate",                                                           
+            "ClosedDate",
             "WaitingForUserAction",
             "DeviceHeld",
             "DeviceReadyForReturn",

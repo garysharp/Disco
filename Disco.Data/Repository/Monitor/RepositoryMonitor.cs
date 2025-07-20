@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Disco.Models.Repository;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Data.Objects;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Data.Entity.Infrastructure;
-using System.Collections.Concurrent;
-using System.Data.Objects;
-using Disco.Models.Repository;
 
 namespace Disco.Data.Repository.Monitor
 {

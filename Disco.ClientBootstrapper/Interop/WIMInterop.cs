@@ -649,7 +649,8 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             ///Private null constructor
             ///</summary>
             private
-            NativeMethods() { }
+            NativeMethods()
+            { }
 
             [DllImport("Wimgapi.dll", ExactSpelling = true,
                        EntryPoint = "WIMCreateFile",
@@ -1435,7 +1436,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             ///Abort.
             ///</summary>
             Abort = NativeMethods.WIMMessage.WIM_MSG_ABORT_IMAGE,
-            
+
             MountCleanupProgress = NativeMethods.WIMMessage.WIM_MSG_MOUNT_CLEANUP_PROGRESS
         }
 

@@ -139,7 +139,8 @@ namespace Disco.Services.Plugins
                 pluginPackagesLocation = database.DiscoConfiguration.PluginPackagesLocation;
                 installedPluginManifests = OfflineInstalledPlugins(database);
 
-                if (installedPluginManifests.Count > 0){
+                if (installedPluginManifests.Count > 0)
+                {
                     libraryManifest = PluginLibrary.LoadManifest(database);
                     libraryIncompatibility = libraryManifest.LoadIncompatibilityData();
                 }

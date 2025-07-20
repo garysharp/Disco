@@ -19,7 +19,7 @@ namespace Disco.Models.ClientServices.EnrolmentInformation
         public string WlanStatus { get; set; }
         public bool NetEnabled { get; set; }
         public bool IPEnabled { get; set; }
-        
+
         public List<string> IPAddresses { get; set; }
     }
 }

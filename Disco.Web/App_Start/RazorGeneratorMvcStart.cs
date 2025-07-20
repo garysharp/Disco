@@ -1,6 +1,6 @@
+using RazorGenerator.Mvc;
 using System.Web.Mvc;
 using System.Web.WebPages;
-using RazorGenerator.Mvc;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(Disco.Web.RazorGeneratorMvcStart), "Start")]
 

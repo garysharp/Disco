@@ -77,7 +77,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
 
         #region Active Directory
 
-        [Display(Name="Search All Servers")]
+        [Display(Name = "Search All Servers")]
         public bool ADSearchAllServers { get; set; }
 
         public List<ADDomain> ADDomains { get; set; }

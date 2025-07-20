@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Disco.Client.Extensions;
+using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
-using Disco.Client.Extensions;
-using Newtonsoft.Json;
 
 namespace Disco.Client
 {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
-using System.Net;
-using System.IO;
-using System.Diagnostics;
 
 namespace Disco.ClientBootstrapper
 {
@@ -20,13 +20,13 @@ namespace Disco.ClientBootstrapper
         private StringBuilder errorMessage;
         private Process clientProcess;
 
-//#if DEBUG
-//        public const string DiscoServerName = "WS-GSHARP";
-//        public const int DiscoServerPort = 57252;
-//#else
+        //#if DEBUG
+        //        public const string DiscoServerName = "WS-GSHARP";
+        //        public const int DiscoServerPort = 57252;
+        //#else
         public const string DiscoServerName = "DISCO";
         public const int DiscoServerPort = 9292;
-//#endif
+        //#endif
 
         public BootstrapperLoop(IStatus StatusUI, LoopCompleteCallback Callback)
         {
@@ -128,8 +128,8 @@ namespace Disco.ClientBootstrapper
                                 break;
                         }
                     }
-                }    
-                
+                }
+
                 if (!Interop.NetworkInterop.PingDiscoIct(DiscoServerName))
                 {
                     // Client Failed

@@ -17,7 +17,7 @@
         public bool ShowSImg { get; set; }
         [ClaimDetails("Show Software - Operating System Jobs", "Can show jobs of this type")]
         public bool ShowSOS { get; set; }
-        
+
         [ClaimDetails("Show User Management Jobs", "Can show jobs of this type")]
         public bool ShowUMgmt { get; set; }
 

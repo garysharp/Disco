@@ -15,10 +15,10 @@ namespace Disco.Models.Repository
         public DateTime Timestamp { get; set; }
         [Required]
         public string Comments { get; set; }
-        
+
         [ForeignKey("JobId")]
         public Job Job { get; set; }
-        
+
         [ForeignKey("TechUserId")]
         public User TechUser { get; set; }
     }

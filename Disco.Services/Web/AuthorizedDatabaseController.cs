@@ -1,5 +1,5 @@
-﻿using Disco.Services.Authorization;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using Disco.Services.Authorization;
 using Disco.Services.Users;
 
 namespace Disco.Services.Web

@@ -20,14 +20,14 @@ namespace Disco.Web.Areas.Public.Models.UserHeldDevices
         public UserHeldDeviceModel ToUserHeldDeviceModel(DiscoDataContext Database)
         {
             var uhdm = new UserHeldDeviceModel()
-                {
-                    UserId = UserId,
-                    UserDisplayName = UserDisplayName,
-                    ReadyForReturn = ReadyForReturn,
-                    WaitingForUserAction = WaitingForUserAction,
-                    DeviceProfileId = DeviceProfileId,
-                    DeviceAddress = (DeviceAddressId.HasValue ? Database.DiscoConfiguration.OrganisationAddresses.GetAddress(DeviceAddressId.Value)?.ShortName : string.Empty)
-                };
+            {
+                UserId = UserId,
+                UserDisplayName = UserDisplayName,
+                ReadyForReturn = ReadyForReturn,
+                WaitingForUserAction = WaitingForUserAction,
+                DeviceProfileId = DeviceProfileId,
+                DeviceAddress = (DeviceAddressId.HasValue ? Database.DiscoConfiguration.OrganisationAddresses.GetAddress(DeviceAddressId.Value)?.ShortName : string.Empty)
+            };
             var n = DateTime.Now;
             if (!ReadyForReturn && EstimatedReturnTime.HasValue && EstimatedReturnTime.Value > n)
             {

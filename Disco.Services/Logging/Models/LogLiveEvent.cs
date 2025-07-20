@@ -1,6 +1,6 @@
-﻿using System;
-using Disco.Models.Exporting;
+﻿using Disco.Models.Exporting;
 using Newtonsoft.Json;
+using System;
 
 namespace Disco.Services.Logging.Models
 {

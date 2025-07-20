@@ -43,7 +43,7 @@ namespace Disco.Services.Authorization
                     Name = "Access Denied",
                     Format = "User: {0}; Resource: {1}; Reason: {2}",
                     Severity = (int)LogEventType.Severities.Warning,
-                    UseLive = true, UsePersist = true, UseDisplay = true 
+                    UseLive = true, UsePersist = true, UseDisplay = true
                 },
                 new LogEventType() {
                     Id = (int)EventTypeIds.RoleCreated,

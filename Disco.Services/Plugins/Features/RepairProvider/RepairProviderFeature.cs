@@ -15,7 +15,7 @@ namespace Disco.Services.Plugins.Features.RepairProvider
         /// The repairer identifier. Used to link this provider to any <see cref="Models.Repository.RepairerName"/>. This identifier is used to automatically set the RepairerName when a job is submitted using this plugin.
         /// </summary>
         public abstract string ProviderId { get; }
-        
+
         #region Job Submission
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Disco.Services.Plugins.Features.RepairProvider
         public virtual Tuple<Type, dynamic> JobDetails(DiscoDataContext Database, Controller controller, Job Job)
         {
             return null;
-        } 
+        }
 
         #endregion
 

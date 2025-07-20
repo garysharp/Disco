@@ -14,10 +14,10 @@ namespace Disco.Models.Repository
         [StringLength(500)]
         public string Description { get; set; }
         public decimal Cost { get; set; }
-        
+
         [ForeignKey("JobId")]
         public virtual Job Job { get; set; }
-        
+
         [ForeignKey("TechUserId")]
         public virtual User TechUser { get; set; }
     }

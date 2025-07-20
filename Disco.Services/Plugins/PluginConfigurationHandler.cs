@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Disco.Data.Repository;
+using System;
 using System.Web.Mvc;
-using Disco.Data.Repository;
 
 namespace Disco.Services.Plugins
 {

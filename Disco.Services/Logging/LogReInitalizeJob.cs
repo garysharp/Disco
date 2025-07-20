@@ -1,5 +1,5 @@
-﻿using Quartz;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
+using Quartz;
 
 namespace Disco.Services.Logging
 {

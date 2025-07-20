@@ -2,6 +2,7 @@
 using Disco.Data.Repository.Monitor;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Users;
 using Disco.Services.Web.Signalling;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
@@ -9,7 +10,6 @@ using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Disco.Services.Users;
 
 namespace Disco.Services.Jobs
 {

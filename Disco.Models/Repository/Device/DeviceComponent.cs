@@ -12,10 +12,10 @@ namespace Disco.Models.Repository
         [StringLength(100)]
         public string Description { get; set; }
         public decimal Cost { get; set; }
-        
+
         [ForeignKey("DeviceModelId")]
         public virtual DeviceModel DeviceModel { get; set; }
-        
+
         public virtual IList<JobSubType> JobSubTypes { get; set; }
     }
 }

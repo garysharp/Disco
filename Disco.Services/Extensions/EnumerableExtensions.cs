@@ -50,7 +50,7 @@ namespace Disco
 
         IEnumerator IEnumerable.GetEnumerator()
             => new OneOfEnumerator(instance);
-        
+
         private struct OneOfEnumerator : IEnumerator<T>
         {
             private readonly T instance;

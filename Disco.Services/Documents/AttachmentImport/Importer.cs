@@ -270,7 +270,7 @@ namespace Disco.Services.Documents.AttachmentImport
                 {
                     var rules = Identifier.DocumentTemplate.GetOnImportUserFlagRules();
 
-                    foreach ( var rule in rules)
+                    foreach (var rule in rules)
                     {
                         rule.Apply(Database, Identifier.Target, creatorUser);
                     }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Disco.Data.Repository;
+using Disco.Models.UI.Config.DocumentTemplate;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations;
-using Disco.Data.Repository;
-using Disco.Models.UI.Config.DocumentTemplate;
 
 namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {

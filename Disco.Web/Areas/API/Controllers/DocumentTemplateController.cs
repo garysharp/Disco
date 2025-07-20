@@ -1263,7 +1263,8 @@ namespace Disco.Web.Areas.API.Controllers
                     Scope = $"User Detail '{key}' didn't match any users{(string.IsNullOrWhiteSpace(value) ? null : $" with the value '{value}'")}",
                     IsError = true,
                 });
-            } else
+            }
+            else
             {
                 foreach (var user in details.Select(d => d.User).Distinct())
                 {
@@ -1431,7 +1432,7 @@ namespace Disco.Web.Areas.API.Controllers
                                 UiUrl = handler.GenerationOptionsUi == null ? null : Url.Action(MVC.API.DocumentTemplate.GenerateDocumentHandlerUi(template.Id, target.AttachmentReferenceId, f.Id)),
                                 Icon = handler.GenerationOptionsIcon,
                             });
-                    };
+                    }
                     return Enumerable.Empty<DocumentHandlerModel>();
                 }).ToList();
 

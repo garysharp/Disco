@@ -23,7 +23,7 @@ namespace Disco.Models.Repository
         // 2012-06-14 G#
         [Required, DataType(DataType.MultilineText)]
         public string ComputerNameTemplate { get; set; }
-        
+
         [Required]
         public DistributionTypes? DistributionType { get; set; }
 

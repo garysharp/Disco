@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Disco.Models.Repository
 {
@@ -51,7 +51,7 @@ namespace Disco.Models.Repository
         [InverseProperty(nameof(Job.Device))]
         public virtual IList<Job> Jobs { get; set; }
         public virtual IList<DeviceFlagAssignment> DeviceFlagAssignments { get; set; }
-        
+
         [InverseProperty(nameof(DeviceComment.Device))]
         public virtual IList<DeviceComment> DeviceComments { get; set; }
 

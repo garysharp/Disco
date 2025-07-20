@@ -7,7 +7,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
     public class CreatePackageModel : ConfigDocumentTemplateCreatePackageModel
     {
         public DocumentTemplatePackage Package { get; set; }
-        
+
         public List<string> Scopes
         {
             get

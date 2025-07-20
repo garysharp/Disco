@@ -9,7 +9,7 @@ namespace Disco.Models.Repository
         public string Id { get; set; }
         [StringLength(100)]
         public string Description { get; set; }
-        
+
         public virtual IList<JobSubType> JobSubTypes { get; set; }
 
         public override string ToString()

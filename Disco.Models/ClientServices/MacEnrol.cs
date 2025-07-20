@@ -11,7 +11,7 @@
         public string DeviceUUID { get; set; }
 
         public string DeviceComputerName { get; set; }
-        
+
         public string DeviceManufacturer { get; set; }
         public string DeviceModel { get; set; }
         public string DeviceModelType { get; set; }

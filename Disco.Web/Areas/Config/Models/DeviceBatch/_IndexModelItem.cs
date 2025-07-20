@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Disco.Models.UI.Config.DeviceBatch;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Disco.Models.UI.Config.DeviceBatch;
 
 namespace Disco.Web.Areas.Config.Models.DeviceBatch
 {

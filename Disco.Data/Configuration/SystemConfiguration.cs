@@ -58,7 +58,7 @@ namespace Disco.Data.Configuration
                 if (result == null)
                 {
                     var appDataPath = System.Web.HttpContext.Current.Server.MapPath("~/App_Data");
-                    
+
                     if (!appDataPath.EndsWith(@"\"))
                         appDataPath += @"\";
 

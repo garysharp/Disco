@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Disco.Services.Logging;
+using Disco.Services.Logging.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Validation;
 using System.Text;
-using Disco.Services.Logging;
-using Disco.Services.Logging.Models;
 
 namespace Disco.Services.Tasks
 {
@@ -128,83 +128,83 @@ namespace Disco.Services.Tasks
         {
             return new List<LogEventType>
             {
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializingScheduledTasks, 
-					ModuleId = _ModuleId, 
-					Name = "Initializing Scheduled Tasks", 
-					Format = "Starting Scheduled Task discovery and initialization", 
-					Severity =  (int)LogEventType.Severities.Information, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeException, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Exception", 
-					Format = "Exception: {0}: {1}; {2}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeExceptionWithInner, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Exception with Inner Exception", 
-					Format = "Exception: {0}: {1}; {2}; Inner: {3}: {4}; {5}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
                 new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeScheduledTasksException, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Task Exception", 
-					Format = "[{0}] At '{1}'; Exception: {2}: {3}; {4}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.InitializeScheduledTasksExceptionWithInner, 
-					ModuleId = _ModuleId, 
-					Name = "Initialize Task Exception with Inner Exception", 
-					Format = "[{0}] At '{1}'; Exception: {2}: {3}; {4}; Inner: {5}: {6}; {7}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = false, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.ScheduledTasksException, 
-					ModuleId = _ModuleId, 
-					Name = "Scheduled Task Exception", 
-					Format = "Task Name: {0}; SessionId: {1}; At: '{2}'; Exception: {3}: {4}; {5}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.ScheduledTasksExceptionWithInner, 
-					ModuleId = _ModuleId, 
-					Name = "Scheduled Task Exception with Inner Exception", 
-					Format = "Task Name: {0}; SessionId: {1}; At: '{2}'; Exception: {3}: {4}; {5}; Inner: {6}: {7}; {8}", 
-					Severity = (int)LogEventType.Severities.Error, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				},
+                {
+                    Id = (int)EventTypeIds.InitializingScheduledTasks,
+                    ModuleId = _ModuleId,
+                    Name = "Initializing Scheduled Tasks",
+                    Format = "Starting Scheduled Task discovery and initialization",
+                    Severity =  (int)LogEventType.Severities.Information,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeException,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Exception",
+                    Format = "Exception: {0}: {1}; {2}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeExceptionWithInner,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Exception with Inner Exception",
+                    Format = "Exception: {0}: {1}; {2}; Inner: {3}: {4}; {5}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeScheduledTasksException,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Task Exception",
+                    Format = "[{0}] At '{1}'; Exception: {2}: {3}; {4}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.InitializeScheduledTasksExceptionWithInner,
+                    ModuleId = _ModuleId,
+                    Name = "Initialize Task Exception with Inner Exception",
+                    Format = "[{0}] At '{1}'; Exception: {2}: {3}; {4}; Inner: {5}: {6}; {7}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = false,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.ScheduledTasksException,
+                    ModuleId = _ModuleId,
+                    Name = "Scheduled Task Exception",
+                    Format = "Task Name: {0}; SessionId: {1}; At: '{2}'; Exception: {3}: {4}; {5}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.ScheduledTasksExceptionWithInner,
+                    ModuleId = _ModuleId,
+                    Name = "Scheduled Task Exception with Inner Exception",
+                    Format = "Task Name: {0}; SessionId: {1}; At: '{2}'; Exception: {3}: {4}; {5}; Inner: {6}: {7}; {8}",
+                    Severity = (int)LogEventType.Severities.Error,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
                 new LogEventType
                 {
                     Id = (int)EventTypeIds.ScheduledTasksWarning,
@@ -226,29 +226,29 @@ namespace Disco.Services.Tasks
                     UseLive = true,
                     UsePersist = true,
                     UseDisplay = true
-                }, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.ScheduledTaskExecuted, 
-					ModuleId = _ModuleId, 
-					Name = "Scheduled Task Started", 
-					Format = "Scheduled Task Started: {0}; Session Id: {1}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}, 
-				new LogEventType
-				{
-					Id = (int)EventTypeIds.ScheduledTaskFinished, 
-					ModuleId = _ModuleId, 
-					Name = "Scheduled Task Finished", 
-					Format = "Scheduled Task Finished: {0}; Session Id: {1}", 
-					Severity = (int)LogEventType.Severities.Information, 
-					UseLive = true, 
-					UsePersist = true, 
-					UseDisplay = true
-				}
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.ScheduledTaskExecuted,
+                    ModuleId = _ModuleId,
+                    Name = "Scheduled Task Started",
+                    Format = "Scheduled Task Started: {0}; Session Id: {1}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                },
+                new LogEventType
+                {
+                    Id = (int)EventTypeIds.ScheduledTaskFinished,
+                    ModuleId = _ModuleId,
+                    Name = "Scheduled Task Finished",
+                    Format = "Scheduled Task Finished: {0}; Session Id: {1}",
+                    Severity = (int)LogEventType.Severities.Information,
+                    UseLive = true,
+                    UsePersist = true,
+                    UseDisplay = true
+                }
             };
         }
     }

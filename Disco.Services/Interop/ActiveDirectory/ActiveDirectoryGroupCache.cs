@@ -12,7 +12,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         private ConcurrentDictionary<SecurityIdentifier, Tuple<ADGroup, DateTime>> securityIdentifierCache;
         private ConcurrentDictionary<string, Tuple<ADGroup, DateTime>> distinguishedNameCache;
         private const long CacheTimeoutTicks = 6000000000; // 10 Minutes
-        
+
         private const int CacheCleanIntervalMinutes = 15;
         private DateTime cacheCleanNext;
         private object cacheCleanLock = new object();

@@ -63,7 +63,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ADDomain deviceDomain;
 
                 ActiveDirectory.ParseDomainAccountId(Device.DeviceDomainId + "$", out deviceSamAccountName, out deviceDomain);
-                
+
                 var ldapFilter = string.Format(ldapFilterTemplate, ADHelpers.EscapeLdapQuery(deviceSamAccountName));
                 IEnumerable<ADDomainController> domainControllers;
 

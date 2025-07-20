@@ -35,7 +35,7 @@ namespace Disco.Services.Devices.Importing.Fields
             else if (ExistingDevice != null)
             {
                 var detail = ExistingDevice.DeviceDetails.FirstOrDefault(dd => dd.Scope == DeviceDetail.ScopeHardware && dd.Key == DeviceDetail.HardwareKeyACAdapter);
-                
+
                 if (detail == null && parsedValue == null)
                     return Success(EntityState.Unchanged);
                 else if (detail == null && parsedValue != null)

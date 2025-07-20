@@ -3,7 +3,7 @@
     public class ComputerSystem
     {
         public string ChassisSKUNumber { get; set; }
-        public short? CurrentTimeZone { get; set;}
+        public short? CurrentTimeZone { get; set; }
         public string Description { get; set; }
         public string[] OEMStringArray { get; set; }
         public string PCSystemType { get; set; }

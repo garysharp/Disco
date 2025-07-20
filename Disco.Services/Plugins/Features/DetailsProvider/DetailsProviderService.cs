@@ -90,7 +90,8 @@ namespace Disco.Services.Plugins.Features.DetailsProvider
                 return user.UserDetails
                     .Where(d => string.Equals(d.Scope, DetailsScope, StringComparison.Ordinal))
                     .ToDictionary(d => d.Key, d => d.Value, StringComparer.OrdinalIgnoreCase);
-            } else
+            }
+            else
             {
                 return database.UserDetails
                     .Where(d => d.UserId == user.UserId &&

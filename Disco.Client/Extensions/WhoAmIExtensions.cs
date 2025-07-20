@@ -1,5 +1,5 @@
-﻿using System.Text;
-using Disco.Models.ClientServices;
+﻿using Disco.Models.ClientServices;
+using System.Text;
 
 namespace Disco.Client.Extensions
 {

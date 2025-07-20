@@ -66,7 +66,7 @@ namespace Disco.ClientBootstrapper.Interop
             foreach (var file in Directory.EnumerateFiles(SourceLocation))
             {
                 var fileName = Path.GetFileName(file);
-                
+
                 // Only Copy Certain Files
 
                 // Copy Wireless Certificates
@@ -79,7 +79,7 @@ namespace Disco.ClientBootstrapper.Interop
                 if (fileName.StartsWith("WLAN_Profile_", StringComparison.OrdinalIgnoreCase) &&
                     fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
                     File.Copy(file, Path.Combine(InstallLocation, fileName));
-                
+
             }
             #endregion
 
@@ -340,7 +340,7 @@ namespace Disco.ClientBootstrapper.Interop
 
                     var progress = eventArgs.WideParameter.ToInt32();
                     Program.Status.UpdateStatus(null, null, $"Time remaining: {timeRemainingMessage}", true, progress);
-                    
+
                     break;
                 default:
                     break;

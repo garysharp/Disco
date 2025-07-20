@@ -1,7 +1,7 @@
-﻿using System;
-using System.Data.Entity.Infrastructure;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
 using System.Data.Common;
+using System.Data.Entity.Infrastructure;
 using System.Security;
 
 namespace Disco.Data.Repository

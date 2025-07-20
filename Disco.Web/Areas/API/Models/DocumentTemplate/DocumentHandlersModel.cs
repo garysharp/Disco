@@ -8,7 +8,7 @@ namespace Disco.Web.Areas.API.Models.DocumentTemplate
         public string TemplateName { get; set; }
         public string TargetId { get; set; }
         public string TargetName { get; set; }
-        
+
         public List<DocumentHandlerModel> Handlers { get; set; }
     }
 

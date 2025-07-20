@@ -168,7 +168,7 @@ namespace Disco.Services.Devices.Enrolment
                 Request.Hardware.Model,
                 Request.Hardware.ModelType);
         }
-        
+
         public static void LogSessionProgress(string SessionId, int Progress, string Status)
         {
             Log(EventTypeIds.SessionProgress, new object[]

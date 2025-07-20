@@ -35,7 +35,8 @@ namespace Disco.Data.Configuration.Modules
 
         public bool? SearchAllServers
         {
-            get { 
+            get
+            {
                 var value = Get<bool?>(null);
 
                 /// migrate <see cref="SearchAllForestServers"/>

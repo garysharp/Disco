@@ -249,7 +249,7 @@ namespace Disco.Services.Documents
         {
             var query = database.UserAttachments
                 .Include(a => a.User);
-            
+
             if (Options.HasDeviceOptions())
                 query = query.Include(a => a.User.DeviceUserAssignments.Select(u => u.Device));
             if (Options.HasDeviceBatchOptions())

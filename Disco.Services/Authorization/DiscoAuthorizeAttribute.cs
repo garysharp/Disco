@@ -30,11 +30,10 @@ namespace Disco.Services.Authorization
 
             if (UserService.CurrentAuthorization == null)
                 resultMessage = AuthorizationToken.RequireAuthenticationMessage;
+            else if (string.IsNullOrEmpty(authorizedClaim))
+                resultMessage = AuthorizationToken.RequireDiscoAuthorizationMessage;
             else
-                if (string.IsNullOrEmpty(authorizedClaim))
-                    resultMessage = AuthorizationToken.RequireDiscoAuthorizationMessage;
-                else
-                    resultMessage = AuthorizationToken.BuildRequireMessage(authorizedClaim);
+                resultMessage = AuthorizationToken.BuildRequireMessage(authorizedClaim);
 
             return resultMessage;
         }

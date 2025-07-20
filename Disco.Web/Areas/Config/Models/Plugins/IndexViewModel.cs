@@ -23,7 +23,7 @@ namespace Disco.Web.Areas.Config.Models.Plugins
                     if (PluginLibrary == null || PluginLibrary.Plugins == null || PluginLibrary.Plugins.Count == 0 ||
                         PluginManifests == null || PluginManifests.Count == 0)
                     {
-                        _PluginUpdates = new Dictionary<PluginManifest,Tuple<PluginLibraryItemV2,PluginLibraryItemReleaseV2>>(); // No Updates
+                        _PluginUpdates = new Dictionary<PluginManifest, Tuple<PluginLibraryItemV2, PluginLibraryItemReleaseV2>>(); // No Updates
                     }
                     else
                     {

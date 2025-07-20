@@ -82,7 +82,8 @@ namespace Disco.Web.Models.Job
                     try
                     {
                         UserService.GetUser(jobUserId, Database, true);
-                    } catch (Exception) {}
+                    }
+                    catch (Exception) { }
                 }
 
                 Job = Database.Jobs

@@ -8,7 +8,7 @@ namespace Disco.Web.Areas.Config.Models.Shared
 
         public string Description { get; set; }
         public string CategoryDescription { get; set; }
-        
+
         public string UpdateUrl { get; set; }
 
         public ADManagedGroup ManagedGroup { get; set; }

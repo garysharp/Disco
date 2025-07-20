@@ -52,7 +52,8 @@ namespace Disco.Data.Repository.Monitor
             return (T)dbEntityState.CurrentValues[PropertyName];
         }
 
-        public void ExecuteAfterCommit(Action<RepositoryMonitorEvent> action){
+        public void ExecuteAfterCommit(Action<RepositoryMonitorEvent> action)
+        {
             if (afterCommit)
             {
                 // Execute Immediately

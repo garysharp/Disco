@@ -72,7 +72,7 @@ namespace Disco.Services.Plugins
                     Status.UpdateStatus(20, $"{packageManifest.Name} [{packageManifest.Id} v{packageManifest.Version.ToString(4)}] by {packageManifest.Author}", "Initializing Install Environment");
 
                     PluginsLog.LogInstalling(packageManifest);
-                    
+
                     lock (Plugins._PluginLock)
                     {
                         if (!Plugins.PluginsLoaded)

@@ -15,9 +15,9 @@ using System.Text;
 namespace Disco.Services.Interop.DiscoServices
 {
     using StatisticInt = UpdateRequestV2.StatisticInt;
+    using StatisticIntPair = UpdateRequestV2.StatisticIntPair;
     using StatisticJob = UpdateRequestV2.StatisticJob;
     using StatisticString = UpdateRequestV2.StatisticString;
-    using StatisticIntPair = UpdateRequestV2.StatisticIntPair;
 
     public static class UpdateQuery
     {

@@ -1,5 +1,5 @@
-﻿using Disco.Models.Services.Authorization;
-using Disco.Models.Repository;
+﻿using Disco.Models.Repository;
+using Disco.Models.Services.Authorization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace Disco.Services.Authorization.Roles
 
             return FromAuthorizationRole(Role, claims);
         }
-        
+
         internal static RoleToken FromAuthorizationRole(AuthorizationRole Role, RoleClaims Claims)
         {
             string[] sg = (Role.SubjectIds == null ? new string[0] : Role.SubjectIds.Split(',').ToArray());

@@ -16,7 +16,7 @@ namespace Disco.Services.Devices.ManagedGroups
         private const string DescriptionFormat = "Devices within the {0} Profile will have their assigned users added to this Active Directory group.";
         private const string CategoryDescriptionFormat = "Assigned Users Linked Group";
         private const string GroupDescriptionFormat = "{0} [Device Profile Assigned Users]";
-        
+
         private static Lazy<IObservable<RepositoryMonitorEvent>> RepositoryEvents;
 
         private IDisposable repositorySubscription;

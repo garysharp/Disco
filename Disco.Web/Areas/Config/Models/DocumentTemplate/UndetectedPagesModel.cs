@@ -7,7 +7,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
 {
     public class UndetectedPagesModel : ConfigDocumentTemplateUndetectedPagesModel
     {
-        
+
         public List<Disco.Models.Repository.DocumentTemplate> DocumentTemplates { get; set; }
 
         public List<SelectListItem> DocumentTemplatesSelectListItems

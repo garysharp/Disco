@@ -67,7 +67,8 @@ namespace Disco.Web.Controllers
         {
             if (!Request.IsLocal && !ServerIsCoreSKU.Value && !("true".Equals(ConfigurationManager.AppSettings["DiscoAllowRemoteMaintenance"], StringComparison.OrdinalIgnoreCase)))
             {
-                filterContext.Result = new ContentResult() {
+                filterContext.Result = new ContentResult()
+                {
                     Content = "Initial Configuration of Disco ICT is only allowed via a localhost connection",
                     ContentType = "text/plain"
                 };

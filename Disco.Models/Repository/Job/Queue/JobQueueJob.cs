@@ -12,13 +12,13 @@ namespace Disco.Models.Repository
         public int JobQueueId { get; set; }
         [Required]
         public int JobId { get; set; }
-        
+
         [Required]
         public DateTime AddedDate { get; set; }
         [Required]
         public string AddedUserId { get; set; }
         public string AddedComment { get; set; }
-        
+
         public DateTime? RemovedDate { get; set; }
         public string RemovedUserId { get; set; }
         public string RemovedComment { get; set; }

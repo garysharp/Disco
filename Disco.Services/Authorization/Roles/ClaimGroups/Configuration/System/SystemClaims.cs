@@ -8,7 +8,7 @@
 
         [ClaimDetails("Configure Proxy Settings", "Can configure the proxy settings")]
         public bool ConfigureProxy { get; set; }
-        
+
         [ClaimDetails("Configure Email Settings", "Can configure the email settings")]
         public bool ConfigureEmail { get; set; }
 

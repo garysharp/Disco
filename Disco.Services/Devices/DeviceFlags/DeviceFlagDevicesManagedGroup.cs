@@ -111,7 +111,7 @@ namespace Disco.Services.Devices.DeviceFlags
             var assignment = (DeviceFlagAssignment)Event.Entity;
 
             var domainId = assignment.Device?.DeviceDomainId;
-            
+
             if (!ActiveDirectory.IsValidDomainAccountId(domainId))
                 return;
             domainId += "$";

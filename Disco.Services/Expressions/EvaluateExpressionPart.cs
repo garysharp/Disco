@@ -20,9 +20,8 @@ namespace Disco.Services.Expressions
             {
                 if (expressionParseException == null)
                     return null;
-                else
-                    if (evaluateParseException == null)
-                        evaluateParseException = EvaluateExpressionParseException.FromRecognitionException(expressionParseException, Source);
+                else if (evaluateParseException == null)
+                    evaluateParseException = EvaluateExpressionParseException.FromRecognitionException(expressionParseException, Source);
                 return evaluateParseException;
             }
         }

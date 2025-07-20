@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Disco.Data.Repository;
-using System.IO;
-using System.Data.SqlServerCe;
+﻿using Disco.Data.Repository;
+using Newtonsoft.Json;
 using Quartz;
 using Quartz.Impl;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlServerCe;
+using System.IO;
+using System.Linq;
 
 namespace Disco.Services.Logging
 {
@@ -50,7 +50,7 @@ namespace Disco.Services.Logging
                         var appDomain = AppDomain.CurrentDomain;
                         var servicesAssemblyName = typeof(LogContext).Assembly.GetName().Name;
 
-                        var logModuleTypes  = appDomain.GetAssemblies()
+                        var logModuleTypes = appDomain.GetAssemblies()
                             .Where(a => !a.GlobalAssemblyCache && !a.IsDynamic &&
                                 (a.GetName().Name == servicesAssemblyName || a.GetReferencedAssemblies().Any(ra => ra.Name == servicesAssemblyName)))
                             .SelectMany(a => a.GetTypes())

@@ -8,7 +8,7 @@ namespace Disco.Services.Jobs.JobQueues
     {
         public override string TaskName { get { return "Job Queues - Delete Queue"; } }
 
-        public override bool SingleInstanceTask { get { return false; }}
+        public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
         public override bool LogExceptionsOnly { get { return true; } }
 

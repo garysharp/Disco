@@ -189,7 +189,7 @@ namespace Disco.Services.Devices.DeviceFlags
                         status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Removing Flag: {flagAssignment.Device}");
 
                         flagAssignment.OnRemoveUnsafe(database, technician);
-                        
+
                         return flagAssignment;
                     }).ToList();
 

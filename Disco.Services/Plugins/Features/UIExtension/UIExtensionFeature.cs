@@ -1,7 +1,7 @@
-﻿using System;
-using System.Web.Mvc;
-using Disco.Models.UI;
+﻿using Disco.Models.UI;
 using Disco.Services.Plugins.Features.UIExtension.Results;
+using System;
+using System.Web.Mvc;
 
 namespace Disco.Services.Plugins.Features.UIExtension
 {
@@ -19,7 +19,8 @@ namespace Disco.Services.Plugins.Features.UIExtension
         }
         public UIExtensionFeature()
         {
-            plugin = new Lazy<WebHelper>(new Func<WebHelper>(() => {
+            plugin = new Lazy<WebHelper>(new Func<WebHelper>(() =>
+            {
                 if (Context == null)
                     throw new InvalidOperationException("The Context property is not initialized");
 

@@ -1,14 +1,18 @@
+using RazorGenerator.Mvc;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
-using RazorGenerator.Mvc;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(Disco.Services.App_Start.RazorGeneratorMvcStart), "Start")]
 
-namespace Disco.Services.App_Start {
-    public static class RazorGeneratorMvcStart {
-        public static void Start() {
-            var engine = new PrecompiledMvcEngine(typeof(RazorGeneratorMvcStart).Assembly) {
+namespace Disco.Services.App_Start
+{
+    public static class RazorGeneratorMvcStart
+    {
+        public static void Start()
+        {
+            var engine = new PrecompiledMvcEngine(typeof(RazorGeneratorMvcStart).Assembly)
+            {
                 UsePhysicalViewsIfNewer = HttpContext.Current.Request.IsLocal
             };
 

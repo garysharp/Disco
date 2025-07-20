@@ -21,7 +21,7 @@ namespace Disco.Client.Interop
 
             return adapters;
         }
-        
+
         private static List<NetworkAdapter> GetWmiNetworkAdapters()
         {
             try

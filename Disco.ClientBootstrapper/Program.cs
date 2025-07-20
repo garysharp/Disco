@@ -118,18 +118,17 @@ namespace Disco.ClientBootstrapper
                     SleepThread(4000, true);
                     Interop.ShutdownInterop.Shutdown();
                 }
+                else if (PostBootstrapperActions.Contains("Reboot"))
+                {
+                    Status.UpdateStatus("System Preparation (Bootstrapper)", "Rebooting; Finished...", string.Empty, false, 0);
+                    SleepThread(4000, true);
+                    Interop.ShutdownInterop.Reboot();
+                }
                 else
-                    if (PostBootstrapperActions.Contains("Reboot"))
-                    {
-                        Status.UpdateStatus("System Preparation (Bootstrapper)", "Rebooting; Finished...", string.Empty, false, 0);
-                        SleepThread(4000, true);
-                        Interop.ShutdownInterop.Reboot();
-                    }
-                    else
-                    {
-                        Status.UpdateStatus("System Preparation (Bootstrapper)", "Starting System; Finished...", string.Empty, false, 0);
-                        SleepThread(2000, true);
-                    }
+                {
+                    Status.UpdateStatus("System Preparation (Bootstrapper)", "Starting System; Finished...", string.Empty, false, 0);
+                    SleepThread(2000, true);
+                }
             }
             else
             {

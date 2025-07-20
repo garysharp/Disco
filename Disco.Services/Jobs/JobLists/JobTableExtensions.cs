@@ -264,7 +264,7 @@ namespace Disco.Services
 
             foreach (var j in items)
             {
-                j.UserFriendlyId =j.UserId == null ? null : ActiveDirectory.FriendlyAccountId(j.UserId);
+                j.UserFriendlyId = j.UserId == null ? null : ActiveDirectory.FriendlyAccountId(j.UserId);
                 j.OpenedTechUserFriendlyId = ActiveDirectory.FriendlyAccountId(j.OpenedTechUserId);
 
                 if (j.DeviceAddressId.HasValue)

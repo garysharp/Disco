@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Disco.Models.Services.Authorization;
 using Disco.Models.UI.Config.AuthorizationRole;
-using Disco.Models.Services.Authorization;
 using Disco.Web.Areas.API.Models.Shared;
+using System.Collections.Generic;
 
 namespace Disco.Web.Areas.Config.Models.AuthorizationRole
 {

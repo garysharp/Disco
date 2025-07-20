@@ -41,6 +41,6 @@ namespace Disco.Models.Repository
         public virtual User TechUser { get; set; }
 
         [ForeignKey("DocumentTemplateId")]
-        public virtual DocumentTemplate DocumentTemplate { get; set; } 
+        public virtual DocumentTemplate DocumentTemplate { get; set; }
     }
 }

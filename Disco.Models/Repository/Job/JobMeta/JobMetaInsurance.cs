@@ -59,7 +59,7 @@ namespace Disco.Models.Repository
         public string Insurer { get; set; }
         [StringLength(200)]
         public string InsurerReference { get; set; }
-        
+
         [Required, ForeignKey("JobId")]
         public virtual Job Job { get; set; }
 

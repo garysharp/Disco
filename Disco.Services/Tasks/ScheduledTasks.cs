@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Disco.Data.Repository;
 using Quartz;
 using Quartz.Impl;
-using Disco.Data.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Disco.Services.Tasks

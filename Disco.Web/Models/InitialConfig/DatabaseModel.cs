@@ -73,7 +73,7 @@ namespace Disco.Web.Models.InitialConfig
 
         [CustomValidation(typeof(DatabaseModel), "SqlAuthRequired", ErrorMessage = "When using SQL Authentication a Username is required")]
         public string Auth_SQL_Username { get; set; }
-        [DataType(DataType.Password), CustomValidation(typeof(DatabaseModel), "SqlAuthRequired", ErrorMessage="When using SQL Authentication a Password is required")]
+        [DataType(DataType.Password), CustomValidation(typeof(DatabaseModel), "SqlAuthRequired", ErrorMessage = "When using SQL Authentication a Password is required")]
         public string Auth_SQL_Password { get; set; }
 
         public List<SelectListItem> AuthMethods

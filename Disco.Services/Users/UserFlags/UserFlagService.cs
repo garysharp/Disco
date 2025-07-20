@@ -189,7 +189,7 @@ namespace Disco.Services.Users.UserFlags
                         Status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Removing Flag: {flagAssignment.User.ToString()}");
 
                         flagAssignment.OnRemoveUnsafe(Database, Technician);
-                        
+
                         return flagAssignment;
                     }).ToList();
 

@@ -1,12 +1,12 @@
-﻿using System;
-using Disco.Data.Repository;
+﻿using Disco.Data.Repository;
 using Disco.Services.Tasks;
+using System;
 
 namespace Disco.Services.Plugins
 {
     public abstract class Plugin : IDisposable
     {
-        public PluginManifest Manifest {get; internal set;}
+        public PluginManifest Manifest { get; internal set; }
 
         #region Lifecycle
         // Events/Triggers for Custom Plugin Initialization (Optional)

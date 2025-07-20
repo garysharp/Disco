@@ -16,7 +16,7 @@ namespace Disco.Services.Devices.ManagedGroups
         private const string DescriptionFormat = "Devices within the {0} Profile will be added to this Active Directory group.";
         private const string CategoryDescriptionFormat = "Devices Linked Group";
         private const string GroupDescriptionFormat = "{0} [Device Profile Devices]";
-        
+
         private static Lazy<IObservable<RepositoryMonitorEvent>> RepositoryEvents;
 
         private IDisposable repositorySubscription;

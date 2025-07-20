@@ -8,7 +8,7 @@ namespace Disco.Services.Users.UserFlags
     {
         public override string TaskName { get { return "User Flags - Delete Flag"; } }
 
-        public override bool SingleInstanceTask { get { return false; }}
+        public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
         public override bool LogExceptionsOnly { get { return true; } }
 
