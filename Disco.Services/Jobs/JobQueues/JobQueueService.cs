@@ -126,7 +126,7 @@ namespace Disco.Services.Jobs.JobQueues
                         JobId = jqj.JobId,
                         TechUserId = jqj.AddedUserId,
                         Timestamp = jqj.AddedDate,
-                        Comments = string.Format("# Added to Queue\r\n**{0}**\r\nPriority: **{1}**\r\n{2}", Environment.NewLine, queue.Name, jqj.Priority.ToString(), string.IsNullOrWhiteSpace(jqj.AddedComment) ? "<no comment>" : jqj.AddedComment)
+                        Comments = $"# Added to Queue\r\n**{queue.Name}**\r\nPriority: **{jqj.Priority.ToString()}**\r\n{(string.IsNullOrWhiteSpace(jqj.AddedComment) ? "<no comment>" : jqj.AddedComment)}"
                     });
                     Database.JobLogs.Add(new JobLog()
                     {

@@ -63,7 +63,7 @@ namespace Disco.Services.Plugins
                 int num = (lastFormNumber != null) ? (((int)lastFormNumber) + 1) : 1000;
                 ViewPage.ViewContext.HttpContext.Items["DiscoPluginLastFormNum"] = num;
 
-                builder.GenerateId(string.Format(CultureInfo.InvariantCulture, "form{0}", new object[] { num }));
+                builder.GenerateId($"form{num}");
             }
             ViewPage.ViewContext.Writer.Write(builder.ToString(TagRenderMode.StartTag));
             MvcForm form = new MvcForm(ViewPage.ViewContext);

@@ -139,8 +139,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             CreateFileAccessPrivate fileAccess = GetMappedFileAccess(access);
             if (fileAccess == CreateFileAccessPrivate.Read && (!File.Exists(imageFilePath) || (CreateFileMode.OpenExisting != mode)))
             {
-                throw new System.UnauthorizedAccessException(string.Format(CultureInfo.CurrentCulture,
-                                 "Read access can be specified only with OpenExisting mode or OpenAlways mode when the .wim file does not exist."));
+                throw new System.UnauthorizedAccessException("Read access can be specified only with OpenExisting mode or OpenAlways mode when the .wim file does not exist.");
             }
 
             //
@@ -153,7 +152,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
             }
             catch (System.DllNotFoundException ex)
             {
-                throw new System.DllNotFoundException(string.Format(CultureInfo.CurrentCulture,
+                throw new System.DllNotFoundException(string.Format(
                                   "Unable to load WIM libraries. Make sure the correct DLLs are present (Wimgapi.dll and Xmlrw.dll)."), ex.InnerException);
             }
 
@@ -172,8 +171,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 //
                 //Throw an exception
                 //
-                throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                         "Unable to open  the .wim file {0}.", imageFilePath));
+                throw new System.InvalidOperationException($"Unable to open  the .wim file {imageFilePath}.");
             }
 
             //
@@ -575,12 +573,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                 //1. Leading 0xFEFF
                 //2. Be in <IMAGE></IMAGE>
                 //
-                string formattedXml = String.Format(CultureInfo.InvariantCulture,
-                                                    "{0}{1}{2}{3}",
-                                                    UNICODE_FILE_MARKER,
-                                                    "<IMAGE>",
-                                                    imageInformation,
-                                                    "</IMAGE>");
+                string formattedXml = $"{UNICODE_FILE_MARKER}{"<IMAGE>"}{imageInformation}{"</IMAGE>"}";
 
                 NativeMethods.SetImageInformation(m_ImageHandle, formattedXml);
                 GC.KeepAlive(this);
@@ -691,9 +684,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Everything failed; throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to open/create .wim file {0}. Error = {1}",
-                                                                             imageFile, rc));
+                    throw new System.InvalidOperationException($"Unable to open/create .wim file {imageFile}. Error = {rc}");
                 }
 
                 return windowsImageHandle;
@@ -728,8 +719,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                         "Unable to close image handle. Error = {0}", rc));
+                    throw new System.InvalidOperationException($"Unable to close image handle. Error = {rc}");
                 }
             }
 
@@ -764,7 +754,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Unable to set temporary path. Error = {0}", rc));
+                    throw new System.InvalidOperationException($"Unable to set temporary path. Error = {rc}");
                 }
             }
 
@@ -801,7 +791,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Unable to load image. Error = {0}", rc));
+                    throw new System.InvalidOperationException($"Unable to load image. Error = {rc}");
                 }
 
                 return hWim;
@@ -839,8 +829,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Failed to capture image from {0}. Error = {1}", path, rc));
+                    throw new System.InvalidOperationException($"Failed to capture image from {path}. Error = {rc}");
                 }
                 return hImage;
             }
@@ -880,7 +869,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Unable to get image count. Error = {0}", rc));
+                    throw new System.InvalidOperationException($"Unable to get image count. Error = {rc}");
                 }
 
                 return count;
@@ -982,17 +971,14 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to mount image {0} to {1}.", windowsImageFileName, mountPath));
+                    throw new System.InvalidOperationException($"Unable to mount image {windowsImageFileName} to {mountPath}.");
                 }
                 if (status == false)
                 {
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to mount image {0} to {1}. Error = {2}",
-                                                                             windowsImageFileName, mountPath, rc));
+                    throw new System.InvalidOperationException($"Unable to mount image {windowsImageFileName} to {mountPath}. Error = {rc}");
                 }
             }
 
@@ -1029,8 +1015,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to apply image to {0}. Error = {1}", applicationPath, rc));
+                    throw new System.InvalidOperationException($"Unable to apply image to {applicationPath}. Error = {rc}");
                 }
             }
 
@@ -1070,8 +1055,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to get image information. Error = {0}", rc));
+                    throw new System.InvalidOperationException($"Unable to get image information. Error = {rc}");
                 }
                 string s = Marshal.PtrToStringUni(info);
 
@@ -1119,8 +1103,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to set image information. Error = {0}", rc));
+                    throw new System.InvalidOperationException($"Unable to set image information. Error = {rc}");
                 }
             }
 
@@ -1161,8 +1144,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.StackOverflowException(string.Format(CultureInfo.CurrentCulture,
-                                                                          "Unable to unmount image {0} from {1}.", wimdowsImageFileName, mountPath),
+                    throw new System.StackOverflowException($"Unable to unmount image {wimdowsImageFileName} from {mountPath}.",
                                                                           ex.InnerException);
                 }
                 if (status == false)
@@ -1170,9 +1152,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture,
-                                                                             "Unable to unmount image {0} from {1}. Error = {2}",
-                                                                             wimdowsImageFileName, mountPath, rc));
+                    throw new System.InvalidOperationException($"Unable to unmount image {wimdowsImageFileName} from {mountPath}. Error = {rc}");
                 }
             }
 
@@ -1228,7 +1208,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     //Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Unable to register message callback."));
+                    throw new System.InvalidOperationException("Unable to register message callback.");
                 }
             }
 
@@ -1260,7 +1240,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     //
                     // Throw an exception
                     //
-                    throw new System.InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Unable to unregister message callback."));
+                    throw new System.InvalidOperationException("Unable to unregister message callback.");
                 }
             }
 
@@ -1358,7 +1338,7 @@ namespace Disco.ClientBootstrapper.Interop.WIMInterop
                     fileAccess = CreateFileAccessPrivate.Write;
                     break;
                 default:
-                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "No file access level specified."));
+                    throw new ArgumentException("No file access level specified.");
             }
             return fileAccess;
         }

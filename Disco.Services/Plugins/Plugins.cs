@@ -369,7 +369,7 @@ namespace Disco.Services.Plugins
             _PluginAssemblyManifests = _PluginManifests.Values.ToDictionary(p => p.PluginAssembly, p => p);
         }
 
-        public static PluginManifest UpdatePlugin(DiscoDataContext Database, PluginManifest ExistingManifest, String UpdatePluginPackageFilePath, PluginLibraryIncompatibility PluginLibraryIncompatibility = null)
+        public static PluginManifest UpdatePlugin(DiscoDataContext Database, PluginManifest ExistingManifest, string UpdatePluginPackageFilePath, PluginLibraryIncompatibility PluginLibraryIncompatibility = null)
         {
             PluginManifest updatedManifest;
 

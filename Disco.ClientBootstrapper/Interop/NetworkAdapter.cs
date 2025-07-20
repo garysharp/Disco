@@ -14,8 +14,8 @@ namespace Disco.ClientBootstrapper.Interop
         public string Name { get; set; }
         public string NetConnectionID { get; set; }
         public string MACAddress { get; set; }
-        public UInt64 Speed { get; set; }
-        public UInt16 LastConnectionStatus { get; set; }
+        public ulong Speed { get; set; }
+        public ushort LastConnectionStatus { get; set; }
         public bool IsWireless { get; set; }
         public string WirelessInterfaceDescription { get; set; }
         public int LastWirelessConnectionStatus { get; set; }
@@ -28,12 +28,12 @@ namespace Disco.ClientBootstrapper.Interop
         private void UpdateFromWmi(ManagementObject wmiObject)
         {
             WmiPath = (string)wmiObject.GetPropertyValue("__PATH");
-            Index = (UInt32)wmiObject.GetPropertyValue("Index");
+            Index = (uint)wmiObject.GetPropertyValue("Index");
             Guid = Guid.Parse((string)wmiObject.GetPropertyValue("GUID"));
             MACAddress = (string)wmiObject.GetPropertyValue("MACAddress");
             Name = (string)wmiObject.GetPropertyValue("Name");
             NetConnectionID = (string)wmiObject.GetPropertyValue("NetConnectionID");
-            Speed = (UInt64)wmiObject.GetPropertyValue("Speed");
+            Speed = (ulong)wmiObject.GetPropertyValue("Speed");
             _ = ConnectionStatus;
             IsWireless = true;
             try
@@ -111,46 +111,46 @@ namespace Disco.ClientBootstrapper.Interop
             }
         }
 
-        public UInt16 ConnectionStatus
+        public ushort ConnectionStatus
         {
             get
             {
                 using (var wmiObject = new ManagementObject(WmiPath))
                 {
-                    LastConnectionStatus = (UInt16)wmiObject.GetPropertyValue("NetConnectionStatus");
+                    LastConnectionStatus = (ushort)wmiObject.GetPropertyValue("NetConnectionStatus");
                 }
                 return LastConnectionStatus;
             }
         }
-        public string ConnectionStatusMeaning(UInt16 status)
+        public string ConnectionStatusMeaning(ushort status)
         {
             switch (status)
             {
-                case (UInt16)0:
+                case (ushort)0:
                     return "Disconnected";
-                case (UInt16)1:
+                case (ushort)1:
                     return "Connecting";
-                case (UInt16)2:
+                case (ushort)2:
                     return "Connected";
-                case (UInt16)3:
+                case (ushort)3:
                     return "Disconnecting";
-                case (UInt16)4:
+                case (ushort)4:
                     return "Hardware not present";
-                case (UInt16)5:
+                case (ushort)5:
                     return "Hardware disabled";
-                case (UInt16)6:
+                case (ushort)6:
                     return "Hardware malfunction";
-                case (UInt16)7:
+                case (ushort)7:
                     return "Media disconnected";
-                case (UInt16)8:
+                case (ushort)8:
                     return "Authenticating";
-                case (UInt16)9:
+                case (ushort)9:
                     return "Authentication succeeded";
-                case (UInt16)10:
+                case (ushort)10:
                     return "Authentication failed";
-                case (UInt16)11:
+                case (ushort)11:
                     return "Invalid address";
-                case (UInt16)12:
+                case (ushort)12:
                     return "Credentials required";
                 default:
                     return "Unknown";

@@ -236,7 +236,7 @@ namespace Disco.Services.Documents
 
         private static int chooseMaskPattern(BitArray bits, ErrorCorrectionLevel ecLevel, ZXing.QrCode.Internal.Version version, ByteMatrix matrix)
         {
-            int minPenalty = Int32.MaxValue;  // Lower penalty is better.
+            int minPenalty = int.MaxValue;  // Lower penalty is better.
             int bestMaskPattern = -1;
             // We try all mask patterns to choose the best one.
             for (int maskPattern = 0; maskPattern < QRCode.NUM_MASK_PATTERNS; maskPattern++)

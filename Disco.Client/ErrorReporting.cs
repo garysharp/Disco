@@ -105,7 +105,7 @@ namespace Disco.Client
                 }
             }
 
-            Debug.WriteLine("Error Report Logged to Server; Response: {0}", reportResponse);
+            Debug.WriteLine($"Error Report Logged to Server; Response: {reportResponse}");
         }
 
         #endregion

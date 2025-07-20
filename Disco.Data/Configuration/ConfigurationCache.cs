@@ -177,18 +177,18 @@ namespace Disco.Data.Configuration
         #region Helpers
         private static bool IsConvertableFromString(Type t)
         {
-            if (t == typeof(Boolean) ||
-                t == typeof(Char) ||
-                t == typeof(SByte) ||
-                t == typeof(Byte) ||
-                t == typeof(Int16) || t == typeof(UInt16) ||
-                t == typeof(Int32) || t == typeof(UInt32) ||
-                t == typeof(Int64) || t == typeof(UInt64) ||
-                t == typeof(Single) ||
-                t == typeof(Double) ||
-                t == typeof(Decimal) ||
+            if (t == typeof(bool) ||
+                t == typeof(char) ||
+                t == typeof(sbyte) ||
+                t == typeof(byte) ||
+                t == typeof(short) || t == typeof(ushort) ||
+                t == typeof(int) || t == typeof(uint) ||
+                t == typeof(long) || t == typeof(ulong) ||
+                t == typeof(float) ||
+                t == typeof(double) ||
+                t == typeof(decimal) ||
                 t == typeof(DateTime) ||
-                t == typeof(String))
+                t == typeof(string))
                 return true;
             else
                 return false;

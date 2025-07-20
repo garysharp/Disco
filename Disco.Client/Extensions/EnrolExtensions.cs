@@ -104,7 +104,7 @@ namespace Disco.Client.Extensions
                     using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
                     {
                         regWinlogon.SetValue("DefaultDomainName", enrolResponse.DomainName, RegistryValueKind.String);
-                        regWinlogon.SetValue("DefaultUserName", String.Empty, RegistryValueKind.String);
+                        regWinlogon.SetValue("DefaultUserName", string.Empty, RegistryValueKind.String);
                     }
                     using (RegistryKey regLogonUI = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI", true))
                     {

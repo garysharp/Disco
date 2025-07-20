@@ -27,7 +27,7 @@ namespace Disco.Web.Extensions
                 selectItems = organisationAddressess.Select(wpd => new SelectListItem { Value = wpd.Id.Value.ToString(), Text = $"{wpd.Name} ({wpd.ShortName})", Selected = (SelectedId.Equals(wpd.Id)) }).ToList();
 
             if (IncludeInstructionFirst)
-                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = $"<{InstructionMessage}>", Selected = !SelectedId.HasValue });
+                selectItems.Insert(0, new SelectListItem() { Value = string.Empty, Text = $"<{InstructionMessage}>", Selected = !SelectedId.HasValue });
 
             return selectItems;
         }

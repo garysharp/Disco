@@ -44,7 +44,7 @@ namespace Disco.ClientBootstrapper.Interop
                 }
                 catch (Exception ex)
                 {
-                    throw new IOException(string.Format("Unable to delete folder: ", InstallLocation), ex);
+                    throw new IOException($"Unable to delete folder: {InstallLocation}", ex);
                 }
             }
             if (!Directory.Exists(InstallLocation))

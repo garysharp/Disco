@@ -52,7 +52,7 @@ namespace Disco.Web.Extensions
             var selectItems = items.OrderBy(i => i.Text).ToList();
 
             if (IncludeInstructionFirst)
-                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = $"<{InstructionMessage}>", Selected = (selectedIds?.Count ?? 0) != 0 });
+                selectItems.Insert(0, new SelectListItem() { Value = string.Empty, Text = $"<{InstructionMessage}>", Selected = (selectedIds?.Count ?? 0) != 0 });
 
             return selectItems;
         }
@@ -76,7 +76,7 @@ namespace Disco.Web.Extensions
                 selectItems = PluginDefinitions.Select(wpd => new SelectListItem { Value = wpd.Id, Text = wpd.Name, Selected = (SelectedId.Equals(wpd.Id)) }).ToList();
 
             if (IncludeInstructionFirst)
-                selectItems.Insert(0, new SelectListItem() { Value = String.Empty, Text = $"<{InstructionMessage}>", Selected = String.IsNullOrEmpty(SelectedId) });
+                selectItems.Insert(0, new SelectListItem() { Value = string.Empty, Text = $"<{InstructionMessage}>", Selected = string.IsNullOrEmpty(SelectedId) });
 
             return selectItems;
         }

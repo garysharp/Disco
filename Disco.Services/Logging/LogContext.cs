@@ -16,7 +16,7 @@ namespace Disco.Services.Logging
         private static object _LogModulesLock = new object();
 
         private static LogContext _Current;
-        private static object _CurrentLock = new Object();
+        private static object _CurrentLock = new object();
         public static LogContext Current
         {
             get

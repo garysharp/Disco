@@ -203,7 +203,7 @@ namespace Disco.Services
                         AttachmentDataStoreExtensions.RepositoryFilename);
 
                     if (!publishJobResult.Success)
-                        throw new Exception(string.Format("Disco ICT Online Services failed with the following message: ", publishJobResult.ErrorMessage));
+                        throw new Exception($"Disco ICT Online Services failed with the following message: {publishJobResult.ErrorMessage}");
 
                     if (string.IsNullOrWhiteSpace(FaultDescription))
                         FaultDescription = publishJobResult.PublishMessage;
@@ -433,7 +433,7 @@ namespace Disco.Services
                         AttachmentDataStoreExtensions.RepositoryFilename);
 
                     if (!publishJobResult.Success)
-                        throw new Exception(string.Format("Disco ICT Online Services failed with the following message: ", publishJobResult.ErrorMessage));
+                        throw new Exception($"Disco ICT Online Services failed with the following message: {publishJobResult.ErrorMessage}");
 
                     if (string.IsNullOrWhiteSpace(RepairDescription))
                         RepairDescription = publishJobResult.PublishMessage;
