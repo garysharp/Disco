@@ -4,7 +4,6 @@ using Disco.Services.Web;
 using System;
 using System.Configuration;
 using System.Net;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 

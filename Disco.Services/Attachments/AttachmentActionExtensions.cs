@@ -4,7 +4,6 @@ using Disco.Services.Authorization;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Users;
 using System;
-using System.Data.Entity;
 using System.Drawing;
 using System.IO;
 using System.Threading;

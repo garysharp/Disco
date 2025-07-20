@@ -5,7 +5,6 @@ using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
 using System;
-using System.Data.Entity;
 using System.Linq;
 
 namespace Disco.Services

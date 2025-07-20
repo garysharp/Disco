@@ -4,7 +4,6 @@ using Disco.Models.Services.Documents;
 using Disco.Models.Services.Expressions.Extensions;
 using Disco.Services.Plugins.Features.DetailsProvider;
 using Spring.Core.TypeResolution;
-using Spring.Expressions;
 using System;
 using System.Collections;
 using System.Collections.Generic;

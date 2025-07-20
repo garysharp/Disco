@@ -1,7 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Exporting;
 using Disco.Models.Repository;
-using Disco.Models.Services.Devices;
 using Disco.Models.Services.Exporting;
 using Disco.Models.Services.Jobs;
 using Disco.Services.Exporting;
@@ -13,7 +12,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Disco.Services.Jobs
 {

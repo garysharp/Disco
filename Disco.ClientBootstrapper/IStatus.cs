@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Disco.ClientBootstrapper
+﻿namespace Disco.ClientBootstrapper
 {
     interface IStatus
     {
