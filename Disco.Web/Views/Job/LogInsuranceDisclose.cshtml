@@ -4,7 +4,7 @@
 
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Insurance Claim");
 }
-@using (Html.BeginForm(MVC.Job.LogInsurance(), FormMethod.Post))
+@using (Html.BeginForm(MVC.Job.LogInsurance()))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

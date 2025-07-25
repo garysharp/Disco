@@ -57,7 +57,7 @@ WriteLiteral("\r\n");
 
             
             #line 7 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
- using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+ using (Html.BeginForm(MVC.Job.LogWarranty()))
 {
     
             
@@ -474,28 +474,28 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"PublishAttachmentIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 4393), Tuple.Create("\"", 4407)
+WriteAttribute("value", Tuple.Create(" value=\"", 4376), Tuple.Create("\"", 4390)
             
             #line 118 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-            , Tuple.Create(Tuple.Create("", 4401), Tuple.Create<System.Object, System.Int32>(ja.Id
+            , Tuple.Create(Tuple.Create("", 4384), Tuple.Create<System.Object, System.Int32>(ja.Id
             
             #line default
             #line hidden
-, 4401), false)
+, 4384), false)
 );
 
 WriteLiteral(" />\r\n");
 
 WriteLiteral("                                    <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4451), Tuple.Create("\"", 4508)
+WriteAttribute("href", Tuple.Create(" href=\"", 4434), Tuple.Create("\"", 4491)
             
             #line 119 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-, Tuple.Create(Tuple.Create("", 4458), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 4441), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 4458), false)
+, 4441), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -524,28 +524,28 @@ WriteLiteral(">\r\n                                        <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4626), Tuple.Create("\"", 4646)
+WriteAttribute("title", Tuple.Create(" title=\"", 4609), Tuple.Create("\"", 4629)
             
             #line 120 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-, Tuple.Create(Tuple.Create("", 4634), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 4617), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 4634), false)
+, 4617), false)
 );
 
 WriteLiteral(">\r\n                                            <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 4725), Tuple.Create("\"", 4784)
+WriteAttribute("src", Tuple.Create(" src=\"", 4708), Tuple.Create("\"", 4767)
             
             #line 121 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-  , Tuple.Create(Tuple.Create("", 4731), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+  , Tuple.Create(Tuple.Create("", 4714), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 4731), false)
+, 4714), false)
 );
 
 WriteLiteral(" />\r\n                                        </span>\r\n                           " +
@@ -553,14 +553,14 @@ WriteLiteral(" />\r\n                                        </span>\r\n        
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4901), Tuple.Create("\"", 4921)
+WriteAttribute("title", Tuple.Create(" title=\"", 4884), Tuple.Create("\"", 4904)
             
             #line 123 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-, Tuple.Create(Tuple.Create("", 4909), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 4892), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 4909), false)
+, 4892), false)
 );
 
 WriteLiteral(">\r\n");
@@ -634,14 +634,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5395), Tuple.Create("\"", 5433)
+WriteAttribute("title", Tuple.Create(" title=\"", 5378), Tuple.Create("\"", 5416)
             
             #line 128 "..\..\Views\Job\LogWarrantyDisclose.cshtml"
-                                                                                                       , Tuple.Create(Tuple.Create("", 5403), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                                       , Tuple.Create(Tuple.Create("", 5386), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 5403), false)
+, 5386), false)
 );
 
 WriteLiteral(">");

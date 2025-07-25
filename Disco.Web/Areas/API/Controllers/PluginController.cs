@@ -31,7 +31,8 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Install), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.Plugin.Install)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAll()
         {
             var status = UpdatePluginTask.UpdateAllPlugins();
@@ -39,7 +40,8 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Install), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.Plugin.Install)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(string pluginId)
         {
             if (string.IsNullOrEmpty(pluginId))
@@ -50,7 +52,8 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Uninstall), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.Plugin.Uninstall)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Uninstall(string id, bool uninstallData)
         {
             if (string.IsNullOrEmpty(id))
@@ -63,7 +66,8 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [HttpPost, DiscoAuthorize(Claims.Config.Plugin.Install), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.Plugin.Install)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Install(string pluginId)
         {
             if (string.IsNullOrEmpty(pluginId))
@@ -92,7 +96,8 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
-        [HttpPost, DiscoAuthorizeAll(Claims.Config.Plugin.Install, Claims.Config.Plugin.InstallLocal), ValidateAntiForgeryToken]
+        [DiscoAuthorizeAll(Claims.Config.Plugin.Install, Claims.Config.Plugin.InstallLocal)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult InstallLocal(HttpPostedFileBase plugin, bool immediateRestart = false)
         {
             if (plugin == null || plugin.ContentLength <= 0 || string.IsNullOrWhiteSpace(plugin.FileName))

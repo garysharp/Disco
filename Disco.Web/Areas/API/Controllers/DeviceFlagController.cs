@@ -24,6 +24,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pOnUnassignmentExpression = "onunassignmentexpression";
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.DeviceFlag.Configure);
@@ -68,43 +69,48 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Config.DeviceFlag.Index(flag.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateName(int id, string FlagName = null, bool? redirect = null)
         {
             return Update(id, pName, FlagName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIcon(int id, string Icon = null, bool? redirect = null)
         {
             return Update(id, pIcon, Icon, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIconColour(int id, string IconColour = null, bool? redirect = null)
         {
             return Update(id, pIconColour, IconColour, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIconAndColour(int id, string Icon = null, string IconColour = null, bool redirect = false)
         {
             try
@@ -124,27 +130,30 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Config.DeviceFlag.Index(DeviceFlag.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnAssignmentExpression(int id, string OnAssignmentExpression = null, bool redirect = false)
         {
             return Update(id, pOnAssignmentExpression, OnAssignmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnUnassignmentExpression(int id, string OnUnassignmentExpression = null, bool redirect = false)
         {
             return Update(id, pOnUnassignmentExpression, OnUnassignmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
         {
             try
@@ -167,17 +176,18 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUserLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
         {
             try
@@ -200,14 +210,14 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
@@ -341,6 +351,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Actions
         [DiscoAuthorizeAll(Claims.Config.DeviceFlag.Configure, Claims.Config.DeviceFlag.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -354,7 +365,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new ArgumentException("Invalid Device Flag Id", nameof(id));
             }
@@ -363,11 +374,12 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceFlag.Configure, Claims.Device.Actions.AddFlags, Claims.Device.Actions.RemoveFlags, Claims.Device.ShowFlagAssignments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult BulkAssignDevices(int id, bool Override, string DeviceSerialNumbers = null, string Comments = null)
         {
             if (id < 0)

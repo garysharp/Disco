@@ -68,7 +68,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 9 "..\..\Views\Job\Create.cshtml"
-     using (Html.BeginForm(MVC.Job.Create(), FormMethod.Post))
+     using (Html.BeginForm(MVC.Job.Create()))
     {
         
             
@@ -225,15 +225,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 1133), Tuple.Create("\"", 1164)
-, Tuple.Create(Tuple.Create("", 1138), Tuple.Create("createJob_SubType_", 1138), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 1116), Tuple.Create("\"", 1147)
+, Tuple.Create(Tuple.Create("", 1121), Tuple.Create("createJob_SubType_", 1121), true)
             
             #line 29 "..\..\Views\Job\Create.cshtml"
-, Tuple.Create(Tuple.Create("", 1156), Tuple.Create<System.Object, System.Int32>(jt.Id
+, Tuple.Create(Tuple.Create("", 1139), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 1156), false)
+, 1139), false)
 );
 
 WriteLiteral(" class=\"createJob_SubType\"");

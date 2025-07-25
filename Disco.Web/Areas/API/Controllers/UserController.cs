@@ -139,7 +139,8 @@ namespace Disco.Web.Areas.API.Controllers
             return HttpNotFound("Invalid Attachment Number");
         }
 
-        [DiscoAuthorize(Claims.User.Actions.AddAttachments), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentUpload(string id, string domain, string comments)
         {
             id = ActiveDirectory.ParseDomainAccountId(id, domain);
@@ -224,6 +225,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorizeAny(Claims.User.Actions.RemoveAnyAttachments, Claims.User.Actions.RemoveOwnAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentRemove(int id)
         {
             var ua = Database.UserAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
@@ -236,9 +238,9 @@ namespace Disco.Web.Areas.API.Controllers
 
                 ua.OnDelete(Database);
                 Database.SaveChanges();
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
             }
-            return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Attachment Number");
         }
 
         [DiscoAuthorize(Claims.User.Actions.AddAttachments)]
@@ -267,43 +269,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Json(new
-                {
-                    Success = false,
-                    ErrorMessage = ex.Message,
-                });
+                return BadRequest(ex.Message);
             }
         }
 
         #endregion
-
-        [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdf(string id, string domain, string DocumentTemplateId)
-        {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException(nameof(id));
-            if (string.IsNullOrEmpty(DocumentTemplateId))
-                throw new ArgumentNullException(nameof(DocumentTemplateId));
-
-            var userId = ActiveDirectory.ParseDomainAccountId(id, domain);
-
-            // Obsolete: Use API\DocumentTemplate\Generate instead
-            return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, userId));
-        }
-
-        [DiscoAuthorize(Claims.User.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdfPackage(string id, string domain, string DocumentTemplatePackageId)
-        {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException(nameof(id));
-            if (string.IsNullOrEmpty(DocumentTemplatePackageId))
-                throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
-
-            var userId = ActiveDirectory.ParseDomainAccountId(id, domain);
-
-            // Obsolete: Use API\DocumentTemplatePackage\Generate instead
-            return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, userId));
-        }
 
         public virtual ActionResult Photo(string userId)
         {

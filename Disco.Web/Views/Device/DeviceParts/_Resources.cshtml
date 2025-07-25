@@ -18,8 +18,7 @@
     <table id="deviceShowResources">
         <tr>
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")">
-                    @Html.AntiForgeryToken()
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")" data-removeurl="@Url.Action(MVC.API.Device.AttachmentRemove())">
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -236,8 +235,6 @@
                             function removeAttachment() {
                                 $this = $(this).closest('a');
 
-                                var data = { id: $this.attr('data-attachmentid') };
-
                                 if (!$dialogRemoveAttachment) {
                                     $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
                                         resizable: false,
@@ -247,35 +244,36 @@
                                     });
                                 }
 
-                                $dialogRemoveAttachment.dialog("enable");
+                                async function removeAttachmentAsync(id) {
+                                    const body = new FormData();
+                                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                    body.append('id', id);
+
+                                    try {
+                                        const response = await fetch($Attachments.attr('data-removeurl'), {
+                                            body: body,
+                                            method: 'POST'
+                                        });
+                                        if (!response.ok) {
+                                            alert('Unable to remove attachment: ' + response.statusText);
+                                        }
+                                        $dialogRemoveAttachment.dialog("close");
+                                    } catch (e) {
+                                        alert('Unable to remove attachment: ' + e);
+                                        $dialogRemoveAttachment.dialog("close");
+                                    }
+                                }
+
+                                const attachmentId = $this.attr('data-attachmentid');
                                 $dialogRemoveAttachment.dialog('option', 'buttons', {
                                     "Remove": function () {
-                                        $dialogRemoveAttachment.dialog("disable");
                                         $dialogRemoveAttachment.dialog("option", "buttons", null);
-                                        $.ajax({
-                                            url: '@Url.Action(MVC.API.Device.AttachmentRemove())',
-                                            dataType: 'json',
-                                            data: data,
-                                            success: function (d) {
-                                                if (d == 'OK') {
-                                                    // Do nothing, await SignalR notification
-                                                } else {
-                                                    alert('Unable to remove attachment: ' + d);
-                                                }
-                                                $dialogRemoveAttachment.dialog("close");
-                                            },
-                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                alert('Unable to remove attachment: ' + textStatus);
-                                                $dialogRemoveAttachment.dialog("close");
-                                            }
-                                        });
+                                        removeAttachmentAsync(attachmentId);
                                     },
                                     Cancel: function () {
                                         $dialogRemoveAttachment.dialog("close");
                                     }
-                                });
-
-                                $dialogRemoveAttachment.dialog('open');
+                                }).dialog('open');
 
                                 return false;
                             }

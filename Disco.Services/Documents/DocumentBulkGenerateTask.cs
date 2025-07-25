@@ -25,7 +25,7 @@ namespace Disco.Services.Documents
                 Directory.Delete(cachePath, true);
         }
 
-        public static Stream GetCached(DiscoDataContext database, string id)
+        public static Stream GetCached(DiscoDataContext database, Guid id)
         {
             var cachePath = GetCachePath(database);
             var path = Path.Combine(cachePath, $"{id}.pdf");

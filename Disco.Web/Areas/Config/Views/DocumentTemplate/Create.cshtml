@@ -1,25 +1,28 @@
 ﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.CreateModel
 @{
     Authorization.RequireAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Create");
 }
 @using (Html.BeginForm(MVC.Config.DocumentTemplate.Create(), FormMethod.Post, new { enctype = "multipart/form-data" }))
-{ 
+{
+    @Html.AntiForgeryToken()
     <div class="form" style="width: 650px">
         <table>
             <tr>
                 <th>
                     Id:
                 </th>
-                <td>@Html.TextBoxFor(model => model.DocumentTemplate.Id)<br />@Html.ValidationMessageFor(model => model.DocumentTemplate.Id)
+                <td>
+                    @Html.TextBoxFor(model => model.Id)<br />@Html.ValidationMessageFor(model => model.Id)
                 </td>
             </tr>
             <tr>
                 <th>
                     Description:
                 </th>
-                <td>@Html.TextBoxFor(model => model.DocumentTemplate.Description)<br />@Html.ValidationMessageFor(model => model.DocumentTemplate.Description)
+                <td>
+                    @Html.TextBoxFor(model => model.Description)<br />@Html.ValidationMessageFor(model => model.Description)
                 </td>
             </tr>
             <tr>
@@ -27,7 +30,7 @@
                     Scope:
                 </th>
                 <td>
-                    @Html.DropDownListFor(model => model.DocumentTemplate.Scope, Model.Scopes.ToSelectListItems(null))
+                    @Html.DropDownListFor(model => model.Scope, Model.Scopes.ToSelectListItems(null))
                 </td>
             </tr>
             <tr>
@@ -52,12 +55,13 @@
                     <th class="name">
                         @jt.Description<br />
                         Sub Types<br />
-                    @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id))
+                        @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id))
                     </th>
                     <td class="value">
                         @CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 2)
                     </td>
-                </tr>   
+                </tr>
+
             }
         </table>
         <p class="actions">
@@ -68,7 +72,7 @@
         $(function () {
             $('#Name').focus().select();
 
-            var $scope = $('#DocumentTemplate_Scope');
+            var $scope = $('#Scope');
             var $trJobTypes = $('#trJobTypes');
             var $jobTypes = $trJobTypes.find('input[type="checkbox"]');
             $scope.change(scopeChange);
@@ -89,7 +93,7 @@
             function jobTypesChange() {
                 $('.jobSubTypes').hide();
                 $jobTypes.filter(':checked').each(function () {
-                    $('#trJobSubType' + $(this).val()).show();    
+                    $('#trJobSubType' + $(this).val()).show();
                 });
             }
 

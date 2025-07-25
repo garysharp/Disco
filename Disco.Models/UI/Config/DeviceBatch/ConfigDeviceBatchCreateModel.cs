@@ -1,7 +1,10 @@
-﻿namespace Disco.Models.UI.Config.DeviceBatch
+﻿using System;
+
+namespace Disco.Models.UI.Config.DeviceBatch
 {
     public interface ConfigDeviceBatchCreateModel : BaseUIModel
     {
-        Repository.DeviceBatch DeviceBatch { get; set; }
+        string Name { get; set; }
+        DateTime PurchaseDate { get; set; }
     }
 }

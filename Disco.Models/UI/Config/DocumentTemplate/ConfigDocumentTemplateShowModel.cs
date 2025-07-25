@@ -1,4 +1,5 @@
 ﻿using Disco.Models.Services.Documents;
+using System;
 using System.Collections.Generic;
 
 namespace Disco.Models.UI.Config.DocumentTemplate
@@ -9,7 +10,7 @@ namespace Disco.Models.UI.Config.DocumentTemplate
         int StoredInstanceCount { get; set; }
         List<bool> TemplatePagesHaveAttachmentId { get; set; }
         int TemplatePageCount { get; }
-        string BulkGenerateDownloadId { get; }
+        Guid? BulkGenerateDownloadId { get; }
         string BulkGenerateDownloadFilename { get; }
 
         List<Repository.UserFlag> UserFlags { get; set; }

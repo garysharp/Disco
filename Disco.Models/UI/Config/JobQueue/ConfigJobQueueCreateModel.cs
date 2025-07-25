@@ -2,6 +2,7 @@
 {
     public interface ConfigJobQueueCreateModel : BaseUIModel
     {
-        Repository.JobQueue JobQueue { get; set; }
+        string Name { get; set; }
+        string Description { get; set; }
     }
 }

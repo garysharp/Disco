@@ -411,7 +411,7 @@ WriteLiteral("></i><strong>Warning:</strong> Data will be permanently deleted\r\
             #line hidden
             
             #line 91 "..\..\Areas\Config\Views\Plugins\Index.cshtml"
-                     using (Html.BeginForm(MVC.API.Plugin.Uninstall(), FormMethod.Post))
+                     using (Html.BeginForm(MVC.API.Plugin.Uninstall()))
                     {
                         
             

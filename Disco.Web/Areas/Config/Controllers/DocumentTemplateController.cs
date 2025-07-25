@@ -23,7 +23,7 @@ namespace Disco.Web.Areas.Config.Controllers
     public partial class DocumentTemplateController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Show)]
-        public virtual ActionResult Index(string id, string bulkGenerateId = null, string bulkGenerateFilename = null)
+        public virtual ActionResult Index(string id, Guid? bulkGenerateId = null, string bulkGenerateFilename = null)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -76,6 +76,7 @@ namespace Disco.Web.Areas.Config.Controllers
             }
         }
 
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Show)]
         public virtual ActionResult ShowPackage(string id)
         {
             // Document Template Package
@@ -139,7 +140,8 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Create(CreateModel model)
         {
             model.UpdateModel(Database);
@@ -147,27 +149,30 @@ namespace Disco.Web.Areas.Config.Controllers
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.DocumentTemplates.Where(m => m.Id == model.DocumentTemplate.Id).FirstOrDefault();
+                var existing = Database.DocumentTemplates.Where(m => m.Id == model.Id).FirstOrDefault();
                 if (existing == null)
                 {
-
-                    Database.DocumentTemplates.Add(model.DocumentTemplate);
-
-                    if (model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
+                    var template = new DocumentTemplate()
                     {
-                        model.DocumentTemplate.JobSubTypes = model.GetJobSubTypes();
-                    }
+                        Id = model.Id,
+                        Description = model.Description,
+                        Scope = model.Scope,
+                    };
 
+                    if (model.Scope == DocumentTemplate.DocumentTemplateScopes.Job)
+                        template.JobSubTypes = model.GetJobSubTypes();
+
+                    Database.DocumentTemplates.Add(template);
                     Database.SaveChanges();
 
                     // Save Template
-                    model.DocumentTemplate.SavePdfTemplate(Database, model.Template.InputStream);
+                    template.SavePdfTemplate(Database, model.Template.InputStream);
 
-                    return RedirectToAction(MVC.Config.DocumentTemplate.Index(model.DocumentTemplate.Id));
+                    return RedirectToAction(MVC.Config.DocumentTemplate.Index(template.Id));
                 }
                 else
                 {
-                    ModelState.AddModelError("Id", "A Document Template with this Id already exists.");
+                    ModelState.AddModelError(nameof(DocumentTemplate.Id), "A Document Template with this Id already exists.");
                 }
             }
 
@@ -188,18 +193,19 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult CreatePackage(CreatePackageModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = DocumentTemplatePackages.GetPackage(model.Package.Id);
+                var existing = DocumentTemplatePackages.GetPackage(model.Id);
                 if (existing == null)
                 {
-                    DocumentTemplatePackages.CreatePackage(model.Package);
+                    DocumentTemplatePackages.CreatePackage(model.Id, model.Description, model.Scope);
 
-                    return RedirectToAction(MVC.Config.DocumentTemplate.ShowPackage(model.Package.Id));
+                    return RedirectToAction(MVC.Config.DocumentTemplate.ShowPackage(model.Id));
                 }
                 else
                 {

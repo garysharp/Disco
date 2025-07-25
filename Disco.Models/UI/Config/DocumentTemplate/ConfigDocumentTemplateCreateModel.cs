@@ -4,7 +4,9 @@ namespace Disco.Models.UI.Config.DocumentTemplate
 {
     public interface ConfigDocumentTemplateCreateModel : BaseUIModel
     {
-        Repository.DocumentTemplate DocumentTemplate { get; set; }
+        string Id { get; set; }
+        string Description { get; set; }
+        string Scope { get; set; }
 
         List<string> Types { get; set; }
         List<string> SubTypes { get; set; }

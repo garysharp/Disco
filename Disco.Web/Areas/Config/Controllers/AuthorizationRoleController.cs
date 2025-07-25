@@ -17,6 +17,7 @@ namespace Disco.Web.Areas.Config.Controllers
     [DiscoAuthorize(Claims.DiscoAdminAccount)]
     public partial class AuthorizationRoleController : AuthorizedDatabaseController
     {
+        [HttpGet]
         public virtual ActionResult Index(int? id)
         {
             if (id.HasValue)
@@ -72,13 +73,11 @@ namespace Disco.Web.Areas.Config.Controllers
             }
         }
 
+        [HttpGet]
         public virtual ActionResult Create()
         {
             // Default Role
-            var m = new Models.AuthorizationRole.CreateModel()
-            {
-                AuthorizationRole = new Disco.Models.Repository.AuthorizationRole()
-            };
+            var m = new Models.AuthorizationRole.CreateModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigAuthorizationRoleCreateModel>(ControllerContext, m);
@@ -86,16 +85,16 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Create(Models.AuthorizationRole.CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.AuthorizationRoles.Where(m => m.Name == model.AuthorizationRole.Name).FirstOrDefault();
+                var existing = Database.AuthorizationRoles.Where(m => m.Name == model.Name).FirstOrDefault();
                 if (existing == null)
                 {
-                    var roleId = UserService.CreateAuthorizationRole(Database, model.AuthorizationRole);
+                    var roleId = UserService.CreateAuthorizationRole(Database, model.Name);
 
                     return RedirectToAction(MVC.Config.AuthorizationRole.Index(roleId));
                 }

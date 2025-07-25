@@ -6,16 +6,20 @@
 <div id="DeviceDetailTab-Certificates" class="DevicePart">
     <div class="genericData certificateTable">
         @if (Model.Certificates.Count() > 0)
-        { 
+        {
             <table class="genericData certificateTable">
                 <tr>
-                    <th>Name
+                    <th>
+                        Name
                     </th>
-                    <th>Enabled
+                    <th>
+                        Enabled
                     </th>
-                    <th>Allocated
+                    <th>
+                        Allocated
                     </th>
-                    <th>Expires
+                    <th>
+                        Expires
                     </th>
                 </tr>
                 @foreach (var item in Model.Certificates)
@@ -24,7 +28,7 @@
                         <td>
                             @if (hasDownloadCert)
                             {
-                                @Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id))
+                                <a href="#" class="certificateDownload" data-id="@item.Id">@item.Name</a>
                             }
                             else
                             {
@@ -43,9 +47,28 @@
                     </tr>
                 }
             </table>
+            if (hasDownloadCert)
+            {
+                using (Html.BeginForm(MVC.API.DeviceCertificate.Download()))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" />
+                }
+                <script>
+                    $(function () {
+                        $('#DeviceDetailTab-Certificates').on('click', '.certificateDownload', function (e) {
+                            e.preventDefault();
+                            const form = $('#DeviceDetailTab-Certificates').find('form');
+                            form.find('input[name="id"]').val($(this).attr('data-id'));
+                            form.trigger('submit');
+                            return false;
+                        })
+                    })
+                </script>
+            }
         }
         else
-        { 
+        {
             <span class="smallMessage">No Certificates Allocated</span>
         }
     </div>

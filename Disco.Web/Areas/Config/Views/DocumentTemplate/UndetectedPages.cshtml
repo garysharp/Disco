@@ -6,7 +6,14 @@
     Html.BundleDeferred("~/ClientScripts/Modules/Knockout");
     Html.BundleDeferred("~/ClientScripts/Modules/jQuery-SignalR");
 }
-<div id="undetectedPagesContainer">
+<div id="undetectedPagesContainer"
+     data-urlundetectedfiles="@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFiles()))"
+     data-urlundetectedpagethumbnail="@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, true))))"
+     data-urlundetectedpagepreview="@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, false))))"
+     data-urlundetectedpagesource="@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, true, false))))"
+     data-urldataidlookupservice="@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDataIdLookup()))/"
+     data-urlimporterundetectedassign="@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedAssign()))/"
+     data-urlimporterundetecteddelete="@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()))">
     <div id="noUndetectedPages" data-bind="visible: noUndetectedPages">
         <h3>No Undetected Pages</h3>
     </div>
@@ -27,8 +34,8 @@
     <div class="actions">
         Type: @Html.DropDownList("dialogDocumentTemplateId", Model.DocumentTemplatesSelectListItems, new Dictionary<string, object> { { "data-bind", "value: dialogTemplateId" } })
         Data:
-        <input id="dialogDataId" type="text" data-bind="value: dialogDataId, autocomplete: { source: dialogDataIdService, minLength: 3, position: { my: 'left bottom', at: 'left top' } }" />
-        <a href="#" class="button" id="dialogAssignButton" data-bind="click: assignPage">Assign</a>
+        <input id="dialogDataId" type="text" data-bind="value: dialogDataId, autocomplete: { source: dialogDataIdService, minLength: 2, position: { my: 'left bottom', at: 'left top' } }" />
+        <button type="button" class="button" id="dialogAssignButton" data-bind="click: assignPage">Assign</button>
     </div>
 </div>
 <div id="dialogRemove" title="Delete this Page?">
@@ -61,14 +68,16 @@
 <script type="text/javascript">
     $(function () {
 
-        var vm;
-        var urlUndetectedPageThumbnail = '@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, true))))';
-        var urlUndetectedPagePreview = '@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, false))))';
-        var urlUndetectedPageSource = '@(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, true, false))))';
-        var urlDataIdLookupService = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDataIdLookup()))/';
-        var urlImporterUndetectedAssign = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedAssign()))/';
-        var urlImporterUndetectedDelete = '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()))/';
-        var $undetectedPageDialog = $('#undetectedPageDialog').dialog({
+        const vm = new pageViewModel();
+        const $undetectedPagesContainer = $(undetectedPagesContainer);
+        const urlUndetectedFiles = $undetectedPagesContainer.attr('data-urlundetectedfiles');
+        const urlUndetectedPageThumbnail = $undetectedPagesContainer.attr('data-urlundetectedpagethumbnail');
+        const urlUndetectedPagePreview = $undetectedPagesContainer.attr('data-urlundetectedpagepreview');
+        const urlUndetectedPageSource = $undetectedPagesContainer.attr('data-urlundetectedpagesource');
+        const urlDataIdLookupService = $undetectedPagesContainer.attr('data-urldataidlookupservice');
+        const urlImporterUndetectedAssign = $undetectedPagesContainer.attr('data-urlimporterundetectedassign');
+        const urlImporterUndetectedDelete = $undetectedPagesContainer.attr('data-urlimporterundetecteddelete');
+        const $undetectedPageDialog = $('#undetectedPageDialog').dialog({
             modal: true,
             width: 800,
             resizable: false,
@@ -134,31 +143,32 @@
                 return urlDataIdLookupService + self.dialogTemplateId();
             });
             self.deletePage = function () {
-                $undetectedPageDialog.dialog('option', 'disabled', true);
-
                 $dialogRemove.dialog('option', 'buttons', {
                     "Remove": function () {
                         $dialogRemove.dialog("close");
-                        var data = { id: self.id };
-                        $.ajax({
-                            url: urlImporterUndetectedDelete,
-                            dataType: 'json',
-                            data: data,
-                            type: 'POST',
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    vm.selectNextPage();
-                                    vm.undetectedPages.remove(self);
-                                } else {
-                                    alert('Unable to delete page: ' + d);
+
+                        async function removeAsync() {
+
+                            const body = new FormData();
+                            body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                            body.append('id', self.id);
+
+                            try {
+                                const response = await fetch(urlImporterUndetectedDelete, {
+                                    method: 'POST',
+                                    body: body
+                                });
+                                if (!response.ok) {
+                                    alert('Unable to delete page: ' + response.statusText);
+                                    return;
                                 }
-                                $undetectedPageDialog.dialog('option', 'disabled', false);
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to delete page: ' + errorThrown);
-                                $undetectedPageDialog.dialog('option', 'disabled', false);
+                                vm.selectNextPage();
+                                vm.undetectedPages.remove(self);
+                            } catch (e) {
+                                alert('Unable to delete page: ' + e);
                             }
-                        });
+                        }
+                        removeAsync(self.id);
                     },
                     "Cancel": function () {
                         $dialogRemove.dialog("close");
@@ -170,55 +180,52 @@
 
                 return false;
             }
-            self.assignPage = function () {
+            self.assignPage = async function () {
                 var dtId = self.dialogTemplateId();
                 var dId = self.dialogDataId();
                 if (!dtId || !dId) {
                     alert('Please specify a valid Document Type and Data Id');
                 } else {
-                    $undetectedPageDialog.dialog('option', 'disabled', true);
+                    const body = new FormData();
+                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                    body.append('id', self.id);
+                    body.append('documentTemplateId', dtId);
+                    body.append('dataId', dId);
 
-                    var data = { id: self.id, DocumentTemplateId: dtId, DataId: dId };
-
-                    $.ajax({
-                        url: urlImporterUndetectedAssign,
-                        dataType: 'json',
-                        data: data,
-                        type: 'POST',
-                        success: function (d) {
-                            if (d == 'OK') {
-                                vm.selectNextPage();
-                                vm.undetectedPages.remove(self);
-                            } else {
-                                alert('Unable to assign page: ' + d);
-                            }
-                            $undetectedPageDialog.dialog('option', 'disabled', false);
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to assign page: ' + errorThrown);
-                            $undetectedPageDialog.dialog('option', 'disabled', false);
+                    try {
+                        const response = await fetch(urlImporterUndetectedAssign, {
+                            method: 'POST',
+                            body: body
+                        });
+                        if (response.ok) {
+                            vm.selectNextPage();
+                            vm.undetectedPages.remove(self);
+                        } else {
+                            alert('Unable to assign page: ' + response.statusText);
                         }
-                    });
-
+                    } catch (e) {
+                        alert('Unable to assign page: ' + e);
+                    }
                 }
                 return false;
             };
         }
 
-        function init() {
-            vm = new pageViewModel();
-
-            $.ajax({
-                url: '@(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFiles()))',
-                dataType: 'json',
-                type: 'POST',
-                success: init_loadedContent,
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to load content: ' + errorThrown);
-                }
+        async function init() {
+            const body = new FormData();
+            body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+            const response = await fetch(urlUndetectedFiles, {
+                method: 'POST',
+                body: body
             });
-        }
-        function init_loadedContent(content) {
+
+            if (!response.ok) {
+                alert('Unable to load content: ' + response.statusText);
+                return;
+            }
+
+            const content = await response.json();
+
             if (content.length > 0) {
                 for (var i = 0; i < content.length; i++) {
                     var c = content[i];
@@ -228,9 +235,7 @@
             }
 
             ko.applyBindings(vm);
-            init_loadedOpen();
-        }
-        function init_loadedOpen() {
+
             var fileId = window.location.hash;
             if (fileId) {
                 fileId = fileId.substr(1);
@@ -243,7 +248,7 @@
                 }
             }
         }
-        init();
 
+        init();
     });
 </script>

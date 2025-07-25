@@ -19,6 +19,7 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class SystemController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.System.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateLastNetworkLogonDates()
         {
             var taskStatus = ADNetworkLogonDatesUpdateTask.ScheduleImmediately();
@@ -27,6 +28,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.DiscoAdminAccount)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAttachmentThumbnails()
         {
             var ts = Disco.Services.Documents.AttachmentImport.ThumbnailUpdateTask.ScheduleImmediately();
@@ -35,6 +37,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.DiscoAdminAccount)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateADDeviceDescriptions()
         {
             var ts = ADDeviceDescriptionUpdateTask.ScheduleImmediately();
@@ -63,6 +66,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.System.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateCheck()
         {
             var ts = UpdateQueryTask.ScheduleNow();
@@ -70,7 +74,8 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(ts.SessionId));
         }
 
-        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.System.Show)]
+        [DiscoAuthorize(Claims.Config.System.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult OnlineServicesConnectStart()
         {
             OnlineServicesConnect.QueueStart();
@@ -82,6 +87,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Organisation Name
         [DiscoAuthorize(Claims.Config.Organisation.ConfigureName)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOrganisationName(string OrganisationName, bool redirect = false)
         {
             if (string.IsNullOrWhiteSpace(OrganisationName))
@@ -96,7 +102,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
         #endregion
 
@@ -117,7 +123,8 @@ namespace Disco.Web.Areas.API.Controllers
                 }
             }
         }
-        [DiscoAuthorize(Claims.Config.Organisation.ConfigureLogo), HttpPost]
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureLogo)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult OrganisationLogo(bool redirect, HttpPostedFileBase Image, bool? ResetLogo = null)
         {
             if (ResetLogo.HasValue && ResetLogo.Value)
@@ -127,7 +134,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Config.Organisation.Index());
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
 
             if (Image != null && Image.ContentLength > 0)
@@ -139,25 +146,26 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Config.Organisation.Index());
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
                     if (redirect)
                         return RedirectToAction(MVC.Config.Organisation.Index());
                     else
-                        return Json("Invalid Content Type", JsonRequestBehavior.AllowGet);
+                        return BadRequest("Invalid Content Type");
                 }
             }
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());
             else
-                return Json("No Image Supplied", JsonRequestBehavior.AllowGet);
+                return BadRequest("No Image Supplied");
         }
         #endregion
 
         #region Organisation Addresses
-        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOrganisationAddress(Disco.Models.BI.Config.OrganisationAddress organisationAddress, bool redirect = false)
         {
             if (organisationAddress == null)
@@ -171,7 +179,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Config.Organisation.Index());
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             else
             {
@@ -193,7 +201,8 @@ namespace Disco.Web.Areas.API.Controllers
                     return Json(em.ToString(), JsonRequestBehavior.AllowGet);
             }
         }
-        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
+        [DiscoAuthorize(Claims.Config.Organisation.ConfigureAddresses)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DeleteOrganisationAddress(int id, bool redirect = false)
         {
             // Remove References in Device Profiles
@@ -207,7 +216,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         #endregion
@@ -215,6 +224,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region MultiSiteMode
 
         [DiscoAuthorize(Claims.Config.Organisation.ConfigureMultiSiteMode)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateMultiSiteMode(bool MultiSiteMode, bool redirect = false)
         {
             Database.DiscoConfiguration.MultiSiteMode = MultiSiteMode;
@@ -226,7 +236,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.Organisation.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         #endregion
@@ -236,6 +246,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Active Directory
 
         [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateActiveDirectorySearchScope(List<string> Containers, bool redirect = false)
         {
             ActiveDirectory.Context.UpdateSearchContainers(Database, Containers);
@@ -244,10 +255,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.SystemConfig.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateActiveDirectorySearchAllServers(bool SearchAllServers, bool redirect = false)
         {
             try
@@ -268,18 +280,19 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Config.SystemConfig.Index());
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Config.System.ConfigureActiveDirectory)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateActiveDirectorySearchWildcardSuffixOnly(bool SearchWildcardSuffixOnly, bool redirect = false)
         {
             ActiveDirectory.Context.UpdateWildcardSearchSuffixOnly(Database, SearchWildcardSuffixOnly);
@@ -289,7 +302,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.SystemConfig.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorizeAny(Claims.Config.System.ConfigureActiveDirectory, Claims.Config.DeviceProfile.Configure)]
@@ -341,7 +354,8 @@ namespace Disco.Web.Areas.API.Controllers
                 return Json(Models.Shared.SubjectDescriptorModel.FromActiveDirectoryObject(subject), JsonRequestBehavior.AllowGet);
         }
 
-        [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure)]
+        [DiscoAuthorizeAny(Claims.Config.UserFlag.Configure, Claims.Config.DeviceFlag.Configure, Claims.Config.DeviceProfile.Configure, Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult SyncActiveDirectoryManagedGroup(string id, string redirectUrl = null)
         {
 
@@ -361,6 +375,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Proxy Settings
 
         [DiscoAuthorize(Claims.Config.System.ConfigureProxy)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateProxySettings(string ProxyAddress, int? ProxyPort, string ProxyUsername, string ProxyPassword, bool redirect = false)
         {
             // Default Proxy Port
@@ -387,14 +402,15 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.SystemConfig.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         #endregion
 
         #region Email Settings
 
-        [DiscoAuthorize(Claims.Config.System.ConfigureEmail), ValidateInput(false), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.System.ConfigureEmail), ValidateInput(false)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateEmailSettings(string SmtpServer, int? SmtpPort, string FromAddress, string ReplyToAddress, bool EnableSsl, string Username, string Password, bool redirect = false)
         {
             // Default Port
@@ -419,10 +435,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.SystemConfig.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
-        [DiscoAuthorize(Claims.Config.System.ConfigureEmail), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.System.ConfigureEmail)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult SendTestEmail(string Recipient, bool redirect = false)
         {
             if (string.IsNullOrWhiteSpace(Recipient))
@@ -433,7 +450,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.SystemConfig.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         #endregion

@@ -78,7 +78,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 11 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)))
         {
             if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
             {
@@ -314,17 +314,17 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUsers\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2917), Tuple.Create("\"", 2973)
+WriteAttribute("title", Tuple.Create(" title=\"", 2900), Tuple.Create("\"", 2956)
             
             #line 62 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                    , Tuple.Create(Tuple.Create("", 2925), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                    , Tuple.Create(Tuple.Create("", 2908), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 2925), false)
-, Tuple.Create(Tuple.Create("", 2962), Tuple.Create(":", 2962), true)
-, Tuple.Create(Tuple.Create(" ", 2963), Tuple.Create("Add", 2964), true)
-, Tuple.Create(Tuple.Create(" ", 2967), Tuple.Create("Users", 2968), true)
+, 2908), false)
+, Tuple.Create(Tuple.Create("", 2945), Tuple.Create(":", 2945), true)
+, Tuple.Create(Tuple.Create(" ", 2946), Tuple.Create("Add", 2947), true)
+, Tuple.Create(Tuple.Create(" ", 2950), Tuple.Create("Users", 2951), true)
 );
 
 WriteLiteral(">\r\n    <div");
@@ -396,7 +396,7 @@ WriteLiteral("\\rsmith;Domain Admins</div>\r\n        </div>\r\n    </div>\r\n")
             #line hidden
             
             #line 82 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-     using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUsers(), FormMethod.Post))
+     using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUsers()))
     {
 
             
@@ -451,18 +451,18 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4437), Tuple.Create("\"", 4501)
+WriteAttribute("title", Tuple.Create(" title=\"", 4403), Tuple.Create("\"", 4467)
             
             #line 90 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                           , Tuple.Create(Tuple.Create("", 4445), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                           , Tuple.Create(Tuple.Create("", 4411), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 4445), false)
-, Tuple.Create(Tuple.Create("", 4482), Tuple.Create(":", 4482), true)
-, Tuple.Create(Tuple.Create(" ", 4483), Tuple.Create("Add", 4484), true)
-, Tuple.Create(Tuple.Create(" ", 4487), Tuple.Create("Group", 4488), true)
-, Tuple.Create(Tuple.Create(" ", 4493), Tuple.Create("Members", 4494), true)
+, 4411), false)
+, Tuple.Create(Tuple.Create("", 4448), Tuple.Create(":", 4448), true)
+, Tuple.Create(Tuple.Create(" ", 4449), Tuple.Create("Add", 4450), true)
+, Tuple.Create(Tuple.Create(" ", 4453), Tuple.Create("Group", 4454), true)
+, Tuple.Create(Tuple.Create(" ", 4459), Tuple.Create("Members", 4460), true)
 );
 
 WriteLiteral(">\r\n    <div");
@@ -480,7 +480,7 @@ WriteLiteral(">\r\n        <div>\r\n            Add all members of a group (incl
             #line hidden
             
             #line 96 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-     using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers(), FormMethod.Post))
+     using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers()))
     {
 
             
@@ -555,19 +555,19 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUserFlag\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5539), Tuple.Create("\"", 5611)
+WriteAttribute("title", Tuple.Create(" title=\"", 5488), Tuple.Create("\"", 5560)
             
             #line 116 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                           , Tuple.Create(Tuple.Create("", 5547), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                           , Tuple.Create(Tuple.Create("", 5496), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 5547), false)
-, Tuple.Create(Tuple.Create("", 5584), Tuple.Create(":", 5584), true)
-, Tuple.Create(Tuple.Create(" ", 5585), Tuple.Create("Add", 5586), true)
-, Tuple.Create(Tuple.Create(" ", 5589), Tuple.Create("User", 5590), true)
-, Tuple.Create(Tuple.Create(" ", 5594), Tuple.Create("Flag", 5595), true)
-, Tuple.Create(Tuple.Create(" ", 5599), Tuple.Create("Assignments", 5600), true)
+, 5496), false)
+, Tuple.Create(Tuple.Create("", 5533), Tuple.Create(":", 5533), true)
+, Tuple.Create(Tuple.Create(" ", 5534), Tuple.Create("Add", 5535), true)
+, Tuple.Create(Tuple.Create(" ", 5538), Tuple.Create("User", 5539), true)
+, Tuple.Create(Tuple.Create(" ", 5543), Tuple.Create("Flag", 5544), true)
+, Tuple.Create(Tuple.Create(" ", 5548), Tuple.Create("Assignments", 5549), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -585,7 +585,7 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
             #line hidden
             
             #line 122 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag()))
         {
 
             
@@ -621,15 +621,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6097), Tuple.Create("\"", 6148)
-, Tuple.Create(Tuple.Create("", 6105), Tuple.Create("item", 6105), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6029), Tuple.Create("\"", 6080)
+, Tuple.Create(Tuple.Create("", 6037), Tuple.Create("item", 6037), true)
             
             #line 128 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 6109), Tuple.Create<System.Object, System.Int32>(flag.Count == 0 ? "disabled" : null
+, Tuple.Create(Tuple.Create(" ", 6041), Tuple.Create<System.Object, System.Int32>(flag.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 6110), false)
+, 6042), false)
 );
 
 WriteLiteral(" data-userflagid=\"");
@@ -645,26 +645,26 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6210), Tuple.Create("\"", 6279)
-, Tuple.Create(Tuple.Create("", 6218), Tuple.Create("fa", 6218), true)
-, Tuple.Create(Tuple.Create(" ", 6220), Tuple.Create("fa-", 6221), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6142), Tuple.Create("\"", 6211)
+, Tuple.Create(Tuple.Create("", 6150), Tuple.Create("fa", 6150), true)
+, Tuple.Create(Tuple.Create(" ", 6152), Tuple.Create("fa-", 6153), true)
             
             #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create("", 6224), Tuple.Create<System.Object, System.Int32>(flag.Item.Icon
+, Tuple.Create(Tuple.Create("", 6156), Tuple.Create<System.Object, System.Int32>(flag.Item.Icon
             
             #line default
             #line hidden
-, 6224), false)
-, Tuple.Create(Tuple.Create(" ", 6241), Tuple.Create("fa-fw", 6242), true)
-, Tuple.Create(Tuple.Create(" ", 6247), Tuple.Create("fa-lg", 6248), true)
-, Tuple.Create(Tuple.Create(" ", 6253), Tuple.Create("d-", 6254), true)
+, 6156), false)
+, Tuple.Create(Tuple.Create(" ", 6173), Tuple.Create("fa-fw", 6174), true)
+, Tuple.Create(Tuple.Create(" ", 6179), Tuple.Create("fa-lg", 6180), true)
+, Tuple.Create(Tuple.Create(" ", 6185), Tuple.Create("d-", 6186), true)
             
             #line 129 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create("", 6256), Tuple.Create<System.Object, System.Int32>(flag.Item.IconColour
+, Tuple.Create(Tuple.Create("", 6188), Tuple.Create<System.Object, System.Int32>(flag.Item.IconColour
             
             #line default
             #line hidden
-, 6256), false)
+, 6188), false)
 );
 
 WriteLiteral("></i>");
@@ -752,21 +752,21 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddDeviceProfile\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6673), Tuple.Create("\"", 6755)
+WriteAttribute("title", Tuple.Create(" title=\"", 6605), Tuple.Create("\"", 6687)
             
             #line 141 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                                , Tuple.Create(Tuple.Create("", 6681), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                                , Tuple.Create(Tuple.Create("", 6613), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 6681), false)
-, Tuple.Create(Tuple.Create("", 6718), Tuple.Create(":", 6718), true)
-, Tuple.Create(Tuple.Create(" ", 6719), Tuple.Create("Add", 6720), true)
-, Tuple.Create(Tuple.Create(" ", 6723), Tuple.Create("User", 6724), true)
-, Tuple.Create(Tuple.Create(" ", 6728), Tuple.Create("by", 6729), true)
-, Tuple.Create(Tuple.Create(" ", 6731), Tuple.Create("Assigned", 6732), true)
-, Tuple.Create(Tuple.Create(" ", 6740), Tuple.Create("Device", 6741), true)
-, Tuple.Create(Tuple.Create(" ", 6747), Tuple.Create("Profile", 6748), true)
+, 6613), false)
+, Tuple.Create(Tuple.Create("", 6650), Tuple.Create(":", 6650), true)
+, Tuple.Create(Tuple.Create(" ", 6651), Tuple.Create("Add", 6652), true)
+, Tuple.Create(Tuple.Create(" ", 6655), Tuple.Create("User", 6656), true)
+, Tuple.Create(Tuple.Create(" ", 6660), Tuple.Create("by", 6661), true)
+, Tuple.Create(Tuple.Create(" ", 6663), Tuple.Create("Assigned", 6664), true)
+, Tuple.Create(Tuple.Create(" ", 6672), Tuple.Create("Device", 6673), true)
+, Tuple.Create(Tuple.Create(" ", 6679), Tuple.Create("Profile", 6680), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -785,7 +785,7 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
             #line hidden
             
             #line 147 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile()))
         {
 
             
@@ -821,15 +821,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 7287), Tuple.Create("\"", 7341)
-, Tuple.Create(Tuple.Create("", 7295), Tuple.Create("item", 7295), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 7202), Tuple.Create("\"", 7256)
+, Tuple.Create(Tuple.Create("", 7210), Tuple.Create("item", 7210), true)
             
             #line 153 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 7299), Tuple.Create<System.Object, System.Int32>(profile.Count == 0 ? "disabled" : null
+, Tuple.Create(Tuple.Create(" ", 7214), Tuple.Create<System.Object, System.Int32>(profile.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 7300), false)
+, 7215), false)
 );
 
 WriteLiteral(" data-id=\"");
@@ -931,21 +931,21 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddDeviceBatch\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 7825), Tuple.Create("\"", 7905)
+WriteAttribute("title", Tuple.Create(" title=\"", 7740), Tuple.Create("\"", 7820)
             
             #line 165 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                              , Tuple.Create(Tuple.Create("", 7833), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                              , Tuple.Create(Tuple.Create("", 7748), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 7833), false)
-, Tuple.Create(Tuple.Create("", 7870), Tuple.Create(":", 7870), true)
-, Tuple.Create(Tuple.Create(" ", 7871), Tuple.Create("Add", 7872), true)
-, Tuple.Create(Tuple.Create(" ", 7875), Tuple.Create("User", 7876), true)
-, Tuple.Create(Tuple.Create(" ", 7880), Tuple.Create("by", 7881), true)
-, Tuple.Create(Tuple.Create(" ", 7883), Tuple.Create("Assigned", 7884), true)
-, Tuple.Create(Tuple.Create(" ", 7892), Tuple.Create("Device", 7893), true)
-, Tuple.Create(Tuple.Create(" ", 7899), Tuple.Create("Batch", 7900), true)
+, 7748), false)
+, Tuple.Create(Tuple.Create("", 7785), Tuple.Create(":", 7785), true)
+, Tuple.Create(Tuple.Create(" ", 7786), Tuple.Create("Add", 7787), true)
+, Tuple.Create(Tuple.Create(" ", 7790), Tuple.Create("User", 7791), true)
+, Tuple.Create(Tuple.Create(" ", 7795), Tuple.Create("by", 7796), true)
+, Tuple.Create(Tuple.Create(" ", 7798), Tuple.Create("Assigned", 7799), true)
+, Tuple.Create(Tuple.Create(" ", 7807), Tuple.Create("Device", 7808), true)
+, Tuple.Create(Tuple.Create(" ", 7814), Tuple.Create("Batch", 7815), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -963,7 +963,7 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
             #line hidden
             
             #line 171 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch()))
         {
 
             
@@ -999,15 +999,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 8428), Tuple.Create("\"", 8480)
-, Tuple.Create(Tuple.Create("", 8436), Tuple.Create("item", 8436), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 8326), Tuple.Create("\"", 8378)
+, Tuple.Create(Tuple.Create("", 8334), Tuple.Create("item", 8334), true)
             
             #line 177 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 8440), Tuple.Create<System.Object, System.Int32>(batch.Count == 0 ? "disabled" : null
+, Tuple.Create(Tuple.Create(" ", 8338), Tuple.Create<System.Object, System.Int32>(batch.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 8441), false)
+, 8339), false)
 );
 
 WriteLiteral(" data-id=\"");
@@ -1109,21 +1109,21 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment\"
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 8967), Tuple.Create("\"", 9047)
+WriteAttribute("title", Tuple.Create(" title=\"", 8865), Tuple.Create("\"", 8945)
             
             #line 189 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                                     , Tuple.Create(Tuple.Create("", 8975), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                                     , Tuple.Create(Tuple.Create("", 8873), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 8975), false)
-, Tuple.Create(Tuple.Create("", 9012), Tuple.Create(":", 9012), true)
-, Tuple.Create(Tuple.Create(" ", 9013), Tuple.Create("Add", 9014), true)
-, Tuple.Create(Tuple.Create(" ", 9017), Tuple.Create("User", 9018), true)
-, Tuple.Create(Tuple.Create(" ", 9022), Tuple.Create("by", 9023), true)
-, Tuple.Create(Tuple.Create(" ", 9025), Tuple.Create("Assigned", 9026), true)
-, Tuple.Create(Tuple.Create(" ", 9034), Tuple.Create("Device", 9035), true)
-, Tuple.Create(Tuple.Create(" ", 9041), Tuple.Create("Batch", 9042), true)
+, 8873), false)
+, Tuple.Create(Tuple.Create("", 8910), Tuple.Create(":", 8910), true)
+, Tuple.Create(Tuple.Create(" ", 8911), Tuple.Create("Add", 8912), true)
+, Tuple.Create(Tuple.Create(" ", 8915), Tuple.Create("User", 8916), true)
+, Tuple.Create(Tuple.Create(" ", 8920), Tuple.Create("by", 8921), true)
+, Tuple.Create(Tuple.Create(" ", 8923), Tuple.Create("Assigned", 8924), true)
+, Tuple.Create(Tuple.Create(" ", 8932), Tuple.Create("Device", 8933), true)
+, Tuple.Create(Tuple.Create(" ", 8939), Tuple.Create("Batch", 8940), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -1142,7 +1142,7 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users associated
             #line hidden
             
             #line 195 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment()))
         {
 
             
@@ -1178,15 +1178,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 9606), Tuple.Create("\"", 9661)
-, Tuple.Create(Tuple.Create("", 9614), Tuple.Create("item", 9614), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 9487), Tuple.Create("\"", 9542)
+, Tuple.Create(Tuple.Create("", 9495), Tuple.Create("item", 9495), true)
             
             #line 201 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 9618), Tuple.Create<System.Object, System.Int32>(template.Count == 0 ? "disabled" : null
+, Tuple.Create(Tuple.Create(" ", 9499), Tuple.Create<System.Object, System.Int32>(template.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 9619), false)
+, 9500), false)
 );
 
 WriteLiteral(" data-id=\"");
@@ -1316,19 +1316,19 @@ WriteLiteral(" id=\"DocumentTemplate_BulkGenerate_Dialog_AddUserDetail\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 10517), Tuple.Create("\"", 10582)
+WriteAttribute("title", Tuple.Create(" title=\"", 10398), Tuple.Create("\"", 10463)
             
             #line 217 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-                            , Tuple.Create(Tuple.Create("", 10525), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
+                            , Tuple.Create(Tuple.Create("", 10406), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Description
             
             #line default
             #line hidden
-, 10525), false)
-, Tuple.Create(Tuple.Create("", 10562), Tuple.Create(":", 10562), true)
-, Tuple.Create(Tuple.Create(" ", 10563), Tuple.Create("Add", 10564), true)
-, Tuple.Create(Tuple.Create(" ", 10567), Tuple.Create("User", 10568), true)
-, Tuple.Create(Tuple.Create(" ", 10572), Tuple.Create("by", 10573), true)
-, Tuple.Create(Tuple.Create(" ", 10575), Tuple.Create("Detail", 10576), true)
+, 10406), false)
+, Tuple.Create(Tuple.Create("", 10443), Tuple.Create(":", 10443), true)
+, Tuple.Create(Tuple.Create(" ", 10444), Tuple.Create("Add", 10445), true)
+, Tuple.Create(Tuple.Create(" ", 10448), Tuple.Create("User", 10449), true)
+, Tuple.Create(Tuple.Create(" ", 10453), Tuple.Create("by", 10454), true)
+, Tuple.Create(Tuple.Create(" ", 10456), Tuple.Create("Detail", 10457), true)
 );
 
 WriteLiteral(">\r\n        <div");
@@ -1346,7 +1346,7 @@ WriteLiteral(">\r\n            <div>\r\n                Add all users with a mat
             #line hidden
             
             #line 223 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail()))
         {
 
             
@@ -1401,15 +1401,15 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                    <div");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 11216), Tuple.Create("\"", 11266)
-, Tuple.Create(Tuple.Create("", 11224), Tuple.Create("item", 11224), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 11080), Tuple.Create("\"", 11130)
+, Tuple.Create(Tuple.Create("", 11088), Tuple.Create("item", 11088), true)
             
             #line 231 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create(" ", 11228), Tuple.Create<System.Object, System.Int32>(key.Count == 0 ? "disabled" : null
+, Tuple.Create(Tuple.Create(" ", 11092), Tuple.Create<System.Object, System.Int32>(key.Count == 0 ? "disabled" : null
             
             #line default
             #line hidden
-, 11229), false)
+, 11093), false)
 );
 
 WriteLiteral(" data-id=\"");
@@ -1491,7 +1491,7 @@ WriteLiteral("        ");
 
             
             #line 239 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml"
-         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues()))
         {
 
             

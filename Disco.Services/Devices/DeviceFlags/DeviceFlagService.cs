@@ -45,25 +45,23 @@ namespace Disco.Services.Devices.DeviceFlags
         public static DeviceFlag GetDeviceFlag(int deviceFlagId) { return _cache.GetDeviceFlag(deviceFlagId); }
 
         #region Device Flag Maintenance
-        public static DeviceFlag CreateDeviceFlag(DiscoDataContext database, DeviceFlag deviceFlag)
+        public static DeviceFlag CreateDeviceFlag(DiscoDataContext database, string name, string description)
         {
             // Verify
-            if (string.IsNullOrWhiteSpace(deviceFlag.Name))
-                throw new ArgumentException("The Device Flag Name is required", nameof(deviceFlag));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("The Device Flag Name is required", nameof(name));
 
             // Name Unique
-            if (_cache.GetDeviceFlags().Any(f => f.Name == deviceFlag.Name))
-                throw new ArgumentException("Another Device Flag already exists with that name", nameof(deviceFlag));
+            if (_cache.GetDeviceFlags().Any(f => f.Name.Equals(name, StringComparison.Ordinal)))
+                throw new ArgumentException("Another Device Flag already exists with that name", nameof(name));
 
             // Clone to break reference
             var flag = new DeviceFlag()
             {
-                Name = deviceFlag.Name,
-                Description = deviceFlag.Description,
-                Icon = deviceFlag.Icon,
-                IconColour = deviceFlag.IconColour,
-                DevicesLinkedGroup = deviceFlag.DevicesLinkedGroup,
-                DeviceUsersLinkedGroup = deviceFlag.DeviceUsersLinkedGroup,
+                Name = name,
+                Description = description,
+                Icon = RandomUnusedIcon(),
+                IconColour = RandomUnusedThemeColour(),
             };
 
             database.DeviceFlags.Add(flag);

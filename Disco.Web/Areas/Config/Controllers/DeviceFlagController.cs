@@ -79,14 +79,7 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult Create()
         {
             // Default Queue
-            var m = new CreateModel()
-            {
-                DeviceFlag = new DeviceFlag()
-                {
-                    Icon = DeviceFlagService.RandomUnusedIcon(),
-                    IconColour = DeviceFlagService.RandomUnusedThemeColour()
-                }
-            };
+            var m = new CreateModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDeviceFlagCreateModel>(ControllerContext, m);
@@ -94,16 +87,17 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DeviceFlag.Create, Claims.Config.DeviceFlag.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.DeviceFlag.Create, Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Create(CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.DeviceFlags.Where(m => m.Name == model.DeviceFlag.Name).FirstOrDefault();
+                var existing = Database.DeviceFlags.Where(m => m.Name == model.Name).FirstOrDefault();
                 if (existing == null)
                 {
-                    var flag = DeviceFlagService.CreateDeviceFlag(Database, model.DeviceFlag);
+                    var flag = DeviceFlagService.CreateDeviceFlag(Database, model.Name, model.Description);
 
                     return RedirectToAction(MVC.Config.DeviceFlag.Index(flag.Id));
                 }

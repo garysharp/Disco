@@ -16,6 +16,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pSla = "sla";
         const string pPriority = "priority";
 
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             try
@@ -52,40 +53,45 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return Redirect($"{Url.Action(MVC.Job.Show(jobQueueJob.JobId))}#jobDetailTab-Queues");
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnyComments, Claims.Job.Properties.JobQueueProperties.EditOwnComments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAddedComment(int id, string AddedComment = null, bool? redirect = null)
         {
             return Update(id, pAddedComment, AddedComment, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnyComments, Claims.Job.Properties.JobQueueProperties.EditOwnComments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateRemovedComment(int id, string RemovedComment = null, bool? redirect = null)
         {
             return Update(id, pRemovedComment, RemovedComment, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnySLA, Claims.Job.Properties.JobQueueProperties.EditOwnSLA)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateSla(int id, string SLA = null, bool? redirect = null)
         {
             return Update(id, pSla, SLA, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnyPriority, Claims.Job.Properties.JobQueueProperties.EditOwnPriority)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdatePriority(int id, string Priority = null, bool? redirect = null)
         {
             return Update(id, pPriority, Priority, redirect);
         }
         [DiscoAuthorizeAny(Claims.Job.Properties.JobQueueProperties.EditAnySLA, Claims.Job.Properties.JobQueueProperties.EditOwnSLA,
             Claims.Job.Properties.JobQueueProperties.EditAnyPriority, Claims.Job.Properties.JobQueueProperties.EditOwnPriority)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateSlaAndPriority(int id, string Sla = null, string Priority = null, bool? redirect = null)
         {
             try
@@ -106,14 +112,14 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return Redirect($"{Url.Action(MVC.Job.Show(jobQueueJob.JobId))}#jobDetailTab-Queues");
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
@@ -175,6 +181,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorizeAny(Claims.Job.Actions.AddAnyQueues, Claims.Job.Actions.AddOwnQueues)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AddJob(int id, int JobId, string Comment, int? SLAExpiresMinutes, JobQueuePriority Priority)
         {
             DateTime? SLAExpires = (SLAExpiresMinutes.HasValue && SLAExpiresMinutes.Value > 0) ? DateTime.Now.AddMinutes(SLAExpiresMinutes.Value) : (DateTime?)null;
@@ -197,6 +204,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyQueues, Claims.Job.Actions.RemoveOwnQueues)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult RemoveJob(int id, string Comment, bool? CloseJob = null)
         {
             Database.Configuration.LazyLoadingEnabled = true;

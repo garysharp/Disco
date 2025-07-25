@@ -10,15 +10,18 @@
         Html.BundleDeferred("~/ClientScripts/Modules/jQuery-NumberFormatter");
     }
 }
-<table id="jobComponents">
+<table id="jobComponents" data-addurl="@Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null))" data-removeurl="@Url.Action(MVC.API.Job.ComponentRemove())" data-updateurl="@Url.Action(MVC.API.Job.ComponentUpdate())">
     <tr>
-        <th>Description
+        <th>
+            Description
         </th>
-        <th>Cost
+        <th>
+            Cost
         </th>
         @if (hasEdit)
         {
-            <th class="actions">&nbsp;
+            <th class="actions">
+                &nbsp;
             </th>
         }
     </tr>
@@ -26,31 +29,31 @@
     {
         foreach (var jc in Model.Job.JobComponents)
         {
-        <tr data-jobcomponentid="@jc.Id">
-            <td>
-                <input type="text" class="description" value="@jc.Description" />
-            </td>
-            <td>
-                <input type="text" class="cost" value="@jc.Cost.ToString("C")" />
-            </td>
-            <td>
-                <span class="remove fa fa-times-circle"></span>
-            </td>
-        </tr>
+            <tr data-jobcomponentid="@jc.Id">
+                <td>
+                    <input type="text" class="description" value="@jc.Description" />
+                </td>
+                <td>
+                    <input type="text" class="cost" value="@jc.Cost.ToString("C")" />
+                </td>
+                <td>
+                    <span class="remove fa fa-times-circle"></span>
+                </td>
+            </tr>
         }
     }
     else
     {
         foreach (var jc in Model.Job.JobComponents)
         {
-        <tr data-jobcomponentid="@jc.Id">
-            <td>
-                <span class="description">@jc.Description</span>
-            </td>
-            <td>
-                <span class="cost">@jc.Cost.ToString("C")</span>
-            </td>
-        </tr>
+            <tr data-jobcomponentid="@jc.Id">
+                <td>
+                    <span class="description">@jc.Description</span>
+                </td>
+                <td>
+                    <span class="cost">@jc.Cost.ToString("C")</span>
+                </td>
+            </tr>
         }
     }
 
@@ -62,12 +65,13 @@
             }
             &nbsp;
         </td>
-        <td colspan="@(hasEdit ? 2 : 1)" class="totalCost">Total: <span id="jobComponentsTotalCost">
-            @if (!hasEdit)
-            {
-                @Model.Job.JobComponentsTotalCost().ToString("C")
-            }
-        </span>
+        <td colspan="@(hasEdit ? 2 : 1)" class="totalCost">
+            Total: <span id="jobComponentsTotalCost">
+                @if (!hasEdit)
+                {
+                    @Model.Job.JobComponentsTotalCost().ToString("C")
+                }
+            </span>
         </td>
     </tr>
 </table>
@@ -80,7 +84,7 @@
     </div>
     <script type="text/javascript">
         $(function () {
-            var $jobComponents = $('#jobComponents');
+            const $jobComponents = $('#jobComponents');
 
             $jobComponents.on('change', 'input', updateComponent);
             $jobComponents.on('focus', 'input', function () { $(this).select() });
@@ -89,7 +93,7 @@
             $jobComponents.on('click', 'span.remove', removeComponent);
 
             $('#jobComponentsAdd').click(function () {
-                var jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove fa fa-times-circle"></span></td></tr>');
+                const jc = $('<tr><td><input type="text" class="description" /></td><td><input type="text" class="cost" /></td><td><span class="remove fa fa-times-circle"></span></td></tr>');
                 jc.find('input').focus(function () { $(this).select() })
                 jc.insertBefore($jobComponents.find('tr').last());
                 jc.find('input.description').focus();
@@ -104,35 +108,36 @@
             });
 
             function removeComponent() {
-                var componentRow = $(this).closest('tr');
-                var id = componentRow.attr('data-jobcomponentid');
+                const componentRow = $(this).closest('tr');
+                const id = componentRow.attr('data-jobcomponentid');
                 if (id) {
-                    var data = { id: id };
-
                     var $dialogRemoveComponent = $('#dialogRemoveComponent');
                     $dialogRemoveComponent.dialog("enable");
                     $dialogRemoveComponent.dialog('option', 'buttons', {
                         "Remove": function () {
                             $dialogRemoveComponent.dialog("disable");
                             $dialogRemoveComponent.dialog("option", "buttons", null);
-                            $.ajax({
-                                url: '@Url.Action(MVC.API.Job.ComponentRemove())',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d == 'OK') {
-                                        componentRow.remove();
-                                        updateTotalCost();
-                                    } else {
-                                        alert('Unable to remove component: ' + d);
-                                    }
-                                    $dialogRemoveComponent.dialog("close");
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to remove component: ' + textStatus);
-                                    $dialogRemoveComponent.dialog("close");
+
+                            async function removeComponentAsync(id) {
+
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('id', id);
+
+                                const response = await fetch($jobComponents.attr('data-removeurl'), {
+                                    method: 'POST',
+                                    body: body
+                                });
+
+                                if (response.ok) {
+                                    componentRow.remove();
+                                    updateTotalCost();
+                                } else {
+                                    alert('Unable to remove component: ' + response.statusText);
                                 }
-                            });
+                                $dialogRemoveComponent.dialog("close");
+                            }
+                            removeComponentAsync(id);
                         },
                         Cancel: function () {
                             $dialogRemoveComponent.dialog("close");
@@ -167,55 +172,58 @@
                 var id = componentRow.attr('data-jobcomponentid');
                 if (id) {
                     // Update
-                    var data = {
-                        id: id,
-                        Description: componentRow.find('input.description').val(),
-                        Cost: componentRow.find('input.cost').val()
-                    };
-                    $.ajax({
-                        url: '@Url.Action(MVC.API.Job.ComponentUpdate())',
-                        dataType: 'json',
-                        data: data,
-                        success: function (d) {
-                            componentRow.find('input').attr('disabled', false).removeClass('updating');
-                            if (d.Result == 'OK') {
-                                componentRow.find('input.description').val(d.Component.Description);
-                                componentRow.find('input.cost').val(d.Component.Cost);
-                            } else {
-                                alert('Unable to update component: ' + d.Result);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to update component: ' + textStatus);
+                    async function updateComponentAsync(id, description, cost) {
+                        const body = new FormData();
+                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                        body.append('id', id);
+                        body.append('description', description);
+                        body.append('cost', cost);
+
+                        const response = await fetch($jobComponents.attr('data-updateurl'), {
+                            method: 'POST',
+                            body: body
+                        });
+
+                        componentRow.find('input').attr('disabled', false).removeClass('updating');
+
+                        if (response.ok) {
+                            const component = await response.json();
+                            componentRow.find('input.description').val(component.Description);
+                            componentRow.find('input.cost').val(component.Cost);
+                        } else {
+                            alert('Unable to update component: ' + response.statusText);
                         }
-                    });
+                        updateTotalCost();
+                    }
+
+                    updateComponentAsync(id, componentRow.find('input.description').val(), componentRow.find('input.cost').val());
                 } else {
                     // Add
-                    var data = {
-                        id: id,
-                        Description: componentRow.find('input.description').val(),
-                        Cost: componentRow.find('input.cost').val()
-                    };
-                    $.ajax({
-                        url: '@Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null))',
-                        dataType: 'json',
-                        data: data,
-                        success: function (d) {
-                            componentRow.find('input').attr('disabled', false).removeClass('updating');
-                            if (d.Result == 'OK') {
-                                componentRow.attr('data-jobcomponentid', d.Component.Id);
-                                componentRow.find('input.description').val(d.Component.Description);
-                                componentRow.find('input.cost').val(d.Component.Cost);
-                            } else {
-                                alert('Unable to add component: ' + d.Result);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to add component: ' + textStatus);
+                    async function addComponentAsync(description, cost) {
+                        const body = new FormData();
+                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                        body.append('description', description);
+                        body.append('cost', cost);
+
+                        const response = await fetch($jobComponents.attr('data-addurl'), {
+                            method: 'POST',
+                            body: body
+                        });
+
+                        componentRow.find('input').attr('disabled', false).removeClass('updating');
+
+                        if (response.ok) {
+                            const component = await response.json();
+                            componentRow.attr('data-jobcomponentid', component.Id);
+                            componentRow.find('input.description').val(component.Description);
+                            componentRow.find('input.cost').val(component.Cost);
+                        } else {
+                            alert('Unable to add component: ' + response.statusText);
                         }
-                    });
+                        updateTotalCost();
+                    }
+                    addComponentAsync(componentRow.find('input.description').val(), componentRow.find('input.cost').val())
                 }
-                updateTotalCost();
             }
             updateTotalCost();
 

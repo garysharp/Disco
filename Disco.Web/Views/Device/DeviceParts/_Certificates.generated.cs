@@ -73,7 +73,7 @@ WriteLiteral(">\r\n");
             
             #line 8 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
          if (Model.Certificates.Count() > 0)
-        { 
+        {
 
             
             #line default
@@ -84,25 +84,29 @@ WriteLiteral(" class=\"genericData certificateTable\"");
 
 WriteLiteral(@">
                 <tr>
-                    <th>Name
+                    <th>
+                        Name
                     </th>
-                    <th>Enabled
+                    <th>
+                        Enabled
                     </th>
-                    <th>Allocated
+                    <th>
+                        Allocated
                     </th>
-                    <th>Expires
+                    <th>
+                        Expires
                     </th>
                 </tr>
 ");
 
             
-            #line 21 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 25 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 21 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 25 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                  foreach (var item in Model.Certificates)
                 {
 
@@ -112,29 +116,49 @@ WriteLiteral(@">
 WriteLiteral("                    <tr>\r\n                        <td>\r\n");
 
             
-            #line 25 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 29 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 25 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 29 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                              if (hasDownloadCert)
                             {
-                                
-            
-            #line default
-            #line hidden
-            
-            #line 27 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
-                           Write(Html.ActionLink(item.Name, MVC.API.DeviceCertificate.Download(item.Id)));
 
             
             #line default
             #line hidden
+WriteLiteral("                                <a");
+
+WriteLiteral(" href=\"#\"");
+
+WriteLiteral(" class=\"certificateDownload\"");
+
+WriteLiteral(" data-id=\"");
+
             
-            #line 27 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
-                                                                                                        
+            #line 31 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+                                                                            Write(item.Id);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">");
+
+            
+            #line 31 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+                                                                                      Write(item.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</a>\r\n");
+
+            
+            #line 32 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                             }
                             else
                             {
@@ -143,14 +167,14 @@ WriteLiteral("                    <tr>\r\n                        <td>\r\n");
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 35 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                            Write(item.Name);
 
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 35 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                                           
                             }
 
@@ -162,7 +186,7 @@ WriteLiteral("                        </td>\r\n                        <td>\r\n"
 WriteLiteral("                            ");
 
             
-            #line 35 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 39 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                        Write(item.Enabled);
 
             
@@ -173,7 +197,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                            ");
 
             
-            #line 38 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 42 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                        Write(CommonHelpers.FriendlyDate(item.AllocatedDate));
 
             
@@ -184,7 +208,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                            ");
 
             
-            #line 41 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 45 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                        Write(CommonHelpers.FriendlyDate(item.ExpirationDate));
 
             
@@ -193,7 +217,7 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n");
 
             
-            #line 44 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 48 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                 }
 
             
@@ -202,10 +226,63 @@ WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n
 WriteLiteral("            </table>\r\n");
 
             
-            #line 46 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 50 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            if (hasDownloadCert)
+            {
+                using (Html.BeginForm(MVC.API.DeviceCertificate.Download()))
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 54 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+               Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 54 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+                                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"id\"");
+
+WriteLiteral(" />\r\n");
+
+            
+            #line 56 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                <script>
+                    $(function () {
+                        $('#DeviceDetailTab-Certificates').on('click', '.certificateDownload', function (e) {
+                            e.preventDefault();
+                            const form = $('#DeviceDetailTab-Certificates').find('form');
+                            form.find('input[name=""id""]').val($(this).attr('data-id'));
+                            form.trigger('submit');
+                            return false;
+                        })
+                    })
+                </script>
+");
+
+            
+            #line 68 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            }
         }
         else
-        { 
+        {
 
             
             #line default
@@ -217,7 +294,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Certificates Allocated</span>\r\n");
 
             
-            #line 50 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 73 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
         }
 
             
@@ -227,7 +304,7 @@ WriteLiteral("    </div>\r\n    <script>\r\n        $(\'#DeviceDetailTabItems\')
 "\"#DeviceDetailTab-Certificates\">Certificates [");
 
             
-            #line 53 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
+            #line 76 "..\..\Views\Device\DeviceParts\_Certificates.cshtml"
                                                                                                  Write(Model.Certificates.Count);
 
             

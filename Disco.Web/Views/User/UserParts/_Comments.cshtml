@@ -6,7 +6,6 @@
     var canRemoveOwnComments = Authorization.Has(Claims.User.Actions.RemoveOwnComments);
 }
 <div id="Comments" class="@(canAddComments ? "canAddComments" : "cannotAddComments") @(canRemoveAnyComments ? "canRemoveAnyComments" : "cannotRemoveAnyComments") @(canRemoveOwnComments ? "canRemoveOwnComments" : "cannotRemoveOwnComments")" data-id="@Model.User.UserId" data-userid="@CurrentUser.UserId" data-addurl="@Url.Action(MVC.API.User.CommentAdd(Model.User.UserId))" data-removeurl="@Url.Action(MVC.API.User.CommentRemove())" data-geturl="@Url.Action(MVC.API.User.Comment())">
-    @Html.AntiForgeryToken()
     @if (canAddComments)
     {
         <div class="commentInput">
@@ -48,7 +47,7 @@
         }
         async function onCommentAddedAsync(id) {
             const formData = new FormData();
-            formData.append('__RequestVerificationToken', $comments.find('input[name="__RequestVerificationToken"]').val());
+            formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
             formData.append('id', id);
 
             const response = await fetch($comments.attr('data-geturl'), {
@@ -136,7 +135,7 @@
                 $commentInput.prop('disabled', true);
 
                 const formData = new FormData();
-                formData.append('__RequestVerificationToken', $comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                 formData.append('comment', comment);
 
                 const response = await fetch($comments.attr('data-addurl'), {
@@ -194,7 +193,7 @@
             }
             async function removeCommentAsync(commentId) {
                 const formData = new FormData();
-                formData.append('__RequestVerificationToken', $comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                 formData.append('id', commentId);
 
                 const response = await fetch($comments.attr('data-removeurl'), {

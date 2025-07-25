@@ -216,13 +216,13 @@ WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
             #line 30 "..\..\Views\Device\ImportReview.cshtml"
-}
+            }
             
             #line default
             #line hidden
             
             #line 30 "..\..\Views\Device\ImportReview.cshtml"
-  if (Model.StatisticNewRecords > 0)
+              if (Model.StatisticNewRecords > 0)
             {
 
             
@@ -255,23 +255,23 @@ WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
             #line 35 "..\..\Views\Device\ImportReview.cshtml"
-}
+            }
             
             #line default
             #line hidden
             
             #line 35 "..\..\Views\Device\ImportReview.cshtml"
-  if (Model.StatisticModifiedRecords > 0)
-{
+              if (Model.StatisticModifiedRecords > 0)
+            {
 
             
             #line default
             #line hidden
-WriteLiteral("    <li");
+WriteLiteral("                <li");
 
 WriteLiteral(" class=\"actionModified\"");
 
-WriteLiteral(">\r\n        <input");
+WriteLiteral(">\r\n                    <input");
 
 WriteLiteral(" id=\"Devices_Import_Review_Navigation_Modified\"");
 
@@ -285,32 +285,32 @@ WriteLiteral(">Show Modified Devices (");
 
             
             #line 38 "..\..\Views\Device\ImportReview.cshtml"
-                                                                                                                                                                  Write(Model.StatisticModifiedRecords);
+                                                                                                                                                                              Write(Model.StatisticModifiedRecords);
 
             
             #line default
             #line hidden
-WriteLiteral(")</label>\r\n    </li>\r\n");
+WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
             #line 40 "..\..\Views\Device\ImportReview.cshtml"
-}
+            }
             
             #line default
             #line hidden
             
             #line 40 "..\..\Views\Device\ImportReview.cshtml"
-  if (Model.StatisticUnmodifiedRecords > 0)
-{
+              if (Model.StatisticUnmodifiedRecords > 0)
+            {
 
             
             #line default
             #line hidden
-WriteLiteral("    <li");
+WriteLiteral("                <li");
 
 WriteLiteral(" class=\"actionUnchanged\"");
 
-WriteLiteral(">\r\n        <input");
+WriteLiteral(">\r\n                    <input");
 
 WriteLiteral(" id=\"Devices_Import_Review_Navigation_Unchanged\"");
 
@@ -324,73 +324,73 @@ WriteLiteral(">Show Unchanged Devices (");
 
             
             #line 43 "..\..\Views\Device\ImportReview.cshtml"
-                                                                                                                                                                     Write(Model.StatisticUnmodifiedRecords);
+                                                                                                                                                                                 Write(Model.StatisticUnmodifiedRecords);
 
             
             #line default
             #line hidden
-WriteLiteral(")</label>\r\n    </li>\r\n");
+WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
             #line 45 "..\..\Views\Device\ImportReview.cshtml"
-}
+            }
 
             
             #line default
             #line hidden
-WriteLiteral(@"</ul>
-<script>
-    $(function () {
-        $navigationContainer = $('#Devices_Import_Review_Navigation');
-        $tableBody = $('#Devices_Import_Review_TableContainer').find('tbody');
+WriteLiteral(@"        </ul>
+        <script>
+            $(function () {
+                $navigationContainer = $('#Devices_Import_Review_Navigation');
+                $tableBody = $('#Devices_Import_Review_TableContainer').find('tbody');
 
-        $navigationContainer.on('change', 'input', function () {
-            $tableBody.find('tr').show();
+                $navigationContainer.on('change', 'input', function () {
+                    $tableBody.find('tr').show();
 
-            $navigationContainer.find('input').each(function () {
-                var $this = $(this);
-                var action = $this.closest('li').attr('class');
-                var records = $tableBody.find('tr.' + action);
-                if ($this.is(':checked')) {
-                    records.show();
-                } else {
-                    records.hide();
-                }
+                    $navigationContainer.find('input').each(function () {
+                        var $this = $(this);
+                        var action = $this.closest('li').attr('class');
+                        var records = $tableBody.find('tr.' + action);
+                        if ($this.is(':checked')) {
+                            records.show();
+                        } else {
+                            records.hide();
+                        }
+                    });
+                });
             });
-        });
-    });
-</script>
-</div>
-<div");
+        </script>
+    </div>
+    <div");
 
 WriteLiteral(" id=\"Devices_Import_Review_TableContainer\"");
 
-WriteLiteral(">\r\n    <table");
+WriteLiteral(">\r\n        <table");
 
 WriteLiteral(" class=\"tableData\"");
 
-WriteLiteral(">\r\n        <thead>\r\n            <tr>\r\n                <th>Action</th>\r\n          " +
-"      <th>Row</th>\r\n");
+WriteLiteral(">\r\n            <thead>\r\n                <tr>\r\n                    <th>Action</th>" +
+"\r\n                    <th>Row</th>\r\n");
 
             
             #line 75 "..\..\Views\Device\ImportReview.cshtml"
-                
+                    
             
             #line default
             #line hidden
             
             #line 75 "..\..\Views\Device\ImportReview.cshtml"
-                 foreach (var header in Model.Context.Columns.Where(c => c.Type != DeviceImportFieldTypes.IgnoreColumn))
-                {
+                     foreach (var header in Model.Context.Columns.Where(c => c.Type != DeviceImportFieldTypes.IgnoreColumn))
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <th>");
+WriteLiteral("                        <th>");
 
             
             #line 77 "..\..\Views\Device\ImportReview.cshtml"
-                    Write(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Type).Item2);
+                        Write(Model.HeaderTypes.FirstOrDefault(h => h.Item1 == header.Type).Item2);
 
             
             #line default
@@ -399,33 +399,33 @@ WriteLiteral("</th>\r\n");
 
             
             #line 78 "..\..\Views\Device\ImportReview.cshtml"
-                }
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </tr>\r\n            <tr>\r\n                <th>&nbsp;</th>\r\n           " +
-"     <th>&nbsp;</th>\r\n");
+WriteLiteral("                </tr>\r\n                <tr>\r\n                    <th>&nbsp;</th>\r" +
+"\n                    <th>&nbsp;</th>\r\n");
 
             
             #line 83 "..\..\Views\Device\ImportReview.cshtml"
-                
+                    
             
             #line default
             #line hidden
             
             #line 83 "..\..\Views\Device\ImportReview.cshtml"
-                 foreach (var header in Model.Context.Columns.Where(c => c.Type != DeviceImportFieldTypes.IgnoreColumn))
-                {
+                     foreach (var header in Model.Context.Columns.Where(c => c.Type != DeviceImportFieldTypes.IgnoreColumn))
+                    {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <th>");
+WriteLiteral("                        <th>");
 
             
             #line 85 "..\..\Views\Device\ImportReview.cshtml"
-                   Write(header.Name);
+                       Write(header.Name);
 
             
             #line default
@@ -434,42 +434,42 @@ WriteLiteral("</th>\r\n");
 
             
             #line 86 "..\..\Views\Device\ImportReview.cshtml"
-                }
+                    }
 
             
             #line default
             #line hidden
-WriteLiteral("            </tr>\r\n        </thead>\r\n        <tbody>\r\n");
+WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbody>\r\n");
 
             
             #line 90 "..\..\Views\Device\ImportReview.cshtml"
-            
+                
             
             #line default
             #line hidden
             
             #line 90 "..\..\Views\Device\ImportReview.cshtml"
-             foreach (var recordEntry in Model.Context.Records.Select((r, i) => Tuple.Create(r, i)))
-            {
-                var record = recordEntry.Item1;
+                 foreach (var recordEntry in Model.Context.Records.Select((r, i) => Tuple.Create(r, i)))
+                {
+                    var record = recordEntry.Item1;
 
             
             #line default
             #line hidden
-WriteLiteral("                <tr");
+WriteLiteral("                    <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4017), Tuple.Create("\"", 4053)
-, Tuple.Create(Tuple.Create("", 4025), Tuple.Create("action", 4025), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4425), Tuple.Create("\"", 4461)
+, Tuple.Create(Tuple.Create("", 4433), Tuple.Create("action", 4433), true)
             
             #line 93 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 4031), Tuple.Create<System.Object, System.Int32>(record.RecordAction
+, Tuple.Create(Tuple.Create("", 4439), Tuple.Create<System.Object, System.Int32>(record.RecordAction
             
             #line default
             #line hidden
-, 4031), false)
+, 4439), false)
 );
 
-WriteLiteral(">\r\n                    <td");
+WriteLiteral(">\r\n                        <td");
 
 WriteLiteral(" class=\"action\"");
 
@@ -477,11 +477,11 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-fw\"");
 
-WriteLiteral("></i></td>\r\n                    <td>");
+WriteLiteral("></i></td>\r\n                        <td>");
 
             
             #line 95 "..\..\Views\Device\ImportReview.cshtml"
-                    Write(recordEntry.Item2 + 1);
+                        Write(recordEntry.Item2 + 1);
 
             
             #line default
@@ -490,45 +490,45 @@ WriteLiteral("</td>\r\n");
 
             
             #line 96 "..\..\Views\Device\ImportReview.cshtml"
-                    
+                        
             
             #line default
             #line hidden
             
             #line 96 "..\..\Views\Device\ImportReview.cshtml"
-                     foreach (var field in record.Fields)
-                    {
-                        var friendlyValue = field.FriendlyValue;
+                         foreach (var field in record.Fields)
+                        {
+                            var friendlyValue = field.FriendlyValue;
 
             
             #line default
             #line hidden
-WriteLiteral("                        <td");
+WriteLiteral("                            <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4357), Tuple.Create("\"", 4466)
-, Tuple.Create(Tuple.Create("", 4365), Tuple.Create("header", 4365), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4789), Tuple.Create("\"", 4898)
+, Tuple.Create(Tuple.Create("", 4797), Tuple.Create("header", 4797), true)
             
             #line 99 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 4371), Tuple.Create<System.Object, System.Int32>(field.FieldType
+, Tuple.Create(Tuple.Create("", 4803), Tuple.Create<System.Object, System.Int32>(field.FieldType
             
             #line default
             #line hidden
-, 4371), false)
-, Tuple.Create(Tuple.Create(" ", 4389), Tuple.Create("action", 4390), true)
+, 4803), false)
+, Tuple.Create(Tuple.Create(" ", 4821), Tuple.Create("action", 4822), true)
             
             #line 99 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 4396), Tuple.Create<System.Object, System.Int32>(field.FieldAction.HasValue ? field.FieldAction.ToString() : "Error"
+, Tuple.Create(Tuple.Create("", 4828), Tuple.Create<System.Object, System.Int32>(field.FieldAction.HasValue ? field.FieldAction.ToString() : "Error"
             
             #line default
             #line hidden
-, 4396), false)
+, 4828), false)
 );
 
 WriteLiteral(" data-previousvalue=\"");
 
             
             #line 99 "..\..\Views\Device\ImportReview.cshtml"
-                                                                                                                                                          Write(field.FieldAction.HasValue && field.FieldAction.Value == System.Data.EntityState.Modified ? field.FriendlyPreviousValue : null);
+                                                                                                                                                              Write(field.FieldAction.HasValue && field.FieldAction.Value == System.Data.EntityState.Modified ? field.FriendlyPreviousValue : null);
 
             
             #line default
@@ -539,19 +539,19 @@ WriteLiteral(">\r\n");
 
             
             #line 100 "..\..\Views\Device\ImportReview.cshtml"
-                            
+                                
             
             #line default
             #line hidden
             
             #line 100 "..\..\Views\Device\ImportReview.cshtml"
-                             if (!field.FieldAction.HasValue)
-                            {
+                                 if (!field.FieldAction.HasValue)
+                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <span");
+WriteLiteral("                                    <span");
 
 WriteLiteral(" class=\"errorMessage\"");
 
@@ -559,14 +559,14 @@ WriteLiteral("><strong>Error:</strong> ");
 
             
             #line 102 "..\..\Views\Device\ImportReview.cshtml"
-                                                                              Write(field.ErrorMessage);
+                                                                                  Write(field.ErrorMessage);
 
             
             #line default
             #line hidden
 WriteLiteral("</span>\r\n");
 
-WriteLiteral("                                <i");
+WriteLiteral("                                    <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-triangle fa-fw\"");
 
@@ -574,17 +574,17 @@ WriteLiteral("></i>\r\n");
 
             
             #line 104 "..\..\Views\Device\ImportReview.cshtml"
-                            }
+                                }
 
             
             #line default
             #line hidden
-WriteLiteral("                            ");
+WriteLiteral("                                ");
 
             
             #line 105 "..\..\Views\Device\ImportReview.cshtml"
-                             if (string.IsNullOrEmpty(friendlyValue))
-                            {
+                                 if (string.IsNullOrEmpty(friendlyValue))
+                                {
             
             #line default
             #line hidden
@@ -596,77 +596,77 @@ WriteLiteral(">&lt;None&gt;</span>");
 
             
             #line 106 "..\..\Views\Device\ImportReview.cshtml"
-                                                                           }
-                            else if (field.FieldType == DeviceImportFieldTypes.DeviceSerialNumber && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Added)
-                            {
-                                
+                                                                               }
+                                else if (field.FieldType == DeviceImportFieldTypes.DeviceSerialNumber && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Added)
+                                {
+                                    
             
             #line default
             #line hidden
             
             #line 109 "..\..\Views\Device\ImportReview.cshtml"
-                           Write(Html.ActionLink(friendlyValue, MVC.Device.Show((string)field.RawParsedValue), new { target = "_blank" }));
+                               Write(Html.ActionLink(friendlyValue, MVC.Device.Show((string)field.RawParsedValue), new { target = "_blank" }));
 
             
             #line default
             #line hidden
             
             #line 109 "..\..\Views\Device\ImportReview.cshtml"
-                                                                                                                                         }
-                            else if (field.FieldType == DeviceImportFieldTypes.AssignedUserId && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Unchanged)
-                            {
-                                
+                                                                                                                                             }
+                                else if (field.FieldType == DeviceImportFieldTypes.AssignedUserId && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Unchanged)
+                                {
+                                    
             
             #line default
             #line hidden
             
             #line 112 "..\..\Views\Device\ImportReview.cshtml"
-                           Write(Html.ActionLink(friendlyValue, MVC.User.Show((string)field.RawParsedValue), new { target = "_blank" }));
+                               Write(Html.ActionLink(friendlyValue, MVC.User.Show((string)field.RawParsedValue), new { target = "_blank" }));
 
             
             #line default
             #line hidden
             
             #line 112 "..\..\Views\Device\ImportReview.cshtml"
-                                                                                                                                       }
-                            else
-                            {
+                                                                                                                                           }
+                                else
+                                {
             
             #line default
             #line hidden
             
             #line 114 "..\..\Views\Device\ImportReview.cshtml"
-                        Write(friendlyValue);
+                            Write(friendlyValue);
 
             
             #line default
             #line hidden
             
             #line 114 "..\..\Views\Device\ImportReview.cshtml"
-                                           }
+                                               }
 
             
             #line default
             #line hidden
-WriteLiteral("                        </td>\r\n");
+WriteLiteral("                            </td>\r\n");
 
             
             #line 116 "..\..\Views\Device\ImportReview.cshtml"
-                    }
+                        }
 
             
             #line default
             #line hidden
-WriteLiteral("                </tr>\r\n");
+WriteLiteral("                    </tr>\r\n");
 
             
             #line 118 "..\..\Views\Device\ImportReview.cshtml"
-            }
+                }
 
             
             #line default
             #line hidden
-WriteLiteral("        </tbody>\r\n    </table>\r\n</div>\r\n<div");
+WriteLiteral("            </tbody>\r\n        </table>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" class=\"actionBar\"");
 
@@ -674,30 +674,30 @@ WriteLiteral(">\r\n");
 
             
             #line 123 "..\..\Views\Device\ImportReview.cshtml"
-    
+        
             
             #line default
             #line hidden
             
             #line 123 "..\..\Views\Device\ImportReview.cshtml"
-     if (Model.Context.AllowBacktracking)
-    {
+         if (Model.Context.AllowBacktracking)
+        {
 
             
             #line default
             #line hidden
-WriteLiteral("        <a");
+WriteLiteral("            <a");
 
 WriteLiteral(" id=\"Devices_Import_Review_ChangeHeaders\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6122), Tuple.Create("\"", 6191)
+WriteAttribute("href", Tuple.Create(" href=\"", 6658), Tuple.Create("\"", 6727)
             
             #line 125 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 6129), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))
+, Tuple.Create(Tuple.Create("", 6665), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))
             
             #line default
             #line hidden
-, 6129), false)
+, 6665), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -710,26 +710,24 @@ WriteLiteral("></i>Change Import Columns</a>\r\n");
 
             
             #line 126 "..\..\Views\Device\ImportReview.cshtml"
-    }
+        }
 
             
             #line default
             #line hidden
-WriteLiteral("    ");
+WriteLiteral("        ");
 
             
             #line 127 "..\..\Views\Device\ImportReview.cshtml"
-     if (Model.StatisticImportRecords == 0)
-    {
+         if (Model.StatisticImportRecords == 0)
+        {
 
             
             #line default
             #line hidden
-WriteLiteral("        <a");
+WriteLiteral("            <button");
 
 WriteLiteral(" id=\"Devices_Import_Review_Apply\"");
-
-WriteLiteral(" href=\"#\"");
 
 WriteLiteral(" class=\"button disabled\"");
 
@@ -737,30 +735,38 @@ WriteLiteral(" disabled><i");
 
 WriteLiteral(" class=\"fa fa-wrench\"");
 
-WriteLiteral("></i>Apply Device Import</a>\r\n");
+WriteLiteral("></i>Apply Device Import</button>\r\n");
 
             
             #line 130 "..\..\Views\Device\ImportReview.cshtml"
-    }
-    else
-    {
+        }
+        else
+        {
+            using (Html.BeginForm(MVC.API.Device.ImportApply(Model.Context.SessionId)))
+            {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 135 "..\..\Views\Device\ImportReview.cshtml"
+           Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
-WriteLiteral("        <a");
+            
+            #line 135 "..\..\Views\Device\ImportReview.cshtml"
+                                        ;
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <button");
 
 WriteLiteral(" id=\"Devices_Import_Review_Apply\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6532), Tuple.Create("\"", 6603)
-            
-            #line 133 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 6539), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.ImportApply(Model.Context.SessionId))
-            
-            #line default
-            #line hidden
-, 6539), false)
-);
+WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button\"");
 
@@ -768,42 +774,43 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-wrench\"");
 
-WriteLiteral("></i>Apply Device Import</a>\r\n");
+WriteLiteral("></i>Apply Device Import</button>\r\n");
 
             
-            #line 134 "..\..\Views\Device\ImportReview.cshtml"
-    }
+            #line 137 "..\..\Views\Device\ImportReview.cshtml"
+            }
+        }
 
             
             #line default
             #line hidden
-WriteLiteral("</div>\r\n</div>\r\n<script>\r\n    $(function () {\r\n        $Devices_Import_Review_Tab" +
-"leContainer = $(\'#Devices_Import_Review_TableContainer\');\r\n\r\n        $Devices_Im" +
-"port_Review_TableContainer.find(\'tbody\').tooltip({\r\n            items: \'td.actio" +
-"n, td.actionError, td.actionModified\',\r\n            content: function () {\r\n    " +
-"            var $this = $(this);\r\n\r\n                if ($this.hasClass(\'action\')" +
-") {\r\n                    var record = $(this).closest(\'tr\');\r\n\r\n                " +
-"    if (record.hasClass(\'actionDetached\')) {\r\n                        return \'<s" +
-"trong>Error Parsing Record</strong><div>Review the record fields for details abo" +
-"ut any errors.</div><div class=\"smallMessage\">This record will be skipped.</div>" +
-"\';\r\n                    } else if (record.hasClass(\'actionUnchanged\')) {\r\n      " +
-"                  return \'<strong>No Changes</strong><div>No changes were found " +
-"while parsing this record.</div><div class=\"smallMessage\">This record will be sk" +
-"ipped.</div>\';\r\n                    } else if (record.hasClass(\'actionModified\')" +
-") {\r\n                        return \'<strong>Pending Changes</strong><div>This r" +
-"ecord contains changes which will be applied.</div>\';\r\n                    } els" +
-"e if (record.hasClass(\'actionAdded\')) {\r\n                        return \'<strong" +
-">New Record</strong><div>This record will be imported.</div>\';\r\n                " +
-"    }\r\n                } else if ($this.hasClass(\'actionError\')) {\r\n            " +
-"        return $(this).find(\'span.errorMessage\').html();\r\n                } else" +
-" if ($this.hasClass(\'actionModified\')) {\r\n                    var v = $(this).at" +
-"tr(\'data-previousvalue\');\r\n                    if (v) {\r\n                       " +
-" return \'<strong>Previous Value:</strong><br />\' + v;\r\n                    } els" +
-"e {\r\n                        return \'<strong>Previous Value:</strong><br /><em>&" +
-"lt;None&gt;</em>\';\r\n                    }\r\n                }\r\n            },\r\n  " +
-"          position: {\r\n                my: \"left top\",\r\n                at: \"lef" +
-"t bottom\",\r\n                collision: \"flipfit flip\"\r\n            }\r\n        })" +
-";\r\n\r\n    });\r\n</script>\r\n");
+WriteLiteral("    </div>\r\n</div>\r\n<script>\r\n    $(function () {\r\n        $Devices_Import_Review" +
+"_TableContainer = $(\'#Devices_Import_Review_TableContainer\');\r\n\r\n        $Device" +
+"s_Import_Review_TableContainer.find(\'tbody\').tooltip({\r\n            items: \'td.a" +
+"ction, td.actionError, td.actionModified\',\r\n            content: function () {\r\n" +
+"                var $this = $(this);\r\n\r\n                if ($this.hasClass(\'acti" +
+"on\')) {\r\n                    var record = $(this).closest(\'tr\');\r\n\r\n            " +
+"        if (record.hasClass(\'actionDetached\')) {\r\n                        return" +
+" \'<strong>Error Parsing Record</strong><div>Review the record fields for details" +
+" about any errors.</div><div class=\"smallMessage\">This record will be skipped.</" +
+"div>\';\r\n                    } else if (record.hasClass(\'actionUnchanged\')) {\r\n  " +
+"                      return \'<strong>No Changes</strong><div>No changes were fo" +
+"und while parsing this record.</div><div class=\"smallMessage\">This record will b" +
+"e skipped.</div>\';\r\n                    } else if (record.hasClass(\'actionModifi" +
+"ed\')) {\r\n                        return \'<strong>Pending Changes</strong><div>Th" +
+"is record contains changes which will be applied.</div>\';\r\n                    }" +
+" else if (record.hasClass(\'actionAdded\')) {\r\n                        return \'<st" +
+"rong>New Record</strong><div>This record will be imported.</div>\';\r\n            " +
+"        }\r\n                } else if ($this.hasClass(\'actionError\')) {\r\n        " +
+"            return $(this).find(\'span.errorMessage\').html();\r\n                } " +
+"else if ($this.hasClass(\'actionModified\')) {\r\n                    var v = $(this" +
+").attr(\'data-previousvalue\');\r\n                    if (v) {\r\n                   " +
+"     return \'<strong>Previous Value:</strong><br />\' + v;\r\n                    }" +
+" else {\r\n                        return \'<strong>Previous Value:</strong><br /><" +
+"em>&lt;None&gt;</em>\';\r\n                    }\r\n                }\r\n            }," +
+"\r\n            position: {\r\n                my: \"left top\",\r\n                at: " +
+"\"left bottom\",\r\n                collision: \"flipfit flip\"\r\n            }\r\n      " +
+"  });\r\n\r\n    });\r\n</script>\r\n");
 
         }
     }

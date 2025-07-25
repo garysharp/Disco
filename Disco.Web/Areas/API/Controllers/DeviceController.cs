@@ -26,7 +26,6 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DeviceController : AuthorizedDatabaseController
     {
-
         const string pDeviceProfileId = "deviceprofileid";
         const string pDeviceBatchId = "devicebatchid";
         const string pAssetNumber = "assetnumber";
@@ -37,6 +36,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pDetailBattery = "detailbattery";
         const string pDetailKeyboard = "detailkeyboard";
 
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
             Database.Configuration.LazyLoadingEnabled = true;
@@ -99,20 +99,21 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Device.Show(device.SerialNumber));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
 
-        [DiscoAuthorize(Claims.Device.Properties.DeviceProfile), HttpPost, ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Device.Properties.DeviceProfile)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDeviceProfileId(string id, string DeviceProfileId = null, bool enforceOrganisationalUnit = false, bool redirect = false)
         {
             var updateResult = Update(id, pDeviceProfileId, DeviceProfileId, redirect);
@@ -163,24 +164,28 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Properties.DeviceBatch)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDeviceBatchId(string id, string DeviceBatchId = null, bool redirect = false)
         {
             return Update(id, pDeviceBatchId, DeviceBatchId, redirect);
         }
 
         [DiscoAuthorize(Claims.Device.Properties.AssetNumber)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssetNumber(string id, string AssetNumber = null, bool redirect = false)
         {
             return Update(id, pAssetNumber, AssetNumber, redirect);
         }
 
         [DiscoAuthorize(Claims.Device.Properties.Location)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateLocation(string id, string Location = null, bool redirect = false)
         {
             return Update(id, pLocation, Location, redirect);
         }
 
         [DiscoAuthorize(Claims.Device.Actions.AssignUser)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUserId(string id, string AssignedUserId = null, bool redirect = false)
         {
             if (!string.IsNullOrWhiteSpace(AssignedUserId))
@@ -190,24 +195,28 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Actions.AllowUnauthenticatedEnrol)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAllowUnauthenticatedEnrol(string id, string AllowUnauthenticatedEnrol = null, bool redirect = false)
         {
             return Update(id, pAllowUnauthenticatedEnrol, AllowUnauthenticatedEnrol, redirect);
         }
 
         [DiscoAuthorize(Claims.Device.Properties.Details)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDetailACAdapter(string id, string DetailACAdapter = null, bool redirect = false)
         {
             return Update(id, pDetailACAdapter, DetailACAdapter, redirect);
         }
 
         [DiscoAuthorize(Claims.Device.Properties.Details)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDetailBattery(string id, string DetailBattery = null, bool redirect = false)
         {
             return Update(id, pDetailBattery, DetailBattery, redirect);
         }
 
         [DiscoAuthorize(Claims.Device.Properties.Details)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDetailKeyboard(string id, string DetailKeyboard = null, bool redirect = false)
         {
             return Update(id, pDetailKeyboard, DetailKeyboard, redirect);
@@ -344,31 +353,36 @@ namespace Disco.Web.Areas.API.Controllers
         #region Device Actions
 
         [DiscoAuthorize(Claims.Device.Actions.Decommission)]
-        public virtual ActionResult Decommission(string id, int Reason, bool redirect)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Decommission(string id, int? Reason = null, bool redirect = false)
         {
+            if (Reason == null)
+                throw new ArgumentNullException(nameof(Reason), "Decommission Reason is required");
+
             var d = Database.Devices.Find(id);
             Database.Configuration.LazyLoadingEnabled = true;
             if (d != null)
             {
                 if (d.CanDecommission())
                 {
-                    d.OnDecommission((DecommissionReasons)Reason, Database);
+                    d.OnDecommission((DecommissionReasons)Reason.Value, Database);
 
                     Database.SaveChanges();
                     if (redirect)
                         return RedirectToAction(MVC.Device.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Device's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Device's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Device Serial Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Device Serial Number");
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Recommission)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Recommission(string id, bool redirect)
         {
             var d = Database.Devices.Find(id);
@@ -383,17 +397,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Device.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Device's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Device's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Device Serial Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Device Serial Number");
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(string id, bool redirect)
         {
             var j = Database.Devices.Find(id);
@@ -408,43 +423,20 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Device.Index());
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Device Serial Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Device Serial Number");
         }
 
         #endregion
 
-        [DiscoAuthorize(Claims.Device.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdf(string id, string DocumentTemplateId)
-        {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException(nameof(id));
-            if (string.IsNullOrEmpty(DocumentTemplateId))
-                throw new ArgumentNullException(nameof(DocumentTemplateId));
-
-            // Obsolete: Use API\DocumentTemplate\Generate instead
-            return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, id));
-        }
-
-        [DiscoAuthorize(Claims.Device.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdfPackage(string id, string DocumentTemplatePackageId)
-        {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException(nameof(id));
-            if (string.IsNullOrEmpty(DocumentTemplatePackageId))
-                throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
-
-            // Obsolete: Use API\DocumentTemplatePackage\Generate instead
-            return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, id));
-        }
-
         [DiscoAuthorize(Claims.Device.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult LastNetworkLogonDate(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -585,7 +577,8 @@ namespace Disco.Web.Areas.API.Controllers
             return HttpNotFound("Invalid Attachment Number");
         }
 
-        [DiscoAuthorize(Claims.Device.Actions.AddAttachments), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Device.Actions.AddAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentUpload(string id, string comments)
         {
             var d = Database.Devices.Find(id);
@@ -644,7 +637,7 @@ namespace Disco.Web.Areas.API.Controllers
 
                 return Json(m, JsonRequestBehavior.AllowGet);
             }
-            return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Attachment Number");
         }
 
         [DiscoAuthorize(Claims.Device.ShowAttachments)]
@@ -661,10 +654,11 @@ namespace Disco.Web.Areas.API.Controllers
 
                 return Json(m, JsonRequestBehavior.AllowGet);
             }
-            return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid Device Serial Number" }, JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Device Serial Number");
         }
 
         [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentRemove(int id)
         {
             var da = Database.DeviceAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
@@ -677,9 +671,9 @@ namespace Disco.Web.Areas.API.Controllers
 
                 da.OnDelete(Database);
                 Database.SaveChanges();
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
             }
-            return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Attachment Number");
         }
 
         [DiscoAuthorize(Claims.Device.Actions.AddAttachments)]
@@ -706,11 +700,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Json(new
-                {
-                    Success = false,
-                    ErrorMessage = ex.Message,
-                });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -736,6 +726,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImportBegin(HttpPostedFileBase ImportFile, bool HasHeader)
         {
             if (ImportFile == null || ImportFile.ContentLength == 0)
@@ -752,15 +743,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImportParse(string Id, List<DeviceImportFieldTypes> Headers)
         {
             if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
+                throw new ArgumentNullException(nameof(Id));
 
-            var context = Import_RetrieveContext(Id);
-
-            if (context == null)
-                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+            var context = Import_RetrieveContext(Id)
+                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
 
             context.UpdateColumnTypes(Headers);
 
@@ -777,15 +767,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImportApply(string Id)
         {
             if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
+                throw new ArgumentNullException(nameof(Id));
 
-            var context = Import_RetrieveContext(Id);
-
-            if (context == null)
-                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+            var context = Import_RetrieveContext(Id)
+                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
 
             var status = DeviceImportApplyTask.ScheduleNow(context);
             status.SetFinishedUrl(Url.Action(MVC.Device.Import(context.SessionId)));
@@ -895,6 +884,7 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         [DiscoAuthorize(Claims.DiscoAdminAccount)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult MigrateDeviceMacAddressesFromLog()
         {
             var taskStatus = Disco.Services.Devices.Enrolment.LogMacAddressImportingTask.ScheduleImmediately();

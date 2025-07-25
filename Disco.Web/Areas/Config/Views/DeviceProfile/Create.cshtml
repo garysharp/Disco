@@ -1,11 +1,12 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.CreateModel
 @{
     Authorization.RequireAll(Claims.Config.DeviceProfile.Create, Claims.Config.DeviceProfile.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Create");
 }
 @using (Html.BeginForm())
-{ 
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(false)
     <div class="form" style="width: 450px">
         <table>
@@ -14,28 +15,26 @@
                     Name:
                 </th>
                 <td>
-                @Html.TextBoxFor(model => model.DeviceProfile.Name)<br />@Html.ValidationMessageFor(model => model.DeviceProfile.Name)
+                    @Html.TextBoxFor(model => model.Name)<br />@Html.ValidationMessageFor(model => model.Name)
                 </td>
             </tr>
             <tr>
                 <th>
                     Short Name:
                 </th>
-                <td>@Html.TextBoxFor(model => model.DeviceProfile.ShortName)<br />@Html.ValidationMessageFor(model => model.DeviceProfile.ShortName)
+                <td>
+                    @Html.TextBoxFor(model => model.ShortName)<br />@Html.ValidationMessageFor(model => model.ShortName)
                 </td>
             </tr>
             <tr>
                 <th>
                     Description:
                 </th>
-                <td>@Html.TextBoxFor(model => model.DeviceProfile.Description)<br />@Html.ValidationMessageFor(model => model.DeviceProfile.Description)
+                <td>
+                    @Html.TextBoxFor(model => model.Description)<br />@Html.ValidationMessageFor(model => model.Description)
                 </td>
             </tr>
         </table>
-        @Html.HiddenFor(model => model.DeviceProfile.ComputerNameTemplate)
-        @Html.HiddenFor(model => model.DeviceProfile.ProvisionADAccount)
-        @Html.HiddenFor(model => model.DeviceProfile.DistributionType)
-        @Html.HiddenFor(model => model.DeviceProfile.OrganisationalUnit)
         <p class="actions">
             <input type="submit" class="button" value="Create" />
         </p>

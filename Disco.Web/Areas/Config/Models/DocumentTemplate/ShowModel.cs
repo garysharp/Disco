@@ -5,6 +5,7 @@ using Disco.Models.UI.Config.DocumentTemplate;
 using Disco.Services;
 using Disco.Services.Documents.ManagedGroups;
 using Disco.Services.Expressions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,7 +37,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
         public DocumentTemplateDevicesManagedGroup DevicesLinkedGroup { get; set; }
         public DocumentTemplateUsersManagedGroup UsersLinkedGroup { get; set; }
 
-        public string BulkGenerateDownloadId { get; set; }
+        public Guid? BulkGenerateDownloadId { get; set; }
 
         public string BulkGenerateDownloadFilename { get; set; }
 

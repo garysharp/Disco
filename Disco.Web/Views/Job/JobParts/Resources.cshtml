@@ -30,7 +30,6 @@
         {
             <td id="CommentsContainer">
                 <div id="Comments" class="@(canAddLogs ? "canAddLogs" : "cannotAddLogs") @(canRemoveAnyLogs ? "canRemoveAnyLogs" : "cannotRemoveAnyLogs") @(canRemoveOwnLogs ? "canRemoveOwnLogs" : "cannotRemoveOwnLogs")" data-jobid="@Model.Job.Id" data-addurl="@Url.Action(MVC.API.Job.CommentAdd(Model.Job.Id))" data-removeurl="@Url.Action(MVC.API.Job.CommentRemove())" data-geturl="@Url.Action(MVC.API.Job.Comment())" data-userid="@CurrentUser.UserId">
-                    @Html.AntiForgeryToken()
                     <div class="commentOutput">
                         @foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
                         {
@@ -54,8 +53,7 @@
         @if (canShowAttachments)
         {
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Job.AttachmentOnlineUploadSession(Model.Job.Id)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")">
-                    @Html.AntiForgeryToken()
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Job.AttachmentOnlineUploadSession(Model.Job.Id)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")" data-removeurl="@Url.Action(MVC.API.Job.AttachmentRemove())">
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -143,7 +141,7 @@
                 $CommentInput.prop('disabled', true);
 
                 const formData = new FormData();
-                formData.append('__RequestVerificationToken', $Comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                 formData.append('comment', comment);
 
                 const response = await fetch($Comments.attr('data-addurl'), {
@@ -171,7 +169,7 @@
 
             async function removeComment(commentId) {
                 const formData = new FormData();
-                formData.append('__RequestVerificationToken', $Comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                 formData.append('id', commentId);
 
                 const response = await fetch($Comments.attr('data-removeurl'), {
@@ -221,7 +219,7 @@
             async function loadLiveComment(id) {
 
                 const formData = new FormData();
-                formData.append('__RequestVerificationToken', $Comments.find('input[name="__RequestVerificationToken"]').val());
+                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                 formData.append('id', id);
 
                 const response = await fetch($Comments.attr('data-geturl'), {
@@ -361,8 +359,6 @@
             function removeLocalAttachment() {
                 $this = $(this).closest('a');
 
-                var data = { id: $this.attr('data-attachmentid') };
-
                 if (!$dialogRemoveAttachment) {
                     $dialogRemoveAttachment = $('<div class="dialog" title="Remove this Attachment?"><p><i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?</p></div>')
                         .appendTo(document.body)
@@ -374,29 +370,33 @@
                         });
                 }
 
-                $dialogRemoveAttachment.dialog("enable").dialog('option', 'buttons', {
-                    "Remove": function () {
-                        $dialogRemoveAttachment.dialog("disable");
-                        $dialogRemoveAttachment.dialog("option", "buttons", null);
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Job.AttachmentRemove())',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    // Should be removed via Repository Notifications
-                                } else {
-                                    alert('Unable to remove attachment: ' + d);
-                                }
-                                $dialogRemoveAttachment.dialog("close");
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to remove attachment: ' + textStatus);
-                                $dialogRemoveAttachment.dialog("close");
-                            }
+                async function removeAttachmentAsync(id) {
+                    const body = new FormData();
+                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                    body.append('id', id);
+
+                    try {
+                        const response = await fetch($Attachments.attr('data-removeurl'), {
+                            body: body,
+                            method: 'POST'
                         });
+                        if (!response.ok) {
+                            alert('Unable to remove attachment: ' + response.statusText);
+                        }
+                        $dialogRemoveAttachment.dialog("close");
+                    } catch (e) {
+                        alert('Unable to remove attachment: ' + e);
+                        $dialogRemoveAttachment.dialog("close");
+                    }
+                }
+
+                const attachmentId = $this.attr('data-attachmentid');
+                $dialogRemoveAttachment.dialog('option', 'buttons', {
+                    "Remove": function () {
+                        $dialogRemoveAttachment.dialog("option", "buttons", null);
+                        removeAttachmentAsync(attachmentId);
                     },
-                    "Cancel": function () {
+                    Cancel: function () {
                         $dialogRemoveAttachment.dialog("close");
                     }
                 }).dialog('open');

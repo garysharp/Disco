@@ -69,7 +69,18 @@ WriteLiteral(" action=\"#\"");
 
 WriteLiteral(" method=\"post\"");
 
-WriteLiteral(">\r\n        <table");
+WriteLiteral(">\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 7 "..\..\Areas\Config\Views\Shared\LinkedGroupShared.cshtml"
+   Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n        <table");
 
 WriteLiteral(" class=\"input\"");
 
@@ -86,6 +97,17 @@ WriteLiteral(" id=\"Config_LinkedGroup_Id\"");
 WriteLiteral(" type=\"text\"");
 
 WriteLiteral(" name=\"GroupId\"");
+
+WriteLiteral(" data-sourceurl=\"");
+
+            
+            #line 15 "..\..\Areas\Config\Views\Shared\LinkedGroupShared.cshtml"
+                                                                                                 Write(Url.Action(MVC.API.System.SearchGroupSubjects()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
 
 WriteLiteral(" />\r\n                    </td>\r\n                </tr>\r\n                <tr>\r\n    " +
 "                <th>\r\n                        <label");
@@ -118,83 +140,59 @@ WriteLiteral(">\r\n            <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-circle\"");
 
-WriteLiteral(@"></i><strong>Warning:</strong> This group will be managed by Disco ICT.<br />
-            Any <strong>existing members will be removed from the group</strong>, and it will be automatically synchronized with related members.
-        </p>
-    </div>
-</div>
-<script>
-    $(function () {
-        let dialog;
-        let dialogGroupId;
-        let dialogFilterDate;
-        let dialogTitle;
-
-        function showDialog(groupId, filterDateOption, filterDateValue, updateUrl, title) {
-            if (dialog == null) {
-                dialog = $('#Config_LinkedGroup_Dialog').dialog({
-                    width: 450,
-                    resizable: false,
-                    modal: true,
-                    autoOpen: false
-                });
-
-                dialogFilterDate = $('#Config_LinkedGroup_FilterDate');
-                dialogFilterDate.datetimepicker({
-                    ampm: true,
-                    changeYear: true,
-                    changeMonth: true,
-                    dateFormat: 'yy/mm/dd'
-                });
-
-                dialogGroupId = $('#Config_LinkedGroup_Id');
-                dialogGroupId.focus(function () { $(this).select(); });
-                dialogGroupId.autocomplete({
-                    source: '");
-
-            
-            #line 62 "..\..\Areas\Config\Views\Shared\LinkedGroupShared.cshtml"
-                         Write(Url.Action(MVC.API.System.SearchGroupSubjects()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                    minLength: 2,\r\n                    select: function (e, u" +
-"i) {\r\n                        dialogGroupId.val(ui.item.Id);\r\n                  " +
-"      return false;\r\n                    }\r\n                }).data(\'ui-autocomp" +
-"lete\')._renderItem = function (ul, item) {\r\n                    return $(\"<li>\")" +
-"\r\n                        .data(\"item.autocomplete\", item)\r\n                    " +
-"    .append(\"<a><strong>\" + item.Name + \"</strong><br>\" + item.Id + \" (\" + item." +
-"Type + \")</a>\")\r\n                        .appendTo(ul);\r\n                };\r\n\r\n " +
-"               dialogTitle = $(\'#Config_LinkedGroup_Title\');\r\n            }\r\n\r\n " +
-"           var dialogButtons = {};\r\n            if (!!groupId) {\r\n              " +
-"  dialogButtons[\'Remove Link\'] = function () {\r\n                    $(this).dial" +
-"og(\'disable\');\r\n                    dialogGroupId.val(\'\');\r\n                    " +
-"dialogGroupId.closest(\'form\').attr(\'action\', updateUrl).submit();\r\n             " +
-"   }\r\n            }\r\n            dialogButtons[(!!groupId ? \'Save Changes\' : \'Li" +
-"nk Group\')] = function () {\r\n                if (!dialogGroupId.val()) {\r\n      " +
-"              alert(\'A Linked Group must be specified\');\r\n                    re" +
-"turn;\r\n                }\r\n                $(this).dialog(\'disable\');\r\n          " +
-"      dialogGroupId.closest(\'form\').attr(\'action\', updateUrl).submit();\r\n       " +
-"     }\r\n            dialogButtons[\'Cancel\'] = function () {\r\n                $(t" +
-"his).dialog(\'close\');\r\n            };\r\n\r\n            dialogGroupId.val(groupId);" +
-"\r\n\r\n            if (!!filterDateOption) {\r\n                if (!!filterDateValue" +
-") {\r\n                    dialogFilterDate.datetimepicker(\'setDate\', moment(filte" +
-"rDateValue).toDate());\r\n                } else {\r\n                    dialogFilt" +
-"erDate.val(\'\');\r\n                }\r\n                dialogFilterDate.closest(\'tr" +
-"\').show();\r\n            } else {\r\n                dialogFilterDate.closest(\'tr\')" +
-".hide();\r\n            }\r\n\r\n            dialogTitle.text(title);\r\n            dia" +
-"log.dialog(\'option\', \'buttons\', dialogButtons);\r\n            dialog.dialog(\'opti" +
-"on\', \'title\', \'Linked Group: \' + title);\r\n            dialog.dialog(\'open\');\r\n  " +
-"      }\r\n\r\n        $(document).on(\'click\', \'.Config_LinkedGroup_LinkButton\', fun" +
-"ction () {\r\n            $this = $(this);\r\n\r\n            var configuredGroupId = " +
-"$this.attr(\'data-linkedgroupid\');\r\n            var configuredFilterBeginDate = $" +
-"this.attr(\'data-linkedgroupfilterdate\');\r\n            var filterDateOption = $th" +
-"is.attr(\'data-linkedgroupfilterdateoption\') == \'True\';\r\n            var descript" +
-"ion = $this.attr(\'data-linkedroupdescription\');\r\n            var updateUrl = $th" +
-"is.attr(\'data-linkedroupupdateurl\');\r\n\r\n            showDialog(configuredGroupId" +
-", filterDateOption, configuredFilterBeginDate, updateUrl, description);\r\n\r\n     " +
-"       return false;\r\n        });\r\n    });\r\n</script>\r\n");
+WriteLiteral("></i><strong>Warning:</strong> This group will be managed by Disco ICT.<br />\r\n  " +
+"          Any <strong>existing members will be removed from the group</strong>, " +
+"and it will be automatically synchronized with related members.\r\n        </p>\r\n " +
+"   </div>\r\n</div>\r\n<script>\r\n    $(function () {\r\n        let dialog;\r\n        l" +
+"et dialogGroupId;\r\n        let dialogFilterDate;\r\n        let dialogTitle;\r\n\r\n  " +
+"      function showDialog(groupId, filterDateOption, filterDateValue, updateUrl," +
+" title) {\r\n            if (dialog == null) {\r\n                dialog = $(\'#Confi" +
+"g_LinkedGroup_Dialog\').dialog({\r\n                    width: 450,\r\n              " +
+"      resizable: false,\r\n                    modal: true,\r\n                    a" +
+"utoOpen: false\r\n                });\r\n\r\n                dialogFilterDate = $(\'#Co" +
+"nfig_LinkedGroup_FilterDate\');\r\n                dialogFilterDate.datetimepicker(" +
+"{\r\n                    ampm: true,\r\n                    changeYear: true,\r\n     " +
+"               changeMonth: true,\r\n                    dateFormat: \'yy/mm/dd\'\r\n " +
+"               });\r\n\r\n                dialogGroupId = $(\'#Config_LinkedGroup_Id\'" +
+");\r\n                dialogGroupId.focus(function () { $(this).select(); });\r\n   " +
+"             dialogGroupId.autocomplete({\r\n                    source: dialogGro" +
+"upId.attr(\'data-sourceurl\'),\r\n                    minLength: 2,\r\n               " +
+"     select: function (e, ui) {\r\n                        dialogGroupId.val(ui.it" +
+"em.Id);\r\n                        return false;\r\n                    }\r\n         " +
+"       }).data(\'ui-autocomplete\')._renderItem = function (ul, item) {\r\n         " +
+"           return $(\"<li>\")\r\n                        .data(\"item.autocomplete\", " +
+"item)\r\n                        .append(\"<a><strong>\" + item.Name + \"</strong><br" +
+">\" + item.Id + \" (\" + item.Type + \")</a>\")\r\n                        .appendTo(ul" +
+");\r\n                };\r\n\r\n                dialogTitle = $(\'#Config_LinkedGroup_T" +
+"itle\');\r\n            }\r\n\r\n            var dialogButtons = {};\r\n            if (!" +
+"!groupId) {\r\n                dialogButtons[\'Remove Link\'] = function () {\r\n     " +
+"               $(this).dialog(\'disable\');\r\n                    dialogGroupId.val" +
+"(\'\');\r\n                    dialogGroupId.closest(\'form\').attr(\'action\', updateUr" +
+"l).submit();\r\n                }\r\n            }\r\n            dialogButtons[(!!gro" +
+"upId ? \'Save Changes\' : \'Link Group\')] = function () {\r\n                if (!dia" +
+"logGroupId.val()) {\r\n                    alert(\'A Linked Group must be specified" +
+"\');\r\n                    return;\r\n                }\r\n                $(this).dia" +
+"log(\'disable\');\r\n                dialogGroupId.closest(\'form\').attr(\'action\', up" +
+"dateUrl).submit();\r\n            }\r\n            dialogButtons[\'Cancel\'] = functio" +
+"n () {\r\n                $(this).dialog(\'close\');\r\n            };\r\n\r\n            " +
+"dialogGroupId.val(groupId);\r\n\r\n            if (!!filterDateOption) {\r\n          " +
+"      if (!!filterDateValue) {\r\n                    dialogFilterDate.datetimepic" +
+"ker(\'setDate\', moment(filterDateValue).toDate());\r\n                } else {\r\n   " +
+"                 dialogFilterDate.val(\'\');\r\n                }\r\n                d" +
+"ialogFilterDate.closest(\'tr\').show();\r\n            } else {\r\n                dia" +
+"logFilterDate.closest(\'tr\').hide();\r\n            }\r\n\r\n            dialogTitle.te" +
+"xt(title);\r\n            dialog.dialog(\'option\', \'buttons\', dialogButtons);\r\n    " +
+"        dialog.dialog(\'option\', \'title\', \'Linked Group: \' + title);\r\n           " +
+" dialog.dialog(\'open\');\r\n        }\r\n\r\n        $(document).on(\'click\', \'.Config_L" +
+"inkedGroup_LinkButton\', function () {\r\n            $this = $(this);\r\n\r\n         " +
+"   var configuredGroupId = $this.attr(\'data-linkedgroupid\');\r\n            var co" +
+"nfiguredFilterBeginDate = $this.attr(\'data-linkedgroupfilterdate\');\r\n           " +
+" var filterDateOption = $this.attr(\'data-linkedgroupfilterdateoption\') == \'True\'" +
+";\r\n            var description = $this.attr(\'data-linkedroupdescription\');\r\n    " +
+"        var updateUrl = $this.attr(\'data-linkedroupupdateurl\');\r\n\r\n            s" +
+"howDialog(configuredGroupId, filterDateOption, configuredFilterBeginDate, update" +
+"Url, description);\r\n\r\n            return false;\r\n        });\r\n    });\r\n</script>" +
+"\r\n");
 
         }
     }

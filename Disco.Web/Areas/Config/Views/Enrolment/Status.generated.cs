@@ -71,18 +71,7 @@ WriteLiteral(" data-defaultdeviceprofileid=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n");
-
-WriteLiteral("    ");
-
-            
-            #line 11 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-Write(Html.AntiForgeryToken());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n    <div");
+WriteLiteral(">\r\n    <div");
 
 WriteLiteral(" id=\"noSessions\"");
 
@@ -182,14 +171,14 @@ WriteLiteral(" data-bind=\"visible: isPending\"");
 WriteLiteral(">\r\n");
 
             
-            #line 34 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 34 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-                 using (Html.BeginForm(MVC.API.Enrolment.ResolveSessionPending(), FormMethod.Post))
+            #line 33 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+                 using (Html.BeginForm(MVC.API.Enrolment.ResolveSessionPending()))
                 {
 
             
@@ -202,20 +191,20 @@ WriteLiteral(" data-bind=\"text: pendingIdentifier\"");
 WriteLiteral("></code>\r\n");
 
             
-            #line 37 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 36 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                             ;
 
             
@@ -245,13 +234,13 @@ WriteLiteral(" data-bind=\"value: deviceProfileId\"");
 WriteLiteral(">\r\n");
 
             
-            #line 43 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 42 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 42 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                  foreach (var deviceProfile in Model.DeviceProfiles)
                                 {
 
@@ -260,20 +249,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                    <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 2814), Tuple.Create("\"", 2839)
+WriteAttribute("value", Tuple.Create(" value=\"", 2767), Tuple.Create("\"", 2792)
             
-            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-, Tuple.Create(Tuple.Create("", 2822), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
+            #line 44 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+, Tuple.Create(Tuple.Create("", 2775), Tuple.Create<System.Object, System.Int32>(deviceProfile.Id
             
             #line default
             #line hidden
-, 2822), false)
+, 2775), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 44 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                                                  Write(deviceProfile.Name);
 
             
@@ -282,7 +271,7 @@ WriteLiteral(">");
 WriteLiteral(" (");
 
             
-            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 44 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                                                                       Write(deviceProfile.Id);
 
             
@@ -291,7 +280,7 @@ WriteLiteral(" (");
 WriteLiteral(")</option>\r\n");
 
             
-            #line 46 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 45 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                 }
 
             
@@ -301,7 +290,7 @@ WriteLiteral("                            </select>\r\n                        <
 "            </div>\r\n");
 
             
-            #line 50 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 49 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                     if (Model.DeviceBatches.Count != 0)
                     {
 
@@ -326,13 +315,13 @@ WriteLiteral(" value=\"\"");
 WriteLiteral(" selected>&lt;None&gt;</option>\r\n");
 
             
-            #line 57 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 56 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 57 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 56 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                      foreach (var deviceBatch in Model.DeviceBatches)
                                     {
 
@@ -341,20 +330,20 @@ WriteLiteral(" selected>&lt;None&gt;</option>\r\n");
             #line hidden
 WriteLiteral("                                        <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 3596), Tuple.Create("\"", 3619)
+WriteAttribute("value", Tuple.Create(" value=\"", 3549), Tuple.Create("\"", 3572)
             
-            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
-, Tuple.Create(Tuple.Create("", 3604), Tuple.Create<System.Object, System.Int32>(deviceBatch.Id
+            #line 58 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+, Tuple.Create(Tuple.Create("", 3557), Tuple.Create<System.Object, System.Int32>(deviceBatch.Id
             
             #line default
             #line hidden
-, 3604), false)
+, 3557), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 58 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                                                    Write(deviceBatch.Name);
 
             
@@ -363,7 +352,7 @@ WriteLiteral(">");
 WriteLiteral(" (");
 
             
-            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 58 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                                                                       Write(deviceBatch.Id);
 
             
@@ -372,7 +361,7 @@ WriteLiteral(" (");
 WriteLiteral(")</option>\r\n");
 
             
-            #line 60 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 59 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                     }
 
             
@@ -382,7 +371,7 @@ WriteLiteral("                                </select>\r\n                     
 "                        </div>\r\n");
 
             
-            #line 64 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 63 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                     }
 
             
@@ -417,7 +406,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Reject</button>\r\n                    </div>\r\n");
 
             
-            #line 70 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 69 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                 }
 
             
@@ -596,7 +585,7 @@ WriteLiteral(@">
         var deviceBaseUrl = '");
 
             
-            #line 149 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 148 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -605,7 +594,7 @@ WriteLiteral(@">
 WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 
             
-            #line 150 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 149 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                Write(Url.Action(MVC.API.DeviceModel.Image()));
 
             
@@ -614,7 +603,7 @@ WriteLiteral("/\'\r\n        var deviceModelImageUrl = \'");
 WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 
             
-            #line 151 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 150 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                               Write(Links.ClientSource.Style.Images.Status.warning32_png);
 
             
@@ -623,7 +612,7 @@ WriteLiteral("/\'\r\n        var iconWarningUrl = \'url(");
 WriteLiteral(")\';\r\n        var iconErrorUrl = \'url(");
 
             
-            #line 152 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 151 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                             Write(Links.ClientSource.Style.Images.Status.fail32_png);
 
             
@@ -750,7 +739,7 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 "= new pageViewModel();\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 352 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 351 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.DeviceModel.Index()));
 
             
@@ -759,6 +748,9 @@ WriteLiteral(")\';\r\n\r\n        function pageViewModel() {\r\n            var 
 WriteLiteral(@"',
                 dataType: 'json',
                 type: 'POST',
+                data: {
+                    '__RequestVerificationToken': document.body.dataset.antiforgery
+                },
                 success: init_loadedDeviceModels,
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert('Unable to retrieve device models: ' + errorThrown);
@@ -780,13 +772,13 @@ WriteLiteral(@"',
                 End: null,
                 ModuleId: 50,
                 Take: 2000,
-                '__RequestVerificationToken': host.find('input[name=""__RequestVerificationToken""]').val()
+                '__RequestVerificationToken': document.body.dataset.antiforgery
             };
             $.ajax({
                 url: '");
 
             
-            #line 379 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 381 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -825,7 +817,7 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 409 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
+            #line 411 "..\..\Areas\Config\Views\Enrolment\Status.cshtml"
                                              Write(Disco.Services.Devices.Enrolment.EnrolmentLog.Current.LiveLogGroupName);
 
             

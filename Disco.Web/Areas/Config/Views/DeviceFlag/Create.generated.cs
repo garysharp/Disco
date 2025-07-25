@@ -57,35 +57,21 @@ WriteLiteral("\r\n");
             
             #line 6 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
  using (Html.BeginForm())
-{ 
+{
     
             
             #line default
             #line hidden
             
             #line 8 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-Write(Html.HiddenFor(m => m.DeviceFlag.Icon));
+Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 8 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-                                           
-    
-            
-            #line default
-            #line hidden
-            
-            #line 9 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-Write(Html.HiddenFor(m => m.DeviceFlag.IconColour));
-
-            
-            #line default
-            #line hidden
-            
-            #line 9 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-                                                 
+                            
 
             
             #line default
@@ -96,14 +82,14 @@ WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 450px\"");
 
-WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>Name:\r\n                " +
-"</th>\r\n                <td>\r\n");
+WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r\n                    N" +
+"ame:\r\n                </th>\r\n                <td>\r\n");
 
 WriteLiteral("                    ");
 
             
             #line 16 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-               Write(Html.EditorFor(model => model.DeviceFlag.Name));
+               Write(Html.EditorFor(model => model.Name));
 
             
             #line default
@@ -112,19 +98,20 @@ WriteLiteral("<br />");
 
             
             #line 16 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-                                                                    Write(Html.ValidationMessageFor(model => model.DeviceFlag.Name));
+                                                         Write(Html.ValidationMessageFor(model => model.Name));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">Description:\r\n                </th>\r\n                <td>\r\n");
+">\r\n                    Description:\r\n                </th>\r\n                <td>" +
+"\r\n");
 
 WriteLiteral("                    ");
 
             
-            #line 23 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-               Write(Html.EditorFor(model => model.DeviceFlag.Description));
+            #line 24 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
+               Write(Html.EditorFor(model => model.Description));
 
             
             #line default
@@ -132,8 +119,8 @@ WriteLiteral("                    ");
 WriteLiteral("<br />");
 
             
-            #line 23 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
-                                                                           Write(Html.ValidationMessageFor(model => model.DeviceFlag.Description));
+            #line 24 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
+                                                                Write(Html.ValidationMessageFor(model => model.Description));
 
             
             #line default
@@ -156,11 +143,11 @@ WriteLiteral("    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n        $(function () {\r\n            $(\'#DeviceFlag_Name\').focus().select();\r\n" +
-"        });\r\n    </script>\r\n");
+WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Name\').focus().select();\r\n        });" +
+"\r\n    </script>\r\n");
 
             
-            #line 36 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
+            #line 37 "..\..\Areas\Config\Views\DeviceFlag\Create.cshtml"
 }
 
             

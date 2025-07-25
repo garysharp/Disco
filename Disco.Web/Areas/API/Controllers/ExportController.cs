@@ -33,7 +33,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 var errorState = ModelState.First(m => m.Value.Errors.Any());
                 var error = errorState.Value.Errors.First();
-                return new HttpStatusCodeResult(400, $"{errorState.Key}: {error.Exception?.Message ?? error.ErrorMessage}");
+                return BadRequest($"{errorState.Key}: {error.Exception?.Message ?? error.ErrorMessage}");
             }
 
             SavedExports.UpdateSavedExport(Database, model.ToSavedExport());

@@ -617,7 +617,7 @@ WriteLiteral(">Change Scope</button>\r\n                        </div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                        <div");
+WriteLiteral("                            <div");
 
 WriteLiteral(" id=\"Config_DocumentTemplatePackages_Scope_Dialog\"");
 
@@ -629,27 +629,41 @@ WriteLiteral(">\r\n");
 
             
             #line 173 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                            
+                                
             
             #line default
             #line hidden
             
             #line 173 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                             using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateScope(Model.Package.Id, redirect: true)))
+                                 using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateScope(Model.Package.Id, redirect: true)))
                                 {
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 175 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                               Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
-WriteLiteral("                                <div");
+            
+            #line 175 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <div");
 
 WriteLiteral(" class=\"input\"");
 
-WriteLiteral(">\r\n                                    <label");
+WriteLiteral(">\r\n                                        <label");
 
 WriteLiteral(" for=\"Config_DocumentTemplatePackages_Scope_Scope\"");
 
-WriteLiteral(">Scope: </label>\r\n                                    <select");
+WriteLiteral(">Scope: </label>\r\n                                        <select");
 
 WriteLiteral(" id=\"Config_DocumentTemplatePackages_Scope_Scope\"");
 
@@ -658,46 +672,46 @@ WriteLiteral(" name=\"Scope\"");
 WriteLiteral(">\r\n");
 
             
-            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                        
+            #line 179 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                            
             
             #line default
             #line hidden
             
-            #line 178 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                         foreach (var scope in Model.Scopes)
+            #line 179 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                             foreach (var scope in Model.Scopes)
                                             {
 
             
             #line default
             #line hidden
-WriteLiteral("                                            <option");
+WriteLiteral("                                                <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 9309), Tuple.Create("\"", 9323)
+WriteAttribute("value", Tuple.Create(" value=\"", 9399), Tuple.Create("\"", 9413)
             
-            #line 180 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-, Tuple.Create(Tuple.Create("", 9317), Tuple.Create<System.Object, System.Int32>(scope
+            #line 181 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+, Tuple.Create(Tuple.Create("", 9407), Tuple.Create<System.Object, System.Int32>(scope
             
             #line default
             #line hidden
-, 9317), false)
+, 9407), false)
 );
 
-WriteAttribute("selected", Tuple.Create(" selected=\"", 9324), Tuple.Create("\"", 9398)
+WriteAttribute("selected", Tuple.Create(" selected=\"", 9414), Tuple.Create("\"", 9488)
             
-            #line 180 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-, Tuple.Create(Tuple.Create("", 9335), Tuple.Create<System.Object, System.Int32>(scope == Model.Package.Scope.ToString() ? " selected" : null
+            #line 181 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+  , Tuple.Create(Tuple.Create("", 9425), Tuple.Create<System.Object, System.Int32>(scope == Model.Package.Scope.ToString() ? " selected" : null
             
             #line default
             #line hidden
-, 9335), false)
+, 9425), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 180 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                                                                                                         Write(scope);
+            #line 181 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                                                                                                             Write(scope);
 
             
             #line default
@@ -705,58 +719,58 @@ WriteLiteral(">");
 WriteLiteral("</option>\r\n");
 
             
-            #line 181 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 182 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                             }
 
             
             #line default
             #line hidden
-WriteLiteral("                                    </select>\r\n                                </" +
-"div>\r\n");
+WriteLiteral("                                        </select>\r\n                              " +
+"      </div>\r\n");
 
             
-            #line 184 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 185 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                 }
 
             
             #line default
             #line hidden
-WriteLiteral("                            ");
+WriteLiteral("                                ");
 
             
-            #line 185 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                             if (Model.Package.DocumentTemplateIds != null && Model.Package.DocumentTemplateIds.Count > 0)
+            #line 186 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                 if (Model.Package.DocumentTemplateIds != null && Model.Package.DocumentTemplateIds.Count > 0)
                                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <div");
+WriteLiteral("                                    <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                                    <p");
+WriteLiteral(">\r\n                                        <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                                        <i");
+WriteLiteral(">\r\n                                            <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>If changed, all Document Templates will be unassociated with this Package.\r\n" +
-"                                    </p>\r\n                                </div>" +
-"\r\n");
+"                                        </p>\r\n                                  " +
+"  </div>\r\n");
 
             
-            #line 192 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 193 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                 }
 
             
             #line default
             #line hidden
-WriteLiteral("                        </div>\r\n");
+WriteLiteral("                            </div>\r\n");
 
-WriteLiteral("                        <script");
+WriteLiteral("                            <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -769,23 +783,22 @@ WriteLiteral(">\r\n                                $(function () {\r\n          
 "                                    modal: true,\r\n                              " +
 "                  autoOpen: false,\r\n                                            " +
 "    buttons: {\r\n                                                    \'Save Change" +
-"s\': function () {\r\n                                                        dialo" +
-"g.dialog(\'option\', \'buttons\', null);\r\n                                          " +
-"              dialog.dialog(\'disable\');\r\n                                       " +
-"                 $(\'#Config_DocumentTemplatePackages_Scope_Scope\').closest(\'form" +
-"\').submit();\r\n                                                    },\r\n          " +
-"                                          \'Cancel\': function () {\r\n             " +
-"                                           dialog.dialog(\'close\');\r\n            " +
-"                                        }\r\n                                     " +
-"           }\r\n                                            });\r\n                 " +
-"                       }\r\n\r\n                                        dialog.dialo" +
-"g(\'open\');\r\n\r\n                                        return false;\r\n           " +
-"                         }\r\n\r\n                                    $(\'#Config_Doc" +
-"umentTemplatePackages_Scope_Button\').click(showDialog);\r\n                       " +
-"         });\r\n                        </script>\r\n");
+"s\': function () {\r\n                                                        $(thi" +
+"s)\r\n                                                            .dialog(\'option\'" +
+", \'buttons\', null)\r\n                                                            " +
+".find(\'form\').trigger(\'submit\');\r\n                                              " +
+"      },\r\n                                                    \'Cancel\': function" +
+" () {\r\n                                                        $(this).dialog(\'c" +
+"lose\');\r\n                                                    }\r\n                " +
+"                                }\r\n                                            }" +
+");\r\n                                        }\r\n\r\n                               " +
+"         dialog.dialog(\'open\');\r\n\r\n                                        retur" +
+"n false;\r\n                                    }\r\n\r\n                             " +
+"       $(\'#Config_DocumentTemplatePackages_Scope_Button\').click(showDialog);\r\n  " +
+"                              });\r\n                            </script>\r\n");
 
             
-            #line 226 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 227 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
 
             
@@ -794,88 +807,88 @@ WriteLiteral(">\r\n                                $(function () {\r\n          
 WriteLiteral("                        ");
 
             
-            #line 227 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 228 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                          if (Model.Package.Scope == AttachmentTypes.Job)
                         {
 
             
             #line default
             #line hidden
-WriteLiteral("                        <hr />\r\n");
+WriteLiteral("                            <hr />\r\n");
 
-WriteLiteral("                        <h4>Job Type Filters:</h4>\r\n");
+WriteLiteral("                            <h4>Job Type Filters:</h4>\r\n");
 
-WriteLiteral("                        <div");
+WriteLiteral("                            <div");
 
 WriteLiteral(" id=\"Config_DocumentTemplatePackages_JobSubTypes\"");
 
-WriteLiteral(">\r\n                            <div>\r\n");
+WriteLiteral(">\r\n                                <div>\r\n");
 
             
-            #line 233 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                
+            #line 234 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                    
             
             #line default
             #line hidden
             
-            #line 233 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                 if (Model.Package.JobSubTypes != null && Model.Package.JobSubTypes.Count > 0)
+            #line 234 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                     if (Model.Package.JobSubTypes != null && Model.Package.JobSubTypes.Count > 0)
                                     {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <ul>\r\n");
+WriteLiteral("                                        <ul>\r\n");
 
             
-            #line 236 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                        
+            #line 237 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                            
             
             #line default
             #line hidden
             
-            #line 236 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                         foreach (var jobType in Model.JobSubTypesSelected.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+            #line 237 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                             foreach (var jobType in Model.JobSubTypesSelected.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
                                             {
 
             
             #line default
             #line hidden
-WriteLiteral("                                            <li>\r\n");
+WriteLiteral("                                                <li>\r\n");
 
-WriteLiteral("                                                ");
+WriteLiteral("                                                    ");
 
             
-            #line 239 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                           Write(jobType.Key.Description);
+            #line 240 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                               Write(jobType.Key.Description);
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                                <ul>\r\n");
+WriteLiteral("\r\n                                                    <ul>\r\n");
 
             
-            #line 241 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                    
+            #line 242 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                        
             
             #line default
             #line hidden
             
-            #line 241 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                     if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
+            #line 242 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                         if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
                                                         {
 
             
             #line default
             #line hidden
-WriteLiteral("                                                        <li><span");
+WriteLiteral("                                                            <li><span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">[All Sub Types]</span></li>\r\n");
 
             
-            #line 244 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 245 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                         }
                                                         else
                                                         {
@@ -885,11 +898,11 @@ WriteLiteral(">[All Sub Types]</span></li>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                                                        <li>");
+WriteLiteral("                                                                <li>");
 
             
-            #line 249 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                       Write(jobSubType.Description);
+            #line 250 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                               Write(jobSubType.Description);
 
             
             #line default
@@ -897,27 +910,27 @@ WriteLiteral("                                                        <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 250 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 251 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                             }
                                                         }
 
             
             #line default
             #line hidden
-WriteLiteral("                                                </ul>\r\n                          " +
-"                  </li>\r\n");
+WriteLiteral("                                                    </ul>\r\n                      " +
+"                          </li>\r\n");
 
             
-            #line 254 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 255 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                             }
 
             
             #line default
             #line hidden
-WriteLiteral("                                    </ul>\r\n");
+WriteLiteral("                                        </ul>\r\n");
 
             
-            #line 256 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 257 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                     }
                                     else
                                     {
@@ -925,36 +938,36 @@ WriteLiteral("                                    </ul>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                                    <span");
+WriteLiteral("                                        <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;No Filter&gt;</span>\r\n");
 
             
-            #line 260 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 261 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                     }
 
             
             #line default
             #line hidden
-WriteLiteral("                            </div>\r\n");
+WriteLiteral("                                </div>\r\n");
 
             
-            #line 262 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                            
+            #line 263 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                
             
             #line default
             #line hidden
             
-            #line 262 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                             if (canConfig)
+            #line 263 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                 if (canConfig)
                                 {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <a");
+WriteLiteral("                                    <a");
 
 WriteLiteral(" id=\"Config_DocumentTemplatePackages_JobSubTypes_Update\"");
 
@@ -964,7 +977,7 @@ WriteLiteral(" class=\"button small\"");
 
 WriteLiteral(">Update</a>\r\n");
 
-WriteLiteral("                                <div");
+WriteLiteral("                                    <div");
 
 WriteLiteral(" id=\"Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog\"");
 
@@ -975,15 +988,29 @@ WriteLiteral(" title=\"Job Type Filter\"");
 WriteLiteral(">\r\n");
 
             
-            #line 266 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                    
+            #line 267 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                        
             
             #line default
             #line hidden
             
-            #line 266 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                     using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateJobSubTypes(Model.Package.Id, null, true)))
+            #line 267 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                         using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateJobSubTypes(Model.Package.Id, null, true)))
                                         {
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 269 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 269 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                                    
                                             var selectedTypes = Model.JobSubTypesSelected.Select(jst => jst.JobType).Distinct().ToList();
                                             foreach (var jt in Model.JobTypes)
                                             {
@@ -991,179 +1018,177 @@ WriteLiteral(">\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                                        <div");
+WriteLiteral("                                                <div");
 
 WriteLiteral(" class=\"jobTypes\"");
 
-WriteLiteral(">\r\n                                            <h4>\r\n                            " +
-"                    <input");
+WriteLiteral(">\r\n                                                    <h4>\r\n                    " +
+"                                    <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 15256), Tuple.Create("\"", 15275)
-, Tuple.Create(Tuple.Create("", 15261), Tuple.Create("Types_", 15261), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 15517), Tuple.Create("\"", 15536)
+, Tuple.Create(Tuple.Create("", 15522), Tuple.Create("Types_", 15522), true)
             
-            #line 273 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-, Tuple.Create(Tuple.Create("", 15267), Tuple.Create<System.Object, System.Int32>(jt.Id
+            #line 275 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+, Tuple.Create(Tuple.Create("", 15528), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 15267), false)
+, 15528), false)
 );
 
 WriteLiteral(" class=\"jobType\"");
 
 WriteLiteral(" type=\"checkbox\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 15308), Tuple.Create("\"", 15324)
+WriteAttribute("value", Tuple.Create(" value=\"", 15569), Tuple.Create("\"", 15585)
             
-            #line 273 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                  , Tuple.Create(Tuple.Create("", 15316), Tuple.Create<System.Object, System.Int32>(jt.Id
+            #line 275 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                          , Tuple.Create(Tuple.Create("", 15577), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 15316), false)
+, 15577), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 273 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                                                                                        Write(selectedTypes.Contains(jt) ? "checked=\" checked\"" : null);
+            #line 275 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                                                                                                Write(selectedTypes.Contains(jt) ? "checked=\" checked\"" : null);
 
             
             #line default
             #line hidden
 WriteLiteral(" /><label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 15396), Tuple.Create("\"", 15416)
-, Tuple.Create(Tuple.Create("", 15402), Tuple.Create("Types_", 15402), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 15657), Tuple.Create("\"", 15677)
+, Tuple.Create(Tuple.Create("", 15663), Tuple.Create("Types_", 15663), true)
             
-            #line 273 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                                                                                              , Tuple.Create(Tuple.Create("", 15408), Tuple.Create<System.Object, System.Int32>(jt.Id
+            #line 275 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                                                                                                      , Tuple.Create(Tuple.Create("", 15669), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 15408), false)
+, 15669), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 273 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                                                                                                                                                                                   Write(jt.Description);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</label>\r\n                                            </h4>\r\n                    " +
-"                        <div");
-
-WriteAttribute("id", Tuple.Create(" id=\"", 15542), Tuple.Create("\"", 15564)
-, Tuple.Create(Tuple.Create("", 15547), Tuple.Create("SubTypes_", 15547), true)
-            
             #line 275 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-, Tuple.Create(Tuple.Create("", 15556), Tuple.Create<System.Object, System.Int32>(jt.Id
+                                                                                                                                                                                                                           Write(jt.Description);
+
             
             #line default
             #line hidden
-, 15556), false)
+WriteLiteral("</label>\r\n                                                    </h4>\r\n            " +
+"                                        <div");
+
+WriteAttribute("id", Tuple.Create(" id=\"", 15819), Tuple.Create("\"", 15841)
+, Tuple.Create(Tuple.Create("", 15824), Tuple.Create("SubTypes_", 15824), true)
+            
+            #line 277 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+, Tuple.Create(Tuple.Create("", 15833), Tuple.Create<System.Object, System.Int32>(jt.Id
+            
+            #line default
+            #line hidden
+, 15833), false)
 );
 
 WriteLiteral(" class=\"jobSubTypes\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("                                                ");
+WriteLiteral("                                                        ");
 
             
-            #line 276 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                           Write(CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div"));
+            #line 278 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                   Write(CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div"));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n");
 
-WriteLiteral("                                                ");
+WriteLiteral("                                                        ");
 
             
-            #line 277 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                           Write(CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Package.JobSubTypes), 2));
+            #line 279 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                   Write(CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Package.JobSubTypes), 2));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                                            </div>\r\n                           " +
-"             </div>\r\n");
+WriteLiteral("\r\n                                                    </div>\r\n                   " +
+"                             </div>\r\n");
 
             
-            #line 280 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 282 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                             }
                                         }
 
             
             #line default
             #line hidden
-WriteLiteral("                                </div>\r\n");
+WriteLiteral("                                    </div>\r\n");
 
-WriteLiteral("                                <script>\r\n                                       " +
-" (function () {\r\n                                            var dialog;\r\n\r\n    " +
-"                                        function showDialog() {\r\n               " +
-"                                 if (!dialog) {\r\n                               " +
-"                     dialog = $(\'#Config_DocumentTemplatePackages_JobSubTypes_Up" +
-"date_Dialog\').dialog({\r\n                                                        " +
-"resizable: false,\r\n                                                        modal" +
-": true,\r\n                                                        autoOpen: false" +
-",\r\n                                                        width: 750,\r\n        " +
-"                                                height: 580,\r\n                  " +
-"                                      buttons: {\r\n                              " +
-"                              \"Save Changes\": saveChanges,\r\n                    " +
-"                                        Cancel: cancel\r\n                        " +
-"                                }\r\n                                             " +
-"       });\r\n\r\n                                                    dialog.find(\'." +
-"jobSubTypes\').hide();\r\n                                                    dialo" +
-"g.on(\'change\', \'input.jobType\', function () {\r\n                                 " +
-"                       var $this = $(this);\r\n                                   " +
-"                     if ($this.is(\':checked\'))\r\n                                " +
-"                            $(\'#SubTypes_\' + $this.val()).slideDown(\'fast\');\r\n  " +
-"                                                      else\r\n                    " +
-"                                        $(\'#SubTypes_\' + $this.val()).slideUp(\'f" +
-"ast\');\r\n                                                    }).find(\'input.jobTy" +
-"pe:checked\').each(function () {\r\n                                               " +
-"         $(\'#SubTypes_\' + $(this).val()).show();\r\n                              " +
-"                      });\r\n                                                }\r\n\r\n" +
-"                                                dialog.dialog(\'open\');\r\n\r\n      " +
-"                                          return false;\r\n                       " +
-"                     }\r\n\r\n                                            function c" +
-"ancel() {\r\n                                                dialog.dialog(\"disabl" +
-"e\");\r\n                                                dialog.dialog(\"option\", \"b" +
-"uttons\", null);\r\n\r\n                                                // Refresh Pa" +
-"ge\r\n                                                window.location.reload(true)" +
-";\r\n                                            }\r\n\r\n                            " +
-"                function saveChanges() {\r\n                                      " +
-"          var form = dialog.find(\'form\');\r\n\r\n                                   " +
-"             $(\'input.jobType:unchecked\').each(function () {\r\n                  " +
-"                                  $(\'#SubTypes_\' + $(this).val()).find(\'input\')." +
-"prop(\'checked\', false);\r\n                                                });\r\n\r\n" +
-"                                                form.submit();\r\n\r\n              " +
-"                                  dialog.dialog(\"disable\");\r\n                   " +
-"                             dialog.dialog(\"option\", \"buttons\", null);\r\n        " +
-"                                    }\r\n\r\n                                       " +
-"     $(function () {\r\n                                                $(\'#Config" +
-"_DocumentTemplatePackages_JobSubTypes_Update\').click(showDialog);\r\n             " +
-"                               });\r\n\r\n                                        })" +
-"();\r\n                                </script>\r\n");
+WriteLiteral("                                    <script>\r\n                                   " +
+"     (function () {\r\n                                            var dialog;\r\n\r\n" +
+"                                            function showDialog() {\r\n           " +
+"                                     if (!dialog) {\r\n                           " +
+"                         dialog = $(\'#Config_DocumentTemplatePackages_JobSubType" +
+"s_Update_Dialog\').dialog({\r\n                                                    " +
+"    resizable: false,\r\n                                                        m" +
+"odal: true,\r\n                                                        autoOpen: f" +
+"alse,\r\n                                                        width: 750,\r\n    " +
+"                                                    height: 580,\r\n              " +
+"                                          buttons: {\r\n                          " +
+"                                  \"Save Changes\": saveChanges,\r\n                " +
+"                                            Cancel: cancel\r\n                    " +
+"                                    }\r\n                                         " +
+"           });\r\n\r\n                                                    dialog.fin" +
+"d(\'.jobSubTypes\').hide();\r\n                                                    d" +
+"ialog.on(\'change\', \'input.jobType\', function () {\r\n                             " +
+"                           var $this = $(this);\r\n                               " +
+"                         if ($this.is(\':checked\'))\r\n                            " +
+"                                $(\'#SubTypes_\' + $this.val()).slideDown(\'fast\');" +
+"\r\n                                                        else\r\n                " +
+"                                            $(\'#SubTypes_\' + $this.val()).slideU" +
+"p(\'fast\');\r\n                                                    }).find(\'input.j" +
+"obType:checked\').each(function () {\r\n                                           " +
+"             $(\'#SubTypes_\' + $(this).val()).show();\r\n                          " +
+"                          });\r\n                                                }" +
+"\r\n\r\n                                                dialog.dialog(\'open\');\r\n\r\n  " +
+"                                              return false;\r\n                   " +
+"                         }\r\n\r\n                                            functi" +
+"on cancel() {\r\n                                                dialog.dialog(\"op" +
+"tion\", \"buttons\", null);\r\n                                                window" +
+".location.reload(true);\r\n                                            }\r\n\r\n      " +
+"                                      function saveChanges() {\r\n                " +
+"                                var form = dialog.find(\'form\');\r\n\r\n             " +
+"                                   $(\'input.jobType:unchecked\').each(function ()" +
+" {\r\n                                                    $(\'#SubTypes_\' + $(this)" +
+".val()).find(\'input\').prop(\'checked\', false);\r\n                                 " +
+"               });\r\n\r\n                                                form.trigg" +
+"er(\'submit\');\r\n                                                dialog.dialog(\"op" +
+"tion\", \"buttons\", null);\r\n                                            }\r\n\r\n     " +
+"                                       $(function () {\r\n                        " +
+"                        $(\'#Config_DocumentTemplatePackages_JobSubTypes_Update\')" +
+".click(showDialog);\r\n                                            });\r\n\r\n        " +
+"                                })();\r\n                                    </scr" +
+"ipt>\r\n");
 
             
-            #line 345 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 342 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                 }
 
             
             #line default
             #line hidden
-WriteLiteral("                        </div>\r\n");
+WriteLiteral("                            </div>\r\n");
 
             
-            #line 347 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 344 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
 
             
@@ -1173,13 +1198,13 @@ WriteLiteral("                    </td>\r\n                </tr>\r\n            
 "           <th>Document Templates:</th>\r\n                    <td>\r\n");
 
             
-            #line 353 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 350 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 353 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 350 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                          if (Model.DocumentTemplatesSelected.Count == 0)
                         {
 
@@ -1210,7 +1235,7 @@ WriteLiteral(" class=\"button small alert\"");
 WriteLiteral(">Choose Document Templates</button>\r\n                            </div>\r\n");
 
             
-            #line 363 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 360 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
                         else
                         {
@@ -1227,13 +1252,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 367 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 364 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 367 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 364 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                  foreach (var template in Model.DocumentTemplatesSelected)
                                 {
 
@@ -1248,7 +1273,7 @@ WriteLiteral(" class=\"description\"");
 WriteLiteral(">");
 
             
-            #line 370 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 367 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                              Write(template.Description);
 
             
@@ -1261,7 +1286,7 @@ WriteLiteral(" class=\"id\"");
 WriteLiteral(">");
 
             
-            #line 371 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 368 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                     Write(Html.ActionLink(template.Id, MVC.Config.DocumentTemplate.Index(template.Id)));
 
             
@@ -1270,7 +1295,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                                    </li>\r\n");
 
             
-            #line 373 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 370 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                 }
 
             
@@ -1303,7 +1328,7 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(">Change Document Templates</button>\r\n                            </div>\r\n");
 
             
-            #line 383 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 380 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
 
             
@@ -1312,7 +1337,7 @@ WriteLiteral(">Change Document Templates</button>\r\n                           
 WriteLiteral("                        ");
 
             
-            #line 384 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 381 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                          if (canConfig)
                         {
 
@@ -1331,15 +1356,29 @@ WriteLiteral(">\r\n                                <div>\r\n                    
 ">Package Templates</h3>\r\n");
 
             
-            #line 389 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 386 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 389 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 386 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                      using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateDocumentTemplates(Model.Package.Id, redirect: true)))
                                     {
+                                        
+            
+            #line default
+            #line hidden
+            
+            #line 388 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                   Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 388 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                                                
 
             
             #line default
@@ -1351,13 +1390,13 @@ WriteLiteral(" class=\"templates_connected none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 392 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 390 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                             
             
             #line default
             #line hidden
             
-            #line 392 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 390 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                              foreach (var template in Model.DocumentTemplatesSelected)
                                             {
 
@@ -1371,14 +1410,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"DocumentTemplates\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 22938), Tuple.Create("\"", 22958)
+WriteAttribute("value", Tuple.Create(" value=\"", 23119), Tuple.Create("\"", 23139)
             
-            #line 395 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                        , Tuple.Create(Tuple.Create("", 22946), Tuple.Create<System.Object, System.Int32>(template.Id
+            #line 393 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                        , Tuple.Create(Tuple.Create("", 23127), Tuple.Create<System.Object, System.Int32>(template.Id
             
             #line default
             #line hidden
-, 22946), false)
+, 23127), false)
 );
 
 WriteLiteral(" />\r\n                                                    <span");
@@ -1388,7 +1427,7 @@ WriteLiteral(" class=\"id\"");
 WriteLiteral(">");
 
             
-            #line 396 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 394 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                 Write(template.Id);
 
             
@@ -1401,7 +1440,7 @@ WriteLiteral(" class=\"description\"");
 WriteLiteral(">");
 
             
-            #line 397 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 395 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                          Write(template.Description);
 
             
@@ -1410,7 +1449,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                                                </li>\r\n");
 
             
-            #line 399 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 397 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                             }
 
             
@@ -1419,7 +1458,7 @@ WriteLiteral("</span>\r\n                                                </li>\r
 WriteLiteral("                                        </ol>\r\n");
 
             
-            #line 401 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 399 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                     }
 
             
@@ -1452,13 +1491,13 @@ WriteLiteral(" class=\"templates_connected none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 413 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 411 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 413 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 411 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                          foreach (var template in Model.DocumentTemplates.Where(t => !t.IsHidden).Except(Model.DocumentTemplatesSelected))
                                         {
 
@@ -1472,14 +1511,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"DocumentTemplates\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 24444), Tuple.Create("\"", 24464)
+WriteAttribute("value", Tuple.Create(" value=\"", 24625), Tuple.Create("\"", 24645)
             
-            #line 416 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                    , Tuple.Create(Tuple.Create("", 24452), Tuple.Create<System.Object, System.Int32>(template.Id
+            #line 414 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                    , Tuple.Create(Tuple.Create("", 24633), Tuple.Create<System.Object, System.Int32>(template.Id
             
             #line default
             #line hidden
-, 24452), false)
+, 24633), false)
 );
 
 WriteLiteral(" />\r\n                                                <span");
@@ -1489,7 +1528,7 @@ WriteLiteral(" class=\"id\"");
 WriteLiteral(">");
 
             
-            #line 417 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 415 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                             Write(template.Id);
 
             
@@ -1502,7 +1541,7 @@ WriteLiteral(" class=\"description\"");
 WriteLiteral(">");
 
             
-            #line 418 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 416 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                      Write(template.Description);
 
             
@@ -1511,7 +1550,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                                            </li>\r\n");
 
             
-            #line 420 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 418 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                         }
 
             
@@ -1537,28 +1576,27 @@ WriteLiteral(">\r\n                                $(function () {\r\n          
 "ar $form = dialog.find(\'form\');\r\n                                               " +
 "         if ($form.find(\'input\').length > 0) {\r\n                                " +
 "                            dialog.dialog(\'option\', \'buttons\', null);\r\n         " +
-"                                                   dialog.dialog(\'disable\');\r\n  " +
-"                                                          $form.submit();\r\n     " +
-"                                                   } else {\r\n                   " +
-"                                         alert(\'The package templates must inclu" +
-"de at least one document template\');\r\n                                          " +
-"              }\r\n                                                    },\r\n       " +
-"                                             \'Cancel\': function () {\r\n          " +
-"                                              dialog.dialog(\'close\');\r\n         " +
-"                                           }\r\n                                  " +
-"              }\r\n                                            });\r\n\r\n            " +
-"                                dialog.find(\'.templates_connected\')\r\n           " +
-"                                     .sortable({\r\n                              " +
-"                      connectWith: \'.templates_connected\'\r\n                     " +
-"                           })\r\n                                        }\r\n\r\n    " +
-"                                    dialog.dialog(\'open\');\r\n\r\n                  " +
-"                      return false;\r\n                                    }\r\n\r\n  " +
-"                                  $(\'#Config_DocumentTemplatePackages_Templates_" +
-"Button\').click(showDialog);\r\n                                });\r\n              " +
-"              </script>\r\n");
+"                                                   $form.submit();\r\n            " +
+"                                            } else {\r\n                          " +
+"                                  alert(\'The package templates must include at l" +
+"east one document template\');\r\n                                                 " +
+"       }\r\n                                                    },\r\n              " +
+"                                      \'Cancel\': function () {\r\n                 " +
+"                                       dialog.dialog(\'close\');\r\n                " +
+"                                    }\r\n                                         " +
+"       }\r\n                                            });\r\n\r\n                   " +
+"                         dialog.find(\'.templates_connected\')\r\n                  " +
+"                              .sortable({\r\n                                     " +
+"               connectWith: \'.templates_connected\'\r\n                            " +
+"                    })\r\n                                        }\r\n\r\n           " +
+"                             dialog.dialog(\'open\');\r\n\r\n                         " +
+"               return false;\r\n                                    }\r\n\r\n         " +
+"                           $(\'#Config_DocumentTemplatePackages_Templates_Button\'" +
+").click(showDialog);\r\n                                });\r\n                     " +
+"       </script>\r\n");
 
             
-            #line 466 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 463 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
 
             
@@ -1576,13 +1614,13 @@ WriteLiteral(">\r\n        <h2>Advanced Options</h2>\r\n        <table>\r\n     
 "sion:\r\n                    </th>\r\n                    <td>\r\n");
 
             
-            #line 482 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 479 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 482 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 479 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                          if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
                             
@@ -1590,56 +1628,56 @@ WriteLiteral(">\r\n        <h2>Advanced Options</h2>\r\n        <table>\r\n     
             #line default
             #line hidden
             
-            #line 484 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 481 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(Html.EditorFor(model => Model.Package.FilterExpression));
 
             
             #line default
             #line hidden
             
-            #line 484 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 481 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                                     
                             
             
             #line default
             #line hidden
             
-            #line 485 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 482 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 485 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 482 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                      
                             
             
             #line default
             #line hidden
             
-            #line 486 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 483 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 486 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 483 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                    
                             
             
             #line default
             #line hidden
             
-            #line 487 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 484 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 487 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 484 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                      
 
             
@@ -1661,7 +1699,7 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 497 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 494 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                     Write(Url.Action(MVC.API.DocumentTemplatePackage.UpdateFilterExpression(Model.Package.Id)));
 
             
@@ -1690,7 +1728,7 @@ WriteLiteral("\',\r\n                                        \'FilterExpression\
 "                      </script>\r\n");
 
             
-            #line 526 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 523 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
                         else
                         {
@@ -1707,7 +1745,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 532 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 529 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                             }
                             else
                             {
@@ -1724,7 +1762,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 536 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 533 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                Write(Model.Package.FilterExpression);
 
             
@@ -1733,7 +1771,7 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n                                </div>\r\n");
 
             
-            #line 538 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 535 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                             }
                         }
 
@@ -1765,13 +1803,13 @@ WriteLiteral(@"></i>This expression will be evaluated to determine if this packa
 ");
 
             
-            #line 552 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 549 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 552 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 549 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                          if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
                             
@@ -1779,56 +1817,56 @@ WriteLiteral(@"></i>This expression will be evaluated to determine if this packa
             #line default
             #line hidden
             
-            #line 554 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 551 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(Html.EditorFor(model => Model.Package.OnGenerateExpression));
 
             
             #line default
             #line hidden
             
-            #line 554 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 551 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                                         
                             
             
             #line default
             #line hidden
             
-            #line 555 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 552 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 555 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 552 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                      
                             
             
             #line default
             #line hidden
             
-            #line 556 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 553 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 556 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 553 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                    
                             
             
             #line default
             #line hidden
             
-            #line 557 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 554 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 557 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 554 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                      
 
             
@@ -1850,7 +1888,7 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 567 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 564 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                     Write(Url.Action(MVC.API.DocumentTemplatePackage.UpdateOnGenerateExpression(Model.Package.Id)));
 
             
@@ -1879,7 +1917,7 @@ WriteLiteral("\',\r\n                                        \'OnGenerateExpress
 "                          </script>\r\n");
 
             
-            #line 596 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 593 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         }
                         else
                         {
@@ -1896,7 +1934,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 602 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 599 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                             }
                             else
                             {
@@ -1913,7 +1951,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 606 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 603 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                Write(Model.Package.OnGenerateExpression);
 
             
@@ -1922,7 +1960,7 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n                                </div>\r\n");
 
             
-            #line 608 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 605 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                             }
                         }
 
@@ -1954,9 +1992,42 @@ WriteLiteral(@"></i>This expression will be evaluated each time the package is g
 
 WriteLiteral(" id=\"dialogConfirmDelete\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(" title=\"Delete this Document Template?\"");
 
-WriteLiteral(">\r\n    <p>\r\n        <i");
+WriteLiteral(">\r\n");
+
+            
+            #line 619 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+    
+            
+            #line default
+            #line hidden
+            
+            #line 619 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+     using (Html.BeginForm(MVC.API.DocumentTemplatePackage.Delete(Model.Package.Id, true)))
+    {
+        
+            
+            #line default
+            #line hidden
+            
+            #line 621 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+   Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 621 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                
+    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <p>\r\n        <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
@@ -1967,31 +2038,29 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
     $(function () {
-        var button = $('#buttonDelete');
-        var buttonDialog = $(""#dialogConfirmDelete"");
-        var buttonLink = button.attr('href');
-        button.attr('href', '#');
-        button.click(function () {
+        const button = $('#buttonDelete');
+        let buttonDialog = null;
+        button.on('click', function () {
+            if (!buttonDialog) {
+                buttonDialog = $(""#dialogConfirmDelete"").dialog({
+                    resizable: false,
+                    modal: true,
+                    autoOpen: false,
+                    buttons: {
+                        ""Delete"": function () {
+                            $(this)
+                                .dialog(""option"", ""buttons"", null)
+                                .find('form').trigger('submit');
+                        },
+                        Cancel: function () {
+                            $(this).dialog(""close"");
+                        }
+                    }
+                });
+            }
             buttonDialog.dialog('open');
             return false;
         });
-        buttonDialog.dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                ""Delete"": function () {
-                    $this = $(this);
-                    $this.dialog('disable');
-                    $this.dialog(""option"", ""buttons"", null);
-                    window.location.href = buttonLink;
-                },
-                Cancel: function () {
-                    $(this).dialog(""close"");
-                }
-            }
-        });
-
     });
 </script>
 <div");
@@ -2001,13 +2070,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 657 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 656 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 657 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 656 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
      if (hideAdvanced)
     {
 
@@ -2033,7 +2102,7 @@ WriteLiteral(@"        <script>
 ");
 
             
-            #line 668 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 667 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
     }
 
             
@@ -2042,39 +2111,39 @@ WriteLiteral(@"        <script>
 WriteLiteral("    ");
 
             
-            #line 669 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 668 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
      if (canBulkGenerate)
     {
 
             
             #line default
             #line hidden
-WriteLiteral("        <a");
+WriteLiteral("        <button");
 
 WriteLiteral(" id=\"buttonBulkGenerate\"");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Bulk Generate</a>\r\n");
+WriteLiteral(">Bulk Generate</button>\r\n");
 
 WriteLiteral("        <div");
 
 WriteLiteral(" id=\"dialogBulkGenerate\"");
 
-WriteLiteral(" class=\"hiddenDialog\"");
+WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 37306), Tuple.Create("\"", 37348)
-, Tuple.Create(Tuple.Create("", 37314), Tuple.Create("Bulk", 37314), true)
-, Tuple.Create(Tuple.Create(" ", 37318), Tuple.Create("Generate:", 37319), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 37631), Tuple.Create("\"", 37673)
+, Tuple.Create(Tuple.Create("", 37639), Tuple.Create("Bulk", 37639), true)
+, Tuple.Create(Tuple.Create(" ", 37643), Tuple.Create("Generate:", 37644), true)
             
-            #line 672 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-, Tuple.Create(Tuple.Create(" ", 37328), Tuple.Create<System.Object, System.Int32>(Model.Package.Id
+            #line 671 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+              , Tuple.Create(Tuple.Create(" ", 37653), Tuple.Create<System.Object, System.Int32>(Model.Package.Id
             
             #line default
             #line hidden
-, 37329), false)
+, 37654), false)
 );
 
 WriteLiteral(">\r\n            <div");
@@ -2084,13 +2153,13 @@ WriteLiteral(" class=\"brief\"");
 WriteLiteral(">\r\n");
 
             
-            #line 674 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 673 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 674 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 673 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                  switch (Model.Package.Scope)
                 {
                     case AttachmentTypes.Device:
@@ -2128,7 +2197,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">01234567;ABCD9876;8VQ6G2R</div>\r\n                        </div>\r\n");
 
             
-            #line 690 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 689 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         break;
                     case AttachmentTypes.Job:
 
@@ -2164,9 +2233,9 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">86;99;44</div>\r\n                        </div>\r\n");
 
             
-            #line 705 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                            break;
-                        case AttachmentTypes.User:
+            #line 704 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                        break;
+                    case AttachmentTypes.User:
 
             
             #line default
@@ -2191,7 +2260,7 @@ WriteLiteral(">\r\n                                user6<br />\r\n              
 "mi0099<br />");
 
             
-            #line 714 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 713 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                          Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -2204,7 +2273,7 @@ WriteLiteral(" class=\"example2 code\"");
 WriteLiteral(">user6,smi0099,");
 
             
-            #line 716 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 715 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                  Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -2217,7 +2286,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">user6;smi0099;");
 
             
-            #line 717 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 716 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                                                                  Write(ActiveDirectory.Context.PrimaryDomain.NetBiosName);
 
             
@@ -2226,7 +2295,7 @@ WriteLiteral(">user6;smi0099;");
 WriteLiteral("\\rsmith</div>\r\n                        </div>\r\n");
 
             
-            #line 719 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 718 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
                         break;
                 }
 
@@ -2236,15 +2305,29 @@ WriteLiteral("\\rsmith</div>\r\n                        </div>\r\n");
 WriteLiteral("            </div>\r\n");
 
             
-            #line 722 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 721 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 722 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-             using (Html.BeginForm(MVC.API.DocumentTemplatePackage.BulkGenerate(Model.Package.Id), FormMethod.Post))
+            #line 721 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+             using (Html.BeginForm(MVC.API.DocumentTemplatePackage.BulkGenerate(Model.Package.Id)))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 723 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 723 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+                                        
 
             
             #line default
@@ -2255,7 +2338,7 @@ WriteLiteral(" class=\"field-validation-valid\"");
 
 WriteLiteral(" data-valmsg-replace=\"true\"");
 
-WriteLiteral(" data-valmsg-for=\"DataIds\"");
+WriteLiteral(" data-valmsg-for=\"dataIds\"");
 
 WriteLiteral("></div>\r\n");
 
@@ -2263,7 +2346,7 @@ WriteLiteral("                <textarea");
 
 WriteLiteral(" id=\"inputBulkGenerateDataIds\"");
 
-WriteLiteral(" name=\"DataIds\"");
+WriteLiteral(" name=\"dataIds\"");
 
 WriteLiteral(" data-val=\"true\"");
 
@@ -2271,28 +2354,8 @@ WriteLiteral(" data-val-required=\"Identifiers are required\"");
 
 WriteLiteral("></textarea>\r\n");
 
-WriteLiteral("                <div");
-
-WriteLiteral(" style=\"margin-top: 6px;\"");
-
-WriteLiteral(">\r\n                    <input");
-
-WriteLiteral(" id=\"inputBulkGenerateInsertBlankPage\"");
-
-WriteLiteral(" type=\"checkbox\"");
-
-WriteLiteral(" name=\"InsertBlankPage\"");
-
-WriteLiteral(" value=\"True\"");
-
-WriteLiteral(" /><label");
-
-WriteLiteral(" for=\"inputBulkGenerateInsertBlankPage\"");
-
-WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n                </div>\r\n");
-
             
-            #line 729 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 726 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
             }
 
             
@@ -2301,7 +2364,7 @@ WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n         
 WriteLiteral("        </div>\r\n");
 
             
-            #line 731 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 728 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
 
 
             
@@ -2309,9 +2372,8 @@ WriteLiteral("        </div>\r\n");
             #line hidden
 WriteLiteral(@"        <script>
             $(function () {
-                var dialog;
-
-                $('#buttonBulkGenerate').click(function () {
+                let dialog = null;
+                $('#buttonBulkGenerate').on('click', function () {
                     if (!dialog) {
                         dialog = $('#dialogBulkGenerate').dialog({
                             resizable: false,
@@ -2320,11 +2382,10 @@ WriteLiteral(@"        <script>
                             width: 460,
                             buttons: {
                                 ""Bulk Generate"": function () {
-                                    dialog.find('form').submit();
-                                    dialog.dialog(""disable"");
+                                    $(this).find('form').trigger('submit');
                                 },
                                 Close: function () {
-                                    $(this).dialog(""close"");
+                                    $(this).dialog('close');
                                 }
                             }
                         });
@@ -2340,7 +2401,7 @@ WriteLiteral(@"        <script>
 ");
 
             
-            #line 762 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 757 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
     }
 
             
@@ -2349,23 +2410,25 @@ WriteLiteral(@"        <script>
 WriteLiteral("    ");
 
             
-            #line 763 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
+            #line 758 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
      if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
     {
-        
-            
-            #line default
-            #line hidden
-            
-            #line 765 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-   Write(Html.ActionLinkButton("Delete", MVC.API.DocumentTemplatePackage.Delete(Model.Package.Id, true), "buttonDelete"));
 
             
             #line default
             #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" id=\"buttonDelete\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Delete</button>\r\n");
+
             
-            #line 765 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
-                                                                                                                        
+            #line 761 "..\..\Areas\Config\Views\DocumentTemplate\ShowPackage.cshtml"
     }
 
             

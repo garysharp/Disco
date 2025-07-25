@@ -20,7 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult TypeDescriptor(string type, bool staticMembersOnly = false)
         {
             if (string.IsNullOrWhiteSpace(type))
-                return new HttpStatusCodeResult(400, "Type is required");
+                return BadRequest("Type is required");
 
             var t = Type.GetType(type, false);
 
@@ -28,15 +28,15 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 var typeNameParts = type.Split(new string[] { ", " }, StringSplitOptions.None);
                 if (typeNameParts.Length < 2)
-                    return Json("Invalid Type Specified");
+                    return BadRequest("Invalid Type Specified");
 
                 if (!ExpressionExtensionProviderFeature.TryGetExtensionAssembly(typeNameParts[1], out var assembly))
-                    return Json("Invalid Type Specified");
+                    return BadRequest("Invalid Type Specified");
 
                 t = assembly.GetType(typeNameParts[0]);
 
                 if (t == null)
-                    return Json("Invalid Type Specified");
+                    return BadRequest("Invalid Type Specified");
             }
 
             return Json(ExpressionTypeDescriptor.Build(t, staticMembersOnly));

@@ -2,6 +2,7 @@
 {
     public interface ConfigDeviceFlagCreateModel : BaseUIModel
     {
-        Repository.DeviceFlag DeviceFlag { get; set; }
+        string Name { get; set; }
+        string Description { get; set; }
     }
 }

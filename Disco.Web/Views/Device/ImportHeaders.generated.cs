@@ -403,6 +403,20 @@ WriteLiteral(">\r\n");
             #line 64 "..\..\Views\Device\ImportHeaders.cshtml"
          using (Html.BeginForm(MVC.API.Device.ImportParse(Model.Context.SessionId, null)))
         {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Views\Device\ImportHeaders.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 66 "..\..\Views\Device\ImportHeaders.cshtml"
+                                    
 
             
             #line default
@@ -418,7 +432,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Parse Device Import</a>\r\n");
 
             
-            #line 67 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 68 "..\..\Views\Device\ImportHeaders.cshtml"
         }
 
             
@@ -442,13 +456,13 @@ WriteLiteral("></i>Parsing device import...</h4>\r\n</div>\r\n<script>\r\n    $(
 "  var headerTypes = {\r\n");
 
             
-            #line 76 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 77 "..\..\Views\Device\ImportHeaders.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 76 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 77 "..\..\Views\Device\ImportHeaders.cshtml"
              foreach (var h in Model.HeaderTypes)
             {
 
@@ -460,7 +474,7 @@ WriteLiteral("                ");
 WriteLiteral("\'");
 
             
-            #line 78 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 79 "..\..\Views\Device\ImportHeaders.cshtml"
                    Write(h.Item1);
 
             
@@ -469,7 +483,7 @@ WriteLiteral("\'");
 WriteLiteral("\': \'");
 
             
-            #line 78 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 79 "..\..\Views\Device\ImportHeaders.cshtml"
                                  Write(h.Item2);
 
             
@@ -480,7 +494,7 @@ WriteLiteral("\',");
 WriteLiteral("\r\n");
 
             
-            #line 79 "..\..\Views\Device\ImportHeaders.cshtml"
+            #line 80 "..\..\Views\Device\ImportHeaders.cshtml"
             }
 
             

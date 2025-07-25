@@ -116,6 +116,7 @@
     <div id="Job_Show_Queues_Actions_Remove_Dialog" class="dialog" title="Remove this Job from the queue?">
         @using (Html.BeginForm(MVC.API.JobQueueJob.RemoveJob()))
         {
+            @Html.AntiForgeryToken()
             <input id="Job_Show_Queues_Actions_Remove_Dialog_Id" type="hidden" name="id" value="" />
             <p>
                 <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
@@ -133,6 +134,7 @@
     <div id="Job_Show_Queues_Actions_EditAddedComment_Dialog" class="dialog" title="Edit the Added Comment">
         @using (Html.BeginForm(MVC.API.JobQueueJob.UpdateAddedComment()))
         {
+            @Html.AntiForgeryToken()
             <input id="Job_Show_Queues_Actions_EditAddedComment_Dialog_Id" type="hidden" name="id" value="" />
             <input type="hidden" name="redirect" value="true" />
             <h4>Comment:</h4>
@@ -144,6 +146,7 @@
     <div id="Job_Show_Queues_Actions_EditRemovedComment_Dialog" class="dialog" title="Edit the Removed Comment">
         @using (Html.BeginForm(MVC.API.JobQueueJob.UpdateRemovedComment()))
         {
+            @Html.AntiForgeryToken()
             <input id="Job_Show_Queues_Actions_EditRemovedComment_Dialog_Id" type="hidden" name="id" value="" />
             <input type="hidden" name="redirect" value="true" />
             <h4>Comment:</h4>
@@ -155,6 +158,7 @@
     <div id="Job_Show_Queues_Actions_EditSla_Dialog" class="dialog" title="Edit the SLA">
         @using (Html.BeginForm(MVC.API.JobQueueJob.UpdateSlaAndPriority()))
         {
+            @Html.AntiForgeryToken()
             <input id="Job_Show_Queues_Actions_EditSla_Dialog_Id" type="hidden" name="id" value="" />
             <input type="hidden" name="redirect" value="true" />
             <div class="priority">

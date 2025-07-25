@@ -63,7 +63,7 @@ WriteLiteral(" data-targetid=\"");
 
             
             #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                                      Write(HttpUtility.UrlEncode(Model.Target.AttachmentReferenceId));
+                                                      Write(Model.Target.AttachmentReferenceId);
 
             
             #line default
@@ -74,7 +74,7 @@ WriteLiteral(" data-targettype=\"");
 
             
             #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                                                                                                                   Write(Model.Target.HasAttachmentType);
+                                                                                                            Write(Model.Target.HasAttachmentType);
 
             
             #line default
@@ -85,29 +85,29 @@ WriteLiteral(" data-generatepdfurl=\"");
 
             
             #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                                                                                                                                                                         Write(Url.Action(MVC.API.DocumentTemplate.Generate()));
+                                                                                                                                                                  Write(Url.Action(MVC.API.DocumentTemplate.Generate()));
 
             
             #line default
             #line hidden
-WriteLiteral("/\"");
+WriteLiteral("\"");
 
 WriteLiteral(" data-generatepackageurl=\"");
 
             
             #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                                                                                                                                                                                                                                                     Write(Url.Action(MVC.API.DocumentTemplatePackage.Generate()));
+                                                                                                                                                                                                                                             Write(Url.Action(MVC.API.DocumentTemplatePackage.Generate()));
 
             
             #line default
             #line hidden
-WriteLiteral("/\"");
+WriteLiteral("\"");
 
 WriteLiteral(" data-handlerspresent=\"");
 
             
             #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                                                                                                                                                                                                                                                                                                                                      Write(Model.HandlersPresent ? "true" : "false");
+                                                                                                                                                                                                                                                                                                                             Write(Model.HandlersPresent ? "true" : "false");
 
             
             #line default
@@ -118,7 +118,7 @@ WriteLiteral(" data-handlersurl=\"");
 
             
             #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                    Write(Url.Action(MVC.API.DocumentTemplate.DocumentHandlers()));
+                                                                                                                                                                                                                                                                                                                                                                                           Write(Url.Action(MVC.API.DocumentTemplate.DocumentHandlers()));
 
             
             #line default
@@ -192,15 +192,16 @@ WriteLiteral(">\r\n                    <div");
 
 WriteLiteral(" id=\"Document_Generation_Dialog_Download_Container\"");
 
-WriteLiteral(">\r\n                        <a");
+WriteLiteral(">\r\n                        <button");
 
 WriteLiteral(" id=\"Document_Generation_Dialog_Download\"");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Download Document</a>\r\n                    </div>\r\n                    <div");
+WriteLiteral(">Download Document</button>\r\n                    </div>\r\n                    <div" +
+"");
 
 WriteLiteral(" id=\"Document_Generation_Dialog_HandlerUI\"");
 

@@ -240,6 +240,8 @@ WriteLiteral("        <div");
 
 WriteLiteral(" id=\"dialogFlagsAction\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(" title=\"Add Flag\"");
 
 WriteLiteral(">\r\n");
@@ -254,6 +256,20 @@ WriteLiteral(">\r\n");
             #line 37 "..\..\Views\Job\JobParts\Flags.cshtml"
              using (Html.BeginForm(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, true)))
             {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 39 "..\..\Views\Job\JobParts\Flags.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 39 "..\..\Views\Job\JobParts\Flags.cshtml"
+                                        
 
             
             #line default
@@ -281,7 +297,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                </p>\r\n");
 
             
-            #line 44 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 45 "..\..\Views\Job\JobParts\Flags.cshtml"
             }
 
             
@@ -297,79 +313,75 @@ WriteLiteral(">\r\n            $(\'#jobDetailTabItems\').append(\'<li><a href=\"
 "Flags [");
 
             
-            #line 47 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 48 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                  Write(validFlags.SelectMany(g => g.Value).Count(f => f.Item3));
 
             
             #line default
             #line hidden
-WriteLiteral(@"]</a></li>');
-            $(function () {
-                var $flagCheckboxes = $('#jobFlags').find('input[type=""checkbox""]');
-                var $dialogFlagsAction = $('#dialogFlagsAction');
-                var $flagCheckbox;
-
-                var updateFlags = function () {
-                    $flagCheckbox = $(this);
-                    var flagValue = $flagCheckbox.val();
-
-                    if ($flagCheckbox.is(':checked')) {
-                        // Add
-                        $('#dialogFlagsActionFlag').val(flagValue);
-                        var title = 'Add Flag: ' + $flagCheckbox.closest('tr').find('th .flagGroupName').text() + ': ' + $('#jobFlagLabel_' + flagValue).text();
-                        $dialogFlagsAction.dialog('option', 'title', title);
-                        $dialogFlagsAction.dialog('open');
-                    } else {
-                        // Remove
-                        var $ajaxLoading = $flagCheckbox.closest('tr').find('span.ajaxLoading');
-                        $ajaxLoading.show();
-                        $.getJSON('");
+WriteLiteral("]</a></li>\');\r\n            $(function () {\r\n                const $flagCheckboxes" +
+" = $(\'#jobFlags\').find(\'input[type=\"checkbox\"]\');\r\n                let $dialogFl" +
+"agsAction = null;\r\n\r\n                var updateFlags = function () {\r\n          " +
+"          const $flagCheckbox = $(this);\r\n                    const flagValue = " +
+"$flagCheckbox.val();\r\n\r\n                    if ($flagCheckbox.is(\':checked\')) {\r" +
+"\n                        // Add\r\n                        $(\'#dialogFlagsActionFl" +
+"ag\').val(flagValue);\r\n                        const title = \'Add Flag: \' + $flag" +
+"Checkbox.closest(\'tr\').find(\'th .flagGroupName\').text() + \': \' + $(\'#jobFlagLabe" +
+"l_\' + flagValue).text();\r\n\r\n                        if (!$dialogFlagsAction) {\r\n" +
+"                            $dialogFlagsAction = $(\'#dialogFlagsAction\').dialog(" +
+"{\r\n                                resizable: false,\r\n                          " +
+"      height: 240,\r\n                                modal: true,\r\n              " +
+"                  autoOpen: false,\r\n                                buttons: {\r\n" +
+"                                    \"Add\": function () {\r\n                      " +
+"                  var $this = $(this);\r\n                                        " +
+"$this.dialog(\"disable\");\r\n                                        $this.dialog(\"" +
+"option\", \"buttons\", null);\r\n                                        $this.find(\'" +
+"form\').first().submit();\r\n                                    },\r\n              " +
+"                      Cancel: function () {\r\n                                   " +
+"     $(this).dialog(\"close\");\r\n                                    }\r\n          " +
+"                      },\r\n                                close: function () {\r\n" +
+"                                    $flagCheckbox.prop(\'checked\', false);\r\n     " +
+"                           }\r\n                            });\r\n                 " +
+"       }\r\n\r\n                        $dialogFlagsAction.dialog(\'option\', \'title\'," +
+" title);\r\n                        $dialogFlagsAction.dialog(\'open\');\r\n          " +
+"          } else {\r\n                        // Remove\r\n                        v" +
+"ar $ajaxLoading = $flagCheckbox.closest(\'tr\').find(\'span.ajaxLoading\');\r\n       " +
+"                 $ajaxLoading.show();\r\n\r\n                        const body = ne" +
+"w FormData();\r\n                        body.append(\'__RequestVerificationToken\'," +
+" document.body.dataset.antiforgery);\r\n                        body.append(\'Flag\'" +
+", \'-\' + flagValue);\r\n                        fetch(\'");
 
             
-            #line 67 "..\..\Views\Job\JobParts\Flags.cshtml"
-                               Write(Url.Action(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, false)));
+            #line 95 "..\..\Views\Job\JobParts\Flags.cshtml"
+                           Write(Url.Action(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, false)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', { Flag: '-' + flagValue }, function (response, result) {
-                        if (result != 'success' || response != 'OK') {
-                            alert('Unable to change Flag:\n' + response);
+WriteLiteral(@"', {
+                            method: 'post',
+                            body: body
+                        }).then(r => {
+                            if (r.ok) {
+                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                            } else {
+                                alert('Unable to change Flag:\n' + r.statusText);
+                                $ajaxLoading.hide();
+                            }
+                        }).catch(e => {
+                            alert('Unable to change Flag:\n' + e);
                             $ajaxLoading.hide();
-                        } else {
-                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                        }
-                    })
-                }
-            };
-            $dialogFlagsAction.dialog({
-                resizable: false,
-                height: 240,
-                modal: true,
-                autoOpen: false,
-                buttons: {
-                    ""Add"": function () {
-                        var $this = $(this);
-                        $this.dialog(""disable"");
-                        $this.dialog(""option"", ""buttons"", null);
-                        $this.find('form').first().submit();
-                    },
-                    Cancel: function () {
-                        $(this).dialog(""close"");
+                        });
                     }
-                },
-                close: function () {
-                    $flagCheckbox.prop('checked', false);
                 }
-            });
 
-            $flagCheckboxes.click(updateFlags);
-        });
+                $flagCheckboxes.on('click', updateFlags);
+            });
         </script>
 ");
 
             
-            #line 101 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 115 "..\..\Views\Job\JobParts\Flags.cshtml"
     }
     else
     {
@@ -381,7 +393,7 @@ WriteLiteral("        <script>\r\n            $(\'#jobDetailTabItems\').append(\
 "tailTab-Flags\">Flags [");
 
             
-            #line 105 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 119 "..\..\Views\Job\JobParts\Flags.cshtml"
                                                                                  Write(validFlags.SelectMany(g => g.Value).Count(f => f.Item3));
 
             
@@ -390,7 +402,7 @@ WriteLiteral("        <script>\r\n            $(\'#jobDetailTabItems\').append(\
 WriteLiteral("]</a></li>\');\r\n        </script>\r\n");
 
             
-            #line 107 "..\..\Views\Job\JobParts\Flags.cshtml"
+            #line 121 "..\..\Views\Job\JobParts\Flags.cshtml"
     }
 
             

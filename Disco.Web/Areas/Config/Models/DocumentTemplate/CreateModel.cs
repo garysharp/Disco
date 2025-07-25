@@ -10,7 +10,13 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
     [CustomValidation(typeof(CreateModelValidation), "ValidateCreateModel")]
     public class CreateModel : ConfigDocumentTemplateCreateModel
     {
-        public Disco.Models.Repository.DocumentTemplate DocumentTemplate { get; set; }
+        [StringLength(30), Required]
+        public string Id { get; set; }
+
+        [StringLength(250), Required]
+        public string Description { get; set; }
+        [Required, StringLength(6)]
+        public string Scope { get; set; }
 
         [Required]
         public HttpPostedFileBase Template { get; set; }
@@ -21,13 +27,8 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
         public List<Disco.Models.Repository.JobType> JobTypes { get; set; }
         public List<Disco.Models.Repository.JobSubType> JobSubTypes { get; set; }
 
-        public List<string> Scopes
-        {
-            get
-            {
-                return Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.ToList();
-            }
-        }
+        public List<string> Scopes =>
+            Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.ToList();
 
         public List<Disco.Models.Repository.JobType> GetJobTypes()
         {
@@ -63,7 +64,7 @@ namespace Disco.Web.Areas.Config.Models.DocumentTemplate
         public static ValidationResult ValidateCreateModel(CreateModel model)
         {
 
-            if (model.DocumentTemplate != null && model.DocumentTemplate.Scope == Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job)
+            if (model.Scope == Disco.Models.Repository.DocumentTemplate.DocumentTemplateScopes.Job)
             {
                 if (model.Types != null && model.SubTypes != null)
                 {

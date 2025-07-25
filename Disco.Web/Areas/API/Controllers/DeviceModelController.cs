@@ -7,6 +7,7 @@ using Disco.Services.Plugins.Features.WarrantyProvider;
 using Disco.Services.Web;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,6 +25,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pDefaultRepairProvider = "defaultrepairprovider";
 
         [DiscoAuthorize(Claims.Config.DeviceModel.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool redirect = false)
         {
             Authorization.Require(Claims.Config.DeviceModel.Configure);
@@ -63,19 +65,19 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Device Model Number", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Device Model Number");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.DeviceModel.Index(deviceModel.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
@@ -120,12 +122,12 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Update Properties
-        private void UpdateDescription(DeviceModel deviceModel, string Description)
+        private void UpdateDescription(DeviceModel deviceModel, string description)
         {
-            if (string.IsNullOrWhiteSpace(Description))
+            if (string.IsNullOrWhiteSpace(description))
                 deviceModel.Description = null;
             else
-                deviceModel.Description = Description;
+                deviceModel.Description = description;
             Database.SaveChanges();
         }
         private void UpdateManufacturer(DeviceModel deviceModel, string manufacturer)
@@ -150,15 +152,15 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceModel.Model = model;
             Database.SaveChanges();
         }
-        private void UpdateDefaultPurchaseDate(DeviceModel deviceModel, string DefaultPurchaseDate)
+        private void UpdateDefaultPurchaseDate(DeviceModel deviceModel, string defaultPurchaseDate)
         {
-            if (string.IsNullOrEmpty(DefaultPurchaseDate))
+            if (string.IsNullOrEmpty(defaultPurchaseDate))
             {
                 deviceModel.DefaultPurchaseDate = null;
             }
             else
             {
-                if (DateTime.TryParse(DefaultPurchaseDate, out var d))
+                if (DateTime.TryParse(defaultPurchaseDate, out var d))
                 {
                     deviceModel.DefaultPurchaseDate = d;
                 }
@@ -169,30 +171,30 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateDefaultWarrantyProvider(DeviceModel deviceModel, string DefaultWarrantyProvider)
+        private void UpdateDefaultWarrantyProvider(DeviceModel deviceModel, string defaultWarrantyProvider)
         {
-            if (string.IsNullOrEmpty(DefaultWarrantyProvider))
+            if (string.IsNullOrEmpty(defaultWarrantyProvider))
             {
                 deviceModel.DefaultWarrantyProvider = null;
             }
             else
             {
                 // Validate
-                var WarrantyProvider = Plugins.GetPluginFeature(DefaultWarrantyProvider, typeof(WarrantyProviderFeature));
+                var WarrantyProvider = Plugins.GetPluginFeature(defaultWarrantyProvider, typeof(WarrantyProviderFeature));
                 deviceModel.DefaultWarrantyProvider = WarrantyProvider.Id;
             }
             Database.SaveChanges();
         }
-        private void UpdateDefaultRepairProvider(DeviceModel deviceModel, string DefaultRepairProvider)
+        private void UpdateDefaultRepairProvider(DeviceModel deviceModel, string defaultRepairProvider)
         {
-            if (string.IsNullOrEmpty(DefaultRepairProvider))
+            if (string.IsNullOrEmpty(defaultRepairProvider))
             {
                 deviceModel.DefaultRepairProvider = null;
             }
             else
             {
                 // Validate
-                var RepairProvider = Plugins.GetPluginFeature(DefaultRepairProvider, typeof(RepairProviderFeature));
+                var RepairProvider = Plugins.GetPluginFeature(defaultRepairProvider, typeof(RepairProviderFeature));
                 deviceModel.DefaultRepairProvider = RepairProvider.Id;
             }
             Database.SaveChanges();
@@ -213,12 +215,7 @@ namespace Disco.Web.Areas.API.Controllers
                     var deviceModelImage = m.Image();
                     if (deviceModelImage != null)
                         return File(deviceModelImage, "image/png");
-                    //if ( m.Image != null)
-                    //{
-                    //    return File(m.Image, "image/png");
-                    //}
-                    //else
-                    //{
+
                     // DataStore Failed - Use Generic Images
                     if (m.ModelType != null)
                     {
@@ -228,13 +225,13 @@ namespace Disco.Web.Areas.API.Controllers
                             return File(modelTypePath, "image/png");
                         }
                     }
-                    //}
                 }
             }
             return File(Links.ClientSource.Style.Images.DeviceTypes.Unknown_png, "image/png");
         }
 
-        [DiscoAuthorize(Claims.Config.DeviceModel.Configure), HttpPost]
+        [DiscoAuthorize(Claims.Config.DeviceModel.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Image(int id, bool redirect, HttpPostedFileBase Image)
         {
             if (Image != null && Image.ContentLength > 0)
@@ -248,31 +245,32 @@ namespace Disco.Web.Areas.API.Controllers
                         if (redirect)
                             return RedirectToAction(MVC.Config.DeviceModel.Index(dm.Id));
                         else
-                            return Json("OK", JsonRequestBehavior.AllowGet);
+                            return Ok();
                     }
                     else
                     {
                         if (redirect)
                             return RedirectToAction(MVC.Config.DeviceModel.Index(dm.Id));
                         else
-                            return Json("Invalid Image Format", JsonRequestBehavior.AllowGet);
+                            return BadRequest("Invalid Image Format");
                     }
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.DeviceModel.Index());
                 else
-                    return Json("Invalid Device Model Number", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Device Model Number");
             }
             if (redirect)
                 return RedirectToAction(MVC.Config.DeviceModel.Index());
             else
-                return Json("No Image Supplied", JsonRequestBehavior.AllowGet);
+                return BadRequest("No Image Supplied");
         }
         #endregion
 
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DeviceModel.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -285,7 +283,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DeviceModel.Index(null));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Device Model Number");
             }
@@ -294,7 +292,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
@@ -303,39 +301,38 @@ namespace Disco.Web.Areas.API.Controllers
         #region Device Model Components
 
         [DiscoAuthorize(Claims.Config.DeviceModel.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Component(int id)
         {
-            var dc = Database.DeviceComponents.Include("JobSubTypes").Where(i => i.Id == id).FirstOrDefault();
-            if (dc != null)
-            {
-                return Json(new Models.DeviceModel.ComponentModel { Result = "OK", Component = Models.DeviceModel._ComponentModel.FromDeviceComponent(dc) }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new Models.DeviceModel.ComponentModel { Result = "Invalid Device Component Id" }, JsonRequestBehavior.AllowGet);
+            var dc = Database.DeviceComponents.Include(c => c.JobSubTypes).Where(i => i.Id == id).FirstOrDefault();
+            if (dc == null)
+                return BadRequest("Invalid Device Component Id");
+
+            return Json(Models.DeviceModel.ComponentModel.FromDeviceComponent(dc));
         }
 
         [DiscoAuthorize(Claims.Config.DeviceModel.ConfigureComponents)]
-        public virtual ActionResult ComponentAdd(int? id, string Description, string Cost)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ComponentAdd(int? id, string description, string cost)
         {
             DeviceModel dm = null;
             if (id.HasValue)
             {
                 dm = Database.DeviceModels.Find(id.Value);
                 if (dm == null)
-                {
-                    return Json(new Models.DeviceModel.ComponentModel { Result = "Invalid Device Model Id" }, JsonRequestBehavior.AllowGet);
-                }
+                    return BadRequest("Invalid Device Model Id");
             }
 
-            if (string.IsNullOrEmpty(Description))
-                Description = "?";
-            if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
-                Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-            decimal.TryParse(Cost, out var cost);
+            if (string.IsNullOrEmpty(description))
+                description = "?";
+            if (!string.IsNullOrEmpty(cost) && cost.Contains("$"))
+                cost = cost.Substring(cost.IndexOf("$") + 1);
+            decimal.TryParse(cost, out var costValue);
 
             var dc = new DeviceComponent()
             {
-                Description = Description,
-                Cost = cost
+                Description = description,
+                Cost = costValue
             };
             if (dm != null)
             {
@@ -346,77 +343,77 @@ namespace Disco.Web.Areas.API.Controllers
             Database.DeviceComponents.Add(dc);
             Database.SaveChanges();
 
-            return Json(new Models.DeviceModel.ComponentModel { Result = "OK", Component = Models.DeviceModel._ComponentModel.FromDeviceComponent(dc) }, JsonRequestBehavior.AllowGet);
+            return Json(Models.DeviceModel.ComponentModel.FromDeviceComponent(dc));
         }
 
         [DiscoAuthorize(Claims.Config.DeviceModel.ConfigureComponents)]
-        public virtual ActionResult ComponentUpdateJobSubTypes(int id, List<string> JobSubTypes)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ComponentUpdateJobSubTypes(int id, List<string> jobSubTypes)
         {
-            var dc = Database.DeviceComponents.Include("JobSubTypes").Where(i => i.Id == id).FirstOrDefault();
-            if (dc != null)
-            {
-                dc.JobSubTypes.Clear();
+            var dc = Database.DeviceComponents.Include(c => c.JobSubTypes).Where(i => i.Id == id).FirstOrDefault();
+            if (dc == null)
+                return BadRequest("Invalid Device Component Id");
 
-                if (JobSubTypes != null)
+            dc.JobSubTypes.Clear();
+
+            if (jobSubTypes != null)
+            {
+                var jsts = Database.JobSubTypes.Where(jst => jobSubTypes.Contains(jst.JobTypeId + "_" + jst.Id));
+                foreach (var jst in jsts)
                 {
-                    var jsts = Database.JobSubTypes.Where(jst => JobSubTypes.Contains(jst.JobTypeId + "_" + jst.Id));
-                    foreach (var jst in jsts)
-                    {
-                        dc.JobSubTypes.Add(jst);
-                    }
+                    dc.JobSubTypes.Add(jst);
                 }
-
-                Database.SaveChanges();
-
-                return Json(new Models.DeviceModel.ComponentModel { Result = "OK", Component = Models.DeviceModel._ComponentModel.FromDeviceComponent(dc) }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new Models.DeviceModel.ComponentModel { Result = "Invalid Device Component Id" }, JsonRequestBehavior.AllowGet);
+
+            Database.SaveChanges();
+
+            return Json(Models.DeviceModel.ComponentModel.FromDeviceComponent(dc));
         }
 
         [DiscoAuthorize(Claims.Config.DeviceModel.ConfigureComponents)]
-        public virtual ActionResult ComponentUpdate(int id, string Description, string Cost)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ComponentUpdate(int id, string description, string cost)
         {
-            var dc = Database.DeviceComponents.Include("JobSubTypes").Where(i => i.Id == id).FirstOrDefault();
-            if (dc != null)
-            {
+            var dc = Database.DeviceComponents.Include(c => c.JobSubTypes).Where(i => i.Id == id).FirstOrDefault();
+            if (dc == null)
+                return BadRequest("Invalid Device Component Id");
 
-                if (string.IsNullOrEmpty(Description))
-                    Description = "?";
-                if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
-                    Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-                decimal.TryParse(Cost, out var cost);
+            if (string.IsNullOrEmpty(description))
+                description = "?";
+            if (!string.IsNullOrEmpty(cost) && cost.Contains("$"))
+                cost = cost.Substring(cost.IndexOf("$") + 1);
+            decimal.TryParse(cost, out var costValue);
 
-                dc.Description = Description;
-                dc.Cost = cost;
+            dc.Description = description;
+            dc.Cost = costValue;
 
-                Database.SaveChanges();
+            Database.SaveChanges();
 
-                return Json(new Models.DeviceModel.ComponentModel { Result = "OK", Component = Models.DeviceModel._ComponentModel.FromDeviceComponent(dc) }, JsonRequestBehavior.AllowGet);
-            }
-            return Json(new Models.DeviceModel.ComponentModel { Result = "Invalid Device Component Id" }, JsonRequestBehavior.AllowGet);
+            return Json(Models.DeviceModel.ComponentModel.FromDeviceComponent(dc));
         }
 
         [DiscoAuthorize(Claims.Config.DeviceModel.ConfigureComponents)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ComponentRemove(int id)
         {
-            var dc = Database.DeviceComponents.Include("JobSubTypes").Where(c => c.Id == id).FirstOrDefault();
-            if (dc != null)
-            {
-                dc.JobSubTypes.Clear();
-                Database.DeviceComponents.Remove(dc);
-                Database.SaveChanges();
-                return Json("OK", JsonRequestBehavior.AllowGet);
-            }
-            return Json("Invalid Device Component Id", JsonRequestBehavior.AllowGet);
+            var dc = Database.DeviceComponents.Include(c => c.JobSubTypes).Where(c => c.Id == id).FirstOrDefault();
+            if (dc == null)
+                return BadRequest("Invalid Device Component Id");
+
+            dc.JobSubTypes.Clear();
+            Database.DeviceComponents.Remove(dc);
+            Database.SaveChanges();
+            return Ok();
         }
         #endregion
 
         #region Index
-        [DiscoAuthorize(Claims.Config.DeviceModel.Show)]
+        [DiscoAuthorizeAny(Claims.Config.DeviceModel.Show, Claims.Config.Enrolment.ShowStatus)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Index()
         {
-            var deviceModels = Database.DeviceModels.ToArray().Select(dm => Models.DeviceModel._DeviceModel.FromDeviceModel(dm)).ToArray();
-            return Json(deviceModels, JsonRequestBehavior.AllowGet);
+            var deviceModels = Database.DeviceModels.AsEnumerable().Select(dm => Models.DeviceModel._DeviceModel.FromDeviceModel(dm)).ToList();
+            return Json(deviceModels);
         }
         #endregion
 

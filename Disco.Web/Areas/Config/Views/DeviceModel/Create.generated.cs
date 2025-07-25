@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceModel
             #line 2 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
   
     Authorization.RequireAll(Claims.Config.DeviceModel.CreateCustom, Claims.Config.DeviceModel.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models", MVC.Config.DeviceModel.Index(null), "Create Custom");
 
             
@@ -58,7 +58,7 @@ WriteLiteral("\r\n");
             
             #line 7 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
  using (Html.BeginForm())
-{ 
+{
     
             
             #line default
@@ -86,11 +86,11 @@ WriteLiteral(" style=\"width: 450px\"");
 WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r\n                    N" +
 "ame / Description:\r\n                </th>\r\n                <td>\r\n");
 
-WriteLiteral("                ");
+WriteLiteral("                    ");
 
             
             #line 17 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
-           Write(Html.TextBoxFor(model => model.Description));
+               Write(Html.TextBoxFor(model => model.Description));
 
             
             #line default
@@ -99,17 +99,19 @@ WriteLiteral("<br />");
 
             
             #line 17 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
-                                                             Write(Html.ValidationMessageFor(model => model.Description));
+                                                                 Write(Html.ValidationMessageFor(model => model.Description));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
 ">\r\n                    Manufacturer:\r\n                </th>\r\n                <td" +
-">");
+">\r\n");
+
+WriteLiteral("                    ");
 
             
-            #line 24 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
+            #line 25 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
                Write(Html.TextBoxFor(model => model.Manufacturer));
 
             
@@ -118,17 +120,19 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("<br />");
 
             
-            #line 24 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
+            #line 25 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
                                                                   Write(Html.ValidationMessageFor(model => model.Manufacturer));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
-">\r\n                    Model:\r\n                </th>\r\n                <td>");
+">\r\n                    Model:\r\n                </th>\r\n                <td>\r\n");
+
+WriteLiteral("                    ");
 
             
-            #line 31 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
+            #line 33 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
                Write(Html.TextBoxFor(model => model.ManufacturerModel));
 
             
@@ -137,7 +141,7 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("<br />");
 
             
-            #line 31 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
+            #line 33 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
                                                                        Write(Html.ValidationMessageFor(model => model.ManufacturerModel));
 
             
@@ -165,7 +169,7 @@ WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Description\').fo
 "    });\r\n    </script>\r\n");
 
             
-            #line 44 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
+            #line 46 "..\..\Areas\Config\Views\DeviceModel\Create.cshtml"
 }
 
             

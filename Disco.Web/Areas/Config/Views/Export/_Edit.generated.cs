@@ -45,7 +45,7 @@ namespace Disco.Web.Areas.Config.Views.Export
         {
             
             #line 2 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
- using (Html.BeginForm(MVC.API.Export.Update(), FormMethod.Post))
+ using (Html.BeginForm(MVC.API.Export.Update()))
 {
     
             
@@ -164,14 +164,14 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                        Enable Scheduled Export\r\n                    </label>\r\n" +
 "                </td>\r\n            </tr>\r\n            <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1306), Tuple.Create("\"", 1356)
+WriteAttribute("class", Tuple.Create(" class=\"", 1289), Tuple.Create("\"", 1339)
             
             #line 40 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 1314), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
+, Tuple.Create(Tuple.Create("", 1297), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
             
             #line default
             #line hidden
-, 1314), false)
+, 1297), false)
 );
 
 WriteLiteral(">\r\n                <th>\r\n                    Days:\r\n                </th>\r\n      " +
@@ -245,14 +245,14 @@ WriteLiteral(" Saturday</label></li>\r\n                        <li><label>");
 WriteLiteral(" Sunday</label></li>\r\n                    </ul>\r\n                </td>\r\n         " +
 "   </tr>\r\n            <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2258), Tuple.Create("\"", 2308)
+WriteAttribute("class", Tuple.Create(" class=\"", 2241), Tuple.Create("\"", 2291)
             
             #line 56 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 2266), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
+, Tuple.Create(Tuple.Create("", 2249), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
             
             #line default
             #line hidden
-, 2266), false)
+, 2249), false)
 );
 
 WriteLiteral(">\r\n                <th>\r\n                    Start Time:\r\n                </th>\r\n" +
@@ -300,14 +300,14 @@ WriteLiteral(">12:00 AM</option>\r\n");
             #line hidden
 WriteLiteral("                                <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 2740), Tuple.Create("\"", 2750)
+WriteAttribute("value", Tuple.Create(" value=\"", 2723), Tuple.Create("\"", 2733)
             
             #line 66 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 2748), Tuple.Create<System.Object, System.Int32>(i
+, Tuple.Create(Tuple.Create("", 2731), Tuple.Create<System.Object, System.Int32>(i
             
             #line default
             #line hidden
-, 2748), false)
+, 2731), false)
 );
 
 WriteLiteral(" ");
@@ -362,14 +362,14 @@ WriteLiteral(">12:00 PM</option>\r\n");
             #line hidden
 WriteLiteral("                                <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 3102), Tuple.Create("\"", 3112)
+WriteAttribute("value", Tuple.Create(" value=\"", 3085), Tuple.Create("\"", 3095)
             
             #line 71 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 3110), Tuple.Create<System.Object, System.Int32>(i
+, Tuple.Create(Tuple.Create("", 3093), Tuple.Create<System.Object, System.Int32>(i
             
             #line default
             #line hidden
-, 3110), false)
+, 3093), false)
 );
 
 WriteLiteral(" ");
@@ -418,14 +418,14 @@ WriteLiteral(@"></i> By default, Disco ICT shuts down at 1:30am and does not res
             </tr>
             <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3737), Tuple.Create("\"", 3787)
+WriteAttribute("class", Tuple.Create(" class=\"", 3720), Tuple.Create("\"", 3770)
             
             #line 82 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 3745), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
+, Tuple.Create(Tuple.Create("", 3728), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
             
             #line default
             #line hidden
-, 3745), false)
+, 3728), false)
 );
 
 WriteLiteral(">\r\n                <th>\r\n                    Repeat Hourly Until:\r\n              " +
@@ -465,14 +465,14 @@ WriteLiteral(">Run once</option>\r\n");
             #line hidden
 WriteLiteral("                                <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 4223), Tuple.Create("\"", 4233)
+WriteAttribute("value", Tuple.Create(" value=\"", 4206), Tuple.Create("\"", 4216)
             
             #line 92 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 4231), Tuple.Create<System.Object, System.Int32>(i
+, Tuple.Create(Tuple.Create("", 4214), Tuple.Create<System.Object, System.Int32>(i
             
             #line default
             #line hidden
-, 4231), false)
+, 4214), false)
 );
 
 WriteLiteral(" ");
@@ -527,14 +527,14 @@ WriteLiteral(">12:00 PM</option>\r\n");
             #line hidden
 WriteLiteral("                                <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 4581), Tuple.Create("\"", 4591)
+WriteAttribute("value", Tuple.Create(" value=\"", 4564), Tuple.Create("\"", 4574)
             
             #line 97 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 4589), Tuple.Create<System.Object, System.Int32>(i
+, Tuple.Create(Tuple.Create("", 4572), Tuple.Create<System.Object, System.Int32>(i
             
             #line default
             #line hidden
-, 4589), false)
+, 4572), false)
 );
 
 WriteLiteral(" ");
@@ -567,14 +567,14 @@ WriteLiteral(":00 PM</option>\r\n");
 WriteLiteral("\r\n                    </select>\r\n                </td>\r\n            </tr>\r\n      " +
 "      <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4815), Tuple.Create("\"", 4865)
+WriteAttribute("class", Tuple.Create(" class=\"", 4798), Tuple.Create("\"", 4848)
             
             #line 103 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 4823), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
+, Tuple.Create(Tuple.Create("", 4806), Tuple.Create<System.Object, System.Int32>(Model.ScheduleEnabled ? null : "hidden"
             
             #line default
             #line hidden
-, 4823), false)
+, 4806), false)
 );
 
 WriteLiteral(">\r\n                <th>\r\n                    File System Location:\r\n             " +
@@ -709,29 +709,29 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"OnDemandPrincipals\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 6700), Tuple.Create("\"", 6714)
+WriteAttribute("value", Tuple.Create(" value=\"", 6683), Tuple.Create("\"", 6697)
             
             #line 141 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-          , Tuple.Create(Tuple.Create("", 6708), Tuple.Create<System.Object, System.Int32>(sg.Id
+          , Tuple.Create(Tuple.Create("", 6691), Tuple.Create<System.Object, System.Int32>(sg.Id
             
             #line default
             #line hidden
-, 6708), false)
+, 6691), false)
 );
 
 WriteLiteral(" />\r\n                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 6758), Tuple.Create("\"", 6808)
-, Tuple.Create(Tuple.Create("", 6766), Tuple.Create("fa", 6766), true)
-, Tuple.Create(Tuple.Create(" ", 6768), Tuple.Create("fa-user", 6769), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6741), Tuple.Create("\"", 6791)
+, Tuple.Create(Tuple.Create("", 6749), Tuple.Create("fa", 6749), true)
+, Tuple.Create(Tuple.Create(" ", 6751), Tuple.Create("fa-user", 6752), true)
             
             #line 142 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 6776), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "s" : null
+, Tuple.Create(Tuple.Create("", 6759), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "s" : null
             
             #line default
             #line hidden
-, 6776), false)
-, Tuple.Create(Tuple.Create(" ", 6802), Tuple.Create("fa-lg", 6803), true)
+, 6759), false)
+, Tuple.Create(Tuple.Create(" ", 6785), Tuple.Create("fa-lg", 6786), true)
 );
 
 WriteLiteral("></i>\r\n");
@@ -874,14 +874,14 @@ WriteLiteral("                <tr>\r\n                    <th>Link</th>\r\n     
 
 WriteLiteral(" type=\"text\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 8472), Tuple.Create("\"", 8485)
+WriteAttribute("value", Tuple.Create(" value=\"", 8455), Tuple.Create("\"", 8468)
             
             #line 171 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 8480), Tuple.Create<System.Object, System.Int32>(link
+, Tuple.Create(Tuple.Create("", 8463), Tuple.Create<System.Object, System.Int32>(link
             
             #line default
             #line hidden
-, 8480), false)
+, 8463), false)
 );
 
 WriteLiteral(" style=\"width: 90%;\"");
@@ -928,14 +928,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8776), Tuple.Create("\"", 8836)
+WriteAttribute("href", Tuple.Create(" href=\"", 8759), Tuple.Create("\"", 8819)
             
             #line 183 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 8783), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Export.RunScheduled(Model.Id))
+, Tuple.Create(Tuple.Create("", 8766), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Export.RunScheduled(Model.Id))
             
             #line default
             #line hidden
-, 8783), false)
+, 8766), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -952,14 +952,14 @@ WriteLiteral(">Schedule Now</a>\r\n");
             #line hidden
 WriteLiteral("            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 8902), Tuple.Create("\"", 8953)
+WriteAttribute("href", Tuple.Create(" href=\"", 8885), Tuple.Create("\"", 8936)
             
             #line 186 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 8909), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Export.Run(Model.Id))
+, Tuple.Create(Tuple.Create("", 8892), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Export.Run(Model.Id))
             
             #line default
             #line hidden
-, 8909), false)
+, 8892), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -1017,24 +1017,24 @@ WriteLiteral("    <div");
 
 WriteLiteral(" id=\"Config_Export_Edit_DeleteDialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 9256), Tuple.Create("\"", 9311)
-, Tuple.Create(Tuple.Create("", 9264), Tuple.Create("Delete", 9264), true)
-, Tuple.Create(Tuple.Create(" ", 9270), Tuple.Create("Saved", 9271), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 9239), Tuple.Create("\"", 9294)
+, Tuple.Create(Tuple.Create("", 9247), Tuple.Create("Delete", 9247), true)
+, Tuple.Create(Tuple.Create(" ", 9253), Tuple.Create("Saved", 9254), true)
             
             #line 196 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create(" ", 9276), Tuple.Create<System.Object, System.Int32>(Model.ExportTypeName
+, Tuple.Create(Tuple.Create(" ", 9259), Tuple.Create<System.Object, System.Int32>(Model.ExportTypeName
             
             #line default
             #line hidden
-, 9277), false)
-, Tuple.Create(Tuple.Create("", 9298), Tuple.Create(":", 9298), true)
+, 9260), false)
+, Tuple.Create(Tuple.Create("", 9281), Tuple.Create(":", 9281), true)
             
             #line 196 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-        , Tuple.Create(Tuple.Create(" ", 9299), Tuple.Create<System.Object, System.Int32>(Model.Name
+        , Tuple.Create(Tuple.Create(" ", 9282), Tuple.Create<System.Object, System.Int32>(Model.Name
             
             #line default
             #line hidden
-, 9300), false)
+, 9283), false)
 );
 
 WriteLiteral(" class=\"dialog\"");
@@ -1079,7 +1079,7 @@ WriteLiteral("?\r\n            </p>\r\n        </div>\r\n");
             #line hidden
             
             #line 202 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-         using (Html.BeginForm(MVC.API.Export.Delete(), FormMethod.Post))
+         using (Html.BeginForm(MVC.API.Export.Delete()))
         {
             
             
@@ -1105,14 +1105,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"id\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 9729), Tuple.Create("\"", 9746)
+WriteAttribute("value", Tuple.Create(" value=\"", 9695), Tuple.Create("\"", 9712)
             
             #line 205 "..\..\Areas\Config\Views\Export\_Edit.cshtml"
-, Tuple.Create(Tuple.Create("", 9737), Tuple.Create<System.Object, System.Int32>(Model.Id
+, Tuple.Create(Tuple.Create("", 9703), Tuple.Create<System.Object, System.Int32>(Model.Id
             
             #line default
             #line hidden
-, 9737), false)
+, 9703), false)
 );
 
 WriteLiteral(" />\r\n");

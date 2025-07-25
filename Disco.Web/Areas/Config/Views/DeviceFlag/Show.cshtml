@@ -38,10 +38,10 @@
             </th>
             <td>
                 @if (canConfig)
-            {@Html.EditorFor(model => model.DeviceFlag.Name)
-                    @AjaxHelpers.AjaxSave()
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
+                {@Html.EditorFor(model => model.DeviceFlag.Name)
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
                         $(function () {
                             document.DiscoFunctions.PropertyChangeHelper(
                                 $('#DeviceFlag_Name'),
@@ -50,12 +50,12 @@
                                 'FlagName'
                             );
                         });
-                    </script>
-                }
-                else
-                {
-                    @Model.DeviceFlag.Name
-                }
+                </script>
+            }
+            else
+            {
+                @Model.DeviceFlag.Name
+            }
             </td>
         </tr>
         <tr>
@@ -65,9 +65,9 @@
             <td>
                 @if (canConfig)
                 {@Html.EditorFor(model => model.DeviceFlag.Description)
-                    @AjaxHelpers.AjaxSave()
-                    @AjaxHelpers.AjaxLoader()
-                    <script type="text/javascript">
+                @AjaxHelpers.AjaxSave()
+                @AjaxHelpers.AjaxLoader()
+                <script type="text/javascript">
                         $(function () {
                             document.DiscoFunctions.PropertyChangeHelper(
                                 $('#DeviceFlag_Description'),
@@ -76,11 +76,11 @@
                                 'Description'
                             );
                         });
-                    </script>
-                }
-                else
-                {
-                    <pre>
+                </script>
+            }
+            else
+            {
+                <pre>
                     @if (string.IsNullOrEmpty(Model.DeviceFlag.Description))
                     {
                     <text>&lt;None&gt;</text>
@@ -90,7 +90,7 @@
                         @Model.DeviceFlag.Description.ToHtmlComment()
                     }
                     </pre>
-                }
+            }
             </td>
         </tr>
         <tr>
@@ -113,6 +113,12 @@
                     <div>
                         <a id="Config_DeviceFlags_Icon_Update" href="#" class="button small">Update</a>
                         <div id="Config_DeviceFlags_Icon_Update_Dialog" class="dialog" title="Device Flag Icon">
+                            @using (Html.BeginForm(MVC.API.DeviceFlag.UpdateIconAndColour(id: Model.DeviceFlag.Id, redirect: true)))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="icon" />
+                                <input type="hidden" name="iconColour" />
+                            }
                             <div>
                                 <div class="colours">
                                     @foreach (var colour in Model.ThemeColours)
@@ -183,15 +189,11 @@
                                 }
 
                                 function save() {
-                                    var url = '@(Url.Action(MVC.API.DeviceFlag.UpdateIconAndColour(id: Model.DeviceFlag.Id, redirect: true)))',
-                                        data = {
-                                            Icon: icons.find('i.selected').attr('data-icon'),
-                                            IconColour: colours.find('i.selected').attr('data-colour')
-                                        };
-                                    window.location.href = url + '&' + $.param(data);
-
-                                    dialog.dialog("disable");
                                     dialog.dialog("option", "buttons", null);
+                                    const $form = dialog.find('form');
+                                    $form.find('input[name="icon"]').val(icons.find('i.selected').attr('data-icon'));
+                                    $form.find('input[name="iconColour"]').val(colours.find('i.selected').attr('data-colour'));
+                                    $form.trigger('submit');
                                 }
 
                                 function cancel() {
@@ -391,7 +393,7 @@
                    UpdateUrl = Url.Action(MVC.API.DeviceFlag.UpdateAssignedUserLinkedGroup(Model.DeviceFlag.Id, redirect: true))
                })
                     @if (canConfig)
-            {
+                    {
                         @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
                     }
                 </div>
@@ -442,7 +444,8 @@
                 <div class="loading">
                     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading current assignments...</h4>
                 </div>
-                <form action="#" method="post">
+                <form action="#" method="post" data-overrideaction="@(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, true)))" data-addaction="@(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, false)))">
+                    @Html.AntiForgeryToken()
                     <textarea id="Config_DeviceFlags_BulkAssign_AssignDialog_DeviceSerialNumbers" name="DeviceSerialNumbers"></textarea>
                     <h4>Comments:</h4>
                     <textarea id="Config_DeviceFlags_BulkAssign_AssignDialog_Comments" name="Comments"></textarea>
@@ -502,8 +505,9 @@
                         assignDialog.dialog('option', 'buttons', buttons);
                         assignDialog.dialog('option', 'title', 'Bulk Assign Devices: ' + mode);
 
+                        const $form = assignDeviceSerialNumbers.closest('form');
                         if (mode == "Override") {
-                            assignDeviceSerialNumbers.closest('form').attr('action', '@(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, true)))');
+                            $form.attr('action', $form.attr('data-overrideaction'));
 
                             assignDialog.addClass('loading');
                             $.getJSON('@Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id))', function (response, result) {
@@ -523,7 +527,7 @@
                         }
                         else // Assume Add
                         {
-                            assignDeviceSerialNumbers.closest('form').attr('action', '@(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, false)))');
+                            $form.attr('action', $form.attr('data-addaction'));
                         }
 
                         assignDialog.dialog('open');
@@ -538,8 +542,12 @@
         }
         @if (canDelete)
         {
-            @Html.ActionLinkButton("Delete", MVC.API.DeviceFlag.Delete(Model.DeviceFlag.Id, true), "Config_DeviceFlags_Actions_Delete_Button")
-            <div id="Config_DeviceFlags_Actions_Delete_Dialog" title="Delete this Device Flag?">
+            <button id="Config_DeviceFlags_Actions_Delete_Button" type="button" class="button">Delete</button>
+            <div id="Config_DeviceFlags_Actions_Delete_Dialog" class="dialog" title="Delete this Device Flag?">
+                @using (Html.BeginForm(MVC.API.DeviceFlag.Delete(Model.DeviceFlag.Id, true)))
+                {
+                    @Html.AntiForgeryToken()
+                }
                 <p>
                     <i class="fa fa-exclamation-triangle fa-lg warning"></i>
                     This item will be permanently deleted and cannot be recovered.<br />
@@ -555,29 +563,27 @@
             </div>
             <script type="text/javascript">
                 $(function () {
-                    var button = $('#Config_DeviceFlags_Actions_Delete_Button');
-                    var buttonDialog = $('#Config_DeviceFlags_Actions_Delete_Dialog');
-                    var buttonLink = button.attr('href');
-                    button.attr('href', '#');
-                    button.click(function () {
-                        buttonDialog.dialog('open');
-                        return false;
-                    });
-                    buttonDialog.dialog({
-                        resizable: false,
-                        modal: true,
-                        autoOpen: false,
-                        buttons: {
-                            "Delete": function () {
-                                var $this = $(this);
-                                $this.dialog("disable");
-                                $this.dialog("option", "buttons", null);
-                                window.location.href = buttonLink;
-                            },
-                            Cancel: function () {
-                                $(this).dialog("close");
-                            }
+                    let buttonDialog = null;
+                    $('#Config_DeviceFlags_Actions_Delete_Button').on('click', function () {
+                        const $button = $(this);
+                        if (!buttonDialog) {
+                            buttonDialog = $('#Config_DeviceFlags_Actions_Delete_Dialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    "Delete": function () {
+                                        $(this)
+                                            .dialog("option", "buttons", null)
+                                            .find('form').trigger('submit');
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
                         }
+                        buttonDialog.dialog('open');
                     });
                 });
             </script>

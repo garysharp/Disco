@@ -6,7 +6,7 @@
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), "Create");
 }
 <div id="createJob_Container">
-    @using (Html.BeginForm(MVC.Job.Create(), FormMethod.Post))
+    @using (Html.BeginForm(MVC.Job.Create()))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.DeviceSerialNumber)

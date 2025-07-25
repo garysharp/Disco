@@ -57,49 +57,21 @@ WriteLiteral("\r\n");
             
             #line 6 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
  using (Html.BeginForm())
-{ 
+{
     
             
             #line default
             #line hidden
             
             #line 8 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-Write(Html.HiddenFor(m => m.JobQueue.Icon));
+Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 8 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-                                         
-    
-            
-            #line default
-            #line hidden
-            
-            #line 9 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-Write(Html.HiddenFor(m => m.JobQueue.IconColour));
-
-            
-            #line default
-            #line hidden
-            
-            #line 9 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-                                               
-    
-            
-            #line default
-            #line hidden
-            
-            #line 10 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-Write(Html.HiddenFor(m => m.JobQueue.Priority));
-
-            
-            #line default
-            #line hidden
-            
-            #line 10 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-                                             
+                            
 
             
             #line default
@@ -116,8 +88,8 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r
 WriteLiteral("                    ");
 
             
-            #line 18 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-               Write(Html.EditorFor(model => model.JobQueue.Name));
+            #line 16 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
+               Write(Html.EditorFor(model => model.Name));
 
             
             #line default
@@ -125,8 +97,8 @@ WriteLiteral("                    ");
 WriteLiteral("<br />");
 
             
-            #line 18 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-                                                                  Write(Html.ValidationMessageFor(model => model.JobQueue.Name));
+            #line 16 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
+                                                         Write(Html.ValidationMessageFor(model => model.Name));
 
             
             #line default
@@ -138,8 +110,8 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 26 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-               Write(Html.EditorFor(model => model.JobQueue.Description));
+            #line 24 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
+               Write(Html.EditorFor(model => model.Description));
 
             
             #line default
@@ -147,8 +119,8 @@ WriteLiteral("                    ");
 WriteLiteral("<br />");
 
             
-            #line 26 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
-                                                                         Write(Html.ValidationMessageFor(model => model.JobQueue.Description));
+            #line 24 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
+                                                                Write(Html.ValidationMessageFor(model => model.Description));
 
             
             #line default
@@ -171,11 +143,11 @@ WriteLiteral("    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n        $(function () {\r\n            $(\'#JobQueue_Name\').focus().select();\r\n  " +
-"      });\r\n    </script>\r\n");
+WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Name\').focus().select();\r\n        });" +
+"\r\n    </script>\r\n");
 
             
-            #line 39 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
+            #line 37 "..\..\Areas\Config\Views\JobQueue\Create.cshtml"
 }
             
             #line default

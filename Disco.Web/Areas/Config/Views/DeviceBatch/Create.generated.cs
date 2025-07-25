@@ -57,20 +57,34 @@ WriteLiteral("\r\n");
             
             #line 6 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
  using (Html.BeginForm())
-{ 
+{
     
             
             #line default
             #line hidden
             
             #line 8 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
-Write(Html.ValidationSummary(false));
+Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 8 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+                            
+    
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+Write(Html.ValidationSummary(false));
+
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
                                   
 
             
@@ -88,8 +102,8 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>Na
 WriteLiteral("                    ");
 
             
-            #line 14 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
-               Write(Html.EditorFor(model => model.DeviceBatch.Name));
+            #line 15 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+               Write(Html.EditorFor(model => model.Name));
 
             
             #line default
@@ -97,8 +111,8 @@ WriteLiteral("                    ");
 WriteLiteral("<br />");
 
             
-            #line 14 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
-                                                                     Write(Html.ValidationMessageFor(model => model.DeviceBatch.Name));
+            #line 15 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+                                                         Write(Html.ValidationMessageFor(model => model.Name));
 
             
             #line default
@@ -109,8 +123,8 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 20 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
-               Write(Html.EditorFor(model => model.DeviceBatch.PurchaseDate));
+            #line 21 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+               Write(Html.EditorFor(model => model.PurchaseDate));
 
             
             #line default
@@ -118,8 +132,8 @@ WriteLiteral("                    ");
 WriteLiteral("<br />");
 
             
-            #line 20 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
-                                                                             Write(Html.ValidationMessageFor(model => model.DeviceBatch.PurchaseDate));
+            #line 21 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+                                                                 Write(Html.ValidationMessageFor(model => model.PurchaseDate));
 
             
             #line default
@@ -146,6 +160,7 @@ WriteLiteral(@">
         $(function () {
             $('#Name').focus().select();
             $('#PurchaseDate').datepicker({
+                minDate: new Date(1900, 1-1, 1),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy/mm/dd'
@@ -155,7 +170,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 38 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
+            #line 40 "..\..\Areas\Config\Views\DeviceBatch\Create.cshtml"
 }
 
             

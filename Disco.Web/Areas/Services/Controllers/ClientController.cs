@@ -3,6 +3,7 @@ using Disco.Models.ClientServices;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.Enrolment;
+using Disco.Services.Web;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 namespace Disco.Web.Areas.Services.Controllers
 {
     [OutputCache(Duration = 0)]
-    public partial class ClientController : Controller
+    public partial class ClientController : BaseController
     {
         [DiscoAuthorize(Claims.Config.Enrolment.DownloadBootstrapper)]
         public virtual ActionResult Bootstrapper()
@@ -41,7 +42,7 @@ namespace Disco.Web.Areas.Services.Controllers
                             {
                                 if (clientVersion < new Version(2, 2))
                                 {
-                                    return new HttpStatusCodeResult(400, "Disco ICT Client not compatible");
+                                    return BadRequest("Disco ICT Client not compatible");
                                 }
                             }
                         }
@@ -113,7 +114,7 @@ namespace Disco.Web.Areas.Services.Controllers
                             {
                                 if (clientVersion < new Version(2, 2))
                                 {
-                                    return new HttpStatusCodeResult(400, "Disco ICT Client not compatible");
+                                    return BadRequest("Disco ICT Client not compatible");
                                 }
                             }
                         }

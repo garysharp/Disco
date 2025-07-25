@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceBatch
             #line 1 "..\..\Areas\Config\Views\DeviceBatch\Timeline.cshtml"
   
     Authorization.Require(Claims.Config.DeviceBatch.ShowTimeline);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), "Timeline");
     Html.BundleDeferred("~/Style/Timeline");
     Html.BundleDeferred("~/ClientScripts/Modules/Timeline");
@@ -61,74 +61,83 @@ WriteLiteral(" id=\"deviceBatchesTimeline\"");
 
 WriteLiteral(" style=\"height: 550px;\"");
 
-WriteLiteral(">\r\n</div>\r\n<script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(">\r\n    (function () {\r\n        var dataUrl = \'");
+WriteLiteral(" data-url=\"");
 
             
-            #line 12 "..\..\Areas\Config\Views\DeviceBatch\Timeline.cshtml"
-                   Write(Url.Action(MVC.API.DeviceBatch.Timeline()));
+            #line 8 "..\..\Areas\Config\Views\DeviceBatch\Timeline.cshtml"
+                                                             Write(Url.Action(MVC.API.DeviceBatch.Timeline()));
 
             
             #line default
             #line hidden
-WriteLiteral("\';\r\n        var tl;\r\n\r\n        $(function () {\r\n\r\n            var eventSource = n" +
-"ew Timeline.DefaultEventSource();\r\n\r\n            var currentDate = new Date();\r\n" +
-"            currentDate = new Date(currentDate.getFullYear(), currentDate.getMon" +
-"th(), currentDate.getDay(), 10, 0, 0);\r\n            var tomorrowDate = new Date(" +
-");\r\n            tomorrowDate.setDate(currentDate.getDate() + 1);\r\n            va" +
-"r sixMonthsDate = new Date();\r\n            sixMonthsDate.setDate(currentDate.get" +
-"Date());\r\n            sixMonthsDate.setMonth(currentDate.getMonth() + 6);\r\n     " +
-"       \r\n            var hotZoneStart1 = new Date(currentDate.getFullYear(), 0, " +
-"1, 10, 0, 0);\r\n            var hotZoneEnd1 = new Date(currentDate.getFullYear()," +
-" 11, 31, 10, 0, 0);\r\n            var hotZoneStart2 = new Date(currentDate.getFul" +
-"lYear() + 1, 0, 1, 10, 0, 0);\r\n            var hotZoneEnd2 = new Date(currentDat" +
-"e.getFullYear() + 1, 11, 31, 10, 0, 0);\r\n            //hotZoneEnd.setDate(hotZon" +
-"eEnd.getDate() - 1);\r\n\r\n            //hotZoneStart = hotZoneStart.toLocaleDateSt" +
-"ring();\r\n            //hotZoneEnd = hotZoneEnd.toLocaleDateString();\r\n\r\n\r\n      " +
-"      var bandInfos = [\r\n                Timeline.createHotZoneBandInfo({\r\n     " +
-"               zones: [\r\n                    {\r\n                        start: h" +
-"otZoneStart1,\r\n                        end: hotZoneEnd1,\r\n                      " +
-"  magnify: 4,\r\n                        unit: Timeline.DateTime.MONTH\r\n          " +
-"          },\r\n                    {\r\n                        start: hotZoneStart" +
-"2,\r\n                        end: hotZoneEnd2,\r\n                        magnify: " +
-"4,\r\n                        unit: Timeline.DateTime.MONTH\r\n                    }" +
-"\r\n                    ],\r\n                    eventSource: eventSource,\r\n       " +
-"             width: \"85%\",\r\n                    intervalUnit: Timeline.DateTime." +
-"YEAR,\r\n                    intervalPixels: 150,\r\n                    timeZone: 1" +
-"0,\r\n                    date: sixMonthsDate\r\n                }),\r\n              " +
-"  Timeline.createBandInfo({\r\n                    eventSource: eventSource,\r\n    " +
-"                width: \"15%\",\r\n                    intervalUnit: Timeline.DateTi" +
-"me.YEAR,\r\n                    intervalPixels: 150,\r\n                    overview" +
-": true,\r\n                    timeZone: 10,\r\n                    date: sixMonthsD" +
-"ate\r\n                })\r\n            ];\r\n            bandInfos[1].syncWith = 0;\r" +
-"\n            bandInfos[1].highlight = true;\r\n\r\n            for (var i = 0; i < b" +
-"andInfos.length; i++) {\r\n                bandInfos[i].decorators = [\r\n          " +
-"          new Timeline.SpanHighlightDecorator({\r\n                        startDa" +
-"te: currentDate,\r\n                        endDate: tomorrowDate,\r\n              " +
-"          color: \"#CC2222\",\r\n                        opacity: 50\r\n              " +
-"      }),\r\n                    new Timeline.SpanHighlightDecorator({\r\n          " +
-"              startDate: hotZoneStart1,\r\n                        endDate: hotZon" +
-"eEnd1,\r\n                        color: \"#CEA5A5\",\r\n                        opaci" +
-"ty: 50\r\n                    }),\r\n                    new Timeline.SpanHighlightD" +
-"ecorator({\r\n                        startDate: hotZoneStart2,\r\n                 " +
-"       endDate: hotZoneEnd2,\r\n                        color: \"#CCB7B7\",\r\n       " +
-"                 opacity: 50\r\n                    })\r\n                ];\r\n      " +
-"      }\r\n\r\n            tl = Timeline.create($(\'#deviceBatchesTimeline\')[0], band" +
-"Infos);\r\n\r\n            var tlResizeLayoutHandle = null;\r\n            $(window).r" +
-"esize(function () {\r\n                if (tlResizeLayoutHandle)\r\n                " +
-"    window.clearTimeout(tlResizeLayoutHandle);\r\n                tlResizeLayoutHa" +
-"ndle = window.setTimeout(function () {\r\n                    tlResizeLayoutHandle" +
-" = null;\r\n                    tl.layout();\r\n                }, 500);\r\n          " +
-"  });\r\n\r\n            // Load Events\r\n            $.ajax({\r\n                url: " +
-"dataUrl,\r\n                dataType: \'json\',\r\n                type: \'POST\',\r\n    " +
-"            success: function (data) {\r\n                    eventSource.loadJSON" +
-"(data, dataUrl);\r\n                },\r\n                error: function (jqXHR, te" +
-"xtStatus, errorThrown) {\r\n                    alert(\'Unable to load Timeline Dat" +
-"a: \' + errorThrown);\r\n                }\r\n            });\r\n        });\r\n\r\n    })(" +
-");\r\n\r\n</script>\r\n");
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n</div>\r\n<script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(">\r\n    (function () {\r\n        var tl;\r\n\r\n        $(function () {\r\n\r\n            " +
+"var eventSource = new Timeline.DefaultEventSource();\r\n\r\n            var currentD" +
+"ate = new Date();\r\n            currentDate = new Date(currentDate.getFullYear()," +
+" currentDate.getMonth(), currentDate.getDay(), 10, 0, 0);\r\n            var tomor" +
+"rowDate = new Date();\r\n            tomorrowDate.setDate(currentDate.getDate() + " +
+"1);\r\n            var sixMonthsDate = new Date();\r\n            sixMonthsDate.setD" +
+"ate(currentDate.getDate());\r\n            sixMonthsDate.setMonth(currentDate.getM" +
+"onth() + 6);\r\n\r\n            var hotZoneStart1 = new Date(currentDate.getFullYear" +
+"(), 0, 1, 10, 0, 0);\r\n            var hotZoneEnd1 = new Date(currentDate.getFull" +
+"Year(), 11, 31, 10, 0, 0);\r\n            var hotZoneStart2 = new Date(currentDate" +
+".getFullYear() + 1, 0, 1, 10, 0, 0);\r\n            var hotZoneEnd2 = new Date(cur" +
+"rentDate.getFullYear() + 1, 11, 31, 10, 0, 0);\r\n            //hotZoneEnd.setDate" +
+"(hotZoneEnd.getDate() - 1);\r\n\r\n            //hotZoneStart = hotZoneStart.toLocal" +
+"eDateString();\r\n            //hotZoneEnd = hotZoneEnd.toLocaleDateString();\r\n\r\n\r" +
+"\n            var bandInfos = [\r\n                Timeline.createHotZoneBandInfo({" +
+"\r\n                    zones: [\r\n                        {\r\n                     " +
+"       start: hotZoneStart1,\r\n                            end: hotZoneEnd1,\r\n   " +
+"                         magnify: 4,\r\n                            unit: Timeline" +
+".DateTime.MONTH\r\n                        },\r\n                        {\r\n        " +
+"                    start: hotZoneStart2,\r\n                            end: hotZ" +
+"oneEnd2,\r\n                            magnify: 4,\r\n                            u" +
+"nit: Timeline.DateTime.MONTH\r\n                        }\r\n                    ],\r" +
+"\n                    eventSource: eventSource,\r\n                    width: \"85%\"" +
+",\r\n                    intervalUnit: Timeline.DateTime.YEAR,\r\n                  " +
+"  intervalPixels: 150,\r\n                    timeZone: 10,\r\n                    d" +
+"ate: sixMonthsDate\r\n                }),\r\n                Timeline.createBandInfo" +
+"({\r\n                    eventSource: eventSource,\r\n                    width: \"1" +
+"5%\",\r\n                    intervalUnit: Timeline.DateTime.YEAR,\r\n               " +
+"     intervalPixels: 150,\r\n                    overview: true,\r\n                " +
+"    timeZone: 10,\r\n                    date: sixMonthsDate\r\n                })\r\n" +
+"            ];\r\n            bandInfos[1].syncWith = 0;\r\n            bandInfos[1]" +
+".highlight = true;\r\n\r\n            for (var i = 0; i < bandInfos.length; i++) {\r\n" +
+"                bandInfos[i].decorators = [\r\n                    new Timeline.Sp" +
+"anHighlightDecorator({\r\n                        startDate: currentDate,\r\n       " +
+"                 endDate: tomorrowDate,\r\n                        color: \"#CC2222" +
+"\",\r\n                        opacity: 50\r\n                    }),\r\n              " +
+"      new Timeline.SpanHighlightDecorator({\r\n                        startDate: " +
+"hotZoneStart1,\r\n                        endDate: hotZoneEnd1,\r\n                 " +
+"       color: \"#CEA5A5\",\r\n                        opacity: 50\r\n                 " +
+"   }),\r\n                    new Timeline.SpanHighlightDecorator({\r\n             " +
+"           startDate: hotZoneStart2,\r\n                        endDate: hotZoneEn" +
+"d2,\r\n                        color: \"#CCB7B7\",\r\n                        opacity:" +
+" 50\r\n                    })\r\n                ];\r\n            }\r\n\r\n            tl" +
+" = Timeline.create($(\'#deviceBatchesTimeline\')[0], bandInfos);\r\n\r\n            va" +
+"r tlResizeLayoutHandle = null;\r\n            $(window).resize(function () {\r\n    " +
+"            if (tlResizeLayoutHandle)\r\n                    window.clearTimeout(t" +
+"lResizeLayoutHandle);\r\n                tlResizeLayoutHandle = window.setTimeout(" +
+"function () {\r\n                    tlResizeLayoutHandle = null;\r\n               " +
+"     tl.layout();\r\n                }, 500);\r\n            });\r\n\r\n            // L" +
+"oad Events\r\n            async function loadEventsAsync() {\r\n                try " +
+"{\r\n                    const dataUrl = $(\'#deviceBatchesTimeline\').attr(\'data-ur" +
+"l\');\r\n                    const body = new FormData();\r\n                    body" +
+".append(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n     " +
+"               const response = await fetch(dataUrl, {\r\n                        " +
+"method: \'POST\',\r\n                        body: body\r\n                    });\r\n  " +
+"                  if (response.ok) {\r\n                        const data = await" +
+" response.json();\r\n                        eventSource.loadJSON(data, dataUrl);\r" +
+"\n                    } else {\r\n                        alert(\'Unable to load Tim" +
+"eline Data: \' + response.statusText);\r\n                    }\r\n                } " +
+"catch (e) {\r\n                    alert(\'Unable to load Timeline Data: \' + e);\r\n " +
+"               }\r\n            }\r\n            loadEventsAsync();\r\n        });\r\n\r\n" +
+"    })();\r\n\r\n</script>\r\n");
 
         }
     }

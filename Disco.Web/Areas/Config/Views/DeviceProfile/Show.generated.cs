@@ -1825,7 +1825,7 @@ WriteLiteral(">\r\n                        </div>\r\n");
             #line hidden
             
             #line 571 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                         using (Html.BeginForm(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, redirect: true), FormMethod.Post))
+                         using (Html.BeginForm(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, redirect: true)))
                         {
                             
             
@@ -2230,38 +2230,45 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
                         $(function () {
-                            var $container = $('#DeviceProfile_CertificateProviders');
+                            const $container = $('#DeviceProfile_CertificateProviders');
 
                             $container.on('change', 'input', function () {
-                                var $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
+                                const $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
 
-                                var data = {
-                                    CertificateProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
-                                };
-                                $.getJSON('");
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('certificateProviders', $container.find('input:checked',).map(function () { return $(this).val() }).get().join(','));
+
+                                fetch('");
 
             
-            #line 765 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                       Write(Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviders(Model.DeviceProfile.Id)));
+            #line 766 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                   Write(Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviders(Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property ""CertificateProviders"":\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
+WriteLiteral(@"', {
+                                    method: 'POST',
+                                    body: body
+                                }).then(r => {
+                                    if (r.ok) {
                                         $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change property ""CertificateProviders"":\n' + r.statusText);
+                                        $ajaxLoading.hide();
                                     }
-                                })
-                            })
+                                }).catch(e => {
+                                    alert('Unable to change property ""CertificateProviders"":\n' + e);
+                                    $ajaxLoading.hide();
+                                });
+                            });
                         });
                     </script>
 ");
 
             
-            #line 776 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 783 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -2270,7 +2277,7 @@ WriteLiteral(@"', data, function (response, result) {
 WriteLiteral("                ");
 
             
-            #line 777 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 784 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig && Model.CertificateProviders.Count > 0)
                 {
 
@@ -2288,33 +2295,40 @@ WriteLiteral(@">
                             $container.on('change', 'input', function () {
                                 var $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
 
-                                var data = {
-                                    CertificateAuthorityProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
-                                };
-                                $.getJSON('");
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('certificateAuthorityProviders', $container.find('input:checked',).map(function () { return $(this).val() }).get().join(','));
+
+                                fetch('");
 
             
-            #line 789 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                       Write(Url.Action(MVC.API.DeviceProfile.UpdateCertificateAuthorityProviders(Model.DeviceProfile.Id)));
+            #line 797 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                   Write(Url.Action(MVC.API.DeviceProfile.UpdateCertificateAuthorityProviders(Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property ""CertificateAuthorityProviders"":\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
+WriteLiteral(@"', {
+                                    method: 'POST',
+                                    body: body
+                                }).then(r => {
+                                    if (r.ok) {
                                         $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change property ""CertificateAuthorityProviders"":\n' + r.statusText);
+                                        $ajaxLoading.hide();
                                     }
-                                })
-                            })
+                                }).catch(e => {
+                                    alert('Unable to change property ""CertificateAuthorityProviders"":\n' + e);
+                                    $ajaxLoading.hide();
+                                });
+                            });
                         });
                     </script>
 ");
 
             
-            #line 800 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 814 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -2324,13 +2338,13 @@ WriteLiteral("            </th>\r\n            <td>\r\n                <h4>Devic
 "tes</h4>\r\n");
 
             
-            #line 804 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 818 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 804 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 818 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig && Model.CertificateProviders.Count > 0)
                 {
                     
@@ -2338,14 +2352,14 @@ WriteLiteral("            </th>\r\n            <td>\r\n                <h4>Devic
             #line default
             #line hidden
             
-            #line 806 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 820 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(CommonHelpers.CheckBoxList("DeviceProfile_CertificateProviders", "DeviceProfile_CertificateProviders", Model.CertificateProviders.ToSelectListItems(Model.DeviceProfile.GetCertificateProviders())));
 
             
             #line default
             #line hidden
             
-            #line 806 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 820 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                                                                         
                 }
                 else
@@ -2365,7 +2379,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
 
             
-            #line 815 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 829 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -2376,13 +2390,13 @@ WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
 WriteLiteral("                        <ul>\r\n");
 
             
-            #line 819 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 833 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 819 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 833 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                              foreach (var certificateProvider in certificateProviders)
                             {
 
@@ -2392,7 +2406,7 @@ WriteLiteral("                        <ul>\r\n");
 WriteLiteral("                                <li>");
 
             
-            #line 821 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 835 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                Write(certificateProvider.Name);
 
             
@@ -2401,7 +2415,7 @@ WriteLiteral("                                <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 822 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 836 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                             }
 
             
@@ -2410,7 +2424,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                        </ul>\r\n");
 
             
-            #line 824 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 838 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                 }
 
@@ -2424,13 +2438,13 @@ WriteLiteral(" style=\"margin-top: 4px;\"");
 WriteLiteral(">Authority Certificates</h4>\r\n");
 
             
-            #line 827 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 841 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 827 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 841 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig && Model.CertificateAuthorityProviders.Count > 0)
                 {
                     
@@ -2438,14 +2452,14 @@ WriteLiteral(">Authority Certificates</h4>\r\n");
             #line default
             #line hidden
             
-            #line 829 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 843 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(CommonHelpers.CheckBoxList("DeviceProfile_CertificateAuthorityProviders", "DeviceProfile_CertificateAuthorityProviders", Model.CertificateAuthorityProviders.ToSelectListItems(Model.DeviceProfile.GetCertificateAuthorityProviders())));
 
             
             #line default
             #line hidden
             
-            #line 829 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 843 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                                                                                                             
                 }
                 else
@@ -2465,7 +2479,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
 
             
-            #line 838 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 852 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -2476,13 +2490,13 @@ WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
 WriteLiteral("                        <ul>\r\n");
 
             
-            #line 842 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 856 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 842 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 856 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                              foreach (var certificateProvider in certificateProviders)
                             {
 
@@ -2492,7 +2506,7 @@ WriteLiteral("                        <ul>\r\n");
 WriteLiteral("                                <li>");
 
             
-            #line 844 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 858 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                Write(certificateProvider.Name);
 
             
@@ -2501,7 +2515,7 @@ WriteLiteral("                                <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 845 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 859 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                             }
 
             
@@ -2510,7 +2524,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                        </ul>\r\n");
 
             
-            #line 847 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 861 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                 }
 
@@ -2520,7 +2534,7 @@ WriteLiteral("                        </ul>\r\n");
 WriteLiteral("                ");
 
             
-            #line 849 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 863 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canViewPlugins)
                 {
 
@@ -2541,21 +2555,21 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 48824), Tuple.Create("\"", 48874)
+WriteAttribute("href", Tuple.Create(" href=\"", 49620), Tuple.Create("\"", 49670)
             
-            #line 853 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 48831), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+            #line 867 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 49627), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 48831), false)
+, 49627), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install certificate provider plugins.\r\n    " +
 "                    </p>\r\n                    </div>\r\n");
 
             
-            #line 856 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 870 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -2565,13 +2579,13 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
 " Provision Wireless Profiles:\r\n");
 
             
-            #line 862 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 876 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 862 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 876 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig && Model.WirelessProfileProviders.Count > 0)
                 {
 
@@ -2581,20 +2595,20 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
 WriteLiteral("                    <br />\r\n");
 
             
-            #line 865 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 879 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 865 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 879 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader("DeviceProfile_WirelessProfileProviders"));
 
             
             #line default
             #line hidden
             
-            #line 865 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 879 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                      
 
             
@@ -2611,33 +2625,40 @@ WriteLiteral(@">
                             $container.on('change', 'input', function () {
                                 var $ajaxLoading = $('#DeviceProfile_WirelessProfileProviders_loading').show();
 
-                                var data = {
-                                    WirelessProfileProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
-                                };
-                                $.getJSON('");
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('wirelessProfileProviders', $container.find('input:checked',).map(function () { return $(this).val() }).get().join(','));
+
+                                fetch('");
 
             
-            #line 876 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                       Write(Url.Action(MVC.API.DeviceProfile.UpdateWirelessProfileProviders(Model.DeviceProfile.Id)));
+            #line 891 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                   Write(Url.Action(MVC.API.DeviceProfile.UpdateWirelessProfileProviders(Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property ""WirelessProfileProviders"":\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
+WriteLiteral(@"', {
+                                    method: 'POST',
+                                    body: body
+                                }).then(r => {
+                                    if (r.ok) {
                                         $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change property ""WirelessProfileProviders"":\n' + r.statusText);
+                                        $ajaxLoading.hide();
                                     }
-                                })
-                            })
+                                }).catch(e => {
+                                    alert('Unable to change property ""WirelessProfileProviders"":\n' + e);
+                                    $ajaxLoading.hide();
+                                });
+                            });
                         });
                     </script>
 ");
 
             
-            #line 887 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 908 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -2646,13 +2667,13 @@ WriteLiteral(@"', data, function (response, result) {
 WriteLiteral("            </th>\r\n            <td>\r\n");
 
             
-            #line 890 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 911 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 890 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 911 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canConfig && Model.WirelessProfileProviders.Count > 0)
                 {
                     
@@ -2660,14 +2681,14 @@ WriteLiteral("            </th>\r\n            <td>\r\n");
             #line default
             #line hidden
             
-            #line 892 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 913 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(CommonHelpers.CheckBoxList("DeviceProfile_WirelessProfileProviders", "DeviceProfile_WirelessProfileProviders", Model.WirelessProfileProviders.ToSelectListItems(Model.DeviceProfile.GetWirelessProfileProviders())));
 
             
             #line default
             #line hidden
             
-            #line 892 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 913 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                                                                                         
                 }
                 else
@@ -2687,7 +2708,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
 
             
-            #line 901 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 922 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                     else
                     {
@@ -2698,13 +2719,13 @@ WriteLiteral(">&lt;None Allocated&gt;</span>\r\n");
 WriteLiteral("                        <ul>\r\n");
 
             
-            #line 905 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 926 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 905 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 926 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                              foreach (var wirelessProfileProvider in wirelessProfileProviders)
                             {
 
@@ -2714,7 +2735,7 @@ WriteLiteral("                        <ul>\r\n");
 WriteLiteral("                                <li>");
 
             
-            #line 907 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 928 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                Write(wirelessProfileProvider.Name);
 
             
@@ -2723,7 +2744,7 @@ WriteLiteral("                                <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 908 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 929 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                             }
 
             
@@ -2732,7 +2753,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                        </ul>\r\n");
 
             
-            #line 910 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 931 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     }
                 }
 
@@ -2742,7 +2763,7 @@ WriteLiteral("                        </ul>\r\n");
 WriteLiteral("                ");
 
             
-            #line 912 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 933 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                  if (canViewPlugins)
                 {
 
@@ -2763,21 +2784,21 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 52078), Tuple.Create("\"", 52128)
+WriteAttribute("href", Tuple.Create(" href=\"", 53278), Tuple.Create("\"", 53328)
             
-            #line 916 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 52085), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+            #line 937 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 53285), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 52085), false)
+, 53285), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install wireless profile provider plugins.\r" +
 "\n                        </p>\r\n                    </div>\r\n");
 
             
-            #line 919 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 940 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                 }
 
             
@@ -2786,13 +2807,13 @@ WriteLiteral(">Plugin Catalogue</a> to discover and install wireless profile pro
 WriteLiteral("            </td>\r\n        </tr>\r\n");
 
             
-            #line 922 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 943 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 922 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 943 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
          if (hideAdvanced)
         {
 
@@ -2826,7 +2847,7 @@ WriteLiteral(@">Show Advanced Options</button>
 ");
 
             
-            #line 938 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 959 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
         }
 
             
@@ -2842,7 +2863,7 @@ WriteLiteral(">\r\n            <th>\r\n                Linked Groups:\r\n       
 WriteLiteral("                    ");
 
             
-            #line 945 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 966 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -2860,7 +2881,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                    ");
 
             
-            #line 953 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 974 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -2876,13 +2897,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n");
 
             
-            #line 961 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 982 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 961 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 982 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                      if (canConfig)
                     {
                         
@@ -2890,14 +2911,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 963 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 984 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                    Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared));
 
             
             #line default
             #line hidden
             
-            #line 963 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 984 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                 
                     }
 
@@ -2907,69 +2928,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 970 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
- if (canDelete)
-{
-
-            
-            #line default
-            #line hidden
-WriteLiteral("    <div");
-
-WriteLiteral(" id=\"dialogConfirmDelete\"");
-
-WriteLiteral(" title=\"Delete this Device Profile?\"");
-
-WriteLiteral(">\r\n        <p>\r\n            <i");
-
-WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
-
-WriteLiteral("></i>\r\n            This item will be permanently deleted and cannot be recovered." +
-" Are you sure?\r\n        </p>\r\n    </div>\r\n");
-
-WriteLiteral("    <script");
-
-WriteLiteral(" type=\"text/javascript\"");
-
-WriteLiteral(@">
-        $(function () {
-
-            var button = $('#buttonDelete');
-            var buttonLink = button.attr('href');
-            button.attr('href', '#');
-            button.click(function () {
-                $(""#dialogConfirmDelete"").dialog('open');
-            });
-
-            $(""#dialogConfirmDelete"").dialog({
-                resizable: false,
-                height: 140,
-                modal: true,
-                autoOpen: false,
-                buttons: {
-                    ""Delete"": function () {
-                        $(this).dialog('disable');
-                        window.location.href = buttonLink;
-                    },
-                    Cancel: function () {
-                        $(this).dialog(""close"");
-                    }
-                }
-            });
-
-        });
-    </script>
-");
-
-            
-            #line 1006 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-}
-
-            
-            #line default
-            #line hidden
-            
-            #line 1007 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 991 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
 
             
@@ -2982,13 +2941,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1009 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 993 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 1009 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 993 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Model.CanDecommission)
     {
 
@@ -3014,28 +2973,28 @@ WriteLiteral(" title=\"Profile Device Decommission\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1013 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 997 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 1013 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-             using (Html.BeginForm(MVC.API.Device.DeviceProfileDecommission(Model.DeviceProfile.Id), FormMethod.Post))
+            #line 997 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+             using (Html.BeginForm(MVC.API.Device.DeviceProfileDecommission(Model.DeviceProfile.Id)))
             {
                 
             
             #line default
             #line hidden
             
-            #line 1015 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 999 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1015 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 999 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                         
 
             
@@ -3060,13 +3019,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1021 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1005 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1021 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1005 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                          foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                         {
 
@@ -3077,33 +3036,33 @@ WriteLiteral("                            <li>\r\n                              
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 56977), Tuple.Create("\"", 57049)
-, Tuple.Create(Tuple.Create("", 56982), Tuple.Create("DeviceProfile_Decommission_Dialog_Reason_", 56982), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 56980), Tuple.Create("\"", 57052)
+, Tuple.Create(Tuple.Create("", 56985), Tuple.Create("DeviceProfile_Decommission_Dialog_Reason_", 56985), true)
             
-            #line 1024 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                 , Tuple.Create(Tuple.Create("", 57023), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 1008 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                 , Tuple.Create(Tuple.Create("", 57026), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 57023), false)
+, 57026), false)
 );
 
 WriteLiteral("\r\n                                       name=\"decommissionReason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 57116), Tuple.Create("\"", 57150)
+WriteAttribute("value", Tuple.Create(" value=\"", 57119), Tuple.Create("\"", 57153)
             
-            #line 1025 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 57124), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 1009 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 57127), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 57124), false)
+, 57127), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 1025 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1009 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                 Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -3111,21 +3070,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 57290), Tuple.Create("\"", 57363)
-, Tuple.Create(Tuple.Create("", 57296), Tuple.Create("DeviceProfile_Decommission_Dialog_Reason_", 57296), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 57293), Tuple.Create("\"", 57366)
+, Tuple.Create(Tuple.Create("", 57299), Tuple.Create("DeviceProfile_Decommission_Dialog_Reason_", 57299), true)
             
-            #line 1026 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-     , Tuple.Create(Tuple.Create("", 57337), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 1010 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+     , Tuple.Create(Tuple.Create("", 57340), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 57337), false)
+, 57340), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 1026 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1010 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                              Write(decommissionReason.ReasonMessage());
 
             
@@ -3134,7 +3093,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                            </li>\r\n");
 
             
-            #line 1028 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1012 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                         }
 
             
@@ -3153,7 +3112,7 @@ WriteLiteral(" />\r\n                        Unassign devices users\r\n         
 "\r\n                </div>\r\n");
 
             
-            #line 1036 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1020 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
             }
 
             
@@ -3197,7 +3156,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 1067 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1051 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     }
 
             
@@ -3206,23 +3165,104 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 1068 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1052 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (canDelete)
     {
-        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" id=\"buttonDelete\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Delete</button>\r\n");
+
+WriteLiteral("        <div");
+
+WriteLiteral(" id=\"dialogConfirmDelete\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Delete this Device Profile?\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 1056 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            
             
             #line default
             #line hidden
             
-            #line 1070 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-   Write(Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete"));
+            #line 1056 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+             using (Html.BeginForm(MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true)))
+            {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 1058 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+           Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1070 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
-                                                                                                                    
+            #line 1058 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+                                        
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <p>\r\n                <i");
+
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
+
+WriteLiteral("></i>\r\n                This item will be permanently deleted and cannot be recove" +
+"red. Are you sure?\r\n            </p>\r\n        </div>\r\n");
+
+WriteLiteral("        <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+            $(function () {
+                let dialog = null;
+                $('#buttonDelete').on('click', function () {
+                    if (!dialog) {
+                        dialog = $(""#dialogConfirmDelete"").dialog({
+                            resizable: false,
+                            width: 300,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                ""Delete"": function () {
+                                    $(this)
+                                        .dialog(""option"", ""buttons"", null)
+                                        .find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog(""close"");
+                                }
+                            }
+                        });
+                    }
+
+                    dialog.dialog('open');
+                });
+            });
+        </script>
+");
+
+            
+            #line 1092 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
     }
 
             
@@ -3231,7 +3271,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 1072 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1093 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Actions.Export))
     {
         
@@ -3239,14 +3279,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1074 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1095 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Profile, Model.DeviceProfile.Id)));
 
             
             #line default
             #line hidden
             
-            #line 1074 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1095 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                           
     }
 
@@ -3256,7 +3296,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 1076 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1097 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
      if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
     {
         
@@ -3264,14 +3304,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1078 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1099 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
    Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceProfile.Id.ToString(), "DeviceProfile")));
 
             
             #line default
             #line hidden
             
-            #line 1078 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
+            #line 1099 "..\..\Areas\Config\Views\DeviceProfile\Show.cshtml"
                                                                                                                                                                                                    
     }
 

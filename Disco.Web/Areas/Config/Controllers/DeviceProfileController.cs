@@ -105,18 +105,10 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Create, Claims.Config.DeviceProfile.Configure)]
+        [HttpGet]
         public virtual ActionResult Create()
         {
-            var m = new Models.DeviceProfile.CreateModel()
-            {
-                DeviceProfile = new DeviceProfile()
-                {
-                    ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
-                    ProvisionADAccount = true,
-                    DistributionType = DeviceProfile.DistributionTypes.OneToMany,
-                    OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer
-                }
-            };
+            var m = new Models.DeviceProfile.CreateModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDeviceProfileCreateModel>(ControllerContext, m);
@@ -124,20 +116,30 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Create, Claims.Config.DeviceProfile.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Create, Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Create(Models.DeviceProfile.CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.DeviceProfiles.Where(m => m.Name == model.DeviceProfile.Name).FirstOrDefault();
-                if (existing == null)
+                var existingName = Database.DeviceProfiles.Any(m => m.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase));
+                if (!existingName)
                 {
-                    model.DeviceProfile.ProvisionADAccount = true;
+                    var deviceProfile = new DeviceProfile()
+                    {
+                        Name = model.Name,
+                        ShortName = model.ShortName,
+                        Description = model.Description,
+                        ProvisionADAccount = true,
+                        ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
+                        DistributionType = DeviceProfile.DistributionTypes.OneToMany,
+                        OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer
+                    };
 
-                    Database.DeviceProfiles.Add(model.DeviceProfile);
+                    Database.DeviceProfiles.Add(deviceProfile);
                     Database.SaveChanges();
-                    return RedirectToAction(MVC.Config.DeviceProfile.Index(model.DeviceProfile.Id));
+                    return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
                 }
                 else
                 {

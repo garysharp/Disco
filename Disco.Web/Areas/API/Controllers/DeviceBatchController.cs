@@ -9,6 +9,7 @@ using Disco.Services.Web;
 using Disco.Web.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
@@ -35,6 +36,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool redirect = false)
         {
             Authorization.Require(Claims.Config.DeviceBatch.Configure);
@@ -104,109 +106,124 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Device Batch Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Device Batch Id");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.DeviceBatch.Index(deviceBatch.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateName(int id, string BatchName = null, bool redirect = false)
         {
             return Update(id, pName, BatchName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdatePurchaseDate(int id, string PurchaseDate = null, bool redirect = false)
         {
             return Update(id, pPurchaseDate, PurchaseDate, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateSupplier(int id, string Supplier = null, bool redirect = false)
         {
             return Update(id, pSupplier, Supplier, redirect);
         }
 
-        [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
-        public virtual ActionResult UpdatePurchaseDetails(int id, string PurchaseDetails = null, bool redirect = false)
+        [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken, ValidateInput(false)]
+        public virtual ActionResult UpdatePurchaseDetails(int id, string purchaseDetails = null, bool redirect = false)
         {
-            return Update(id, pPurchaseDetails, PurchaseDetails, redirect);
+            return Update(id, pPurchaseDetails, purchaseDetails, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateUnitCost(int id, string UnitCost = null, bool redirect = false)
         {
             return Update(id, pUnitCost, UnitCost, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateUnitQuantity(int id, string UnitQuantity = null, bool redirect = false)
         {
             return Update(id, pUnitQuantity, UnitQuantity, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDefaultDeviceModelId(int id, string DefaultDeviceModelId = null, bool redirect = false)
         {
             return Update(id, pDefaultDeviceModelId, DefaultDeviceModelId, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateWarrantyValidUntil(int id, string WarrantyValidUntil = null, bool redirect = false)
         {
             return Update(id, pWarrantyValidUntil, WarrantyValidUntil, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
-        public virtual ActionResult UpdateWarrantyDetails(int id, string WarrantyDetails = null, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateWarrantyDetails(int id, string warrantyDetails = null, bool redirect = false)
         {
-            return Update(id, pWarrantyDetails, WarrantyDetails, redirect);
+            return Update(id, pWarrantyDetails, warrantyDetails, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuredDate(int id, string InsuredDate = null, bool redirect = false)
         {
             return Update(id, pInsuredDate, InsuredDate, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceSupplier(int id, string InsuranceSupplier = null, bool redirect = false)
         {
             return Update(id, pInsuranceSupplier, InsuranceSupplier, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuredUntil(int id, string InsuredUntil = null, bool redirect = false)
         {
             return Update(id, pInsuredUntil, InsuredUntil, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
-        public virtual ActionResult UpdateInsuranceDetails(int id, string InsuranceDetails = null, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateInsuranceDetails(int id, string insuranceDetails = null, bool redirect = false)
         {
-            return Update(id, pInsuranceDetails, InsuranceDetails, redirect);
+            return Update(id, pInsuranceDetails, insuranceDetails, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure), ValidateInput(false)]
-        public virtual ActionResult UpdateComments(int id, string Comments = null, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateComments(int id, string comments = null, bool redirect = false)
         {
-            return Update(id, pComments, Comments, redirect);
+            return Update(id, pComments, comments, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, bool redirect = false)
         {
             try
@@ -228,17 +245,18 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, bool redirect = false)
         {
             try
@@ -260,42 +278,42 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
 
         #region Update Properties
-        private void UpdateName(DeviceBatch deviceBatch, string Name)
+        private void UpdateName(DeviceBatch deviceBatch, string name)
         {
-            if (string.IsNullOrWhiteSpace(Name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("Name", "Device Batch Name is required");
             else
             {
                 // Check for Duplicates
-                var d = Database.DeviceBatches.Where(db => db.Id != deviceBatch.Id && db.Name == Name).Count();
+                var d = Database.DeviceBatches.Where(db => db.Id != deviceBatch.Id && db.Name == name).Count();
                 if (d > 0)
                 {
                     throw new Exception("A Device Batch with that name already exists");
                 }
-                deviceBatch.Name = Name;
+                deviceBatch.Name = name;
             }
             Database.SaveChanges();
         }
-        private void UpdatePurchaseDate(DeviceBatch deviceBatch, string PurchaseDate)
+        private void UpdatePurchaseDate(DeviceBatch deviceBatch, string purchaseDate)
         {
-            if (string.IsNullOrEmpty(PurchaseDate))
+            if (string.IsNullOrEmpty(purchaseDate))
                 throw new ArgumentNullException("PurchaseDate", "A Device Batch Purchase Date is required");
             else
             {
-                if (DateTime.TryParse(PurchaseDate, out var ecd))
+                if (DateTime.TryParse(purchaseDate, out var ecd))
                 {
                     deviceBatch.PurchaseDate = ecd.Date;
                 }
@@ -306,48 +324,48 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateSupplier(DeviceBatch deviceBatch, string Supplier)
+        private void UpdateSupplier(DeviceBatch deviceBatch, string supplier)
         {
-            if (string.IsNullOrWhiteSpace(Supplier))
+            if (string.IsNullOrWhiteSpace(supplier))
                 deviceBatch.Supplier = null;
             else
-                deviceBatch.Supplier = Supplier;
+                deviceBatch.Supplier = supplier;
             Database.SaveChanges();
         }
-        private void UpdatePurchaseDetails(DeviceBatch deviceBatch, string PurchaseDetails)
+        private void UpdatePurchaseDetails(DeviceBatch deviceBatch, string purchaseDetails)
         {
-            if (string.IsNullOrWhiteSpace(PurchaseDetails))
+            if (string.IsNullOrWhiteSpace(purchaseDetails))
                 deviceBatch.PurchaseDetails = null;
             else
-                deviceBatch.PurchaseDetails = PurchaseDetails;
+                deviceBatch.PurchaseDetails = purchaseDetails;
             Database.SaveChanges();
         }
-        private void UpdateUnitCost(DeviceBatch deviceBatch, string UnitCost)
+        private void UpdateUnitCost(DeviceBatch deviceBatch, string unitCost)
         {
-            if (string.IsNullOrWhiteSpace(UnitCost))
+            if (string.IsNullOrWhiteSpace(unitCost))
                 deviceBatch.UnitCost = null;
             else
             {
-                if (decimal.TryParse(UnitCost, out var unitCost))
-                {
-                    deviceBatch.UnitCost = unitCost;
-                }
+                unitCost = unitCost.Trim();
+                if (unitCost.StartsWith("$"))
+                    unitCost = unitCost.Substring(1).Trim(); // Remove $ sign if present
+
+                if (decimal.TryParse(unitCost, out var unitCostValue))
+                    deviceBatch.UnitCost = unitCostValue;
                 else
-                {
                     throw new Exception("Invalid Currency Format");
-                }
             }
             Database.SaveChanges();
         }
-        private void UpdateUnitQuantity(DeviceBatch deviceBatch, string UnitQuantity)
+        private void UpdateUnitQuantity(DeviceBatch deviceBatch, string unitQuantity)
         {
-            if (string.IsNullOrWhiteSpace(UnitQuantity))
+            if (string.IsNullOrWhiteSpace(unitQuantity))
                 deviceBatch.UnitQuantity = null;
             else
             {
-                if (int.TryParse(UnitQuantity, out var unitQuantity))
+                if (int.TryParse(unitQuantity, out var unitQuantityValue))
                 {
-                    deviceBatch.UnitQuantity = unitQuantity;
+                    deviceBatch.UnitQuantity = unitQuantityValue;
                 }
                 else
                 {
@@ -356,11 +374,11 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateDefaultDeviceModelId(DeviceBatch deviceBatch, string DefaultDeviceModelId)
+        private void UpdateDefaultDeviceModelId(DeviceBatch deviceBatch, string defaultDeviceModelId)
         {
-            if (!string.IsNullOrEmpty(DefaultDeviceModelId))
+            if (!string.IsNullOrEmpty(defaultDeviceModelId))
             {
-                if (int.TryParse(DefaultDeviceModelId, out var bId))
+                if (int.TryParse(defaultDeviceModelId, out var bId))
                 {
                     var dm = Database.DeviceModels.Find(bId);
                     if (dm != null)
@@ -384,13 +402,13 @@ namespace Disco.Web.Areas.API.Controllers
             }
             throw new Exception("Invalid Device Model Id");
         }
-        private void UpdateWarrantyValidUntil(DeviceBatch deviceBatch, string WarrantyValidUntil)
+        private void UpdateWarrantyValidUntil(DeviceBatch deviceBatch, string warrantyValidUntil)
         {
-            if (string.IsNullOrEmpty(WarrantyValidUntil))
+            if (string.IsNullOrEmpty(warrantyValidUntil))
                 deviceBatch.WarrantyValidUntil = null;
             else
             {
-                if (DateTime.TryParse(WarrantyValidUntil, out var ecd))
+                if (DateTime.TryParse(warrantyValidUntil, out var ecd))
                 {
                     deviceBatch.WarrantyValidUntil = ecd.Date;
                 }
@@ -401,21 +419,21 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateWarrantyDetails(DeviceBatch deviceBatch, string WarrantyDetails)
+        private void UpdateWarrantyDetails(DeviceBatch deviceBatch, string warrantyDetails)
         {
-            if (string.IsNullOrWhiteSpace(WarrantyDetails))
+            if (string.IsNullOrWhiteSpace(warrantyDetails))
                 deviceBatch.WarrantyDetails = null;
             else
-                deviceBatch.WarrantyDetails = WarrantyDetails;
+                deviceBatch.WarrantyDetails = warrantyDetails;
             Database.SaveChanges();
         }
-        private void UpdateInsuredDate(DeviceBatch deviceBatch, string InsuredDate)
+        private void UpdateInsuredDate(DeviceBatch deviceBatch, string insuredDate)
         {
-            if (string.IsNullOrEmpty(InsuredDate))
+            if (string.IsNullOrEmpty(insuredDate))
                 deviceBatch.InsuredDate = null;
             else
             {
-                if (DateTime.TryParse(InsuredDate, out var ecd))
+                if (DateTime.TryParse(insuredDate, out var ecd))
                 {
                     deviceBatch.InsuredDate = ecd.Date;
                 }
@@ -426,21 +444,21 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateInsuranceSupplier(DeviceBatch deviceBatch, string InsuranceSupplier)
+        private void UpdateInsuranceSupplier(DeviceBatch deviceBatch, string insuranceSupplier)
         {
-            if (string.IsNullOrWhiteSpace(InsuranceSupplier))
+            if (string.IsNullOrWhiteSpace(insuranceSupplier))
                 deviceBatch.InsuranceSupplier = null;
             else
-                deviceBatch.InsuranceSupplier = InsuranceSupplier;
+                deviceBatch.InsuranceSupplier = insuranceSupplier;
             Database.SaveChanges();
         }
-        private void UpdateInsuredUntil(DeviceBatch deviceBatch, string InsuredUntil)
+        private void UpdateInsuredUntil(DeviceBatch deviceBatch, string insuredUntil)
         {
-            if (string.IsNullOrEmpty(InsuredUntil))
+            if (string.IsNullOrEmpty(insuredUntil))
                 deviceBatch.InsuredUntil = null;
             else
             {
-                if (DateTime.TryParse(InsuredUntil, out var ecd))
+                if (DateTime.TryParse(insuredUntil, out var ecd))
                 {
                     deviceBatch.InsuredUntil = ecd.Date;
                 }
@@ -451,26 +469,26 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
         }
-        private void UpdateInsuranceDetails(DeviceBatch deviceBatch, string InsuranceDetails)
+        private void UpdateInsuranceDetails(DeviceBatch deviceBatch, string insuranceDetails)
         {
-            if (string.IsNullOrWhiteSpace(InsuranceDetails))
+            if (string.IsNullOrWhiteSpace(insuranceDetails))
                 deviceBatch.InsuranceDetails = null;
             else
-                deviceBatch.InsuranceDetails = InsuranceDetails;
+                deviceBatch.InsuranceDetails = insuranceDetails;
             Database.SaveChanges();
         }
-        private void UpdateComments(DeviceBatch deviceBatch, string Comments)
+        private void UpdateComments(DeviceBatch deviceBatch, string comments)
         {
-            if (string.IsNullOrWhiteSpace(Comments))
+            if (string.IsNullOrWhiteSpace(comments))
                 deviceBatch.Comments = null;
             else
-                deviceBatch.Comments = Comments;
+                deviceBatch.Comments = comments;
             Database.SaveChanges();
         }
 
-        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceBatch DeviceBatch, string DevicesLinkedGroup)
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceBatch DeviceBatch, string devicesLinkedGroup)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchDevicesManagedGroup.GetKey(DeviceBatch), DevicesLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchDevicesManagedGroup.GetKey(DeviceBatch), devicesLinkedGroup, null);
 
             if (DeviceBatch.DevicesLinkedGroup != configJson)
             {
@@ -485,9 +503,9 @@ namespace Disco.Web.Areas.API.Controllers
             return null;
         }
 
-        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceBatch DeviceBatch, string AssignedUsersLinkedGroup)
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceBatch DeviceBatch, string assignedUsersLinkedGroup)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchAssignedUsersManagedGroup.GetKey(DeviceBatch), AssignedUsersLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchAssignedUsersManagedGroup.GetKey(DeviceBatch), assignedUsersLinkedGroup, null);
 
             if (DeviceBatch.AssignedUsersLinkedGroup != configJson)
             {
@@ -506,6 +524,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -518,7 +537,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DeviceBatch.Index(null));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Device Batch Number");
             }
@@ -527,7 +546,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
@@ -536,6 +555,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Index
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Index(int? id)
         {
             if (id.HasValue)
@@ -556,6 +576,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Timeline
 
         [DiscoAuthorizeAll(Claims.Config.DeviceBatch.Show, Claims.Config.DeviceBatch.ShowTimeline)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Timeline()
         {
 
@@ -601,7 +622,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
         #endregion
 
-        #region Attachements
+        #region Attachments
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
@@ -660,6 +681,9 @@ namespace Disco.Web.Areas.API.Controllers
                         if (string.IsNullOrEmpty(contentType) || contentType.Equals("unknown/unknown", StringComparison.OrdinalIgnoreCase))
                             contentType = MimeTypes.ResolveMimeType(file.FileName);
 
+                        if (string.IsNullOrWhiteSpace(comments))
+                            comments = null;
+
                         var attachment = new DeviceBatchAttachment()
                         {
                             DeviceBatchId = batch.Id,
@@ -687,7 +711,7 @@ namespace Disco.Web.Areas.API.Controllers
         [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
         public virtual ActionResult Attachment(int id)
         {
-            var attachment = Database.DeviceBatchAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var attachment = Database.DeviceBatchAttachments.Include(a => a.TechUser).Where(m => m.Id == id).FirstOrDefault();
             if (attachment != null)
             {
 
@@ -699,13 +723,13 @@ namespace Disco.Web.Areas.API.Controllers
 
                 return Json(m, JsonRequestBehavior.AllowGet);
             }
-            return Json(new Models.Attachment.AttachmentModel() { Result = "Invalid Attachment Number" }, JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Attachment Number");
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Show)]
         public virtual ActionResult Attachments(int id)
         {
-            var batch = Database.DeviceBatches.Include("DeviceBatchAttachments.TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var batch = Database.DeviceBatches.Include(b => b.DeviceBatchAttachments.Select(a => a.TechUser)).Where(m => m.Id == id).FirstOrDefault();
             if (batch != null)
             {
                 var m = new Models.Attachment.AttachmentsModel()
@@ -716,20 +740,21 @@ namespace Disco.Web.Areas.API.Controllers
 
                 return Json(m, JsonRequestBehavior.AllowGet);
             }
-            return Json(new Models.Attachment.AttachmentsModel() { Result = "Invalid Device Batch Id" }, JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Device Batch Id");
         }
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentRemove(int id)
         {
-            var attachment = Database.DeviceBatchAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
+            var attachment = Database.DeviceBatchAttachments.Include(a => a.TechUser).Where(m => m.Id == id).FirstOrDefault();
             if (attachment != null)
             {
                 attachment.OnDelete(Database);
                 Database.SaveChanges();
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
             }
-            return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Attachment Number");
         }
 
         #endregion

@@ -277,8 +277,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_BulkGenerate
         {
             public readonly string id = "id";
-            public readonly string DataIds = "DataIds";
-            public readonly string InsertBlankPage = "InsertBlankPage";
+            public readonly string dataIds = "dataIds";
         }
         static readonly ActionParamsClass_Generate s_params_Generate = new ActionParamsClass_Generate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -287,7 +286,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_Generate
         {
             public readonly string id = "id";
-            public readonly string TargetId = "TargetId";
+            public readonly string targetId = "targetId";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -445,29 +444,28 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void BulkGenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string DataIds, bool InsertBlankPage);
+        partial void BulkGenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string dataIds);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerate(string id, string DataIds, bool InsertBlankPage)
+        public override System.Web.Mvc.ActionResult BulkGenerate(string id, string dataIds)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DataIds", DataIds);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "InsertBlankPage", InsertBlankPage);
-            BulkGenerateOverride(callInfo, id, DataIds, InsertBlankPage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "dataIds", dataIds);
+            BulkGenerateOverride(callInfo, id, dataIds);
             return callInfo;
         }
 
         [NonAction]
-        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string TargetId);
+        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string targetId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Generate(string id, string TargetId)
+        public override System.Web.Mvc.ActionResult Generate(string id, string targetId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "TargetId", TargetId);
-            GenerateOverride(callInfo, id, TargetId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
+            GenerateOverride(callInfo, id, targetId);
             return callInfo;
         }
 

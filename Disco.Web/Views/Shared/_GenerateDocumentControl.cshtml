@@ -5,7 +5,7 @@
     selectListItems.Add(new SelectListItem() { Selected = true, Value = string.Empty, Text = "Generate Document" });
     selectListItems.AddRange(Model.Templates.ToSelectListItems());
     selectListItems.AddRange(Model.TemplatePackages.ToSelectListItems());
-    <div id="Document_Generation_Container" data-targetid="@HttpUtility.UrlEncode(Model.Target.AttachmentReferenceId)" data-targettype="@Model.Target.HasAttachmentType" data-generatepdfurl="@Url.Action(MVC.API.DocumentTemplate.Generate())/" data-generatepackageurl="@Url.Action(MVC.API.DocumentTemplatePackage.Generate())/" data-handlerspresent="@(Model.HandlersPresent ? "true" : "false")" data-handlersurl="@Url.Action(MVC.API.DocumentTemplate.DocumentHandlers())">
+    <div id="Document_Generation_Container" data-targetid="@Model.Target.AttachmentReferenceId" data-targettype="@Model.Target.HasAttachmentType" data-generatepdfurl="@Url.Action(MVC.API.DocumentTemplate.Generate())" data-generatepackageurl="@Url.Action(MVC.API.DocumentTemplatePackage.Generate())" data-handlerspresent="@(Model.HandlersPresent ? "true" : "false")" data-handlersurl="@Url.Action(MVC.API.DocumentTemplate.DocumentHandlers())">
         @Html.DropDownList("Document_Generate", selectListItems)
         @if (Model.HandlersPresent)
         {
@@ -20,7 +20,7 @@
                 </div>
                 <div class="details">
                     <div id="Document_Generation_Dialog_Download_Container">
-                        <a id="Document_Generation_Dialog_Download" href="#" class="button">Download Document</a>
+                        <button id="Document_Generation_Dialog_Download" type="button" class="button">Download Document</button>
                     </div>
                     <div id="Document_Generation_Dialog_HandlerUI">
                     </div>

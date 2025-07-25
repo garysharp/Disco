@@ -4,20 +4,21 @@
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), "Create");
 }
 @using (Html.BeginForm())
-{ 
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(false)
     <div class="form" style="width: 450px">
         <table>
             <tr>
                 <th>Name:</th>
                 <td>
-                    @Html.EditorFor(model => model.DeviceBatch.Name)<br />@Html.ValidationMessageFor(model => model.DeviceBatch.Name)
+                    @Html.EditorFor(model => model.Name)<br />@Html.ValidationMessageFor(model => model.Name)
                 </td>
             </tr>
             <tr>
                 <th>Purchase Date:</th>
                 <td>
-                    @Html.EditorFor(model => model.DeviceBatch.PurchaseDate)<br />@Html.ValidationMessageFor(model => model.DeviceBatch.PurchaseDate)
+                    @Html.EditorFor(model => model.PurchaseDate)<br />@Html.ValidationMessageFor(model => model.PurchaseDate)
                 </td>
             </tr>
         </table>
@@ -29,6 +30,7 @@
         $(function () {
             $('#Name').focus().select();
             $('#PurchaseDate').datepicker({
+                minDate: new Date(1900, 1-1, 1),
                 changeYear: true,
                 changeMonth: true,
                 dateFormat: 'yy/mm/dd'

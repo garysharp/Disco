@@ -9,6 +9,7 @@ namespace Disco.Web.Areas.API.Controllers
     {
 
         [DiscoAuthorize(Claims.Config.DeviceCertificate.DownloadCertificates)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Download(int id)
         {
             var wc = Database.DeviceCertificates.Find(id);

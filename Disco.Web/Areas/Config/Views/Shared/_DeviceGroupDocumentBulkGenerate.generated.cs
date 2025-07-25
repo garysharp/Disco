@@ -131,7 +131,7 @@ WriteLiteral(".\r\n            </p>\r\n");
             #line hidden
             
             #line 46 "..\..\Areas\Config\Views\Shared\_DeviceGroupDocumentBulkGenerate.cshtml"
-             using (Html.BeginForm(urlDelegate(), FormMethod.Post))
+             using (Html.BeginForm(urlDelegate()))
             {
                 
             
@@ -191,14 +191,14 @@ WriteLiteral(">-- Choose Document Template --</option>\r\n");
             #line hidden
 WriteLiteral("                        <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 2652), Tuple.Create("\"", 2672)
+WriteAttribute("value", Tuple.Create(" value=\"", 2635), Tuple.Create("\"", 2655)
             
             #line 54 "..\..\Areas\Config\Views\Shared\_DeviceGroupDocumentBulkGenerate.cshtml"
-, Tuple.Create(Tuple.Create("", 2660), Tuple.Create<System.Object, System.Int32>(template.Id
+, Tuple.Create(Tuple.Create("", 2643), Tuple.Create<System.Object, System.Int32>(template.Id
             
             #line default
             #line hidden
-, 2660), false)
+, 2643), false)
 );
 
 WriteLiteral(">");

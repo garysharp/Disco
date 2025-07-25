@@ -130,53 +130,53 @@ WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n        
             
             #line 40 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                  if (canConfig)
-            {
+                {
             
             #line default
             #line hidden
             
             #line 41 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-        Write(Html.EditorFor(model => model.DeviceFlag.Name));
+            Write(Html.EditorFor(model => model.DeviceFlag.Name));
 
             
             #line default
             #line hidden
             
             #line 41 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                                            
-                    
+                                                                
+                
             
             #line default
             #line hidden
             
             #line 42 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-               Write(AjaxHelpers.AjaxSave());
+           Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
             #line 42 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                           
-                    
+                                       
+                
             
             #line default
             #line hidden
             
             #line 43 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-               Write(AjaxHelpers.AjaxLoader());
+           Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
             #line 43 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                             
+                                         
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+WriteLiteral("                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -195,28 +195,28 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("\',\r\n                                \'FlagName\'\r\n                            );\r\n " +
-"                       });\r\n                    </script>\r\n");
+"                       });\r\n                </script>\r\n");
 
             
             #line 54 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                }
-                else
-                {
-                    
+            }
+            else
+            {
+                
             
             #line default
             #line hidden
             
             #line 57 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-               Write(Model.DeviceFlag.Name);
+           Write(Model.DeviceFlag.Name);
 
             
             #line default
             #line hidden
             
             #line 57 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                          
-                }
+                                      
+            }
 
             
             #line default
@@ -247,39 +247,39 @@ WriteLiteral("            </td>\r\n        </tr>\r\n        <tr>\r\n            
             
             #line 67 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                        
-                    
+                
             
             #line default
             #line hidden
             
             #line 68 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-               Write(AjaxHelpers.AjaxSave());
+           Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
             #line 68 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                           
-                    
+                                       
+                
             
             #line default
             #line hidden
             
             #line 69 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-               Write(AjaxHelpers.AjaxLoader());
+           Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
             #line 69 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                             
+                                         
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+WriteLiteral("                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -298,18 +298,18 @@ WriteLiteral(@">
             #line default
             #line hidden
 WriteLiteral("\',\r\n                                \'Description\'\r\n                            );" +
-"\r\n                        });\r\n                    </script>\r\n");
+"\r\n                        });\r\n                </script>\r\n");
 
             
             #line 80 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                }
-                else
-                {
+            }
+            else
+            {
 
             
             #line default
             #line hidden
-WriteLiteral("                    <pre>\r\n");
+WriteLiteral("                <pre>\r\n");
 
             
             #line 84 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
@@ -359,7 +359,7 @@ WriteLiteral("                    </pre>\r\n");
 
             
             #line 93 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                }
+            }
 
             
             #line default
@@ -429,25 +429,25 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4688), Tuple.Create("\"", 4765)
-, Tuple.Create(Tuple.Create("", 4696), Tuple.Create("fa", 4696), true)
-, Tuple.Create(Tuple.Create(" ", 4698), Tuple.Create("fa-", 4699), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4620), Tuple.Create("\"", 4697)
+, Tuple.Create(Tuple.Create("", 4628), Tuple.Create("fa", 4628), true)
+, Tuple.Create(Tuple.Create(" ", 4630), Tuple.Create("fa-", 4631), true)
             
             #line 110 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                                                , Tuple.Create(Tuple.Create("", 4702), Tuple.Create<System.Object, System.Int32>(Model.DeviceFlag.Icon
+                                                                , Tuple.Create(Tuple.Create("", 4634), Tuple.Create<System.Object, System.Int32>(Model.DeviceFlag.Icon
             
             #line default
             #line hidden
-, 4702), false)
-, Tuple.Create(Tuple.Create(" ", 4726), Tuple.Create("fa-4x", 4727), true)
-, Tuple.Create(Tuple.Create(" ", 4732), Tuple.Create("d-", 4733), true)
+, 4634), false)
+, Tuple.Create(Tuple.Create(" ", 4658), Tuple.Create("fa-4x", 4659), true)
+, Tuple.Create(Tuple.Create(" ", 4664), Tuple.Create("d-", 4665), true)
             
             #line 110 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                                                                                 , Tuple.Create(Tuple.Create("", 4735), Tuple.Create<System.Object, System.Int32>(Model.DeviceFlag.IconColour
+                                                                                                 , Tuple.Create(Tuple.Create("", 4667), Tuple.Create<System.Object, System.Int32>(Model.DeviceFlag.IconColour
             
             #line default
             #line hidden
-, 4735), false)
+, 4667), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -482,20 +482,73 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Device Flag Icon\"");
 
-WriteLiteral(">\r\n                            <div>\r\n                                <div");
+WriteLiteral(">\r\n");
+
+            
+            #line 116 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 116 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                             using (Html.BeginForm(MVC.API.DeviceFlag.UpdateIconAndColour(id: Model.DeviceFlag.Id, redirect: true)))
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 118 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 118 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                                                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"icon\"");
+
+WriteLiteral(" />\r\n");
+
+WriteLiteral("                                <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"iconColour\"");
+
+WriteLiteral(" />\r\n");
+
+            
+            #line 121 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div>\r\n                                <div");
 
 WriteLiteral(" class=\"colours\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 118 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 124 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 124 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                      foreach (var colour in Model.ThemeColours)
                                     {
 
@@ -507,7 +560,7 @@ WriteLiteral("                                        <i");
 WriteLiteral(" data-colour=\"");
 
             
-            #line 120 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 126 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                     Write(colour.Key);
 
             
@@ -515,33 +568,33 @@ WriteLiteral(" data-colour=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 5351), Tuple.Create("\"", 5387)
-, Tuple.Create(Tuple.Create("", 5359), Tuple.Create("fa", 5359), true)
-, Tuple.Create(Tuple.Create(" ", 5361), Tuple.Create("fa-square", 5362), true)
-, Tuple.Create(Tuple.Create(" ", 5371), Tuple.Create("d-", 5372), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 5681), Tuple.Create("\"", 5717)
+, Tuple.Create(Tuple.Create("", 5689), Tuple.Create("fa", 5689), true)
+, Tuple.Create(Tuple.Create(" ", 5691), Tuple.Create("fa-square", 5692), true)
+, Tuple.Create(Tuple.Create(" ", 5701), Tuple.Create("d-", 5702), true)
             
-            #line 120 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-              , Tuple.Create(Tuple.Create("", 5374), Tuple.Create<System.Object, System.Int32>(colour.Key
+            #line 126 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+              , Tuple.Create(Tuple.Create("", 5704), Tuple.Create<System.Object, System.Int32>(colour.Key
             
             #line default
             #line hidden
-, 5374), false)
+, 5704), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5388), Tuple.Create("\"", 5409)
+WriteAttribute("title", Tuple.Create(" title=\"", 5718), Tuple.Create("\"", 5739)
             
-            #line 120 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                   , Tuple.Create(Tuple.Create("", 5396), Tuple.Create<System.Object, System.Int32>(colour.Value
+            #line 126 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                                   , Tuple.Create(Tuple.Create("", 5726), Tuple.Create<System.Object, System.Int32>(colour.Value
             
             #line default
             #line hidden
-, 5396), false)
+, 5726), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 121 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 127 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                     }
 
             
@@ -554,13 +607,13 @@ WriteLiteral(" class=\"icons\"");
 WriteLiteral(">\r\n");
 
             
-            #line 124 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 130 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 124 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 130 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                      foreach (var icon in Model.Icons)
                                     {
 
@@ -572,7 +625,7 @@ WriteLiteral("                                        <i");
 WriteLiteral(" data-icon=\"");
 
             
-            #line 126 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 132 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                   Write(icon.Key);
 
             
@@ -580,32 +633,32 @@ WriteLiteral(" data-icon=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 5726), Tuple.Create("\"", 5751)
-, Tuple.Create(Tuple.Create("", 5734), Tuple.Create("fa", 5734), true)
-, Tuple.Create(Tuple.Create(" ", 5736), Tuple.Create("fa-", 5737), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 6056), Tuple.Create("\"", 6081)
+, Tuple.Create(Tuple.Create("", 6064), Tuple.Create("fa", 6064), true)
+, Tuple.Create(Tuple.Create(" ", 6066), Tuple.Create("fa-", 6067), true)
             
-            #line 126 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
- , Tuple.Create(Tuple.Create("", 5740), Tuple.Create<System.Object, System.Int32>(icon.Key
+            #line 132 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+ , Tuple.Create(Tuple.Create("", 6070), Tuple.Create<System.Object, System.Int32>(icon.Key
             
             #line default
             #line hidden
-, 5740), false)
+, 6070), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5752), Tuple.Create("\"", 5771)
+WriteAttribute("title", Tuple.Create(" title=\"", 6082), Tuple.Create("\"", 6101)
             
-            #line 126 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                    , Tuple.Create(Tuple.Create("", 5760), Tuple.Create<System.Object, System.Int32>(icon.Value
+            #line 132 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                    , Tuple.Create(Tuple.Create("", 6090), Tuple.Create<System.Object, System.Int32>(icon.Value
             
             #line default
             #line hidden
-, 5760), false)
+, 6090), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 127 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 133 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                     }
 
             
@@ -648,42 +701,22 @@ WriteLiteral("                                </div>\r\n                        
 "     iconCode = $this.attr(\'data-icon\');\r\n\r\n                                    " +
 "icons.find(\'i\').removeClass(\'selected\');\r\n                                    $t" +
 "his.addClass(\'selected\');\r\n                                }\r\n\r\n                " +
-"                function save() {\r\n                                    var url =" +
-" \'");
+"                function save() {\r\n                                    dialog.di" +
+"alog(\"option\", \"buttons\", null);\r\n                                    const $for" +
+"m = dialog.find(\'form\');\r\n                                    $form.find(\'input[" +
+"name=\"icon\"]\').val(icons.find(\'i.selected\').attr(\'data-icon\'));\r\n               " +
+"                     $form.find(\'input[name=\"iconColour\"]\').val(colours.find(\'i." +
+"selected\').attr(\'data-colour\'));\r\n                                    $form.trig" +
+"ger(\'submit\');\r\n                                }\r\n\r\n                           " +
+"     function cancel() {\r\n                                    $(this).dialog(\"cl" +
+"ose\");\r\n                                }\r\n\r\n                                $(f" +
+"unction () {\r\n                                    icon = $(\'#Config_DeviceFlags_" +
+"Icon\');\r\n                                    $(\'#Config_DeviceFlags_Icon_Update\'" +
+").click(showDialog);\r\n                                });\r\n                     " +
+"       }());\r\n                        </script>\r\n                    </div>\r\n");
 
             
-            #line 186 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                           Write(Url.Action(MVC.API.DeviceFlag.UpdateIconAndColour(id: Model.DeviceFlag.Id, redirect: true)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"',
-                                        data = {
-                                            Icon: icons.find('i.selected').attr('data-icon'),
-                                            IconColour: colours.find('i.selected').attr('data-colour')
-                                        };
-                                    window.location.href = url + '&' + $.param(data);
-
-                                    dialog.dialog(""disable"");
-                                    dialog.dialog(""option"", ""buttons"", null);
-                                }
-
-                                function cancel() {
-                                    $(this).dialog(""close"");
-                                }
-
-                                $(function () {
-                                    icon = $('#Config_DeviceFlags_Icon');
-                                    $('#Config_DeviceFlags_Icon_Update').click(showDialog);
-                                });
-                            }());
-                        </script>
-                    </div>
-");
-
-            
-            #line 208 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 210 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                 }
 
             
@@ -692,13 +725,13 @@ WriteLiteral(@"',
 WriteLiteral("            </td>\r\n        </tr>\r\n");
 
             
-            #line 211 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 213 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 211 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 213 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (hideAdvanced)
         {
 
@@ -732,7 +765,7 @@ WriteLiteral(@">Show Advanced Options</button>
 ");
 
             
-            #line 227 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 229 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         }
 
             
@@ -746,13 +779,13 @@ WriteLiteral(">\r\n            <th>\r\n                On Assignment<br />Expres
 "</th>\r\n            <td>\r\n");
 
             
-            #line 233 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 235 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 233 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 235 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                  if (canConfig)
                 {
                     
@@ -760,56 +793,56 @@ WriteLiteral(">\r\n            <th>\r\n                On Assignment<br />Expres
             #line default
             #line hidden
             
-            #line 235 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 237 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(Html.EditorFor(model => model.DeviceFlag.OnAssignmentExpression));
 
             
             #line default
             #line hidden
             
-            #line 235 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 237 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                      
                     
             
             #line default
             #line hidden
             
-            #line 236 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 238 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 236 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 238 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                              
                     
             
             #line default
             #line hidden
             
-            #line 237 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 239 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 237 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 239 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                            
                     
             
             #line default
             #line hidden
             
-            #line 238 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 240 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 238 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 240 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                              
 
             
@@ -831,7 +864,7 @@ WriteLiteral(@">
                                     '");
 
             
-            #line 248 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 250 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                 Write(Url.Action(MVC.API.DeviceFlag.UpdateOnAssignmentExpression(Model.DeviceFlag.Id)));
 
             
@@ -859,7 +892,7 @@ WriteLiteral("\',\r\n                                    \'OnAssignmentExpressio
 "    </script>\r\n");
 
             
-            #line 277 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 279 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                 }
                 else
                 {
@@ -876,7 +909,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 283 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 285 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     }
                     else
                     {
@@ -893,7 +926,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 287 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 289 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                        Write(Model.DeviceFlag.OnAssignmentExpression);
 
             
@@ -902,7 +935,7 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </div>\r\n");
 
             
-            #line 289 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 291 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     }
                 }
 
@@ -932,13 +965,13 @@ WriteLiteral(">\r\n            <th>\r\n                On Unassignment<br />Expr
 "  </th>\r\n            <td>\r\n");
 
             
-            #line 303 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 305 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 303 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 305 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                  if (canConfig)
                 {
                     
@@ -946,56 +979,56 @@ WriteLiteral(">\r\n            <th>\r\n                On Unassignment<br />Expr
             #line default
             #line hidden
             
-            #line 305 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 307 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(Html.EditorFor(model => model.DeviceFlag.OnUnassignmentExpression));
 
             
             #line default
             #line hidden
             
-            #line 305 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 307 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                        
                     
             
             #line default
             #line hidden
             
-            #line 306 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 308 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 306 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 308 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                              
                     
             
             #line default
             #line hidden
             
-            #line 307 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 309 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 307 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 309 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                            
                     
             
             #line default
             #line hidden
             
-            #line 308 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 310 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 308 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 310 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                              
 
             
@@ -1017,7 +1050,7 @@ WriteLiteral(@">
                                 '");
 
             
-            #line 318 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 320 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                             Write(Url.Action(MVC.API.DeviceFlag.UpdateOnUnassignmentExpression(Model.DeviceFlag.Id)));
 
             
@@ -1055,7 +1088,7 @@ WriteLiteral(@"',
 ");
 
             
-            #line 347 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 349 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                 }
                 else
                 {
@@ -1072,7 +1105,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 353 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 355 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     }
                     else
                     {
@@ -1089,7 +1122,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                            ");
 
             
-            #line 357 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 359 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                        Write(Model.DeviceFlag.OnUnassignmentExpression);
 
             
@@ -1098,7 +1131,7 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </div>\r\n");
 
             
-            #line 359 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 361 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     }
                 }
 
@@ -1130,7 +1163,7 @@ WriteLiteral(">\r\n            <th>\r\n                Linked Groups:\r\n       
 WriteLiteral("                    ");
 
             
-            #line 375 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 377 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -1149,7 +1182,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                    ");
 
             
-            #line 384 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 386 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -1166,28 +1199,28 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n");
 
             
-            #line 393 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 395 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 393 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 395 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                      if (canConfig)
-            {
+                    {
                         
             
             #line default
             #line hidden
             
-            #line 395 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 397 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                    Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared));
 
             
             #line default
             #line hidden
             
-            #line 395 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 397 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                 
                     }
 
@@ -1197,7 +1230,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 402 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 404 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
  if (canBulkAssignment || canDelete || canShowDevices || canExportCurrent || canExportAll)
 {
 
@@ -1211,13 +1244,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 405 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 407 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 405 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 407 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canExportCurrent)
         {
             
@@ -1225,14 +1258,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 407 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 409 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
        Write(Html.ActionLinkButton("Export Current Assignments", MVC.Config.DeviceFlag.Export(null, Model.DeviceFlag.Id, true), "Config_DeviceFlags_Actions_ExportCurrent_Button"));
 
             
             #line default
             #line hidden
             
-            #line 407 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 409 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                                                                                                                   
         }
 
@@ -1242,7 +1275,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 409 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 411 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canExportAll)
         {
             
@@ -1250,14 +1283,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 411 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 413 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
        Write(Html.ActionLinkButton("Export All Assignments", MVC.Config.DeviceFlag.Export(null, Model.DeviceFlag.Id, false), "Config_DeviceFlags_Actions_ExportAll_Button"));
 
             
             #line default
             #line hidden
             
-            #line 411 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 413 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                                                                                                            
         }
 
@@ -1267,7 +1300,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 413 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 415 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canBulkAssignment)
         {
 
@@ -1358,7 +1391,40 @@ WriteLiteral(" action=\"#\"");
 
 WriteLiteral(" method=\"post\"");
 
-WriteLiteral(">\r\n                    <textarea");
+WriteLiteral(" data-overrideaction=\"");
+
+            
+            #line 447 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                                                                Write(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, true)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-addaction=\"");
+
+            
+            #line 447 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                                                                                                                                                                Write(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, false)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("                    ");
+
+            
+            #line 448 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+               Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                    <textarea");
 
 WriteLiteral(" id=\"Config_DeviceFlags_BulkAssign_AssignDialog_DeviceSerialNumbers\"");
 
@@ -1405,21 +1471,14 @@ WriteLiteral("            <script>\r\n                $(function () {\r\n       
 " {\r\n                            $(this).dialog(\'close\');\r\n                      " +
 "  }\r\n                        assignDialog.dialog(\'option\', \'buttons\', buttons);\r" +
 "\n                        assignDialog.dialog(\'option\', \'title\', \'Bulk Assign Dev" +
-"ices: \' + mode);\r\n\r\n                        if (mode == \"Override\") {\r\n         " +
-"                   assignDeviceSerialNumbers.closest(\'form\').attr(\'action\', \'");
+"ices: \' + mode);\r\n\r\n                        const $form = assignDeviceSerialNumb" +
+"ers.closest(\'form\');\r\n                        if (mode == \"Override\") {\r\n       " +
+"                     $form.attr(\'action\', $form.attr(\'data-overrideaction\'));\r\n\r" +
+"\n                            assignDialog.addClass(\'loading\');\r\n                " +
+"            $.getJSON(\'");
 
             
-            #line 506 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                                                                  Write(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, true)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\');\r\n\r\n                            assignDialog.addClass(\'loading\');\r\n           " +
-"                 $.getJSON(\'");
-
-            
-            #line 509 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 513 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                   Write(Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id)));
 
             
@@ -1442,16 +1501,7 @@ WriteLiteral(@"', function (response, result) {
                         }
                         else // Assume Add
                         {
-                            assignDeviceSerialNumbers.closest('form').attr('action', '");
-
-            
-            #line 526 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                                                                  Write(Url.Action(MVC.API.DeviceFlag.BulkAssignDevices(Model.DeviceFlag.Id, false)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"');
+                            $form.attr('action', $form.attr('data-addaction'));
                         }
 
                         assignDialog.dialog('open');
@@ -1466,7 +1516,7 @@ WriteLiteral(@"');
 ");
 
             
-            #line 538 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 542 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         }
 
             
@@ -1475,34 +1525,63 @@ WriteLiteral(@"');
 WriteLiteral("        ");
 
             
-            #line 539 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 543 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canDelete)
         {
-            
-            
-            #line default
-            #line hidden
-            
-            #line 541 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-       Write(Html.ActionLinkButton("Delete", MVC.API.DeviceFlag.Delete(Model.DeviceFlag.Id, true), "Config_DeviceFlags_Actions_Delete_Button"));
 
             
             #line default
             #line hidden
-            
-            #line 541 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                                                                                                                              
+WriteLiteral("            <button");
 
-            
-            #line default
-            #line hidden
+WriteLiteral(" id=\"Config_DeviceFlags_Actions_Delete_Button\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Delete</button>\r\n");
+
 WriteLiteral("            <div");
 
 WriteLiteral(" id=\"Config_DeviceFlags_Actions_Delete_Dialog\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(" title=\"Delete this Device Flag?\"");
 
-WriteLiteral(">\r\n                <p>\r\n                    <i");
+WriteLiteral(">\r\n");
+
+            
+            #line 547 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 547 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                 using (Html.BeginForm(MVC.API.DeviceFlag.Delete(Model.DeviceFlag.Id, true)))
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 549 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+               Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 549 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                                            
+                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <p>\r\n                    <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
@@ -1510,13 +1589,13 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 "covered.<br />\r\n                    <br />\r\n");
 
             
-            #line 547 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 555 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 547 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 555 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                      if (Model.CurrentAssignmentCount > 0)
                     {
 
@@ -1526,7 +1605,7 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 WriteLiteral("                        <strong>");
 
             
-            #line 549 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 557 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                            Write(Model.CurrentAssignmentCount);
 
             
@@ -1535,7 +1614,7 @@ WriteLiteral("                        <strong>");
 WriteLiteral(" device");
 
             
-            #line 549 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 557 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                 Write(Model.CurrentAssignmentCount != 1 ? "s are" : " is");
 
             
@@ -1548,7 +1627,7 @@ WriteLiteral("                        <br />\r\n");
 WriteLiteral("                        <br />\r\n");
 
             
-            #line 552 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 560 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     }
 
             
@@ -1562,36 +1641,34 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
                 $(function () {
-                    var button = $('#Config_DeviceFlags_Actions_Delete_Button');
-                    var buttonDialog = $('#Config_DeviceFlags_Actions_Delete_Dialog');
-                    var buttonLink = button.attr('href');
-                    button.attr('href', '#');
-                    button.click(function () {
-                        buttonDialog.dialog('open');
-                        return false;
-                    });
-                    buttonDialog.dialog({
-                        resizable: false,
-                        modal: true,
-                        autoOpen: false,
-                        buttons: {
-                            ""Delete"": function () {
-                                var $this = $(this);
-                                $this.dialog(""disable"");
-                                $this.dialog(""option"", ""buttons"", null);
-                                window.location.href = buttonLink;
-                            },
-                            Cancel: function () {
-                                $(this).dialog(""close"");
-                            }
+                    let buttonDialog = null;
+                    $('#Config_DeviceFlags_Actions_Delete_Button').on('click', function () {
+                        const $button = $(this);
+                        if (!buttonDialog) {
+                            buttonDialog = $('#Config_DeviceFlags_Actions_Delete_Dialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    ""Delete"": function () {
+                                        $(this)
+                                            .dialog(""option"", ""buttons"", null)
+                                            .find('form').trigger('submit');
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog(""close"");
+                                    }
+                                }
+                            });
                         }
+                        buttonDialog.dialog('open');
                     });
                 });
             </script>
 ");
 
             
-            #line 584 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 590 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         }
 
             
@@ -1600,7 +1677,7 @@ WriteLiteral(@">
 WriteLiteral("        ");
 
             
-            #line 585 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 591 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canShowDevices)
         {
             
@@ -1608,14 +1685,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 587 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 593 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("Show {0} device{1}", Model.CurrentAssignmentCount, (Model.CurrentAssignmentCount == 1 ? null : "s")), MVC.Search.Query(Model.DeviceFlag.Id.ToString(), "DeviceFlag"), "Config_DeviceFlags_Actions_ShowDevices_Button"));
 
             
             #line default
             #line hidden
             
-            #line 587 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 593 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                                                                                                                                                                                                         
         }
 
@@ -1625,7 +1702,7 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 590 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 596 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
 }
 
             

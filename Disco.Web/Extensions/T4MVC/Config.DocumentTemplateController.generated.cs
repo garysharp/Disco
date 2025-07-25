@@ -216,10 +216,10 @@ namespace Disco.Web.Areas.Config.Controllers
         public T4MVC_DocumentTemplateController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string bulkGenerateId, string bulkGenerateFilename);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, System.Guid? bulkGenerateId, string bulkGenerateFilename);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index(string id, string bulkGenerateId, string bulkGenerateFilename)
+        public override System.Web.Mvc.ActionResult Index(string id, System.Guid? bulkGenerateId, string bulkGenerateFilename)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);

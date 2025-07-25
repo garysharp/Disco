@@ -185,7 +185,7 @@
             }
 
             const formData = new FormData();
-            formData.append('__RequestVerificationToken', self.$host.find('input[name="__RequestVerificationToken"]').val());
+            formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
             const result = await fetch(onlineUploadUrl, {
                 method: 'POST',
                 body: formData
@@ -359,7 +359,7 @@
                 .append($('<span>').text('Uploading: ' + fileName))
                 .appendTo(self.uploadProgressContainer);
 
-            formData.append('__RequestVerificationToken', self.$host.find('input[name="__RequestVerificationToken"]').val());
+            formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
             formData.append('comments', comments);
             formData.append('file', fileData, fileName);
 

@@ -78,18 +78,11 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure)]
+        [HttpGet]
         public virtual ActionResult Create()
         {
             // Default Queue
-            var m = new Models.JobQueue.CreateModel()
-            {
-                JobQueue = new JobQueue()
-                {
-                    Icon = JobQueueService.RandomUnusedIcon(),
-                    IconColour = JobQueueService.RandomUnusedThemeColour(),
-                    Priority = JobQueuePriority.Normal
-                }
-            };
+            var m = new Models.JobQueue.CreateModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigJobQueueCreateModel>(ControllerContext, m);
@@ -97,16 +90,17 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.JobQueue.Create, Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Create(Models.JobQueue.CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.JobQueues.Where(m => m.Name == model.JobQueue.Name).FirstOrDefault();
-                if (existing == null)
+                var nameExists = Database.JobQueues.Any(m => m.Name.Equals(model.Name, StringComparison.Ordinal));
+                if (!nameExists)
                 {
-                    var token = JobQueueService.CreateJobQueue(Database, model.JobQueue);
+                    var token = JobQueueService.CreateJobQueue(Database, model.Name, model.Description);
 
                     return RedirectToAction(MVC.Config.JobQueue.Index(token.JobQueue.Id));
                 }

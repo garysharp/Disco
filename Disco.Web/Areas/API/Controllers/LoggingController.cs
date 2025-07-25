@@ -21,7 +21,8 @@ namespace Disco.Web.Areas.API.Controllers
             return Json(m, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost, ValidateAntiForgeryToken, DiscoAuthorize(Claims.Config.Logging.Show)]
+        [DiscoAuthorize(Claims.Config.Logging.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult RetrieveEvents(string Format, DateTime? Start = null, DateTime? End = null, int? ModuleId = null, List<int> EventTypeIds = null, int? Take = null)
         {
             if (string.Equals(Format, "json", StringComparison.OrdinalIgnoreCase))

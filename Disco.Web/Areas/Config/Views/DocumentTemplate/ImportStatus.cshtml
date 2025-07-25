@@ -9,7 +9,6 @@
     Documents Imported Today
 </h2>
 <div id="importStatus">
-    @Html.AntiForgeryToken()
     <div id="noSessions" data-bind="visible: noSessions">
         <h3>No imported documents today</h3>
     </div>
@@ -285,7 +284,7 @@
                 End: null,
                 ModuleId: 40,
                 Take: 2000,
-                '__RequestVerificationToken': host.find('input[name="__RequestVerificationToken"]').val()
+                '__RequestVerificationToken': document.body.dataset.antiforgery
             };
             $.ajax({
                 url: '@(Url.Action(MVC.API.Logging.RetrieveEvents()))',

@@ -117,13 +117,14 @@
                     </table>
                     @if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes))
                     {
-                        <div id="Job_Show_Job_SubTypes_Update_Dialog" title="Update Job Types">
+                        <div id="Job_Show_Job_SubTypes_Update_Dialog" class="dialog" title="Update Job Types">
                             <div>
                                 <h2>
                                     @Model.Job.JobType.Description
                                 </h2>
                                 @using (Html.BeginForm(MVC.API.Job.UpdateSubTypes(Model.Job.Id, redirect: true), FormMethod.Post, new { id = "formUpdateJobTypes" }))
                                 {
+                                    @Html.AntiForgeryToken()
                                     @CommonHelpers.CheckBoxList("SubTypes", Model.UpdatableJobSubTypes.ToSelectListItems(Model.Job.JobSubTypes.ToList()), 3)
                                     <hr />
                                     <div>
@@ -311,7 +312,7 @@
                                 <tr>
                                     <td>Location:</td>
                                     <td>
-                                        <span id="Job_Show_Device_DeviceHeld_Location">
+                                        <span id="Job_Show_Device_DeviceHeld_Location" data-locationsurl="@Url.Action(MVC.API.Job.DeviceHeldLocations())" data-updateurl="@Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null))">
                                             @if (canEditLocation)
                                             {
                                                 switch (Model.LocationMode)
@@ -371,9 +372,10 @@
                                             case LocationModes.Unrestricted:
                                             case LocationModes.OptionalList:
                                                 <text>
-                                        var $deviceHeldLocation = $('#Job_DeviceHeldLocation');
-                                        var $ajaxSave = $deviceHeldLocation.next('.ajaxSave');
-                                        var autocompleteLoaded = false;
+                                        const $deviceHeldLocationContainer = $('#Job_Show_Device_DeviceHeld_Location');
+                                        const $deviceHeldLocation = $('#Job_DeviceHeldLocation');
+                                        const $ajaxSave = $deviceHeldLocation.next('.ajaxSave');
+                                        let autocompleteLoaded = false;
 
                                         $deviceHeldLocation
                                             .watermark('Unknown')
@@ -381,41 +383,46 @@
                                                 $deviceHeldLocation.select();
 
                                                 // Load AutoComplete
-                                                if (!autocompleteLoaded){
-                                                    $.ajax({
-                                                        url: '@(Url.Action(MVC.API.Job.DeviceHeldLocations()))',
-                                                        dataType: 'json',
-                                                        success: function (d) {
+                                                if (!autocompleteLoaded) {
 
-                                                            $.each(d, function(){
-                                                                this.value = this.Location;
-                                                                this.label = this.Location;
-                                                            });
+                                                    const body = new FormData();
+                                                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                                    fetch($deviceHeldLocationContainer.attr('data-locationsurl'), {
+                                                        method: 'POST',
+                                                        body: body
+                                                    }).then(r => {
+                                                        if (r.ok) {
+                                                            r.json().then(d => {
+                                                                $.each(d, function () {
+                                                                    this.value = this.Location;
+                                                                    this.label = this.Location;
+                                                                });
 
-                                                            $deviceHeldLocation.autocomplete({
-                                                                source: d,
-                                                                minLength: 0,
-                                                                focus: function(e, ui){
-                                                                    return false;
-                                                                },
-                                                                select: function (e, ui) {
-                                                                    $deviceHeldLocation.val(ui.item.Location).blur().change();
-                                                                    return false;
-                                                                }
-                                                            }).data('ui-autocomplete')._renderItem = function (ul, item) {
-                                                                var anchor = $('<a>').append($('<strong>').text(item.Location));
-                                                                if (item.References){
-                                                                    anchor.append(document.createTextNode(' ['+item.References+']'));
-                                                                }
-                                                                var item = $("<li></li>")
-                                                                    .data("item.autocomplete", item)
-                                                                    .append(anchor);
-                                                                return item.appendTo(ul);
-                                                            };
+                                                                $deviceHeldLocation.autocomplete({
+                                                                    source: d,
+                                                                    minLength: 0,
+                                                                    focus: function (e, ui) {
+                                                                        return false;
+                                                                    },
+                                                                    select: function (e, ui) {
+                                                                        $deviceHeldLocation.val(ui.item.Location).blur().change();
+                                                                        return false;
+                                                                    }
+                                                                }).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                                                    var anchor = $('<a>').append($('<strong>').text(item.Location));
+                                                                    if (item.References) {
+                                                                        anchor.append(document.createTextNode(' [' + item.References + ']'));
+                                                                    }
+                                                                    var item = $("<li></li>")
+                                                                        .data("item.autocomplete", item)
+                                                                        .append(anchor);
+                                                                    return item.appendTo(ul);
+                                                                };
 
-                                                            $deviceHeldLocation.autocomplete('search', '');
+                                                                $deviceHeldLocation.autocomplete('search', '');
+                                                            })
                                                         }
-                                                    });
+                                                    })
                                                     autocompleteLoaded = true;
                                                 }else{
                                                     $deviceHeldLocation.autocomplete('search', '');
@@ -432,23 +439,23 @@
                                             .change(function () {
                                                 $ajaxSave.hide();
                                                 $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
-                                                var data = { DeviceHeldLocation: $deviceHeldLocation.val() };
-                                                $.ajax({
-                                                    url: '@Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null))',
-                                                    dataType: 'json',
-                                                    data: data,
-                                                    success: function (d) {
-                                                        if (d == 'OK') {
-                                                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                                        } else {
-                                                            $ajaxLoading.hide();
-                                                            alert('Unable to update device held location: ' + d);
-                                                        }
-                                                    },
-                                                    error: function (jqXHR, textStatus, errorThrown) {
-                                                        alert('Unable to update device held location: ' + textStatus);
+
+                                                const body = new FormData();
+                                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                                body.append('DeviceHeldLocation', $deviceHeldLocation.val());
+                                                fetch($deviceHeldLocationContainer.attr('data-updateurl'), {
+                                                    method: 'POST',
+                                                    body: body
+                                                }).then(r => {
+                                                    if (r.ok) {
+                                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                                    } else {
                                                         $ajaxLoading.hide();
+                                                        alert('Unable to update device held location: ' + r.statusText);
                                                     }
+                                                }).catch(e => {
+                                                    alert('Unable to update device held location: ' + e.textStatus);
+                                                    $ajaxLoading.hide();
                                                 });
                                             });
                                         </text>
@@ -606,6 +613,7 @@
                         </div>
                         @using (Html.BeginForm(MVC.API.Job.ForceClose(Model.Job.Id, null, true)))
                         {
+                            @Html.AntiForgeryToken()
                             <h3>Reason:</h3>
                             <p>
                                 <textarea name="Reason" class="block"></textarea>
@@ -648,18 +656,21 @@
 
             @if (Model.Job.CanCloseNormally())
             {
-                @Html.ActionLinkSmallButton("Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_Close_Button")
+                <button type="button" id="Job_Show_Job_Actions_Close_Button" class="button small">Close</button>
                 <div id="Job_Show_Job_Actions_Close_Dialog" class="dialog" title="Close this Job?">
+                    @using (Html.BeginForm(MVC.API.Job.Close(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
                     <p>
                         <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        var button = $('#Job_Show_Job_Actions_Close_Button');
-                        var buttonDialog = null;
-                        var buttonLink = button.attr('href');
-                        button.attr('href', '#').click(function () {
+                        const button = $('#Job_Show_Job_Actions_Close_Button');
+                        let buttonDialog = null;
+                        button.on('click', function () {
                             if (!buttonDialog) {
                                 buttonDialog = $('#Job_Show_Job_Actions_Close_Dialog');
                                 buttonDialog.dialog({
@@ -668,10 +679,9 @@
                                     autoOpen: false,
                                     buttons: {
                                         "Close Job": function () {
-                                            var $this = $(this);
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            window.location.href = buttonLink;
+                                            $(this)
+                                                .dialog("option", "buttons", null)
+                                                .find('form').trigger('submit');
                                         },
                                         Cancel: function () {
                                             $(this).dialog("close");
@@ -688,18 +698,20 @@
             }
             @if (Model.Job.CanReopen())
             {
-                @Html.ActionLinkSmallButton("Reopen Job", MVC.API.Job.Reopen(Model.Job.Id, true), "Job_Show_Job_Actions_Reopen_Button")
+                <button id="Job_Show_Job_Actions_Reopen_Button" type="button" class="button small">Reopen Job</button>
                 <div id="Job_Show_Job_Actions_Reopen_Dialog" class="dialog" title="Reopen this Job?">
+                    @using (Html.BeginForm(MVC.API.Job.Reopen(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
                     <p>
                         <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        var button = $('#Job_Show_Job_Actions_Reopen_Button');
-                        var buttonDialog = null;
-                        var buttonLink = button.attr('href');
-                        button.attr('href', '#');
+                        const button = $('#Job_Show_Job_Actions_Reopen_Button');
+                        let buttonDialog = null;
                         button.click(function () {
                             if (!buttonDialog) {
                                 buttonDialog = $('#Job_Show_Job_Actions_Reopen_Dialog');
@@ -709,10 +721,9 @@
                                     autoOpen: false,
                                     buttons: {
                                         "Reopen": function () {
-                                            var $this = $(this);
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            window.location.href = buttonLink;
+                                            $(this)
+                                                .dialog("option", "buttons", null)
+                                                .find('form').trigger('submit');
                                         },
                                         Cancel: function () {
                                             $(this).dialog("close");
@@ -729,18 +740,20 @@
             }
             @if (Model.Job.CanDelete())
             {
-                @Html.ActionLinkSmallButton("Delete", MVC.API.Job.Delete(Model.Job.Id, true), "Job_Show_Job_Actions_Delete_Button")
+                <button id="Job_Show_Job_Actions_Delete_Button" type="button" class="button small">Delete</button>
                 <div id="Job_Show_Job_Actions_Delete_Dialog" class="dialog" title="Delete this Job?">
+                    @using (Html.BeginForm(MVC.API.Job.Delete(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
                     <p>
                         <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;This item will be permanently deleted and cannot be recovered. Are you sure?
                     </p>
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        var button = $('#Job_Show_Job_Actions_Delete_Button');
-                        var buttonDialog = null;
-                        var buttonLink = button.attr('href');
-                        button.attr('href', '#');
+                        const button = $('#Job_Show_Job_Actions_Delete_Button');
+                        let buttonDialog = null;
                         button.click(function () {
                             if (!buttonDialog) {
                                 buttonDialog = $('#Job_Show_Job_Actions_Delete_Dialog');
@@ -750,10 +763,9 @@
                                     autoOpen: false,
                                     buttons: {
                                         "Delete": function () {
-                                            var $this = $(this);
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            window.location.href = buttonLink;
+                                            $(this)
+                                                .dialog("option", "buttons", null)
+                                                .find('form').trigger('submit');
                                         },
                                         Cancel: function () {
                                             $(this).dialog("close");
@@ -780,6 +792,7 @@
                 <div id="Job_Show_Job_Actions_AddQueue_Dialog" class="dialog" title="Add Job to Queue">
                     @using (Html.BeginForm(MVC.API.JobQueueJob.AddJob()))
                     {
+                        @Html.AntiForgeryToken()
                         <input id="Job_Show_Job_Actions_AddQueue_Dialog_Id" type="hidden" name="id" />
                         <input id="Job_Show_Job_Actions_AddQueue_Dialog_JobId" type="hidden" name="JobId" value="@Model.Job.Id" />
                         <div class="queuePicker">
@@ -853,10 +866,9 @@
                                         },
                                         "Add to Queue": function () {
                                             if (!!queueId.val()) {
-                                                var $this = $(this);
-                                                $this.dialog("disable");
-                                                $this.dialog("option", "buttons", null);
-                                                buttonDialog.find('form').submit();
+                                                $(this)
+                                                    .dialog("option", "buttons", null)
+                                                    .find('form').trigger('submit');
                                             } else {
                                                 alert('Select a Job Queue');
                                             }
@@ -906,8 +918,12 @@
             }
             @if (Model.Job.CanConvertHWarToHNWar())
             {
-                @Html.ActionLinkSmallButton("Convert to Non-Warranty", MVC.API.Job.ConvertHWarToHNWar(Model.Job.Id, true), "Job_Show_Job_Actions_ConvertToHNWar_Button")
+                <button id="Job_Show_Job_Actions_ConvertToHNWar_Button" type="button" class="button small">Convert to Non-Warranty</button>
                 <div id="Job_Show_Job_Actions_ConvertToHNWar_Dialog" class="dialog" title="Convert this Job?">
+                    @using (Html.BeginForm(MVC.API.Job.ConvertHWarToHNWar(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                    }
                     <p>
                         <i class="fa fa-exclamation-triangle fa-lg"></i>&nbsp;This process is not reversible.<br />
                         Are you sure?
@@ -915,10 +931,8 @@
                 </div>
                 <script type="text/javascript">
                     $(function () {
-                        var button = $('#Job_Show_Job_Actions_ConvertToHNWar_Button');
-                        var buttonDialog = null;
-                        var buttonLink = button.attr('href');
-                        button.attr('href', '#');
+                        const button = $('#Job_Show_Job_Actions_ConvertToHNWar_Button');
+                        let buttonDialog = null;
                         button.click(function () {
                             if (!buttonDialog) {
                                 buttonDialog = $('#Job_Show_Job_Actions_ConvertToHNWar_Dialog');
@@ -928,10 +942,9 @@
                                     autoOpen: false,
                                     buttons: {
                                         "Convert": function () {
-                                            var $this = $(this);
-                                            $this.dialog("disable");
-                                            $this.dialog("option", "buttons", null);
-                                            window.location.href = buttonLink;
+                                            $(this)
+                                                .dialog("option", "buttons", null)
+                                                .find('form').trigger('submit');
                                         },
                                         Cancel: function () {
                                             $(this).dialog("close");
@@ -953,15 +966,27 @@
             <td id="Job_Show_Device_Actions">
                 @if (Model.Job.CanDeviceHeld())
                 {
-                    @Html.ActionLinkSmallButton("Device Held", MVC.API.Job.DeviceHeld(Model.Job.Id, true), "Job_Show_Device_Actions_Held_Button")
+                    using (Html.BeginForm(MVC.API.Job.DeviceHeld(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button id="Job_Show_Device_Actions_Held_Button" type="submit" class="button small">Device Held</button>
+                    }
                 }
                 @if (Model.Job.CanDeviceReadyForReturn())
                 {
-                    @Html.ActionLinkSmallButton("Device Ready For Return", MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReadyForReturn_Button", "alert")
+                    using (Html.BeginForm(MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button id="Job_Show_Device_Actions_DeviceReadyForReturn_Button" type="submit" class="button small alert">Device Ready For Return</button>
+                    }
                 }
                 @if (Model.Job.CanDeviceReturned())
                 {
-                    @Html.ActionLinkSmallButton("Device Returned", MVC.API.Job.DeviceReturned(Model.Job.Id, true), "Job_Show_Device_Actions_DeviceReturned_Button", Model.Job.CanDeviceReadyForReturn() ? null : "alert")
+                    using (Html.BeginForm(MVC.API.Job.DeviceReturned(Model.Job.Id, true)))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button id="Job_Show_Device_Actions_DeviceReturned_Button" type="submit" class="button small @(Model.Job.CanDeviceReadyForReturn() ? null : "alert")">Device Returned</button>
+                    }
                 }
             </td>
         }
@@ -976,6 +1001,7 @@
                     <div id="Job_Show_User_Actions_WaitingForUserAction_Dialog" class="dialog" title="Waiting for User Action">
                         @using (Html.BeginForm(MVC.API.Job.WaitingForUserAction(Model.Job.Id, null, true)))
                         {
+                            @Html.AntiForgeryToken()
                             <h3>Reason:</h3>
                             <p>
                                 <textarea name="Reason" class="block"></textarea>
@@ -1020,6 +1046,7 @@
                     <div id="Job_Show_User_Actions_NotWaitingForUserAction_Dialog" class="dialog" title="Not Waiting for User Action">
                         @using (Html.BeginForm(MVC.API.Job.NotWaitingForUserAction(Model.Job.Id, null, true)))
                         {
+                            @Html.AntiForgeryToken()
                             <h3>Resolution:</h3>
                             <p>
                                 <textarea name="Resolution" class="block"></textarea>

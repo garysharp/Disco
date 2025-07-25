@@ -109,7 +109,7 @@
                 }
                 else
                 {
-                    using (Html.BeginForm(MVC.Config.SystemConfig.Activate(), FormMethod.Post))
+                    using (Html.BeginForm(MVC.Config.SystemConfig.Activate()))
                     {
                         @Html.AntiForgeryToken();
                         <button type="submit" class="button small">Activate Now</button>
@@ -127,7 +127,7 @@
                 License:
             </th>
             <td>
-                @using (Html.BeginForm(MVC.API.System.LicenseCheck(), FormMethod.Post))
+                @using (Html.BeginForm(MVC.API.System.LicenseCheck()))
                 {
                     @Html.AntiForgeryToken();
                     <input id="license" type="text" name="license" value="@Model.License" />
@@ -259,7 +259,13 @@
                 @{
                     if (Model.UpdateRunningStatus == null)
                     {
-                        <span>@Html.ActionLinkSmallButton("Check Now", MVC.API.System.UpdateCheck())</span>
+                        <span>
+                            @using (Html.BeginForm(MVC.API.System.UpdateCheck()))
+                            {
+                                @Html.AntiForgeryToken();
+                                <button type="submit" class="button small">Check Now</button>
+                            }
+                        </span>
                         <span class="smallMessage">[Will run automatically <strong>@CommonHelpers.FriendlyDate(Model.UpdateNextScheduled, "Unknown")</strong>]</span>
                     }
                     else
@@ -549,6 +555,7 @@
                         </div>
                         @using (Html.BeginForm(MVC.API.System.UpdateActiveDirectorySearchScope(null, redirect: true)))
                         {
+                            @Html.AntiForgeryToken()
                         }
                     </div>
                     <script>
@@ -670,6 +677,7 @@
 {
     using (Html.BeginForm(MVC.API.System.UpdateProxySettings()))
     {
+        @Html.AntiForgeryToken()
         <div class="form" style="width: 450px; margin-top: 15px;">
             <h2>Proxy Settings</h2>
             <table>
@@ -717,32 +725,26 @@
                         <button id="Config_System_Proxy_Save" type="button" class="button small">Save Proxy Settings</button>@AjaxHelpers.AjaxLoader()
                         <script>
                             $(function () {
-                                var button = $('#Config_System_Proxy_Save');
+                                const button = $('#Config_System_Proxy_Save');
 
-                                button.click(function () {
-                                    var url = '@(Url.Action(MVC.API.System.UpdateProxySettings()))';
-                                    var data = {
-                                        ProxyAddress: $('#ProxyAddress').val(),
-                                        ProxyPort: $('#ProxyPort').val(),
-                                        ProxyUsername: $('#ProxyUsername').val(),
-                                        ProxyPassword: $('#ProxyPassword').val()
-                                    }
-                                    var ajaxLoading = button.next('.ajaxLoading').first().show();
-
-                                    $.ajax({
-                                        type: 'POST',
-                                        dataType: 'json',
-                                        url: url,
-                                        data: data,
-                                        complete: function (response, result) {
-                                            if (result != 'success' || response.responseJSON != 'OK') {
-                                                alert('Unable to change proxy settings:\nCheck logs for more information');
-                                                ajaxLoading.hide();
-                                            } else {
-                                                ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                            }
-                                        }
+                                async function updateProxySettings(ajaxLoading) {
+                                    const $form = $('#ProxyAddress').closest('form');
+                                    const body = new FormData($form[0]);
+                                    const response = await fetch($form.attr('action'), {
+                                        method: 'post',
+                                        body: body
                                     });
+                                    if (response.ok) {
+                                        ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change proxy settings:\nCheck logs for more information');
+                                        ajaxLoading.hide();
+                                    }
+                                }
+
+                                button.on('click', function () {
+                                    var ajaxLoading = button.next('.ajaxLoading').first().show();
+                                    updateProxySettings(ajaxLoading);
                                 });
                             });
                         </script>
@@ -864,17 +866,16 @@ else
                     &nbsp;
                 </th>
                 <td>
-                    @Html.AntiForgeryToken()
                     <button id="Config_System_Email_Test" type="button" class="button small" @(Model.EmailIsConfigured ? null : "disabled")>Send Test Email</button>
                     <button id="Config_System_Email_Save" type="button" class="button small">Save Email Settings</button>@AjaxHelpers.AjaxLoader()
                     <div id="Config_System_Email_Test_Dialog" class="dialog" title="Send Test Email">
                         <h4><i class="fa fa-envelope information"></i>&nbsp;Recipient Email Address:</h4>
                         <br />
-                        @using (Html.BeginForm(MVC.API.System.SendTestEmail(), FormMethod.Post))
+                        @using (Html.BeginForm(MVC.API.System.SendTestEmail()))
                         {
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="redirect" value="true" />
                             <input id="Config_System_Email_Test_Recipient" name="Recipient" type="text" value="@CurrentUser.EmailAddress" />
-                            @Html.AntiForgeryToken()
                         }
                     </div>
                     <script>
@@ -893,7 +894,7 @@ else
                                     EnableSsl: $('#EmailEnableSsl').is(':checked'),
                                     Username: $('#EmailUsername').val(),
                                     Password: $('#EmailPassword').val(),
-                                    '__RequestVerificationToken': button.parent().find('input[name="__RequestVerificationToken"]').first().val()
+                                    '__RequestVerificationToken': document.body.dataset.antiforgery
                                 }
                                 var ajaxLoading = button.next('.ajaxLoading').first().show();
 
@@ -903,7 +904,7 @@ else
                                     url: url,
                                     data: data,
                                     complete: function (response, result) {
-                                        if (result != 'success' || response.responseJSON != 'OK') {
+                                        if (result != 'success') {
                                             alert('Unable to change email settings:\nCheck logs for more information');
                                             ajaxLoading.hide();
                                         } else {
@@ -1022,5 +1023,9 @@ else
     </div>
 }
 <div class="actionBar">
-    @Html.ActionLinkButton("Update Device Last Network Logons", MVC.API.System.UpdateLastNetworkLogonDates())
+    @using (Html.BeginForm(MVC.API.System.UpdateLastNetworkLogonDates()))
+    {
+        @Html.AntiForgeryToken();
+        <button type="submit" class="button">Update Device Last Network Logons</button>
+    }
 </div>

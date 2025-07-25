@@ -5864,9 +5864,6 @@ td.subtleHighlight {
 .ajaxRemove:hover {
   opacity: 1;
 }
-#layout_Page div.hiddenDialog {
-  display: none;
-}
 /* float clearing for IE6 */
 * html .clearfix {
   height: 1%;

@@ -24,24 +24,34 @@ if (!document.DiscoFunctions.PropertyChangeHelper) {
                 fieldValue = changedValue;
                 if (fieldChangeToken)
                     window.clearTimeout(fieldChangeToken);
-                fieldChangeToken = window.setTimeout(function () {
+                fieldChangeToken = window.setTimeout(async function () {
                     $ajaxLoading.show();
-                    if (!data) {
-                        data = {};
-                    }
-                    data[updatePropertyName] = fieldValue;
+                    const body = new FormData();
+                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
 
-                    $.getJSON(updateUrl, data, function (response, result) {
-                        if (result != 'success' || response != 'OK') {
-                            alert('Unable to change property "' + updatePropertyName + '":\n' + response);
-                            $ajaxLoading.hide();
-                        } else {
-                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                    if (!data) {
+                        for (const prop in data) {
+                            body.append(prop, data[prop]);
                         }
-                    }).fail(function (jqXHR, textStatus, errorThrown) {
-                        alert('Unable to change property "' + updatePropertyName + '":\n' + errorThrown);
+                    }
+                    body.append(updatePropertyName, fieldValue);
+
+                    try {
+                        const response = await fetch(updateUrl, {
+                            method: 'POST',
+                            body: body
+                        });
+
+                        if (response.ok) {
+                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                        } else {
+                            alert('Unable to change property "' + updatePropertyName + '":\n' + response.statusText);
+                            $ajaxLoading.hide();
+                        }
+                    } catch (e) {
+                        alert('Unable to change property "' + updatePropertyName + '":\n' + e);
                         $ajaxLoading.hide();
-                    })
+                    }
                     fieldChangeToken = null;
                 }, 500);
             };
@@ -59,11 +69,11 @@ if (!document.DiscoFunctions.PropertyChangeHelper) {
                     $(this).blur();
                 }
             })
-            .blur(function () {
-                $ajaxSave.hide();
-            }).focus(function () {
-                $(this).select();
-            });
+                .blur(function () {
+                    $ajaxSave.hide();
+                }).focus(function () {
+                    $(this).select();
+                });
             if (fieldWatermark) {
                 propertyField.watermark(fieldWatermark);
             }
@@ -91,19 +101,31 @@ if (!document.DiscoFunctions.DateChangeUserHelper) {
                     dateFieldValue = dateText;
                     if (dateFieldChangeToken)
                         window.clearTimeout(dateFieldChangeToken);
-                    dateFieldChangeToken = window.setTimeout(function () {
+                    dateFieldChangeToken = window.setTimeout(async function () {
                         $ajaxLoading.show();
-                        var data = {};
-                        data[UpdatePropertyName] = dateFieldValue;
-                        $.getJSON(UpdateUrl, data, function (response, result) {
-                            if (result != 'success' || response.Result != 'OK') {
-                                alert('Unable to change Date:\n' + response);
-                                $ajaxLoading.hide();
-                            } else {
-                                UserField.text('by ' + response.UserDescription);
+                        const body = new FormData();
+                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                        body.append(UpdatePropertyName, dateFieldValue);
+
+                        try {
+                            const response = await fetch(UpdateUrl, {
+                                method: 'POST',
+                                body: body
+                            });
+
+                            if (response.ok) {
+                                const result = await response.json();
+
+                                UserField.text('by ' + result.UserDescription);
                                 $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                            } else {
+                                alert('Unable to change Date:\n' + response.statusText);
+                                $ajaxLoading.hide();
                             }
-                        })
+                        } catch (e) {
+                            alert('Unable to change Date:\n' + response.statusText);
+                            $ajaxLoading.hide();
+                        }
                         dateFieldChangeToken = null;
                     }, 500);
                 }
@@ -157,18 +179,30 @@ if (!document.DiscoFunctions.DateChangeHelper) {
                     dateFieldValue = dateText;
                     if (dateFieldChangeToken)
                         window.clearTimeout(dateFieldChangeToken);
-                    dateFieldChangeToken = window.setTimeout(function () {
+                    dateFieldChangeToken = window.setTimeout(async function () {
                         $ajaxLoading.show();
-                        var data = {};
-                        data[UpdatePropertyName] = dateFieldValue;
-                        $.getJSON(UpdateUrl, data, function (response, result) {
-                            if (result != 'success' || response != 'OK') {
-                                alert('Unable to change Date:\n' + response);
-                                $ajaxLoading.hide();
-                            } else {
+
+                        const body = new FormData();
+                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                        body.append(UpdatePropertyName, dateFieldValue);
+
+                        try {
+                            const response = await fetch(UpdateUrl, {
+                                method: 'POST',
+                                body: body
+                            });
+
+                            if (response.ok) {
                                 $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                            } else {
+                                alert('Unable to change Date:\n' + response.statusText);
+                                $ajaxLoading.hide();
                             }
-                        })
+                        } catch (e) {
+                            alert('Unable to change Date:\n' + response.statusText);
+                            $ajaxLoading.hide();
+                        }
+
                         dateFieldChangeToken = null;
                     }, 500);
                 }
@@ -209,8 +243,7 @@ if (!document.DiscoFunctions.DateChangeHelper) {
 
     };
 }
-if (!document.DiscoFunctions.DateDialogCreateUpdater)
-{
+if (!document.DiscoFunctions.DateDialogCreateUpdater) {
     var dialog, dialogForm, dialogHeader, dialogDateBox, dialogDatePropertyNameBox;
     var updateUrl, friendlyName, dateField, userField, updatePropertyName, notSetDisplay, minDate, useAjax;
 
@@ -229,7 +262,9 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
                 modal: true,
                 autoOpen: false,
                 buttons: {
-                    "Update": dateDialogUpdate,
+                    "Update": function () {
+                        dateDialogUpdate();
+                    },
                     Cancel: function () {
                         $(this).dialog("close");
                     }
@@ -249,7 +284,7 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
         return dialog;
     }
 
-    function dateDialogUpdate() {
+    async function dateDialogUpdate() {
         var dateValue = dialogDateBox.val();
 
         if (useAjax) {
@@ -263,20 +298,25 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
 
             var $ajaxLoading = ($userField ? $userField.next('.ajaxLoading') : $dateField.next('.ajaxLoading')).show();
 
-            var data = {
-                key: updatePropertyName,
-                value: dateValue
-            };
-            $.getJSON(updateUrl, data, function (response, result) {
-                if (result != 'success' || response.Result != 'OK') {
-                    alert('Unable to change ' + friendlyName + ' Date:\n' + response);
-                    $ajaxLoading.hide();
-                } else {
-                    if (response.DateTimeFull) {
-                        $dateField.attr('data-isodate', response.DateTimeISO8601)
-                            .attr('data-livestamp', response.DateTimeUnixEpoc)
-                            .attr('title', response.DateTimeFull)
-                            .text(response.DateTimeFriendly);
+            const body = new FormData();
+            body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+            body.append('key', updatePropertyName);
+            body.append('value', dateValue);
+
+            try {
+                const response = await fetch(updateUrl, {
+                    method: 'POST',
+                    body: body
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+
+                    if (result.DateTimeFull) {
+                        $dateField.attr('data-isodate', result.DateTimeISO8601)
+                            .attr('data-livestamp', result.DateTimeUnixEpoc)
+                            .attr('title', result.DateTimeFull)
+                            .text(result.DateTimeFriendly);
                     } else {
                         $dateField.attr('data-isodate', '')
                             .attr('data-livestamp', '-1')
@@ -284,10 +324,16 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater)
                             .text(notSetDisplay);
                     }
                     if ($userField)
-                        $userField.text('by ' + response.UserDescription);
+                        $userField.text('by ' + result.UserDescription);
                     $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                } else {
+                    alert('Unable to change ' + friendlyName + ' Date:\n' + response.statusText);
+                    $ajaxLoading.hide();
                 }
-            })
+            } catch (e) {
+                alert('Unable to change ' + friendlyName + ' Date:\n' + response.statusText);
+                $ajaxLoading.hide();
+            }
         } else {
             // Post Form & Redirect
             dialog.dialog("disable");

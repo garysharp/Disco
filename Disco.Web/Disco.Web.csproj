@@ -472,6 +472,7 @@
     <Compile Include="Controllers\InitialConfigController.cs" />
     <Compile Include="Controllers\PluginWebHandlerController.cs" />
     <Compile Include="Controllers\UpdateController.cs" />
+    <Compile Include="Extensions\AntiForgeryExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="App_Start\AppConfig.cs" />
@@ -480,7 +481,6 @@
     <Compile Include="App_Start\RazorGeneratorMvcStart.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\API\APIAreaRegistration.cs" />
-    <Compile Include="Areas\API\Controllers\BootstrapperController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceBatchController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceController.cs" />
     <Compile Include="Areas\API\Controllers\DeviceModelController.cs" />
@@ -498,14 +498,12 @@
     <Compile Include="Areas\API\Models\DeviceBatch\DeviceBatchTimelineEvent.cs" />
     <Compile Include="Areas\API\Models\DeviceBatch\DeviceBatchTimelineEventSource.cs" />
     <Compile Include="Areas\API\Models\DeviceModel\ComponentModel.cs" />
-    <Compile Include="Areas\API\Models\DeviceModel\_ComponentModel.cs" />
     <Compile Include="Areas\API\Models\DeviceModel\_DeviceModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\ImporterUndetectedDataIdLookupModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\ImporterUndetectedFilesModel.cs" />
     <Compile Include="Areas\API\Models\Expressions\ValidateExpressionModel.cs" />
     <Compile Include="Areas\API\Models\Job\ComponentModel.cs" />
     <Compile Include="Areas\API\Models\Shared\CommentModel.cs" />
-    <Compile Include="Areas\API\Models\Job\_ComponentModel.cs" />
     <Compile Include="Areas\API\Models\Job\_DateChangeModel.cs" />
     <Compile Include="Areas\API\Models\Logs\LogEventTypeModel.cs" />
     <Compile Include="Areas\API\Models\Logs\LogModuleModel.cs" />
@@ -753,9 +751,6 @@
     </Compile>
     <Compile Include="Extensions\T4MVC\T4MVCExtensions.cs" />
     <Compile Include="Extensions\T4MVC\API.AuthorizationRoleController.generated.cs">
-      <DependentUpon>T4MVC.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Extensions\T4MVC\API.BootstrapperController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="Extensions\T4MVC\API.DeviceBatchController.generated.cs">
@@ -2002,26 +1997,26 @@
       <DependentUpon>Site.less</DependentUpon>
     </None>
     <Content Include="ClientSource\Style\Timeline\images\blue-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-down.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-arrow-point-up.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-bottom-arrow.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-bottom-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-bottom-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-bottom.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-left-arrow.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-right-arrow.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-top-arrow.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-top-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-top-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\bubble-top.png" />
-    <None Include="ClientSource\Style\Timeline\images\close-button.png" />
-    <None Include="ClientSource\Style\Timeline\images\copy.png" />
-    <None Include="ClientSource\Style\Timeline\images\copyright-vertical.png" />
-    <None Include="ClientSource\Style\Timeline\images\copyright.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-arrow-point-down.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-arrow-point-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-arrow-point-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-arrow-point-up.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-bottom-arrow.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-bottom-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-bottom-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-bottom.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-left-arrow.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-right-arrow.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-top-arrow.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-top-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-top-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\bubble-top.png" />
+    <Content Include="ClientSource\Style\Timeline\images\close-button.png" />
+    <Content Include="ClientSource\Style\Timeline\images\copy.png" />
+    <Content Include="ClientSource\Style\Timeline\images\copyright-vertical.png" />
+    <Content Include="ClientSource\Style\Timeline\images\copyright.png" />
     <Content Include="ClientSource\Style\Timeline\images\dark-blue-circle.png" />
     <Content Include="ClientSource\Style\Timeline\images\dark-green-circle.png" />
     <Content Include="ClientSource\Style\Timeline\images\dark-red-circle.png" />
@@ -2030,15 +2025,15 @@
     <Content Include="ClientSource\Style\Timeline\images\dull-red-circle.png" />
     <Content Include="ClientSource\Style\Timeline\images\gray-circle.png" />
     <Content Include="ClientSource\Style\Timeline\images\green-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\message-bottom-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\message-bottom-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\message-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\message-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\message-top-left.png" />
-    <None Include="ClientSource\Style\Timeline\images\message-top-right.png" />
-    <None Include="ClientSource\Style\Timeline\images\progress-running.gif" />
+    <Content Include="ClientSource\Style\Timeline\images\message-bottom-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\message-bottom-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\message-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\message-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\message-top-left.png" />
+    <Content Include="ClientSource\Style\Timeline\images\message-top-right.png" />
+    <Content Include="ClientSource\Style\Timeline\images\progress-running.gif" />
     <Content Include="ClientSource\Style\Timeline\images\red-circle.png" />
-    <None Include="ClientSource\Style\Timeline\images\top-bubble.png" />
+    <Content Include="ClientSource\Style\Timeline\images\top-bubble.png" />
     <None Include="ClientSource\Style\Timeline\timeline-bundle.css" />
     <None Include="ClientSource\Style\Timeline\timeline-bundle.min.css">
       <DependentUpon>timeline-bundle.css</DependentUpon>

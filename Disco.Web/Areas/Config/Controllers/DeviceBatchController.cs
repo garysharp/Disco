@@ -6,6 +6,7 @@ using Disco.Services.Devices;
 using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
+using Disco.Web.Areas.Config.Models.DeviceBatch;
 using System;
 using System.Linq;
 using System.Web.Mvc;
@@ -24,7 +25,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 var m = Database.DeviceBatches
                     .Include(nameof(DeviceBatch.DeviceBatchAttachments))
                     .Where(db => db.Id == id.Value)
-                    .Select(db => new Models.DeviceBatch.ShowModel()
+                    .Select(db => new ShowModel()
                     {
                         DeviceBatch = db,
                         DeviceCount = db.Devices.Count(),
@@ -34,7 +35,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 if (m == null || m.DeviceBatch == null)
                     throw new ArgumentException("Invalid Device Batch Id", "id");
 
-                m.DeviceModelMembers = m.DeviceBatch.Devices.GroupBy(d => d.DeviceModel).Select(dG => new Models.DeviceBatch._ShowModelMembership()
+                m.DeviceModelMembers = m.DeviceBatch.Devices.GroupBy(d => d.DeviceModel).Select(dG => new _ShowModelMembership()
                 {
                     DeviceModel = dG.Key,
                     DeviceCount = dG.Count(),
@@ -82,9 +83,9 @@ namespace Disco.Web.Areas.Config.Controllers
         public virtual ActionResult Create()
         {
             // Default Batch
-            var m = new Models.DeviceBatch.CreateModel()
+            var m = new CreateModel()
             {
-                DeviceBatch = DeviceBatches.DefaultNewDeviceBatch(Database)
+                PurchaseDate = DateTime.Today,
             };
 
             // UI Extensions
@@ -93,22 +94,28 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DeviceBatch.Create, Claims.Config.DeviceBatch.Configure), HttpPost]
-        public virtual ActionResult Create(Models.DeviceBatch.CreateModel model)
+        [DiscoAuthorizeAll(Claims.Config.DeviceBatch.Create, Claims.Config.DeviceBatch.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Create(CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.DeviceBatches.Where(m => m.Name == model.DeviceBatch.Name).FirstOrDefault();
-                if (existing == null)
+                var alreadyExists = Database.DeviceBatches.Any(m => m.Name == model.Name);
+                if (!alreadyExists)
                 {
-                    Database.DeviceBatches.Add(model.DeviceBatch);
+                    var batch = new DeviceBatch()
+                    {
+                        Name = model.Name,
+                        PurchaseDate = model.PurchaseDate,
+                    };
+                    Database.DeviceBatches.Add(batch);
                     Database.SaveChanges();
-                    return RedirectToAction(MVC.Config.DeviceBatch.Index(model.DeviceBatch.Id));
+                    return RedirectToAction(MVC.Config.DeviceBatch.Index(batch.Id));
                 }
                 else
                 {
-                    ModelState.AddModelError("Name", "A Device Batch with this name already exists.");
+                    ModelState.AddModelError(nameof(CreateModel.Name), "A Device Batch with this name already exists.");
                 }
             }
 
@@ -121,7 +128,7 @@ namespace Disco.Web.Areas.Config.Controllers
         [DiscoAuthorize(Claims.Config.DeviceBatch.ShowTimeline)]
         public virtual ActionResult Timeline()
         {
-            var m = new Models.DeviceBatch.TimelineModel();
+            var m = new TimelineModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigDeviceBatchTimelineModel>(ControllerContext, m);

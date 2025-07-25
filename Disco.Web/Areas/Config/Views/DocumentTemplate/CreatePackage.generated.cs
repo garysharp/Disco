@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
             #line 2 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
   
     Authorization.RequireAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Create Package");
 
             
@@ -58,7 +58,21 @@ WriteLiteral("\r\n");
             
             #line 7 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
  using (Html.BeginForm(MVC.Config.DocumentTemplate.CreatePackage()))
-{ 
+{
+    
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+                            
 
             
             #line default
@@ -70,11 +84,13 @@ WriteLiteral(" class=\"form\"");
 WriteLiteral(" style=\"width: 650px\"");
 
 WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r\n                    I" +
-"d:\r\n                </th>\r\n                <td>");
+"d:\r\n                </th>\r\n                <td>\r\n");
+
+WriteLiteral("                    ");
 
             
-            #line 15 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
-               Write(Html.TextBoxFor(model => model.Package.Id));
+            #line 17 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+               Write(Html.TextBoxFor(model => model.Id));
 
             
             #line default
@@ -82,19 +98,21 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r
 WriteLiteral("<br />");
 
             
-            #line 15 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
-                                                                Write(Html.ValidationMessageFor(model => model.Package.Id));
+            #line 17 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+                                                        Write(Html.ValidationMessageFor(model => model.Id));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
 ">\r\n                    Description:\r\n                </th>\r\n                <td>" +
-"");
+"\r\n");
+
+WriteLiteral("                    ");
 
             
-            #line 22 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
-               Write(Html.TextBoxFor(model => model.Package.Description));
+            #line 25 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+               Write(Html.TextBoxFor(model => model.Description));
 
             
             #line default
@@ -102,8 +120,8 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("<br />");
 
             
-            #line 22 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
-                                                                         Write(Html.ValidationMessageFor(model => model.Package.Description));
+            #line 25 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+                                                                 Write(Html.ValidationMessageFor(model => model.Description));
 
             
             #line default
@@ -114,8 +132,8 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 30 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
-               Write(Html.DropDownListFor(model => model.Package.Scope, Model.Scopes.ToSelectListItems(null)));
+            #line 33 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+               Write(Html.DropDownListFor(model => model.Scope, Model.Scopes.ToSelectListItems(null)));
 
             
             #line default
@@ -135,7 +153,7 @@ WriteLiteral(" value=\"Create\"");
 WriteLiteral(" />\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 38 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml"
 }
             
             #line default

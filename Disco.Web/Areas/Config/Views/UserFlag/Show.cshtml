@@ -38,7 +38,8 @@
             </th>
             <td>
                 @if (canConfig)
-            {@Html.EditorFor(model => model.UserFlag.Name)
+                {
+                    @Html.EditorFor(model => model.UserFlag.Name)
                     @AjaxHelpers.AjaxSave()
                     @AjaxHelpers.AjaxLoader()
                     <script type="text/javascript">
@@ -64,7 +65,8 @@
             </th>
             <td>
                 @if (canConfig)
-                {@Html.EditorFor(model => model.UserFlag.Description)
+                {
+                    @Html.EditorFor(model => model.UserFlag.Description)
                     @AjaxHelpers.AjaxSave()
                     @AjaxHelpers.AjaxLoader()
                     <script type="text/javascript">
@@ -111,8 +113,14 @@
                 @if (canConfig)
                 {
                     <div>
-                        <a id="Config_UserFlags_Icon_Update" href="#" class="button small">Update</a>
+                        <button id="Config_UserFlags_Icon_Update" type="button" class="button small">Update</button>
                         <div id="Config_UserFlags_Icon_Update_Dialog" class="dialog" title="User Flag Icon">
+                            @using (Html.BeginForm(MVC.API.UserFlag.UpdateIconAndColour(id: Model.UserFlag.Id, redirect: true)))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="icon" />
+                                <input type="hidden" name="iconColour" />
+                            }
                             <div>
                                 <div class="colours">
                                     @foreach (var colour in Model.ThemeColours)
@@ -183,15 +191,11 @@
                                 }
 
                                 function save() {
-                                    var url = '@(Url.Action(MVC.API.UserFlag.UpdateIconAndColour(id: Model.UserFlag.Id, redirect: true)))',
-                                        data = {
-                                            Icon: icons.find('i.selected').attr('data-icon'),
-                                            IconColour: colours.find('i.selected').attr('data-colour')
-                                        };
-                                    window.location.href = url + '&' + $.param(data);
-
-                                    dialog.dialog("disable");
                                     dialog.dialog("option", "buttons", null);
+                                    const $form = dialog.find('form');
+                                    $form.find('input[name="icon"]').val(icons.find('i.selected').attr('data-icon'));
+                                    $form.find('input[name="iconColour"]').val(colours.find('i.selected').attr('data-colour'));
+                                    $form.trigger('submit');
                                 }
 
                                 function cancel() {
@@ -391,7 +395,7 @@
                    UpdateUrl = Url.Action(MVC.API.UserFlag.UpdateAssignedUserDevicesLinkedGroup(Model.UserFlag.Id, redirect: true))
                })
                     @if (canConfig)
-            {
+                    {
                         @Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared)
                     }
                 </div>
@@ -452,7 +456,8 @@
                 <div class="loading">
                     <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading current assignments...</h4>
                 </div>
-                <form action="#" method="post">
+                <form action="#" method="post" data-overrideaction="@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, true)))" data-addaction="@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, false)))">
+                    @Html.AntiForgeryToken()
                     <textarea id="Config_UserFlags_BulkAssign_AssignDialog_UserIds" name="UserIds"></textarea>
                     <h4>Comments:</h4>
                     <textarea id="Config_UserFlags_BulkAssign_AssignDialog_Comments" name="Comments"></textarea>
@@ -512,8 +517,9 @@
                         assignDialog.dialog('option', 'buttons', buttons);
                         assignDialog.dialog('option', 'title', 'Bulk Assign Users: ' + mode);
 
+                        const $form = assignUserIds.closest('form');
                         if (mode == "Override") {
-                            assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, true)))');
+                            $form.attr('action', $form.attr('data-overrideaction'));
 
                             assignDialog.addClass('loading');
                             $.getJSON('@Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id))', function (response, result) {
@@ -533,7 +539,7 @@
                         }
                         else // Assume Add
                         {
-                            assignUserIds.closest('form').attr('action', '@(Url.Action(MVC.API.UserFlag.BulkAssignUsers(Model.UserFlag.Id, false)))');
+                            $form.attr('action', $form.attr('data-addaction'));
                         }
 
                         assignDialog.dialog('open');
@@ -548,8 +554,12 @@
         }
         @if (canDelete)
         {
-            @Html.ActionLinkButton("Delete", MVC.API.UserFlag.Delete(Model.UserFlag.Id, true), "Config_UserFlags_Actions_Delete_Button")
-            <div id="Config_UserFlags_Actions_Delete_Dialog" title="Delete this User Flag?">
+            <button id="Config_UserFlags_Actions_Delete_Button" type="button" class="button">Delete</button>
+            <div id="Config_UserFlags_Actions_Delete_Dialog" title="Delete this User Flag?" class="dialog">
+                @using (Html.BeginForm(MVC.API.UserFlag.Delete(Model.UserFlag.Id, true)))
+                {
+                    @Html.AntiForgeryToken()
+                }
                 <p>
                     <i class="fa fa-exclamation-triangle fa-lg warning"></i>
                     This item will be permanently deleted and cannot be recovered.<br />
@@ -565,29 +575,27 @@
             </div>
             <script type="text/javascript">
                 $(function () {
-                    var button = $('#Config_UserFlags_Actions_Delete_Button');
-                    var buttonDialog = $('#Config_UserFlags_Actions_Delete_Dialog');
-                    var buttonLink = button.attr('href');
-                    button.attr('href', '#');
-                    button.click(function () {
-                        buttonDialog.dialog('open');
-                        return false;
-                    });
-                    buttonDialog.dialog({
-                        resizable: false,
-                        modal: true,
-                        autoOpen: false,
-                        buttons: {
-                            "Delete": function () {
-                                var $this = $(this);
-                                $this.dialog("disable");
-                                $this.dialog("option", "buttons", null);
-                                window.location.href = buttonLink;
-                            },
-                            Cancel: function () {
-                                $(this).dialog("close");
-                            }
+                    let buttonDialog = null;
+                    $('#Config_UserFlags_Actions_Delete_Button').on('click', function () {
+                        const $button = $(this);
+                        if (!buttonDialog) {
+                            buttonDialog = $('#Config_UserFlags_Actions_Delete_Dialog').dialog({
+                                resizable: false,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    "Delete": function () {
+                                        $(this)
+                                            .dialog("option", "buttons", null)
+                                            .find('form').trigger('submit');
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
                         }
+                        buttonDialog.dialog('open');
                     });
                 });
             </script>

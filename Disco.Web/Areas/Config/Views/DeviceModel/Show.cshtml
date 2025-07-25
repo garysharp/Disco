@@ -274,6 +274,7 @@
                     <hr />
                     using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
+                        @Html.AntiForgeryToken()
                         <input type="file" name="Image" id="Image" style="width: 220px;" />
                         <input class="button small" type="submit" value="Upload Image" />
                     }
@@ -290,7 +291,7 @@
     {
         <button id="DeviceModel_Decommission" class="button">Decommission All Devices</button>
         <div id="DeviceModel_Decommission_Dialog" class="dialog" title="Model Device Decommission">
-            @using (Html.BeginForm(MVC.API.Device.DeviceModelDecommission(Model.DeviceModel.Id), FormMethod.Post))
+            @using (Html.BeginForm(MVC.API.Device.DeviceModelDecommission(Model.DeviceModel.Id)))
             {
                 @Html.AntiForgeryToken()
                 <div class="clearfix" style="margin-bottom: 10px;">
@@ -347,7 +348,44 @@
     }
     @if (Model.CanDelete)
     {
-        @Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete")
+        <button id="buttonDelete" type="button" class="button">Delete</button>
+        <div id="dialogConfirmDelete" class="dialog" title="Delete this Device Model?">
+            @using (Html.BeginForm(MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true)))
+            {
+                @Html.AntiForgeryToken()
+            }
+            <p>
+                <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+                This item will be permanently deleted and cannot be recovered. Are you sure?
+            </p>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                let dialog = null;
+                $('#buttonDelete').on('click', function () {
+                    if (!dialog) {
+                        dialog = $("#dialogConfirmDelete").dialog({
+                            resizable: false,
+                            width: 300,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Delete": function () {
+                                    $(this)
+                                        .dialog("option", "buttons", null)
+                                        .find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+
+                    dialog.dialog('open');
+                });
+            });
+        </script>
     }
     @if (Model.DeviceCount > 0)
     {

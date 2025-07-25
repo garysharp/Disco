@@ -4,7 +4,7 @@
 
     ViewBag.Title = Html.ToBreadcrumb("Jobs", MVC.Job.Index(), string.Format("Job: {0}", Model.Job.Id), MVC.Job.Show(Model.Job.Id), "Lodge Repair");
 }
-@using (Html.BeginForm(MVC.Job.LogRepair(), FormMethod.Post))
+@using (Html.BeginForm(MVC.Job.LogRepair()))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -191,7 +191,7 @@
             ).append(
                 $('<input>').attr({ type: 'hidden', name: 'ManualProviderReference', value: $('#ManualProviderReference').val() })
             ).append(
-                $('<input>').attr({ type: 'hidden', name: '__RequestVerificationToken', value: $providerId.closest('form').find('input[name="__RequestVerificationToken"]').val() })
+                $('<input>').attr({ type: 'hidden', name: '__RequestVerificationToken', value: document.body.dataset.antiforgery })
             ).appendTo('body').submit();
         }
 

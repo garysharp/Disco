@@ -159,7 +159,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateClaims
         {
             public readonly string id = "id";
-            public readonly string ClaimKeys = "ClaimKeys";
+            public readonly string claimKeys = "claimKeys";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateSubjects s_params_UpdateSubjects = new ActionParamsClass_UpdateSubjects();
@@ -187,7 +187,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_UpdateAdministratorSubjects
         {
-            public readonly string Subjects = "Subjects";
+            public readonly string subjects = "subjects";
             public readonly string redirect = "redirect";
         }
         static readonly ViewsClass s_views = new ViewsClass();
@@ -239,16 +239,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateClaimsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string[] ClaimKeys, bool redirect);
+        partial void UpdateClaimsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string[] claimKeys, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateClaims(int id, string[] ClaimKeys, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateClaims(int id, string[] claimKeys, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateClaims);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ClaimKeys", ClaimKeys);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "claimKeys", claimKeys);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateClaimsOverride(callInfo, id, ClaimKeys, redirect);
+            UpdateClaimsOverride(callInfo, id, claimKeys, redirect);
             return callInfo;
         }
 
@@ -280,15 +280,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateAdministratorSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] Subjects, bool redirect);
+        partial void UpdateAdministratorSubjectsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] subjects, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateAdministratorSubjects(string[] Subjects, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateAdministratorSubjects(string[] subjects, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAdministratorSubjects);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Subjects", Subjects);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "subjects", subjects);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateAdministratorSubjectsOverride(callInfo, Subjects, redirect);
+            UpdateAdministratorSubjectsOverride(callInfo, subjects, redirect);
             return callInfo;
         }
 

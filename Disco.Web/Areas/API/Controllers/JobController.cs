@@ -78,6 +78,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #endregion
 
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             try
@@ -287,7 +288,6 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 if (redirect.HasValue && redirect.Value)
                     return this.RedirectToAction(MVC.Job.Show(job.Id), resultUrlFragment);
-                //return RedirectToAction(MVC.Job.Show(job.Id));
                 else
                 {
                     if (resultData != null)
@@ -296,7 +296,7 @@ namespace Disco.Web.Areas.API.Controllers
                     }
                     else
                     {
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                     }
                 }
             }
@@ -305,22 +305,25 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Job.Properties.ExpectedClosedDate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateExpectedClosedDate(int id, string ExpectedClosedDate, bool? redirect = null)
         {
             return Update(id, pExpectedClosedDate, ExpectedClosedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.DeviceHeldLocation)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDeviceHeldLocation(int id, string DeviceHeldLocation, bool? redirect = null)
         {
             return Update(id, pDeviceHeldLocation, DeviceHeldLocation, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.Flags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateFlags(int id, string Flags, bool? redirect = null)
         {
             return Update(id, pFlags, Flags, redirect);
@@ -328,61 +331,73 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region NonWarranty
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeRequired)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyAccountingChargeRequired(int id, string AccountingChargeRequiredDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyAccountingChargeRequired, AccountingChargeRequiredDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeAdded)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyAccountingChargeAdded(int id, string AccountingChargeAddedDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyAccountingChargeAdded, AccountingChargeAddedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.AccountingChargePaid)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyAccountingChargePaid(int id, string AccountingChargePaidDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyAccountingChargePaid, AccountingChargePaidDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyPurchaseOrderRaised(int id, string PurchaseOrderRaisedDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyPurchaseOrderRaised, PurchaseOrderRaisedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderReference)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyPurchaseOrderReference(int id, string PurchaseOrderReference, bool? redirect = null)
         {
             return Update(id, pNonWarrantyPurchaseOrderReference, PurchaseOrderReference, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderSent)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyPurchaseOrderSent(int id, string PurchaseOrderSentDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyPurchaseOrderSent, PurchaseOrderSentDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InvoiceReceived)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyInvoiceReceived(int id, string InvoiceReceivedDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyInvoiceReceived, InvoiceReceivedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerName)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyRepairerName(int id, string RepairerName, bool? redirect = null)
         {
             return Update(id, pNonWarrantyRepairerName, RepairerName, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerLoggedDate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyRepairerLoggedDate(int id, string RepairerLoggedDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyRepairerLoggedDate, RepairerLoggedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerReference)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyRepairerReference(int id, string RepairerReference, bool? redirect = null)
         {
             return Update(id, pNonWarrantyRepairerReference, RepairerReference, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.RepairerCompletedDate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyRepairerCompletedDate(int id, string RepairerCompletedDate, bool? redirect = null)
         {
             return Update(id, pNonWarrantyRepairerCompletedDate, RepairerCompletedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.IsInsuranceClaim)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateNonWarrantyIsInsuranceClaim(int id, bool IsInsuranceClaim, bool? redirect = null)
         {
             return Update(id, pNonWarrantyIsInsuranceClaim, IsInsuranceClaim.ToString(), redirect);
@@ -392,91 +407,109 @@ namespace Disco.Web.Areas.API.Controllers
         #region Insurance
 
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceLossOrDamageDate(int id, string LossOrDamageDate, bool? redirect = null)
         {
             return Update(id, pInsuranceLossOrDamageDate, LossOrDamageDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceEventLocation(int id, string EventLocation, bool? redirect = null)
         {
             return Update(id, pInsuranceEventLocation, EventLocation, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceDescription(int id, string Description, bool? redirect = null)
         {
             return Update(id, pInsuranceDescription, Description, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceThirdPartyCaused(int id, string ThirdPartyCaused, bool? redirect = null)
         {
             return Update(id, pInsuranceThirdPartyCaused, ThirdPartyCaused, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceThirdPartyCausedName(int id, string ThirdPartyCausedName, bool? redirect = null)
         {
             return Update(id, pInsuranceThirdPartyCausedName, ThirdPartyCausedName, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceThirdPartyCausedWhy(int id, string ThirdPartyCausedWhy, bool? redirect = null)
         {
             return Update(id, pInsuranceThirdPartyCausedWhy, ThirdPartyCausedWhy, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceWitnessesNamesAddresses(int id, string WitnessesNamesAddresses, bool? redirect = null)
         {
             return Update(id, pInsuranceWitnessesNamesAddresses, WitnessesNamesAddresses, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceBurglaryTheftMethodOfEntry(int id, string BurglaryTheftMethodOfEntry, bool? redirect = null)
         {
             return Update(id, pInsuranceBurglaryTheftMethodOfEntry, BurglaryTheftMethodOfEntry, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsurancePropertyLastSeenDate(int id, string PropertyLastSeenDate, bool? redirect = null)
         {
             return Update(id, pInsurancePropertyLastSeenDate, PropertyLastSeenDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsurancePoliceNotified(int id, string PoliceNotified, bool? redirect = null)
         {
             return Update(id, pInsurancePoliceNotified, PoliceNotified, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsurancePoliceNotifiedStation(int id, string PoliceNotifiedStation, bool? redirect = null)
         {
             return Update(id, pInsurancePoliceNotifiedStation, PoliceNotifiedStation, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsurancePoliceNotifiedDate(int id, string PoliceNotifiedDate, bool? redirect = null)
         {
             return Update(id, pInsurancePoliceNotifiedDate, PoliceNotifiedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsurancePoliceNotifiedCrimeReportNo(int id, string PoliceNotifiedCrimeReportNo, bool? redirect = null)
         {
             return Update(id, pInsurancePoliceNotifiedCrimeReportNo, PoliceNotifiedCrimeReportNo, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceRecoverReduceAction(int id, string RecoverReduceAction, bool? redirect = null)
         {
             return Update(id, pInsuranceRecoverReduceAction, RecoverReduceAction, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceOtherInterestedParties(int id, string OtherInterestedParties, bool? redirect = null)
         {
             return Update(id, pInsuranceOtherInterestedParties, OtherInterestedParties, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceDetails)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceDateOfPurchase(int id, string DateOfPurchase, bool? redirect = null)
         {
             return Update(id, pInsuranceDateOfPurchase, DateOfPurchase, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceClaimFormSentDate(int id, string ClaimFormSentDate, bool? redirect = null)
         {
             return Update(id, pInsuranceClaimFormSentDate, ClaimFormSentDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.InsuranceClaimFormSent)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInsuranceClaimFormSentUserId(int id, string ClaimFormSentUserId, bool? redirect = null)
         {
             return Update(id, pInsuranceClaimFormSentUserId, ClaimFormSentUserId, redirect);
@@ -486,21 +519,25 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Warranty
         [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalName)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateWarrantyExternalName(int id, string ExternalName, bool? redirect = null)
         {
             return Update(id, pWarrantyExternalName, ExternalName, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalLoggedDate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateWarrantyExternalLoggedDate(int id, string ExternalLoggedDate, bool? redirect = null)
         {
             return Update(id, pWarrantyExternalLoggedDate, ExternalLoggedDate, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalReference)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateWarrantyExternalReference(int id, string ExternalReference, bool? redirect = null)
         {
             return Update(id, pWarrantyExternalReference, ExternalReference, redirect);
         }
         [DiscoAuthorize(Claims.Job.Properties.WarrantyProperties.ExternalCompletedDate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateWarrantyExternalCompletedDate(int id, string ExternalCompletedDate, bool? redirect = null)
         {
             return Update(id, pWarrantyExternalCompletedDate, ExternalCompletedDate, redirect);
@@ -1424,6 +1461,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Job Actions
 
         [DiscoAuthorize(Claims.Job.Actions.UpdateSubTypes)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateSubTypes(int id, List<string> SubTypes = null, bool? AddComponents = null, bool? redirect = null)
         {
             try
@@ -1448,18 +1486,19 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Job.Properties.Flags)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateFlag(int id, long? Flag, string Reason, bool? redirect = null)
         {
             try
@@ -1508,7 +1547,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Job.Show(job.Id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
@@ -1520,11 +1559,12 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Job.Properties.WaitingForUserAction)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult WaitingForUserAction(int id, string Reason, bool? redirect = null)
         {
             try
@@ -1544,18 +1584,19 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Job.Properties.NotWaitingForUserAction)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult NotWaitingForUserAction(int id, string Resolution, bool? redirect = null)
         {
             try
@@ -1575,18 +1616,19 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Job.Show(job.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Job.Properties.DeviceReadyForReturn)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DeviceReadyForReturn(int id, bool redirect)
         {
             Database.Configuration.LazyLoadingEnabled = true;
@@ -1601,17 +1643,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Properties.DeviceHeld)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DeviceHeld(int id, bool redirect)
         {
             var j = Database.Jobs.Find(id);
@@ -1625,17 +1668,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Properties.DeviceReturned)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DeviceReturned(int id, bool redirect)
         {
             var j = Database.Jobs.Find(id);
@@ -1649,17 +1693,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Actions.ForceClose)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ForceClose(int id, string Reason, bool? redirect = null)
         {
             var j = Database.Jobs.Find(id);
@@ -1674,17 +1719,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Actions.Close)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Close(int id, bool redirect)
         {
             var j = Database.Jobs.Find(id);
@@ -1699,17 +1745,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Actions.Reopen)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Reopen(int id, bool redirect)
         {
             var j = Database.Jobs
@@ -1725,17 +1772,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Actions.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool redirect)
         {
             var j = Database.Jobs.Find(id);
@@ -1750,17 +1798,18 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Index());
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Actions.ConvertHWarToHNWar)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ConvertHWarToHNWar(int id, bool redirect)
         {
             var j = Database.Jobs.Find(id);
@@ -1775,14 +1824,14 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect)
                         return RedirectToAction(MVC.Job.Show(j.Id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 else
                 {
-                    return Json("Job's state doesn't allow this action", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Job's state doesn't allow this action");
                 }
             }
-            return Json("Invalid Job Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         #endregion
@@ -1872,7 +1921,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
         #endregion
 
-        #region Job Attachements
+        #region Job Attachments
 
         [DiscoAuthorize(Claims.Job.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
         public virtual ActionResult AttachmentDownload(int id)
@@ -1907,7 +1956,8 @@ namespace Disco.Web.Areas.API.Controllers
             return HttpNotFound("Invalid Attachment Number");
         }
 
-        [DiscoAuthorize(Claims.Job.Actions.AddAttachments), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Job.Actions.AddAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentUpload(int id, string comments)
         {
             var j = Database.Jobs.Find(id);
@@ -1987,6 +2037,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorizeAny(Claims.Job.Actions.RemoveAnyAttachments, Claims.Job.Actions.RemoveOwnAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AttachmentRemove(int id)
         {
             var ja = Database.JobAttachments.Include("TechUser").Where(m => m.Id == id).FirstOrDefault();
@@ -1999,9 +2050,9 @@ namespace Disco.Web.Areas.API.Controllers
 
                 ja.OnDelete(Database);
                 Database.SaveChanges();
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
             }
-            return Json("Invalid Attachment Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Attachment Number");
         }
 
         [DiscoAuthorize(Claims.Job.Actions.AddAttachments)]
@@ -2028,11 +2079,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Json(new
-                {
-                    Success = false,
-                    ErrorMessage = ex.Message,
-                });
+                return BadRequest(ex.Message);
             }
         }
 
@@ -2041,55 +2088,58 @@ namespace Disco.Web.Areas.API.Controllers
         #region Job Components
 
         [DiscoAuthorizeAll(Claims.Job.Properties.NonWarrantyProperties.AddComponents, Claims.Job.Properties.NonWarrantyProperties.EditComponents)]
-        public virtual ActionResult ComponentAdd(int id, string Description, string Cost)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ComponentAdd(int id, string description, string cost)
         {
             var j = Database.Jobs.Find(id);
             if (j != null)
             {
-                if (string.IsNullOrEmpty(Description))
-                    Description = "?";
-                if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
-                    Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-                decimal.TryParse(Cost, out var cost);
+                if (string.IsNullOrEmpty(description))
+                    description = "?";
+                if (!string.IsNullOrEmpty(cost) && cost.Contains("$"))
+                    cost = cost.Substring(cost.IndexOf("$") + 1);
+                decimal.TryParse(cost, out var costValue);
 
                 var jc = new JobComponent()
                 {
                     JobId = j.Id,
-                    Description = Description,
-                    Cost = cost,
+                    Description = description,
+                    Cost = costValue,
                     TechUserId = CurrentUser.UserId
                 };
                 Database.JobComponents.Add(jc);
                 Database.SaveChanges();
 
-                return Json(new Models.Job.ComponentModel { Result = "OK", Component = Models.Job._ComponentModel.FromJobComponent(jc) }, JsonRequestBehavior.AllowGet);
+                return Json(Models.Job.ComponentModel.FromJobComponent(jc));
             }
-            return Json(new Models.Job.ComponentModel { Result = "Invalid Job Number" }, JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Number");
         }
 
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.EditComponents)]
-        public virtual ActionResult ComponentUpdate(int id, string Description, string Cost)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ComponentUpdate(int id, string description, string cost)
         {
             var jc = Database.JobComponents.Find(id);
             if (jc != null)
             {
 
-                if (string.IsNullOrEmpty(Description))
-                    Description = "?";
-                if (!string.IsNullOrEmpty(Cost) && Cost.Contains("$"))
-                    Cost = Cost.Substring(Cost.IndexOf("$") + 1);
-                decimal.TryParse(Cost, out var cost);
+                if (string.IsNullOrEmpty(description))
+                    description = "?";
+                if (!string.IsNullOrEmpty(cost) && cost.Contains("$"))
+                    cost = cost.Substring(cost.IndexOf("$") + 1);
+                decimal.TryParse(cost, out var costValue);
 
-                jc.Description = Description;
-                jc.Cost = cost;
+                jc.Description = description;
+                jc.Cost = costValue;
                 Database.SaveChanges();
 
-                return Json(new Models.Job.ComponentModel { Result = "OK", Component = Models.Job._ComponentModel.FromJobComponent(jc) }, JsonRequestBehavior.AllowGet);
+                return Json(Models.Job.ComponentModel.FromJobComponent(jc));
             }
-            return Json(new Models.Job.ComponentModel { Result = "Invalid Job Component Number" }, JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Component Number");
         }
 
         [DiscoAuthorize(Claims.Job.Properties.NonWarrantyProperties.EditComponents)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ComponentRemove(int id)
         {
             var jc = Database.JobComponents.Find(id);
@@ -2097,9 +2147,9 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 Database.JobComponents.Remove(jc);
                 Database.SaveChanges();
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
             }
-            return Json("Invalid Job Component Number", JsonRequestBehavior.AllowGet);
+            return BadRequest("Invalid Job Component Number");
         }
 
         #endregion
@@ -2115,30 +2165,6 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         #endregion
-
-        [DiscoAuthorize(Claims.Job.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdf(int id, string DocumentTemplateId)
-        {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException(nameof(id));
-            if (string.IsNullOrEmpty(DocumentTemplateId))
-                throw new ArgumentNullException(nameof(DocumentTemplateId));
-
-            // Obsolete: Use API\DocumentTemplate\Generate instead
-            return RedirectToAction(MVC.API.DocumentTemplate.Generate(DocumentTemplateId, id.ToString()));
-        }
-
-        [DiscoAuthorize(Claims.Job.Actions.GenerateDocuments)]
-        public virtual ActionResult GeneratePdfPackage(int id, string DocumentTemplatePackageId)
-        {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException(nameof(id));
-            if (string.IsNullOrEmpty(DocumentTemplatePackageId))
-                throw new ArgumentNullException(nameof(DocumentTemplatePackageId));
-
-            // Obsolete: Use API\DocumentTemplatePackage\Generate instead
-            return RedirectToAction(MVC.API.DocumentTemplatePackage.Generate(DocumentTemplatePackageId, id.ToString()));
-        }
 
         [DiscoAuthorize(Claims.Job.Properties.DeviceHeldLocation)]
         public virtual ActionResult DeviceHeldLocations()

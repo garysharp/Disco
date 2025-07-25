@@ -20,6 +20,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pDefaultSLAExpiry = "defaultslaexpiry";
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.JobQueue.Configure);
@@ -64,55 +65,62 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Config.JobQueue.Index(jobQueue.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateName(int id, string QueueName = null, bool? redirect = null)
         {
             return Update(id, pName, QueueName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdatePriority(int id, string Priority = null, bool? redirect = null)
         {
             return Update(id, pPriority, Priority, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDefaultSLAExpiry(int id, string DefaultSLAExpiry = null, bool? redirect = null)
         {
             return Update(id, pDefaultSLAExpiry, DefaultSLAExpiry, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIcon(int id, string Icon = null, bool? redirect = null)
         {
             return Update(id, pIcon, Icon, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIconColour(int id, string IconColour = null, bool? redirect = null)
         {
             return Update(id, pIconColour, IconColour, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIconAndColour(int id, string Icon = null, string IconColour = null, bool redirect = false)
         {
             try
@@ -127,23 +135,24 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Job Queue Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Job Queue Id");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.JobQueue.Index(jobQueue.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateSubjects(int id, string[] Subjects = null, bool redirect = false)
         {
             try
@@ -158,23 +167,24 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Job Queue Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Job Queue Id");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.JobQueue.Index(jobQueue.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Config.JobQueue.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateJobSubTypes(int id, List<string> JobSubTypes = null, bool redirect = false)
         {
             try
@@ -186,50 +196,50 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Job Queue Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Job Queue Id");
                 }
 
                 if (redirect)
                     return RedirectToAction(MVC.Config.JobQueue.Index(jobQueue.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
 
         #region Update Properties
-        private void UpdateIconAndColour(JobQueue jobQueue, string Icon, string IconColour)
+        private void UpdateIconAndColour(JobQueue jobQueue, string icon, string iconColour)
         {
-            if (string.IsNullOrWhiteSpace(Icon))
-                throw new ArgumentNullException("Icon");
-            if (string.IsNullOrWhiteSpace(IconColour))
-                throw new ArgumentNullException("IconColour");
+            if (string.IsNullOrWhiteSpace(icon))
+                throw new ArgumentNullException(nameof(icon));
+            if (string.IsNullOrWhiteSpace(iconColour))
+                throw new ArgumentNullException(nameof(iconColour));
 
-            jobQueue.Icon = Icon;
-            jobQueue.IconColour = IconColour;
+            jobQueue.Icon = icon;
+            jobQueue.IconColour = iconColour;
             JobQueueService.UpdateJobQueue(Database, jobQueue);
         }
-        private void UpdateIcon(JobQueue jobQueue, string Icon)
+        private void UpdateIcon(JobQueue jobQueue, string icon)
         {
-            if (string.IsNullOrWhiteSpace(Icon))
+            if (string.IsNullOrWhiteSpace(icon))
                 throw new ArgumentNullException("Icon");
 
-            jobQueue.Icon = Icon;
+            jobQueue.Icon = icon;
             JobQueueService.UpdateJobQueue(Database, jobQueue);
         }
-        private void UpdateIconColour(JobQueue jobQueue, string IconColour)
+        private void UpdateIconColour(JobQueue jobQueue, string iconColour)
         {
-            if (string.IsNullOrWhiteSpace(IconColour))
+            if (string.IsNullOrWhiteSpace(iconColour))
                 throw new ArgumentNullException("IconColour");
 
-            jobQueue.IconColour = IconColour;
+            jobQueue.IconColour = iconColour;
             JobQueueService.UpdateJobQueue(Database, jobQueue);
         }
 
@@ -277,25 +287,25 @@ namespace Disco.Web.Areas.API.Controllers
             JobQueueService.UpdateJobQueue(Database, jobQueue);
         }
 
-        private void UpdateSubjects(JobQueue jobQueue, string[] Subjects)
+        private void UpdateSubjects(JobQueue jobQueue, string[] subjects)
         {
             string subjectIds = null;
 
             // Validate Subjects
-            if (Subjects != null && Subjects.Length > 0)
+            if (subjects != null && subjects.Length > 0)
             {
-                var subjects = Subjects
+                var subjectRecords = subjects
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
                     .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
                     .Where(s => s.Item2 is ADUserAccount || s.Item2 is ADGroup)
                     .ToList();
-                var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
+                var invalidSubjects = subjectRecords.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException($"Subjects not found: {string.Join(", ", invalidSubjects)}", "Subjects");
 
-                var proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
+                var proposedSubjects = subjectRecords.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
 
                 subjectIds = string.Join(",", proposedSubjects);
 
@@ -340,6 +350,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Actions
         [DiscoAuthorize(Claims.Config.JobQueue.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -353,7 +364,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Job Queue Id");
             }
@@ -362,7 +373,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion

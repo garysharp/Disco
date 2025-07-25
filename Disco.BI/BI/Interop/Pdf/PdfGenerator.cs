@@ -21,16 +21,16 @@ namespace Disco.BI.Interop.Pdf
 {
     public static class PdfGenerator
     {
-        public static Stream GenerateBulkFromPackage(DocumentTemplatePackage package, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<IAttachmentTarget> DataObjects)
+        public static Stream GenerateBulkFromPackage(DocumentTemplatePackage package, DiscoDataContext database, User creatorUser, DateTime timestamp, bool? insertBlankPages, List<IAttachmentTarget> dataObjects)
         {
-            if (DataObjects.Count > 0)
+            if (dataObjects.Count > 0)
             {
-                List<Stream> generatedPdfs = new List<Stream>(DataObjects.Count);
+                List<Stream> generatedPdfs = new List<Stream>(dataObjects.Count);
                 using (var state = DocumentState.DefaultState())
                 {
-                    foreach (var d in DataObjects)
+                    foreach (var d in dataObjects)
                     {
-                        generatedPdfs.Add(package.GeneratePdfPackage(Database, d, CreatorUser, Timestamp, state));
+                        generatedPdfs.Add(package.GeneratePdfPackage(database, d, creatorUser, timestamp, state));
                         state.SequenceNumber++;
                         state.FlushScopeCache();
                     }
@@ -41,7 +41,7 @@ namespace Disco.BI.Interop.Pdf
                 }
                 else
                 {
-                    Stream bulkPdf = Utilities.JoinPdfs(package.InsertBlankPages || InsertBlankPages, generatedPdfs);
+                    Stream bulkPdf = Utilities.JoinPdfs(insertBlankPages.GetValueOrDefault(package.InsertBlankPages), generatedPdfs);
                     foreach (Stream singlePdf in generatedPdfs)
                         singlePdf.Dispose();
                     return bulkPdf;
@@ -50,25 +50,25 @@ namespace Disco.BI.Interop.Pdf
             return null;
         }
 
-        public static Stream GenerateBulkFromPackage(DocumentTemplatePackage package, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<string> DataObjectsIds)
+        public static Stream GenerateBulkFromPackage(DocumentTemplatePackage package, DiscoDataContext database, User creatorUser, DateTime timestamp, bool? insertBlankPages, List<string> dataObjectsIds)
         {
             List<IAttachmentTarget> DataObjects;
 
             switch (package.Scope)
             {
                 case AttachmentTypes.Device:
-                    DataObjects = Database.Devices.Where(d => DataObjectsIds.Contains(d.SerialNumber)).ToList<IAttachmentTarget>();
+                    DataObjects = database.Devices.Where(d => dataObjectsIds.Contains(d.SerialNumber)).ToList<IAttachmentTarget>();
                     break;
                 case AttachmentTypes.Job:
-                    int[] intDataObjectsIds = DataObjectsIds.Select(i => int.Parse(i)).ToArray();
-                    DataObjects = Database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).ToList<IAttachmentTarget>();
+                    int[] intDataObjectsIds = dataObjectsIds.Select(i => int.Parse(i)).ToArray();
+                    DataObjects = database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).ToList<IAttachmentTarget>();
                     break;
                 case AttachmentTypes.User:
-                    DataObjects = new List<IAttachmentTarget>(DataObjectsIds.Count);
-                    for (int idIndex = 0; idIndex < DataObjectsIds.Count; idIndex++)
+                    DataObjects = new List<IAttachmentTarget>(dataObjectsIds.Count);
+                    for (int idIndex = 0; idIndex < dataObjectsIds.Count; idIndex++)
                     {
-                        string dataObjectId = DataObjectsIds[idIndex];
-                        var user = UserService.GetUser(ActiveDirectory.ParseDomainAccountId(dataObjectId), Database, true);
+                        string dataObjectId = dataObjectsIds[idIndex];
+                        var user = UserService.GetUser(ActiveDirectory.ParseDomainAccountId(dataObjectId), database, true);
                         if (user == null)
                             throw new Exception($"Unknown Username specified: {dataObjectId}");
                         DataObjects.Add(user);
@@ -78,12 +78,12 @@ namespace Disco.BI.Interop.Pdf
                     throw new InvalidOperationException("Invalid DocumentType Scope");
             }
 
-            return GenerateBulkFromPackage(package, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjects);
+            return GenerateBulkFromPackage(package, database, creatorUser, timestamp, insertBlankPages, DataObjects);
         }
 
-        public static Stream GenerateFromPackage(DocumentTemplatePackage package, DiscoDataContext Database, IAttachmentTarget Data, User CreatorUser, DateTime Timestamp, DocumentState State)
+        public static Stream GenerateFromPackage(DocumentTemplatePackage package, DiscoDataContext database, IAttachmentTarget data, User creatorUser, DateTime timestamp, DocumentState state)
         {
-            var templates = package.GetDocumentTemplates(Database);
+            var templates = package.GetDocumentTemplates(database);
 
             if (templates.Count == 0)
                 return null;
@@ -92,21 +92,21 @@ namespace Disco.BI.Interop.Pdf
             string generateExpressionResult = null;
 
             if (generateExpression)
-                generateExpressionResult = package.EvaluateOnGenerateExpression(Data, Database, CreatorUser, Timestamp, State);
+                generateExpressionResult = package.EvaluateOnGenerateExpression(data, database, creatorUser, timestamp, state);
 
             List<Stream> generatedPdfs = new List<Stream>(templates.Count);
             foreach (var template in templates)
             {
-                generatedPdfs.Add(template.GeneratePdf(Database, Data, CreatorUser, Timestamp, State, true));
+                generatedPdfs.Add(template.GeneratePdf(database, data, creatorUser, timestamp, state, true));
 
-                State.SequenceNumber++;
-                State.FlushScopeCache();
+                state.SequenceNumber++;
+                state.FlushScopeCache();
             }
 
             if (generateExpression)
-                DocumentsLog.LogDocumentPackageGenerated(package, Data, CreatorUser, generateExpressionResult);
+                DocumentsLog.LogDocumentPackageGenerated(package, data, creatorUser, generateExpressionResult);
             else
-                DocumentsLog.LogDocumentPackageGenerated(package, Data, CreatorUser);
+                DocumentsLog.LogDocumentPackageGenerated(package, data, creatorUser);
 
             if (generatedPdfs.Count == 1)
             {
@@ -120,20 +120,20 @@ namespace Disco.BI.Interop.Pdf
                 return bulkPdf;
             }
         }
-        public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<IAttachmentTarget> DataObjects, IScheduledTaskStatus taskStatus)
+        public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext database, User creatorUser, DateTime timestamp, bool insertBlankPages, List<IAttachmentTarget> dataObjects, IScheduledTaskStatus taskStatus)
         {
-            if (DataObjects.Count > 0)
+            if (dataObjects.Count > 0)
             {
-                List<Stream> generatedPdfs = new List<Stream>(DataObjects.Count);
-                var progressPerDoc = 80d / DataObjects.Count;
+                List<Stream> generatedPdfs = new List<Stream>(dataObjects.Count);
+                var progressPerDoc = 80d / dataObjects.Count;
                 var progressDoc = 10d;
                 using (var state = DocumentState.DefaultState())
                 {
                     taskStatus.UpdateStatus(10, "Rendering", "Starting");
-                    foreach (var d in DataObjects)
+                    foreach (var d in dataObjects)
                     {
                         taskStatus.UpdateStatus(progressDoc += progressPerDoc, $"Rendering {d.AttachmentReferenceId}");
-                        generatedPdfs.Add(dt.GeneratePdf(Database, d, CreatorUser, Timestamp, state, true));
+                        generatedPdfs.Add(dt.GeneratePdf(database, d, creatorUser, timestamp, state, true));
                         state.SequenceNumber++;
                         state.FlushScopeCache();
                     }
@@ -145,7 +145,7 @@ namespace Disco.BI.Interop.Pdf
                 else
                 {
                     taskStatus.UpdateStatus(90, "Merging", "Merging documents");
-                    Stream bulkPdf = Utilities.JoinPdfs(InsertBlankPages, generatedPdfs);
+                    Stream bulkPdf = Utilities.JoinPdfs(insertBlankPages, generatedPdfs);
                     foreach (Stream singlePdf in generatedPdfs)
                         singlePdf.Dispose();
                     return bulkPdf;
@@ -154,28 +154,28 @@ namespace Disco.BI.Interop.Pdf
             return null;
         }
 
-        public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<string> DataObjectsIds, IScheduledTaskStatus taskStatus)
+        public static Stream GenerateBulkFromTemplate(DocumentTemplate dt, DiscoDataContext database, User creatorUser, DateTime timestamp, bool insertBlankPages, List<string> dataObjectsIds, IScheduledTaskStatus taskStatus)
         {
             Dictionary<string, IAttachmentTarget> dataObjectLookup;
-            List<string> dataObjectIds = DataObjectsIds;
+            List<string> dataObjectIds = dataObjectsIds;
 
             taskStatus.UpdateStatus(0, "Resolving targets", "Resolving render targets");
 
             switch (dt.Scope)
             {
                 case DocumentTemplate.DocumentTemplateScopes.Device:
-                    dataObjectLookup = Database.Devices.Where(d => DataObjectsIds.Contains(d.SerialNumber)).AsEnumerable().Cast<IAttachmentTarget>().ToDictionary(i => i.AttachmentReferenceId, StringComparer.OrdinalIgnoreCase);
+                    dataObjectLookup = database.Devices.Where(d => dataObjectsIds.Contains(d.SerialNumber)).AsEnumerable().Cast<IAttachmentTarget>().ToDictionary(i => i.AttachmentReferenceId, StringComparer.OrdinalIgnoreCase);
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.Job:
-                    var intDataObjectsIds = DataObjectsIds.Select(i => int.Parse(i)).ToList();
-                    dataObjectLookup = Database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).AsEnumerable().Cast<IAttachmentTarget>().ToDictionary(i => i.AttachmentReferenceId, StringComparer.OrdinalIgnoreCase);
+                    var intDataObjectsIds = dataObjectsIds.Select(i => int.Parse(i)).ToList();
+                    dataObjectLookup = database.Jobs.Where(j => intDataObjectsIds.Contains(j.Id)).AsEnumerable().Cast<IAttachmentTarget>().ToDictionary(i => i.AttachmentReferenceId, StringComparer.OrdinalIgnoreCase);
                     break;
                 case DocumentTemplate.DocumentTemplateScopes.User:
-                    dataObjectLookup = new Dictionary<string, IAttachmentTarget>(DataObjectsIds.Count, StringComparer.OrdinalIgnoreCase);
-                    dataObjectIds = new List<string>(DataObjectsIds.Count);
-                    foreach (var userId in DataObjectsIds)
+                    dataObjectLookup = new Dictionary<string, IAttachmentTarget>(dataObjectsIds.Count, StringComparer.OrdinalIgnoreCase);
+                    dataObjectIds = new List<string>(dataObjectsIds.Count);
+                    foreach (var userId in dataObjectsIds)
                     {
-                        var user = UserService.GetUser(ActiveDirectory.ParseDomainAccountId(userId), Database, true);
+                        var user = UserService.GetUser(ActiveDirectory.ParseDomainAccountId(userId), database, true);
                         if (user == null)
                         {
                             dataObjectIds.Add(userId);
@@ -190,7 +190,7 @@ namespace Disco.BI.Interop.Pdf
             }
 
             // recreate list to honor the sort-order provided in DataObjectsIds
-            var dataObjects = new List<IAttachmentTarget>(DataObjectsIds.Count);
+            var dataObjects = new List<IAttachmentTarget>(dataObjectsIds.Count);
             var missingIds = new List<string>();
             foreach (var id in dataObjectIds)
             {
@@ -204,10 +204,10 @@ namespace Disco.BI.Interop.Pdf
                 throw new Exception($"Unknown id specified: {string.Join("; ", missingIds)}");
             }
 
-            return GenerateBulkFromTemplate(dt, Database, CreatorUser, Timestamp, InsertBlankPages, dataObjects, taskStatus);
+            return GenerateBulkFromTemplate(dt, database, creatorUser, timestamp, insertBlankPages, dataObjects, taskStatus);
         }
 
-        public static Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Data, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
+        public static Stream GenerateFromTemplate(DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Data, User CreatorUser, DateTime TimeStamp, DocumentState State, bool flattenFields = false)
         {
             // Validate Data
             switch (dt.Scope)
@@ -232,7 +232,7 @@ namespace Disco.BI.Interop.Pdf
 
             // Override FlattenFields if Document Template instructs.
             if (dt.FlattenForm)
-                FlattenFields = true;
+                flattenFields = true;
 
             var expressionCache = dt.PdfExpressionsFromCache(Database);
 
@@ -242,7 +242,7 @@ namespace Disco.BI.Interop.Pdf
             MemoryStream pdfGeneratedStream = new MemoryStream();
             PdfStamper pdfStamper = new PdfStamper(pdfReader, pdfGeneratedStream);
 
-            pdfStamper.FormFlattening = FlattenFields;
+            pdfStamper.FormFlattening = flattenFields;
             pdfStamper.Writer.CloseStream = false;
 
             IDictionary expressionVariables = Expression.StandardVariables(dt, Database, CreatorUser, TimeStamp, State, Data);
@@ -253,7 +253,7 @@ namespace Disco.BI.Interop.Pdf
                 {
                     AcroFields.Item fields = pdfStamper.AcroFields.Fields[pdfFieldKey];
                     string fieldValue = dt.CreateUniqueIdentifier(Database, Data, CreatorUser, TimeStamp, 0).ToJson();
-                    if (FlattenFields)
+                    if (flattenFields)
                         pdfStamper.AcroFields.SetField(pdfFieldKey, string.Empty);
                     else
                         pdfStamper.AcroFields.SetField(pdfFieldKey, fieldValue);

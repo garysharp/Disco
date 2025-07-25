@@ -231,7 +231,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_UpdateLocationList
         {
-            public readonly string LocationList = "LocationList";
+            public readonly string locationList = "locationList";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_ImportLocationList s_params_ImportLocationList = new ActionParamsClass_ImportLocationList();
@@ -370,15 +370,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateLocationListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] LocationList, bool redirect);
+        partial void UpdateLocationListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string[] locationList, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateLocationList(string[] LocationList, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateLocationList(string[] locationList, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateLocationList);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "LocationList", LocationList);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "locationList", locationList);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateLocationListOverride(callInfo, LocationList, redirect);
+            UpdateLocationListOverride(callInfo, locationList, redirect);
             return callInfo;
         }
 

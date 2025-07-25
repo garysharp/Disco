@@ -936,6 +936,20 @@ WriteLiteral("                    <hr />\r\n");
             #line 275 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                     using (Html.BeginForm(MVC.API.DeviceModel.Image(Model.DeviceModel.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
                     {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 277 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                   Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 277 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                                
 
             
             #line default
@@ -963,7 +977,7 @@ WriteLiteral(" value=\"Upload Image\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 279 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 280 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                     }
                 }
 
@@ -973,7 +987,7 @@ WriteLiteral(" />\r\n");
 WriteLiteral("            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n<h2>Components</h2>\r\n");
 
             
-            #line 286 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 287 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
 Write(Html.Partial(MVC.Config.DeviceModel.Views._DeviceComponentsTable, Model.DeviceComponentsModel));
 
             
@@ -982,7 +996,7 @@ Write(Html.Partial(MVC.Config.DeviceModel.Views._DeviceComponentsTable, Model.De
 WriteLiteral("\r\n");
 
             
-            #line 287 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 288 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
 
             
@@ -995,13 +1009,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 289 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 290 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 289 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 290 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.CanDecommission)
     {
 
@@ -1027,28 +1041,28 @@ WriteLiteral(" title=\"Model Device Decommission\"");
 WriteLiteral(">\r\n");
 
             
-            #line 293 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 294 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 293 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-             using (Html.BeginForm(MVC.API.Device.DeviceModelDecommission(Model.DeviceModel.Id), FormMethod.Post))
+            #line 294 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+             using (Html.BeginForm(MVC.API.Device.DeviceModelDecommission(Model.DeviceModel.Id)))
             {
                 
             
             #line default
             #line hidden
             
-            #line 295 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 296 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 295 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 296 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                         
 
             
@@ -1073,13 +1087,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 301 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 302 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 301 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 302 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                          foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                         {
 
@@ -1090,33 +1104,33 @@ WriteLiteral("                            <li>\r\n                              
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 12649), Tuple.Create("\"", 12719)
-, Tuple.Create(Tuple.Create("", 12654), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 12654), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 12682), Tuple.Create("\"", 12752)
+, Tuple.Create(Tuple.Create("", 12687), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 12687), true)
             
-            #line 304 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-               , Tuple.Create(Tuple.Create("", 12693), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 305 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+               , Tuple.Create(Tuple.Create("", 12726), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 12693), false)
+, 12726), false)
 );
 
 WriteLiteral("\r\n                                       name=\"decommissionReason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 12786), Tuple.Create("\"", 12820)
+WriteAttribute("value", Tuple.Create(" value=\"", 12819), Tuple.Create("\"", 12853)
             
-            #line 305 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 12794), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 306 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 12827), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 12794), false)
+, 12827), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 305 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 306 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                 Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -1124,21 +1138,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 12960), Tuple.Create("\"", 13031)
-, Tuple.Create(Tuple.Create("", 12966), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 12966), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 12993), Tuple.Create("\"", 13064)
+, Tuple.Create(Tuple.Create("", 12999), Tuple.Create("DeviceModel_Decommission_Dialog_Reason_", 12999), true)
             
-            #line 306 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-   , Tuple.Create(Tuple.Create("", 13005), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 307 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+   , Tuple.Create(Tuple.Create("", 13038), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 13005), false)
+, 13038), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 306 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 307 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                            Write(decommissionReason.ReasonMessage());
 
             
@@ -1147,7 +1161,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                            </li>\r\n");
 
             
-            #line 308 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 309 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                         }
 
             
@@ -1166,7 +1180,7 @@ WriteLiteral(" />\r\n                        Unassign devices users\r\n         
 "\r\n                </div>\r\n");
 
             
-            #line 316 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 317 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
             }
 
             
@@ -1210,7 +1224,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 347 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 348 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
     }
 
             
@@ -1219,23 +1233,104 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 348 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 349 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.CanDelete)
     {
-        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <button");
+
+WriteLiteral(" id=\"buttonDelete\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Delete</button>\r\n");
+
+WriteLiteral("        <div");
+
+WriteLiteral(" id=\"dialogConfirmDelete\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Delete this Device Model?\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 353 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            
             
             #line default
             #line hidden
             
-            #line 350 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-   Write(Html.ActionLinkButton("Delete", MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true), "buttonDelete"));
+            #line 353 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+             using (Html.BeginForm(MVC.API.DeviceModel.Delete(Model.DeviceModel.Id, true)))
+            {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 355 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+           Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 350 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
-                                                                                                                
+            #line 355 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+                                        
+            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <p>\r\n                <i");
+
+WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
+
+WriteLiteral("></i>\r\n                This item will be permanently deleted and cannot be recove" +
+"red. Are you sure?\r\n            </p>\r\n        </div>\r\n");
+
+WriteLiteral("        <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+            $(function () {
+                let dialog = null;
+                $('#buttonDelete').on('click', function () {
+                    if (!dialog) {
+                        dialog = $(""#dialogConfirmDelete"").dialog({
+                            resizable: false,
+                            width: 300,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                ""Delete"": function () {
+                                    $(this)
+                                        .dialog(""option"", ""buttons"", null)
+                                        .find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog(""close"");
+                                }
+                            }
+                        });
+                    }
+
+                    dialog.dialog('open');
+                });
+            });
+        </script>
+");
+
+            
+            #line 389 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
     }
 
             
@@ -1244,7 +1339,7 @@ WriteLiteral("    ");
 WriteLiteral("    ");
 
             
-            #line 352 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 390 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
      if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
@@ -1254,14 +1349,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 356 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 394 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
        Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Model, Model.DeviceModel.Id)));
 
             
             #line default
             #line hidden
             
-            #line 356 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 394 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                                                           
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
@@ -1271,14 +1366,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 360 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 398 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceModel.Id.ToString(), "DeviceModel")));
 
             
             #line default
             #line hidden
             
-            #line 360 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
+            #line 398 "..\..\Areas\Config\Views\DeviceModel\Show.cshtml"
                                                                                                                                                                                                    
         }
     }

@@ -434,7 +434,7 @@ WriteLiteral("></i><strong>Warning:</strong> All plugins run with the same level
             #line hidden
             
             #line 78 "..\..\Areas\Config\Views\Plugins\Install.cshtml"
-     using (Html.BeginForm(MVC.API.Plugin.Install(), FormMethod.Post))
+     using (Html.BeginForm(MVC.API.Plugin.Install()))
     {
         
             

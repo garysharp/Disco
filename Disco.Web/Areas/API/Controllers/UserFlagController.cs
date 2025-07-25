@@ -24,6 +24,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pOnUnassignmentExpression = "onunassignmentexpression";
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.UserFlag.Configure);
@@ -68,93 +69,101 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Config.UserFlag.Index(flag.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateName(int id, string FlagName = null, bool? redirect = null)
         {
             return Update(id, pName, FlagName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateIcon(int id, string Icon = null, bool? redirect = null)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateIcon(int id, string icon = null, bool? redirect = null)
         {
-            return Update(id, pIcon, Icon, redirect);
+            return Update(id, pIcon, icon, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateIconColour(int id, string IconColour = null, bool? redirect = null)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateIconColour(int id, string iconColour = null, bool? redirect = null)
         {
-            return Update(id, pIconColour, IconColour, redirect);
+            return Update(id, pIconColour, iconColour, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
-        public virtual ActionResult UpdateIconAndColour(int id, string Icon = null, string IconColour = null, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateIconAndColour(int id, string icon = null, string iconColour = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
                 var UserFlag = Database.UserFlags.Find(id);
                 if (UserFlag != null)
                 {
-                    UpdateIconAndColour(UserFlag, Icon, IconColour);
+                    UpdateIconAndColour(UserFlag, icon, iconColour);
                 }
                 else
                 {
-                    throw new ArgumentException("Invalid User Flag Id", "id");
+                    throw new ArgumentException("Invalid User Flag Id", nameof(id));
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.UserFlag.Index(UserFlag.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnAssignmentExpression(int id, string OnAssignmentExpression = null, bool redirect = false)
         {
             return Update(id, pOnAssignmentExpression, OnAssignmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnUnassignmentExpression(int id, string OnUnassignmentExpression = null, bool redirect = false)
         {
             return Update(id, pOnUnassignmentExpression, OnUnassignmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
                 var UserFlag = Database.UserFlags.Find(id);
                 if (UserFlag == null)
-                    throw new ArgumentException("Invalid User Flag Id", "id");
+                    throw new ArgumentException("Invalid User Flag Id", nameof(id));
 
 
                 var syncTaskStatus = UpdateAssignedUsersLinkedGroup(UserFlag, GroupId, FilterBeginDate);
@@ -167,27 +176,28 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUserDevicesLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
                 var UserFlag = Database.UserFlags.Find(id);
                 if (UserFlag == null)
-                    throw new ArgumentException("Invalid User Flag Id", "id");
+                    throw new ArgumentException("Invalid User Flag Id", nameof(id));
 
 
                 var syncTaskStatus = UpdateAssignedUserDevicesLinkedGroup(UserFlag, GroupId, FilterBeginDate);
@@ -200,14 +210,14 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
@@ -347,6 +357,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Actions
         [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.Config.UserFlag.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -360,7 +371,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid User Flag Id");
             }
@@ -369,11 +380,12 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult BulkAssignUsers(int id, bool Override, string UserIds = null, string Comments = null)
         {
             if (id < 0)

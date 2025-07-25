@@ -1,11 +1,11 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceModel.CreateModel
 @{
     Authorization.RequireAll(Claims.Config.DeviceModel.CreateCustom, Claims.Config.DeviceModel.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Models", MVC.Config.DeviceModel.Index(null), "Create Custom");
 }
 @using (Html.BeginForm())
-{ 
+{
     @Html.AntiForgeryToken()
     <div class="form" style="width: 450px">
         <table>
@@ -14,21 +14,23 @@
                     Name / Description:
                 </th>
                 <td>
-                @Html.TextBoxFor(model => model.Description)<br />@Html.ValidationMessageFor(model => model.Description)
+                    @Html.TextBoxFor(model => model.Description)<br />@Html.ValidationMessageFor(model => model.Description)
                 </td>
             </tr>
             <tr>
                 <th>
                     Manufacturer:
                 </th>
-                <td>@Html.TextBoxFor(model => model.Manufacturer)<br />@Html.ValidationMessageFor(model => model.Manufacturer)
+                <td>
+                    @Html.TextBoxFor(model => model.Manufacturer)<br />@Html.ValidationMessageFor(model => model.Manufacturer)
                 </td>
             </tr>
             <tr>
                 <th>
                     Model:
                 </th>
-                <td>@Html.TextBoxFor(model => model.ManufacturerModel)<br />@Html.ValidationMessageFor(model => model.ManufacturerModel)
+                <td>
+                    @Html.TextBoxFor(model => model.ManufacturerModel)<br />@Html.ValidationMessageFor(model => model.ManufacturerModel)
                 </td>
             </tr>
         </table>

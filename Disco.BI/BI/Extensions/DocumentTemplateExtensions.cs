@@ -66,54 +66,54 @@ namespace Disco.BI.Extensions
             return CreateExpressions(templateFileName, database);
         }
 
-        public static Dictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext Database)
+        public static Dictionary<string, Expression> PdfExpressionsFromCache(this DocumentTemplate dt, DiscoDataContext database)
         {
-            return ExpressionCache.GetOrCreateExpressions(dt, () => CreateExpressions(dt, Database));
+            return ExpressionCache.GetOrCreateExpressions(dt, () => CreateExpressions(dt, database));
         }
 
-        public static List<DocumentField> PdfFieldsFromCache(this DocumentTemplate dt, DiscoDataContext Database)
+        public static List<DocumentField> PdfFieldsFromCache(this DocumentTemplate dt, DiscoDataContext database)
         {
-            return ExpressionCache.GetOrCreateFields(dt, () => CreateExpressions(dt, Database));
+            return ExpressionCache.GetOrCreateFields(dt, () => CreateExpressions(dt, database));
         }
 
-        public static List<Expression> ExtractPdfExpressions(this DocumentTemplate dt, DiscoDataContext Database)
+        public static List<Expression> ExtractPdfExpressions(this DocumentTemplate dt, DiscoDataContext database)
         {
-            return dt.PdfExpressionsFromCache(Database).Values.OrderBy(e => e.Ordinal).ToList();
+            return dt.PdfExpressionsFromCache(database).Values.OrderBy(e => e.Ordinal).ToList();
         }
 
-        public static Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext Database, IAttachmentTarget Target, User CreatorUser, DateTime TimeStamp, DocumentState State, bool FlattenFields = false)
+        public static Stream GeneratePdf(this DocumentTemplate dt, DiscoDataContext database, IAttachmentTarget target, User creatorUser, DateTime timeStamp, DocumentState state, bool flattenFields = false)
         {
             bool generateExpression = !string.IsNullOrEmpty(dt.OnGenerateExpression);
             string generateExpressionResult = null;
 
             if (generateExpression)
-                generateExpressionResult = dt.EvaluateOnGenerateExpression(Target, Database, CreatorUser, TimeStamp, State);
+                generateExpressionResult = dt.EvaluateOnGenerateExpression(target, database, creatorUser, timeStamp, state);
 
-            var pdfStream = Interop.Pdf.PdfGenerator.GenerateFromTemplate(dt, Database, Target, CreatorUser, TimeStamp, State, FlattenFields);
+            var pdfStream = Interop.Pdf.PdfGenerator.GenerateFromTemplate(dt, database, target, creatorUser, timeStamp, state, flattenFields);
 
             if (generateExpression)
-                DocumentsLog.LogDocumentGenerated(dt, Target, CreatorUser, generateExpressionResult);
+                DocumentsLog.LogDocumentGenerated(dt, target, creatorUser, generateExpressionResult);
             else
-                DocumentsLog.LogDocumentGenerated(dt, Target, CreatorUser);
+                DocumentsLog.LogDocumentGenerated(dt, target, creatorUser);
 
             return pdfStream;
         }
-        public static Stream GeneratePdfPackage(this DocumentTemplatePackage package, DiscoDataContext Database, IAttachmentTarget Target, User CreatorUser, DateTime TimeStamp, DocumentState State)
+        public static Stream GeneratePdfPackage(this DocumentTemplatePackage package, DiscoDataContext database, IAttachmentTarget target, User creatorUser, DateTime timeStamp, DocumentState state)
         {
-            return Interop.Pdf.PdfGenerator.GenerateFromPackage(package, Database, Target, CreatorUser, TimeStamp, State);
+            return Interop.Pdf.PdfGenerator.GenerateFromPackage(package, database, target, creatorUser, timeStamp, state);
         }
-        public static Stream GeneratePdfPackageBulk(this DocumentTemplatePackage package, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<string> DataObjectsIds)
+        public static Stream GeneratePdfPackageBulk(this DocumentTemplatePackage package, DiscoDataContext database, User creatorUser, DateTime timestamp, bool? insertBlankPages, List<string> dataObjectsIds)
         {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromPackage(package, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjectsIds);
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromPackage(package, database, creatorUser, timestamp, insertBlankPages, dataObjectsIds);
         }
-        public static Stream GeneratePdfPackageBulk(this DocumentTemplatePackage package, DiscoDataContext Database, User CreatorUser, DateTime Timestamp, bool InsertBlankPages, List<IAttachmentTarget> DataObjects)
+        public static Stream GeneratePdfPackageBulk(this DocumentTemplatePackage package, DiscoDataContext database, User creatorUser, DateTime timestamp, bool? insertBlankPages, List<IAttachmentTarget> dataObjects)
         {
-            return Interop.Pdf.PdfGenerator.GenerateBulkFromPackage(package, Database, CreatorUser, Timestamp, InsertBlankPages, DataObjects);
+            return Interop.Pdf.PdfGenerator.GenerateBulkFromPackage(package, database, creatorUser, timestamp, insertBlankPages, dataObjects);
         }
 
-        public static List<bool> PdfPageHasAttachmentId(this DocumentTemplate dt, DiscoDataContext Database)
+        public static List<bool> PdfPageHasAttachmentId(this DocumentTemplate dt, DiscoDataContext database)
         {
-            string templateFilename = dt.RepositoryFilename(Database);
+            string templateFilename = dt.RepositoryFilename(database);
             if (!File.Exists(templateFilename))
                 throw new FileNotFoundException("PDF template not found", templateFilename);
 

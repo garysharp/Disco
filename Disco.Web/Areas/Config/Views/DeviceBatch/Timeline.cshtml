@@ -1,15 +1,14 @@
 ﻿@{
     Authorization.Require(Claims.Config.DeviceBatch.ShowTimeline);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Batches", MVC.Config.DeviceBatch.Index(null), "Timeline");
     Html.BundleDeferred("~/Style/Timeline");
     Html.BundleDeferred("~/ClientScripts/Modules/Timeline");
 }
-<div id="deviceBatchesTimeline" style="height: 550px;">
+<div id="deviceBatchesTimeline" style="height: 550px;" data-url="@(Url.Action(MVC.API.DeviceBatch.Timeline()))">
 </div>
 <script type="text/javascript">
     (function () {
-        var dataUrl = '@(Url.Action(MVC.API.DeviceBatch.Timeline()))';
         var tl;
 
         $(function () {
@@ -23,7 +22,7 @@
             var sixMonthsDate = new Date();
             sixMonthsDate.setDate(currentDate.getDate());
             sixMonthsDate.setMonth(currentDate.getMonth() + 6);
-            
+
             var hotZoneStart1 = new Date(currentDate.getFullYear(), 0, 1, 10, 0, 0);
             var hotZoneEnd1 = new Date(currentDate.getFullYear(), 11, 31, 10, 0, 0);
             var hotZoneStart2 = new Date(currentDate.getFullYear() + 1, 0, 1, 10, 0, 0);
@@ -37,18 +36,18 @@
             var bandInfos = [
                 Timeline.createHotZoneBandInfo({
                     zones: [
-                    {
-                        start: hotZoneStart1,
-                        end: hotZoneEnd1,
-                        magnify: 4,
-                        unit: Timeline.DateTime.MONTH
-                    },
-                    {
-                        start: hotZoneStart2,
-                        end: hotZoneEnd2,
-                        magnify: 4,
-                        unit: Timeline.DateTime.MONTH
-                    }
+                        {
+                            start: hotZoneStart1,
+                            end: hotZoneEnd1,
+                            magnify: 4,
+                            unit: Timeline.DateTime.MONTH
+                        },
+                        {
+                            start: hotZoneStart2,
+                            end: hotZoneEnd2,
+                            magnify: 4,
+                            unit: Timeline.DateTime.MONTH
+                        }
                     ],
                     eventSource: eventSource,
                     width: "85%",
@@ -106,17 +105,26 @@
             });
 
             // Load Events
-            $.ajax({
-                url: dataUrl,
-                dataType: 'json',
-                type: 'POST',
-                success: function (data) {
-                    eventSource.loadJSON(data, dataUrl);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to load Timeline Data: ' + errorThrown);
+            async function loadEventsAsync() {
+                try {
+                    const dataUrl = $('#deviceBatchesTimeline').attr('data-url');
+                    const body = new FormData();
+                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                    const response = await fetch(dataUrl, {
+                        method: 'POST',
+                        body: body
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        eventSource.loadJSON(data, dataUrl);
+                    } else {
+                        alert('Unable to load Timeline Data: ' + response.statusText);
+                    }
+                } catch (e) {
+                    alert('Unable to load Timeline Data: ' + e);
                 }
-            });
+            }
+            loadEventsAsync();
         });
 
     })();

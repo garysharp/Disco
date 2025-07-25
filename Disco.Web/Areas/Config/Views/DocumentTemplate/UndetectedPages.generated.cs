@@ -59,6 +59,83 @@ WriteLiteral("\r\n<div");
 
 WriteLiteral(" id=\"undetectedPagesContainer\"");
 
+WriteLiteral("\r\n     data-urlundetectedfiles=\"");
+
+            
+            #line 10 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                          Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFiles()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral("\r\n     data-urlundetectedpagethumbnail=\"");
+
+            
+            #line 11 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                                  Write(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, true))));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral("\r\n     data-urlundetectedpagepreview=\"");
+
+            
+            #line 12 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                                Write(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, false))));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral("\r\n     data-urlundetectedpagesource=\"");
+
+            
+            #line 13 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                               Write(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, true, false))));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral("\r\n     data-urldataidlookupservice=\"");
+
+            
+            #line 14 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                              Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDataIdLookup()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/\"");
+
+WriteLiteral("\r\n     data-urlimporterundetectedassign=\"");
+
+            
+            #line 15 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                                   Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedAssign()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("/\"");
+
+WriteLiteral("\r\n     data-urlimporterundetecteddelete=\"");
+
+            
+            #line 16 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+                                   Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n    <div");
 
 WriteLiteral(" id=\"noUndetectedPages\"");
@@ -128,7 +205,7 @@ WriteLiteral(" class=\"actions\"");
 WriteLiteral(">\r\n        Type: ");
 
             
-            #line 28 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
+            #line 35 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
          Write(Html.DropDownList("dialogDocumentTemplateId", Model.DocumentTemplatesSelectListItems, new Dictionary<string, object> { { "data-bind", "value: dialogTemplateId" } }));
 
             
@@ -141,11 +218,11 @@ WriteLiteral(" id=\"dialogDataId\"");
 WriteLiteral(" type=\"text\"");
 
 WriteLiteral(" data-bind=\"value: dialogDataId, autocomplete: { source: dialogDataIdService, min" +
-"Length: 3, position: { my: \'left bottom\', at: \'left top\' } }\"");
+"Length: 2, position: { my: \'left bottom\', at: \'left top\' } }\"");
 
-WriteLiteral(" />\r\n        <a");
+WriteLiteral(" />\r\n        <button");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button\"");
 
@@ -153,7 +230,7 @@ WriteLiteral(" id=\"dialogAssignButton\"");
 
 WriteLiteral(" data-bind=\"click: assignPage\"");
 
-WriteLiteral(">Assign</a>\r\n    </div>\r\n</div>\r\n<div");
+WriteLiteral(">Assign</button>\r\n    </div>\r\n</div>\r\n<div");
 
 WriteLiteral(" id=\"dialogRemove\"");
 
@@ -192,185 +269,106 @@ WriteLiteral(@">
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n    $(function () {\r\n\r\n        var vm;\r\n        var urlUndetectedPageThumbnail" +
-" = \'");
-
-            
-            #line 65 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                                      Write(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, true))));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n        var urlUndetectedPagePreview = \'");
-
-            
-            #line 66 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                                    Write(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, false, false))));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n        var urlUndetectedPageSource = \'");
-
-            
-            #line 67 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                                   Write(new HtmlString(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFile(null, true, false))));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\';\r\n        var urlDataIdLookupService = \'");
-
-            
-            #line 68 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                                  Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDataIdLookup()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("/\';\r\n        var urlImporterUndetectedAssign = \'");
-
-            
-            #line 69 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                                       Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedAssign()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("/\';\r\n        var urlImporterUndetectedDelete = \'");
-
-            
-            #line 70 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                                       Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedDelete()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("/\';\r\n        var $undetectedPageDialog = $(\'#undetectedPageDialog\').dialog({\r\n   " +
-"         modal: true,\r\n            width: 800,\r\n            resizable: false,\r\n " +
-"           autoOpen: false\r\n        });\r\n\r\n        function resizeUndetectedPage" +
-"Dialog() {\r\n            var dialogHeight = Math.min($(window).height() - 120, 80" +
-"5);\r\n            $undetectedPageDialog.height(dialogHeight);\r\n            $undet" +
-"ectedPageDialog.find(\'.pagePreview\').height(dialogHeight - 105);\r\n        }\r\n   " +
-"     resizeUndetectedPageDialog();\r\n\r\n        $(window).resize(resizeUndetectedP" +
-"ageDialog);\r\n\r\n        $dialogRemove = $(\'#dialogRemove\').dialog({\r\n            " +
-"resizable: false,\r\n            height: 140,\r\n            modal: true,\r\n         " +
-"   autoOpen: false\r\n        });\r\n\r\n        function pageViewModel() {\r\n         " +
-"   var self = this;\r\n\r\n            self.selectedUndetectedPage = ko.observable(n" +
-"ull);\r\n            self.undetectedPages = ko.observableArray();\r\n            sel" +
-"f.noUndetectedPages = ko.computed(function () { return self.undetectedPages().le" +
-"ngth == 0 });\r\n            self.selectNextPage = function () {\r\n                " +
-"var oldSelected = self.selectedUndetectedPage();\r\n                var oldSelecte" +
-"dIndex = vm.undetectedPages.indexOf(oldSelected);\r\n\r\n                if (vm.unde" +
-"tectedPages().length > 1) {\r\n                    if (oldSelectedIndex + 1 <= vm." +
-"undetectedPages().length - 1)\r\n                        vm.selectedUndetectedPage" +
-"(vm.undetectedPages()[oldSelectedIndex + 1]);\r\n                    else\r\n       " +
-"                 vm.selectedUndetectedPage(vm.undetectedPages()[oldSelectedIndex" +
-" - 1]);\r\n                } else {\r\n                    $undetectedPageDialog.dia" +
-"log(\'close\');\r\n                    vm.selectedUndetectedPage(null);\r\n           " +
-"     }\r\n            }\r\n        }\r\n\r\n        function undetectedPageViewModel(id," +
-" timestamp, timestampFuzzy) {\r\n            var self = this;\r\n\r\n            self." +
-"id = id;\r\n            self.timestamp = timestamp;\r\n            self.timestampFuz" +
-"zy = timestampFuzzy;\r\n            self.thumbnailUrl = \"url(\" + urlUndetectedPage" +
-"Thumbnail + \"&id=\" + id + \")\";\r\n            self.previewUrl = \"url(\" + urlUndete" +
-"ctedPagePreview + \"&id=\" + id + \")\";\r\n            self.sourceUrl = urlUndetected" +
-"PageSource + \"&id=\" + id;\r\n            self.select = function (e, d) {\r\n        " +
-"        vm.selectedUndetectedPage(self);\r\n                $undetectedPageDialog." +
-"dialog(\'open\');\r\n            }\r\n\r\n            // Dialog Properties\r\n            " +
-"self.dialogTemplateId = ko.observable(null);\r\n            self.dialogDataId = ko" +
-".observable(null);\r\n            self.dialogDataIdService = ko.computed(function " +
-"() {\r\n                return urlDataIdLookupService + self.dialogTemplateId();\r\n" +
-"            });\r\n            self.deletePage = function () {\r\n                $u" +
-"ndetectedPageDialog.dialog(\'option\', \'disabled\', true);\r\n\r\n                $dial" +
-"ogRemove.dialog(\'option\', \'buttons\', {\r\n                    \"Remove\": function (" +
-") {\r\n                        $dialogRemove.dialog(\"close\");\r\n                   " +
-"     var data = { id: self.id };\r\n                        $.ajax({\r\n            " +
-"                url: urlImporterUndetectedDelete,\r\n                            d" +
-"ataType: \'json\',\r\n                            data: data,\r\n                     " +
-"       type: \'POST\',\r\n                            success: function (d) {\r\n     " +
-"                           if (d == \'OK\') {\r\n                                   " +
-" vm.selectNextPage();\r\n                                    vm.undetectedPages.re" +
-"move(self);\r\n                                } else {\r\n                         " +
-"           alert(\'Unable to delete page: \' + d);\r\n                              " +
-"  }\r\n                                $undetectedPageDialog.dialog(\'option\', \'dis" +
-"abled\', false);\r\n                            },\r\n                            err" +
-"or: function (jqXHR, textStatus, errorThrown) {\r\n                               " +
-" alert(\'Unable to delete page: \' + errorThrown);\r\n                              " +
-"  $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n                  " +
-"          }\r\n                        });\r\n                    },\r\n              " +
-"      \"Cancel\": function () {\r\n                        $dialogRemove.dialog(\"clo" +
-"se\");\r\n                        $undetectedPageDialog.dialog(\'option\', \'disabled\'" +
-", false);\r\n                    }\r\n                });\r\n\r\n                $dialog" +
-"Remove.dialog(\'open\');\r\n\r\n                return false;\r\n            }\r\n        " +
-"    self.assignPage = function () {\r\n                var dtId = self.dialogTempl" +
-"ateId();\r\n                var dId = self.dialogDataId();\r\n                if (!d" +
-"tId || !dId) {\r\n                    alert(\'Please specify a valid Document Type " +
-"and Data Id\');\r\n                } else {\r\n                    $undetectedPageDia" +
-"log.dialog(\'option\', \'disabled\', true);\r\n\r\n                    var data = { id: " +
-"self.id, DocumentTemplateId: dtId, DataId: dId };\r\n\r\n                    $.ajax(" +
-"{\r\n                        url: urlImporterUndetectedAssign,\r\n                  " +
-"      dataType: \'json\',\r\n                        data: data,\r\n                  " +
-"      type: \'POST\',\r\n                        success: function (d) {\r\n          " +
-"                  if (d == \'OK\') {\r\n                                vm.selectNex" +
-"tPage();\r\n                                vm.undetectedPages.remove(self);\r\n    " +
-"                        } else {\r\n                                alert(\'Unable " +
-"to assign page: \' + d);\r\n                            }\r\n                        " +
-"    $undetectedPageDialog.dialog(\'option\', \'disabled\', false);\r\n                " +
-"        },\r\n                        error: function (jqXHR, textStatus, errorThr" +
-"own) {\r\n                            alert(\'Unable to assign page: \' + errorThrow" +
-"n);\r\n                            $undetectedPageDialog.dialog(\'option\', \'disable" +
-"d\', false);\r\n                        }\r\n                    });\r\n\r\n             " +
-"   }\r\n                return false;\r\n            };\r\n        }\r\n\r\n        functi" +
-"on init() {\r\n            vm = new pageViewModel();\r\n\r\n            $.ajax({\r\n    " +
-"            url: \'");
-
-            
-            #line 212 "..\..\Areas\Config\Views\DocumentTemplate\UndetectedPages.cshtml"
-                  Write(Url.Action(MVC.API.DocumentTemplate.ImporterUndetectedFiles()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"',
-                dataType: 'json',
-                type: 'POST',
-                success: init_loadedContent,
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert('Unable to load content: ' + errorThrown);
-                }
-            });
-        }
-        function init_loadedContent(content) {
-            if (content.length > 0) {
-                for (var i = 0; i < content.length; i++) {
-                    var c = content[i];
-                    var up = new undetectedPageViewModel(c.Id, c.Timestamp, c.TimestampFuzzy);
-                    vm.undetectedPages.push(up);
-                }
-            }
-
-            ko.applyBindings(vm);
-            init_loadedOpen();
-        }
-        function init_loadedOpen() {
-            var fileId = window.location.hash;
-            if (fileId) {
-                fileId = fileId.substr(1);
-                for (var i = 0; i < vm.undetectedPages().length; i++) {
-                    var up = vm.undetectedPages()[i];
-                    if (up.id == fileId) {
-                        up.select();
-                        return;
-                    }
-                }
-            }
-        }
-        init();
-
-    });
-</script>
-");
+WriteLiteral(">\r\n    $(function () {\r\n\r\n        const vm = new pageViewModel();\r\n        const " +
+"$undetectedPagesContainer = $(undetectedPagesContainer);\r\n        const urlUndet" +
+"ectedFiles = $undetectedPagesContainer.attr(\'data-urlundetectedfiles\');\r\n       " +
+" const urlUndetectedPageThumbnail = $undetectedPagesContainer.attr(\'data-urlunde" +
+"tectedpagethumbnail\');\r\n        const urlUndetectedPagePreview = $undetectedPage" +
+"sContainer.attr(\'data-urlundetectedpagepreview\');\r\n        const urlUndetectedPa" +
+"geSource = $undetectedPagesContainer.attr(\'data-urlundetectedpagesource\');\r\n    " +
+"    const urlDataIdLookupService = $undetectedPagesContainer.attr(\'data-urldatai" +
+"dlookupservice\');\r\n        const urlImporterUndetectedAssign = $undetectedPagesC" +
+"ontainer.attr(\'data-urlimporterundetectedassign\');\r\n        const urlImporterUnd" +
+"etectedDelete = $undetectedPagesContainer.attr(\'data-urlimporterundetecteddelete" +
+"\');\r\n        const $undetectedPageDialog = $(\'#undetectedPageDialog\').dialog({\r\n" +
+"            modal: true,\r\n            width: 800,\r\n            resizable: false," +
+"\r\n            autoOpen: false\r\n        });\r\n\r\n        function resizeUndetectedP" +
+"ageDialog() {\r\n            var dialogHeight = Math.min($(window).height() - 120," +
+" 805);\r\n            $undetectedPageDialog.height(dialogHeight);\r\n            $un" +
+"detectedPageDialog.find(\'.pagePreview\').height(dialogHeight - 105);\r\n        }\r\n" +
+"        resizeUndetectedPageDialog();\r\n\r\n        $(window).resize(resizeUndetect" +
+"edPageDialog);\r\n\r\n        $dialogRemove = $(\'#dialogRemove\').dialog({\r\n         " +
+"   resizable: false,\r\n            height: 140,\r\n            modal: true,\r\n      " +
+"      autoOpen: false\r\n        });\r\n\r\n        function pageViewModel() {\r\n      " +
+"      var self = this;\r\n\r\n            self.selectedUndetectedPage = ko.observabl" +
+"e(null);\r\n            self.undetectedPages = ko.observableArray();\r\n            " +
+"self.noUndetectedPages = ko.computed(function () { return self.undetectedPages()" +
+".length == 0 });\r\n            self.selectNextPage = function () {\r\n             " +
+"   var oldSelected = self.selectedUndetectedPage();\r\n                var oldSele" +
+"ctedIndex = vm.undetectedPages.indexOf(oldSelected);\r\n\r\n                if (vm.u" +
+"ndetectedPages().length > 1) {\r\n                    if (oldSelectedIndex + 1 <= " +
+"vm.undetectedPages().length - 1)\r\n                        vm.selectedUndetectedP" +
+"age(vm.undetectedPages()[oldSelectedIndex + 1]);\r\n                    else\r\n    " +
+"                    vm.selectedUndetectedPage(vm.undetectedPages()[oldSelectedIn" +
+"dex - 1]);\r\n                } else {\r\n                    $undetectedPageDialog." +
+"dialog(\'close\');\r\n                    vm.selectedUndetectedPage(null);\r\n        " +
+"        }\r\n            }\r\n        }\r\n\r\n        function undetectedPageViewModel(" +
+"id, timestamp, timestampFuzzy) {\r\n            var self = this;\r\n\r\n            se" +
+"lf.id = id;\r\n            self.timestamp = timestamp;\r\n            self.timestamp" +
+"Fuzzy = timestampFuzzy;\r\n            self.thumbnailUrl = \"url(\" + urlUndetectedP" +
+"ageThumbnail + \"&id=\" + id + \")\";\r\n            self.previewUrl = \"url(\" + urlUnd" +
+"etectedPagePreview + \"&id=\" + id + \")\";\r\n            self.sourceUrl = urlUndetec" +
+"tedPageSource + \"&id=\" + id;\r\n            self.select = function (e, d) {\r\n     " +
+"           vm.selectedUndetectedPage(self);\r\n                $undetectedPageDial" +
+"og.dialog(\'open\');\r\n            }\r\n\r\n            // Dialog Properties\r\n         " +
+"   self.dialogTemplateId = ko.observable(null);\r\n            self.dialogDataId =" +
+" ko.observable(null);\r\n            self.dialogDataIdService = ko.computed(functi" +
+"on () {\r\n                return urlDataIdLookupService + self.dialogTemplateId()" +
+";\r\n            });\r\n            self.deletePage = function () {\r\n               " +
+" $dialogRemove.dialog(\'option\', \'buttons\', {\r\n                    \"Remove\": func" +
+"tion () {\r\n                        $dialogRemove.dialog(\"close\");\r\n\r\n           " +
+"             async function removeAsync() {\r\n\r\n                            const" +
+" body = new FormData();\r\n                            body.append(\'__RequestVerif" +
+"icationToken\', document.body.dataset.antiforgery);\r\n                            " +
+"body.append(\'id\', self.id);\r\n\r\n                            try {\r\n              " +
+"                  const response = await fetch(urlImporterUndetectedDelete, {\r\n " +
+"                                   method: \'POST\',\r\n                            " +
+"        body: body\r\n                                });\r\n                       " +
+"         if (!response.ok) {\r\n                                    alert(\'Unable " +
+"to delete page: \' + response.statusText);\r\n                                    r" +
+"eturn;\r\n                                }\r\n                                vm.se" +
+"lectNextPage();\r\n                                vm.undetectedPages.remove(self)" +
+";\r\n                            } catch (e) {\r\n                                al" +
+"ert(\'Unable to delete page: \' + e);\r\n                            }\r\n            " +
+"            }\r\n                        removeAsync(self.id);\r\n                  " +
+"  },\r\n                    \"Cancel\": function () {\r\n                        $dial" +
+"ogRemove.dialog(\"close\");\r\n                        $undetectedPageDialog.dialog(" +
+"\'option\', \'disabled\', false);\r\n                    }\r\n                });\r\n\r\n   " +
+"             $dialogRemove.dialog(\'open\');\r\n\r\n                return false;\r\n   " +
+"         }\r\n            self.assignPage = async function () {\r\n                v" +
+"ar dtId = self.dialogTemplateId();\r\n                var dId = self.dialogDataId(" +
+");\r\n                if (!dtId || !dId) {\r\n                    alert(\'Please spec" +
+"ify a valid Document Type and Data Id\');\r\n                } else {\r\n            " +
+"        const body = new FormData();\r\n                    body.append(\'__Request" +
+"VerificationToken\', document.body.dataset.antiforgery);\r\n                    bod" +
+"y.append(\'id\', self.id);\r\n                    body.append(\'documentTemplateId\', " +
+"dtId);\r\n                    body.append(\'dataId\', dId);\r\n\r\n                    t" +
+"ry {\r\n                        const response = await fetch(urlImporterUndetected" +
+"Assign, {\r\n                            method: \'POST\',\r\n                        " +
+"    body: body\r\n                        });\r\n                        if (respons" +
+"e.ok) {\r\n                            vm.selectNextPage();\r\n                     " +
+"       vm.undetectedPages.remove(self);\r\n                        } else {\r\n     " +
+"                       alert(\'Unable to assign page: \' + response.statusText);\r\n" +
+"                        }\r\n                    } catch (e) {\r\n                  " +
+"      alert(\'Unable to assign page: \' + e);\r\n                    }\r\n            " +
+"    }\r\n                return false;\r\n            };\r\n        }\r\n\r\n        async" +
+" function init() {\r\n            const body = new FormData();\r\n            body.a" +
+"ppend(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n       " +
+"     const response = await fetch(urlUndetectedFiles, {\r\n                method:" +
+" \'POST\',\r\n                body: body\r\n            });\r\n\r\n            if (!respon" +
+"se.ok) {\r\n                alert(\'Unable to load content: \' + response.statusText" +
+");\r\n                return;\r\n            }\r\n\r\n            const content = await " +
+"response.json();\r\n\r\n            if (content.length > 0) {\r\n                for (" +
+"var i = 0; i < content.length; i++) {\r\n                    var c = content[i];\r\n" +
+"                    var up = new undetectedPageViewModel(c.Id, c.Timestamp, c.Ti" +
+"mestampFuzzy);\r\n                    vm.undetectedPages.push(up);\r\n              " +
+"  }\r\n            }\r\n\r\n            ko.applyBindings(vm);\r\n\r\n            var fileI" +
+"d = window.location.hash;\r\n            if (fileId) {\r\n                fileId = f" +
+"ileId.substr(1);\r\n                for (var i = 0; i < vm.undetectedPages().lengt" +
+"h; i++) {\r\n                    var up = vm.undetectedPages()[i];\r\n              " +
+"      if (up.id == fileId) {\r\n                        up.select();\r\n            " +
+"            return;\r\n                    }\r\n                }\r\n            }\r\n  " +
+"      }\r\n\r\n        init();\r\n    });\r\n</script>\r\n");
 
         }
     }

@@ -2,6 +2,8 @@
 {
     public interface ConfigDeviceProfileCreateModel : BaseUIModel
     {
-        Repository.DeviceProfile DeviceProfile { get; set; }
+        string Name { get; set; }
+        string ShortName { get; set; }
+        string Description { get; set; }
     }
 }

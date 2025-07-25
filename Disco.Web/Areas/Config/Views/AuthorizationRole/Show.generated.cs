@@ -74,22 +74,24 @@ WriteLiteral(">\r\n    <table>\r\n        <tr>\r\n            <th");
 
 WriteLiteral(" style=\"width: 150px\"");
 
-WriteLiteral(">Id:\r\n            </th>\r\n            <td>\r\n");
+WriteLiteral(">\r\n                Id:\r\n            </th>\r\n            <td>\r\n");
 
 WriteLiteral("                ");
 
             
-            #line 17 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 18 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
            Write(Html.DisplayFor(model => model.Token.Role.Id));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>Name:\r\n        " +
-"    </th>\r\n            <td>");
+WriteLiteral("\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <th>\r\n             " +
+"   Name:\r\n            </th>\r\n            <td>\r\n");
+
+WriteLiteral("                ");
 
             
-            #line 23 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 26 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
            Write(Html.EditorFor(model => model.Token.Role.Name));
 
             
@@ -100,7 +102,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                ");
 
             
-            #line 24 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 27 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
            Write(AjaxHelpers.AjaxSave());
 
             
@@ -111,7 +113,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                ");
 
             
-            #line 25 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 28 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
            Write(AjaxHelpers.AjaxLoader());
 
             
@@ -126,7 +128,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "\r\n                            \'Invalid Name\',\r\n                            \'");
 
             
-            #line 31 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 34 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateName(Model.Token.Role.Id)));
 
             
@@ -137,13 +139,13 @@ WriteLiteral("\',\r\n                            \'RoleName\'\r\n               
 "     <tr>\r\n            <th>Linked Groups/Users:</th>\r\n            <td>\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 44 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 41 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 44 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                  if (Model.Token.SubjectIds.Count == 0)
                 {
 
@@ -157,7 +159,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">None Associated</span>\r\n");
 
             
-            #line 44 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 47 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                 }
                 else
                 {
@@ -174,13 +176,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 48 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 48 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                          foreach (var sg in Model.Subjects)
                         {
                             var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
@@ -190,66 +192,72 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2196), Tuple.Create("\"", 2236)
+WriteAttribute("class", Tuple.Create(" class=\"", 2250), Tuple.Create("\"", 2290)
             
-            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 2204), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+            #line 54 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 2258), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 2204), false)
+, 2258), false)
 );
 
-WriteLiteral(">");
+WriteLiteral(">\r\n");
 
             
-            #line 51 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                          if (sg.IsGroup)
-                                                                         {
+            #line 55 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 55 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                 if (sg.IsGroup)
+                                {
 
             
             #line default
             #line hidden
-WriteLiteral("                                <i");
+WriteLiteral("                                    <i");
 
 WriteLiteral(" class=\"fa fa-users fa-lg\"");
 
 WriteLiteral("></i>");
 
             
-            #line 53 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                 
+            #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                     
             
             #line default
             #line hidden
-            
-            #line 53 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                            Write(displayName);
-
-            
-            #line default
-            #line hidden
-            
-            #line 53 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                             
-                                                                         }
-                                                                         else
-                                                                         {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 2676), Tuple.Create("\"", 2746)
             
             #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 2683), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
+                                                                Write(displayName);
+
             
             #line default
             #line hidden
-, 2683), false)
-, Tuple.Create(Tuple.Create("", 2718), Tuple.Create("#UserDetailTab-Authorization", 2718), true)
+            
+            #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                 
+                                }
+                                else
+                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 2608), Tuple.Create("\"", 2678)
+            
+            #line 61 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 2615), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.User.Show(sg.Id))
+            
+            #line default
+            #line hidden
+, 2615), false)
+, Tuple.Create(Tuple.Create("", 2650), Tuple.Create("#UserDetailTab-Authorization", 2650), true)
 );
 
 WriteLiteral("><i");
@@ -259,8 +267,8 @@ WriteLiteral(" class=\"fa fa-user fa-lg\"");
 WriteLiteral("></i>");
 
             
-            #line 57 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                                                                     Write(displayName);
+            #line 61 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                                                         Write(displayName);
 
             
             #line default
@@ -268,15 +276,16 @@ WriteLiteral("></i>");
 WriteLiteral("</a>\r\n");
 
             
-            #line 58 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                         }
+            #line 62 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                }
+
             
             #line default
             #line hidden
-WriteLiteral("</li>\r\n");
+WriteLiteral("                            </li>\r\n");
 
             
-            #line 59 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 64 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                         }
 
             
@@ -285,7 +294,7 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                    </ul>\r\n");
 
             
-            #line 61 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+            #line 66 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
                 }
 
             
@@ -307,17 +316,69 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Authorization Role Linked Groups/Users\"");
 
-WriteLiteral(">\r\n                        <div");
+WriteLiteral(" data-searchsubjectsurl=\"");
+
+            
+            #line 69 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                                                                        Write(Url.Action(MVC.API.System.SearchSubjects()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-subjecturl=\"");
+
+            
+            #line 69 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                                                                                                                                        Write(Url.Action(MVC.API.System.Subject()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 70 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 70 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                         using (Html.BeginForm(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true)))
+                        {
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                    
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_ListContainer\"");
 
-WriteLiteral(">\r\n                            <span");
+WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_None\"");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">None Associated</span>\r\n                            <ul");
+WriteLiteral(">None Associated</span>\r\n                                <ul");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_List\"");
 
@@ -326,105 +387,127 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 68 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                
+            #line 76 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                    
             
             #line default
             #line hidden
             
-            #line 68 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                 foreach (var sg in Model.Subjects)
-                                {
-                                    var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
+            #line 76 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                     foreach (var sg in Model.Subjects)
+                                    {
+                                        var displayName = sg.Id == sg.Name ? sg.Id : string.Format("{0} [{1}]", sg.Name, sg.Id);
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <li");
+WriteLiteral("                                        <li");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3797), Tuple.Create("\"", 3837)
+WriteAttribute("class", Tuple.Create(" class=\"", 4079), Tuple.Create("\"", 4119)
             
-            #line 71 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 3805), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
+            #line 79 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 4087), Tuple.Create<System.Object, System.Int32>(sg.IsGroup ? "group" : "user"
             
             #line default
             #line hidden
-, 3805), false)
+, 4087), false)
 );
 
 WriteLiteral(" data-subjectid=\"");
 
             
-            #line 71 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                            Write(sg.Id);
+            #line 79 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                Write(sg.Id);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">");
+WriteLiteral(">\r\n                                            <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"subjects\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 4227), Tuple.Create("\"", 4241)
+            
+            #line 80 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+        , Tuple.Create(Tuple.Create("", 4235), Tuple.Create<System.Object, System.Int32>(sg.Id
+            
+            #line default
+            #line hidden
+, 4235), false)
+);
+
+WriteLiteral(" />\r\n");
 
             
-            #line 71 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                                          if (sg.IsGroup)
-                                                                                                         {
+            #line 81 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 81 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                             if (sg.IsGroup)
+                                            {
 
             
             #line default
             #line hidden
-WriteLiteral("                                        <i");
+WriteLiteral("                                                <i");
 
 WriteLiteral(" class=\"fa fa-users fa-lg\"");
 
 WriteLiteral("></i>");
 
             
-            #line 73 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                         
+            #line 83 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                 
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                    Write(displayName);
+            #line 83 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                            Write(displayName);
 
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                     
-                                                                                                         }
-                                                                                                         else
-                                                                                                         {
+            #line 83 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                             
+                                            }
+                                            else
+                                            {
 
             
             #line default
             #line hidden
-WriteLiteral("                                        <i");
+WriteLiteral("                                                <i");
 
 WriteLiteral(" class=\"fa fa-user fa-lg\"");
 
 WriteLiteral("></i>");
 
             
-            #line 77 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                        
+            #line 87 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                
             
             #line default
             #line hidden
             
-            #line 77 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                   Write(displayName);
+            #line 87 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                           Write(displayName);
 
             
             #line default
             #line hidden
             
-            #line 77 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                    
-                                                                                                         }
+            #line 87 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                            
+                                            }
             
             #line default
             #line hidden
@@ -432,17 +515,25 @@ WriteLiteral("<i");
 
 WriteLiteral(" class=\"fa fa-times-circle remove\"");
 
-WriteLiteral("></i></li>\r\n");
+WriteLiteral("></i>\r\n                                        </li>\r\n");
 
             
-            #line 79 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                }
+            #line 90 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                    }
 
             
             #line default
             #line hidden
-WriteLiteral("                            </ul>\r\n                        </div>\r\n              " +
-"          <div");
+WriteLiteral("                                </ul>\r\n                            </div>\r\n");
+
+            
+            #line 93 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        <div");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_AddContainer\"");
 
@@ -452,153 +543,108 @@ WriteLiteral(" type=\"text\"");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_TextAdd\"");
 
-WriteLiteral(" />\r\n                            <a");
+WriteLiteral(" />\r\n                            <button");
 
 WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_Add\"");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(">Add</a>\r\n                        </div>\r\n                        <form");
-
-WriteLiteral(" id=\"Config_AuthRoles_Subjects_Update_Dialog_Form\"");
-
-WriteAttribute("action", Tuple.Create(" action=\"", 5168), Tuple.Create("\"", 5265)
-            
-            #line 86 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-         , Tuple.Create(Tuple.Create("", 5177), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.AuthorizationRole.UpdateSubjects(Model.Token.Role.Id, null, true))
-            
-            #line default
-            #line hidden
-, 5177), false)
-);
-
-WriteLiteral(" method=\"post\"");
-
-WriteLiteral("></form>\r\n                    </div>\r\n                    <script>\r\n             " +
-"           (function(){\r\n                            var dialog, textAdd, list, " +
-"noSubjects, form;\r\n                            \r\n                            fun" +
-"ction showDialog(){\r\n                                if (!dialog){\r\n            " +
-"                        dialog = $(\'#Config_AuthRoles_Subjects_Update_Dialog\').d" +
-"ialog({\r\n                                        resizable: false,\r\n            " +
-"                            modal: true,\r\n                                      " +
-"  autoOpen: false,\r\n                                        width: 350,\r\n       " +
-"                                 height: 420,\r\n                                 " +
-"       buttons: {\r\n                                            \"Save Changes\": s" +
-"aveChanges,\r\n                                            Cancel: cancel\r\n       " +
-"                                 }\r\n                                    });\r\n\r\n " +
-"                                   dialog.on(\'click\', \'.remove\', remove);\r\n\r\n   " +
-"                                 list = $(\'#Config_AuthRoles_Subjects_Update_Dia" +
-"log_List\');\r\n                                    noSubjects = $(\'#Config_AuthRol" +
-"es_Subjects_Update_Dialog_None\');\r\n\r\n                                    textAdd" +
-" = $(\'#Config_AuthRoles_Subjects_Update_Dialog_TextAdd\');\r\n\r\n                   " +
-"                 textAdd.watermark(\'Search Subjects\')\r\n                         " +
-"               .autocomplete({\r\n                                            sour" +
-"ce: \'");
-
-            
-            #line 115 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                 Write(Url.Action(MVC.API.System.SearchSubjects()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                            minLength: 2,\r\n                  " +
-"                          focus: function (e, ui) {\r\n                           " +
-"                     textAdd.val(ui.item.Id);\r\n                                 " +
-"               return false;\r\n                                            },\r\n  " +
-"                                          select: function (e, ui) {\r\n          " +
-"                                      textAdd.val(ui.item.Id).blur();\r\n         " +
-"                                       return false;\r\n                          " +
-"                  }\r\n                                        }).data(\'ui-autocom" +
-"plete\')._renderItem = function (ul, item) {\r\n                                   " +
-"         return $(\"<li></li>\")\r\n                                                " +
-".data(\"item.autocomplete\", item)\r\n                                              " +
-"  .append(\"<a><strong>\" + item.Name + \"</strong><br>\" + item.Id + \" (\" + item.Ty" +
-"pe + \")</a>\")\r\n                                                .appendTo(ul);\r\n " +
-"                                       };\r\n\r\n                                   " +
-" $(\'#Config_AuthRoles_Subjects_Update_Dialog_Add\').click(add);\r\n                " +
-"                }\r\n\r\n                                dialog.dialog(\'open\');\r\n\r\n " +
+WriteLiteral(">Add</button>\r\n                        </div>\r\n                    </div>\r\n      " +
+"              <script>\r\n                        (function () {\r\n                " +
+"            let dialog, textAdd, list, originalList, noSubjects;\r\n\r\n            " +
+"                function showDialog() {\r\n                                if (!di" +
+"alog) {\r\n                                    list = $(\'#Config_AuthRoles_Subject" +
+"s_Update_Dialog_List\');\r\n                                    originalList = list" +
+".html();\r\n                                    noSubjects = $(\'#Config_AuthRoles_" +
+"Subjects_Update_Dialog_None\');\r\n                                    textAdd = $(" +
+"\'#Config_AuthRoles_Subjects_Update_Dialog_TextAdd\');\r\n\r\n                        " +
+"            dialog = $(\'#Config_AuthRoles_Subjects_Update_Dialog\').dialog({\r\n   " +
+"                                     resizable: false,\r\n                        " +
+"                modal: true,\r\n                                        autoOpen: " +
+"false,\r\n                                        width: 350,\r\n                   " +
+"                     buttons: {\r\n                                            \"Sa" +
+"ve Changes\": saveChanges,\r\n                                            Cancel: f" +
+"unction () {\r\n                                                $(this).dialog(\"cl" +
+"ose\");\r\n                                            }\r\n                         " +
+"               },\r\n                                        close: function () {\r" +
+"\n                                            list.html(originalList);\r\n         " +
+"                               }\r\n                                    });\r\n\r\n   " +
+"                                 dialog.on(\'click\', \'.remove\', function () {\r\n  " +
+"                                      $(this).closest(\'li\').remove();\r\n         " +
 "                               updateNoSubjects();\r\n                            " +
-"    return false;\r\n                            }\r\n\r\n                            " +
-"function cancel(){\r\n                                $(this).dialog(\"close\");\r\n\r\n" +
-"                                list.find(\'li\').each(function(){\r\n              " +
-"                      $this = $(this);\r\n                                    if (" +
-"$this.is(\'[data-subjectstatus=\"new\"]\')){\r\n                                      " +
-"  $this.remove();\r\n                                    }else{\r\n                 " +
-"                       if ($this.is(\'[data-subjectstatus=\"removed\"]\')){\r\n       " +
-"                                     $this.show();\r\n                            " +
-"            }\r\n                                    }\r\n                          " +
-"      });\r\n                            }\r\n\r\n                            function" +
-" remove(){\r\n                                $this = $(this).closest(\'li\');\r\n\r\n  " +
-"                              if ($this.is(\'[data-subjectstatus=\"new\"]\')){\r\n    " +
-"                                $this.remove();\r\n                               " +
-" }else{\r\n                                    $this.attr(\'data-subjectstatus\', \'r" +
-"emoved\').hide();\r\n                                }\r\n\r\n                         " +
-"       updateNoSubjects();\r\n                            }\r\n\r\n                   " +
-"         function add(){\r\n                                var id = textAdd.val()" +
-";\r\n\r\n                                $.ajax({\r\n                                 " +
-"   url: \'");
-
-            
-            #line 172 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                     Write(Url.Action(MVC.API.System.Subject()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                    method: \'post\',\r\n                        " +
-"            data: { Id: id }\r\n                                }).done(function(r" +
-"esponse){\r\n                                    if (response){\r\n                 " +
-"                       if (response.IsGroup || response.IsUserAccount) {\r\n      " +
-"                                      if (list.find(\'li[data-subjectid=\"\'+respon" +
-"se.Id.replace(\'\\\\\', \'\\\\\\\\\')+\'\"]\').length == 0){\r\n                               " +
-"             \r\n                                                var liIcon = $(\'<" +
-"i>\').addClass(\'fa fa-lg\');\r\n                                                if (" +
-"response.Type === \'user\')\r\n                                                    l" +
-"iIcon.addClass(\'fa-user\');\r\n                                                else" +
-"\r\n                                                    liIcon.addClass(\'fa-users\'" +
-");\r\n\r\n                                                var li = $(\'<li>\')\r\n      " +
-"                                              .append(liIcon)\r\n                 " +
-"                                   .append($(\'<span>\').text(response.Id == respo" +
-"nse.Name ?  response.Id : response.Name + \' [\' + response.Id + \']\'))\r\n          " +
-"                                          .append($(\'<i>\').addClass(\'fa fa-times" +
-"-circle remove\'))\r\n                                                    .addClass" +
-"(response.Type)\r\n                                                    .attr(\'data" +
-"-subjectid\', response.Id)\r\n                                                    ." +
-"attr(\'data-subjectstatus\', \'new\');\r\n\r\n                                          " +
-"      list.append(li);\r\n\r\n                                                update" +
-"NoSubjects();                                        \r\n                         " +
-"                   }else{\r\n                                                alert" +
-"(\'That subject has already been added\');\r\n                                      " +
-"      }\r\n                                        }else{\r\n                       " +
-"                     alert(response.Name + \' [\'+response.Id+\'] is a \' + response" +
-".Type + \'. Only users and groups can be added.\');\r\n                             " +
-"           }\r\n                                    }else{\r\n                      " +
-"                  alert(\'Unknown Id\');\r\n                                    }\r\n " +
-"                               }).fail(function(jqXHR, textStatus, errorThrown){" +
-"\r\n                                    alert(\'Error: \' + errorThrown);\r\n         " +
-"                       });\r\n                                }\r\n\r\n               " +
-"             function updateNoSubjects(){\r\n                                if (l" +
-"ist.find(\'li:visible\').length > 0)\r\n                                    noSubjec" +
-"ts.hide();\r\n                                else\r\n                              " +
-"      noSubjects.show();\r\n                            }\r\n\r\n                     " +
-"       function saveChanges(){\r\n                                var form = $(\'#C" +
-"onfig_AuthRoles_Subjects_Update_Dialog_Form\').empty();\r\n\r\n                      " +
-"          list.find(\'li[data-subjectstatus!=\"removed\"]\').each(function(){\r\n     " +
-"                               var subjectId = $(this).attr(\'data-subjectid\');\r\n" +
-"                                    \r\n                                    form.a" +
-"ppend($(\'<input>\').attr({\r\n                                        \'name\': \'Subj" +
-"ects\',\r\n                                        \'type\': \'hidden\'\r\n              " +
-"                      }).val(subjectId));\r\n\r\n                                })." +
-"get();\r\n\r\n                                form.submit();\r\n\r\n                    " +
-"            dialog.dialog(\"disable\");\r\n                                dialog.di" +
-"alog(\"option\", \"buttons\", null);\r\n                            }\r\n\r\n             " +
-"               $(function(){\r\n                                $(\'#Config_AuthRol" +
-"es_Subjects_Update\').click(showDialog);\r\n                            });\r\n\r\n    " +
-"                    })();\r\n                    </script>\r\n                </div>" +
-"\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td");
+"        });\r\n\r\n\r\n                                    textAdd.watermark(\'Search S" +
+"ubjects\')\r\n                                        .autocomplete({\r\n            " +
+"                                source: dialog.attr(\'data-searchsubjectsurl\'),\r\n" +
+"                                            minLength: 2,\r\n                     " +
+"                       focus: function (e, ui) {\r\n                              " +
+"                  textAdd.val(ui.item.Id);\r\n                                    " +
+"            return false;\r\n                                            },\r\n     " +
+"                                       select: function (e, ui) {\r\n             " +
+"                                   textAdd.val(ui.item.Id).blur();\r\n            " +
+"                                    $(\'#Config_AuthRoles_Subjects_Update_Dialog_" +
+"Add\').trigger(\'click\');\r\n                                                return " +
+"false;\r\n                                            }\r\n                         " +
+"               }).data(\'ui-autocomplete\')._renderItem = function (ul, item) {\r\n " +
+"                                           return $(\"<li></li>\")\r\n              " +
+"                                  .data(\"item.autocomplete\", item)\r\n            " +
+"                                    .append(\"<a><strong>\" + item.Name + \"</stron" +
+"g><br>\" + item.Id + \" (\" + item.Type + \")</a>\")\r\n                               " +
+"                 .appendTo(ul);\r\n                                        };\r\n\r\n " +
+"                                   $(\'#Config_AuthRoles_Subjects_Update_Dialog_A" +
+"dd\').on(\'click\', add);\r\n                                }\r\n\r\n                   " +
+"             dialog.dialog(\'open\');\r\n\r\n                                updateNoS" +
+"ubjects();\r\n                                return false;\r\n                     " +
+"       }\r\n\r\n                            async function add() {\r\n                " +
+"                const id = textAdd.val();\r\n\r\n                                try" +
+" {\r\n                                    const body = new FormData();\r\n          " +
+"                          body.append(\'__RequestVerificationToken\', document.bod" +
+"y.dataset.antiforgery);\r\n                                    body.append(\'id\', i" +
+"d);\r\n                                    const response = await fetch(dialog.att" +
+"r(\'data-subjecturl\'), {\r\n                                        method: \'POST\'," +
+"\r\n                                        body: body\r\n                          " +
+"          });\r\n\r\n                                    if (response.ok) {\r\n       " +
+"                                 const data = await response.json();\r\n\r\n        " +
+"                                if (!data)\r\n                                    " +
+"        throw \'Unknown user id\';\r\n\r\n                                        if (" +
+"!data.IsGroup && !data.IsUserAccount)\r\n                                         " +
+"   throw data.Name + \' [\' + data.Id + \'] is a \' + data.Type + \'. Only users and " +
+"groups can be added.\';\r\n\r\n                                        if (list.find(" +
+"\'li[data-subjectid=\"\' + data.Id.replace(\'\\\\\', \'\\\\\\\\\') + \'\"]\').length != 0) {\r\n  " +
+"                                          throw \'That subject has already been a" +
+"dded\';\r\n                                        }\r\n\r\n                           " +
+"             const liIcon = $(\'<i>\').addClass(\'fa fa-lg\');\r\n                    " +
+"                    if (data.Type === \'user\')\r\n                                 " +
+"           liIcon.addClass(\'fa-user\');\r\n                                        " +
+"else\r\n                                            liIcon.addClass(\'fa-users\');\r\n" +
+"\r\n                                        const li = $(\'<li>\')\r\n                " +
+"                            .append($(\'<input>\').attr({ type: \'hidden\', name: \'s" +
+"ubjects\', value: data.Id }))\r\n                                            .appen" +
+"d(liIcon)\r\n                                            .append($(\'<span>\').text(" +
+"data.Id == data.Name ? data.Id : data.Name + \' [\' + data.Id + \']\'))\r\n           " +
+"                                 .append($(\'<i>\').addClass(\'fa fa-times-circle r" +
+"emove\'))\r\n                                            .addClass(data.Type)\r\n    " +
+"                                        .attr(\'data-subjectid\', data.Id)\r\n      " +
+"                                      .attr(\'data-subjectstatus\', \'new\');\r\n\r\n   " +
+"                                     list.append(li);\r\n                         " +
+"               textAdd.val(\'\');\r\n\r\n                                        updat" +
+"eNoSubjects();\r\n                                    } else {\r\n                  " +
+"                      alert(\'Error: \' + response.statusText);\r\n                 " +
+"                   }\r\n\r\n                                } catch (e) {\r\n         " +
+"                           alert(\'Error: \' + e);\r\n                              " +
+"  }\r\n\r\n                                return false;\r\n                          " +
+"  }\r\n\r\n                            function updateNoSubjects() {\r\n              " +
+"                  if (list.find(\'li:visible\').length > 0)\r\n                     " +
+"               noSubjects.hide();\r\n                                else\r\n       " +
+"                             noSubjects.show();\r\n                            }\r\n" +
+"\r\n                            function saveChanges() {\r\n                        " +
+"        dialog\r\n                                    .dialog(\"option\", \"buttons\"," +
+" null)\r\n                                    .find(\'form\').trigger(\'submit\');\r\n  " +
+"                          }\r\n\r\n                            $(\'#Config_AuthRoles_" +
+"Subjects_Update\').click(showDialog);\r\n                        })();\r\n           " +
+"         </script>\r\n                </div>\r\n            </td>\r\n        </tr>\r\n  " +
+"      <tr>\r\n            <td");
 
 WriteLiteral(" colspan=\"2\"");
 
@@ -606,119 +652,140 @@ WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" id=\"Config_AuthRoles_Claims_Tree\"");
 
-WriteLiteral(">\r\n                </div>\r\n                <div>\r\n                    <a");
+WriteLiteral(">\r\n                </div>\r\n                <div>\r\n                    <button");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" id=\"Config_AuthRoles_Claims_SaveChanges\"");
 
 WriteLiteral(" class=\"button small disabled\"");
 
-WriteLiteral(">Save Changes</a>");
+WriteLiteral(" data-saveurl=\"");
 
             
-            #line 251 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                                                                                                  Write(AjaxHelpers.AjaxLoader());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                </div>\r\n                <script>\r\n                    (function" +
-"(){\r\n                        var claimNodes = ");
-
-            
-            #line 255 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                     Write(new HtmlString(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes)));
+            #line 240 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                                          Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
 
             
             #line default
             #line hidden
-WriteLiteral(@";
+WriteLiteral("\"");
 
-                        $(function(){
-                            var saveButton = $('#Config_AuthRoles_Claims_SaveChanges');
-                            var ajaxLoading = saveButton.next('.ajaxLoading');
-
-                            var tree = $('#Config_AuthRoles_Claims_Tree').fancytree({
-                                source: claimNodes,
-                                checkbox: true,
-                                selectMode: 3,
-                                select: function(){
-                                    saveButton.removeClass('disabled');
-                                },
-                                keyboard: false
-                            });
-
-                            saveButton.click(function(){
-                                if (!saveButton.is('.disabled')){
-                                    var selectedNodes = tree.fancytree('getTree').getSelectedNodes();
-
-                                    var selectedKeys = [];
-                                    for (var i = 0; i < selectedNodes.length; i++) {
-                                        var node = selectedNodes[i];
-                                        if (!node.folder)
-                                            selectedKeys.push(node.key);
-                                    }
-
-                                    ajaxLoading.show()
-
-                                    $.ajax({
-                                        url: '");
+WriteLiteral(">Save Changes</button>");
 
             
-            #line 285 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-                                         Write(Url.Action(MVC.API.AuthorizationRole.UpdateClaims(Model.Token.Role.Id)));
+            #line 240 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                                                                                                                                                                                                         Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                        method: 'post',
-                                        data: { ClaimKeys: selectedKeys },
-                                        traditional: true
-                                    }).done(function(response, result){
-                                        if (result != 'success' || response != 'OK') {
-                                            alert('Unable to save changes:\n' + response);
-                                            ajaxLoading.hide();
-                                        } else {
-                                            saveButton.addClass('disabled');
-                                            ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                        }
-                                    }).fail(function(jqXHR, textStatus, errorThrown){
-                                        alert('Error: ' + errorThrown);
-                                    });
-                                }
-                                return false;
-                            });
-                        });
-                    })();
-                </script>
-            </td>
-        </tr>
-    </table>
-</div>
-<div");
+WriteLiteral("\r\n                </div>\r\n                <script");
 
-WriteLiteral(" class=\"actionBar\"");
+WriteLiteral(" id=\"Config_AuthRoles_Claims_NodesJson\"");
+
+WriteLiteral(" type=\"application/json\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("    ");
+WriteLiteral("                    ");
 
             
-            #line 311 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
-Write(Html.ActionLinkButton("Delete", MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true), "Config_AuthRoles_Actions_Delete_Button"));
+            #line 243 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+               Write(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClaimNavigatorFancyTreeNodes)));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n    <div");
+WriteLiteral("\r\n                </script>\r\n                <script>\r\n                    (funct" +
+"ion () {\r\n                        var claimNodes = JSON.parse($(\'#Config_AuthRol" +
+"es_Claims_NodesJson\').html());\r\n\r\n                        $(function () {\r\n     " +
+"                       var saveButton = $(\'#Config_AuthRoles_Claims_SaveChanges\'" +
+");\r\n                            var ajaxLoading = saveButton.next(\'.ajaxLoading\'" +
+");\r\n\r\n                            var tree = $(\'#Config_AuthRoles_Claims_Tree\')." +
+"fancytree({\r\n                                source: claimNodes,\r\n              " +
+"                  checkbox: true,\r\n                                selectMode: 3" +
+",\r\n                                select: function () {\r\n                      " +
+"              saveButton.removeClass(\'disabled\');\r\n                             " +
+"   },\r\n                                keyboard: false\r\n                        " +
+"    });\r\n\r\n                            saveButton.on(\'click\', async function () " +
+"{\r\n                                if (!saveButton.is(\'.disabled\')) {\r\n         " +
+"                           ajaxLoading.show();\r\n\r\n                              " +
+"      try {\r\n                                        const body = new FormData()" +
+";\r\n                                        body.append(\'__RequestVerificationTok" +
+"en\', document.body.dataset.antiforgery);\r\n\r\n                                    " +
+"    var selectedNodes = tree.fancytree(\'getTree\').getSelectedNodes();\r\n\r\n       " +
+"                                 var selectedKeys = [];\r\n                       " +
+"                 for (var i = 0; i < selectedNodes.length; i++) {\r\n             " +
+"                               var node = selectedNodes[i];\r\n                   " +
+"                         if (!node.folder)\r\n                                    " +
+"            body.append(\'claimKeys\', node.key);\r\n                               " +
+"         }\r\n\r\n                                        const response = await fet" +
+"ch(saveButton.attr(\'data-saveurl\'), {\r\n                                         " +
+"   method: \'POST\',\r\n                                            body: body\r\n    " +
+"                                    });\r\n\r\n                                     " +
+"   if (response.ok) {\r\n                                            saveButton.ad" +
+"dClass(\'disabled\');\r\n                                            ajaxLoading.nex" +
+"t(\'.ajaxOk\').show().delay(\'fast\').fadeOut(\'slow\');\r\n                            " +
+"            } else {\r\n                                            alert(\'Unable " +
+"to save changes:\\n\' + response);\r\n                                        }\r\n   " +
+"                                 } catch (e) {\r\n                                " +
+"        alert(\'Error: \' + e);\r\n                                    }\r\n          " +
+"                          ajaxLoading.hide();\r\n                                }" +
+"\r\n                            });\r\n                        });\r\n                " +
+"    })();\r\n                </script>\r\n            </td>\r\n        </tr>\r\n    </ta" +
+"ble>\r\n</div>\r\n<div");
+
+WriteLiteral(" class=\"actionBar\"");
+
+WriteLiteral(">\r\n    <button");
+
+WriteLiteral(" id=\"Config_AuthRoles_Actions_Delete_Button\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Delete</button>\r\n    <div");
 
 WriteLiteral(" id=\"Config_AuthRoles_Actions_Delete_Dialog\"");
 
+WriteLiteral(" class=\"dialog\"");
+
 WriteLiteral(" title=\"Delete this Authorization Role?\"");
 
-WriteLiteral(">\r\n        <p>\r\n            <i");
+WriteLiteral(">\r\n");
+
+            
+            #line 307 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 307 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+         using (Html.BeginForm(MVC.API.AuthorizationRole.Delete(Model.Token.Role.Id, true)))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 309 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 309 "..\..\Areas\Config\Views\AuthorizationRole\Show.cshtml"
+                                    
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("        <p>\r\n            <i");
 
 WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg warning\"");
 
@@ -730,30 +797,28 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
         $(function () {
-            var button = $('#Config_AuthRoles_Actions_Delete_Button');
-            var buttonDialog = $('#Config_AuthRoles_Actions_Delete_Dialog');
-            var buttonLink = button.attr('href');
-            button.attr('href', '#');
-            button.click(function () {
-                buttonDialog.dialog('open');
-                return false;
-            });
-            buttonDialog.dialog({
-                resizable: false,
-                modal: true,
-                autoOpen: false,
-                buttons: {
-                    ""Delete"": function () {
-                        var $this = $(this);
-                        $this.dialog(""disable"");
-                        $this.dialog(""option"", ""buttons"", null);
-                        window.location.href = buttonLink;
-                    },
-                    Cancel: function () {
-                        $(this).dialog(""close"");
-                    }
+            let buttonDialog = null;
+            $('#Config_AuthRoles_Actions_Delete_Button').click(function () {
+                if (!buttonDialog) {
+                    buttonDialog = $('#Config_AuthRoles_Actions_Delete_Dialog').dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            ""Delete"": function () {
+                                $(this)
+                                    .dialog(""option"", ""buttons"", null)
+                                    .find('form').trigger('submit');
+                            },
+                            Cancel: function () {
+                                $(this).dialog(""close"");
+                            }
+                        }
+                    });
                 }
+                buttonDialog.dialog('open');
             });
+
         });
     </script>
 </div>

@@ -43,7 +43,7 @@
             <p>
                 Bulk generate documents for devices, users or jobs (based on document template scope) associated with this Device @(targetDescription).
             </p>
-            @using (Html.BeginForm(urlDelegate(), FormMethod.Post))
+            @using (Html.BeginForm(urlDelegate()))
             {
                 @Html.AntiForgeryToken()
                 @Html.Hidden("deviceGroupId", targetId)

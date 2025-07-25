@@ -8,7 +8,7 @@
 }
 <div id="DocumentTemplate_BulkGenerate">
     <div class="actions">
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)))
         {
             if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
             {
@@ -79,7 +79,7 @@
             <div class="example3 code">user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith;Domain Admins</div>
         </div>
     </div>
-    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUsers(), FormMethod.Post))
+    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUsers()))
     {
         <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="userIds"></div>
         <textarea id="inputBulkGenerateDataIds" name="userIds" data-val="true" data-val-required="Identifiers are required" required></textarea>
@@ -93,7 +93,7 @@
             Add all members of a group (including recursive members) to the bulk generation.
         </div>
     </div>
-    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers(), FormMethod.Post))
+    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers()))
     {
         <table class="input">
             <tbody>
@@ -119,7 +119,7 @@
                 Add all users associated with the flag to the bulk generation.
             </div>
         </div>
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag()))
         {
             <input name="flagId" type="hidden" required />
             <div class="dialog-item-picker">
@@ -144,7 +144,7 @@
                 Add all users associated with a device in the selected profile to the bulk generation.
             </div>
         </div>
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile()))
         {
             <input name="deviceProfileId" type="hidden" required />
             <div class="dialog-item-picker">
@@ -168,7 +168,7 @@
                 Add all users associated with a device in the selected batch to the bulk generation.
             </div>
         </div>
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch()))
         {
             <input name="deviceBatchId" type="hidden" required />
             <div class="dialog-item-picker">
@@ -192,7 +192,7 @@
                 Add all users associated with an attachment of the selected document template to the bulk generation.
             </div>
         </div>
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment()))
         {
             <input name="documentTemplateId" type="hidden" required />
             <div class="dialog-item-picker">
@@ -220,7 +220,7 @@
                 Add all users with a matching user detail to the bulk generation.
             </div>
         </div>
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail()))
         {
             <input name="key" type="hidden" required />
             <input name="value" type="hidden" />
@@ -236,7 +236,7 @@
 
             @Html.AntiForgeryToken()
         }
-        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues(), FormMethod.Post))
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues()))
         {
             <input name="key" type="hidden" required />
 

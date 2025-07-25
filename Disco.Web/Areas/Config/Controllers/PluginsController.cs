@@ -23,7 +23,8 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         #region Plugin Configuration
-        [DiscoAuthorize(Claims.Config.Plugin.Configure), HttpPost, ValidateInput(false)]
+        [DiscoAuthorize(Claims.Config.Plugin.Configure), ValidateInput(false)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Configure(string PluginId, FormCollection form)
         {
             if (string.IsNullOrEmpty(PluginId))

@@ -173,9 +173,6 @@
   margin-left: 16px;
   font-size: 0.9em;
 }
-#Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_SubTypes_Update_Dialog {
-  display: none;
-}
 #Job_Show #Job_Show_Subjects #Job_Show_Job #Job_Show_Job_Dates {
   padding-bottom: 6px;
 }

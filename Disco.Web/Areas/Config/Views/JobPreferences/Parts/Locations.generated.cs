@@ -65,83 +65,90 @@ WriteLiteral(">\r\n    <h2>Job Locations</h2>\r\n    <table>\r\n        <tr>\r\n
 
 WriteLiteral(" style=\"width: 140px\"");
 
-WriteLiteral(">Mode:\r\n            </th>\r\n            <td>");
+WriteLiteral(">\r\n                Mode:\r\n            </th>\r\n            <td>\r\n");
 
             
-            #line 13 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                
+            
+            #line default
+            #line hidden
+            
+            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
                  if (canConfig)
                 {
-                
-            
-            #line default
-            #line hidden
-            
-            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-           Write(Html.DropDownListFor(model => model.LocationMode, Model.LocationModeOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
-
-            
-            #line default
-            #line hidden
-            
-            #line 15 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                                                                                                                                                              
-                
-            
-            #line default
-            #line hidden
-            
-            #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-           Write(AjaxHelpers.AjaxSave());
-
-            
-            #line default
-            #line hidden
-            
-            #line 16 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                       
-                
+                    
             
             #line default
             #line hidden
             
             #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-           Write(AjaxHelpers.AjaxLoader());
+               Write(Html.DropDownListFor(model => model.LocationMode, Model.LocationModeOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value })));
 
             
             #line default
             #line hidden
             
             #line 17 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                         
+                                                                                                                                                                                  
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+               Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
-WriteLiteral("                <div");
+            
+            #line 18 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                           
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+               Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+            
+            #line 19 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                             
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <div");
 
 WriteLiteral(" id=\"Config_Location_Unrestricted\"");
 
-WriteLiteral(">\r\n                    <div");
+WriteLiteral(">\r\n                        <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                        <p");
+WriteLiteral(">\r\n                            <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                            <i");
+WriteLiteral(">\r\n                                <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>Technicians will be able to specify <em>any</em> value when entering a locat" +
 "ion. A selection of locations used historically will be offered.\r\n              " +
-"          </p>\r\n                    </div>\r\n                </div>\r\n");
+"              </p>\r\n                        </div>\r\n                    </div>\r\n" +
+"");
 
-WriteLiteral("                <div");
+WriteLiteral("                    <div");
 
 WriteLiteral(" id=\"Config_Location_List\"");
 
-WriteLiteral(">\r\n                    <a");
+WriteLiteral(">\r\n                        <a");
 
 WriteLiteral(" id=\"Config_Location_List_Button\"");
 
@@ -157,7 +164,7 @@ WriteLiteral(" href=\"#\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(">Import List</a>\r\n                    <div");
+WriteLiteral(">Import List</a>\r\n                        <div");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog\"");
 
@@ -165,17 +172,47 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Locations\"");
 
-WriteLiteral(">\r\n                        <div");
+WriteLiteral(">\r\n");
+
+            
+            #line 30 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 30 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                             using (Html.BeginForm(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true)))
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 32 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 32 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <div");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_ListContainer\"");
 
-WriteLiteral(">\r\n                            <span");
+WriteLiteral(">\r\n                                    <span");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_None\"");
 
 WriteLiteral(" class=\"smallMessage\"");
 
-WriteLiteral(">The List is Empty</span>\r\n                            <ul");
+WriteLiteral(">The List is Empty</span>\r\n                                    <ul");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_List\"");
 
@@ -184,37 +221,53 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 31 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                
+            #line 36 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                        
             
             #line default
             #line hidden
             
-            #line 31 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                 foreach (var loc in Model.LocationList)
-                                {
+            #line 36 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                         foreach (var loc in Model.LocationList)
+                                        {
 
             
             #line default
             #line hidden
-WriteLiteral("                                    <li");
+WriteLiteral("                                            <li");
 
 WriteLiteral(" data-location=\"");
 
             
-            #line 33 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                                  Write(loc);
+            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                                          Write(loc);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">");
+WriteLiteral("><input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"locationList\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 2305), Tuple.Create("\"", 2317)
+            
+            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                     , Tuple.Create(Tuple.Create("", 2313), Tuple.Create<System.Object, System.Int32>(loc
+            
+            #line default
+            #line hidden
+, 2313), false)
+);
+
+WriteLiteral(" />");
 
             
-            #line 33 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                                        Write(loc);
+            #line 38 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                                                                                                        Write(loc);
 
             
             #line default
@@ -226,48 +279,42 @@ WriteLiteral(" class=\"fa fa-times-circle remove\"");
 WriteLiteral("></i></li>\r\n");
 
             
-            #line 34 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                }
+            #line 39 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                        }
 
             
             #line default
             #line hidden
-WriteLiteral("                            </ul>\r\n                        </div>\r\n              " +
-"          <div");
+WriteLiteral("                                    </ul>\r\n                                </div>" +
+"\r\n");
+
+            
+            #line 42 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_AddContainer\"");
 
-WriteLiteral(">\r\n                            <input");
+WriteLiteral(">\r\n                                <input");
 
 WriteLiteral(" type=\"text\"");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_TextAdd\"");
 
-WriteLiteral(" />\r\n                            <a");
+WriteLiteral(" />\r\n                                <button");
 
 WriteLiteral(" id=\"Config_Location_List_Dialog_Add\"");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(">Add</a>\r\n                        </div>\r\n                        <form");
-
-WriteLiteral(" id=\"Config_Location_List_Dialog_Form\"");
-
-WriteAttribute("action", Tuple.Create(" action=\"", 2451), Tuple.Create("\"", 2538)
-            
-            #line 41 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-, Tuple.Create(Tuple.Create("", 2460), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true))
-            
-            #line default
-            #line hidden
-, 2460), false)
-);
-
-WriteLiteral(" method=\"post\"");
-
-WriteLiteral("></form>\r\n                    </div>\r\n                    <div");
+WriteLiteral(">Add</button>\r\n                            </div>\r\n                        </div>" +
+"\r\n                        <div");
 
 WriteLiteral(" id=\"Config_Location_ListImport_Dialog\"");
 
@@ -275,23 +322,37 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Import Locations\"");
 
-WriteLiteral(">\r\n                        <form");
+WriteLiteral(">\r\n");
 
-WriteLiteral(" id=\"Config_Location_ListImport_Dialog_Form\"");
-
-WriteAttribute("action", Tuple.Create(" action=\"", 2770), Tuple.Create("\"", 2857)
             
-            #line 44 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-   , Tuple.Create(Tuple.Create("", 2779), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.JobPreferences.ImportLocationList(null, redirect: true))
+            #line 49 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                            
             
             #line default
             #line hidden
-, 2779), false)
-);
+            
+            #line 49 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                             using (Html.BeginForm(MVC.API.JobPreferences.ImportLocationList(null, redirect: true)))
+                            {
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 51 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                           Write(Html.AntiForgeryToken());
 
-WriteLiteral(" method=\"post\"");
+            
+            #line default
+            #line hidden
+            
+            #line 51 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                                        
 
-WriteLiteral(">\r\n                            <input");
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <input");
 
 WriteLiteral(" type=\"hidden\"");
 
@@ -301,11 +362,13 @@ WriteLiteral(" name=\"AutomaticList\"");
 
 WriteLiteral(" value=\"False\"");
 
-WriteLiteral(" />\r\n                            <div");
+WriteLiteral(" />\r\n");
+
+WriteLiteral("                                <div");
 
 WriteLiteral(" id=\"Config_Location_ListImport_Dialog_Overwrite_Container\"");
 
-WriteLiteral(">\r\n                                <input");
+WriteLiteral(">\r\n                                    <input");
 
 WriteLiteral(" type=\"checkbox\"");
 
@@ -319,73 +382,82 @@ WriteLiteral(" /><label");
 
 WriteLiteral(" for=\"Config_Location_ListImport_Dialog_Overwrite\"");
 
-WriteLiteral(">Override Existing List</label>\r\n                            </div>\r\n            " +
-"                <textarea");
+WriteLiteral(">Override Existing List</label>\r\n                                </div>\r\n");
+
+WriteLiteral("                                <textarea");
 
 WriteLiteral(" id=\"Config_Location_ListImport_Dialog_LocationList\"");
 
 WriteLiteral(" name=\"LocationList\"");
 
-WriteLiteral("></textarea>\r\n                            <div");
+WriteLiteral("></textarea>\r\n");
+
+WriteLiteral("                                <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                                <p");
+WriteLiteral(">\r\n                                    <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                                    <i");
+WriteLiteral(">\r\n                                        <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
-WriteLiteral(@"></i>Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                                </p>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-");
+WriteLiteral("></i>Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas " +
+"(<code>,</code>) or semicolons (<code>;</code>).\r\n                              " +
+"      </p>\r\n                                </div>\r\n");
 
-WriteLiteral("                <div");
+            
+            #line 62 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </div>\r\n                    </div>\r\n");
+
+WriteLiteral("                    <div");
 
 WriteLiteral(" id=\"Config_Location_Optional\"");
 
-WriteLiteral(">\r\n                    <div");
+WriteLiteral(">\r\n                        <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                        <p");
+WriteLiteral(">\r\n                            <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                            <i");
+WriteLiteral(">\r\n                                <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>Technicians will be able to specify <em>any</em> value when entering a locat" +
-"ion. A defined list of location options is suggested.\r\n                        <" +
-"/p>\r\n                    </div>\r\n                </div>\r\n");
+"ion. A defined list of location options is suggested.\r\n                         " +
+"   </p>\r\n                        </div>\r\n                    </div>\r\n");
 
-WriteLiteral("                <div");
+WriteLiteral("                    <div");
 
 WriteLiteral(" id=\"Config_Location_Restricted\"");
 
-WriteLiteral(">\r\n                    <div");
+WriteLiteral(">\r\n                        <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                        <p");
+WriteLiteral(">\r\n                            <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                            <i");
+WriteLiteral(">\r\n                                <i");
 
 WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>Technicians are restricted to select a location from the defined list.\r\n    " +
-"                    </p>\r\n                    </div>\r\n                </div>\r\n");
+"                        </p>\r\n                        </div>\r\n                  " +
+"  </div>\r\n");
 
-WriteLiteral("                <script");
+WriteLiteral("                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -394,7 +466,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "                           null,\r\n                            \'");
 
             
-            #line 77 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 84 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
                          Write(Url.Action(MVC.API.JobPreferences.UpdateLocationMode()));
 
             
@@ -424,117 +496,102 @@ WriteLiteral("\',\r\n                            \'LocationMode\');\r\n\r\n     
 "    $Config_Location_Restricted.show();\r\n                                    bre" +
 "ak;\r\n                            }\r\n                        }\r\n                 " +
 "       update();\r\n                        $locationMode.change(update);\r\n\r\n     " +
-"                   var dialog, textAdd, list, noList, form;\r\n\r\n                 " +
-"       $(\'#Config_Location_List_Button\').click(showDialog);\r\n\r\n                 " +
-"       function showDialog() {\r\n                            if (!dialog) {\r\n    " +
-"                            dialog = $(\'#Config_Location_List_Dialog\').dialog({\r" +
-"\n                                    resizable: false,\r\n                        " +
-"            modal: true,\r\n                                    autoOpen: false,\r\n" +
-"                                    width: 350,\r\n                               " +
-"     buttons: {\r\n                                        \"Save Changes\": saveCha" +
-"nges,\r\n                                        Cancel: cancel\r\n                 " +
-"                   }\r\n                                });\r\n\r\n                   " +
-"             dialog.on(\'click\', \'.remove\', remove);\r\n\r\n                         " +
-"       list = $(\'#Config_Location_List_Dialog_List\');\r\n                         " +
-"       noList = $(\'#Config_Location_List_Dialog_None\');\r\n\r\n                     " +
-"           textAdd = $(\'#Config_Location_List_Dialog_TextAdd\');\r\n\r\n             " +
-"                   textAdd.watermark(\'Location\');\r\n                             " +
-"   textAdd.keydown(function (e) {\r\n                                    if (e.key" +
-"Code == 13)\r\n                                        add();\r\n                   " +
-"             });\r\n\r\n                                $(\'#Config_Location_List_Dia" +
-"log_Add\').click(add);\r\n                            }\r\n\r\n                        " +
-"    dialog.dialog(\'open\');\r\n\r\n                            updateNoList();\r\n     " +
-"                       return false;\r\n                        }\r\n\r\n             " +
-"           function cancel() {\r\n                            $(this).dialog(\"clos" +
-"e\");\r\n\r\n                            list.find(\'li\').each(function () {\r\n        " +
-"                        $this = $(this);\r\n                                if ($t" +
-"his.is(\'[data-status=\"new\"]\')) {\r\n                                    $this.remo" +
-"ve();\r\n                                } else {\r\n                               " +
-"     if ($this.is(\'[data-status=\"removed\"]\')) {\r\n                               " +
-"         $this.show();\r\n                                        $this.attr(\'data" +
-"-status\', \'\')\r\n                                    }\r\n                          " +
-"      }\r\n                            });\r\n                        }\r\n\r\n         " +
-"               function remove() {\r\n                            $this = $(this)." +
-"closest(\'li\');\r\n\r\n                            if ($this.is(\'[data-status=\"new\"]\'" +
-")) {\r\n                                $this.remove();\r\n                         " +
-"   } else {\r\n                                $this.attr(\'data-status\', \'removed\'" +
-").hide();\r\n                            }\r\n\r\n                            updateNo" +
-"List();\r\n                        }\r\n\r\n                        function add() {\r\n" +
-"\r\n                            var value = textAdd.val();\r\n\r\n                    " +
-"        // Trim\r\n                            value = jQuery.trim(value);\r\n\r\n    " +
-"                        if (!value) {\r\n                                alert(\'En" +
-"ter a location to be added\');\r\n                                return;\r\n        " +
-"                    }\r\n\r\n                            // Already Exists\r\n        " +
-"                    var existingValues = list.find(\'li[data-location]\').filter(\'" +
-"[data-status!=\"removed\"]\').map(function () { return $(this).attr(\'data-location\'" +
-") }).get();\r\n                            if (jQuery.inArray(value, existingValue" +
-"s) >= 0) {\r\n                                alert(\'That item already exists in t" +
-"he list\');\r\n                                return;\r\n                           " +
-" }\r\n\r\n                            // Add Item\r\n                            var l" +
-"i = $(\'<li>\')\r\n                                .append($(\'<span>\').text(value))\r" +
-"\n                                .append($(\'<i>\').addClass(\'fa fa-times-circle r" +
-"emove\'))\r\n                                .attr(\'data-location\', value)\r\n       " +
-"                         .attr(\'data-status\', \'new\');\r\n\r\n                       " +
-"     list.append(li);\r\n\r\n                            textAdd.focus();\r\n\r\n       " +
-"                     updateNoList();\r\n                        }\r\n\r\n             " +
-"           function updateNoList() {\r\n                            if (list.find(" +
-"\'li:visible\').length > 0)\r\n                                noList.hide();\r\n     " +
-"                       else\r\n                                noList.show();\r\n   " +
-"                     }\r\n\r\n                        function saveChanges() {\r\n    " +
-"                        var form = $(\'#Config_Location_List_Dialog_Form\').empty(" +
-");\r\n\r\n                            list.find(\'li[data-status!=\"removed\"]\').each(f" +
-"unction () {\r\n                                var location = $(this).attr(\'data-" +
-"location\');\r\n\r\n                                form.append($(\'<input>\').attr({\r\n" +
-"                                    \'name\': \'LocationList\',\r\n                   " +
-"                 \'type\': \'hidden\'\r\n                                }).val(locati" +
-"on));\r\n\r\n                            }).get();\r\n\r\n                            fo" +
-"rm.submit();\r\n\r\n                            dialog.dialog(\"disable\");\r\n         " +
-"                   dialog.dialog(\"option\", \"buttons\", null);\r\n                  " +
-"      }\r\n\r\n                        // Import\r\n                        var dialog" +
-"Import, formImport;\r\n\r\n                        $(\'#Config_Location_List_ImportBu" +
-"tton\').click(showDialogImport);\r\n\r\n                        function showDialogIm" +
-"port() {\r\n                            if (!dialogImport) {\r\n                    " +
-"            dialogImport = $(\'#Config_Location_ListImport_Dialog\').dialog({\r\n   " +
-"                                 resizable: false,\r\n                            " +
-"        modal: true,\r\n                                    autoOpen: false,\r\n    " +
-"                                width: 350,\r\n                                   " +
-" buttons: {\r\n                                        \"Build Automatic List\": fun" +
-"ction () {\r\n                                            $(\'#Config_Location_List" +
-"Import_Dialog_AutomaticList\').val(\'True\').closest(\'form\').submit();\r\n           " +
-"                                 dialogImport.dialog(\"disable\");\r\n              " +
-"                              dialogImport.dialog(\"option\", \"buttons\", null);\r\n " +
-"                                       },\r\n                                     " +
-"   \"Import List\": function () {\r\n                                            $(\'" +
-"#Config_Location_ListImport_Dialog_LocationList\').closest(\'form\').submit();\r\n   " +
-"                                         dialogImport.dialog(\"disable\");\r\n      " +
-"                                      dialogImport.dialog(\"option\", \"buttons\", n" +
-"ull);\r\n                                        },\r\n                             " +
-"           Cancel: function () {\r\n                                            di" +
-"alogImport.dialog(\"close\");\r\n                                        }\r\n        " +
-"                            }\r\n                                });\r\n            " +
-"                }\r\n\r\n                            dialogImport.dialog(\'open\');\r\n\r" +
-"\n                            return false;\r\n                        }\r\n\r\n       " +
-"             });\r\n                </script>\r\n");
+"                   var dialog, textAdd, list, originalList, noList, form;\r\n\r\n   " +
+"                     $(\'#Config_Location_List_Button\').click(showDialog);\r\n\r\n   " +
+"                     function showDialog() {\r\n                            if (!d" +
+"ialog) {\r\n                                dialog = $(\'#Config_Location_List_Dial" +
+"og\').dialog({\r\n                                    resizable: false,\r\n          " +
+"                          modal: true,\r\n                                    auto" +
+"Open: false,\r\n                                    width: 350,\r\n                 " +
+"                   buttons: {\r\n                                        \"Save Cha" +
+"nges\": saveChanges,\r\n                                        Cancel: cancel\r\n   " +
+"                                 }\r\n                                });\r\n\r\n     " +
+"                           dialog.on(\'click\', \'.remove\', remove);\r\n\r\n           " +
+"                     list = $(\'#Config_Location_List_Dialog_List\');\r\n           " +
+"                     originalList = list.html();\r\n                              " +
+"  noList = $(\'#Config_Location_List_Dialog_None\');\r\n\r\n                          " +
+"      textAdd = $(\'#Config_Location_List_Dialog_TextAdd\');\r\n\r\n                  " +
+"              textAdd.watermark(\'Location\');\r\n                                te" +
+"xtAdd.keydown(function (e) {\r\n                                    if (e.keyCode " +
+"== 13)\r\n                                        add();\r\n                        " +
+"        });\r\n\r\n                                $(\'#Config_Location_List_Dialog_A" +
+"dd\').click(add);\r\n                            }\r\n\r\n                            d" +
+"ialog.dialog(\'open\');\r\n\r\n                            updateNoList();\r\n          " +
+"                  return false;\r\n                        }\r\n\r\n                  " +
+"      function cancel() {\r\n                            $(this).dialog(\"close\");\r" +
+"\n                            list.html(originalList);\r\n                        }" +
+"\r\n\r\n                        function remove() {\r\n                            $(t" +
+"his).closest(\'li\').remove();\r\n\r\n                            updateNoList();\r\n   " +
+"                     }\r\n\r\n                        function add() {\r\n\r\n          " +
+"                  var value = textAdd.val();\r\n\r\n                            // T" +
+"rim\r\n                            value = jQuery.trim(value);\r\n\r\n                " +
+"            if (!value) {\r\n                                alert(\'Enter a locati" +
+"on to be added\');\r\n                                return;\r\n                    " +
+"        }\r\n\r\n                            // Already Exists\r\n                    " +
+"        var existingValues = list.find(\'li[data-location]\').map(function () { re" +
+"turn $(this).attr(\'data-location\') }).get();\r\n                            if (jQ" +
+"uery.inArray(value, existingValues) >= 0) {\r\n                                ale" +
+"rt(\'That item already exists in the list\');\r\n                                ret" +
+"urn;\r\n                            }\r\n\r\n                            // Add Item\r\n" +
+"                            var li = $(\'<li>\')\r\n                                " +
+".append($(\'<input>\').attr({ type: \'hidden\', name: \'locationList\', value: value }" +
+"))\r\n                                .append($(\'<span>\').text(value))\r\n          " +
+"                      .append($(\'<i>\').addClass(\'fa fa-times-circle remove\'))\r\n " +
+"                               .attr(\'data-location\', value)\r\n                  " +
+"              .attr(\'data-status\', \'new\');\r\n\r\n                            list.a" +
+"ppend(li);\r\n\r\n                            textAdd.focus();\r\n\r\n                  " +
+"          updateNoList();\r\n                        }\r\n\r\n                        " +
+"function updateNoList() {\r\n                            if (list.find(\'li:visible" +
+"\').length > 0)\r\n                                noList.hide();\r\n                " +
+"            else\r\n                                noList.show();\r\n              " +
+"          }\r\n\r\n                        function saveChanges() {\r\n               " +
+"             dialog.find(\'form\').submit();\r\n                            dialog.d" +
+"ialog(\"option\", \"buttons\", null);\r\n                        }\r\n\r\n                " +
+"        // Import\r\n                        var dialogImport, formImport;\r\n\r\n    " +
+"                    $(\'#Config_Location_List_ImportButton\').click(showDialogImpo" +
+"rt);\r\n\r\n                        function showDialogImport() {\r\n                 " +
+"           if (!dialogImport) {\r\n                                dialogImport = " +
+"$(\'#Config_Location_ListImport_Dialog\').dialog({\r\n                              " +
+"      resizable: false,\r\n                                    modal: true,\r\n     " +
+"                               autoOpen: false,\r\n                               " +
+"     width: 350,\r\n                                    buttons: {\r\n              " +
+"                          \"Build Automatic List\": function () {\r\n               " +
+"                             $(\'#Config_Location_ListImport_Dialog_AutomaticList" +
+"\').val(\'True\').closest(\'form\').submit();\r\n                                      " +
+"      dialogImport.dialog(\"disable\");\r\n                                         " +
+"   dialogImport.dialog(\"option\", \"buttons\", null);\r\n                            " +
+"            },\r\n                                        \"Import List\": function " +
+"() {\r\n                                            $(\'#Config_Location_ListImport" +
+"_Dialog_LocationList\').closest(\'form\').submit();\r\n                              " +
+"              dialogImport.dialog(\"disable\");\r\n                                 " +
+"           dialogImport.dialog(\"option\", \"buttons\", null);\r\n                    " +
+"                    },\r\n                                        Cancel: function" +
+" () {\r\n                                            dialogImport.dialog(\"close\");" +
+"\r\n                                        }\r\n                                   " +
+" }\r\n                                });\r\n                            }\r\n\r\n      " +
+"                      dialogImport.dialog(\'open\');\r\n\r\n                          " +
+"  return false;\r\n                        }\r\n\r\n                    });\r\n         " +
+"           </script>\r\n");
 
             
-            #line 280 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+            #line 258 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
                 }
                 else
                 {
-                
+                    
             
             #line default
             #line hidden
             
-            #line 283 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-           Write(Model.LocationModeOptions().First(o => o.Key == Model.LocationMode.ToString()).Value);
+            #line 261 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+               Write(Model.LocationModeOptions().First(o => o.Key == Model.LocationMode.ToString()).Value);
 
             
             #line default
             #line hidden
             
-            #line 283 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
-                                                                                                     
+            #line 261 "..\..\Areas\Config\Views\JobPreferences\Parts\Locations.cshtml"
+                                                                                                         
                 }
 
             

@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Models.UI.Config.DocumentTemplate;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -121,19 +122,26 @@ namespace Disco.Services.Documents
             return packages;
         }
 
-        public static DocumentTemplatePackage CreatePackage(DocumentTemplatePackage Package)
+        public static DocumentTemplatePackage CreatePackage(string id, string description, AttachmentTypes scope)
         {
-            if (string.IsNullOrWhiteSpace(Package.Id))
-                throw new ArgumentNullException(nameof(Package), "The Package Id is required");
-            if (cache.ContainsKey(Package.Id)) // Name Unique
-                throw new ArgumentException("Another Package already exists with that Id", nameof(Package));
-            if (string.IsNullOrWhiteSpace(Package.Description))
-                throw new ArgumentNullException(nameof(Package), "The Package Description is required");
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException(nameof(id), "The Package Id is required");
+            if (cache.ContainsKey(id)) // Name Unique
+                throw new ArgumentException("Another Package already exists with that Id", nameof(id));
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentNullException(nameof(description), "The Package Description is required");
 
-            if (cache.TryAdd(Package.Id, Package))
+            var package = new DocumentTemplatePackage()
+            {
+                Id = id,
+                Description = description,
+                Scope = scope,
+            };
+
+            if (cache.TryAdd(id, package))
             {
                 PersistCache();
-                return Package;
+                return package;
             }
             else
                 throw new Exception("Unable to add the Package to the Cache, check the Package Id and try again");

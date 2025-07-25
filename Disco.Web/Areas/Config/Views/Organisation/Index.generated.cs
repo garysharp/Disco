@@ -780,6 +780,20 @@ WriteLiteral(">\r\n");
             #line 160 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
          using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 162 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 162 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+                                    
 
             
             #line default
@@ -849,7 +863,7 @@ WriteLiteral(" class=\"field-validation-valid field-validation-error\"");
 WriteLiteral(">* Required</span>\r\n                </div>\r\n            </div>\r\n");
 
             
-            #line 174 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 175 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         }
 
             
@@ -890,14 +904,14 @@ WriteLiteral(">\r\n        $(function () {\r\n            var button = $(\'#butt
 "               }\r\n            });\r\n        });\r\n    </script>\r\n");
 
             
-            #line 221 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 222 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 222 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 223 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
  if (canConfigAddresses)
 {
 
@@ -920,13 +934,13 @@ WriteLiteral("></i>\r\n            This item will be permanently deleted.\r\n   
 "<p>\r\n            <strong>Are you sure?</strong>\r\n        </p>\r\n");
 
             
-            #line 232 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 233 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 232 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 233 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
          using (Html.BeginForm(MVC.API.System.DeleteOrganisationAddress()))
         {
             
@@ -934,14 +948,14 @@ WriteLiteral("></i>\r\n            This item will be permanently deleted.\r\n   
             #line default
             #line hidden
             
-            #line 234 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 235 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 234 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 235 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                     
 
             
@@ -968,7 +982,7 @@ WriteLiteral(" type=\"hidden\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 237 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 238 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         }
 
             
@@ -987,13 +1001,13 @@ WriteLiteral(" class=\"dialog\"");
 WriteLiteral(">\r\n");
 
             
-            #line 240 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 241 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 240 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 241 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
          using (Html.BeginForm(MVC.API.System.UpdateOrganisationAddress()))
         {
             
@@ -1001,14 +1015,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 242 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 243 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 242 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 243 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
                                     
 
             
@@ -1178,7 +1192,7 @@ WriteLiteral(" data-bind />\r\n                    </td>\r\n                </tr
 "ble>\r\n");
 
             
-            #line 327 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 328 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
         }
 
             
@@ -1241,7 +1255,7 @@ WriteLiteral(">\r\n        $(function () {\r\n            let $addressEditDialog
 "   return false;\r\n            });\r\n        });\r\n    </script>\r\n");
 
             
-            #line 417 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
+            #line 418 "..\..\Areas\Config\Views\Organisation\Index.cshtml"
 }
             
             #line default

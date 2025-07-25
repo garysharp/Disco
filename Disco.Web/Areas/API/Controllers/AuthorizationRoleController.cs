@@ -17,7 +17,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Properties
 
         const string pName = "name";
-
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool redirect = false)
         {
             try
@@ -40,19 +40,19 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Authorization Role Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Authorization Role Id");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.AuthorizationRole.Index(authorizationRole.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
@@ -96,27 +96,27 @@ namespace Disco.Web.Areas.API.Controllers
                 AuthorizationLog.LogRoleConfiguredClaimsAdded(AuthorizationRole, CurrentUser.UserId, addedClaims);
         }
 
-        private void UpdateSubjects(AuthorizationRole AuthorizationRole, string[] Subjects)
+        private void UpdateSubjects(AuthorizationRole AuthorizationRole, string[] subjects)
         {
             string subjectIds = null;
             string[] removedSubjects = null;
             string[] addedSubjects = null;
 
             // Validate Subjects
-            if (Subjects != null && Subjects.Length > 0)
+            if (subjects != null && subjects.Length > 0)
             {
-                var subjects = Subjects
+                var subjectRecords = subjects
                     .Where(s => !string.IsNullOrWhiteSpace(s))
                     .Select(s => s.Trim())
                     .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
                     .Where(s => s.Item2 is ADUserAccount || s.Item2 is ADGroup)
                     .ToList();
-                var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
+                var invalidSubjects = subjectRecords.Where(s => s.Item2 == null).ToList();
 
                 if (invalidSubjects.Count > 0)
                     throw new ArgumentException($"Subjects not found: {string.Join(", ", invalidSubjects)}", "Subjects");
 
-                var proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
+                var proposedSubjects = subjectRecords.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
                 var currentSubjects = AuthorizationRole.SubjectIds == null ? new string[0] : AuthorizationRole.SubjectIds.Split(',');
                 removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
                 addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
@@ -139,12 +139,14 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateName(int id, string RoleName = null, bool redirect = false)
         {
             return Update(id, pName, RoleName, redirect);
         }
 
-        public virtual ActionResult UpdateClaims(int id, string[] ClaimKeys = null, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateClaims(int id, string[] claimKeys = null, bool redirect = false)
         {
             try
             {
@@ -154,26 +156,27 @@ namespace Disco.Web.Areas.API.Controllers
                 var authorizationRole = Database.AuthorizationRoles.Find(id);
                 if (authorizationRole != null)
                 {
-                    UpdateClaims(authorizationRole, ClaimKeys);
+                    UpdateClaims(authorizationRole, claimKeys);
                 }
                 else
                 {
-                    return Json("Invalid Authorization Role Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Authorization Role Id");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.AuthorizationRole.Index(authorizationRole.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateSubjects(int id, string[] Subjects = null, bool redirect = false)
         {
             try
@@ -188,26 +191,26 @@ namespace Disco.Web.Areas.API.Controllers
                 }
                 else
                 {
-                    return Json("Invalid Authorization Role Id", JsonRequestBehavior.AllowGet);
+                    return BadRequest("Invalid Authorization Role Id");
                 }
                 if (redirect)
                     return RedirectToAction(MVC.Config.AuthorizationRole.Index(authorizationRole.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #endregion
 
         #region Actions
-
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -220,7 +223,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.AuthorizationRole.Index(null));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Authorization Role Id");
             }
@@ -229,33 +232,33 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost]
-        public virtual ActionResult UpdateAdministratorSubjects(string[] Subjects, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateAdministratorSubjects(string[] subjects, bool redirect = false)
         {
             string[] proposedSubjects;
             string[] removedSubjects = null;
             string[] addedSubjects = null;
 
             // Validate Subjects
-            if (Subjects == null || Subjects.Length == 0)
+            if (subjects == null || subjects.Length == 0)
                 throw new ArgumentNullException("Subjects", "At least one Id must be supplied");
 
-            var subjects = Subjects
+            var subjectValues = subjects
                 .Where(s => !string.IsNullOrWhiteSpace(s))
                 .Select(s => s.Trim())
                 .Select(s => Tuple.Create(s, ActiveDirectory.RetrieveADObject(s, Quick: true)))
                 .Where(s => s.Item2 is ADUserAccount || s.Item2 is ADGroup)
                 .ToList();
-            var invalidSubjects = subjects.Where(s => s.Item2 == null).ToList();
+            var invalidSubjects = subjectValues.Where(s => s.Item2 == null).ToList();
 
             if (invalidSubjects.Count > 0)
                 throw new ArgumentException($"Subjects not found: {string.Join(", ", invalidSubjects)}", "Subjects");
 
-            proposedSubjects = subjects.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
+            proposedSubjects = subjectValues.Select(s => s.Item2.Id).OrderBy(s => s).ToArray();
             var currentSubjects = UserService.AdministratorSubjectIds;
             removedSubjects = currentSubjects.Except(proposedSubjects).ToArray();
             addedSubjects = proposedSubjects.Except(currentSubjects).ToArray();
@@ -270,7 +273,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.AuthorizationRole.Index());
             else
-                return Json("OK");
+                return Ok();
         }
 
         #endregion

@@ -138,26 +138,28 @@ namespace Disco.Services.Users
             return Cache.InvalidateRecord(UserId);
         }
 
-        public static int CreateAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
+        public static int CreateAuthorizationRole(DiscoDataContext Database, string name)
         {
-            if (Role == null)
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("Role");
 
-            if (string.IsNullOrWhiteSpace(Role.ClaimsJson))
-                Role.ClaimsJson = JsonConvert.SerializeObject(new RoleClaims());
-
-            Database.AuthorizationRoles.Add(Role);
+            var role = new AuthorizationRole()
+            {
+                Name = name,
+                ClaimsJson = JsonConvert.SerializeObject(new RoleClaims()),
+            };
+            Database.AuthorizationRoles.Add(role);
             Database.SaveChanges();
 
-            AuthorizationLog.LogRoleCreated(Role, CurrentUserId);
+            AuthorizationLog.LogRoleCreated(role, CurrentUserId);
 
             // Add to Cache
-            RoleCache.AddRole(Role);
+            RoleCache.AddRole(role);
 
             // Flush User Cache
             Cache.FlushCache();
 
-            return Role.Id;
+            return role.Id;
         }
         public static void DeleteAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
         {

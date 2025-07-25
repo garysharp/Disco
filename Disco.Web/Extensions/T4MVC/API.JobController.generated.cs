@@ -452,18 +452,6 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult GeneratePdf()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult GeneratePdfPackage()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Export()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Export);
@@ -562,8 +550,6 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ComponentUpdate = "ComponentUpdate";
             public readonly string ComponentRemove = "ComponentRemove";
             public readonly string StatisticsDailyOpenedClosed = "StatisticsDailyOpenedClosed";
-            public readonly string GeneratePdf = "GeneratePdf";
-            public readonly string GeneratePdfPackage = "GeneratePdfPackage";
             public readonly string DeviceHeldLocations = "DeviceHeldLocations";
             public readonly string Export = "Export";
             public readonly string ExportRetrieve = "ExportRetrieve";
@@ -639,8 +625,6 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ComponentUpdate = "ComponentUpdate";
             public const string ComponentRemove = "ComponentRemove";
             public const string StatisticsDailyOpenedClosed = "StatisticsDailyOpenedClosed";
-            public const string GeneratePdf = "GeneratePdf";
-            public const string GeneratePdfPackage = "GeneratePdfPackage";
             public const string DeviceHeldLocations = "DeviceHeldLocations";
             public const string Export = "Export";
             public const string ExportRetrieve = "ExportRetrieve";
@@ -1249,8 +1233,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ComponentAdd
         {
             public readonly string id = "id";
-            public readonly string Description = "Description";
-            public readonly string Cost = "Cost";
+            public readonly string description = "description";
+            public readonly string cost = "cost";
         }
         static readonly ActionParamsClass_ComponentUpdate s_params_ComponentUpdate = new ActionParamsClass_ComponentUpdate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1259,8 +1243,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ComponentUpdate
         {
             public readonly string id = "id";
-            public readonly string Description = "Description";
-            public readonly string Cost = "Cost";
+            public readonly string description = "description";
+            public readonly string cost = "cost";
         }
         static readonly ActionParamsClass_ComponentRemove s_params_ComponentRemove = new ActionParamsClass_ComponentRemove();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1269,24 +1253,6 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ComponentRemove
         {
             public readonly string id = "id";
-        }
-        static readonly ActionParamsClass_GeneratePdf s_params_GeneratePdf = new ActionParamsClass_GeneratePdf();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_GeneratePdf GeneratePdfParams { get { return s_params_GeneratePdf; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_GeneratePdf
-        {
-            public readonly string id = "id";
-            public readonly string DocumentTemplateId = "DocumentTemplateId";
-        }
-        static readonly ActionParamsClass_GeneratePdfPackage s_params_GeneratePdfPackage = new ActionParamsClass_GeneratePdfPackage();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_GeneratePdfPackage GeneratePdfPackageParams { get { return s_params_GeneratePdfPackage; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_GeneratePdfPackage
-        {
-            public readonly string id = "id";
-            public readonly string DocumentTemplatePackageId = "DocumentTemplatePackageId";
         }
         static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -2174,30 +2140,30 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void ComponentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, string Cost);
+        partial void ComponentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string description, string cost);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ComponentAdd(int id, string Description, string Cost)
+        public override System.Web.Mvc.ActionResult ComponentAdd(int id, string description, string cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentAdd);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Description", Description);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Cost", Cost);
-            ComponentAddOverride(callInfo, id, Description, Cost);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "description", description);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "cost", cost);
+            ComponentAddOverride(callInfo, id, description, cost);
             return callInfo;
         }
 
         [NonAction]
-        partial void ComponentUpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, string Cost);
+        partial void ComponentUpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string description, string cost);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ComponentUpdate(int id, string Description, string Cost)
+        public override System.Web.Mvc.ActionResult ComponentUpdate(int id, string description, string cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentUpdate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Description", Description);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Cost", Cost);
-            ComponentUpdateOverride(callInfo, id, Description, Cost);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "description", description);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "cost", cost);
+            ComponentUpdateOverride(callInfo, id, description, cost);
             return callInfo;
         }
 
@@ -2221,32 +2187,6 @@ namespace Disco.Web.Areas.API.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.StatisticsDailyOpenedClosed);
             StatisticsDailyOpenedClosedOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void GeneratePdfOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DocumentTemplateId);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult GeneratePdf(int id, string DocumentTemplateId)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdf);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplateId", DocumentTemplateId);
-            GeneratePdfOverride(callInfo, id, DocumentTemplateId);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void GeneratePdfPackageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string DocumentTemplatePackageId);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult GeneratePdfPackage(int id, string DocumentTemplatePackageId)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GeneratePdfPackage);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DocumentTemplatePackageId", DocumentTemplatePackageId);
-            GeneratePdfPackageOverride(callInfo, id, DocumentTemplatePackageId);
             return callInfo;
         }
 

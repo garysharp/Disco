@@ -75,7 +75,7 @@
             <strong>Only Install plugins from a trusted source.</strong>
         </p>
     </div>
-    @using (Html.BeginForm(MVC.API.Plugin.Install(), FormMethod.Post))
+    @using (Html.BeginForm(MVC.API.Plugin.Install()))
     {
         @Html.AntiForgeryToken()
     }

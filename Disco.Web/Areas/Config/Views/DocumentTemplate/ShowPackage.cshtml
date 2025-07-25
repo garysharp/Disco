@@ -169,29 +169,30 @@
                         </div>
                         @if (canConfig)
                         {
-                        <div id="Config_DocumentTemplatePackages_Scope_Dialog" title="Change Document Template Package Scope" class="dialog">
-                            @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateScope(Model.Package.Id, redirect: true)))
+                            <div id="Config_DocumentTemplatePackages_Scope_Dialog" title="Change Document Template Package Scope" class="dialog">
+                                @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateScope(Model.Package.Id, redirect: true)))
                                 {
-                                <div class="input">
-                                    <label for="Config_DocumentTemplatePackages_Scope_Scope">Scope: </label>
-                                    <select id="Config_DocumentTemplatePackages_Scope_Scope" name="Scope">
-                                        @foreach (var scope in Model.Scopes)
+                                    @Html.AntiForgeryToken()
+                                    <div class="input">
+                                        <label for="Config_DocumentTemplatePackages_Scope_Scope">Scope: </label>
+                                        <select id="Config_DocumentTemplatePackages_Scope_Scope" name="Scope">
+                                            @foreach (var scope in Model.Scopes)
                                             {
-                                            <option value="@scope" selected="@(scope == Model.Package.Scope.ToString() ? " selected" : null)">@scope</option>
+                                                <option value="@scope" selected="@(scope == Model.Package.Scope.ToString() ? " selected" : null)">@scope</option>
                                             }
-                                    </select>
-                                </div>
+                                        </select>
+                                    </div>
                                 }
-                            @if (Model.Package.DocumentTemplateIds != null && Model.Package.DocumentTemplateIds.Count > 0)
+                                @if (Model.Package.DocumentTemplateIds != null && Model.Package.DocumentTemplateIds.Count > 0)
                                 {
-                                <div class="info-box">
-                                    <p class="fa-p">
-                                        <i class="fa fa-info-circle"></i>If changed, all Document Templates will be unassociated with this Package.
-                                    </p>
-                                </div>
+                                    <div class="info-box">
+                                        <p class="fa-p">
+                                            <i class="fa fa-info-circle"></i>If changed, all Document Templates will be unassociated with this Package.
+                                        </p>
+                                    </div>
                                 }
-                        </div>
-                        <script type="text/javascript">
+                            </div>
+                            <script type="text/javascript">
                                 $(function () {
                                     var dialog;
 
@@ -204,12 +205,12 @@
                                                 autoOpen: false,
                                                 buttons: {
                                                     'Save Changes': function () {
-                                                        dialog.dialog('option', 'buttons', null);
-                                                        dialog.dialog('disable');
-                                                        $('#Config_DocumentTemplatePackages_Scope_Scope').closest('form').submit();
+                                                        $(this)
+                                                            .dialog('option', 'buttons', null)
+                                                            .find('form').trigger('submit');
                                                     },
                                                     'Cancel': function () {
-                                                        dialog.dialog('close');
+                                                        $(this).dialog('close');
                                                     }
                                                 }
                                             });
@@ -222,65 +223,66 @@
 
                                     $('#Config_DocumentTemplatePackages_Scope_Button').click(showDialog);
                                 });
-                        </script>
+                            </script>
                         }
                         @if (Model.Package.Scope == AttachmentTypes.Job)
                         {
-                        <hr />
-                        <h4>Job Type Filters:</h4>
-                        <div id="Config_DocumentTemplatePackages_JobSubTypes">
-                            <div>
-                                @if (Model.Package.JobSubTypes != null && Model.Package.JobSubTypes.Count > 0)
+                            <hr />
+                            <h4>Job Type Filters:</h4>
+                            <div id="Config_DocumentTemplatePackages_JobSubTypes">
+                                <div>
+                                    @if (Model.Package.JobSubTypes != null && Model.Package.JobSubTypes.Count > 0)
                                     {
-                                    <ul>
-                                        @foreach (var jobType in Model.JobSubTypesSelected.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
+                                        <ul>
+                                            @foreach (var jobType in Model.JobSubTypesSelected.GroupBy(jst => jst.JobType).OrderBy(jtg => jtg.Key.Description))
                                             {
-                                            <li>
-                                                @jobType.Key.Description
-                                                <ul>
-                                                    @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
+                                                <li>
+                                                    @jobType.Key.Description
+                                                    <ul>
+                                                        @if (jobType.Count() == Model.JobTypes.FirstOrDefault(jt => jt.Id == jobType.Key.Id).JobSubTypes.Count)
                                                         {
-                                                        <li><span class="smallMessage">[All Sub Types]</span></li>
+                                                            <li><span class="smallMessage">[All Sub Types]</span></li>
                                                         }
                                                         else
                                                         {
                                                             foreach (var jobSubType in jobType)
                                                             {
-                                                        <li>@jobSubType.Description</li>
+                                                                <li>@jobSubType.Description</li>
                                                             }
                                                         }
-                                                </ul>
-                                            </li>
+                                                    </ul>
+                                                </li>
                                             }
-                                    </ul>
+                                        </ul>
                                     }
                                     else
                                     {
-                                    <span class="smallMessage">&lt;No Filter&gt;</span>
+                                        <span class="smallMessage">&lt;No Filter&gt;</span>
                                     }
-                            </div>
-                            @if (canConfig)
+                                </div>
+                                @if (canConfig)
                                 {
-                                <a id="Config_DocumentTemplatePackages_JobSubTypes_Update" href="#" class="button small">Update</a>
-                                <div id="Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
-                                    @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateJobSubTypes(Model.Package.Id, null, true)))
+                                    <a id="Config_DocumentTemplatePackages_JobSubTypes_Update" href="#" class="button small">Update</a>
+                                    <div id="Config_DocumentTemplatePackages_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
+                                        @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateJobSubTypes(Model.Package.Id, null, true)))
                                         {
+                                            @Html.AntiForgeryToken()
                                             var selectedTypes = Model.JobSubTypesSelected.Select(jst => jst.JobType).Distinct().ToList();
                                             foreach (var jt in Model.JobTypes)
                                             {
-                                        <div class="jobTypes">
-                                            <h4>
-                                                <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\" checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label>
-                                            </h4>
-                                            <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
-                                                @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
-                                                @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Package.JobSubTypes), 2)
-                                            </div>
-                                        </div>
+                                                <div class="jobTypes">
+                                                    <h4>
+                                                        <input id="Types_@(jt.Id)" class="jobType" type="checkbox" value="@(jt.Id)" @(selectedTypes.Contains(jt) ? "checked=\" checked\"" : null) /><label for="Types_@(jt.Id)">@jt.Description</label>
+                                                    </h4>
+                                                    <div id="SubTypes_@(jt.Id)" class="jobSubTypes">
+                                                        @CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id), "div")
+                                                        @CommonHelpers.CheckBoxList("JobSubTypes", jt.JobSubTypes.OrderBy(jst => jst.Description).ToSelectListItems(Model.Package.JobSubTypes), 2)
+                                                    </div>
+                                                </div>
                                             }
                                         }
-                                </div>
-                                <script>
+                                    </div>
+                                    <script>
                                         (function () {
                                             var dialog;
 
@@ -316,10 +318,7 @@
                                             }
 
                                             function cancel() {
-                                                dialog.dialog("disable");
                                                 dialog.dialog("option", "buttons", null);
-
-                                                // Refresh Page
                                                 window.location.reload(true);
                                             }
 
@@ -330,9 +329,7 @@
                                                     $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
                                                 });
 
-                                                form.submit();
-
-                                                dialog.dialog("disable");
+                                                form.trigger('submit');
                                                 dialog.dialog("option", "buttons", null);
                                             }
 
@@ -341,9 +338,9 @@
                                             });
 
                                         })();
-                                </script>
+                                    </script>
                                 }
-                        </div>
+                            </div>
                         }
                     </td>
                 </tr>
@@ -388,6 +385,7 @@
                                     <h3>Package Templates</h3>
                                     @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.UpdateDocumentTemplates(Model.Package.Id, redirect: true)))
                                     {
+                                        @Html.AntiForgeryToken()
                                         <ol class="templates_connected none">
                                             @foreach (var template in Model.DocumentTemplatesSelected)
                                             {
@@ -437,7 +435,6 @@
                                                         var $form = dialog.find('form');
                                                         if ($form.find('input').length > 0) {
                                                             dialog.dialog('option', 'buttons', null);
-                                                            dialog.dialog('disable');
                                                             $form.submit();
                                                         } else {
                                                             alert('The package templates must include at least one document template');
@@ -618,7 +615,11 @@
         </table>
     </div>
 </div>
-<div id="dialogConfirmDelete" title="Delete this Document Template?">
+<div id="dialogConfirmDelete" class="dialog" title="Delete this Document Template?">
+    @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.Delete(Model.Package.Id, true)))
+    {
+        @Html.AntiForgeryToken()
+    }
     <p>
         <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted.<br />
         Are you sure?
@@ -626,31 +627,29 @@
 </div>
 <script type="text/javascript">
     $(function () {
-        var button = $('#buttonDelete');
-        var buttonDialog = $("#dialogConfirmDelete");
-        var buttonLink = button.attr('href');
-        button.attr('href', '#');
-        button.click(function () {
+        const button = $('#buttonDelete');
+        let buttonDialog = null;
+        button.on('click', function () {
+            if (!buttonDialog) {
+                buttonDialog = $("#dialogConfirmDelete").dialog({
+                    resizable: false,
+                    modal: true,
+                    autoOpen: false,
+                    buttons: {
+                        "Delete": function () {
+                            $(this)
+                                .dialog("option", "buttons", null)
+                                .find('form').trigger('submit');
+                        },
+                        Cancel: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
             buttonDialog.dialog('open');
             return false;
         });
-        buttonDialog.dialog({
-            resizable: false,
-            modal: true,
-            autoOpen: false,
-            buttons: {
-                "Delete": function () {
-                    $this = $(this);
-                    $this.dialog('disable');
-                    $this.dialog("option", "buttons", null);
-                    window.location.href = buttonLink;
-                },
-                Cancel: function () {
-                    $(this).dialog("close");
-                }
-            }
-        });
-
     });
 </script>
 <div class="actionBar">
@@ -668,8 +667,8 @@
     }
     @if (canBulkGenerate)
     {
-        <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
-        <div id="dialogBulkGenerate" class="hiddenDialog" title="Bulk Generate: @(Model.Package.Id)">
+        <button id="buttonBulkGenerate" type="button" class="button">Bulk Generate</button>
+        <div id="dialogBulkGenerate" class="dialog dialog-bulk-generate" title="Bulk Generate: @(Model.Package.Id)">
             <div class="brief">
                 @switch (Model.Package.Scope)
                 {
@@ -702,8 +701,8 @@
                             <div class="example2 code">86,99,44</div>
                             <div class="example3 code">86;99;44</div>
                         </div>
-                            break;
-                        case AttachmentTypes.User:
+                        break;
+                    case AttachmentTypes.User:
                         <div>
                             Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
                         </div>
@@ -719,21 +718,18 @@
                         break;
                 }
             </div>
-            @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.BulkGenerate(Model.Package.Id), FormMethod.Post))
+            @using (Html.BeginForm(MVC.API.DocumentTemplatePackage.BulkGenerate(Model.Package.Id)))
             {
-                <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
-                <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
-                <div style="margin-top: 6px;">
-                    <input id="inputBulkGenerateInsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" /><label for="inputBulkGenerateInsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
-                </div>
+                @Html.AntiForgeryToken()
+                <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="dataIds"></div>
+                <textarea id="inputBulkGenerateDataIds" name="dataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
             }
         </div>
 
         <script>
             $(function () {
-                var dialog;
-
-                $('#buttonBulkGenerate').click(function () {
+                let dialog = null;
+                $('#buttonBulkGenerate').on('click', function () {
                     if (!dialog) {
                         dialog = $('#dialogBulkGenerate').dialog({
                             resizable: false,
@@ -742,11 +738,10 @@
                             width: 460,
                             buttons: {
                                 "Bulk Generate": function () {
-                                    dialog.find('form').submit();
-                                    dialog.dialog("disable");
+                                    $(this).find('form').trigger('submit');
                                 },
                                 Close: function () {
-                                    $(this).dialog("close");
+                                    $(this).dialog('close');
                                 }
                             }
                         });
@@ -762,6 +757,6 @@
     }
     @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
     {
-        @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplatePackage.Delete(Model.Package.Id, true), "buttonDelete")
+        <button id="buttonDelete" type="button" class="button">Delete</button>
     }
 </div>

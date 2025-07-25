@@ -303,8 +303,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ComponentAdd
         {
             public readonly string id = "id";
-            public readonly string Description = "Description";
-            public readonly string Cost = "Cost";
+            public readonly string description = "description";
+            public readonly string cost = "cost";
         }
         static readonly ActionParamsClass_ComponentUpdateJobSubTypes s_params_ComponentUpdateJobSubTypes = new ActionParamsClass_ComponentUpdateJobSubTypes();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -313,7 +313,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ComponentUpdateJobSubTypes
         {
             public readonly string id = "id";
-            public readonly string JobSubTypes = "JobSubTypes";
+            public readonly string jobSubTypes = "jobSubTypes";
         }
         static readonly ActionParamsClass_ComponentUpdate s_params_ComponentUpdate = new ActionParamsClass_ComponentUpdate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -322,8 +322,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ComponentUpdate
         {
             public readonly string id = "id";
-            public readonly string Description = "Description";
-            public readonly string Cost = "Cost";
+            public readonly string description = "description";
+            public readonly string cost = "cost";
         }
         static readonly ActionParamsClass_ComponentRemove s_params_ComponentRemove = new ActionParamsClass_ComponentRemove();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -504,43 +504,43 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void ComponentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, string Description, string Cost);
+        partial void ComponentAddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int? id, string description, string cost);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ComponentAdd(int? id, string Description, string Cost)
+        public override System.Web.Mvc.ActionResult ComponentAdd(int? id, string description, string cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentAdd);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Description", Description);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Cost", Cost);
-            ComponentAddOverride(callInfo, id, Description, Cost);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "description", description);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "cost", cost);
+            ComponentAddOverride(callInfo, id, description, cost);
             return callInfo;
         }
 
         [NonAction]
-        partial void ComponentUpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Collections.Generic.List<string> JobSubTypes);
+        partial void ComponentUpdateJobSubTypesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, System.Collections.Generic.List<string> jobSubTypes);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ComponentUpdateJobSubTypes(int id, System.Collections.Generic.List<string> JobSubTypes)
+        public override System.Web.Mvc.ActionResult ComponentUpdateJobSubTypes(int id, System.Collections.Generic.List<string> jobSubTypes)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentUpdateJobSubTypes);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobSubTypes", JobSubTypes);
-            ComponentUpdateJobSubTypesOverride(callInfo, id, JobSubTypes);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "jobSubTypes", jobSubTypes);
+            ComponentUpdateJobSubTypesOverride(callInfo, id, jobSubTypes);
             return callInfo;
         }
 
         [NonAction]
-        partial void ComponentUpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Description, string Cost);
+        partial void ComponentUpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string description, string cost);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ComponentUpdate(int id, string Description, string Cost)
+        public override System.Web.Mvc.ActionResult ComponentUpdate(int id, string description, string cost)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ComponentUpdate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Description", Description);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Cost", Cost);
-            ComponentUpdateOverride(callInfo, id, Description, Cost);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "description", description);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "cost", cost);
+            ComponentUpdateOverride(callInfo, id, description, cost);
             return callInfo;
         }
 

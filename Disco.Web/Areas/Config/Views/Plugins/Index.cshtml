@@ -88,7 +88,7 @@
                             <i class="fa fa-exclamation-triangle"></i><strong>Warning:</strong> Data will be permanently deleted
                         </p>
                     </div>
-                    @using (Html.BeginForm(MVC.API.Plugin.Uninstall(), FormMethod.Post))
+                    @using (Html.BeginForm(MVC.API.Plugin.Uninstall()))
                     {
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" id="dialogUninstallPluginId" />

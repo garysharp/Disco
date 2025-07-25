@@ -139,25 +139,14 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n");
 
-WriteLiteral("    ");
-
             
             #line 9 "..\..\Views\User\UserParts\_Comments.cshtml"
-Write(Html.AntiForgeryToken());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n");
-
-            
-            #line 10 "..\..\Views\User\UserParts\_Comments.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 10 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 9 "..\..\Views\User\UserParts\_Comments.cshtml"
      if (canAddComments)
     {
 
@@ -189,7 +178,7 @@ WriteLiteral(" class=\"fa fa-comment\"");
 WriteLiteral("></i></button>\r\n        </div>\r\n");
 
             
-            #line 16 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 15 "..\..\Views\User\UserParts\_Comments.cshtml"
     }
 
             
@@ -202,13 +191,13 @@ WriteLiteral(" class=\"commentOutput\"");
 WriteLiteral(">\r\n");
 
             
-            #line 18 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 17 "..\..\Views\User\UserParts\_Comments.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 18 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 17 "..\..\Views\User\UserParts\_Comments.cshtml"
          foreach (var c in Model.User.UserComments.OrderBy(m => m.Timestamp))
         {
 
@@ -222,7 +211,7 @@ WriteLiteral(" class=\"comment\"");
 WriteLiteral(" data-commentid=\"");
 
             
-            #line 20 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 19 "..\..\Views\User\UserParts\_Comments.cshtml"
                                             Write(c.Id);
 
             
@@ -237,7 +226,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 20 "..\..\Views\User\UserParts\_Comments.cshtml"
                                 Write(c.TechUser.ToStringFriendly());
 
             
@@ -246,7 +235,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 20 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                            if (canRemoveAnyComments || (canRemoveOwnComments && c.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                 {
             
@@ -259,7 +248,7 @@ WriteLiteral(" class=\"remove fa fa-times-circle\"");
 WriteLiteral("></span>");
 
             
-            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                              }
             
             #line default
@@ -271,7 +260,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                   Write(c.Timestamp.ToUnixEpoc());
 
             
@@ -279,20 +268,20 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 1701), Tuple.Create("\"", 1738)
+WriteAttribute("title", Tuple.Create(" title=\"", 1671), Tuple.Create("\"", 1708)
             
-            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
-                                                                          , Tuple.Create(Tuple.Create("", 1709), Tuple.Create<System.Object, System.Int32>(c.Timestamp.ToFullDateTime()
+            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
+                                                                          , Tuple.Create(Tuple.Create("", 1679), Tuple.Create<System.Object, System.Int32>(c.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 1709), false)
+, 1679), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 21 "..\..\Views\User\UserParts\_Comments.cshtml"
                                                                                                                                                                                     Write(c.Timestamp.ToFullDateTime());
 
             
@@ -305,7 +294,7 @@ WriteLiteral(" class=\"comment\"");
 WriteLiteral(">");
 
             
-            #line 23 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 22 "..\..\Views\User\UserParts\_Comments.cshtml"
                                 Write(c.Comments.ToHtmlComment());
 
             
@@ -314,7 +303,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n            </div>\r\n");
 
             
-            #line 25 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 24 "..\..\Views\User\UserParts\_Comments.cshtml"
         }
 
             
@@ -331,40 +320,40 @@ WriteLiteral("    </div>\r\n</div>\r\n<script>\r\n    if (!document.DiscoFunctio
 "l to Bottom\r\n            }\r\n        });\r\n\r\n        function onCommentAdded(id) {" +
 "\r\n            onCommentAddedAsync(id);\r\n        }\r\n        async function onComm" +
 "entAddedAsync(id) {\r\n            const formData = new FormData();\r\n            f" +
-"ormData.append(\'__RequestVerificationToken\', $comments.find(\'input[name=\"__Reque" +
-"stVerificationToken\"]\').val());\r\n            formData.append(\'id\', id);\r\n\r\n     " +
-"       const response = await fetch($comments.attr(\'data-geturl\'), {\r\n          " +
-"      method: \'POST\',\r\n                body: formData\r\n            });\r\n\r\n      " +
-"      if (!response.ok) {\r\n                alert(\'Unable to load live comment \' " +
-"+ id + \': \' + response.statusText);\r\n            } else {\r\n                const" +
-" comment = await response.json();\r\n\r\n                if ($comments.hasClass(\'can" +
-"RemoveAnyComments\'))\r\n                    renderComment(comment, false, true);\r\n" +
-"                else if ($comments.hasClass(\'canRemoveOwnComments\'))\r\n          " +
-"          renderComment(comment, false, (comment.AuthorId === $comments.attr(\'da" +
-"ta-userid\')));\r\n                else\r\n                    renderComment(comment," +
-" false, false);\r\n            }\r\n        }\r\n        function onCommentRemoved(id)" +
-" {\r\n            $commentOutput.children(\'div[data-commentid=\"\' + id + \'\"]\').slid" +
-"eUp(300).delay(300).queue(function () {\r\n                const $this = $(this);\r" +
-"\n                $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n               " +
-" $this.remove();\r\n            });\r\n        }\r\n        function renderComment(c, " +
-"quick, canRemove) {\r\n            let t = \'<div><span class=\"author\" />\';\r\n      " +
-"      if (canRemove)\r\n                t += \'<span class=\"remove fa fa-times-circ" +
-"le\" />\';\r\n            t += \'<span class=\"timestamp\" /><div class=\"comment\" /></d" +
-"iv>\';\r\n\r\n            const e = $(t);\r\n            e.attr(\'data-commentid\', c.Id)" +
-";\r\n            e.find(\'.author\').text(c.Author);\r\n            e.find(\'.timestamp" +
-"\').text(c.TimestampFull).attr(\'title\', c.TimestampFull).livestamp(c.TimestampUni" +
-"xEpoc);\r\n            e.find(\'.comment\').html(c.HtmlComments);\r\n\r\n            $co" +
-"mmentOutput.append(e);\r\n\r\n            if (!quick) {\r\n                e.animate({" +
-" backgroundColor: \'#ffff99\' }, 500, function () {\r\n                    e.animate" +
-"({ backgroundColor: \'#fafafa\' }, 500, function () {\r\n                        e.c" +
-"ss(\'background-color\', \'\');\r\n                    });\r\n                });\r\n     " +
-"           $commentOutput.animate({ scrollTop: $commentOutput[0].scrollHeight }," +
-" 250)\r\n            }\r\n        }\r\n\r\n        document.DiscoFunctions.onCommentAdde" +
-"d = onCommentAdded;\r\n        document.DiscoFunctions.onCommentRemoved = onCommen" +
-"tRemoved;\r\n    });\r\n</script>\r\n");
+"ormData.append(\'__RequestVerificationToken\', document.body.dataset.antiforgery);" +
+"\r\n            formData.append(\'id\', id);\r\n\r\n            const response = await f" +
+"etch($comments.attr(\'data-geturl\'), {\r\n                method: \'POST\',\r\n        " +
+"        body: formData\r\n            });\r\n\r\n            if (!response.ok) {\r\n    " +
+"            alert(\'Unable to load live comment \' + id + \': \' + response.statusTe" +
+"xt);\r\n            } else {\r\n                const comment = await response.json(" +
+");\r\n\r\n                if ($comments.hasClass(\'canRemoveAnyComments\'))\r\n         " +
+"           renderComment(comment, false, true);\r\n                else if ($comme" +
+"nts.hasClass(\'canRemoveOwnComments\'))\r\n                    renderComment(comment" +
+", false, (comment.AuthorId === $comments.attr(\'data-userid\')));\r\n               " +
+" else\r\n                    renderComment(comment, false, false);\r\n            }\r" +
+"\n        }\r\n        function onCommentRemoved(id) {\r\n            $commentOutput." +
+"children(\'div[data-commentid=\"\' + id + \'\"]\').slideUp(300).delay(300).queue(funct" +
+"ion () {\r\n                const $this = $(this);\r\n                $this.find(\'.t" +
+"imestamp\').livestamp(\'destroy\');\r\n                $this.remove();\r\n            }" +
+");\r\n        }\r\n        function renderComment(c, quick, canRemove) {\r\n          " +
+"  let t = \'<div><span class=\"author\" />\';\r\n            if (canRemove)\r\n         " +
+"       t += \'<span class=\"remove fa fa-times-circle\" />\';\r\n            t += \'<sp" +
+"an class=\"timestamp\" /><div class=\"comment\" /></div>\';\r\n\r\n            const e = " +
+"$(t);\r\n            e.attr(\'data-commentid\', c.Id);\r\n            e.find(\'.author\'" +
+").text(c.Author);\r\n            e.find(\'.timestamp\').text(c.TimestampFull).attr(\'" +
+"title\', c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r\n            e.find(\'.c" +
+"omment\').html(c.HtmlComments);\r\n\r\n            $commentOutput.append(e);\r\n\r\n     " +
+"       if (!quick) {\r\n                e.animate({ backgroundColor: \'#ffff99\' }, " +
+"500, function () {\r\n                    e.animate({ backgroundColor: \'#fafafa\' }" +
+", 500, function () {\r\n                        e.css(\'background-color\', \'\');\r\n  " +
+"                  });\r\n                });\r\n                $commentOutput.anima" +
+"te({ scrollTop: $commentOutput[0].scrollHeight }, 250)\r\n            }\r\n        }" +
+"\r\n\r\n        document.DiscoFunctions.onCommentAdded = onCommentAdded;\r\n        do" +
+"cument.DiscoFunctions.onCommentRemoved = onCommentRemoved;\r\n    });\r\n</script>\r\n" +
+"");
 
             
-            #line 107 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 106 "..\..\Views\User\UserParts\_Comments.cshtml"
  if (canAddComments)
 {
 
@@ -385,25 +374,25 @@ WriteLiteral("    <script>\r\n        $(function () {\r\n            const $comm
 "     alert(\'Enter a comment to post\');\r\n                    $commentInput.focus(" +
 ");\r\n                    return;\r\n                }\r\n\r\n                $commentIn" +
 "put.prop(\'disabled\', true);\r\n\r\n                const formData = new FormData();\r" +
-"\n                formData.append(\'__RequestVerificationToken\', $comments.find(\'i" +
-"nput[name=\"__RequestVerificationToken\"]\').val());\r\n                formData.appe" +
-"nd(\'comment\', comment);\r\n\r\n                const response = await fetch($comment" +
-"s.attr(\'data-addurl\'), {\r\n                    method: \'POST\',\r\n                 " +
-"   body: formData\r\n                });\r\n\r\n                if (response.ok) {\r\n  " +
-"                  $commentInput.val(\'\').prop(\'disabled\', false).focus();\r\n      " +
-"          } else {\r\n                    alert(\'Unable to add comment: \' + respon" +
-"se.statusText);\r\n                    $commentInput.prop(\'disabled\', false).focus" +
-"();\r\n                }\r\n            }\r\n        });\r\n    </script>\r\n");
+"\n                formData.append(\'__RequestVerificationToken\', document.body.dat" +
+"aset.antiforgery);\r\n                formData.append(\'comment\', comment);\r\n\r\n    " +
+"            const response = await fetch($comments.attr(\'data-addurl\'), {\r\n     " +
+"               method: \'POST\',\r\n                    body: formData\r\n            " +
+"    });\r\n\r\n                if (response.ok) {\r\n                    $commentInput" +
+".val(\'\').prop(\'disabled\', false).focus();\r\n                } else {\r\n           " +
+"         alert(\'Unable to add comment: \' + response.statusText);\r\n              " +
+"      $commentInput.prop(\'disabled\', false).focus();\r\n                }\r\n       " +
+"     }\r\n        });\r\n    </script>\r\n");
 
             
-            #line 156 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 155 "..\..\Views\User\UserParts\_Comments.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 157 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 156 "..\..\Views\User\UserParts\_Comments.cshtml"
  if (canRemoveAnyComments || canRemoveOwnComments)
 {
 
@@ -430,17 +419,16 @@ WriteLiteral("    <script>\r\n        $(function () {\r\n            const $comm
 " $dialogRemove.dialog(\"close\");\r\n                    }\r\n                }).dialo" +
 "g(\'open\');\r\n            }\r\n            async function removeCommentAsync(comment" +
 "Id) {\r\n                const formData = new FormData();\r\n                formDat" +
-"a.append(\'__RequestVerificationToken\', $comments.find(\'input[name=\"__RequestVeri" +
-"ficationToken\"]\').val());\r\n                formData.append(\'id\', commentId);\r\n\r\n" +
-"                const response = await fetch($comments.attr(\'data-removeurl\'), {" +
-"\r\n                    method: \'POST\',\r\n                    body: formData\r\n     " +
-"           });\r\n\r\n                if (!response.ok) {\r\n                    alert" +
-"(\'Unable to remove comment: \' + response.statusText);\r\n                }\r\n      " +
-"          $dialogRemove.dialog(\"close\");\r\n            }\r\n        });\r\n    </scri" +
-"pt>\r\n");
+"a.append(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n    " +
+"            formData.append(\'id\', commentId);\r\n\r\n                const response " +
+"= await fetch($comments.attr(\'data-removeurl\'), {\r\n                    method: \'" +
+"POST\',\r\n                    body: formData\r\n                });\r\n\r\n             " +
+"   if (!response.ok) {\r\n                    alert(\'Unable to remove comment: \' +" +
+" response.statusText);\r\n                }\r\n                $dialogRemove.dialog(" +
+"\"close\");\r\n            }\r\n        });\r\n    </script>\r\n");
 
             
-            #line 212 "..\..\Views\User\UserParts\_Comments.cshtml"
+            #line 211 "..\..\Views\User\UserParts\_Comments.cshtml"
 }
 
             

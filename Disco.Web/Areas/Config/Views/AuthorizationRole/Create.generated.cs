@@ -57,7 +57,21 @@ WriteLiteral("\r\n");
             
             #line 6 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
  using (Html.BeginForm())
-{ 
+{
+    
+            
+            #line default
+            #line hidden
+            
+            #line 8 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
+Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 8 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
+                            
 
             
             #line default
@@ -74,8 +88,8 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r
 WriteLiteral("                    ");
 
             
-            #line 15 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
-               Write(Html.EditorFor(model => model.AuthorizationRole.Name));
+            #line 16 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
+               Write(Html.EditorFor(model => model.Name));
 
             
             #line default
@@ -83,8 +97,8 @@ WriteLiteral("                    ");
 WriteLiteral("<br />");
 
             
-            #line 15 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
-                                                                           Write(Html.ValidationMessageFor(model => model.AuthorizationRole.Name));
+            #line 16 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
+                                                         Write(Html.ValidationMessageFor(model => model.Name));
 
             
             #line default
@@ -107,11 +121,11 @@ WriteLiteral("    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n        $(function () {\r\n            $(\'#AuthorizationRole_Name\').focus().sele" +
-"ct();\r\n        });\r\n    </script>\r\n");
+WriteLiteral(">\r\n        $(function () {\r\n            $(\'#Name\').focus().select();\r\n        });" +
+"\r\n    </script>\r\n");
 
             
-            #line 28 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
+            #line 29 "..\..\Areas\Config\Views\AuthorizationRole\Create.cshtml"
 }
 
             

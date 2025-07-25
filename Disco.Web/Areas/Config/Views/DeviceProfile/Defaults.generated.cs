@@ -47,8 +47,10 @@ namespace Disco.Web.Areas.Config.Views.DeviceProfile
             #line 2 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
   
     Authorization.Require(Claims.Config.DeviceProfile.ConfigureDefaults);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Defaults");
+
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 
             
             #line default
@@ -74,7 +76,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                ");
 
             
-            #line 14 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
+            #line 16 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
            Write(Html.DropDownListFor(m => m.Default, Model.DeviceProfiles.ToSelectListItems(Model.Default)));
 
             
@@ -85,7 +87,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                ");
 
             
-            #line 15 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
+            #line 17 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
            Write(AjaxHelpers.AjaxLoader());
 
             
@@ -95,36 +97,20 @@ WriteLiteral("\r\n                <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-                    $(function () {
-                        $('#Default').change(function () {
-                            $this = $(this);
-                            $ajaxLoading = $this.next('.ajaxLoading').show();
-                            var data = { id: $this.val() };
-                            $.getJSON('");
+WriteLiteral(">\r\n                    $(function () {\r\n                        document.DiscoFun" +
+"ctions.PropertyChangeHelper(\r\n                            $(\'#Default\'),\r\n      " +
+"                      \'Default Profile\',\r\n                            \'");
 
             
-            #line 22 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
-                                   Write(Url.Action(MVC.API.DeviceProfile.Default()));
+            #line 23 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
+                        Write(Url.Action(MVC.API.DeviceProfile.Default()));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', data, function (response, result) {
-                                if (result != 'success' || response != 'OK') {
-                                    alert('Unable to change Default Device Profile:\n' + response);
-                                    $ajaxLoading.hide();
-                                } else {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                }
-                            });
-                        });
-                    });
-                </script>
-            </td>
-        </tr>
-        <tr>
-            <th");
+WriteLiteral("\',\r\n                            \'id\'\r\n                        );\r\n               " +
+"     });\r\n                </script>\r\n            </td>\r\n        </tr>\r\n        <" +
+"tr>\r\n            <th");
 
 WriteLiteral(" class=\"name\"");
 
@@ -138,7 +124,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                ");
 
             
-            #line 40 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
+            #line 35 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
            Write(Html.DropDownListFor(m => m.DefaultAddDeviceOffline, Model.DeviceProfilesAndNone.ToSelectListItems(Model.DefaultAddDeviceOffline)));
 
             
@@ -149,7 +135,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                ");
 
             
-            #line 41 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
+            #line 36 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
            Write(AjaxHelpers.AjaxLoader());
 
             
@@ -161,35 +147,21 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
                     $(function () {
-                        $('#DefaultAddDeviceOffline').change(function () {
-                            $this = $(this);
-                            $ajaxLoading = $this.next('.ajaxLoading').show();
-                            var data = { id: $this.val() };
-                            $.getJSON('");
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#DefaultAddDeviceOffline'),
+                            'Default Add Device Offline Profile',
+                            '");
 
             
-            #line 48 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
-                                   Write(Url.Action(MVC.API.DeviceProfile.DefaultAddDeviceOffline()));
+            #line 42 "..\..\Areas\Config\Views\DeviceProfile\Defaults.cshtml"
+                        Write(Url.Action(MVC.API.DeviceProfile.DefaultAddDeviceOffline()));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', data, function (response, result) {
-                                if (result != 'success' || response != 'OK') {
-                                    alert('Unable to change Default Add Device Offline Device Profile:\n' + response);
-                                    $ajaxLoading.hide();
-                                } else {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                }
-                            });
-                        });
-                    });
-                </script>
-            </td>
-        </tr>
-    </table>
-</div>
-");
+WriteLiteral("\',\r\n                            \'id\'\r\n                        );\r\n               " +
+"     });\r\n                </script>\r\n            </td>\r\n        </tr>\r\n    </tab" +
+"le>\r\n</div>\r\n");
 
         }
     }

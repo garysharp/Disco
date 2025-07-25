@@ -12,6 +12,7 @@ namespace Disco.Web.Areas.API.Controllers
     public partial class JobPreferencesController : AuthorizedDatabaseController
     {
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateInitialCommentsTemplate(string initialCommentsTemplate, bool redirect = false)
         {
             string expression = null;
@@ -32,10 +33,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateLongRunningJobDaysThreshold(int LongRunningJobDaysThreshold, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.LongRunningJobDaysThreshold = LongRunningJobDaysThreshold;
@@ -44,10 +46,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateStaleJobMinutesThreshold(int StaleJobMinutesThreshold, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.StaleJobMinutesThreshold = StaleJobMinutesThreshold;
@@ -56,10 +59,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateLodgmentIncludeAllAttachmentsByDefault(bool includeAllAttachmentsByDefault, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.LodgmentIncludeAllAttachmentsByDefault = includeAllAttachmentsByDefault;
@@ -68,10 +72,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDefaultNoticeboardTheme(string DefaultNoticeboardTheme, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.DefaultNoticeboardTheme = DefaultNoticeboardTheme;
@@ -82,10 +87,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateLocationMode(LocationModes LocationMode, bool redirect = false)
         {
             Database.DiscoConfiguration.JobPreferences.LocationMode = LocationMode;
@@ -94,13 +100,14 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
-        public virtual ActionResult UpdateLocationList(string[] LocationList, bool redirect = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateLocationList(string[] locationList, bool redirect = false)
         {
-            var list = LocationList
+            var list = locationList
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Trim())
                 .Distinct(StringComparer.OrdinalIgnoreCase)
@@ -112,10 +119,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImportLocationList(string LocationList, bool AutomaticList = false, bool Override = false, bool redirect = false)
         {
             IEnumerable<string> list;
@@ -152,10 +160,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnCreateExpression(string OnCreateExpression, bool redirect = false)
         {
             string expression = null;
@@ -176,10 +185,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnDeviceReadyForReturnExpression(string OnDeviceReadyForReturnExpression, bool redirect = false)
         {
             string expression = null;
@@ -200,10 +210,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
 
         [DiscoAuthorize(Claims.Config.JobPreferences.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnCloseExpression(string OnCloseExpression, bool redirect = false)
         {
             string expression = null;
@@ -224,7 +235,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect)
                 return RedirectToAction(MVC.Config.JobPreferences.Index());
             else
-                return Json("OK", JsonRequestBehavior.AllowGet);
+                return Ok();
         }
     }
 }

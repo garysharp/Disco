@@ -249,7 +249,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateIcon
         {
             public readonly string id = "id";
-            public readonly string Icon = "Icon";
+            public readonly string icon = "icon";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateIconColour s_params_UpdateIconColour = new ActionParamsClass_UpdateIconColour();
@@ -259,7 +259,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateIconColour
         {
             public readonly string id = "id";
-            public readonly string IconColour = "IconColour";
+            public readonly string iconColour = "iconColour";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateIconAndColour s_params_UpdateIconAndColour = new ActionParamsClass_UpdateIconAndColour();
@@ -269,8 +269,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateIconAndColour
         {
             public readonly string id = "id";
-            public readonly string Icon = "Icon";
-            public readonly string IconColour = "IconColour";
+            public readonly string icon = "icon";
+            public readonly string iconColour = "iconColour";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateOnAssignmentExpression s_params_UpdateOnAssignmentExpression = new ActionParamsClass_UpdateOnAssignmentExpression();
@@ -430,45 +430,45 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateIconOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Icon, bool? redirect);
+        partial void UpdateIconOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string icon, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateIcon(int id, string Icon, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateIcon(int id, string icon, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIcon);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Icon", Icon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "icon", icon);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateIconOverride(callInfo, id, Icon, redirect);
+            UpdateIconOverride(callInfo, id, icon, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateIconColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string IconColour, bool? redirect);
+        partial void UpdateIconColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string iconColour, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateIconColour(int id, string IconColour, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateIconColour(int id, string iconColour, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconColour);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "IconColour", IconColour);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "iconColour", iconColour);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateIconColourOverride(callInfo, id, IconColour, redirect);
+            UpdateIconColourOverride(callInfo, id, iconColour, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateIconAndColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Icon, string IconColour, bool redirect);
+        partial void UpdateIconAndColourOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string icon, string iconColour, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateIconAndColour(int id, string Icon, string IconColour, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateIconAndColour(int id, string icon, string iconColour, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateIconAndColour);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Icon", Icon);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "IconColour", IconColour);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "icon", icon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "iconColour", iconColour);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateIconAndColourOverride(callInfo, id, Icon, IconColour, redirect);
+            UpdateIconAndColourOverride(callInfo, id, icon, iconColour, redirect);
             return callInfo;
         }
 

@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.Plugins
             #line 2 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
   
     Authorization.Require(Claims.Config.Plugin.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), Model.Manifest.Name);
 
             
@@ -58,20 +58,34 @@ WriteLiteral("\r\n");
             
             #line 7 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
  using (Html.BeginForm())
-{ 
+{
     
             
             #line default
             #line hidden
             
             #line 9 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
-Write(Html.ValidationSummary(false));
+Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 9 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
+                            
+    
+            
+            #line default
+            #line hidden
+            
+            #line 10 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
+Write(Html.ValidationSummary(false));
+
+            
+            #line default
+            #line hidden
+            
+            #line 10 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
                                   
 
             
@@ -86,7 +100,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("        ");
 
             
-            #line 11 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
+            #line 12 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
    Write(Html.PartialCompiled(Model.PluginViewType, Model.PluginViewModel));
 
             
@@ -109,8 +123,9 @@ WriteLiteral(" value=\"Save Configuration\"");
 WriteLiteral(" />\r\n    </div>\r\n");
 
             
-            #line 16 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
+            #line 17 "..\..\Areas\Config\Views\Plugins\Configure.cshtml"
 }
+
             
             #line default
             #line hidden

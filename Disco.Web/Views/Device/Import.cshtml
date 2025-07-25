@@ -8,6 +8,7 @@
 <div id="Devices_Import">
     @using (Html.BeginForm(MVC.API.Device.ImportBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
+        @Html.AntiForgeryToken()
         <div id="importDialog" class="form" style="width: 450px">
             <h2>Import Devices</h2>
             <table>
@@ -101,7 +102,7 @@
                             }
 
                         </td>
-                    </tr>                   
+                    </tr>
                 }
             </tbody>
         </table>
@@ -186,9 +187,9 @@
                     modal: true,
                     autoOpen: false
                 },
-                $DeviceModelsDialog = null,
-                $DeviceProfilesDialog = null,
-                $DeviceBatchesDialog = null;
+                    $DeviceModelsDialog = null,
+                    $DeviceProfilesDialog = null,
+                    $DeviceBatchesDialog = null;
 
                 $('#Devices_Import_Documentation_DeviceModels_Button').click(function (e) {
                     e.preventDefault();

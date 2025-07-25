@@ -7,7 +7,6 @@
     var uniqueId = Guid.NewGuid().ToString("N");
 }
 <div id="LogEvents_@(uniqueId)" class="logEventsViewport">
-    @Html.AntiForgeryToken()
     <table class="logEventsViewport">
         <thead>
             <tr>
@@ -82,7 +81,7 @@
                     End: logEndFiler,
                     ModuleId: logModuleId,
                     Take: logTakeFiler,
-                    '__RequestVerificationToken': logEventsHost.find('input[name="__RequestVerificationToken"]').val()
+                    '__RequestVerificationToken': document.body.dataset.antiforgery
                 };
                 if (logEventTypeFiltered)
                     loadData["EventTypeIds"] = logEventTypeFiltered;

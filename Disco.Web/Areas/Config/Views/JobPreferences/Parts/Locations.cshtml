@@ -8,68 +8,75 @@
     <h2>Job Locations</h2>
     <table>
         <tr>
-            <th style="width: 140px">Mode:
+            <th style="width: 140px">
+                Mode:
             </th>
-            <td>@if (canConfig)
+            <td>
+                @if (canConfig)
                 {
-                @Html.DropDownListFor(model => model.LocationMode, Model.LocationModeOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
-                @AjaxHelpers.AjaxSave()
-                @AjaxHelpers.AjaxLoader()
-                <div id="Config_Location_Unrestricted">
-                    <div class="info-box">
-                        <p class="fa-p">
-                            <i class="fa fa-info-circle"></i>Technicians will be able to specify <em>any</em> value when entering a location. A selection of locations used historically will be offered.
-                        </p>
-                    </div>
-                </div>
-                <div id="Config_Location_List">
-                    <a id="Config_Location_List_Button" href="#" class="button small">Update List</a> <a id="Config_Location_List_ImportButton" href="#" class="button small">Import List</a>
-                    <div id="Config_Location_List_Dialog" class="dialog" title="Locations">
-                        <div id="Config_Location_List_Dialog_ListContainer">
-                            <span id="Config_Location_List_Dialog_None" class="smallMessage">The List is Empty</span>
-                            <ul id="Config_Location_List_Dialog_List" class="none">
-                                @foreach (var loc in Model.LocationList)
-                                {
-                                    <li data-location="@loc">@loc<i class="fa fa-times-circle remove"></i></li>
-                                }
-                            </ul>
+                    @Html.DropDownListFor(model => model.LocationMode, Model.LocationModeOptions().Select(o => new SelectListItem() { Value = o.Key.ToString(), Text = o.Value }))
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    <div id="Config_Location_Unrestricted">
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>Technicians will be able to specify <em>any</em> value when entering a location. A selection of locations used historically will be offered.
+                            </p>
                         </div>
-                        <div id="Config_Location_List_Dialog_AddContainer">
-                            <input type="text" id="Config_Location_List_Dialog_TextAdd" />
-                            <a id="Config_Location_List_Dialog_Add" href="#" class="button small">Add</a>
+                    </div>
+                    <div id="Config_Location_List">
+                        <a id="Config_Location_List_Button" href="#" class="button small">Update List</a> <a id="Config_Location_List_ImportButton" href="#" class="button small">Import List</a>
+                        <div id="Config_Location_List_Dialog" class="dialog" title="Locations">
+                            @using (Html.BeginForm(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true)))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div id="Config_Location_List_Dialog_ListContainer">
+                                    <span id="Config_Location_List_Dialog_None" class="smallMessage">The List is Empty</span>
+                                    <ul id="Config_Location_List_Dialog_List" class="none">
+                                        @foreach (var loc in Model.LocationList)
+                                        {
+                                            <li data-location="@loc"><input type="hidden" name="locationList" value="@loc" />@loc<i class="fa fa-times-circle remove"></i></li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            <div id="Config_Location_List_Dialog_AddContainer">
+                                <input type="text" id="Config_Location_List_Dialog_TextAdd" />
+                                <button id="Config_Location_List_Dialog_Add" type="button" class="button small">Add</button>
+                            </div>
                         </div>
-                        <form id="Config_Location_List_Dialog_Form" action="@(Url.Action(MVC.API.JobPreferences.UpdateLocationList(null, redirect: true)))" method="post"></form>
+                        <div id="Config_Location_ListImport_Dialog" class="dialog" title="Import Locations">
+                            @using (Html.BeginForm(MVC.API.JobPreferences.ImportLocationList(null, redirect: true)))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" id="Config_Location_ListImport_Dialog_AutomaticList" name="AutomaticList" value="False" />
+                                <div id="Config_Location_ListImport_Dialog_Overwrite_Container">
+                                    <input type="checkbox" id="Config_Location_ListImport_Dialog_Overwrite" name="Override" value="True" /><label for="Config_Location_ListImport_Dialog_Overwrite">Override Existing List</label>
+                                </div>
+                                <textarea id="Config_Location_ListImport_Dialog_LocationList" name="LocationList"></textarea>
+                                <div class="info-box">
+                                    <p class="fa-p">
+                                        <i class="fa fa-info-circle"></i>Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                                    </p>
+                                </div>
+                            }
+                        </div>
                     </div>
-                    <div id="Config_Location_ListImport_Dialog" class="dialog" title="Import Locations">
-                        <form id="Config_Location_ListImport_Dialog_Form" action="@(Url.Action(MVC.API.JobPreferences.ImportLocationList(null, redirect: true)))" method="post">
-                            <input type="hidden" id="Config_Location_ListImport_Dialog_AutomaticList" name="AutomaticList" value="False" />
-                            <div id="Config_Location_ListImport_Dialog_Overwrite_Container">
-                                <input type="checkbox" id="Config_Location_ListImport_Dialog_Overwrite" name="Override" value="True" /><label for="Config_Location_ListImport_Dialog_Overwrite">Override Existing List</label>
-                            </div>
-                            <textarea id="Config_Location_ListImport_Dialog_LocationList" name="LocationList"></textarea>
-                            <div class="info-box">
-                                <p class="fa-p">
-                                    <i class="fa fa-info-circle"></i>Enter multiple locations separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
-                                </p>
-                            </div>
-                        </form>
+                    <div id="Config_Location_Optional">
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>Technicians will be able to specify <em>any</em> value when entering a location. A defined list of location options is suggested.
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div id="Config_Location_Optional">
-                    <div class="info-box">
-                        <p class="fa-p">
-                            <i class="fa fa-info-circle"></i>Technicians will be able to specify <em>any</em> value when entering a location. A defined list of location options is suggested.
-                        </p>
+                    <div id="Config_Location_Restricted">
+                        <div class="info-box">
+                            <p class="fa-p">
+                                <i class="fa fa-info-circle"></i>Technicians are restricted to select a location from the defined list.
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div id="Config_Location_Restricted">
-                    <div class="info-box">
-                        <p class="fa-p">
-                            <i class="fa fa-info-circle"></i>Technicians are restricted to select a location from the defined list.
-                        </p>
-                    </div>
-                </div>
-                <script type="text/javascript">
+                    <script type="text/javascript">
                     $(function () {
                         document.DiscoFunctions.PropertyChangeHelper(
                             $('#LocationMode'),
@@ -114,7 +121,7 @@
                         update();
                         $locationMode.change(update);
 
-                        var dialog, textAdd, list, noList, form;
+                        var dialog, textAdd, list, originalList, noList, form;
 
                         $('#Config_Location_List_Button').click(showDialog);
 
@@ -134,6 +141,7 @@
                                 dialog.on('click', '.remove', remove);
 
                                 list = $('#Config_Location_List_Dialog_List');
+                                originalList = list.html();
                                 noList = $('#Config_Location_List_Dialog_None');
 
                                 textAdd = $('#Config_Location_List_Dialog_TextAdd');
@@ -155,28 +163,11 @@
 
                         function cancel() {
                             $(this).dialog("close");
-
-                            list.find('li').each(function () {
-                                $this = $(this);
-                                if ($this.is('[data-status="new"]')) {
-                                    $this.remove();
-                                } else {
-                                    if ($this.is('[data-status="removed"]')) {
-                                        $this.show();
-                                        $this.attr('data-status', '')
-                                    }
-                                }
-                            });
+                            list.html(originalList);
                         }
 
                         function remove() {
-                            $this = $(this).closest('li');
-
-                            if ($this.is('[data-status="new"]')) {
-                                $this.remove();
-                            } else {
-                                $this.attr('data-status', 'removed').hide();
-                            }
+                            $(this).closest('li').remove();
 
                             updateNoList();
                         }
@@ -194,7 +185,7 @@
                             }
 
                             // Already Exists
-                            var existingValues = list.find('li[data-location]').filter('[data-status!="removed"]').map(function () { return $(this).attr('data-location') }).get();
+                            var existingValues = list.find('li[data-location]').map(function () { return $(this).attr('data-location') }).get();
                             if (jQuery.inArray(value, existingValues) >= 0) {
                                 alert('That item already exists in the list');
                                 return;
@@ -202,6 +193,7 @@
 
                             // Add Item
                             var li = $('<li>')
+                                .append($('<input>').attr({ type: 'hidden', name: 'locationList', value: value }))
                                 .append($('<span>').text(value))
                                 .append($('<i>').addClass('fa fa-times-circle remove'))
                                 .attr('data-location', value)
@@ -222,21 +214,7 @@
                         }
 
                         function saveChanges() {
-                            var form = $('#Config_Location_List_Dialog_Form').empty();
-
-                            list.find('li[data-status!="removed"]').each(function () {
-                                var location = $(this).attr('data-location');
-
-                                form.append($('<input>').attr({
-                                    'name': 'LocationList',
-                                    'type': 'hidden'
-                                }).val(location));
-
-                            }).get();
-
-                            form.submit();
-
-                            dialog.dialog("disable");
+                            dialog.find('form').submit();
                             dialog.dialog("option", "buttons", null);
                         }
 
@@ -276,11 +254,11 @@
                         }
 
                     });
-                </script>
+                    </script>
                 }
                 else
                 {
-                @Model.LocationModeOptions().First(o => o.Key == Model.LocationMode.ToString()).Value
+                    @Model.LocationModeOptions().First(o => o.Key == Model.LocationMode.ToString()).Value
                 }
             </td>
         </tr>

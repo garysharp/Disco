@@ -149,18 +149,18 @@ WriteLiteral(" data-qrcodeurl=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n");
-
-WriteLiteral("                    ");
+WriteLiteral(" data-removeurl=\"");
 
             
-            #line 22 "..\..\Views\User\UserParts\_Resources.cshtml"
-               Write(Html.AntiForgeryToken());
+            #line 21 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Write(Url.Action(MVC.API.User.AttachmentRemove()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <div");
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n                    <div");
 
 WriteLiteral(" class=\"Disco-AttachmentUpload-DropTarget\"");
 
@@ -172,13 +172,13 @@ WriteLiteral(" class=\"attachmentOutput\"");
 WriteLiteral(">\r\n");
 
             
-            #line 27 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 26 "..\..\Views\User\UserParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 27 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 26 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (Model.User.UserAttachments != null)
                         {
                             foreach (var ua in Model.User.UserAttachments.OrderByDescending(a => a.Id))
@@ -189,20 +189,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1868), Tuple.Create("\"", 1926)
+WriteAttribute("href", Tuple.Create(" href=\"", 1884), Tuple.Create("\"", 1942)
             
-            #line 31 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1875), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentDownload(ua.Id))
+            #line 30 "..\..\Views\User\UserParts\_Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 1891), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentDownload(ua.Id))
             
             #line default
             #line hidden
-, 1875), false)
+, 1891), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 31 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 30 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                             Write(ua.Id);
 
             
@@ -213,7 +213,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 31 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 30 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                                    Write(ua.MimeType);
 
             
@@ -225,28 +225,28 @@ WriteLiteral(">\r\n                                    <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2040), Tuple.Create("\"", 2060)
+WriteAttribute("title", Tuple.Create(" title=\"", 2056), Tuple.Create("\"", 2076)
             
-            #line 32 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2048), Tuple.Create<System.Object, System.Int32>(ua.Filename
+            #line 31 "..\..\Views\User\UserParts\_Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 2064), Tuple.Create<System.Object, System.Int32>(ua.Filename
             
             #line default
             #line hidden
-, 2048), false)
+, 2064), false)
 );
 
 WriteLiteral(">\r\n                                        <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 2135), Tuple.Create("\"", 2195)
+WriteAttribute("src", Tuple.Create(" src=\"", 2151), Tuple.Create("\"", 2211)
             
-            #line 33 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2141), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id))
+            #line 32 "..\..\Views\User\UserParts\_Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 2157), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.AttachmentThumbnail(ua.Id))
             
             #line default
             #line hidden
-, 2141), false)
+, 2157), false)
 );
 
 WriteLiteral(" />\r\n                                    </span>\r\n                               " +
@@ -254,40 +254,40 @@ WriteLiteral(" />\r\n                                    </span>\r\n            
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2304), Tuple.Create("\"", 2324)
+WriteAttribute("title", Tuple.Create(" title=\"", 2320), Tuple.Create("\"", 2340)
             
-            #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2312), Tuple.Create<System.Object, System.Int32>(ua.Comments
+            #line 34 "..\..\Views\User\UserParts\_Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 2328), Tuple.Create<System.Object, System.Int32>(ua.Comments
             
             #line default
             #line hidden
-, 2312), false)
+, 2328), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 36 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 36 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 35 "..\..\Views\User\UserParts\_Resources.cshtml"
                                           if (!string.IsNullOrEmpty(ua.DocumentTemplateId))
                                             { 
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 36 "..\..\Views\User\UserParts\_Resources.cshtml"
                                          Write(ua.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 36 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                               }
                                         else
                                         { 
@@ -295,14 +295,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 39 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 38 "..\..\Views\User\UserParts\_Resources.cshtml"
                                       Write(ua.Comments ?? ua.Filename);
 
             
             #line default
             #line hidden
             
-            #line 39 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 38 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                         }
             
             #line default
@@ -314,7 +314,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 39 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                            Write(ua.TechUser.ToStringFriendly());
 
             
@@ -323,7 +323,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 39 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                        if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ua.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                                     {
             
@@ -336,7 +336,7 @@ WriteLiteral(" class=\"remove fa fa-times-circle\"");
 WriteLiteral("></span>");
 
             
-            #line 41 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                  }
             
             #line default
@@ -348,7 +348,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 41 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                                       Write(ua.Timestamp.ToUnixEpoc());
 
             
@@ -356,20 +356,20 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3033), Tuple.Create("\"", 3071)
+WriteAttribute("title", Tuple.Create(" title=\"", 3049), Tuple.Create("\"", 3087)
             
-            #line 41 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                                                                               , Tuple.Create(Tuple.Create("", 3041), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
+            #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
+                                                                                               , Tuple.Create(Tuple.Create("", 3057), Tuple.Create<System.Object, System.Int32>(ua.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 3041), false)
+, 3057), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 41 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 40 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                                                                                                           Write(ua.Timestamp.ToFullDateTime());
 
             
@@ -378,7 +378,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                                </a>\r\n");
 
             
-            #line 43 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 42 "..\..\Views\User\UserParts\_Resources.cshtml"
                             }
                         }
 
@@ -388,13 +388,13 @@ WriteLiteral("</span>\r\n                                </a>\r\n");
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 46 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 45 "..\..\Views\User\UserParts\_Resources.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 46 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 45 "..\..\Views\User\UserParts\_Resources.cshtml"
                      if (canAddAttachments)
                     {
 
@@ -432,7 +432,7 @@ WriteLiteral(" title=\"Upload with Online Services\"");
 WriteLiteral("></span>\r\n                        </div>\r\n");
 
             
-            #line 52 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 51 "..\..\Views\User\UserParts\_Resources.cshtml"
                     }
 
             
@@ -459,7 +459,7 @@ WriteLiteral(@">
                                     url: '");
 
             
-            #line 67 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 66 "..\..\Views\User\UserParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.User.Attachment()));
 
             
@@ -492,7 +492,7 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "chmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'href\', \'");
 
             
-            #line 97 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 96 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.User.AttachmentDownload()));
 
             
@@ -524,7 +524,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 120 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 119 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.User.AttachmentThumbnail()));
 
             
@@ -577,13 +577,13 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;\r\n\r\n");
 
             
-            #line 182 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 181 "..\..\Views\User\UserParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 182 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 181 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
@@ -630,7 +630,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 "                        //#endregion\r\n                            ");
 
             
-            #line 229 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 228 "..\..\Views\User\UserParts\_Resources.cshtml"
                                    }
 
             
@@ -639,69 +639,51 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 230 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 229 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
             #line default
             #line hidden
-WriteLiteral(@"
-                            //#region Remove Attachments
-
-                            $attachmentOutput.find('span.remove').click(removeAttachment);
-
-                            function removeAttachment() {
-                                $this = $(this).closest('a');
-
-                                var data = { id: $this.attr('data-attachmentid') };
-
-                                if (!$dialogRemoveAttachment) {
-                                    $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
-                                        resizable: false,
-                                        height: 140,
-                                        modal: true,
-                                        autoOpen: false
-                                    });
-                                }
-
-                                $dialogRemoveAttachment.dialog(""enable"");
-                                $dialogRemoveAttachment.dialog('option', 'buttons', {
-                                    ""Remove"": function () {
-                                        $dialogRemoveAttachment.dialog(""disable"");
-                                        $dialogRemoveAttachment.dialog(""option"", ""buttons"", null);
-                                        $.ajax({
-                                            url: '");
-
-            
-            #line 256 "..\..\Views\User\UserParts\_Resources.cshtml"
-                                             Write(Url.Action(MVC.API.User.AttachmentRemove()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                            dataType: \'json\',\r\n              " +
-"                              data: data,\r\n                                     " +
-"       success: function (d) {\r\n                                                " +
-"if (d == \'OK\') {\r\n                                                    // Do noth" +
-"ing, await SignalR notification\r\n                                               " +
-" } else {\r\n                                                    alert(\'Unable to " +
-"remove attachment: \' + d);\r\n                                                }\r\n " +
-"                                               $dialogRemoveAttachment.dialog(\"c" +
-"lose\");\r\n                                            },\r\n                       " +
-"                     error: function (jqXHR, textStatus, errorThrown) {\r\n       " +
-"                                         alert(\'Unable to remove attachment: \' +" +
-" textStatus);\r\n                                                $dialogRemoveAtta" +
-"chment.dialog(\"close\");\r\n                                            }\r\n        " +
-"                                });\r\n                                    },\r\n   " +
-"                                 Cancel: function () {\r\n                        " +
-"                $dialogRemoveAttachment.dialog(\"close\");\r\n                      " +
-"              }\r\n                                });\r\n\r\n                        " +
-"        $dialogRemoveAttachment.dialog(\'open\');\r\n\r\n                             " +
-"   return false;\r\n                            }\r\n\r\n                            /" +
-"/#endregion\r\n                        ");
+WriteLiteral("\r\n                            //#region Remove Attachments\r\n\r\n                   " +
+"         $attachmentOutput.find(\'span.remove\').click(removeAttachment);\r\n\r\n     " +
+"                       function removeAttachment() {\r\n                          " +
+"      $this = $(this).closest(\'a\');\r\n\r\n                                if (!$dia" +
+"logRemoveAttachment) {\r\n                                    $dialogRemoveAttachm" +
+"ent = $(\'#dialogRemoveAttachment\').dialog({\r\n                                   " +
+"     resizable: false,\r\n                                        height: 140,\r\n  " +
+"                                      modal: true,\r\n                            " +
+"            autoOpen: false\r\n                                    });\r\n          " +
+"                      }\r\n\r\n                                async function remove" +
+"AttachmentAsync(id) {\r\n                                    const body = new Form" +
+"Data();\r\n                                    body.append(\'__RequestVerificationT" +
+"oken\', document.body.dataset.antiforgery);\r\n                                    " +
+"body.append(\'id\', id);\r\n\r\n                                    try {\r\n           " +
+"                             const response = await fetch($Attachments.attr(\'dat" +
+"a-removeurl\'), {\r\n                                            body: body,\r\n     " +
+"                                       method: \'POST\'\r\n                         " +
+"               });\r\n                                        if (!response.ok) {\r" +
+"\n                                            alert(\'Unable to remove attachment:" +
+" \' + response.statusText);\r\n                                        }\r\n         " +
+"                               $dialogRemoveAttachment.dialog(\"close\");\r\n       " +
+"                             } catch (e) {\r\n                                    " +
+"    alert(\'Unable to remove attachment: \' + e);\r\n                               " +
+"         $dialogRemoveAttachment.dialog(\"close\");\r\n                             " +
+"       }\r\n                                }\r\n\r\n                                c" +
+"onst attachmentId = $this.attr(\'data-attachmentid\');\r\n                          " +
+"      $dialogRemoveAttachment.dialog(\'option\', \'buttons\', {\r\n                   " +
+"                 \"Remove\": function () {\r\n                                      " +
+"  $dialogRemoveAttachment.dialog(\"option\", \"buttons\", null);\r\n                  " +
+"                      removeAttachmentAsync(attachmentId);\r\n                    " +
+"                },\r\n                                    Cancel: function () {\r\n " +
+"                                       $dialogRemoveAttachment.dialog(\"close\");\r" +
+"\n                                    }\r\n                                }).dialo" +
+"g(\'open\');\r\n\r\n                                return false;\r\n                   " +
+"         }\r\n\r\n                            //#endregion\r\n                        " +
+"");
 
             
-            #line 284 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 282 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
@@ -725,7 +707,7 @@ WriteLiteral(@"
         $('#UserDetailTabItems').append('<li><a href=""#UserDetailTab-Resources"" id=""UserDetailTab-ResourcesLink"">Attachments [");
 
             
-            #line 300 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 298 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             
@@ -734,7 +716,7 @@ WriteLiteral(@"
 WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
             
-            #line 303 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 301 "..\..\Views\User\UserParts\_Resources.cshtml"
  if (canRemoveAnyAttachments || canRemoveOwnAttachments)
 {
 
@@ -756,7 +738,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 310 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 308 "..\..\Views\User\UserParts\_Resources.cshtml"
 }
             
             #line default

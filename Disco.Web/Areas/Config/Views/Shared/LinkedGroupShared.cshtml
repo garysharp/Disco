@@ -4,6 +4,7 @@
 <div id="Config_LinkedGroup_Dialog" title="Linked Group" class="dialog">
     <h3 id="Config_LinkedGroup_Title"></h3>
     <form action="#" method="post">
+        @Html.AntiForgeryToken()
         <table class="input">
             <tbody>
                 <tr>
@@ -11,7 +12,7 @@
                         <label for="Config_LinkedGroup_Id">Linked Group:</label>
                     </th>
                     <td>
-                        <input id="Config_LinkedGroup_Id" type="text" name="GroupId" />
+                        <input id="Config_LinkedGroup_Id" type="text" name="GroupId" data-sourceurl="@(Url.Action(MVC.API.System.SearchGroupSubjects()))" />
                     </td>
                 </tr>
                 <tr>
@@ -59,7 +60,7 @@
                 dialogGroupId = $('#Config_LinkedGroup_Id');
                 dialogGroupId.focus(function () { $(this).select(); });
                 dialogGroupId.autocomplete({
-                    source: '@(Url.Action(MVC.API.System.SearchGroupSubjects()))',
+                    source: dialogGroupId.attr('data-sourceurl'),
                     minLength: 2,
                     select: function (e, ui) {
                         dialogGroupId.val(ui.item.Id);

@@ -152,6 +152,7 @@
                             <div id="Config_DocumentTemplates_Scope_Dialog" title="Change Document Template Scope" class="dialog">
                                 @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateScope(Model.DocumentTemplate.Id, redirect: true)))
                                 {
+                                    @Html.AntiForgeryToken()
                                     <div class="input">
                                         <label for="Config_DocumentTemplates_Scope_Scope">Scope: </label>
                                         <select id="Config_DocumentTemplates_Scope_Scope" name="Scope">
@@ -178,10 +179,9 @@
                             </div>
                             <script type="text/javascript">
                                 $(function () {
-                                    var dialog;
-
-                                    function showDialog() {
-                                        if (dialog == null) {
+                                    let dialog = null;
+                                    $('#Config_DocumentTemplates_Scope_Button').on('click', function () {
+                                        if (!dialog) {
                                             dialog = $('#Config_DocumentTemplates_Scope_Dialog').dialog({
                                                 width: 400,
                                                 resizable: false,
@@ -189,23 +189,19 @@
                                                 autoOpen: false,
                                                 buttons: {
                                                     'Save Changes': function () {
-                                                        dialog.dialog('option', 'buttons', null);
-                                                        dialog.dialog('disable');
-                                                        $('#Config_DocumentTemplates_Scope_Scope').closest('form').submit();
+                                                        $(this)
+                                                            .dialog('option', 'buttons', null)
+                                                            .find('form').submit();
                                                     },
                                                     'Cancel': function () {
-                                                        dialog.dialog('close');
+                                                        $(this).dialog('close');
                                                     }
                                                 }
                                             });
                                         }
 
                                         dialog.dialog('open');
-
-                                        return false;
-                                    }
-
-                                    $('#Config_DocumentTemplates_Scope_Button').click(showDialog);
+                                    });
                                 });
                             </script>
                         }
@@ -250,6 +246,7 @@
                                     <div id="Config_DocumentTemplates_JobSubTypes_Update_Dialog" class="dialog" title="Job Type Filter">
                                         @using (Html.BeginForm(MVC.API.DocumentTemplate.UpdateJobSubTypes(Model.DocumentTemplate.Id, null, true)))
                                         {
+                                            @Html.AntiForgeryToken()
                                             var selectedTypes = Model.DocumentTemplate.JobSubTypes.Select(jst => jst.JobType).Distinct().ToList();
                                             foreach (var jt in Model.JobTypes)
                                             {
@@ -266,10 +263,9 @@
                                         }
                                     </div>
                                     <script>
-                                        (function () {
-                                            var dialog;
-
-                                            function showDialog() {
+                                        $(function () {
+                                            let dialog = null;
+                                            $('#Config_DocumentTemplates_JobSubTypes_Update').on('click', function () {
                                                 if (!dialog) {
                                                     dialog = $('#Config_DocumentTemplates_JobSubTypes_Update_Dialog').dialog({
                                                         resizable: false,
@@ -278,8 +274,19 @@
                                                         width: 750,
                                                         height: 580,
                                                         buttons: {
-                                                            "Save Changes": saveChanges,
-                                                            Cancel: cancel
+                                                            "Save Changes": function () {
+                                                                var form = dialog.find('form');
+                                                                $('input.jobType:unchecked').each(function () {
+                                                                    $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
+                                                                });
+                                                                form.trigger('submit');
+                                                                dialog.dialog("option", "buttons", null);
+                                                            },
+                                                            Cancel: function () {
+                                                                dialog.dialog("option", "buttons", null);
+                                                                // refresh Page
+                                                                window.location.reload(true);
+                                                            }
                                                         }
                                                     });
 
@@ -296,36 +303,8 @@
                                                 }
 
                                                 dialog.dialog('open');
-
-                                                return false;
-                                            }
-
-                                            function cancel() {
-                                                dialog.dialog("disable");
-                                                dialog.dialog("option", "buttons", null);
-
-                                                // Refresh Page
-                                                window.location.reload(true);
-                                            }
-
-                                            function saveChanges() {
-                                                var form = dialog.find('form');
-
-                                                $('input.jobType:unchecked').each(function () {
-                                                    $('#SubTypes_' + $(this).val()).find('input').prop('checked', false);
-                                                });
-
-                                                form.submit();
-
-                                                dialog.dialog("disable");
-                                                dialog.dialog("option", "buttons", null);
-                                            }
-
-                                            $(function () {
-                                                $('#Config_DocumentTemplates_JobSubTypes_Update').click(showDialog);
                                             });
-
-                                        })();
+                                        });
                                     </script>
                                 }
                             </div>
@@ -413,6 +392,7 @@
                                         <div>
                                             @using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
                                             {
+                                                @Html.AntiForgeryToken()
                                                 <input type="file" name="Template" id="Config_DocumentTemplates_TemplatePdf_Template" accept=".pdf" style="width: 250px;" />
                                             }
                                         </div>
@@ -737,7 +717,7 @@
                                 @Html.Hidden("ruleId", "")
                             }
                             <a id="DocumentTemplate_OnImportUserFlagRules_AddButton" href="#" class="button small">Add User Flag Rule</a>
-                            <div id="DocumentTemplate_OnImportUserFlagRules_AddDialog" class="hiddenDialog" title="On Import User Flag Rule: @(Model.DocumentTemplate.Id)">
+                            <div id="DocumentTemplate_OnImportUserFlagRules_AddDialog" class="dialog" title="On Import User Flag Rule: @(Model.DocumentTemplate.Id)">
                                 <div class="brief">
                                     @switch (Model.DocumentTemplate.Scope)
                                     {
@@ -758,7 +738,7 @@
                                             break;
                                     }
                                 </div>
-                                @using (Html.BeginForm(MVC.API.DocumentTemplate.AddOnImportUserFlagRule(Model.DocumentTemplate.Id), FormMethod.Post))
+                                @using (Html.BeginForm(MVC.API.DocumentTemplate.AddOnImportUserFlagRule(Model.DocumentTemplate.Id)))
                                 {
                                     @Html.AntiForgeryToken()
                                     <div class="distribute-evenly">
@@ -878,7 +858,7 @@
                                                             rulesTable.find('tbody').append(row);
 
                                                             rulesTable.find('tbody').find('tr').first().addClass('hidden');
-                                                            
+
                                                             dialog.dialog("close");
                                                         })
                                                         .catch(e => {
@@ -997,6 +977,10 @@
             </div>
         </div>
         <div id="dialogConfirmDelete" title="Delete this Document Template?" class="dialog">
+            @using (Html.BeginForm(MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true)))
+            {
+                @Html.AntiForgeryToken()
+            }
             <p>
                 <i class="fa fa-exclamation-triangle fa-lg warning"></i>This item will be permanently deleted and cannot be recovered.<br />
                 <em>
@@ -1008,31 +992,28 @@
         </div>
         <script type="text/javascript">
             $(function () {
-                var button = $('#buttonDelete');
-                var buttonDialog = $("#dialogConfirmDelete");
-                var buttonLink = button.attr('href');
-                button.attr('href', '#');
+                const button = $('#buttonDelete');
+                let buttonDialog = null;
                 button.click(function () {
-                    buttonDialog.dialog('open');
-                    return false;
-                });
-                buttonDialog.dialog({
-                    resizable: false,
-                    modal: true,
-                    autoOpen: false,
-                    buttons: {
-                        "Delete": function () {
-                            $this = $(this);
-                            $this.dialog('disable');
-                            $this.dialog("option", "buttons", null);
-                            window.location.href = buttonLink;
-                        },
-                        Cancel: function () {
-                            $(this).dialog("close");
-                        }
+                    if (!buttonDialog) {
+                        buttonDialog = $("#dialogConfirmDelete").dialog({
+                            resizable: false,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Delete": function () {
+                                    $(this)
+                                        .dialog("option", "buttons", null)
+                                        .find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
                     }
+                    buttonDialog.dialog('open');
                 });
-
             });
         </script>
         <div class="actionBar">
@@ -1065,7 +1046,7 @@
                 else
                 {
                     <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
-                    <div id="dialogBulkGenerate" class="hiddenDialog dialog-bulk-generate" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
+                    <div id="dialogBulkGenerate" class="dialog dialog-bulk-generate" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
                         <div class="brief">
                             @switch (Model.DocumentTemplate.Scope)
                             {
@@ -1101,8 +1082,9 @@
                                     break;
                             }
                         </div>
-                        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id), FormMethod.Post))
+                        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)))
                         {
+                            @Html.AntiForgeryToken()
                             <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="DataIds"></div>
                             <textarea id="inputBulkGenerateDataIds" name="DataIds" data-val="true" data-val-required="Identifiers are required"></textarea>
                             if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
@@ -1127,8 +1109,7 @@
                                         width: 460,
                                         buttons: {
                                             "Bulk Generate": function () {
-                                                dialog.find('form').submit();
-                                                dialog.dialog("disable");
+                                                $(this).find('form').trigger('submit');
                                             },
                                             Close: function () {
                                                 $(this).dialog("close");
@@ -1148,13 +1129,13 @@
             }
             @if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
             {
-                @Html.ActionLinkButton("Delete", MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true), "buttonDelete")
+                <button id="buttonDelete" type="button" class="button">Delete</button>
             }
         </div>
-        @if (!string.IsNullOrWhiteSpace(Model.BulkGenerateDownloadId))
+        @if (Model.BulkGenerateDownloadId.HasValue)
         {
             <div id="Config_DocumentTemplates_Show_DownloadBulk_Dialog" class="dialog" title="Download Bulk Documents">
-                <a href="@Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId, Model.BulkGenerateDownloadFilename))" class="button"><i class="fa fa-download fa-lg"></i>Download Bulk Documents</a>
+                <a href="@Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId.Value, Model.BulkGenerateDownloadFilename))" class="button"><i class="fa fa-download fa-lg"></i>Download Bulk Documents</a>
             </div>
             <script>
                 $(function () {

@@ -762,6 +762,20 @@ WriteLiteral(">\r\n");
             #line 117 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.RemoveJob()))
         {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 119 "..\..\Views\Job\JobParts\Queues.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 119 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                    
 
             
             #line default
@@ -815,7 +829,7 @@ WriteLiteral(" for=\"Job_Show_Queues_Actions_Remove_Dialog_CloseJob\"");
 WriteLiteral(">Close the Job</label>\r\n            </div>\r\n");
 
             
-            #line 131 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 132 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -834,15 +848,29 @@ WriteLiteral(" title=\"Edit the Added Comment\"");
 WriteLiteral(">\r\n");
 
             
-            #line 134 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 135 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 134 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 135 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.UpdateAddedComment()))
         {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 137 "..\..\Views\Job\JobParts\Queues.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 137 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                    
 
             
             #line default
@@ -882,7 +910,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n            </p>\r\n");
 
             
-            #line 142 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 144 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -901,15 +929,29 @@ WriteLiteral(" title=\"Edit the Removed Comment\"");
 WriteLiteral(">\r\n");
 
             
-            #line 145 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 147 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 145 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 147 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.UpdateRemovedComment()))
         {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 149 "..\..\Views\Job\JobParts\Queues.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 149 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                    
 
             
             #line default
@@ -949,7 +991,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n            </p>\r\n");
 
             
-            #line 153 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 156 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -968,15 +1010,29 @@ WriteLiteral(" title=\"Edit the SLA\"");
 WriteLiteral(">\r\n");
 
             
-            #line 156 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 159 "..\..\Views\Job\JobParts\Queues.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 156 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 159 "..\..\Views\Job\JobParts\Queues.cshtml"
          using (Html.BeginForm(MVC.API.JobQueueJob.UpdateSlaAndPriority()))
         {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 161 "..\..\Views\Job\JobParts\Queues.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 161 "..\..\Views\Job\JobParts\Queues.cshtml"
+                                    
 
             
             #line default
@@ -1023,13 +1079,13 @@ WriteLiteral(" autofocus=\"autofocus\"");
 WriteLiteral(">\r\n");
 
             
-            #line 165 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 169 "..\..\Views\Job\JobParts\Queues.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 165 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 169 "..\..\Views\Job\JobParts\Queues.cshtml"
                          foreach (var priorityItem in Enum.GetNames(typeof(JobQueuePriority)))
                         {
 
@@ -1038,20 +1094,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 8819), Tuple.Create("\"", 8842)
+WriteAttribute("value", Tuple.Create(" value=\"", 8971), Tuple.Create("\"", 8994)
             
-            #line 167 "..\..\Views\Job\JobParts\Queues.cshtml"
-, Tuple.Create(Tuple.Create("", 8827), Tuple.Create<System.Object, System.Int32>(priorityItem
+            #line 171 "..\..\Views\Job\JobParts\Queues.cshtml"
+, Tuple.Create(Tuple.Create("", 8979), Tuple.Create<System.Object, System.Int32>(priorityItem
             
             #line default
             #line hidden
-, 8827), false)
+, 8979), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 167 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 171 "..\..\Views\Job\JobParts\Queues.cshtml"
                                                         Write(priorityItem);
 
             
@@ -1060,7 +1116,7 @@ WriteLiteral(">");
 WriteLiteral("</option>\r\n");
 
             
-            #line 168 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 172 "..\..\Views\Job\JobParts\Queues.cshtml"
                         }
 
             
@@ -1086,7 +1142,7 @@ WriteLiteral(" placeholder=\"None\"");
 WriteLiteral(" />\r\n                </p>\r\n            </div>\r\n");
 
             
-            #line 178 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 182 "..\..\Views\Job\JobParts\Queues.cshtml"
         }
 
             
@@ -1109,7 +1165,7 @@ WriteLiteral(@">
             var dialogEditSla_BothUrl = '");
 
             
-            #line 188 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 192 "..\..\Views\Job\JobParts\Queues.cshtml"
                                      Write(Url.Action(MVC.API.JobQueueJob.UpdateSlaAndPriority()));
 
             
@@ -1118,7 +1174,7 @@ WriteLiteral(@">
 WriteLiteral("\';\r\n            var dialogEditSla_SlaUrl = \'");
 
             
-            #line 189 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 193 "..\..\Views\Job\JobParts\Queues.cshtml"
                                     Write(Url.Action(MVC.API.JobQueueJob.UpdateSla()));
 
             
@@ -1127,7 +1183,7 @@ WriteLiteral("\';\r\n            var dialogEditSla_SlaUrl = \'");
 WriteLiteral("\';\r\n            var dialogEditSla_PriorityUrl = \'");
 
             
-            #line 190 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 194 "..\..\Views\Job\JobParts\Queues.cshtml"
                                          Write(Url.Action(MVC.API.JobQueueJob.UpdatePriority()));
 
             
@@ -1249,7 +1305,7 @@ WriteLiteral("\';\r\n\r\n            jobQueues.on(\'click\', \'a.remove\', funct
 "script>\r\n");
 
             
-            #line 392 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 396 "..\..\Views\Job\JobParts\Queues.cshtml"
 }
 else
 {
@@ -1264,7 +1320,7 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">This job has no associated queue history</div>\r\n");
 
             
-            #line 396 "..\..\Views\Job\JobParts\Queues.cshtml"
+            #line 400 "..\..\Views\Job\JobParts\Queues.cshtml"
 }
             
             #line default

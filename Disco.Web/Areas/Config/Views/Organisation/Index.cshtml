@@ -159,6 +159,7 @@
     <div id="dialogUpdateOrganisationLogo" title="Update Organisation Logo" class="dialog">
         @using (Html.BeginForm(MVC.API.System.OrganisationLogo(true, null, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
+            @Html.AntiForgeryToken()
             <h3>Update Organisation Logo</h3>
             <div style="margin-top: 10px; padding-bottom: 5px;">
                 <input id="updateOrganisationLogoResetLogo" type="radio" name="ResetLogo" value="true"

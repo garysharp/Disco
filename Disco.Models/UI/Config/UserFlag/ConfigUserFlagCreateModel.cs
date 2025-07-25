@@ -2,6 +2,7 @@
 {
     public interface ConfigUserFlagCreateModel : BaseUIModel
     {
-        Repository.UserFlag UserFlag { get; set; }
+        string Name { get; set; }
+        string Description { get; set; }
     }
 }

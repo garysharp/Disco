@@ -63,17 +63,50 @@ WriteLiteral("\r\n<table");
 
 WriteLiteral(" id=\"jobComponents\"");
 
-WriteLiteral(">\r\n    <tr>\r\n        <th>Description\r\n        </th>\r\n        <th>Cost\r\n        </" +
-"th>\r\n");
+WriteLiteral(" data-addurl=\"");
 
             
-            #line 19 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 13 "..\..\Views\Job\JobParts\Components.cshtml"
+                                  Write(Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-removeurl=\"");
+
+            
+            #line 13 "..\..\Views\Job\JobParts\Components.cshtml"
+                                                                                                                   Write(Url.Action(MVC.API.Job.ComponentRemove()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-updateurl=\"");
+
+            
+            #line 13 "..\..\Views\Job\JobParts\Components.cshtml"
+                                                                                                                                                                               Write(Url.Action(MVC.API.Job.ComponentUpdate()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n    <tr>\r\n        <th>\r\n            Description\r\n        </th>\r\n        <th>\r\n" +
+"            Cost\r\n        </th>\r\n");
+
+            
+            #line 21 "..\..\Views\Job\JobParts\Components.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 19 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 21 "..\..\Views\Job\JobParts\Components.cshtml"
          if (hasEdit)
         {
 
@@ -84,10 +117,10 @@ WriteLiteral("            <th");
 
 WriteLiteral(" class=\"actions\"");
 
-WriteLiteral(">&nbsp;\r\n            </th>\r\n");
+WriteLiteral(">\r\n                &nbsp;\r\n            </th>\r\n");
 
             
-            #line 23 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 26 "..\..\Views\Job\JobParts\Components.cshtml"
         }
 
             
@@ -96,13 +129,13 @@ WriteLiteral(">&nbsp;\r\n            </th>\r\n");
 WriteLiteral("    </tr>\r\n");
 
             
-            #line 25 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 28 "..\..\Views\Job\JobParts\Components.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 25 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 28 "..\..\Views\Job\JobParts\Components.cshtml"
      if (hasEdit)
     {
         foreach (var jc in Model.Job.JobComponents)
@@ -111,59 +144,59 @@ WriteLiteral("    </tr>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("        <tr");
+WriteLiteral("            <tr");
 
 WriteLiteral(" data-jobcomponentid=\"");
 
             
-            #line 29 "..\..\Views\Job\JobParts\Components.cshtml"
-                            Write(jc.Id);
+            #line 32 "..\..\Views\Job\JobParts\Components.cshtml"
+                                Write(jc.Id);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n            <td>\r\n                <input");
+WriteLiteral(">\r\n                <td>\r\n                    <input");
 
 WriteLiteral(" type=\"text\"");
 
 WriteLiteral(" class=\"description\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 853), Tuple.Create("\"", 876)
+WriteAttribute("value", Tuple.Create(" value=\"", 1109), Tuple.Create("\"", 1132)
             
-            #line 31 "..\..\Views\Job\JobParts\Components.cshtml"
-, Tuple.Create(Tuple.Create("", 861), Tuple.Create<System.Object, System.Int32>(jc.Description
+            #line 34 "..\..\Views\Job\JobParts\Components.cshtml"
+, Tuple.Create(Tuple.Create("", 1117), Tuple.Create<System.Object, System.Int32>(jc.Description
             
             #line default
             #line hidden
-, 861), false)
+, 1117), false)
 );
 
-WriteLiteral(" />\r\n            </td>\r\n            <td>\r\n                <input");
+WriteLiteral(" />\r\n                </td>\r\n                <td>\r\n                    <input");
 
 WriteLiteral(" type=\"text\"");
 
 WriteLiteral(" class=\"cost\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 966), Tuple.Create("\"", 996)
+WriteAttribute("value", Tuple.Create(" value=\"", 1234), Tuple.Create("\"", 1264)
             
-            #line 34 "..\..\Views\Job\JobParts\Components.cshtml"
-, Tuple.Create(Tuple.Create("", 974), Tuple.Create<System.Object, System.Int32>(jc.Cost.ToString("C")
+            #line 37 "..\..\Views\Job\JobParts\Components.cshtml"
+, Tuple.Create(Tuple.Create("", 1242), Tuple.Create<System.Object, System.Int32>(jc.Cost.ToString("C")
             
             #line default
             #line hidden
-, 974), false)
+, 1242), false)
 );
 
-WriteLiteral(" />\r\n            </td>\r\n            <td>\r\n                <span");
+WriteLiteral(" />\r\n                </td>\r\n                <td>\r\n                    <span");
 
 WriteLiteral(" class=\"remove fa fa-times-circle\"");
 
-WriteLiteral("></span>\r\n            </td>\r\n        </tr>\r\n");
+WriteLiteral("></span>\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 40 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 43 "..\..\Views\Job\JobParts\Components.cshtml"
         }
     }
     else
@@ -174,49 +207,49 @@ WriteLiteral("></span>\r\n            </td>\r\n        </tr>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("        <tr");
+WriteLiteral("            <tr");
 
 WriteLiteral(" data-jobcomponentid=\"");
 
             
-            #line 46 "..\..\Views\Job\JobParts\Components.cshtml"
-                            Write(jc.Id);
+            #line 49 "..\..\Views\Job\JobParts\Components.cshtml"
+                                Write(jc.Id);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n            <td>\r\n                <span");
+WriteLiteral(">\r\n                <td>\r\n                    <span");
 
 WriteLiteral(" class=\"description\"");
 
 WriteLiteral(">");
 
             
-            #line 48 "..\..\Views\Job\JobParts\Components.cshtml"
-                                     Write(jc.Description);
+            #line 51 "..\..\Views\Job\JobParts\Components.cshtml"
+                                         Write(jc.Description);
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n            </td>\r\n            <td>\r\n                <span");
+WriteLiteral("</span>\r\n                </td>\r\n                <td>\r\n                    <span");
 
 WriteLiteral(" class=\"cost\"");
 
 WriteLiteral(">");
 
             
-            #line 51 "..\..\Views\Job\JobParts\Components.cshtml"
-                              Write(jc.Cost.ToString("C"));
+            #line 54 "..\..\Views\Job\JobParts\Components.cshtml"
+                                  Write(jc.Cost.ToString("C"));
 
             
             #line default
             #line hidden
-WriteLiteral("</span>\r\n            </td>\r\n        </tr>\r\n");
+WriteLiteral("</span>\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 54 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 57 "..\..\Views\Job\JobParts\Components.cshtml"
         }
     }
 
@@ -226,13 +259,13 @@ WriteLiteral("</span>\r\n            </td>\r\n        </tr>\r\n");
 WriteLiteral("\r\n    <tr>\r\n        <td>\r\n");
 
             
-            #line 59 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 62 "..\..\Views\Job\JobParts\Components.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 59 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 62 "..\..\Views\Job\JobParts\Components.cshtml"
              if (hasEdit && hasAdd)
             {
 
@@ -248,7 +281,7 @@ WriteLiteral(" id=\"jobComponentsAdd\"");
 WriteLiteral(">Add Component</a>\r\n");
 
             
-            #line 62 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 65 "..\..\Views\Job\JobParts\Components.cshtml"
             }
 
             
@@ -256,57 +289,57 @@ WriteLiteral(">Add Component</a>\r\n");
             #line hidden
 WriteLiteral("            &nbsp;\r\n        </td>\r\n        <td");
 
-WriteAttribute("colspan", Tuple.Create(" colspan=\"", 1727), Tuple.Create("\"", 1755)
+WriteAttribute("colspan", Tuple.Create(" colspan=\"", 2047), Tuple.Create("\"", 2075)
             
-            #line 65 "..\..\Views\Job\JobParts\Components.cshtml"
-, Tuple.Create(Tuple.Create("", 1737), Tuple.Create<System.Object, System.Int32>(hasEdit ? 2 : 1
+            #line 68 "..\..\Views\Job\JobParts\Components.cshtml"
+, Tuple.Create(Tuple.Create("", 2057), Tuple.Create<System.Object, System.Int32>(hasEdit ? 2 : 1
             
             #line default
             #line hidden
-, 1737), false)
+, 2057), false)
 );
 
 WriteLiteral(" class=\"totalCost\"");
 
-WriteLiteral(">Total: <span");
+WriteLiteral(">\r\n            Total: <span");
 
 WriteLiteral(" id=\"jobComponentsTotalCost\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 66 "..\..\Views\Job\JobParts\Components.cshtml"
-            
-            
-            #line default
-            #line hidden
-            
-            #line 66 "..\..\Views\Job\JobParts\Components.cshtml"
-             if (!hasEdit)
-            {
+            #line 70 "..\..\Views\Job\JobParts\Components.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 68 "..\..\Views\Job\JobParts\Components.cshtml"
-           Write(Model.Job.JobComponentsTotalCost().ToString("C"));
+            #line 70 "..\..\Views\Job\JobParts\Components.cshtml"
+                 if (!hasEdit)
+                {
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 72 "..\..\Views\Job\JobParts\Components.cshtml"
+               Write(Model.Job.JobComponentsTotalCost().ToString("C"));
 
             
             #line default
             #line hidden
             
-            #line 68 "..\..\Views\Job\JobParts\Components.cshtml"
-                                                                 
-            }
+            #line 72 "..\..\Views\Job\JobParts\Components.cshtml"
+                                                                     
+                }
 
             
             #line default
             #line hidden
-WriteLiteral("        </span>\r\n        </td>\r\n    </tr>\r\n</table>\r\n");
+WriteLiteral("            </span>\r\n        </td>\r\n    </tr>\r\n</table>\r\n");
 
             
-            #line 74 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 78 "..\..\Views\Job\JobParts\Components.cshtml"
  if (hasEdit)
 {
 
@@ -329,138 +362,96 @@ WriteLiteral("    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n        $(function () {\r\n            var $jobComponents = $(\'#jobComponents\');" +
-"\r\n\r\n            $jobComponents.on(\'change\', \'input\', updateComponent);\r\n        " +
-"    $jobComponents.on(\'focus\', \'input\', function () { $(this).select() });\r\n\r\n\r\n" +
-"            $jobComponents.on(\'click\', \'span.remove\', removeComponent);\r\n\r\n     " +
-"       $(\'#jobComponentsAdd\').click(function () {\r\n                var jc = $(\'<" +
-"tr><td><input type=\"text\" class=\"description\" /></td><td><input type=\"text\" clas" +
-"s=\"cost\" /></td><td><span class=\"remove fa fa-times-circle\"></span></td></tr>\');" +
-"\r\n                jc.find(\'input\').focus(function () { $(this).select() })\r\n    " +
-"            jc.insertBefore($jobComponents.find(\'tr\').last());\r\n                " +
-"jc.find(\'input.description\').focus();\r\n                return false;\r\n          " +
-"  });\r\n\r\n            $(\'#dialogRemoveComponent\').dialog({\r\n                resiz" +
-"able: false,\r\n                height: 140,\r\n                modal: true,\r\n      " +
-"          autoOpen: false\r\n            });\r\n\r\n            function removeCompone" +
-"nt() {\r\n                var componentRow = $(this).closest(\'tr\');\r\n             " +
-"   var id = componentRow.attr(\'data-jobcomponentid\');\r\n                if (id) {" +
-"\r\n                    var data = { id: id };\r\n\r\n                    var $dialogR" +
-"emoveComponent = $(\'#dialogRemoveComponent\');\r\n                    $dialogRemove" +
-"Component.dialog(\"enable\");\r\n                    $dialogRemoveComponent.dialog(\'" +
-"option\', \'buttons\', {\r\n                        \"Remove\": function () {\r\n        " +
-"                    $dialogRemoveComponent.dialog(\"disable\");\r\n                 " +
-"           $dialogRemoveComponent.dialog(\"option\", \"buttons\", null);\r\n          " +
-"                  $.ajax({\r\n                                url: \'");
+WriteLiteral(">\r\n        $(function () {\r\n            const $jobComponents = $(\'#jobComponents\'" +
+");\r\n\r\n            $jobComponents.on(\'change\', \'input\', updateComponent);\r\n      " +
+"      $jobComponents.on(\'focus\', \'input\', function () { $(this).select() });\r\n\r\n" +
+"\r\n            $jobComponents.on(\'click\', \'span.remove\', removeComponent);\r\n\r\n   " +
+"         $(\'#jobComponentsAdd\').click(function () {\r\n                const jc = " +
+"$(\'<tr><td><input type=\"text\" class=\"description\" /></td><td><input type=\"text\" " +
+"class=\"cost\" /></td><td><span class=\"remove fa fa-times-circle\"></span></td></tr" +
+">\');\r\n                jc.find(\'input\').focus(function () { $(this).select() })\r\n" +
+"                jc.insertBefore($jobComponents.find(\'tr\').last());\r\n            " +
+"    jc.find(\'input.description\').focus();\r\n                return false;\r\n      " +
+"      });\r\n\r\n            $(\'#dialogRemoveComponent\').dialog({\r\n                r" +
+"esizable: false,\r\n                height: 140,\r\n                modal: true,\r\n  " +
+"              autoOpen: false\r\n            });\r\n\r\n            function removeCom" +
+"ponent() {\r\n                const componentRow = $(this).closest(\'tr\');\r\n       " +
+"         const id = componentRow.attr(\'data-jobcomponentid\');\r\n                i" +
+"f (id) {\r\n                    var $dialogRemoveComponent = $(\'#dialogRemoveCompo" +
+"nent\');\r\n                    $dialogRemoveComponent.dialog(\"enable\");\r\n         " +
+"           $dialogRemoveComponent.dialog(\'option\', \'buttons\', {\r\n               " +
+"         \"Remove\": function () {\r\n                            $dialogRemoveCompo" +
+"nent.dialog(\"disable\");\r\n                            $dialogRemoveComponent.dial" +
+"og(\"option\", \"buttons\", null);\r\n\r\n                            async function rem" +
+"oveComponentAsync(id) {\r\n\r\n                                const body = new Form" +
+"Data();\r\n                                body.append(\'__RequestVerificationToken" +
+"\', document.body.dataset.antiforgery);\r\n                                body.app" +
+"end(\'id\', id);\r\n\r\n                                const response = await fetch($" +
+"jobComponents.attr(\'data-removeurl\'), {\r\n                                    met" +
+"hod: \'POST\',\r\n                                    body: body\r\n                  " +
+"              });\r\n\r\n                                if (response.ok) {\r\n       " +
+"                             componentRow.remove();\r\n                           " +
+"         updateTotalCost();\r\n                                } else {\r\n         " +
+"                           alert(\'Unable to remove component: \' + response.statu" +
+"sText);\r\n                                }\r\n                                $dia" +
+"logRemoveComponent.dialog(\"close\");\r\n                            }\r\n            " +
+"                removeComponentAsync(id);\r\n                        },\r\n         " +
+"               Cancel: function () {\r\n                            $dialogRemoveC" +
+"omponent.dialog(\"close\");\r\n                        }\r\n                    });\r\n\r" +
+"\n                    $dialogRemoveComponent.dialog(\'open\');\r\n\r\n                }" +
+" else {\r\n                    // New - Remove\r\n                    componentRow.r" +
+"emove();\r\n                    updateTotalCost();\r\n                }\r\n           " +
+" }\r\n            function updateTotalCost() {\r\n                var totalCost = 0;" +
+"\r\n\r\n                $jobComponents.find(\'input.cost\').each(function () {\r\n      " +
+"              var v = $(this).val();\r\n                    v = $.parseNumber(v, {" +
+" format: \'#,##0.00\', locale: \'au\' });\r\n                    if (!isNaN(v))\r\n     " +
+"                   totalCost += v;\r\n                });\r\n                var tot" +
+"alCostFormatted = $.formatNumber(totalCost, { format: \'#,##0.00\', locale: \'au\' }" +
+");\r\n                $(\'#jobComponentsTotalCost\').text(\'$\' + totalCostFormatted);" +
+"\r\n            }\r\n            function updateComponent() {\r\n                var c" +
+"omponentRow = $(this).closest(\'tr\');\r\n\r\n                componentRow.find(\'input" +
+"\').attr(\'disabled\', true).addClass(\'updating\');\r\n\r\n                var id = comp" +
+"onentRow.attr(\'data-jobcomponentid\');\r\n                if (id) {\r\n              " +
+"      // Update\r\n                    async function updateComponentAsync(id, des" +
+"cription, cost) {\r\n                        const body = new FormData();\r\n       " +
+"                 body.append(\'__RequestVerificationToken\', document.body.dataset" +
+".antiforgery);\r\n                        body.append(\'id\', id);\r\n                " +
+"        body.append(\'description\', description);\r\n                        body.a" +
+"ppend(\'cost\', cost);\r\n\r\n                        const response = await fetch($jo" +
+"bComponents.attr(\'data-updateurl\'), {\r\n                            method: \'POST" +
+"\',\r\n                            body: body\r\n                        });\r\n\r\n     " +
+"                   componentRow.find(\'input\').attr(\'disabled\', false).removeClas" +
+"s(\'updating\');\r\n\r\n                        if (response.ok) {\r\n                  " +
+"          const component = await response.json();\r\n                            " +
+"componentRow.find(\'input.description\').val(component.Description);\r\n            " +
+"                componentRow.find(\'input.cost\').val(component.Cost);\r\n          " +
+"              } else {\r\n                            alert(\'Unable to update comp" +
+"onent: \' + response.statusText);\r\n                        }\r\n                   " +
+"     updateTotalCost();\r\n                    }\r\n\r\n                    updateComp" +
+"onentAsync(id, componentRow.find(\'input.description\').val(), componentRow.find(\'" +
+"input.cost\').val());\r\n                } else {\r\n                    // Add\r\n    " +
+"                async function addComponentAsync(description, cost) {\r\n         " +
+"               const body = new FormData();\r\n                        body.append" +
+"(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n            " +
+"            body.append(\'description\', description);\r\n                        bo" +
+"dy.append(\'cost\', cost);\r\n\r\n                        const response = await fetch" +
+"($jobComponents.attr(\'data-addurl\'), {\r\n                            method: \'POS" +
+"T\',\r\n                            body: body\r\n                        });\r\n\r\n    " +
+"                    componentRow.find(\'input\').attr(\'disabled\', false).removeCla" +
+"ss(\'updating\');\r\n\r\n                        if (response.ok) {\r\n                 " +
+"           const component = await response.json();\r\n                           " +
+" componentRow.attr(\'data-jobcomponentid\', component.Id);\r\n                      " +
+"      componentRow.find(\'input.description\').val(component.Description);\r\n      " +
+"                      componentRow.find(\'input.cost\').val(component.Cost);\r\n    " +
+"                    } else {\r\n                            alert(\'Unable to add c" +
+"omponent: \' + response.statusText);\r\n                        }\r\n                " +
+"        updateTotalCost();\r\n                    }\r\n                    addCompon" +
+"entAsync(componentRow.find(\'input.description\').val(), componentRow.find(\'input." +
+"cost\').val())\r\n                }\r\n            }\r\n            updateTotalCost();\r" +
+"\n\r\n        });\r\n    </script>\r\n");
 
             
-            #line 119 "..\..\Views\Job\JobParts\Components.cshtml"
-                                 Write(Url.Action(MVC.API.Job.ComponentRemove()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\',\r\n                                dataType: \'json\',\r\n                          " +
-"      data: data,\r\n                                success: function (d) {\r\n    " +
-"                                if (d == \'OK\') {\r\n                              " +
-"          componentRow.remove();\r\n                                        update" +
-"TotalCost();\r\n                                    } else {\r\n                    " +
-"                    alert(\'Unable to remove component: \' + d);\r\n                " +
-"                    }\r\n                                    $dialogRemoveComponen" +
-"t.dialog(\"close\");\r\n                                },\r\n                        " +
-"        error: function (jqXHR, textStatus, errorThrown) {\r\n                    " +
-"                alert(\'Unable to remove component: \' + textStatus);\r\n           " +
-"                         $dialogRemoveComponent.dialog(\"close\");\r\n              " +
-"                  }\r\n                            });\r\n                        }," +
-"\r\n                        Cancel: function () {\r\n                            $di" +
-"alogRemoveComponent.dialog(\"close\");\r\n                        }\r\n               " +
-"     });\r\n\r\n                    $dialogRemoveComponent.dialog(\'open\');\r\n\r\n      " +
-"          } else {\r\n                    // New - Remove\r\n                    com" +
-"ponentRow.remove();\r\n                    updateTotalCost();\r\n                }\r\n" +
-"            }\r\n            function updateTotalCost() {\r\n                var tot" +
-"alCost = 0;\r\n\r\n                $jobComponents.find(\'input.cost\').each(function (" +
-") {\r\n                    var v = $(this).val();\r\n                    v = $.parse" +
-"Number(v, { format: \'#,##0.00\', locale: \'au\' });\r\n                    if (!isNaN" +
-"(v))\r\n                        totalCost += v;\r\n                });\r\n            " +
-"    var totalCostFormatted = $.formatNumber(totalCost, { format: \'#,##0.00\', loc" +
-"ale: \'au\' });\r\n                $(\'#jobComponentsTotalCost\').text(\'$\' + totalCost" +
-"Formatted);\r\n            }\r\n            function updateComponent() {\r\n          " +
-"      var componentRow = $(this).closest(\'tr\');\r\n\r\n                componentRow." +
-"find(\'input\').attr(\'disabled\', true).addClass(\'updating\');\r\n\r\n                va" +
-"r id = componentRow.attr(\'data-jobcomponentid\');\r\n                if (id) {\r\n   " +
-"                 // Update\r\n                    var data = {\r\n                  " +
-"      id: id,\r\n                        Description: componentRow.find(\'input.des" +
-"cription\').val(),\r\n                        Cost: componentRow.find(\'input.cost\')" +
-".val()\r\n                    };\r\n                    $.ajax({\r\n                  " +
-"      url: \'");
-
-            
-            #line 176 "..\..\Views\Job\JobParts\Components.cshtml"
-                         Write(Url.Action(MVC.API.Job.ComponentUpdate()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"',
-                        dataType: 'json',
-                        data: data,
-                        success: function (d) {
-                            componentRow.find('input').attr('disabled', false).removeClass('updating');
-                            if (d.Result == 'OK') {
-                                componentRow.find('input.description').val(d.Component.Description);
-                                componentRow.find('input.cost').val(d.Component.Cost);
-                            } else {
-                                alert('Unable to update component: ' + d.Result);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to update component: ' + textStatus);
-                        }
-                    });
-                } else {
-                    // Add
-                    var data = {
-                        id: id,
-                        Description: componentRow.find('input.description').val(),
-                        Cost: componentRow.find('input.cost').val()
-                    };
-                    $.ajax({
-                        url: '");
-
-            
-            #line 200 "..\..\Views\Job\JobParts\Components.cshtml"
-                         Write(Url.Action(MVC.API.Job.ComponentAdd(Model.Job.Id, null, null)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"',
-                        dataType: 'json',
-                        data: data,
-                        success: function (d) {
-                            componentRow.find('input').attr('disabled', false).removeClass('updating');
-                            if (d.Result == 'OK') {
-                                componentRow.attr('data-jobcomponentid', d.Component.Id);
-                                componentRow.find('input.description').val(d.Component.Description);
-                                componentRow.find('input.cost').val(d.Component.Cost);
-                            } else {
-                                alert('Unable to add component: ' + d.Result);
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('Unable to add component: ' + textStatus);
-                        }
-                    });
-                }
-                updateTotalCost();
-            }
-            updateTotalCost();
-
-        });
-    </script>
-");
-
-            
-            #line 224 "..\..\Views\Job\JobParts\Components.cshtml"
+            #line 232 "..\..\Views\Job\JobParts\Components.cshtml"
 }
             
             #line default

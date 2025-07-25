@@ -45,25 +45,23 @@ namespace Disco.Services.Users.UserFlags
         public static UserFlag GetUserFlag(int UserFlagId) { return _cache.GetUserFlag(UserFlagId); }
 
         #region User Flag Maintenance
-        public static UserFlag CreateUserFlag(DiscoDataContext Database, UserFlag UserFlag)
+        public static UserFlag CreateUserFlag(DiscoDataContext Database, string name, string description)
         {
             // Verify
-            if (string.IsNullOrWhiteSpace(UserFlag.Name))
-                throw new ArgumentException("The User Flag Name is required");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("The User Flag Name is required", nameof(name));
 
             // Name Unique
-            if (_cache.GetUserFlags().Any(f => f.Name == UserFlag.Name))
-                throw new ArgumentException("Another User Flag already exists with that name", "UserFlag");
+            if (_cache.GetUserFlags().Any(f => f.Name.Equals(name, StringComparison.Ordinal)))
+                throw new ArgumentException("Another User Flag already exists with that name", nameof(name));
 
             // Clone to break reference
             var flag = new UserFlag()
             {
-                Name = UserFlag.Name,
-                Description = UserFlag.Description,
-                Icon = UserFlag.Icon,
-                IconColour = UserFlag.IconColour,
-                UsersLinkedGroup = UserFlag.UsersLinkedGroup,
-                UserDevicesLinkedGroup = UserFlag.UserDevicesLinkedGroup
+                Name = name,
+                Description = description,
+                Icon = RandomUnusedIcon(),
+                IconColour = RandomUnusedThemeColour(),
             };
 
             Database.UserFlags.Add(flag);

@@ -317,7 +317,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateCertificateProviders
         {
             public readonly string id = "id";
-            public readonly string CertificateProviders = "CertificateProviders";
+            public readonly string certificateProviders = "certificateProviders";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateCertificateAuthorityProviders s_params_UpdateCertificateAuthorityProviders = new ActionParamsClass_UpdateCertificateAuthorityProviders();
@@ -327,7 +327,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateCertificateAuthorityProviders
         {
             public readonly string id = "id";
-            public readonly string CertificateAuthorityProviders = "CertificateAuthorityProviders";
+            public readonly string certificateAuthorityProviders = "certificateAuthorityProviders";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateWirelessProfileProviders s_params_UpdateWirelessProfileProviders = new ActionParamsClass_UpdateWirelessProfileProviders();
@@ -337,7 +337,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateWirelessProfileProviders
         {
             public readonly string id = "id";
-            public readonly string WirelessProfileProviders = "WirelessProfileProviders";
+            public readonly string wirelessProfileProviders = "wirelessProfileProviders";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateOrganisationalUnit s_params_UpdateOrganisationalUnit = new ActionParamsClass_UpdateOrganisationalUnit();
@@ -569,44 +569,44 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateCertificateProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string CertificateProviders, bool? redirect);
+        partial void UpdateCertificateProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string certificateProviders, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateCertificateProviders(int id, string CertificateProviders, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateCertificateProviders(int id, string certificateProviders, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CertificateProviders", CertificateProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "certificateProviders", certificateProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateCertificateProvidersOverride(callInfo, id, CertificateProviders, redirect);
+            UpdateCertificateProvidersOverride(callInfo, id, certificateProviders, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateCertificateAuthorityProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string CertificateAuthorityProviders, bool? redirect);
+        partial void UpdateCertificateAuthorityProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string certificateAuthorityProviders, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateCertificateAuthorityProviders(int id, string CertificateAuthorityProviders, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateCertificateAuthorityProviders(int id, string certificateAuthorityProviders, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateCertificateAuthorityProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "CertificateAuthorityProviders", CertificateAuthorityProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "certificateAuthorityProviders", certificateAuthorityProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateCertificateAuthorityProvidersOverride(callInfo, id, CertificateAuthorityProviders, redirect);
+            UpdateCertificateAuthorityProvidersOverride(callInfo, id, certificateAuthorityProviders, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateWirelessProfileProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WirelessProfileProviders, bool? redirect);
+        partial void UpdateWirelessProfileProvidersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string wirelessProfileProviders, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateWirelessProfileProviders(int id, string WirelessProfileProviders, bool? redirect)
+        public override System.Web.Mvc.ActionResult UpdateWirelessProfileProviders(int id, string wirelessProfileProviders, bool? redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWirelessProfileProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "WirelessProfileProviders", WirelessProfileProviders);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "wirelessProfileProviders", wirelessProfileProviders);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateWirelessProfileProvidersOverride(callInfo, id, WirelessProfileProviders, redirect);
+            UpdateWirelessProfileProvidersOverride(callInfo, id, wirelessProfileProviders, redirect);
             return callInfo;
         }
 

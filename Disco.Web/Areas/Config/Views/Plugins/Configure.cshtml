@@ -1,11 +1,12 @@
 ﻿@model Disco.Web.Areas.Config.Models.Plugins.PluginConfigurationViewModel
 @{
     Authorization.Require(Claims.Config.Plugin.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Plugins", MVC.Config.Plugins.Index(), Model.Manifest.Name);
 }
 @using (Html.BeginForm())
-{ 
+{
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(false)
     <div class="clearfix">
         @Html.PartialCompiled(Model.PluginViewType, Model.PluginViewModel)

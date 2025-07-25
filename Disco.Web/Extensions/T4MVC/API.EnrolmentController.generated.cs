@@ -71,6 +71,18 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PendingTimeoutMinutes);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult MacSshUsername()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshUsername);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult MacSshPassword()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshPassword);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public EnrolmentController Actions { get { return MVC.API.Enrolment; } }
@@ -89,6 +101,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string ResolveSessionPending = "ResolveSessionPending";
             public readonly string PendingTimeoutMinutes = "PendingTimeoutMinutes";
+            public readonly string MacSshUsername = "MacSshUsername";
+            public readonly string MacSshPassword = "MacSshPassword";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -96,6 +110,8 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public const string ResolveSessionPending = "ResolveSessionPending";
             public const string PendingTimeoutMinutes = "PendingTimeoutMinutes";
+            public const string MacSshUsername = "MacSshUsername";
+            public const string MacSshPassword = "MacSshPassword";
         }
 
 
@@ -118,6 +134,22 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_PendingTimeoutMinutes
         {
             public readonly string PendingTimeoutMinutes = "PendingTimeoutMinutes";
+        }
+        static readonly ActionParamsClass_MacSshUsername s_params_MacSshUsername = new ActionParamsClass_MacSshUsername();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_MacSshUsername MacSshUsernameParams { get { return s_params_MacSshUsername; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_MacSshUsername
+        {
+            public readonly string MacSshUsername = "MacSshUsername";
+        }
+        static readonly ActionParamsClass_MacSshPassword s_params_MacSshPassword = new ActionParamsClass_MacSshPassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_MacSshPassword MacSshPasswordParams { get { return s_params_MacSshPassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_MacSshPassword
+        {
+            public readonly string MacSshPassword = "MacSshPassword";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -163,6 +195,30 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.PendingTimeoutMinutes);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PendingTimeoutMinutes", PendingTimeoutMinutes);
             PendingTimeoutMinutesOverride(callInfo, PendingTimeoutMinutes);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void MacSshUsernameOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string MacSshUsername);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult MacSshUsername(string MacSshUsername)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshUsername);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "MacSshUsername", MacSshUsername);
+            MacSshUsernameOverride(callInfo, MacSshUsername);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void MacSshPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string MacSshPassword);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult MacSshPassword(string MacSshPassword)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "MacSshPassword", MacSshPassword);
+            MacSshPasswordOverride(callInfo, MacSshPassword);
             return callInfo;
         }
 

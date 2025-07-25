@@ -47,7 +47,7 @@ namespace Disco.Web.Areas.Config.Views.DocumentTemplate
             #line 2 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
   
     Authorization.RequireAll(Claims.Config.DocumentTemplate.Create, Claims.Config.DocumentTemplate.Configure);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), "Create");
 
             
@@ -58,7 +58,21 @@ WriteLiteral("\r\n");
             
             #line 7 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
  using (Html.BeginForm(MVC.Config.DocumentTemplate.Create(), FormMethod.Post, new { enctype = "multipart/form-data" }))
-{ 
+{
+    
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 9 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+                            
 
             
             #line default
@@ -70,11 +84,13 @@ WriteLiteral(" class=\"form\"");
 WriteLiteral(" style=\"width: 650px\"");
 
 WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r\n                    I" +
-"d:\r\n                </th>\r\n                <td>");
+"d:\r\n                </th>\r\n                <td>\r\n");
+
+WriteLiteral("                    ");
 
             
-            #line 15 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-               Write(Html.TextBoxFor(model => model.DocumentTemplate.Id));
+            #line 17 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+               Write(Html.TextBoxFor(model => model.Id));
 
             
             #line default
@@ -82,19 +98,21 @@ WriteLiteral(">\r\n        <table>\r\n            <tr>\r\n                <th>\r
 WriteLiteral("<br />");
 
             
-            #line 15 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-                                                                         Write(Html.ValidationMessageFor(model => model.DocumentTemplate.Id));
+            #line 17 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+                                                        Write(Html.ValidationMessageFor(model => model.Id));
 
             
             #line default
             #line hidden
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>\r\n                <th" +
 ">\r\n                    Description:\r\n                </th>\r\n                <td>" +
-"");
+"\r\n");
+
+WriteLiteral("                    ");
 
             
-            #line 22 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-               Write(Html.TextBoxFor(model => model.DocumentTemplate.Description));
+            #line 25 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+               Write(Html.TextBoxFor(model => model.Description));
 
             
             #line default
@@ -102,8 +120,8 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("<br />");
 
             
-            #line 22 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-                                                                                  Write(Html.ValidationMessageFor(model => model.DocumentTemplate.Description));
+            #line 25 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+                                                                 Write(Html.ValidationMessageFor(model => model.Description));
 
             
             #line default
@@ -114,8 +132,8 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n            <tr>
 WriteLiteral("                    ");
 
             
-            #line 30 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-               Write(Html.DropDownListFor(model => model.DocumentTemplate.Scope, Model.Scopes.ToSelectListItems(null)));
+            #line 33 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+               Write(Html.DropDownListFor(model => model.Scope, Model.Scopes.ToSelectListItems(null)));
 
             
             #line default
@@ -133,7 +151,7 @@ WriteLiteral(" accept=\".pdf\"");
 WriteLiteral(" /><br />");
 
             
-            #line 38 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 41 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
                                                                         Write(Html.ValidationMessage("Template"));
 
             
@@ -156,7 +174,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                    ");
 
             
-            #line 46 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 49 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
                Write(CommonHelpers.CheckBoxList("Types", Model.JobTypes.ToSelectListItems(Model.Types), 2));
 
             
@@ -165,13 +183,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n                </td>\r\n            </tr>\r\n");
 
             
-            #line 49 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 52 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 49 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 52 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
              foreach (var jt in Model.JobTypes)
             {
 
@@ -180,15 +198,15 @@ WriteLiteral("\r\n                </td>\r\n            </tr>\r\n");
             #line hidden
 WriteLiteral("                <tr");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 2046), Tuple.Create("\"", 2071)
-, Tuple.Create(Tuple.Create("", 2051), Tuple.Create("trJobSubType", 2051), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 2030), Tuple.Create("\"", 2055)
+, Tuple.Create(Tuple.Create("", 2035), Tuple.Create("trJobSubType", 2035), true)
             
-            #line 51 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-, Tuple.Create(Tuple.Create("", 2063), Tuple.Create<System.Object, System.Int32>(jt.Id
+            #line 54 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+, Tuple.Create(Tuple.Create("", 2047), Tuple.Create<System.Object, System.Int32>(jt.Id
             
             #line default
             #line hidden
-, 2063), false)
+, 2047), false)
 );
 
 WriteLiteral(" class=\"jobSubTypes\"");
@@ -202,7 +220,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 53 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 56 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
                    Write(jt.Description);
 
             
@@ -210,11 +228,11 @@ WriteLiteral("                        ");
             #line hidden
 WriteLiteral("<br />\r\n                        Sub Types<br />\r\n");
 
-WriteLiteral("                    ");
+WriteLiteral("                        ");
 
             
-            #line 55 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
-               Write(CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id)));
+            #line 58 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+                   Write(CommonHelpers.CheckboxBulkSelect(string.Format("CheckboxBulkSelect_{0}", jt.Id)));
 
             
             #line default
@@ -228,16 +246,17 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 58 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 61 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
                    Write(CommonHelpers.CheckBoxList("SubTypes", Model.JobSubTypes.Where(jst => jst.JobTypeId == jt.Id).ToList().ToSelectListItems(Model.SubTypes), 2));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    </td>\r\n                </tr>   \r\n");
+WriteLiteral("\r\n                    </td>\r\n                </tr>\r\n");
 
             
-            #line 61 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 64 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+
             }
 
             
@@ -265,7 +284,7 @@ WriteLiteral(@">
         $(function () {
             $('#Name').focus().select();
 
-            var $scope = $('#DocumentTemplate_Scope');
+            var $scope = $('#Scope');
             var $trJobTypes = $('#trJobTypes');
             var $jobTypes = $trJobTypes.find('input[type=""checkbox""]');
             $scope.change(scopeChange);
@@ -286,7 +305,7 @@ WriteLiteral(@">
             function jobTypesChange() {
                 $('.jobSubTypes').hide();
                 $jobTypes.filter(':checked').each(function () {
-                    $('#trJobSubType' + $(this).val()).show();    
+                    $('#trJobSubType' + $(this).val()).show();
                 });
             }
 
@@ -295,8 +314,9 @@ WriteLiteral(@">
 ");
 
             
-            #line 98 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
+            #line 102 "..\..\Areas\Config\Views\DocumentTemplate\Create.cshtml"
 }
+
             
             #line default
             #line hidden

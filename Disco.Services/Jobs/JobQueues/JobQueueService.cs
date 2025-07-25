@@ -28,41 +28,24 @@ namespace Disco.Services.Jobs.JobQueues
         public static JobQueueToken GetQueue(int JobQueueId) { return _cache.GetQueue(JobQueueId); }
 
         #region Job Queues Maintenance
-        public static JobQueueToken CreateJobQueue(DiscoDataContext Database, JobQueue JobQueue)
+        public static JobQueueToken CreateJobQueue(DiscoDataContext Database, string name, string description)
         {
             // Verify
-            if (string.IsNullOrWhiteSpace(JobQueue.Name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("The Job Queue Name is required");
 
             // Name Unique
-            if (_cache.GetQueues().Any(q => q.JobQueue.Name == JobQueue.Name))
+            if (_cache.GetQueues().Any(q => q.JobQueue.Name.Equals(name, StringComparison.Ordinal)))
                 throw new ArgumentException("Another Job Queue already exists with that name", "JobQueue");
-
-            // Sanitize Subject Ids
-            if (string.IsNullOrWhiteSpace(JobQueue.SubjectIds))
-            {
-                JobQueue.SubjectIds = null;
-            }
-            else
-            {
-                var subjectIds = JobQueue.SubjectIds.Split(',');
-                foreach (var subjectId in subjectIds)
-                {
-                    UserService.GetUser(subjectId, Database);
-                }
-                JobQueue.SubjectIds = string.Join(",", Database.Users.Where(u => subjectIds.Contains(u.UserId)).Select(u => u.UserId));
-            }
 
             // Clone to break reference
             var queue = new JobQueue()
             {
-                Name = JobQueue.Name,
-                Description = JobQueue.Description,
-                Icon = JobQueue.Icon,
-                IconColour = JobQueue.IconColour,
-                DefaultSLAExpiry = JobQueue.DefaultSLAExpiry,
-                Priority = JobQueue.Priority,
-                SubjectIds = JobQueue.SubjectIds
+                Name = name,
+                Description = description,
+                Icon = RandomUnusedIcon(),
+                IconColour = RandomUnusedThemeColour(),
+                Priority = JobQueuePriority.Normal,
             };
 
             Database.JobQueues.Add(queue);
@@ -84,15 +67,6 @@ namespace Disco.Services.Jobs.JobQueues
             if (string.IsNullOrWhiteSpace(JobQueue.SubjectIds))
             {
                 JobQueue.SubjectIds = null;
-            }
-            else
-            {
-                var subjectIds = JobQueue.SubjectIds.Split(',');
-                foreach (var subjectId in subjectIds)
-                {
-                    UserService.GetUser(subjectId, Database);
-                }
-                JobQueue.SubjectIds = string.Join(",", Database.Users.Where(u => subjectIds.Contains(u.UserId)).Select(u => u.UserId));
             }
 
             Database.SaveChanges();

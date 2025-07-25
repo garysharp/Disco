@@ -6,11 +6,13 @@
     var canShowStatus = Authorization.Has(Claims.Config.Enrolment.ShowStatus);
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Enrolment");
+
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
 <div class="form" style="width: 530px;">
     <table>
         <tr>
-            <th>
+            <th width="130">
                 Pending Timeout:
             </th>
             <td>
@@ -21,50 +23,14 @@
                     @AjaxHelpers.AjaxLoader()
                     <span> minutes <span class="smallText">(default: 30)</span></span>
                     <script type="text/javascript">
-                    $(function () {
-                        var $DOM = $('#PendingTimeoutMinutes');
-                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
-                        $DOM
-                    .watermark('Minutes')
-                    .focus(function () { $DOM.select() })
-                    .keydown(function (e) {
-                        $DOMAjaxSave.show();
-                        if (e.which == 13) {
-                            $(this).blur();
-                        }
-                    }).blur(function () {
-                        $DOMAjaxSave.hide();
-                    })
-                    .change(function () {
-                        $DOMAjaxSave.hide();
-                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
-                        var data = { PendingTimeoutMinutes: parseInt($DOM.val()) };
-                        if (data.PendingTimeoutMinutes <= 0) {
-                            alert('Pending Timeout must be greater than zero');
-                            $ajaxLoading.hide();
-                            return;
-                        } else {
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Enrolment.PendingTimeoutMinutes())',
-                            dataType: 'json',
-                            method: 'POST',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                } else {
-                                    $ajaxLoading.hide();
-                                    alert('Unable to update pending timeout: ' + d);
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to update pending timeout: ' + textStatus);
-                                $ajaxLoading.hide();
-                            }
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#PendingTimeoutMinutes'),
+                                'Pending Timeout',
+                                '@(Url.Action(MVC.API.Enrolment.PendingTimeoutMinutes()))',
+                                'PendingTimeoutMinutes'
+                            );
                         });
-                        }
-                    });
-                    });
                     </script>
                 }
                 else
@@ -87,7 +53,7 @@
     <h2>Apple Mac Secure Enroll</h2>
     <table>
         <tr>
-            <th>
+            <th width="130">
                 Username:
             </th>
             <td>
@@ -97,43 +63,14 @@
                     @AjaxHelpers.AjaxSave()
                     @AjaxHelpers.AjaxLoader()
                     <script type="text/javascript">
-                    $(function () {
-                        var $DOM = $('#MacSshUsername');
-                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
-                        $DOM
-                    .watermark('Username')
-                    .focus(function () { $DOM.select() })
-                    .keydown(function (e) {
-                        $DOMAjaxSave.show();
-                        if (e.which == 13) {
-                            $(this).blur();
-                        }
-                    }).blur(function () {
-                        $DOMAjaxSave.hide();
-                    })
-                    .change(function () {
-                        $DOMAjaxSave.hide();
-                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
-                        var data = { MacSshUsername: $DOM.val() };
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Bootstrapper.MacSshUsername())',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                } else {
-                                    $ajaxLoading.hide();
-                                    alert('Unable to update Username: ' + d);
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to update Username: ' + textStatus);
-                                $ajaxLoading.hide();
-                            }
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#MacSshUsername'),
+                                'Username',
+                                '@(Url.Action(MVC.API.Enrolment.MacSshUsername()))',
+                                'MacSshUsername'
+                            );
                         });
-                    });
-                    });
                     </script>
                 }
                 else
@@ -151,7 +88,7 @@
         </tr>
 
         <tr>
-            <th>
+            <th width="130">
                 Password:
             </th>
             <td>
@@ -161,43 +98,14 @@
                     @AjaxHelpers.AjaxSave()
                     @AjaxHelpers.AjaxLoader()
                     <script type="text/javascript">
-                    $(function () {
-                        var $DOM = $('#MacSshPassword');
-                        var $DOMAjaxSave = $DOM.next('.ajaxSave');
-                        $DOM
-                    .watermark('Password')
-                    .focus(function () { $DOM.select() })
-                    .keydown(function (e) {
-                        $DOMAjaxSave.show();
-                        if (e.which == 13) {
-                            $(this).blur();
-                        }
-                    }).blur(function () {
-                        $DOMAjaxSave.hide();
-                    })
-                    .change(function () {
-                        $DOMAjaxSave.hide();
-                        var $ajaxLoading = $DOMAjaxSave.next('.ajaxLoading').show();
-                        var data = { MacSshPassword: $DOM.val() };
-                        $.ajax({
-                            url: '@Url.Action(MVC.API.Bootstrapper.MacSshPassword())',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                } else {
-                                    $ajaxLoading.hide();
-                                    alert('Unable to update Password: ' + d);
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to update Password: ' + textStatus);
-                                $ajaxLoading.hide();
-                            }
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#MacSshPassword'),
+                                'Password',
+                                '@(Url.Action(MVC.API.Enrolment.MacSshPassword()))',
+                                'MacSshPassword'
+                            );
                         });
-                    });
-                    });
                     </script>
                 }
                 else

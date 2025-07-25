@@ -57,7 +57,7 @@ WriteLiteral("\r\n");
 
             
             #line 7 "..\..\Views\Job\LogWarranty.cshtml"
- using (Html.BeginForm(MVC.Job.LogWarranty(), FormMethod.Post))
+ using (Html.BeginForm(MVC.Job.LogWarranty()))
 {
     
             
@@ -125,14 +125,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"SubmissionAction\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 529), Tuple.Create("\"", 586)
+WriteAttribute("value", Tuple.Create(" value=\"", 512), Tuple.Create("\"", 569)
             
             #line 13 "..\..\Views\Job\LogWarranty.cshtml"
-, Tuple.Create(Tuple.Create("", 537), Tuple.Create<System.Object, System.Int32>(Model.IsManualProvider ? "Manual" : "Disclose"
+, Tuple.Create(Tuple.Create("", 520), Tuple.Create<System.Object, System.Int32>(Model.IsManualProvider ? "Manual" : "Disclose"
             
             #line default
             #line hidden
-, 537), false)
+, 520), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -393,14 +393,14 @@ WriteLiteral(" class=\"fa fa-info-circle\"");
 
 WriteLiteral("></i>View the <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3597), Tuple.Create("\"", 3647)
+WriteAttribute("href", Tuple.Create(" href=\"", 3580), Tuple.Create("\"", 3630)
             
             #line 85 "..\..\Views\Job\LogWarranty.cshtml"
-    , Tuple.Create(Tuple.Create("", 3604), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
+    , Tuple.Create(Tuple.Create("", 3587), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Plugins.Install())
             
             #line default
             #line hidden
-, 3604), false)
+, 3587), false)
 );
 
 WriteLiteral(">Plugin Catalogue</a> to discover and install warranty provider plugins.\r\n       " +
@@ -574,14 +574,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 5691), Tuple.Create("\"", 5748)
+WriteAttribute("href", Tuple.Create(" href=\"", 5674), Tuple.Create("\"", 5731)
             
             #line 134 "..\..\Views\Job\LogWarranty.cshtml"
-, Tuple.Create(Tuple.Create("", 5698), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+, Tuple.Create(Tuple.Create("", 5681), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 5698), false)
+, 5681), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -614,14 +614,14 @@ WriteLiteral(" class=\"select\"");
 
 WriteLiteral(" name=\"PublishAttachmentIds\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 5909), Tuple.Create("\"", 5923)
+WriteAttribute("value", Tuple.Create(" value=\"", 5892), Tuple.Create("\"", 5906)
             
             #line 135 "..\..\Views\Job\LogWarranty.cshtml"
-                             , Tuple.Create(Tuple.Create("", 5917), Tuple.Create<System.Object, System.Int32>(ja.Id
+                             , Tuple.Create(Tuple.Create("", 5900), Tuple.Create<System.Object, System.Int32>(ja.Id
             
             #line default
             #line hidden
-, 5917), false)
+, 5900), false)
 );
 
 WriteLiteral(" ");
@@ -637,28 +637,28 @@ WriteLiteral(" />\r\n                                    <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6048), Tuple.Create("\"", 6068)
+WriteAttribute("title", Tuple.Create(" title=\"", 6031), Tuple.Create("\"", 6051)
             
             #line 136 "..\..\Views\Job\LogWarranty.cshtml"
-, Tuple.Create(Tuple.Create("", 6056), Tuple.Create<System.Object, System.Int32>(ja.Filename
+, Tuple.Create(Tuple.Create("", 6039), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 6056), false)
+, 6039), false)
 );
 
 WriteLiteral(">\r\n                                        <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 6143), Tuple.Create("\"", 6202)
+WriteAttribute("src", Tuple.Create(" src=\"", 6126), Tuple.Create("\"", 6185)
             
             #line 137 "..\..\Views\Job\LogWarranty.cshtml"
-, Tuple.Create(Tuple.Create("", 6149), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+, Tuple.Create(Tuple.Create("", 6132), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 6149), false)
+, 6132), false)
 );
 
 WriteLiteral(" />\r\n                                    </span>\r\n                               " +
@@ -666,14 +666,14 @@ WriteLiteral(" />\r\n                                    </span>\r\n            
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6311), Tuple.Create("\"", 6331)
+WriteAttribute("title", Tuple.Create(" title=\"", 6294), Tuple.Create("\"", 6314)
             
             #line 139 "..\..\Views\Job\LogWarranty.cshtml"
-, Tuple.Create(Tuple.Create("", 6319), Tuple.Create<System.Object, System.Int32>(ja.Comments
+, Tuple.Create(Tuple.Create("", 6302), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 6319), false)
+, 6302), false)
 );
 
 WriteLiteral(">\r\n");
@@ -747,14 +747,14 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6785), Tuple.Create("\"", 6823)
+WriteAttribute("title", Tuple.Create(" title=\"", 6768), Tuple.Create("\"", 6806)
             
             #line 144 "..\..\Views\Job\LogWarranty.cshtml"
-                                                                                                   , Tuple.Create(Tuple.Create("", 6793), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+                                                                                                   , Tuple.Create(Tuple.Create("", 6776), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 6793), false)
+, 6776), false)
 );
 
 WriteLiteral(">");
@@ -897,21 +897,21 @@ WriteLiteral(">\r\n    $(function () {\r\n        var $providerId = $(\'#Warrant
 "              $(\'<input>\').attr({ type: \'hidden\', name: \'ManualProviderReference" +
 "\', value: $(\'#ManualProviderReference\').val() })\r\n            ).append(\r\n       " +
 "         $(\'<input>\').attr({ type: \'hidden\', name: \'__RequestVerificationToken\'," +
-" value: $providerId.closest(\'form\').find(\'input[name=\"__RequestVerificationToken" +
-"\"]\').val() })\r\n            ).appendTo(\'body\').submit();\r\n        }\r\n\r\n        $p" +
-"roviderId.change(updateDetails);\r\n        $addressId.change(updateDetails);\r\n\r\n " +
-"       var manualProvider = $(\'#ManualProviderName\');\r\n        if (manualProvide" +
-"r.length > 0 && !manualProvider.val()) {\r\n            manualProvider.focus();\r\n " +
-"       } else {\r\n            $(\'#FaultDescription\').focus();\r\n        }\r\n\r\n     " +
-"   $(\'#publishJobAttachments\').on(\'click\', \'input\', function (e) {\r\n            " +
-"e.preventDefault();\r\n            setTimeout(function () {\r\n                var $" +
-"i = $(e.currentTarget);\r\n                $i.prop(\'checked\', !$i.prop(\'checked\'))" +
-";\r\n            }, 0);\r\n            return false;\r\n        });\r\n        $(\'#publi" +
-"shJobAttachmentsSelect\').on(\'click\', \'a\', function (e) {\r\n            e.preventD" +
-"efault();\r\n            var $i = $(e.currentTarget);\r\n            var $c = $i.has" +
-"Class(\'all\');\r\n            setTimeout(function () {\r\n                $(\'#publish" +
-"JobAttachments\').find(\'input:not(:disabled)\').prop(\'checked\', $c);\r\n            " +
-"}, 0);\r\n            return false;\r\n        });\r\n    });\r\n</script>\r\n");
+" value: document.body.dataset.antiforgery })\r\n            ).appendTo(\'body\').sub" +
+"mit();\r\n        }\r\n\r\n        $providerId.change(updateDetails);\r\n        $addres" +
+"sId.change(updateDetails);\r\n\r\n        var manualProvider = $(\'#ManualProviderNam" +
+"e\');\r\n        if (manualProvider.length > 0 && !manualProvider.val()) {\r\n       " +
+"     manualProvider.focus();\r\n        } else {\r\n            $(\'#FaultDescription" +
+"\').focus();\r\n        }\r\n\r\n        $(\'#publishJobAttachments\').on(\'click\', \'input" +
+"\', function (e) {\r\n            e.preventDefault();\r\n            setTimeout(funct" +
+"ion () {\r\n                var $i = $(e.currentTarget);\r\n                $i.prop(" +
+"\'checked\', !$i.prop(\'checked\'));\r\n            }, 0);\r\n            return false;\r" +
+"\n        });\r\n        $(\'#publishJobAttachmentsSelect\').on(\'click\', \'a\', functio" +
+"n (e) {\r\n            e.preventDefault();\r\n            var $i = $(e.currentTarget" +
+");\r\n            var $c = $i.hasClass(\'all\');\r\n            setTimeout(function ()" +
+" {\r\n                $(\'#publishJobAttachments\').find(\'input:not(:disabled)\').pro" +
+"p(\'checked\', $c);\r\n            }, 0);\r\n            return false;\r\n        });\r\n " +
+"   });\r\n</script>\r\n");
 
         }
     }

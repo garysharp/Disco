@@ -707,7 +707,8 @@ div.logEventsViewport table.logEventsViewport > tbody > tr > td.message {
   width: 100px;
 }
 .dialog-bulk-generate textarea {
-  width: calc(100% - .5em);
+  box-sizing: border-box;
+  width: 100%;
   height: 200px;
   margin: 0 auto;
 }
@@ -1551,6 +1552,7 @@ h1.Config_DocumentTemplates {
   margin: 6px 0;
 }
 #Config_Location_ListImport_Dialog #Config_Location_ListImport_Dialog_LocationList {
+  box-sizing: border-box;
   width: 100%;
   height: 200px;
   margin: 0 auto;

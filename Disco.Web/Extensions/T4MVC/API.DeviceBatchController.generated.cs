@@ -333,7 +333,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdatePurchaseDetails
         {
             public readonly string id = "id";
-            public readonly string PurchaseDetails = "PurchaseDetails";
+            public readonly string purchaseDetails = "purchaseDetails";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateUnitCost s_params_UpdateUnitCost = new ActionParamsClass_UpdateUnitCost();
@@ -383,7 +383,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateWarrantyDetails
         {
             public readonly string id = "id";
-            public readonly string WarrantyDetails = "WarrantyDetails";
+            public readonly string warrantyDetails = "warrantyDetails";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateInsuredDate s_params_UpdateInsuredDate = new ActionParamsClass_UpdateInsuredDate();
@@ -423,7 +423,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateInsuranceDetails
         {
             public readonly string id = "id";
-            public readonly string InsuranceDetails = "InsuranceDetails";
+            public readonly string insuranceDetails = "insuranceDetails";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateComments s_params_UpdateComments = new ActionParamsClass_UpdateComments();
@@ -433,7 +433,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateComments
         {
             public readonly string id = "id";
-            public readonly string Comments = "Comments";
+            public readonly string comments = "comments";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateDevicesLinkedGroup s_params_UpdateDevicesLinkedGroup = new ActionParamsClass_UpdateDevicesLinkedGroup();
@@ -599,16 +599,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdatePurchaseDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string PurchaseDetails, bool redirect);
+        partial void UpdatePurchaseDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string purchaseDetails, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdatePurchaseDetails(int id, string PurchaseDetails, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdatePurchaseDetails(int id, string purchaseDetails, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdatePurchaseDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "PurchaseDetails", PurchaseDetails);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "purchaseDetails", purchaseDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdatePurchaseDetailsOverride(callInfo, id, PurchaseDetails, redirect);
+            UpdatePurchaseDetailsOverride(callInfo, id, purchaseDetails, redirect);
             return callInfo;
         }
 
@@ -669,16 +669,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateWarrantyDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string WarrantyDetails, bool redirect);
+        partial void UpdateWarrantyDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string warrantyDetails, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateWarrantyDetails(int id, string WarrantyDetails, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateWarrantyDetails(int id, string warrantyDetails, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateWarrantyDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "WarrantyDetails", WarrantyDetails);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "warrantyDetails", warrantyDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateWarrantyDetailsOverride(callInfo, id, WarrantyDetails, redirect);
+            UpdateWarrantyDetailsOverride(callInfo, id, warrantyDetails, redirect);
             return callInfo;
         }
 
@@ -725,30 +725,30 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateInsuranceDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string InsuranceDetails, bool redirect);
+        partial void UpdateInsuranceDetailsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string insuranceDetails, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateInsuranceDetails(int id, string InsuranceDetails, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateInsuranceDetails(int id, string insuranceDetails, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateInsuranceDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "InsuranceDetails", InsuranceDetails);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "insuranceDetails", insuranceDetails);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateInsuranceDetailsOverride(callInfo, id, InsuranceDetails, redirect);
+            UpdateInsuranceDetailsOverride(callInfo, id, insuranceDetails, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateCommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comments, bool redirect);
+        partial void UpdateCommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string comments, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateComments(int id, string Comments, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateComments(int id, string comments, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateComments);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateCommentsOverride(callInfo, id, Comments, redirect);
+            UpdateCommentsOverride(callInfo, id, comments, redirect);
             return callInfo;
         }
 

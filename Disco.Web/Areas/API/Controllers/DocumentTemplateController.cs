@@ -21,7 +21,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -40,6 +40,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pIsHidden = "ishidden";
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
         {
             try
@@ -97,18 +98,19 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(resultTask.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
-        [DiscoAuthorize(Claims.Config.DocumentTemplate.Upload), HttpGet]
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Upload)]
+        [HttpGet]
         public virtual ActionResult Template(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -128,7 +130,8 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Upload, Claims.Config.DocumentTemplate.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Upload, Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Template(string id, bool redirect, HttpPostedFileBase Template)
         {
             try
@@ -144,18 +147,19 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
-        [DiscoAuthorize(Claims.Config.DocumentTemplate.Show), HttpGet]
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Show)]
+        [HttpGet]
         public virtual ActionResult TemplatePreview(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -180,41 +184,49 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Update Shortcut Methods
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDescription(string id, string Description = null, bool redirect = false)
         {
             return Update(id, pDescription, Description, redirect);
         }
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.DocumentTemplate.ConfigureFilterExpression)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateFilterExpression(string id, string FilterExpression = null, bool redirect = false)
         {
             return Update(id, pFilterExpression, FilterExpression, redirect);
         }
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.DocumentTemplate.ConfigureFilterExpression)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnGenerateExpression(string id, string OnGenerateExpression = null, bool redirect = false)
         {
             return Update(id, pOnGenerateExpression, OnGenerateExpression, redirect);
         }
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.DocumentTemplate.ConfigureFilterExpression)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOnImportAttachmentExpression(string id, string OnImportAttachmentExpression = null, bool redirect = false)
         {
             return Update(id, pOnImportAttachmentExpression, OnImportAttachmentExpression, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateFlattenForm(string id, string FlattenForm = null, bool redirect = false)
         {
             return Update(id, pFlattenForm, FlattenForm, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateIsHidden(string id, string IsHidden = null, bool redirect = false)
         {
             return Update(id, pIsHidden, IsHidden, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateScope(string id, string Scope = null, bool redirect = false)
         {
             return Update(id, pScope, Scope, redirect);
         }
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateJobSubTypes(string id, List<string> JobSubTypes = null, bool redirect = false)
         {
             try
@@ -228,19 +240,20 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect)
                     return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
 
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDevicesLinkedGroup(string id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
         {
             try
@@ -262,18 +275,19 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateUsersLinkedGroup(string id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
         {
             try
@@ -295,14 +309,14 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
@@ -493,7 +507,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages), OutputCache(NoStore = true, Duration = 0)]
-        public virtual ActionResult ImporterThumbnail(string SessionId, int PageNumber)
+        public virtual ActionResult ImporterThumbnail(Guid SessionId, int PageNumber)
         {
             var dataStoreSessionPagesCacheLocation = DataStore.CreateLocation(Database, "Cache\\DocumentDropBox_SessionPages");
             var filename = Path.Combine(dataStoreSessionPagesCacheLocation, $"{SessionId}-{PageNumber}");
@@ -504,6 +518,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImporterUndetectedFiles()
         {
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
@@ -577,47 +592,51 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
+        [HttpGet]
         public virtual ActionResult ImporterUndetectedFile(string id, bool? Source, bool? Thumbnail)
         {
-            if (!string.IsNullOrEmpty(id))
+            if (!Regex.IsMatch(id, @"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_\d+$"))
+                return BadRequest("Invalid page identifier");
+
+            var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
+            if (Source.HasValue && Source.Value)
             {
-                var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
-                if (Source.HasValue && Source.Value)
+                var filename = Path.Combine(undetectedLocation, $"{id}.pdf");
+                if (System.IO.File.Exists(filename))
+                    return File(filename, DocumentTemplate.PdfMimeType);
+                else
+                    return HttpNotFound();
+            }
+            else
+            {
+                if (Thumbnail.HasValue && Thumbnail.Value)
                 {
-                    var filename = Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
+                    var filename = Path.Combine(undetectedLocation, $"{id}_thumbnail.png");
                     if (System.IO.File.Exists(filename))
-                        return File(filename, DocumentTemplate.PdfMimeType);
+                        return File(filename, "image/png");
                     else
-                        return HttpNotFound();
+                        return File(Links.ClientSource.Style.Images.Status.fileBroken256_png, "image/png");
                 }
                 else
                 {
-                    if (Thumbnail.HasValue && Thumbnail.Value)
-                    {
-                        var filename = Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
-                        if (System.IO.File.Exists(filename))
-                            return File(filename, "image/png");
-                        else
-                            return File(Links.ClientSource.Style.Images.Status.fileBroken256_png, "image/png");
-                    }
+                    var filename = Path.Combine(undetectedLocation, $"{id}.jpg");
+                    if (System.IO.File.Exists(filename))
+                        return File(filename, "image/jpeg");
                     else
-                    {
-                        var filename = Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
-                        if (System.IO.File.Exists(filename))
-                            return File(filename, "image/jpeg");
-                        else
-                            return File(Links.ClientSource.Style.Images.Status.fileBroken256_png, "image/png");
-                    }
+                        return File(Links.ClientSource.Style.Images.Status.fileBroken256_png, "image/png");
                 }
             }
-            return HttpNotFound();
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImporterUndetectedAssign(string id, string DocumentTemplateId, string DataId)
         {
+            if (!Regex.IsMatch(id, @"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_\d+$"))
+                return BadRequest("Invalid page identifier");
+
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
-            var filename = Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
+            var filename = Path.Combine(undetectedLocation, $"{id}.pdf");
             var identifier = DocumentUniqueIdentifier.Create(Database, DocumentTemplateId, DataId, UserService.CurrentUser.UserId, DateTime.Now, 0);
 
             if (Disco.Services.Documents.AttachmentImport.Importer.ImportPdfAttachment(identifier, Database, filename) != null)
@@ -626,48 +645,53 @@ namespace Disco.Web.Areas.API.Controllers
                 System.IO.File.Delete(filename);
 
                 // Delete Thumbnail/Preview
-                var thumbnailFilename = Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
+                var thumbnailFilename = Path.Combine(undetectedLocation, $"{id}_thumbnail.png");
                 if (System.IO.File.Exists(thumbnailFilename))
                     System.IO.File.Delete(thumbnailFilename);
-                var previewFilename = Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
+                var previewFilename = Path.Combine(undetectedLocation, $"{id}.jpg");
                 if (System.IO.File.Exists(previewFilename))
                     System.IO.File.Delete(previewFilename);
 
-                return Json("OK");
+                return Ok();
             }
             else
             {
-                return Json("Unable to Import File with the supplied parameters");
+                return BadRequest("Unable to Import File with the supplied parameters");
             }
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.UndetectedPages)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ImporterUndetectedDelete(string id)
         {
+            if (!Regex.IsMatch(id, @"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_\d+$"))
+                return BadRequest("Invalid page identifier");
+
             var undetectedLocation = DataStore.CreateLocation(Database, "DocumentDropBox_Unassigned");
-            var filename = Path.Combine(undetectedLocation, string.Concat(id, ".pdf"));
+            var filename = Path.Combine(undetectedLocation, $"{id}.pdf");
             if (System.IO.File.Exists(filename))
             {
                 // Delete File
                 System.IO.File.Delete(filename);
 
                 // Delete Thumbnail/Preview
-                var thumbnailFilename = Path.Combine(undetectedLocation, string.Concat(id, "_thumbnail.png"));
+                var thumbnailFilename = Path.Combine(undetectedLocation, $"{id}_thumbnail.png");
                 if (System.IO.File.Exists(thumbnailFilename))
                     System.IO.File.Delete(thumbnailFilename);
-                var previewFilename = Path.Combine(undetectedLocation, string.Concat(id, ".jpg"));
+                var previewFilename = Path.Combine(undetectedLocation, $"{id}.jpg");
                 if (System.IO.File.Exists(previewFilename))
                     System.IO.File.Delete(previewFilename);
 
-                return Json("OK");
+                return Ok();
             }
             else
             {
-                return Json("File Not Found");
+                return BadRequest("File Not Found");
             }
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceModel.Show, Claims.Config.DocumentTemplate.BulkGenerate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult BulkGenerateDeviceModel(string id, int deviceGroupId)
         {
             var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
@@ -701,6 +725,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Show, Claims.Config.DocumentTemplate.BulkGenerate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult BulkGenerateDeviceProfile(string id, int deviceGroupId)
         {
             var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
@@ -734,6 +759,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceBatch.Show, Claims.Config.DocumentTemplate.BulkGenerate)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult BulkGenerateDeviceBatch(string id, int deviceGroupId)
         {
             var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id);
@@ -767,11 +793,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
-        public virtual ActionResult BulkGenerate(string id, string DataIds = null, bool InsertBlankPage = false)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkGenerate(string id, string dataIds = null, bool insertBlankPage = false)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
-            if (string.IsNullOrEmpty(DataIds))
+            if (string.IsNullOrEmpty(dataIds))
                 throw new ArgumentNullException("DataIds");
             var documentTemplate = Database.DocumentTemplates.Find(id);
             if (documentTemplate == null)
@@ -792,35 +819,34 @@ namespace Disco.Web.Areas.API.Controllers
                     throw new InvalidOperationException("Unknown DocumentType Scope");
             }
 
-            var dataIds = DataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
+            var ids = dataIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
             var timeStamp = DateTime.Now;
 
-            var taskStatus = DocumentBulkGenerateTask.ScheduleNow(BI.Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate, documentTemplate, UserService.CurrentUser, timeStamp, InsertBlankPage, dataIds);
+            var taskStatus = DocumentBulkGenerateTask.ScheduleNow(BI.Interop.Pdf.PdfGenerator.GenerateBulkFromTemplate, documentTemplate, UserService.CurrentUser, timeStamp, insertBlankPage, ids);
 
             var fileName = $"{documentTemplate.Id}_Bulk_{timeStamp:yyyyMMdd-HHmmss}.pdf";
-            taskStatus.SetFinishedUrl(Url.Action(MVC.Config.DocumentTemplate.Index(documentTemplate.Id, taskStatus.SessionId, fileName)));
+            taskStatus.SetFinishedUrl(Url.Action(MVC.Config.DocumentTemplate.Index(documentTemplate.Id, Guid.Parse(taskStatus.SessionId), fileName)));
 
             if (!taskStatus.WaitUntilFinished(TimeSpan.FromSeconds(1)))
                 return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
 
-            var stream = DocumentBulkGenerateTask.GetCached(Database, taskStatus.SessionId);
+            var stream = DocumentBulkGenerateTask.GetCached(Database, Guid.Parse(taskStatus.SessionId));
             return File(stream, "application/pdf", fileName);
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.BulkGenerate)]
-        public virtual ActionResult BulkGenerateDownload(string id, string fileName)
+        public virtual ActionResult BulkGenerateDownload(Guid id, string fileName)
         {
             var stream = DocumentBulkGenerateTask.GetCached(Database, id);
             return File(stream, "application/pdf", fileName);
         }
-
 
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
         [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult BulkGenerateAddUsers(string userIds)
         {
             if (string.IsNullOrWhiteSpace(userIds))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var dataIds = userIds.Split(new string[] { Environment.NewLine, ",", ";" }, StringSplitOptions.RemoveEmptyEntries).Select(d => d.Trim()).Where(d => !string.IsNullOrEmpty(d)).ToList();
             var results = new List<BulkGenerateUserModel>(dataIds.Count);
@@ -893,7 +919,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddGroupMembers(string groupId)
         {
             if (string.IsNullOrWhiteSpace(groupId))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = new List<BulkGenerateUserModel>();
             var accountId = ActiveDirectory.ParseDomainAccountId(groupId);
@@ -954,7 +980,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddUserFlag(int flagId)
         {
             if (flagId <= 0)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1008,7 +1034,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddDeviceProfile(int deviceProfileId)
         {
             if (deviceProfileId <= 0)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1062,7 +1088,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddDeviceBatch(int deviceBatchId)
         {
             if (deviceBatchId <= 0)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1116,7 +1142,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddDocumentAttachment(string documentTemplateId, DateTime? threshold)
         {
             if (string.IsNullOrWhiteSpace(documentTemplateId))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1229,7 +1255,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateGetUserDetailValues(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = Database.UserDetails.Where(d => d.Scope == "Details" && d.Key == key).Select(d => d.Value).Distinct().ToList();
 
@@ -1241,7 +1267,7 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult BulkGenerateAddUserDetail(string key, string value)
         {
             if (string.IsNullOrWhiteSpace(key))
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var results = new List<BulkGenerateUserModel>();
 
@@ -1279,9 +1305,10 @@ namespace Disco.Web.Areas.API.Controllers
             return Json(results);
         }
 
-        public virtual ActionResult Generate(string id, string TargetId)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult Generate(string id, string targetId)
         {
-            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, TargetId, out var template, out var target, out _);
+            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, targetId, out var template, out var target, out _);
 
             // generate document
             var timestamp = DateTime.Now;
@@ -1296,6 +1323,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(string id, bool? redirect = false)
         {
             try
@@ -1308,7 +1336,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DocumentTemplate.Index(null));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Document Template Id");
             }
@@ -1317,12 +1345,12 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult RemoveOnImportUserFlagRule([Required] string id, Guid? ruleId = null)
         {
             try
@@ -1334,16 +1362,16 @@ namespace Disco.Web.Areas.API.Controllers
 
                 template.RemoveOnImportUserFlagRule(Database, ruleId.Value);
 
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
+                return Ok();
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
         [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.Configure, Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AddOnImportUserFlagRule([Required] string id, bool? addFlag = null, int? userFlagId = null, string comments = null)
         {
             try
@@ -1379,14 +1407,14 @@ namespace Disco.Web.Areas.API.Controllers
             }
             catch (Exception ex)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
         #endregion
 
         #region Handlers
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult GenerateDocumentHandlerUi(string templateId, string targetId, string handlerId)
         {
             Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, templateId, targetId, out var template, out var target, out var targetUser);
@@ -1403,15 +1431,13 @@ namespace Disco.Web.Areas.API.Controllers
                 if (handlerPartialView == null)
                     throw new NotSupportedException("Handler does not have a Generation Options UI");
 
-
-
                 var model = handler.GetGenerationOptionsUiModel(template, target, targetUser, CurrentUser);
 
                 return this.PrecompiledPartialView(handlerPartialView, model);
             }
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DocumentHandlers(string templateId, string targetId)
         {
             Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, templateId, targetId, out var template, out var target, out _);

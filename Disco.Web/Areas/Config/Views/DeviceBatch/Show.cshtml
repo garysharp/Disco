@@ -285,7 +285,7 @@
                         </td>
                     </tr>
                 </table>
-                <div id="DeviceBatch_PurchaseDetails_Container">
+                <div id="DeviceBatch_PurchaseDetails_Container" data-updateurl="@(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDetails(Model.DeviceBatch.Id)))">
                     <div>
                         Details @AjaxHelpers.AjaxLoader("ajaxPurchaseDetails")
                     </div>
@@ -294,50 +294,39 @@
                         @Html.EditorFor(model => model.DeviceBatch.PurchaseDetails)
                         <script type="text/javascript">
                             $(function () {
-                                var model = {
-                                    $field: $('#DeviceBatch_PurchaseDetails'),
-                                    fieldName: 'PurchaseDetails',
-                                    $ajax_loading: null,
-                                    $ajax_ok: null,
-                                    updated: function () {
-                                        if (!model.$ajax_loading)
-                                            model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
-                                        if (!model.$ajax_ok)
-                                            model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
-                                        model.$ajax_loading.show();
-                                        var data = {};
-                                        data[model.fieldName] = model.$field.tinymce().getContent();
-                                        $.ajax({
-                                            url: '@(Url.Action(MVC.API.DeviceBatch.UpdatePurchaseDetails(Model.DeviceBatch.Id)))',
-                                            dataType: 'json',
-                                            data: data,
-                                            traditional: true,
-                                            type: 'POST',
-                                            success: function (d) {
-                                                if (d == 'OK') {
-                                                    model.$ajax_loading.hide();
-                                                    model.$ajax_ok.show().delay('fast').fadeOut('slow');
-                                                } else {
-                                                    model.$ajax_loading.hide();
-                                                    alert('Unable to update purchase details: ' + d);
-                                                }
-                                            },
-                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                alert('Unable to update purchase details: ' + errorThrown);
-                                                model.$ajax_loading.hide();
-                                            }
-                                        })
-                                    }
-                                };
+                                const $field = $('#DeviceBatch_PurchaseDetails');
 
-                                model.$field.tinymce({
+                                async function updated() {
+                                    $('#ajaxPurchaseDetails_loading').show();
+                                    try {
+                                        const body = new FormData();
+                                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                        body.append('purchaseDetails', $field.tinymce().getContent())
+
+                                        const response = await fetch($('#DeviceBatch_PurchaseDetails_Container').attr('data-updateurl'), {
+                                            method: 'POST',
+                                            body: body
+                                        });
+
+                                        if (response.ok) {
+                                            $('#ajaxPurchaseDetails_ok').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            alert('Unable to update purchase details: ' + response.statusText);
+                                        }
+                                    } catch (e) {
+                                        alert('Unable to update purchase details: ' + e);
+                                    }
+                                    $('#ajaxPurchaseDetails_loading').hide();
+                                }
+
+                                $field.tinymce({
                                     theme: 'simple',
                                     add_unload_trigger: false,
                                     schema: "html5",
                                     statusbar: false,
                                     setup: function (ed) {
                                         ed.on('init', function () {
-                                            $(ed.getWin()).blur(model.updated);
+                                            $(ed.getWin()).blur(function () { updated(); });
                                         });
                                     }
                                 });
@@ -390,7 +379,7 @@
                         </td>
                     </tr>
                 </table>
-                <div id="DeviceBatch_WarrantyDetails_Container">
+                <div id="DeviceBatch_WarrantyDetails_Container" data-updateurl="@(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyDetails(Model.DeviceBatch.Id)))">
                     <div>
                         Details @AjaxHelpers.AjaxLoader("ajaxWarrantyDetails")
                     </div>
@@ -399,50 +388,39 @@
                         @Html.EditorFor(model => model.DeviceBatch.WarrantyDetails)
                         <script type="text/javascript">
                             $(function () {
-                                var model = {
-                                    $field: $('#DeviceBatch_WarrantyDetails'),
-                                    fieldName: 'WarrantyDetails',
-                                    $ajax_loading: null,
-                                    $ajax_ok: null,
-                                    updated: function () {
-                                        if (!model.$ajax_loading)
-                                            model.$ajax_loading = $('#ajax' + model.fieldName + '_loading');
-                                        if (!model.$ajax_ok)
-                                            model.$ajax_ok = $('#ajax' + model.fieldName + '_ok');
-                                        model.$ajax_loading.show();
-                                        var data = {};
-                                        data[model.fieldName] = model.$field.tinymce().getContent();
-                                        $.ajax({
-                                            url: '@(Url.Action(MVC.API.DeviceBatch.UpdateWarrantyDetails(Model.DeviceBatch.Id)))',
-                                            dataType: 'json',
-                                            data: data,
-                                            traditional: true,
-                                            type: 'POST',
-                                            success: function (d) {
-                                                if (d == 'OK') {
-                                                    model.$ajax_loading.hide();
-                                                    model.$ajax_ok.show().delay('fast').fadeOut('slow');
-                                                } else {
-                                                    model.$ajax_loading.hide();
-                                                    alert('Unable to update warranty details: ' + d);
-                                                }
-                                            },
-                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                alert('Unable to update warranty details: ' + errorThrown);
-                                                model.$ajax_loading.hide();
-                                            }
-                                        })
-                                    }
-                                };
+                                const $field = $('#DeviceBatch_WarrantyDetails');
 
-                                model.$field.tinymce({
+                                async function updated() {
+                                    $('#ajaxWarrantyDetails_loading').show();
+                                    try {
+                                        const body = new FormData();
+                                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                        body.append('warrantyDetails', $field.tinymce().getContent())
+
+                                        const response = await fetch($('#DeviceBatch_WarrantyDetails_Container').attr('data-updateurl'), {
+                                            method: 'POST',
+                                            body: body
+                                        });
+
+                                        if (response.ok) {
+                                            $('#ajaxWarrantyDetails_ok').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            alert('Unable to update warranty details: ' + response.statusText);
+                                        }
+                                    } catch (e) {
+                                        alert('Unable to update warranty details: ' + e);
+                                    }
+                                    $('#ajaxWarrantyDetails_loading').hide();
+                                }
+
+                                $field.tinymce({
                                     theme: 'simple',
                                     add_unload_trigger: false,
                                     schema: "html5",
                                     statusbar: false,
                                     setup: function (ed) {
                                         ed.on('init', function () {
-                                            $(ed.getWin()).blur(model.updated);
+                                            $(ed.getWin()).blur(function () { updated(); });
                                         });
                                     }
                                 });
@@ -555,7 +533,7 @@
                         </td>
                     </tr>
                 </table>
-                <div id="DeviceBatch_InsuranceDetails_Container">
+                <div id="DeviceBatch_InsuranceDetails_Container" data-updateurl="@(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceDetails(Model.DeviceBatch.Id)))">
                     <div>
                         Details @AjaxHelpers.AjaxLoader("ajaxInsuranceDetails")
                     </div>
@@ -564,48 +542,38 @@
                         @Html.EditorFor(model => model.DeviceBatch.InsuranceDetails)
                         <script type="text/javascript">
                             $(function () {
-                                var model = {
-                                    $field: $('#DeviceBatch_InsuranceDetails'),
-                                    $ajax_loading: null,
-                                    $ajax_ok: null,
-                                    updated: function () {
-                                        if (!model.$ajax_loading)
-                                            model.$ajax_loading = $('#ajaxInsuranceDetails_loading');
-                                        if (!model.$ajax_ok)
-                                            model.$ajax_ok = $('#ajaxInsuranceDetails_ok');
-                                        model.$ajax_loading.show();
-                                        var data = { InsuranceDetails: model.$field.tinymce().getContent() };
-                                        $.ajax({
-                                            url: '@(Url.Action(MVC.API.DeviceBatch.UpdateInsuranceDetails(Model.DeviceBatch.Id)))',
-                                            dataType: 'json',
-                                            data: data,
-                                            traditional: true,
-                                            type: 'POST',
-                                            success: function (d) {
-                                                if (d == 'OK') {
-                                                    model.$ajax_loading.hide();
-                                                    model.$ajax_ok.show().delay('fast').fadeOut('slow');
-                                                } else {
-                                                    model.$ajax_loading.hide();
-                                                    alert('Unable to update insurance details: ' + d);
-                                                }
-                                            },
-                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                alert('Unable to update insurance details: ' + errorThrown);
-                                                model.$ajax_loading.hide();
-                                            }
-                                        })
-                                    }
-                                };
+                                const $field = $('#DeviceBatch_InsuranceDetails');
+                                async function updated() {
+                                    $('#ajaxInsuranceDetails_loading').show();
+                                    try {
+                                        const body = new FormData();
+                                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                        body.append('insuranceDetails', $field.tinymce().getContent())
 
-                                model.$field.tinymce({
+                                        const response = await fetch($('#DeviceBatch_InsuranceDetails_Container').attr('data-updateurl'), {
+                                            method: 'POST',
+                                            body: body
+                                        });
+
+                                        if (response.ok) {
+                                            $('#ajaxInsuranceDetails_ok').show().delay('fast').fadeOut('slow');
+                                        } else {
+                                            alert('Unable to update insurance details: ' + response.statusText);
+                                        }
+                                    } catch (e) {
+                                        alert('Unable to update insurance details: ' + e);
+                                    }
+                                    $('#ajaxInsuranceDetails_loading').hide();
+                                }
+
+                                $field.tinymce({
                                     theme: 'simple',
                                     add_unload_trigger: false,
                                     schema: "html5",
                                     statusbar: false,
                                     setup: function (ed) {
                                         ed.on('init', function () {
-                                            $(ed.getWin()).blur(model.updated);
+                                            $(ed.getWin()).blur(function () { updated(); });
                                         });
                                     }
                                 });
@@ -622,7 +590,7 @@
                 </div>
             </td>
         </tr>
-        <tr>
+        <tr id="DeviceBatch_Comments_Container" data-updateurl="@(Url.Action(MVC.API.DeviceBatch.UpdateComments(Model.DeviceBatch.Id)))">
             <th>
                 Comments:<br />
                 @AjaxHelpers.AjaxLoader("ajaxComments")
@@ -632,53 +600,43 @@
                 {
                     @Html.EditorFor(model => model.DeviceBatch.Comments)
                     <script type="text/javascript">
-                    $(function () {
-                        var model = {
-                            $field: $('#DeviceBatch_Comments'),
-                            $ajax_loading: null,
-                            $ajax_ok: null,
-                            updated: function () {
-                                if (!model.$ajax_loading)
-                                    model.$ajax_loading = $('#ajaxComments_loading');
-                                if (!model.$ajax_ok)
-                                    model.$ajax_ok = $('#ajaxComments_ok');
-                                model.$ajax_loading.show();
-                                var data = { Comments: model.$field.tinymce().getContent() };
-                                $.ajax({
-                                    url: '@(Url.Action(MVC.API.DeviceBatch.UpdateComments(Model.DeviceBatch.Id)))',
-                                    dataType: 'json',
-                                    data: data,
-                                    traditional: true,
-                                    type: 'POST',
-                                    success: function (d) {
-                                        if (d == 'OK') {
-                                            model.$ajax_loading.hide();
-                                            model.$ajax_ok.show().delay('fast').fadeOut('slow');
-                                        } else {
-                                            model.$ajax_loading.hide();
-                                            alert('Unable to update comments: ' + d);
-                                        }
-                                    },
-                                    error: function (jqXHR, textStatus, errorThrown) {
-                                        alert('Unable to update comments: ' + errorThrown);
-                                        model.$ajax_loading.hide();
-                                    }
-                                })
-                            }
-                        };
+                        $(function () {
+                            const $field = $('#DeviceBatch_Comments');
+                            async function updated() {
+                                $('#ajaxComments_loading').show();
+                                try {
+                                    const body = new FormData();
+                                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                    body.append('comments', $field.tinymce().getContent())
 
-                        model.$field.tinymce({
-                            theme: 'simple',
-                            add_unload_trigger: false,
-                            schema: "html5",
-                            statusbar: false,
-                            setup: function (ed) {
-                                ed.on('init', function () {
-                                    $(ed.getWin()).blur(model.updated);
-                                });
+                                    const response = await fetch($('#DeviceBatch_Comments_Container').attr('data-updateurl'), {
+                                        method: 'POST',
+                                        body: body
+                                    });
+
+                                    if (response.ok) {
+                                        $('#ajaxComments_ok').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to update comments: ' + response.statusText);
+                                    }
+                                } catch (e) {
+                                    alert('Unable to update comments: ' + e);
+                                }
+                                $('#ajaxComments_loading').hide();
                             }
+
+                            $field.tinymce({
+                                theme: 'simple',
+                                add_unload_trigger: false,
+                                schema: "html5",
+                                statusbar: false,
+                                setup: function (ed) {
+                                    ed.on('init', function () {
+                                        $(ed.getWin()).blur(function () { updated(); });
+                                    });
+                                }
+                            });
                         });
-                    });
                     </script>
                 }
                 else
@@ -693,8 +651,7 @@
         <tr>
             <th>Attachments:</th>
             <td>
-                <div id="DeviceBatch_Attachments" class="@(canConfig ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.DeviceBatch.AttachmentUpload(Model.DeviceBatch.Id, null)))">
-                    @Html.AntiForgeryToken()
+                <div id="DeviceBatch_Attachments" class="@(canConfig ? "canAddAttachments" : "cannotAddAttachments")" data-uploadurl="@(Url.Action(MVC.API.DeviceBatch.AttachmentUpload(Model.DeviceBatch.Id, null)))" data-removeurl="@Url.Action(MVC.API.DeviceBatch.AttachmentRemove())">
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -708,7 +665,7 @@
                                         <img alt="Attachment Thumbnail" src="@(Url.Action(MVC.API.DeviceBatch.AttachmentThumbnail(attachment.Id)))" />
                                     </span>
                                     <span class="comments" title="@attachment.Comments">
-                                        @attachment.Comments
+                                        @(attachment.Comments ?? attachment.Filename)
                                     </span><span class="author">@attachment.TechUser.ToString()</span>@if (canConfig)
                                     {<text><span class="remove fa fa-times-circle"></span></text>}<span class="timestamp" title="@attachment.Timestamp.ToFullDateTime()" data-livestamp="@attachment.Timestamp.ToUnixEpoc()">@attachment.Timestamp.ToFullDateTime()</span>
                                 </a>
@@ -926,12 +883,10 @@
                             });
                             //#endregion
                             //#region Remove Attachments
-                            $attachmentOutput.find('span.remove').click(removeAttachment);
+                            $attachmentOutput.find('span.remove').on('click', removeAttachment);
 
                             function removeAttachment() {
-                                $this = $(this).closest('a');
-
-                                var data = { id: $this.attr('data-attachmentid') };
+                                const attachmentId = $(this).closest('a').attr('data-attachmentid');
 
                                 if (!$dialogRemoveAttachment) {
                                     $dialogRemoveAttachment = $('#dialogRemoveAttachment').dialog({
@@ -942,31 +897,28 @@
                                     });
                                 }
 
-                                $dialogRemoveAttachment.dialog("enable");
                                 $dialogRemoveAttachment.dialog('option', 'buttons', {
                                     "Remove": function () {
-                                        $dialogRemoveAttachment.dialog("disable");
                                         $dialogRemoveAttachment.dialog("option", "buttons", null);
-                                        $.ajax({
-                                            url: '@Url.Action(MVC.API.DeviceBatch.AttachmentRemove())',
-                                            dataType: 'json',
-                                            data: data,
-                                            success: function (d) {
-                                                if (d == 'OK') {
-                                                    // Do nothing, await SignalR notification
-                                                } else {
-                                                    alert('Unable to remove attachment: ' + d);
-                                                }
-                                                $dialogRemoveAttachment.dialog("close");
-                                            },
-                                            error: function (jqXHR, textStatus, errorThrown) {
-                                                alert('Unable to remove attachment: ' + textStatus);
-                                                $dialogRemoveAttachment.dialog("close");
+
+                                        const body = new FormData();
+                                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                        body.append('id', attachmentId);
+                                        fetch($Attachments.attr('data-removeurl'), {
+                                            method: 'POST',
+                                            body: body
+                                        }).then(r => {
+                                            if (!r.ok) {
+                                                alert('Unable to remove attachment: ' + r.statusText);
                                             }
+                                            $dialogRemoveAttachment.dialog('close');
+                                        }).catch(e => {
+                                            alert('Unable to remove attachment: ' + e);
+                                            $dialogRemoveAttachment.dialog('close');
                                         });
                                     },
                                     Cancel: function () {
-                                        $dialogRemoveAttachment.dialog("close");
+                                        $(this).dialog("close");
                                     }
                                 });
 
@@ -1044,7 +996,7 @@
     {
         <button id="DeviceBatch_Decommission" class="button">Decommission All Devices</button>
         <div id="DeviceBatch_Decommission_Dialog" class="dialog" title="Batch Device Decommission">
-            @using (Html.BeginForm(MVC.API.Device.DeviceBatchDecommission(Model.DeviceBatch.Id), FormMethod.Post))
+            @using (Html.BeginForm(MVC.API.Device.DeviceBatchDecommission(Model.DeviceBatch.Id)))
             {
                 @Html.AntiForgeryToken()
                 <div class="clearfix" style="margin-bottom: 10px;">
@@ -1101,7 +1053,44 @@
     }
     @if (Model.CanDelete)
     {
-        @Html.ActionLinkButton("Delete", MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true), "buttonDelete")
+        <button id="buttonDelete" type="button" class="button">Delete</button>
+        <div id="dialogConfirmDelete" class="dialog" title="Delete this Device Batch?">
+            @using (Html.BeginForm(MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true)))
+            {
+                @Html.AntiForgeryToken()
+            }
+            <p>
+                <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+                This item will be permanently deleted and cannot be recovered. Are you sure?
+            </p>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                let dialog = null;
+                $('#buttonDelete').on('click', function () {
+                    if (!dialog) {
+                        dialog = $("#dialogConfirmDelete").dialog({
+                            resizable: false,
+                            width: 300,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Delete": function () {
+                                    $(this)
+                                        .dialog("option", "buttons", null)
+                                        .find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+
+                    dialog.dialog('open');
+                });
+            });
+        </script>
     }
     @if (Model.DeviceCount > 0)
     {

@@ -4,7 +4,8 @@
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Authorization Roles", MVC.Config.AuthorizationRole.Index(null), "Create");
 }
 @using (Html.BeginForm())
-{ 
+{
+    @Html.AntiForgeryToken()
     <div class="form" style="width: 450px">
         <table>
             <tr>
@@ -12,7 +13,7 @@
                     Name:
                 </th>
                 <td>
-                    @Html.EditorFor(model => model.AuthorizationRole.Name)<br />@Html.ValidationMessageFor(model => model.AuthorizationRole.Name)
+                    @Html.EditorFor(model => model.Name)<br />@Html.ValidationMessageFor(model => model.Name)
                 </td>
             </tr>
         </table>
@@ -22,7 +23,7 @@
     </div>
     <script type="text/javascript">
         $(function () {
-            $('#AuthorizationRole_Name').focus().select();
+            $('#Name').focus().select();
         });
     </script>
 }

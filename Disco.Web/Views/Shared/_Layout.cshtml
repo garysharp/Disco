@@ -13,7 +13,7 @@
     @Html.BundleRenderDeferred()
     @RenderSection("head", false)
 </head>
-<body class="layout">
+<body class="layout" data-antiforgery="@AntiForgeryExtensions.GetToken(Context)">
     <div class="page">
         <header>
             <div id="heading">

@@ -199,31 +199,20 @@ WriteLiteral(" data-userid=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n");
-
-WriteLiteral("                    ");
-
-            
-            #line 33 "..\..\Views\Job\JobParts\Resources.cshtml"
-               Write(Html.AntiForgeryToken());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n                    <div");
+WriteLiteral(">\r\n                    <div");
 
 WriteLiteral(" class=\"commentOutput\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 35 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 34 "..\..\Views\Job\JobParts\Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 34 "..\..\Views\Job\JobParts\Resources.cshtml"
                          foreach (var jl in Model.Job.JobLogs.OrderBy(m => m.Timestamp))
                         {
 
@@ -235,7 +224,7 @@ WriteLiteral("                            <div");
 WriteLiteral(" data-logid=\"");
 
             
-            #line 37 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 36 "..\..\Views\Job\JobParts\Resources.cshtml"
                                         Write(jl.Id);
 
             
@@ -250,7 +239,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 37 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                 Write(jl.TechUser.ToStringFriendly());
 
             
@@ -259,7 +248,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 37 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                             if (canRemoveAnyLogs || (canRemoveOwnLogs && jl.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                                 {
             
@@ -272,7 +261,7 @@ WriteLiteral(" class=\"remove fa fa-times-circle\"");
 WriteLiteral("></span>");
 
             
-            #line 39 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                              }
             
             #line default
@@ -284,7 +273,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 39 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                   Write(jl.Timestamp.ToUnixEpoc());
 
             
@@ -292,20 +281,20 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2481), Tuple.Create("\"", 2519)
+WriteAttribute("title", Tuple.Create(" title=\"", 2435), Tuple.Create("\"", 2473)
             
-            #line 39 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 2489), Tuple.Create<System.Object, System.Int32>(jl.Timestamp.ToFullDateTime()
+            #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                           , Tuple.Create(Tuple.Create("", 2443), Tuple.Create<System.Object, System.Int32>(jl.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 2489), false)
+, 2443), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 39 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 38 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                                                                                       Write(jl.Timestamp.ToFullDateTime());
 
             
@@ -318,7 +307,7 @@ WriteLiteral(" class=\"comment\"");
 WriteLiteral(">");
 
             
-            #line 40 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 39 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                 Write(jl.Comments.ToHtmlComment());
 
             
@@ -327,7 +316,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n                            </div>\r\n");
 
             
-            #line 42 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 41 "..\..\Views\Job\JobParts\Resources.cshtml"
                         }
 
             
@@ -336,13 +325,13 @@ WriteLiteral("</div>\r\n                            </div>\r\n");
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 44 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 43 "..\..\Views\Job\JobParts\Resources.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 44 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 43 "..\..\Views\Job\JobParts\Resources.cshtml"
                      if (canAddLogs)
                     {
 
@@ -370,7 +359,7 @@ WriteLiteral(" title=\"Add Comment\"");
 WriteLiteral("></span>\r\n                        </div>\r\n");
 
             
-            #line 50 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 49 "..\..\Views\Job\JobParts\Resources.cshtml"
                     }
 
             
@@ -379,7 +368,7 @@ WriteLiteral("></span>\r\n                        </div>\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n");
 
             
-            #line 53 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 52 "..\..\Views\Job\JobParts\Resources.cshtml"
         }
 
             
@@ -388,7 +377,7 @@ WriteLiteral("                </div>\r\n            </td>\r\n");
 WriteLiteral("        ");
 
             
-            #line 54 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 53 "..\..\Views\Job\JobParts\Resources.cshtml"
          if (canShowAttachments)
         {
 
@@ -403,34 +392,34 @@ WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" id=\"Attachments\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3335), Tuple.Create("\"", 3582)
+WriteAttribute("class", Tuple.Create(" class=\"", 3289), Tuple.Create("\"", 3536)
             
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 3343), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
-            
-            #line default
-            #line hidden
-, 3343), false)
-            
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                 , Tuple.Create(Tuple.Create(" ", 3410), Tuple.Create<System.Object, System.Int32>(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments"
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 3297), Tuple.Create<System.Object, System.Int32>(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments"
             
             #line default
             #line hidden
-, 3411), false)
+, 3297), false)
             
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                                                       , Tuple.Create(Tuple.Create(" ", 3496), Tuple.Create<System.Object, System.Int32>(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments"
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                 , Tuple.Create(Tuple.Create(" ", 3364), Tuple.Create<System.Object, System.Int32>(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments"
             
             #line default
             #line hidden
-, 3497), false)
+, 3365), false)
+            
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                                                       , Tuple.Create(Tuple.Create(" ", 3450), Tuple.Create<System.Object, System.Int32>(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments"
+            
+            #line default
+            #line hidden
+, 3451), false)
 );
 
 WriteLiteral(" data-userid=\"");
 
             
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                                                                                                                                                                                       Write(CurrentUser.UserId);
 
             
@@ -441,7 +430,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-uploadurl=\"");
 
             
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                                                                                                                                                                                                                             Write(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)));
 
             
@@ -452,7 +441,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-onlineuploadurl=\"");
 
             
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                                                                                                                                                                                                                                                                                                                    Write(Url.Action(MVC.API.Job.AttachmentOnlineUploadSession(Model.Job.Id)));
 
             
@@ -463,7 +452,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-qrcodeurl=\"");
 
             
-            #line 57 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Write(Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js"));
 
             
@@ -471,18 +460,18 @@ WriteLiteral(" data-qrcodeurl=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(">\r\n");
-
-WriteLiteral("                    ");
+WriteLiteral(" data-removeurl=\"");
 
             
-            #line 58 "..\..\Views\Job\JobParts\Resources.cshtml"
-               Write(Html.AntiForgeryToken());
+            #line 56 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Write(Url.Action(MVC.API.Job.AttachmentRemove()));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                    <div");
+WriteLiteral("\"");
+
+WriteLiteral(">\r\n                    <div");
 
 WriteLiteral(" class=\"Disco-AttachmentUpload-DropTarget\"");
 
@@ -494,13 +483,13 @@ WriteLiteral(" class=\"attachmentOutput\"");
 WriteLiteral(">\r\n");
 
             
-            #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 61 "..\..\Views\Job\JobParts\Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 61 "..\..\Views\Job\JobParts\Resources.cshtml"
                          foreach (var ja in Model.Job.JobAttachments.OrderByDescending(a => a.Id))
                         {
 
@@ -509,20 +498,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                            <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 4281), Tuple.Create("\"", 4338)
+WriteAttribute("href", Tuple.Create(" href=\"", 4250), Tuple.Create("\"", 4307)
             
-            #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 4288), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
+            #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 4257), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentDownload(ja.Id))
             
             #line default
             #line hidden
-, 4288), false)
+, 4257), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
 
             
-            #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                        Write(ja.Id);
 
             
@@ -533,7 +522,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-mimetype=\"");
 
             
-            #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 63 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                               Write(ja.MimeType);
 
             
@@ -545,28 +534,28 @@ WriteLiteral(">\r\n                                <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4448), Tuple.Create("\"", 4468)
+WriteAttribute("title", Tuple.Create(" title=\"", 4417), Tuple.Create("\"", 4437)
             
-            #line 66 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 4456), Tuple.Create<System.Object, System.Int32>(ja.Filename
+            #line 64 "..\..\Views\Job\JobParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 4425), Tuple.Create<System.Object, System.Int32>(ja.Filename
             
             #line default
             #line hidden
-, 4456), false)
+, 4425), false)
 );
 
 WriteLiteral(">\r\n                                    <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 4539), Tuple.Create("\"", 4598)
+WriteAttribute("src", Tuple.Create(" src=\"", 4508), Tuple.Create("\"", 4567)
             
-            #line 67 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 4545), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
+            #line 65 "..\..\Views\Job\JobParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 4514), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Job.AttachmentThumbnail(ja.Id))
             
             #line default
             #line hidden
-, 4545), false)
+, 4514), false)
 );
 
 WriteLiteral(" />\r\n                                </span>\r\n                                <sp" +
@@ -574,40 +563,40 @@ WriteLiteral(" />\r\n                                </span>\r\n                
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 4699), Tuple.Create("\"", 4719)
+WriteAttribute("title", Tuple.Create(" title=\"", 4668), Tuple.Create("\"", 4688)
             
-            #line 69 "..\..\Views\Job\JobParts\Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 4707), Tuple.Create<System.Object, System.Int32>(ja.Comments
+            #line 67 "..\..\Views\Job\JobParts\Resources.cshtml"
+, Tuple.Create(Tuple.Create("", 4676), Tuple.Create<System.Object, System.Int32>(ja.Comments
             
             #line default
             #line hidden
-, 4707), false)
+, 4676), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 70 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 68 "..\..\Views\Job\JobParts\Resources.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 70 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 68 "..\..\Views\Job\JobParts\Resources.cshtml"
                                       if (!string.IsNullOrEmpty(ja.DocumentTemplateId))
                                         { 
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 69 "..\..\Views\Job\JobParts\Resources.cshtml"
                                      Write(ja.DocumentTemplate.Description);
 
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 69 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                           }
                                     else
                                     { 
@@ -615,14 +604,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 71 "..\..\Views\Job\JobParts\Resources.cshtml"
                                   Write(ja.Comments ?? ja.Filename);
 
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 71 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                     }
             
             #line default
@@ -634,7 +623,7 @@ WriteLiteral(" class=\"author\"");
 WriteLiteral(">");
 
             
-            #line 74 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 72 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                        Write(ja.TechUser.ToStringFriendly());
 
             
@@ -643,7 +632,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 74 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 72 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                    if (canRemoveAnyAttachments || (canRemoveOwnAttachments && ja.TechUserId.Equals(CurrentUser.UserId, StringComparison.OrdinalIgnoreCase)))
                                 {
             
@@ -656,7 +645,7 @@ WriteLiteral(" class=\"remove fa fa-times-circle\"");
 WriteLiteral("></span>");
 
             
-            #line 75 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 73 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                              }
             
             #line default
@@ -668,7 +657,7 @@ WriteLiteral(" class=\"timestamp\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 75 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 73 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                   Write(ja.Timestamp.ToUnixEpoc());
 
             
@@ -676,20 +665,20 @@ WriteLiteral(" data-livestamp=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5404), Tuple.Create("\"", 5442)
+WriteAttribute("title", Tuple.Create(" title=\"", 5373), Tuple.Create("\"", 5411)
             
-            #line 75 "..\..\Views\Job\JobParts\Resources.cshtml"
-                                                                                           , Tuple.Create(Tuple.Create("", 5412), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
+            #line 73 "..\..\Views\Job\JobParts\Resources.cshtml"
+                                                                                           , Tuple.Create(Tuple.Create("", 5381), Tuple.Create<System.Object, System.Int32>(ja.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 5412), false)
+, 5381), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 75 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 73 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                                                                                                                       Write(ja.Timestamp.ToFullDateTime());
 
             
@@ -698,7 +687,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                            </a>\r\n");
 
             
-            #line 77 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 75 "..\..\Views\Job\JobParts\Resources.cshtml"
                         }
 
             
@@ -707,13 +696,13 @@ WriteLiteral("</span>\r\n                            </a>\r\n");
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 79 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 77 "..\..\Views\Job\JobParts\Resources.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 79 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 77 "..\..\Views\Job\JobParts\Resources.cshtml"
                      if (canAddAttachments)
                     {
 
@@ -751,7 +740,7 @@ WriteLiteral(" title=\"Upload with Online Services\"");
 WriteLiteral("></span>\r\n                        </div>\r\n");
 
             
-            #line 85 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 83 "..\..\Views\Job\JobParts\Resources.cshtml"
                     }
 
             
@@ -760,7 +749,7 @@ WriteLiteral("></span>\r\n                        </div>\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n");
 
             
-            #line 88 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 86 "..\..\Views\Job\JobParts\Resources.cshtml"
         }
 
             
@@ -769,7 +758,7 @@ WriteLiteral("                </div>\r\n            </td>\r\n");
 WriteLiteral("    </tr>\r\n</table>\r\n");
 
             
-            #line 91 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 89 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
 
@@ -801,13 +790,13 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 115 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 113 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 115 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 113 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canAddLogs)
             {
             
@@ -827,18 +816,18 @@ WriteLiteral("\r\n            //#region Add Logs\r\n\r\n            const $Comme
 "                   $CommentInput.focus();\r\n                    return;\r\n        " +
 "        }\r\n\r\n                $CommentInput.prop(\'disabled\', true);\r\n\r\n          " +
 "      const formData = new FormData();\r\n                formData.append(\'__Reque" +
-"stVerificationToken\', $Comments.find(\'input[name=\"__RequestVerificationToken\"]\')" +
-".val());\r\n                formData.append(\'comment\', comment);\r\n\r\n              " +
-"  const response = await fetch($Comments.attr(\'data-addurl\'), {\r\n               " +
-"     method: \'POST\',\r\n                    body: formData\r\n                });\r\n\r" +
-"\n                if (response.ok) {\r\n                    $CommentInput.val(\'\').p" +
-"rop(\'disabled\', false).focus();\r\n                } else {\r\n                    a" +
-"lert(\'Unable to add comment: \' + response.statusText);\r\n                    $Com" +
-"mentInput.prop(\'disabled\', false).focus();\r\n                }\r\n            }\r\n\r\n" +
-"            //#endregion\r\n            ");
+"stVerificationToken\', document.body.dataset.antiforgery);\r\n                formD" +
+"ata.append(\'comment\', comment);\r\n\r\n                const response = await fetch(" +
+"$Comments.attr(\'data-addurl\'), {\r\n                    method: \'POST\',\r\n         " +
+"           body: formData\r\n                });\r\n\r\n                if (response.o" +
+"k) {\r\n                    $CommentInput.val(\'\').prop(\'disabled\', false).focus();" +
+"\r\n                } else {\r\n                    alert(\'Unable to add comment: \' " +
+"+ response.statusText);\r\n                    $CommentInput.prop(\'disabled\', fals" +
+"e).focus();\r\n                }\r\n            }\r\n\r\n            //#endregion\r\n     " +
+"       ");
 
             
-            #line 163 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 161 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -847,7 +836,7 @@ WriteLiteral("\r\n            //#region Add Logs\r\n\r\n            const $Comme
 WriteLiteral("            ");
 
             
-            #line 164 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 162 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyLogs || canRemoveOwnLogs)
             {
             
@@ -862,7 +851,7 @@ WriteLiteral(@"
 
             async function removeComment(commentId) {
                 const formData = new FormData();
-                formData.append('__RequestVerificationToken', $Comments.find('input[name=""__RequestVerificationToken""]').val());
+                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                 formData.append('id', commentId);
 
                 const response = await fetch($Comments.attr('data-removeurl'), {
@@ -920,7 +909,7 @@ WriteLiteral(@"></i>&nbsp;Are you sure?</p></div>')
             ");
 
             
-            #line 219 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 217 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -928,50 +917,50 @@ WriteLiteral(@"></i>&nbsp;Are you sure?</p></div>')
             #line hidden
 WriteLiteral("\r\n            async function loadLiveComment(id) {\r\n\r\n                const formD" +
 "ata = new FormData();\r\n                formData.append(\'__RequestVerificationTok" +
-"en\', $Comments.find(\'input[name=\"__RequestVerificationToken\"]\').val());\r\n       " +
-"         formData.append(\'id\', id);\r\n\r\n                const response = await fe" +
-"tch($Comments.attr(\'data-geturl\'), {\r\n                    method: \'POST\',\r\n     " +
-"               body: formData\r\n                });\r\n\r\n                if (!respo" +
-"nse.ok) {\r\n                    alert(\'Unable to load live comment \' + id + \': \' " +
-"+ response.statusText);\r\n                } else {\r\n                    const com" +
-"ment = await response.json();\r\n\r\n                    if ($Comments.hasClass(\'can" +
-"RemoveAnyLogs\'))\r\n                        addComment(comment, false, true);\r\n   " +
-"                 else if ($Comments.hasClass(\'canRemoveOwnLogs\'))\r\n             " +
-"           addComment(comment, false, (comment.AuthorId === $Comments.attr(\'data" +
-"-userid\')));\r\n                    else\r\n                        addComment(comme" +
-"nt, false, false);\r\n                }\r\n            }\r\n            function liveR" +
-"emoveComment(id) {\r\n                $CommentOutput.children(\'div[data-logid=\"\' +" +
-" id + \'\"]\').slideUp(300).delay(300).queue(function () {\r\n                    con" +
-"st $this = $(this);\r\n                    $this.find(\'.timestamp\').livestamp(\'des" +
-"troy\');\r\n                    $this.remove();\r\n                });\r\n            }" +
-"\r\n            function addComment(c, quick, canRemove) {\r\n                let t " +
-"= \'<div><span class=\"author\" />\';\r\n                if (canRemove)\r\n             " +
-"       t += \'<span class=\"remove fa fa-times-circle\" />\';\r\n                t += " +
-"\'<span class=\"timestamp\" /><div class=\"comment\" /></div>\';\r\n\r\n                co" +
-"nst e = $(t);\r\n                e.attr(\'data-logid\', c.Id);\r\n                e.fi" +
-"nd(\'.author\').text(c.Author);\r\n                e.find(\'.timestamp\').text(c.Times" +
-"tampFull).attr(\'title\', c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r\n      " +
-"          e.find(\'.comment\').html(c.HtmlComments);\r\n\r\n                $CommentOu" +
-"tput.append(e);\r\n\r\n                if (!quick) {\r\n                    e.animate(" +
-"{ backgroundColor: \'#ffff99\' }, 500, function () {\r\n                        e.an" +
-"imate({ backgroundColor: \'#fafafa\' }, 500, function () {\r\n                      " +
-"      e.css(\'background-color\', \'\');\r\n                        });\r\n             " +
-"       });\r\n                    $CommentOutput.animate({ scrollTop: $CommentOutp" +
-"ut[0].scrollHeight }, 250)\r\n                }\r\n            }\r\n\r\n            // A" +
-"dd Globally Available Functions\r\n            document.DiscoFunctions.liveLoadCom" +
-"ment = function (id) {\r\n                loadLiveComment(id);\r\n            };\r\n  " +
-"          document.DiscoFunctions.liveRemoveComment = liveRemoveComment;\r\n      " +
-"      //#endregion\r\n        });\r\n    </script>\r\n");
+"en\', document.body.dataset.antiforgery);\r\n                formData.append(\'id\', " +
+"id);\r\n\r\n                const response = await fetch($Comments.attr(\'data-geturl" +
+"\'), {\r\n                    method: \'POST\',\r\n                    body: formData\r\n" +
+"                });\r\n\r\n                if (!response.ok) {\r\n                    " +
+"alert(\'Unable to load live comment \' + id + \': \' + response.statusText);\r\n      " +
+"          } else {\r\n                    const comment = await response.json();\r\n" +
+"\r\n                    if ($Comments.hasClass(\'canRemoveAnyLogs\'))\r\n             " +
+"           addComment(comment, false, true);\r\n                    else if ($Comm" +
+"ents.hasClass(\'canRemoveOwnLogs\'))\r\n                        addComment(comment, " +
+"false, (comment.AuthorId === $Comments.attr(\'data-userid\')));\r\n                 " +
+"   else\r\n                        addComment(comment, false, false);\r\n           " +
+"     }\r\n            }\r\n            function liveRemoveComment(id) {\r\n           " +
+"     $CommentOutput.children(\'div[data-logid=\"\' + id + \'\"]\').slideUp(300).delay(" +
+"300).queue(function () {\r\n                    const $this = $(this);\r\n          " +
+"          $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n                    $t" +
+"his.remove();\r\n                });\r\n            }\r\n            function addComme" +
+"nt(c, quick, canRemove) {\r\n                let t = \'<div><span class=\"author\" />" +
+"\';\r\n                if (canRemove)\r\n                    t += \'<span class=\"remov" +
+"e fa fa-times-circle\" />\';\r\n                t += \'<span class=\"timestamp\" /><div" +
+" class=\"comment\" /></div>\';\r\n\r\n                const e = $(t);\r\n                " +
+"e.attr(\'data-logid\', c.Id);\r\n                e.find(\'.author\').text(c.Author);\r\n" +
+"                e.find(\'.timestamp\').text(c.TimestampFull).attr(\'title\', c.Times" +
+"tampFull).livestamp(c.TimestampUnixEpoc);\r\n                e.find(\'.comment\').ht" +
+"ml(c.HtmlComments);\r\n\r\n                $CommentOutput.append(e);\r\n\r\n            " +
+"    if (!quick) {\r\n                    e.animate({ backgroundColor: \'#ffff99\' }," +
+" 500, function () {\r\n                        e.animate({ backgroundColor: \'#fafa" +
+"fa\' }, 500, function () {\r\n                            e.css(\'background-color\'," +
+" \'\');\r\n                        });\r\n                    });\r\n                   " +
+" $CommentOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)\r\n   " +
+"             }\r\n            }\r\n\r\n            // Add Globally Available Functions" +
+"\r\n            document.DiscoFunctions.liveLoadComment = function (id) {\r\n       " +
+"         loadLiveComment(id);\r\n            };\r\n            document.DiscoFunctio" +
+"ns.liveRemoveComment = liveRemoveComment;\r\n            //#endregion\r\n        });" +
+"\r\n    </script>\r\n");
 
             
-            #line 284 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 282 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 285 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 283 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
 
@@ -992,7 +981,7 @@ WriteLiteral(@"    <script>
             var jobId = parseInt('");
 
             
-            #line 298 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 296 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1003,13 +992,13 @@ WriteLiteral("\');\r\n\r\n            //#region Attachments\r\n            var $
 "tput\');\r\n\r\n");
 
             
-            #line 304 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 302 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 304 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 302 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canAddAttachments)
             {
             
@@ -1048,7 +1037,7 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            var attac
 " ");
 
             
-            #line 351 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 349 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1057,13 +1046,13 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            var attac
 WriteLiteral("\r\n");
 
             
-            #line 353 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 351 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 353 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 351 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyAttachments || canRemoveOwnAttachments)
             {
             
@@ -1079,8 +1068,6 @@ WriteLiteral(@"
             function removeLocalAttachment() {
                 $this = $(this).closest('a');
 
-                var data = { id: $this.attr('data-attachmentid') };
-
                 if (!$dialogRemoveAttachment) {
                     $dialogRemoveAttachment = $('<div");
 
@@ -1092,58 +1079,30 @@ WriteLiteral("><p><i");
 
 WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 
-WriteLiteral(@"></i>&nbsp;Are you sure?</p></div>')
-                        .appendTo(document.body)
-                        .dialog({
-                            resizable: false,
-                            height: 140,
-                            modal: true,
-                            autoOpen: false
-                        });
-                }
-
-                $dialogRemoveAttachment.dialog(""enable"").dialog('option', 'buttons', {
-                    ""Remove"": function () {
-                        $dialogRemoveAttachment.dialog(""disable"");
-                        $dialogRemoveAttachment.dialog(""option"", ""buttons"", null);
-                        $.ajax({
-                            url: '");
-
-            
-            #line 382 "..\..\Views\Job\JobParts\Resources.cshtml"
-                             Write(Url.Action(MVC.API.Job.AttachmentRemove()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"',
-                            dataType: 'json',
-                            data: data,
-                            success: function (d) {
-                                if (d == 'OK') {
-                                    // Should be removed via Repository Notifications
-                                } else {
-                                    alert('Unable to remove attachment: ' + d);
-                                }
-                                $dialogRemoveAttachment.dialog(""close"");
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                alert('Unable to remove attachment: ' + textStatus);
-                                $dialogRemoveAttachment.dialog(""close"");
-                            }
-                        });
-                    },
-                    ""Cancel"": function () {
-                        $dialogRemoveAttachment.dialog(""close"");
-                    }
-                }).dialog('open');
-
-                return false;
-            }
-
-            //#endregion
-
-            ");
+WriteLiteral("></i>&nbsp;Are you sure?</p></div>\')\r\n                        .appendTo(document." +
+"body)\r\n                        .dialog({\r\n                            resizable:" +
+" false,\r\n                            height: 140,\r\n                            m" +
+"odal: true,\r\n                            autoOpen: false\r\n                      " +
+"  });\r\n                }\r\n\r\n                async function removeAttachmentAsync" +
+"(id) {\r\n                    const body = new FormData();\r\n                    bo" +
+"dy.append(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n   " +
+"                 body.append(\'id\', id);\r\n\r\n                    try {\r\n          " +
+"              const response = await fetch($Attachments.attr(\'data-removeurl\'), " +
+"{\r\n                            body: body,\r\n                            method: " +
+"\'POST\'\r\n                        });\r\n                        if (!response.ok) {" +
+"\r\n                            alert(\'Unable to remove attachment: \' + response.s" +
+"tatusText);\r\n                        }\r\n                        $dialogRemoveAtt" +
+"achment.dialog(\"close\");\r\n                    } catch (e) {\r\n                   " +
+"     alert(\'Unable to remove attachment: \' + e);\r\n                        $dialo" +
+"gRemoveAttachment.dialog(\"close\");\r\n                    }\r\n                }\r\n\r\n" +
+"                const attachmentId = $this.attr(\'data-attachmentid\');\r\n         " +
+"       $dialogRemoveAttachment.dialog(\'option\', \'buttons\', {\r\n                  " +
+"  \"Remove\": function () {\r\n                        $dialogRemoveAttachment.dialo" +
+"g(\"option\", \"buttons\", null);\r\n                        removeAttachmentAsync(att" +
+"achmentId);\r\n                    },\r\n                    Cancel: function () {\r\n" +
+"                        $dialogRemoveAttachment.dialog(\"close\");\r\n              " +
+"      }\r\n                }).dialog(\'open\');\r\n\r\n                return false;\r\n  " +
+"          }\r\n\r\n            //#endregion\r\n\r\n            ");
 
             
             #line 409 "..\..\Views\Job\JobParts\Resources.cshtml"

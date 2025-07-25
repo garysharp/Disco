@@ -33,9 +33,10 @@
     </table>
     @if (canEdit)
     {
-        <div id="dialogFlagsAction" title="Add Flag">
+        <div id="dialogFlagsAction" class="dialog" title="Add Flag">
             @using (Html.BeginForm(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, true)))
             {
+                @Html.AntiForgeryToken()
                 <input id="dialogFlagsActionFlag" type="hidden" name="Flag" value="0" />
                 <h3>Reason:</h3>
                 <p>
@@ -46,57 +47,70 @@
         <script type="text/javascript">
             $('#jobDetailTabItems').append('<li><a href="#jobDetailTab-Flags">Flags [@(validFlags.SelectMany(g => g.Value).Count(f => f.Item3))]</a></li>');
             $(function () {
-                var $flagCheckboxes = $('#jobFlags').find('input[type="checkbox"]');
-                var $dialogFlagsAction = $('#dialogFlagsAction');
-                var $flagCheckbox;
+                const $flagCheckboxes = $('#jobFlags').find('input[type="checkbox"]');
+                let $dialogFlagsAction = null;
 
                 var updateFlags = function () {
-                    $flagCheckbox = $(this);
-                    var flagValue = $flagCheckbox.val();
+                    const $flagCheckbox = $(this);
+                    const flagValue = $flagCheckbox.val();
 
                     if ($flagCheckbox.is(':checked')) {
                         // Add
                         $('#dialogFlagsActionFlag').val(flagValue);
-                        var title = 'Add Flag: ' + $flagCheckbox.closest('tr').find('th .flagGroupName').text() + ': ' + $('#jobFlagLabel_' + flagValue).text();
+                        const title = 'Add Flag: ' + $flagCheckbox.closest('tr').find('th .flagGroupName').text() + ': ' + $('#jobFlagLabel_' + flagValue).text();
+
+                        if (!$dialogFlagsAction) {
+                            $dialogFlagsAction = $('#dialogFlagsAction').dialog({
+                                resizable: false,
+                                height: 240,
+                                modal: true,
+                                autoOpen: false,
+                                buttons: {
+                                    "Add": function () {
+                                        var $this = $(this);
+                                        $this.dialog("disable");
+                                        $this.dialog("option", "buttons", null);
+                                        $this.find('form').first().submit();
+                                    },
+                                    Cancel: function () {
+                                        $(this).dialog("close");
+                                    }
+                                },
+                                close: function () {
+                                    $flagCheckbox.prop('checked', false);
+                                }
+                            });
+                        }
+
                         $dialogFlagsAction.dialog('option', 'title', title);
                         $dialogFlagsAction.dialog('open');
                     } else {
                         // Remove
                         var $ajaxLoading = $flagCheckbox.closest('tr').find('span.ajaxLoading');
                         $ajaxLoading.show();
-                        $.getJSON('@(Url.Action(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, false)))', { Flag: '-' + flagValue }, function (response, result) {
-                        if (result != 'success' || response != 'OK') {
-                            alert('Unable to change Flag:\n' + response);
-                            $ajaxLoading.hide();
-                        } else {
-                            $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                        }
-                    })
-                }
-            };
-            $dialogFlagsAction.dialog({
-                resizable: false,
-                height: 240,
-                modal: true,
-                autoOpen: false,
-                buttons: {
-                    "Add": function () {
-                        var $this = $(this);
-                        $this.dialog("disable");
-                        $this.dialog("option", "buttons", null);
-                        $this.find('form').first().submit();
-                    },
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
-                },
-                close: function () {
-                    $flagCheckbox.prop('checked', false);
-                }
-            });
 
-            $flagCheckboxes.click(updateFlags);
-        });
+                        const body = new FormData();
+                        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                        body.append('Flag', '-' + flagValue);
+                        fetch('@(Url.Action(MVC.API.Job.UpdateFlag(Model.Job.Id, null, null, false)))', {
+                            method: 'post',
+                            body: body
+                        }).then(r => {
+                            if (r.ok) {
+                                $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                            } else {
+                                alert('Unable to change Flag:\n' + r.statusText);
+                                $ajaxLoading.hide();
+                            }
+                        }).catch(e => {
+                            alert('Unable to change Flag:\n' + e);
+                            $ajaxLoading.hide();
+                        });
+                    }
+                }
+
+                $flagCheckboxes.on('click', updateFlags);
+            });
         </script>
     }
     else

@@ -13,30 +13,25 @@
         let lastTemplateId = null;
 
         const downloadPdf = function (templateId) {
-
-            let url;
-            if (templateId.lastIndexOf('Package:', 0) === 0)
-                url = generatePackageUrl + templateId.substring(8);
-            else
-                url = generatePdfUrl + templateId;
-            url = url + '?TargetId=' + targetId;
-
-            if ($.connection && $.connection.hub && $.connection.hub.transport &&
-                $.connection.hub.transport.name == 'foreverFrame') {
-                // SignalR active with foreverFrame transport - use popup window
-                window.open(url, '_blank', 'height=150,width=250,location=no,menubar=no,resizable=no,scrollbars=no,status=no,toolbar=no');
-            } else {
-                // use iFrame
-                if (!$generationHost) {
-                    $generationHost = $('<iframe>')
-                        .attr({ 'src': url, 'title': 'Document Generation Host' })
-                        .addClass('hidden')
-                        .appendTo('body')
-                        .contents();
-                } else {
-                    $generationHost[0].location.href = url;
-                }
+            let action = generatePdfUrl;
+            if (templateId.lastIndexOf('Package:', 0) === 0) {
+                templateId + templateId.substring(8);
+                action = generatePackageUrl;
             }
+
+            if (!$generationHost) {
+                $generationHost = $('<iframe>')
+                    .attr('title', 'Document Generation Host')
+                    .addClass('hidden')
+                    .appendTo('body')
+                    .contents();
+                $generationHost[0].body.innerHTML = '<form method="post"><input type="hidden" name="__RequestVerificationToken" value="' + document.body.dataset.antiforgery + '"><input type="hidden" name="id"><input type="hidden" name="targetId"></form>';
+            }
+            const form = $generationHost[0].forms[0];
+            form.action = action;
+            form.id.value = templateId;
+            form.targetId.value = targetId;
+            form.submit();
         }
 
         const updateHandlers = function (templateId) {
@@ -47,6 +42,7 @@
             $loadingUi.show();
 
             var formData = new FormData();
+            formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
             formData.append('templateId', decodeURI(templateId));
             formData.append('targetId', decodeURI(targetId));
             fetch(handlersUrl, {
@@ -59,7 +55,7 @@
                         $('<div class="handler">').text(h.Title).attr({
                             'data-id': h.Id,
                             'data-uiurl': h.UiUrl
-                        }).prepend($('<i class="fa fa-fw fa-lg">').addClass('fa-'+h.Icon)).appendTo($handlerPicker);
+                        }).prepend($('<i class="fa fa-fw fa-lg">').addClass('fa-' + h.Icon)).appendTo($handlerPicker);
                     });
                 });
         }
@@ -106,7 +102,12 @@
                                 $Document_Generation_Dialog_HandlerUI.empty();
                                 $Document_Generation_Dialog_HandlerUI.show();
                                 const uiurl = $this.attr('data-uiurl');
-                                fetch(uiurl, { method: 'POST' })
+                                const formData = new FormData();
+                                formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                fetch(uiurl, {
+                                    method: 'POST',
+                                    body: formData,
+                                })
                                     .then(r => r.text())
                                     .then(html => {
                                         $Document_Generation_Dialog_HandlerUI.html(html);

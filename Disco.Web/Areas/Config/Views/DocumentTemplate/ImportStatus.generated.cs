@@ -59,18 +59,7 @@ WriteLiteral("\r\n<h2>\r\n    Documents Imported Today\r\n</h2>\r\n<div");
 
 WriteLiteral(" id=\"importStatus\"");
 
-WriteLiteral(">\r\n");
-
-WriteLiteral("    ");
-
-            
-            #line 12 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
-Write(Html.AntiForgeryToken());
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n    <div");
+WriteLiteral(">\r\n    <div");
 
 WriteLiteral(" id=\"noSessions\"");
 
@@ -289,7 +278,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = 
 "var urlDeviceShow = \'");
 
             
-            #line 107 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 106 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                          Write(Url.Action(MVC.Device.Show()));
 
             
@@ -298,7 +287,7 @@ WriteLiteral(">\r\n    $(function () {\r\n        var vm;\r\n        var host = 
 WriteLiteral("/\'\r\n        var urlJobShow = \'");
 
             
-            #line 108 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 107 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                       Write(Url.Action(MVC.Job.Show()));
 
             
@@ -307,7 +296,7 @@ WriteLiteral("/\'\r\n        var urlJobShow = \'");
 WriteLiteral("/\'\r\n        var urlUserShow = \'");
 
             
-            #line 109 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 108 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                        Write(Url.Action(MVC.User.Show()));
 
             
@@ -316,7 +305,7 @@ WriteLiteral("/\'\r\n        var urlUserShow = \'");
 WriteLiteral("/\'\r\n        var urlPageThumbnail = \'");
 
             
-            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 109 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                             Write(Url.Action(MVC.API.DocumentTemplate.ImporterThumbnail()));
 
             
@@ -325,7 +314,7 @@ WriteLiteral("/\'\r\n        var urlPageThumbnail = \'");
 WriteLiteral("/\'\r\n        var urlDocumentTemplate = \'");
 
             
-            #line 111 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 110 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                                Write(Url.Action(MVC.Config.DocumentTemplate.Index()));
 
             
@@ -334,7 +323,7 @@ WriteLiteral("/\'\r\n        var urlDocumentTemplate = \'");
 WriteLiteral("/\';\r\n        var urlManuallyAssign = \'");
 
             
-            #line 112 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 111 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                              Write(Url.Action(MVC.Config.DocumentTemplate.UndetectedPages()));
 
             
@@ -442,11 +431,11 @@ WriteLiteral("\';\r\n        var isLive = false;\r\n\r\n        function pageVie
 "ar loadData = {\r\n                Format: \"json\",\r\n                Start: d.getFu" +
 "llYear() + \'-\' + (d.getMonth() + 1) + \'-\' + d.getDate(),\r\n                End: n" +
 "ull,\r\n                ModuleId: 40,\r\n                Take: 2000,\r\n              " +
-"  \'__RequestVerificationToken\': host.find(\'input[name=\"__RequestVerificationToke" +
-"n\"]\').val()\r\n            };\r\n            $.ajax({\r\n                url: \'");
+"  \'__RequestVerificationToken\': document.body.dataset.antiforgery\r\n            }" +
+";\r\n            $.ajax({\r\n                url: \'");
 
             
-            #line 291 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 290 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                   Write(Url.Action(MVC.API.Logging.RetrieveEvents()));
 
             
@@ -478,7 +467,7 @@ WriteLiteral(@"',
             $.connection.hub.qs = { LogModules: '");
 
             
-            #line 314 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
+            #line 313 "..\..\Areas\Config\Views\DocumentTemplate\ImportStatus.cshtml"
                                              Write(Disco.Services.Documents.DocumentsLog.Current.LiveLogGroupName);
 
             

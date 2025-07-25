@@ -63,6 +63,7 @@
     <div class="actionBar">
         @using (Html.BeginForm(MVC.API.Device.ImportParse(Model.Context.SessionId, null)))
         {
+            @Html.AntiForgeryToken()
             <a id="Devices_Import_Headers_Submit" href="#" class="button">Parse Device Import</a>
         }
     </div>

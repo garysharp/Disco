@@ -1,8 +1,10 @@
 ﻿@model Disco.Web.Areas.Config.Models.DeviceProfile.DefaultsModel
 @{
     Authorization.Require(Claims.Config.DeviceProfile.ConfigureDefaults);
-    
+
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Profiles", MVC.Config.DeviceProfile.Index(null), "Defaults");
+
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
 }
 <div class="form" style="width: 600px">
     <table>
@@ -15,19 +17,12 @@
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
                     $(function () {
-                        $('#Default').change(function () {
-                            $this = $(this);
-                            $ajaxLoading = $this.next('.ajaxLoading').show();
-                            var data = { id: $this.val() };
-                            $.getJSON('@(Url.Action(MVC.API.DeviceProfile.Default()))', data, function (response, result) {
-                                if (result != 'success' || response != 'OK') {
-                                    alert('Unable to change Default Device Profile:\n' + response);
-                                    $ajaxLoading.hide();
-                                } else {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                }
-                            });
-                        });
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Default'),
+                            'Default Profile',
+                            '@Url.Action(MVC.API.DeviceProfile.Default())',
+                            'id'
+                        );
                     });
                 </script>
             </td>
@@ -41,19 +36,12 @@
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
                     $(function () {
-                        $('#DefaultAddDeviceOffline').change(function () {
-                            $this = $(this);
-                            $ajaxLoading = $this.next('.ajaxLoading').show();
-                            var data = { id: $this.val() };
-                            $.getJSON('@(Url.Action(MVC.API.DeviceProfile.DefaultAddDeviceOffline()))', data, function (response, result) {
-                                if (result != 'success' || response != 'OK') {
-                                    alert('Unable to change Default Add Device Offline Device Profile:\n' + response);
-                                    $ajaxLoading.hide();
-                                } else {
-                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                }
-                            });
-                        });
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#DefaultAddDeviceOffline'),
+                            'Default Add Device Offline Profile',
+                            '@Url.Action(MVC.API.DeviceProfile.DefaultAddDeviceOffline())',
+                            'id'
+                        );
                     });
                 </script>
             </td>

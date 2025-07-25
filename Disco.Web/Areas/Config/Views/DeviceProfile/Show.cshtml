@@ -568,7 +568,7 @@
                         </div>
                         <div id="treeOrganisationalUnit" class="organisationalUnitTree">
                         </div>
-                        @using (Html.BeginForm(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, redirect: true), FormMethod.Post))
+                        @using (Html.BeginForm(MVC.API.DeviceProfile.UpdateOrganisationalUnit(Model.DeviceProfile.Id, redirect: true)))
                         {
                             @Html.AntiForgeryToken();
                             <input type="hidden" name="OrganisationalUnit" />
@@ -754,23 +754,30 @@
                 {
                     <script type="text/javascript">
                         $(function () {
-                            var $container = $('#DeviceProfile_CertificateProviders');
+                            const $container = $('#DeviceProfile_CertificateProviders');
 
                             $container.on('change', 'input', function () {
-                                var $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
+                                const $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
 
-                                var data = {
-                                    CertificateProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
-                                };
-                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviders(Model.DeviceProfile.Id)))', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property "CertificateProviders":\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('certificateProviders', $container.find('input:checked',).map(function () { return $(this).val() }).get().join(','));
+
+                                fetch('@(Url.Action(MVC.API.DeviceProfile.UpdateCertificateProviders(Model.DeviceProfile.Id)))', {
+                                    method: 'POST',
+                                    body: body
+                                }).then(r => {
+                                    if (r.ok) {
                                         $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change property "CertificateProviders":\n' + r.statusText);
+                                        $ajaxLoading.hide();
                                     }
-                                })
-                            })
+                                }).catch(e => {
+                                    alert('Unable to change property "CertificateProviders":\n' + e);
+                                    $ajaxLoading.hide();
+                                });
+                            });
                         });
                     </script>
                 }
@@ -783,18 +790,25 @@
                             $container.on('change', 'input', function () {
                                 var $ajaxLoading = $('#DeviceProfile_CertificateProviders_loading').show();
 
-                                var data = {
-                                    CertificateAuthorityProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
-                                };
-                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.UpdateCertificateAuthorityProviders(Model.DeviceProfile.Id)))', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property "CertificateAuthorityProviders":\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('certificateAuthorityProviders', $container.find('input:checked',).map(function () { return $(this).val() }).get().join(','));
+
+                                fetch('@(Url.Action(MVC.API.DeviceProfile.UpdateCertificateAuthorityProviders(Model.DeviceProfile.Id)))', {
+                                    method: 'POST',
+                                    body: body
+                                }).then(r => {
+                                    if (r.ok) {
                                         $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change property "CertificateAuthorityProviders":\n' + r.statusText);
+                                        $ajaxLoading.hide();
                                     }
-                                })
-                            })
+                                }).catch(e => {
+                                    alert('Unable to change property "CertificateAuthorityProviders":\n' + e);
+                                    $ajaxLoading.hide();
+                                });
+                            });
                         });
                     </script>
                 }
@@ -870,18 +884,25 @@
                             $container.on('change', 'input', function () {
                                 var $ajaxLoading = $('#DeviceProfile_WirelessProfileProviders_loading').show();
 
-                                var data = {
-                                    WirelessProfileProviders: $('input:checked', $container).map(function () { return $(this).val() }).get().join(',')
-                                };
-                                $.getJSON('@(Url.Action(MVC.API.DeviceProfile.UpdateWirelessProfileProviders(Model.DeviceProfile.Id)))', data, function (response, result) {
-                                    if (result != 'success' || response != 'OK') {
-                                        alert('Unable to change property "WirelessProfileProviders":\n' + response);
-                                        $ajaxLoading.hide();
-                                    } else {
+                                const body = new FormData();
+                                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                body.append('wirelessProfileProviders', $container.find('input:checked',).map(function () { return $(this).val() }).get().join(','));
+
+                                fetch('@(Url.Action(MVC.API.DeviceProfile.UpdateWirelessProfileProviders(Model.DeviceProfile.Id)))', {
+                                    method: 'POST',
+                                    body: body
+                                }).then(r => {
+                                    if (r.ok) {
                                         $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
+                                    } else {
+                                        alert('Unable to change property "WirelessProfileProviders":\n' + r.statusText);
+                                        $ajaxLoading.hide();
                                     }
-                                })
-                            })
+                                }).catch(e => {
+                                    alert('Unable to change property "WirelessProfileProviders":\n' + e);
+                                    $ajaxLoading.hide();
+                                });
+                            });
                         });
                     </script>
                 }
@@ -967,50 +988,13 @@
         </tr>
     </table>
 </div>
-@if (canDelete)
-{
-    <div id="dialogConfirmDelete" title="Delete this Device Profile?">
-        <p>
-            <i class="fa fa-exclamation-triangle fa-lg warning"></i>
-            This item will be permanently deleted and cannot be recovered. Are you sure?
-        </p>
-    </div>
-    <script type="text/javascript">
-        $(function () {
-
-            var button = $('#buttonDelete');
-            var buttonLink = button.attr('href');
-            button.attr('href', '#');
-            button.click(function () {
-                $("#dialogConfirmDelete").dialog('open');
-            });
-
-            $("#dialogConfirmDelete").dialog({
-                resizable: false,
-                height: 140,
-                modal: true,
-                autoOpen: false,
-                buttons: {
-                    "Delete": function () {
-                        $(this).dialog('disable');
-                        window.location.href = buttonLink;
-                    },
-                    Cancel: function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-
-        });
-    </script>
-}
 @Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model)
 <div class="actionBar">
     @if (Model.CanDecommission)
     {
         <button id="DeviceProfile_Decommission" class="button">Decommission All Devices</button>
         <div id="DeviceProfile_Decommission_Dialog" class="dialog" title="Profile Device Decommission">
-            @using (Html.BeginForm(MVC.API.Device.DeviceProfileDecommission(Model.DeviceProfile.Id), FormMethod.Post))
+            @using (Html.BeginForm(MVC.API.Device.DeviceProfileDecommission(Model.DeviceProfile.Id)))
             {
                 @Html.AntiForgeryToken()
                 <div class="clearfix" style="margin-bottom: 10px;">
@@ -1067,7 +1051,44 @@
     }
     @if (canDelete)
     {
-        @Html.ActionLinkButton("Delete", MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true), "buttonDelete")
+        <button id="buttonDelete" type="button" class="button">Delete</button>
+        <div id="dialogConfirmDelete" class="dialog" title="Delete this Device Profile?">
+            @using (Html.BeginForm(MVC.API.DeviceProfile.Delete(Model.DeviceProfile.Id, true)))
+            {
+                @Html.AntiForgeryToken()
+            }
+            <p>
+                <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+                This item will be permanently deleted and cannot be recovered. Are you sure?
+            </p>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                let dialog = null;
+                $('#buttonDelete').on('click', function () {
+                    if (!dialog) {
+                        dialog = $("#dialogConfirmDelete").dialog({
+                            resizable: false,
+                            width: 300,
+                            modal: true,
+                            autoOpen: false,
+                            buttons: {
+                                "Delete": function () {
+                                    $(this)
+                                        .dialog("option", "buttons", null)
+                                        .find('form').trigger('submit');
+                                },
+                                Cancel: function () {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+                    }
+
+                    dialog.dialog('open');
+                });
+            });
+        </script>
     }
     @if (Authorization.Has(Claims.Device.Actions.Export))
     {

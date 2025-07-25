@@ -40,6 +40,7 @@ namespace Disco.Web.Areas.API.Controllers
         const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
         {
             Authorization.Require(Claims.Config.DeviceProfile.Configure);
@@ -114,62 +115,70 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         #region Update Shortcut Methods
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDescription(int id, string Description = null, bool? redirect = null)
         {
             return Update(id, pDescription, Description, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateName(int id, string ProfileName = null, bool? redirect = null)
         {
             return Update(id, pName, ProfileName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateShortName(int id, string ShortName = null, bool? redirect = null)
         {
             return Update(id, pShortName, ShortName, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDistributionType(int id, string DistributionType = null, bool? redirect = null)
         {
             return Update(id, pDistributionType, DistributionType, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateCertificateProviders(int id, string CertificateProviders = null, bool? redirect = null)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateCertificateProviders(int id, string certificateProviders = null, bool? redirect = null)
         {
-            return Update(id, pCertificateProviders, CertificateProviders, redirect);
+            return Update(id, pCertificateProviders, certificateProviders, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateCertificateAuthorityProviders(int id, string CertificateAuthorityProviders = null, bool? redirect = null)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateCertificateAuthorityProviders(int id, string certificateAuthorityProviders = null, bool? redirect = null)
         {
-            return Update(id, pCertificateAuthorityProviders, CertificateAuthorityProviders, redirect);
+            return Update(id, pCertificateAuthorityProviders, certificateAuthorityProviders, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
-        public virtual ActionResult UpdateWirelessProfileProviders(int id, string WirelessProfileProviders = null, bool? redirect = null)
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateWirelessProfileProviders(int id, string wirelessProfileProviders = null, bool? redirect = null)
         {
-            return Update(id, pWirelessProfileProviders, WirelessProfileProviders, redirect);
+            return Update(id, pWirelessProfileProviders, wirelessProfileProviders, redirect);
         }
 
-        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure), HttpPost, ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateOrganisationalUnit(int id, string OrganisationalUnit = null, bool enforce = false, bool? redirect = null)
         {
             var updateResult = Update(id, pOrganisationalUnit, OrganisationalUnit, redirect);
@@ -187,13 +196,14 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDefaultOrganisationAddress(int id, string DefaultOrganisationAddress = null, bool? redirect = null)
         {
             return Update(id, pDefaultOrganisationAddress, DefaultOrganisationAddress, redirect);
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Configure, Claims.Config.DeviceProfile.ConfigureComputerNameTemplate)]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateComputerNameTemplate(int id, string ComputerNameTemplate = null, bool? redirect = null)
         {
             var deviceProfile = Database.DeviceProfiles.Find(id);
@@ -219,11 +229,11 @@ namespace Disco.Web.Areas.API.Controllers
             if (redirect.GetValueOrDefault(false))
                 return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
             else
-                return Json("OK");
+                return Ok();
         }
 
         [DiscoAuthorizeAll(Claims.Config.DeviceProfile.Configure, Claims.Config.DeviceProfile.ConfigureComputerNameTemplate)]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult TestComputerNameTemplate(int id, string ComputerNameTemplate = null, string UserSpecifiedDeviceSerialNumber = null)
         {
             Database.Configuration.LazyLoadingEnabled = true;
@@ -317,36 +327,42 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateEnforceComputerNameConvention(int id, string EnforceComputerNameConvention = null, bool? redirect = null)
         {
             return Update(id, pEnforceComputerNameConvention, EnforceComputerNameConvention, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateEnforceOrganisationalUnit(int id, string EnforceOrganisationalUnit = null, bool? redirect = null)
         {
             return Update(id, pEnforceOrganisationalUnit, EnforceOrganisationalUnit, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, bool? redirect = null)
         {
             return Update(id, pProvisionADAccount, ProvisionADAccount, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUserLocalAdmin(int id, string AssignedUserLocalAdmin = null, bool? redirect = null)
         {
             return Update(id, pAssignedUserLocalAdmin, AssignedUserLocalAdmin, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAllowUntrustedReimageJobEnrolment(int id, string AllowUntrustedReimageJobEnrolment = null, bool? redirect = null)
         {
             return Update(id, pAllowUntrustedReimageJobEnrolment, AllowUntrustedReimageJobEnrolment, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, bool redirect = false)
         {
             try
@@ -368,17 +384,18 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, bool redirect = false)
         {
             try
@@ -400,49 +417,49 @@ namespace Disco.Web.Areas.API.Controllers
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
         #endregion
 
         #region Update Properties
-        private void UpdateDescription(DeviceProfile deviceProfile, string Description)
+        private void UpdateDescription(DeviceProfile deviceProfile, string description)
         {
-            if (string.IsNullOrWhiteSpace(Description))
+            if (string.IsNullOrWhiteSpace(description))
                 deviceProfile.Description = null;
             else
-                deviceProfile.Description = Description;
+                deviceProfile.Description = description;
             Database.SaveChanges();
         }
 
-        private void UpdateName(DeviceProfile deviceProfile, string Name)
+        private void UpdateName(DeviceProfile deviceProfile, string name)
         {
-            if (string.IsNullOrWhiteSpace(Name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new Exception("Profile name cannot be empty");
             else
-                deviceProfile.Name = Name;
+                deviceProfile.Name = name;
             Database.SaveChanges();
         }
 
-        private void UpdateShortName(DeviceProfile deviceProfile, string ShortName)
+        private void UpdateShortName(DeviceProfile deviceProfile, string shortName)
         {
-            if (string.IsNullOrWhiteSpace(ShortName))
+            if (string.IsNullOrWhiteSpace(shortName))
                 throw new Exception("Profile short name cannot be empty");
             else
-                deviceProfile.ShortName = ShortName;
+                deviceProfile.ShortName = shortName;
             Database.SaveChanges();
         }
 
-        private void UpdateDistributionType(DeviceProfile deviceProfile, string DistributionType)
+        private void UpdateDistributionType(DeviceProfile deviceProfile, string distributionType)
         {
-            if (int.TryParse(DistributionType, out var iDt))
+            if (int.TryParse(distributionType, out var iDt))
             {
                 deviceProfile.DistributionType = (DeviceProfile.DistributionTypes)iDt;
                 Database.SaveChanges();
@@ -451,9 +468,9 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Distribution Type Number");
         }
 
-        private void UpdateCertificateProviders(DeviceProfile deviceProfile, string CertificateProviderIds)
+        private void UpdateCertificateProviders(DeviceProfile deviceProfile, string certificateProviderIds)
         {
-            if (string.IsNullOrWhiteSpace(CertificateProviderIds))
+            if (string.IsNullOrWhiteSpace(certificateProviderIds))
             {
                 deviceProfile.CertificateProviders = null;
             }
@@ -461,7 +478,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 // Validate
                 var validatedProviders = new List<PluginFeatureManifest>();
-                foreach (var certificateProviderId in CertificateProviderIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var certificateProviderId in certificateProviderIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var featureManifest = Plugins.GetPluginFeature(certificateProviderId, typeof(CertificateProviderFeature));
                     if (featureManifest == null)
@@ -487,9 +504,9 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateCertificateAuthorityProviders(DeviceProfile deviceProfile, string CertificateAuthorityProviderIds)
+        private void UpdateCertificateAuthorityProviders(DeviceProfile deviceProfile, string certificateAuthorityProviderIds)
         {
-            if (string.IsNullOrWhiteSpace(CertificateAuthorityProviderIds))
+            if (string.IsNullOrWhiteSpace(certificateAuthorityProviderIds))
             {
                 deviceProfile.CertificateAuthorityProviders = null;
             }
@@ -497,7 +514,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 // Validate
                 var validatedProviders = new List<PluginFeatureManifest>();
-                foreach (var certificateAuthorityProviderId in CertificateAuthorityProviderIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var certificateAuthorityProviderId in certificateAuthorityProviderIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var featureManifest = Plugins.GetPluginFeature(certificateAuthorityProviderId, typeof(CertificateAuthorityProviderFeature));
                     if (featureManifest == null)
@@ -523,9 +540,9 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateWirelessProfileProviders(DeviceProfile deviceProfile, string WirelessProfileProviderIds)
+        private void UpdateWirelessProfileProviders(DeviceProfile deviceProfile, string wirelessProfileProviderIds)
         {
-            if (string.IsNullOrWhiteSpace(WirelessProfileProviderIds))
+            if (string.IsNullOrWhiteSpace(wirelessProfileProviderIds))
             {
                 deviceProfile.WirelessProfileProviders = null;
             }
@@ -533,7 +550,7 @@ namespace Disco.Web.Areas.API.Controllers
             {
                 // Validate
                 var validatedProviders = new List<PluginFeatureManifest>();
-                foreach (var wirelessProfileProviderId in WirelessProfileProviderIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var wirelessProfileProviderId in wirelessProfileProviderIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var featureManifest = Plugins.GetPluginFeature(wirelessProfileProviderId, typeof(WirelessProfileProviderFeature));
                     if (featureManifest == null)
@@ -559,28 +576,28 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateOrganisationalUnit(DeviceProfile deviceProfile, string OrganisationalUnit)
+        private void UpdateOrganisationalUnit(DeviceProfile deviceProfile, string organisationalUnit)
         {
-            if (string.IsNullOrWhiteSpace(OrganisationalUnit))
-                OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer;
+            if (string.IsNullOrWhiteSpace(organisationalUnit))
+                organisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer;
 
-            if (OrganisationalUnit != deviceProfile.OrganisationalUnit)
+            if (organisationalUnit != deviceProfile.OrganisationalUnit)
             {
-                deviceProfile.OrganisationalUnit = OrganisationalUnit;
+                deviceProfile.OrganisationalUnit = organisationalUnit;
                 Database.SaveChanges();
             }
         }
 
-        private void UpdateDefaultOrganisationAddress(DeviceProfile deviceProfile, string DefaultOrganisationAddress)
+        private void UpdateDefaultOrganisationAddress(DeviceProfile deviceProfile, string defaultOrganisationAddress)
         {
-            if (string.IsNullOrEmpty(DefaultOrganisationAddress))
+            if (string.IsNullOrEmpty(defaultOrganisationAddress))
             {
                 deviceProfile.DefaultOrganisationAddress = null;
             }
             else
             {
                 // Validate
-                if (int.TryParse(DefaultOrganisationAddress, out var daoId))
+                if (int.TryParse(defaultOrganisationAddress, out var daoId))
                 {
                     var oa = Database.DiscoConfiguration.OrganisationAddresses.GetAddress(daoId);
                     if (oa != null)
@@ -602,9 +619,9 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private void UpdateEnforceComputerNameConvention(DeviceProfile deviceProfile, string EnforceComputerNameConvention)
+        private void UpdateEnforceComputerNameConvention(DeviceProfile deviceProfile, string enforceComputerNameConvention)
         {
-            if (bool.TryParse(EnforceComputerNameConvention, out var bValue))
+            if (bool.TryParse(enforceComputerNameConvention, out var bValue))
             {
                 deviceProfile.EnforceComputerNameConvention = bValue;
 
@@ -614,9 +631,9 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private void UpdateEnforceOrganisationalUnit(DeviceProfile deviceProfile, string EnforceOrganisationalUnit)
+        private void UpdateEnforceOrganisationalUnit(DeviceProfile deviceProfile, string enforceOrganisationalUnit)
         {
-            if (bool.TryParse(EnforceOrganisationalUnit, out var bValue))
+            if (bool.TryParse(enforceOrganisationalUnit, out var bValue))
             {
                 deviceProfile.EnforceOrganisationalUnit = bValue;
 
@@ -626,9 +643,9 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private void UpdateProvisionADAccount(DeviceProfile deviceProfile, string ProvisionADAccount)
+        private void UpdateProvisionADAccount(DeviceProfile deviceProfile, string provisionADAccount)
         {
-            if (bool.TryParse(ProvisionADAccount, out var bValue))
+            if (bool.TryParse(provisionADAccount, out var bValue))
             {
                 deviceProfile.ProvisionADAccount = bValue;
 
@@ -638,9 +655,9 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private void UpdateAssignedUserLocalAdmin(DeviceProfile deviceProfile, string AssignedUserLocalAdmin)
+        private void UpdateAssignedUserLocalAdmin(DeviceProfile deviceProfile, string assignedUserLocalAdmin)
         {
-            if (bool.TryParse(AssignedUserLocalAdmin, out var bValue))
+            if (bool.TryParse(assignedUserLocalAdmin, out var bValue))
             {
                 deviceProfile.AssignedUserLocalAdmin = bValue;
 
@@ -650,9 +667,9 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private void UpdateAllowUntrustedReimageJobEnrolment(DeviceProfile deviceProfile, string AllowUntrustedReimageJobEnrolment)
+        private void UpdateAllowUntrustedReimageJobEnrolment(DeviceProfile deviceProfile, string allowUntrustedReimageJobEnrolment)
         {
-            if (bool.TryParse(AllowUntrustedReimageJobEnrolment, out var bValue))
+            if (bool.TryParse(allowUntrustedReimageJobEnrolment, out var bValue))
             {
                 deviceProfile.AllowUntrustedReimageJobEnrolment = bValue;
 
@@ -662,16 +679,16 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceProfile DeviceProfile, string DevicesLinkedGroup)
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceProfile deviceProfile, string devicesLinkedGroup)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileDevicesManagedGroup.GetKey(DeviceProfile), DevicesLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileDevicesManagedGroup.GetKey(deviceProfile), devicesLinkedGroup, null);
 
-            if (DeviceProfile.DevicesLinkedGroup != configJson)
+            if (deviceProfile.DevicesLinkedGroup != configJson)
             {
-                DeviceProfile.DevicesLinkedGroup = configJson;
+                deviceProfile.DevicesLinkedGroup = configJson;
                 Database.SaveChanges();
 
-                var managedGroup = DeviceProfileDevicesManagedGroup.Initialize(DeviceProfile);
+                var managedGroup = DeviceProfileDevicesManagedGroup.Initialize(deviceProfile);
                 if (managedGroup != null) // Sync Group
                     return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
             }
@@ -679,16 +696,16 @@ namespace Disco.Web.Areas.API.Controllers
             return null;
         }
 
-        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceProfile DeviceProfile, string AssignedUsersLinkedGroup)
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceProfile deviceProfile, string assignedUsersLinkedGroup)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileAssignedUsersManagedGroup.GetKey(DeviceProfile), AssignedUsersLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileAssignedUsersManagedGroup.GetKey(deviceProfile), assignedUsersLinkedGroup, null);
 
-            if (DeviceProfile.AssignedUsersLinkedGroup != configJson)
+            if (deviceProfile.AssignedUsersLinkedGroup != configJson)
             {
-                DeviceProfile.AssignedUsersLinkedGroup = configJson;
+                deviceProfile.AssignedUsersLinkedGroup = configJson;
                 Database.SaveChanges();
 
-                var managedGroup = DeviceProfileAssignedUsersManagedGroup.Initialize(DeviceProfile);
+                var managedGroup = DeviceProfileAssignedUsersManagedGroup.Initialize(deviceProfile);
                 if (managedGroup != null) // Sync Group
                     return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
             }
@@ -700,6 +717,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Actions
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Delete)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Delete(int id, bool? redirect = false)
         {
             try
@@ -712,7 +730,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DeviceProfile.Index(null));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Device Profile Number");
             }
@@ -721,7 +739,7 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
@@ -730,6 +748,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Defaults
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.ConfigureDefaults)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Default(int id, bool? redirect = null)
         {
             try
@@ -742,7 +761,7 @@ namespace Disco.Web.Areas.API.Controllers
                     if (redirect.HasValue && redirect.Value)
                         return RedirectToAction(MVC.Config.DeviceProfile.Index(id));
                     else
-                        return Json("OK", JsonRequestBehavior.AllowGet);
+                        return Ok();
                 }
                 throw new Exception("Invalid Device Profile Number");
             }
@@ -751,11 +770,12 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.ConfigureDefaults)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DefaultAddDeviceOffline(int id, bool? redirect = false)
         {
             try
@@ -778,14 +798,14 @@ namespace Disco.Web.Areas.API.Controllers
                 if (redirect.HasValue && redirect.Value)
                     return RedirectToAction(MVC.Config.DeviceProfile.Index(id));
                 else
-                    return Json("OK", JsonRequestBehavior.AllowGet);
+                    return Ok();
             }
             catch (Exception ex)
             {
                 if (redirect.HasValue && redirect.Value)
                     throw;
                 else
-                    return Json($"Error: {ex.Message}", JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex.Message);
             }
         }
 

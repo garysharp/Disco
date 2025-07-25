@@ -1,5 +1,4 @@
 ﻿using Disco.Models.Areas.Config.UI.UserFlag;
-using Disco.Models.Repository;
 using Disco.Models.Services.Users.UserFlags;
 using Disco.Models.UI.Config.UserFlag;
 using Disco.Services.Authorization;
@@ -76,17 +75,11 @@ namespace Disco.Web.Areas.Config.Controllers
         }
 
         [DiscoAuthorizeAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure)]
+        [HttpGet]
         public virtual ActionResult Create()
         {
             // Default Queue
-            var m = new CreateModel()
-            {
-                UserFlag = new UserFlag()
-                {
-                    Icon = UserFlagService.RandomUnusedIcon(),
-                    IconColour = UserFlagService.RandomUnusedThemeColour()
-                }
-            };
+            var m = new CreateModel();
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<ConfigUserFlagCreateModel>(ControllerContext, m);
@@ -94,22 +87,23 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(m);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure), HttpPost]
+        [DiscoAuthorizeAll(Claims.Config.UserFlag.Create, Claims.Config.UserFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Create(CreateModel model)
         {
             if (ModelState.IsValid)
             {
                 // Check for Existing
-                var existing = Database.UserFlags.Where(m => m.Name == model.UserFlag.Name).FirstOrDefault();
-                if (existing == null)
+                var nameExists = Database.UserFlags.Any(m => m.Name.Equals(model.Name, StringComparison.Ordinal));
+                if (!nameExists)
                 {
-                    var flag = UserFlagService.CreateUserFlag(Database, model.UserFlag);
+                    var flag = UserFlagService.CreateUserFlag(Database, model.Name, model.Description);
 
                     return RedirectToAction(MVC.Config.UserFlag.Index(flag.Id));
                 }
                 else
                 {
-                    ModelState.AddModelError("Name", "A User Flag with this name already exists.");
+                    ModelState.AddModelError(nameof(CreateModel.Name), "A User Flag with this name already exists.");
                 }
             }
 
