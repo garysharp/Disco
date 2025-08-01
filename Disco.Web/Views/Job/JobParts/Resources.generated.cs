@@ -989,55 +989,54 @@ WriteLiteral(@"    <script>
             #line hidden
 WriteLiteral("\');\r\n\r\n            //#region Attachments\r\n            var $Attachments = $(\'#Atta" +
 "chments\');\r\n            var $attachmentOutput = $Attachments.find(\'.attachmentOu" +
-"tput\');\r\n\r\n");
+"tput\');\r\n            let attachmentUploader = null;\r\n\r\n");
 
             
-            #line 302 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 303 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 302 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 303 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canAddAttachments)
             {
             
             #line default
             #line hidden
-WriteLiteral("\r\n            //#region Add Attachments\r\n            var attachmentUploader = new" +
-" document.Disco.AttachmentUploader($Attachments);\r\n\r\n            var $attachment" +
-"Input = $Attachments.find(\'.attachmentInput\');\r\n            $attachmentInput.fin" +
-"d(\'.online-upload\').on(\'click\', function () {\r\n                if ($(this).hasCl" +
-"ass(\'disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Ser" +
-"ver, please refresh this page and try again\');\r\n                else\r\n          " +
-"          attachmentUploader.onlineUpload();\r\n            });\r\n            if (w" +
-"indow.location.protocol != \'https:\') {\r\n                $attachmentInput.find(\'." +
-"photo\')\r\n                    .removeClass(\'enabled\')\r\n                    .addCl" +
-"ass(\'disabled\')\r\n                    .attr(\'title\', \'Capture Image: this functio" +
-"nality is only available over a HTTPS connection\');\r\n            }\r\n            " +
-"$attachmentInput.find(\'.photo\').click(function () {\r\n                if (!$(this" +
-").hasClass(\'enabled\'))\r\n                    alert(\'This functionality is only av" +
-"ailable over a HTTPS connection\');\r\n                else if ($(this).hasClass(\'d" +
-"isabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Server, p" +
-"lease refresh this page and try again\');\r\n                else\r\n                " +
-"    attachmentUploader.uploadImage();\r\n            });\r\n            $attachmentI" +
-"nput.find(\'.upload\').click(function () {\r\n                if ($(this).hasClass(\'" +
-"disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Server, " +
-"please refresh this page and try again\');\r\n                else\r\n               " +
-"     attachmentUploader.uploadFiles();\r\n            });\r\n\r\n            var resou" +
-"rcesTab;\r\n            $(document).on(\'dragover\', function () {\r\n                " +
-"if (!resourcesTab) {\r\n                    var tabs = $Attachments.closest(\'.ui-t" +
-"abs\');\r\n                    resourcesTab = {\r\n                        tabs: tabs" +
-",\r\n                        resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(" +
-"\'a[href=\"#jobDetailTab-Resources\"]\').closest(\'li\').index()\r\n                    " +
-"};\r\n                }\r\n                var selectedIndex = resourcesTab.tabs.tab" +
-"s(\'option\', \'active\');\r\n                if (resourcesTab.resourcesIndex !== sele" +
-"ctedIndex)\r\n                    resourcesTab.tabs.tabs(\'option\', \'active\', resou" +
-"rcesTab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n           " +
-" ");
+WriteLiteral("\r\n            //#region Add Attachments\r\n            attachmentUploader = new doc" +
+"ument.Disco.AttachmentUploader($Attachments);\r\n\r\n            var $attachmentInpu" +
+"t = $Attachments.find(\'.attachmentInput\');\r\n            $attachmentInput.find(\'." +
+"online-upload\').on(\'click\', function () {\r\n                if ($(this).hasClass(" +
+"\'disabled\'))\r\n                    alert(\'Disconnected from the Disco ICT Server," +
+" please refresh this page and try again\');\r\n                else\r\n              " +
+"      attachmentUploader.onlineUpload();\r\n            });\r\n            if (windo" +
+"w.location.protocol != \'https:\') {\r\n                $attachmentInput.find(\'.phot" +
+"o\')\r\n                    .removeClass(\'enabled\')\r\n                    .addClass(" +
+"\'disabled\')\r\n                    .attr(\'title\', \'Capture Image: this functionali" +
+"ty is only available over a HTTPS connection\');\r\n            }\r\n            $att" +
+"achmentInput.find(\'.photo\').click(function () {\r\n                if (!$(this).ha" +
+"sClass(\'enabled\'))\r\n                    alert(\'This functionality is only availa" +
+"ble over a HTTPS connection\');\r\n                else if ($(this).hasClass(\'disab" +
+"led\'))\r\n                    alert(\'Disconnected from the Disco ICT Server, pleas" +
+"e refresh this page and try again\');\r\n                else\r\n                    " +
+"attachmentUploader.uploadImage();\r\n            });\r\n            $attachmentInput" +
+".find(\'.upload\').click(function () {\r\n                if ($(this).hasClass(\'disa" +
+"bled\'))\r\n                    alert(\'Disconnected from the Disco ICT Server, plea" +
+"se refresh this page and try again\');\r\n                else\r\n                   " +
+" attachmentUploader.uploadFiles();\r\n            });\r\n\r\n            var resources" +
+"Tab;\r\n            $(document).on(\'dragover\', function () {\r\n                if (" +
+"!resourcesTab) {\r\n                    var tabs = $Attachments.closest(\'.ui-tabs\'" +
+");\r\n                    resourcesTab = {\r\n                        tabs: tabs,\r\n " +
+"                       resourcesIndex: tabs.children(\'ul.ui-tabs-nav\').find(\'a[h" +
+"ref=\"#jobDetailTab-Resources\"]\').closest(\'li\').index()\r\n                    };\r\n" +
+"                }\r\n                var selectedIndex = resourcesTab.tabs.tabs(\'o" +
+"ption\', \'active\');\r\n                if (resourcesTab.resourcesIndex !== selected" +
+"Index)\r\n                    resourcesTab.tabs.tabs(\'option\', \'active\', resources" +
+"Tab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n            ");
 
             
-            #line 349 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 350 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1046,13 +1045,13 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            var attac
 WriteLiteral("\r\n");
 
             
-            #line 351 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 352 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 351 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 352 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyAttachments || canRemoveOwnAttachments)
             {
             
@@ -1105,7 +1104,7 @@ WriteLiteral("></i>&nbsp;Are you sure?</p></div>\')\r\n                        .
 "          }\r\n\r\n            //#endregion\r\n\r\n            ");
 
             
-            #line 409 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 410 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1115,7 +1114,7 @@ WriteLiteral("\r\n            function addAttachment(key, quick) {\r\n          
 "id: key };\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 414 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 415 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Attachment()));
 
             
@@ -1129,22 +1128,25 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "lse if ($Attachments.hasClass(\'canRemoveOwnAttachments\'))\r\n                     " +
 "           buildAttachment(a, (a.AuthorId === $Attachments.attr(\'data-userid\'))," +
 " quick);\r\n                            else\r\n                                buil" +
-"dAttachment(a, false, quick);\r\n                        } else {\r\n               " +
-"             alert(\'Unable to add attachment: \' + d.Result);\r\n                  " +
-"      }\r\n                    },\r\n                    error: function (jqXHR, tex" +
-"tStatus, errorThrown) {\r\n                        alert(\'Unable to add attachment" +
-": \' + textStatus);\r\n                    }\r\n                });\r\n            }\r\n " +
-"           function buildAttachment(a, canRemove, quick) {\r\n                if (" +
-"parseInt(a.ParentId) == jobId) {\r\n                    var t = \'<a><span class=\"i" +
-"con\"><img alt=\"Attachment Thumbnail\" /></span><span class=\"comments\"></span><spa" +
-"n class=\"author\"></span>\';\r\n                    if (canRemove)\r\n                " +
-"        t += \'<span class=\"remove fa fa-times-circle\"></span>\';\r\n               " +
-"     t += \'<span class=\"timestamp\"></span></a>\';\r\n\r\n                    var e = " +
-"$(t);\r\n\r\n                    e.attr(\'data-attachmentid\', a.Id).attr(\'data-mimety" +
-"pe\', a.MimeType).attr(\'href\', \'");
+"dAttachment(a, false, quick);\r\n\r\n                            if (attachmentUploa" +
+"der && attachmentUploader.onlineUploadCloseDialog) {\r\n                          " +
+"      attachmentUploader.onlineUploadCloseDialog();\r\n                           " +
+" }\r\n                        } else {\r\n                            alert(\'Unable " +
+"to add attachment: \' + d.Result);\r\n                        }\r\n                  " +
+"  },\r\n                    error: function (jqXHR, textStatus, errorThrown) {\r\n  " +
+"                      alert(\'Unable to add attachment: \' + textStatus);\r\n       " +
+"             }\r\n                });\r\n            }\r\n            function buildAt" +
+"tachment(a, canRemove, quick) {\r\n                if (parseInt(a.ParentId) == job" +
+"Id) {\r\n                    var t = \'<a><span class=\"icon\"><img alt=\"Attachment T" +
+"humbnail\" /></span><span class=\"comments\"></span><span class=\"author\"></span>\';\r" +
+"\n                    if (canRemove)\r\n                        t += \'<span class=\"" +
+"remove fa fa-times-circle\"></span>\';\r\n                    t += \'<span class=\"tim" +
+"estamp\"></span></a>\';\r\n\r\n                    var e = $(t);\r\n\r\n                  " +
+"  e.attr(\'data-attachmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'href" +
+"\', \'");
 
             
-            #line 445 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 450 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                   Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -1176,7 +1178,7 @@ WriteLiteral(@"/' + a.Id);
                             img.attr('src', '");
 
             
-            #line 468 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 473 "..\..\Views\Job\JobParts\Resources.cshtml"
                                          Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
@@ -1223,14 +1225,14 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 "script>\r\n");
 
             
-            #line 538 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 543 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 539 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 544 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs || canShowAttachments)
 {
 
@@ -1240,7 +1242,7 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var jobId = parseInt(\'");
 
             
-            #line 543 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 548 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1250,7 +1252,7 @@ WriteLiteral("\');\r\n\r\n            //#region LiveEvents\r\n            var hu
 "dates;\r\n\r\n            // Map Functions\r\n");
 
             
-            #line 549 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 554 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
             
@@ -1261,14 +1263,14 @@ WriteLiteral("\r\n            hub.client.addLog = document.DiscoFunctions.liveLo
 "      ");
 
             
-            #line 553 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 558 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
             #line default
             #line hidden
             
-            #line 554 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 559 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
             
@@ -1289,7 +1291,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 567 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 572 "..\..\Views\Job\JobParts\Resources.cshtml"
        }
 
             
@@ -1331,7 +1333,7 @@ WriteLiteral("\r\n            $.connection.hub.qs = { JobId: jobId };\r\n       
 "});\r\n\r\n            //#endregion\r\n        });\r\n    </script>\r\n");
 
             
-            #line 619 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 624 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default

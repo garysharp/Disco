@@ -452,6 +452,7 @@ WriteLiteral(@">
                             var $attachmentOutput = $Attachments.find('.attachmentOutput');
                             var $dialogRemoveAttachment = null;
                             let $attachmentDownloadHost = null;
+                            let attachmentUploader = null;
 
                             function onAttachmentAdded(id, quick) {
                                 var data = { id: id };
@@ -459,7 +460,7 @@ WriteLiteral(@">
                                     url: '");
 
             
-            #line 66 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 67 "..\..\Views\User\UserParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.User.Attachment()));
 
             
@@ -475,24 +476,28 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "anRemoveOwnAttachments\'))\r\n                                                build" +
 "Attachment(a, (a.AuthorId === $Attachments.attr(\'data-userid\')), quick);\r\n      " +
 "                                      else\r\n                                    " +
-"            buildAttachment(a, false, quick);\r\n                                 " +
-"       } else {\r\n                                            alert(\'Unable to ad" +
-"d attachment: \' + d.Result);\r\n                                        }\r\n       " +
-"                             },\r\n                                    error: func" +
-"tion (jqXHR, textStatus, errorThrown) {\r\n                                       " +
-" alert(\'Unable to add attachment: \' + textStatus);\r\n                            " +
-"        }\r\n                                });\r\n                            }\r\n " +
-"                           function buildAttachment(a, canRemove, quick) {\r\n    " +
-"                            var t = \'<a><span class=\"icon\"><img alt=\"Attachment " +
-"Thumbnail\" /></span><span class=\"comments\"></span><span class=\"author\"></span>\';" +
-"\r\n                                if (canRemove)\r\n                              " +
-"      t += \'<span class=\"remove fa fa-times-circle\"></span>\';\r\n                 " +
-"               t += \'<span class=\"timestamp\"></span></a>\';\r\n\r\n                  " +
-"              var e = $(t);\r\n\r\n                                e.attr(\'data-atta" +
-"chmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'href\', \'");
+"            buildAttachment(a, false, quick);\r\n\r\n                               " +
+"             if (attachmentUploader && attachmentUploader.onlineUploadCloseDialo" +
+"g) {\r\n                                                attachmentUploader.onlineU" +
+"ploadCloseDialog();\r\n                                            }\r\n            " +
+"                            } else {\r\n                                          " +
+"  alert(\'Unable to add attachment: \' + d.Result);\r\n                             " +
+"           }\r\n                                    },\r\n                          " +
+"          error: function (jqXHR, textStatus, errorThrown) {\r\n                  " +
+"                      alert(\'Unable to add attachment: \' + textStatus);\r\n       " +
+"                             }\r\n                                });\r\n           " +
+"                 }\r\n                            function buildAttachment(a, canR" +
+"emove, quick) {\r\n                                var t = \'<a><span class=\"icon\">" +
+"<img alt=\"Attachment Thumbnail\" /></span><span class=\"comments\"></span><span cla" +
+"ss=\"author\"></span>\';\r\n                                if (canRemove)\r\n         " +
+"                           t += \'<span class=\"remove fa fa-times-circle\"></span>" +
+"\';\r\n                                t += \'<span class=\"timestamp\"></span></a>\';\r" +
+"\n\r\n                                var e = $(t);\r\n\r\n                            " +
+"    e.attr(\'data-attachmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'hr" +
+"ef\', \'");
 
             
-            #line 96 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 101 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.User.AttachmentDownload()));
 
             
@@ -524,7 +529,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 119 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 124 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.User.AttachmentThumbnail()));
 
             
@@ -577,60 +582,60 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;\r\n\r\n");
 
             
-            #line 181 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 186 "..\..\Views\User\UserParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 181 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 186 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
             #line default
             #line hidden
 WriteLiteral("\r\n                            //#region Add Attachments\r\n                        " +
-"    var attachmentUploader = new document.Disco.AttachmentUploader($Attachments)" +
-";\r\n\r\n                            var $attachmentInput = $Attachments.find(\'.atta" +
-"chmentInput\');\r\n                            $attachmentInput.find(\'.online-uploa" +
-"d\').on(\'click\', function () {\r\n                                if ($(this).hasCl" +
-"ass(\'disabled\'))\r\n                                    alert(\'Disconnected from t" +
-"he Disco ICT Server, please refresh this page and try again\');\r\n                " +
-"                else\r\n                                    attachmentUploader.onl" +
-"ineUpload();\r\n                            });\r\n                            if (w" +
-"indow.location.protocol != \'https:\') {\r\n                                $attachm" +
-"entInput.find(\'.photo\')\r\n                                    .removeClass(\'enabl" +
-"ed\')\r\n                                    .addClass(\'disabled\')\r\n               " +
-"                     .attr(\'title\', \'Capture Image: this functionality is only a" +
-"vailable over a HTTPS connection\');\r\n                            }\r\n            " +
-"                $attachmentInput.find(\'.photo\').click(function () {\r\n           " +
-"                     if (!$(this).hasClass(\'enabled\'))\r\n                        " +
-"            alert(\'This functionality is only available over a HTTPS connection\'" +
-");\r\n                                else if ($(this).hasClass(\'disabled\'))\r\n    " +
-"                                alert(\'Disconnected from the Disco ICT Server, p" +
-"lease refresh this page and try again\');\r\n                                else\r\n" +
-"                                    attachmentUploader.uploadImage();\r\n         " +
-"                   });\r\n                            $attachmentInput.find(\'.uplo" +
-"ad\').click(function () {\r\n                                if ($(this).hasClass(\'" +
-"disabled\'))\r\n                                    alert(\'Disconnected from the Di" +
-"sco ICT Server, please refresh this page and try again\');\r\n                     " +
-"           else\r\n                                    attachmentUploader.uploadFi" +
-"les();\r\n                            });\r\n\r\n                            var resou" +
-"rcesTab;\r\n                            $(document).on(\'dragover\', function () {\r\n" +
-"                                if (!resourcesTab) {\r\n                          " +
-"          var tabs = $Attachments.closest(\'.ui-tabs\');\r\n                        " +
-"            resourcesTab = {\r\n                                        tabs: tabs" +
-",\r\n                                        resourcesIndex: tabs.children(\'ul.ui-" +
-"tabs-nav\').find(\'a[href=\"#UserDetailTab-Resources\"]\').closest(\'li\').index()\r\n   " +
-"                                 };\r\n                                }\r\n        " +
-"                        var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'ac" +
-"tive\');\r\n                                if (resourcesTab.resourcesIndex !== sel" +
-"ectedIndex)\r\n                                    resourcesTab.tabs.tabs(\'option\'" +
-", \'active\', resourcesTab.resourcesIndex);\r\n                            });\r\n    " +
-"                        //#endregion\r\n                            ");
+"    attachmentUploader = new document.Disco.AttachmentUploader($Attachments);\r\n\r" +
+"\n                            var $attachmentInput = $Attachments.find(\'.attachme" +
+"ntInput\');\r\n                            $attachmentInput.find(\'.online-upload\')." +
+"on(\'click\', function () {\r\n                                if ($(this).hasClass(" +
+"\'disabled\'))\r\n                                    alert(\'Disconnected from the D" +
+"isco ICT Server, please refresh this page and try again\');\r\n                    " +
+"            else\r\n                                    attachmentUploader.onlineU" +
+"pload();\r\n                            });\r\n                            if (windo" +
+"w.location.protocol != \'https:\') {\r\n                                $attachmentI" +
+"nput.find(\'.photo\')\r\n                                    .removeClass(\'enabled\')" +
+"\r\n                                    .addClass(\'disabled\')\r\n                   " +
+"                 .attr(\'title\', \'Capture Image: this functionality is only avail" +
+"able over a HTTPS connection\');\r\n                            }\r\n                " +
+"            $attachmentInput.find(\'.photo\').click(function () {\r\n               " +
+"                 if (!$(this).hasClass(\'enabled\'))\r\n                            " +
+"        alert(\'This functionality is only available over a HTTPS connection\');\r\n" +
+"                                else if ($(this).hasClass(\'disabled\'))\r\n        " +
+"                            alert(\'Disconnected from the Disco ICT Server, pleas" +
+"e refresh this page and try again\');\r\n                                else\r\n    " +
+"                                attachmentUploader.uploadImage();\r\n             " +
+"               });\r\n                            $attachmentInput.find(\'.upload\')" +
+".click(function () {\r\n                                if ($(this).hasClass(\'disa" +
+"bled\'))\r\n                                    alert(\'Disconnected from the Disco " +
+"ICT Server, please refresh this page and try again\');\r\n                         " +
+"       else\r\n                                    attachmentUploader.uploadFiles(" +
+");\r\n                            });\r\n\r\n                            var resources" +
+"Tab;\r\n                            $(document).on(\'dragover\', function () {\r\n    " +
+"                            if (!resourcesTab) {\r\n                              " +
+"      var tabs = $Attachments.closest(\'.ui-tabs\');\r\n                            " +
+"        resourcesTab = {\r\n                                        tabs: tabs,\r\n " +
+"                                       resourcesIndex: tabs.children(\'ul.ui-tabs" +
+"-nav\').find(\'a[href=\"#UserDetailTab-Resources\"]\').closest(\'li\').index()\r\n       " +
+"                             };\r\n                                }\r\n            " +
+"                    var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'active" +
+"\');\r\n                                if (resourcesTab.resourcesIndex !== selecte" +
+"dIndex)\r\n                                    resourcesTab.tabs.tabs(\'option\', \'a" +
+"ctive\', resourcesTab.resourcesIndex);\r\n                            });\r\n        " +
+"                    //#endregion\r\n                            ");
 
             
-            #line 228 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 233 "..\..\Views\User\UserParts\_Resources.cshtml"
                                    }
 
             
@@ -639,7 +644,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 229 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 234 "..\..\Views\User\UserParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -683,7 +688,7 @@ WriteLiteral("\r\n                            //#region Remove Attachments\r\n\r
 "");
 
             
-            #line 282 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 287 "..\..\Views\User\UserParts\_Resources.cshtml"
                                }
 
             
@@ -707,7 +712,7 @@ WriteLiteral(@"
         $('#UserDetailTabItems').append('<li><a href=""#UserDetailTab-Resources"" id=""UserDetailTab-ResourcesLink"">Attachments [");
 
             
-            #line 298 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 303 "..\..\Views\User\UserParts\_Resources.cshtml"
                                                                                                                           Write(Model.User.UserAttachments == null ? 0 : Model.User.UserAttachments.Count);
 
             
@@ -716,7 +721,7 @@ WriteLiteral(@"
 WriteLiteral("]</a></li>\');\r\n    </script>\r\n</div>\r\n");
 
             
-            #line 301 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 306 "..\..\Views\User\UserParts\_Resources.cshtml"
  if (canRemoveAnyAttachments || canRemoveOwnAttachments)
 {
 
@@ -738,7 +743,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n");
 
             
-            #line 308 "..\..\Views\User\UserParts\_Resources.cshtml"
+            #line 313 "..\..\Views\User\UserParts\_Resources.cshtml"
 }
             
             #line default

@@ -59,6 +59,7 @@
                             var $attachmentOutput = $Attachments.find('.attachmentOutput');
                             var $dialogRemoveAttachment = null;
                             let $attachmentDownloadHost = null;
+                            let attachmentUploader = null;
 
                             function onAttachmentAdded(id, quick) {
                                 var data = { id: id };
@@ -76,6 +77,10 @@
                                                 buildAttachment(a, (a.AuthorId === $Attachments.attr('data-userid')), quick);
                                             else
                                                 buildAttachment(a, false, quick);
+
+                                            if (attachmentUploader && attachmentUploader.onlineUploadCloseDialog) {
+                                                attachmentUploader.onlineUploadCloseDialog();
+                                            }
                                         } else {
                                             alert('Unable to add attachment: ' + d.Result);
                                         }
@@ -181,7 +186,7 @@
                         @if (canAddAttachments)
                         {<text>
                             //#region Add Attachments
-                            var attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
+                            attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
 
                             var $attachmentInput = $Attachments.find('.attachmentInput');
                             $attachmentInput.find('.online-upload').on('click', function () {

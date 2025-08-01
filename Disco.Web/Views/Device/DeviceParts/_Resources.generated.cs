@@ -452,6 +452,7 @@ WriteLiteral(@">
                             const $attachmentOutput = $Attachments.find('.attachmentOutput');
                             let $attachmentDownloadHost = null;
                             let $dialogRemoveAttachment = null;
+                            let attachmentUploader = null;
 
                             function onAttachmentAdded(id, quick) {
                                 var data = { id: id };
@@ -459,7 +460,7 @@ WriteLiteral(@">
                                     url: '");
 
             
-            #line 66 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 67 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.Device.Attachment()));
 
             
@@ -475,24 +476,28 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "anRemoveOwnAttachments\'))\r\n                                                build" +
 "Attachment(a, (a.AuthorId === $Attachments.attr(\'data-userid\')), quick);\r\n      " +
 "                                      else\r\n                                    " +
-"            buildAttachment(a, false, quick);\r\n                                 " +
-"       } else {\r\n                                            alert(\'Unable to ad" +
-"d attachment: \' + d.Result);\r\n                                        }\r\n       " +
-"                             },\r\n                                    error: func" +
-"tion (jqXHR, textStatus, errorThrown) {\r\n                                       " +
-" alert(\'Unable to add attachment: \' + textStatus);\r\n                            " +
-"        }\r\n                                });\r\n                            }\r\n\r" +
-"\n                            function buildAttachment(a, canRemove, quick) {\r\n  " +
-"                              var t = \'<a><span class=\"icon\"><img alt=\"Attachmen" +
-"t Thumbnail\" /></span><span class=\"comments\"></span><span class=\"author\"></span>" +
-"\';\r\n                                if (canRemove)\r\n                            " +
-"        t += \'<span class=\"remove fa fa-times-circle\"></span>\';\r\n               " +
-"                 t += \'<span class=\"timestamp\"></span></a>\';\r\n\r\n                " +
-"                var e = $(t);\r\n\r\n                                e.attr(\'data-at" +
-"tachmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'href\', \'");
+"            buildAttachment(a, false, quick);\r\n\r\n                               " +
+"             if (attachmentUploader && attachmentUploader.onlineUploadCloseDialo" +
+"g) {\r\n                                                attachmentUploader.onlineU" +
+"ploadCloseDialog();\r\n                                            }\r\n            " +
+"                            } else {\r\n                                          " +
+"  alert(\'Unable to add attachment: \' + d.Result);\r\n                             " +
+"           }\r\n                                    },\r\n                          " +
+"          error: function (jqXHR, textStatus, errorThrown) {\r\n                  " +
+"                      alert(\'Unable to add attachment: \' + textStatus);\r\n       " +
+"                             }\r\n                                });\r\n           " +
+"                 }\r\n\r\n                            function buildAttachment(a, ca" +
+"nRemove, quick) {\r\n                                var t = \'<a><span class=\"icon" +
+"\"><img alt=\"Attachment Thumbnail\" /></span><span class=\"comments\"></span><span c" +
+"lass=\"author\"></span>\';\r\n                                if (canRemove)\r\n       " +
+"                             t += \'<span class=\"remove fa fa-times-circle\"></spa" +
+"n>\';\r\n                                t += \'<span class=\"timestamp\"></span></a>\'" +
+";\r\n\r\n                                var e = $(t);\r\n\r\n                          " +
+"      e.attr(\'data-attachmentid\', a.Id).attr(\'data-mimetype\', a.MimeType).attr(\'" +
+"href\', \'");
 
             
-            #line 97 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 102 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.Device.AttachmentDownload()));
 
             
@@ -524,7 +529,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 120 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 125 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.Device.AttachmentThumbnail()));
 
             
@@ -577,60 +582,60 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 ".onAttachmentRemoved = onAttachmentRemoved;\r\n\r\n");
 
             
-            #line 182 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 187 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 182 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 187 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
             #line default
             #line hidden
 WriteLiteral("\r\n                            //#region Add Attachments\r\n                        " +
-"    var attachmentUploader = new document.Disco.AttachmentUploader($Attachments)" +
-";\r\n\r\n                            var $attachmentInput = $Attachments.find(\'.atta" +
-"chmentInput\');\r\n                            $attachmentInput.find(\'.online-uploa" +
-"d\').on(\'click\', function () {\r\n                                if ($(this).hasCl" +
-"ass(\'disabled\'))\r\n                                    alert(\'Disconnected from t" +
-"he Disco ICT Server, please refresh this page and try again\');\r\n                " +
-"                else\r\n                                    attachmentUploader.onl" +
-"ineUpload();\r\n                            });\r\n                            if (w" +
-"indow.location.protocol != \'https:\') {\r\n                                $attachm" +
-"entInput.find(\'.photo\')\r\n                                    .removeClass(\'enabl" +
-"ed\')\r\n                                    .addClass(\'disabled\')\r\n               " +
-"                     .attr(\'title\', \'Capture Image: this functionality is only a" +
-"vailable over a HTTPS connection\');\r\n                            }\r\n            " +
-"                $attachmentInput.find(\'.photo\').click(function () {\r\n           " +
-"                     if (!$(this).hasClass(\'enabled\'))\r\n                        " +
-"            alert(\'This functionality is only available over a HTTPS connection\'" +
-");\r\n                                else if ($(this).hasClass(\'disabled\'))\r\n    " +
-"                                alert(\'Disconnected from the Disco ICT Server, p" +
-"lease refresh this page and try again\');\r\n                                else\r\n" +
-"                                    attachmentUploader.uploadImage();\r\n         " +
-"                   });\r\n                            $attachmentInput.find(\'.uplo" +
-"ad\').click(function () {\r\n                                if ($(this).hasClass(\'" +
-"disabled\'))\r\n                                    alert(\'Disconnected from the Di" +
-"sco ICT Server, please refresh this page and try again\');\r\n                     " +
-"           else\r\n                                    attachmentUploader.uploadFi" +
-"les();\r\n                            });\r\n\r\n                            var resou" +
-"rcesTab;\r\n                            $(document).on(\'dragover\', function () {\r\n" +
-"                                if (!resourcesTab) {\r\n                          " +
-"          var tabs = $Attachments.closest(\'.ui-tabs\');\r\n                        " +
-"            resourcesTab = {\r\n                                        tabs: tabs" +
-",\r\n                                        resourcesIndex: tabs.children(\'ul.ui-" +
-"tabs-nav\').find(\'a[href=\"#DeviceDetailTab-Resources\"]\').closest(\'li\').index()\r\n " +
-"                                   };\r\n                                }\r\n      " +
-"                          var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'" +
-"active\');\r\n                                if (resourcesTab.resourcesIndex !== s" +
-"electedIndex)\r\n                                    resourcesTab.tabs.tabs(\'optio" +
-"n\', \'active\', resourcesTab.resourcesIndex);\r\n                            });\r\n  " +
-"                          //#endregion\r\n                            ");
+"    attachmentUploader = new document.Disco.AttachmentUploader($Attachments);\r\n\r" +
+"\n                            var $attachmentInput = $Attachments.find(\'.attachme" +
+"ntInput\');\r\n                            $attachmentInput.find(\'.online-upload\')." +
+"on(\'click\', function () {\r\n                                if ($(this).hasClass(" +
+"\'disabled\'))\r\n                                    alert(\'Disconnected from the D" +
+"isco ICT Server, please refresh this page and try again\');\r\n                    " +
+"            else\r\n                                    attachmentUploader.onlineU" +
+"pload();\r\n                            });\r\n                            if (windo" +
+"w.location.protocol != \'https:\') {\r\n                                $attachmentI" +
+"nput.find(\'.photo\')\r\n                                    .removeClass(\'enabled\')" +
+"\r\n                                    .addClass(\'disabled\')\r\n                   " +
+"                 .attr(\'title\', \'Capture Image: this functionality is only avail" +
+"able over a HTTPS connection\');\r\n                            }\r\n                " +
+"            $attachmentInput.find(\'.photo\').click(function () {\r\n               " +
+"                 if (!$(this).hasClass(\'enabled\'))\r\n                            " +
+"        alert(\'This functionality is only available over a HTTPS connection\');\r\n" +
+"                                else if ($(this).hasClass(\'disabled\'))\r\n        " +
+"                            alert(\'Disconnected from the Disco ICT Server, pleas" +
+"e refresh this page and try again\');\r\n                                else\r\n    " +
+"                                attachmentUploader.uploadImage();\r\n             " +
+"               });\r\n                            $attachmentInput.find(\'.upload\')" +
+".click(function () {\r\n                                if ($(this).hasClass(\'disa" +
+"bled\'))\r\n                                    alert(\'Disconnected from the Disco " +
+"ICT Server, please refresh this page and try again\');\r\n                         " +
+"       else\r\n                                    attachmentUploader.uploadFiles(" +
+");\r\n                            });\r\n\r\n                            var resources" +
+"Tab;\r\n                            $(document).on(\'dragover\', function () {\r\n    " +
+"                            if (!resourcesTab) {\r\n                              " +
+"      var tabs = $Attachments.closest(\'.ui-tabs\');\r\n                            " +
+"        resourcesTab = {\r\n                                        tabs: tabs,\r\n " +
+"                                       resourcesIndex: tabs.children(\'ul.ui-tabs" +
+"-nav\').find(\'a[href=\"#DeviceDetailTab-Resources\"]\').closest(\'li\').index()\r\n     " +
+"                               };\r\n                                }\r\n          " +
+"                      var selectedIndex = resourcesTab.tabs.tabs(\'option\', \'acti" +
+"ve\');\r\n                                if (resourcesTab.resourcesIndex !== selec" +
+"tedIndex)\r\n                                    resourcesTab.tabs.tabs(\'option\', " +
+"\'active\', resourcesTab.resourcesIndex);\r\n                            });\r\n      " +
+"                      //#endregion\r\n                            ");
 
             
-            #line 229 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 234 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    }
 
             
@@ -639,7 +644,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 230 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -682,7 +687,7 @@ WriteLiteral("\r\n                            //#region Remove Attachments\r\n  
 "       }\r\n                            //#endregion\r\n                        ");
 
             
-            #line 281 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 286 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -719,7 +724,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 302 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 307 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

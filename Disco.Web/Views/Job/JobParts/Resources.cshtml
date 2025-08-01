@@ -298,11 +298,12 @@
             //#region Attachments
             var $Attachments = $('#Attachments');
             var $attachmentOutput = $Attachments.find('.attachmentOutput');
+            let attachmentUploader = null;
 
             @if (canAddAttachments)
             {<text>
             //#region Add Attachments
-            var attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
+            attachmentUploader = new document.Disco.AttachmentUploader($Attachments);
 
             var $attachmentInput = $Attachments.find('.attachmentInput');
             $attachmentInput.find('.online-upload').on('click', function () {
@@ -424,6 +425,10 @@
                                 buildAttachment(a, (a.AuthorId === $Attachments.attr('data-userid')), quick);
                             else
                                 buildAttachment(a, false, quick);
+
+                            if (attachmentUploader && attachmentUploader.onlineUploadCloseDialog) {
+                                attachmentUploader.onlineUploadCloseDialog();
+                            }
                         } else {
                             alert('Unable to add attachment: ' + d.Result);
                         }

@@ -218,12 +218,12 @@
         }
         self.onlineUploadDisplay = function () {
             if (!!window.QRCode && !!self.onlineUploadSession) {
-                var dialog = $('<div>')
+                const dialog = $('<div>')
                     .attr({
                         title: 'Online Upload',
                         'class': 'dialog Disco-AttachmentUpload-OnlineUploadDialog'
                     });
-                var qrCode = QRCode({
+                const qrCode = QRCode({
                     msg: self.onlineUploadSession.SessionUri,
                     ecl: 'L'
                 });
@@ -234,10 +234,14 @@
                 $('<div class="info-box"><p class="fa-p"><i class="fa fa-info-circle information"></i> Scan the QR Code or send the link to upload files</p></div>')
                     .appendTo(dialog);
 
-                var expiration = new Date(self.onlineUploadSession.Expiration);
-                var sessionExpiration = setTimeout(function () {
+                const expiration = new Date(self.onlineUploadSession.Expiration);
+                const sessionExpiration = setTimeout(function () {
                     dialog.dialog('close');
                 }, expiration.getTime() - new Date().getTime());
+
+                self.onlineUploadCloseDialog = function () {
+                    dialog.dialog('close');
+                };
 
                 dialog.dialog({
                     resizable: false,
@@ -248,6 +252,7 @@
                         if (!!sessionExpiration) {
                             window.clearTimeout(sessionExpiration);
                         }
+                        self.onlineUploadCloseDialog = null;
                         dialog.dialog('destroy').remove();
                     }
                 });
