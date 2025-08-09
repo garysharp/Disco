@@ -248,10 +248,10 @@
                 });
             }
             function addComment(c, quick, canRemove) {
-                let t = '<div><span class="author" />';
+                let t = '<div><span class="author"></span>';
                 if (canRemove)
-                    t += '<span class="remove fa fa-times-circle" />';
-                t += '<span class="timestamp" /><div class="comment" /></div>';
+                    t += '<span class="remove fa fa-times-circle"></span>';
+                t += '<span class="timestamp"></span><div class="comment"></div></div>';
 
                 const e = $(t);
                 e.attr('data-logid', c.Id);

@@ -3,41 +3,46 @@
 
 // Default Disco Fancytree Styles
 .fancytree-container {
-        border: none;
-    }
+    border: none;
+}
 
-    span.fancytree-node {
-        padding: 1px;
-        border: none;
-    }
+span.fancytree-node {
+    padding: 1px;
+    border: none;
+    box-sizing: border-box;
+}
 
-    span.fancytree-node > span.fancytree-icon {
-        background: none;
-        display: inline-block;
-        font-family: FontAwesome;
-        font-size: 1.2em;
-        width: 14px;
-    }
-    span.fancytree-ico-ef > span.fancytree-icon:before{
-        color: @StatusClosed;
-        font-size: 1em;
-        content: "\f07c";
-    }
-    span.fancytree-ico-cf > span.fancytree-icon:before{
-        color: @StatusClosed;
-        font-size: 1em;
-        content: "\f07b";
-    }
-    span.fancytree-ico-c > span.fancytree-icon:before{
-        color: @StatusRemove;
-        content: "\f023";
-    }
-    span.fancytree-ico-c.fancytree-selected > span.fancytree-icon:before{
-        color: @StatusSuccess;
-        content: "\f09c";
-    }
+span.fancytree-node > span.fancytree-icon {
+    background: none;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-size: 1.2em;
+    width: 14px;
+}
 
-    span.fancytree-node.fancytree-selected {
-        font-style: normal;
-        background: none;
-    }
+span.fancytree-ico-ef > span.fancytree-icon:before {
+    color: @StatusClosed;
+    font-size: 1em;
+    content: "\f07c";
+}
+
+span.fancytree-ico-cf > span.fancytree-icon:before {
+    color: @StatusClosed;
+    font-size: 1em;
+    content: "\f07b";
+}
+
+span.fancytree-ico-c > span.fancytree-icon:before {
+    color: @StatusRemove;
+    content: "\f023";
+}
+
+span.fancytree-ico-c.fancytree-selected > span.fancytree-icon:before {
+    color: @StatusSuccess;
+    content: "\f09c";
+}
+
+span.fancytree-node.fancytree-selected {
+    font-style: normal;
+    background: none;
+}

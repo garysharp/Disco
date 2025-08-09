@@ -51,11 +51,11 @@
     <Reference Include="MarkdownSharp">
       <HintPath>..\packages\MarkdownSharp.1.13.0.0\lib\35\MarkdownSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.1.2\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.4.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.1.2\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.4.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.4.3\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -1553,6 +1553,8 @@
     <Content Include="ClientSource\Scripts\Core\disco.dataTables.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.moment.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <None Include="ClientSource\Scripts\Core\jquery-3.7.1.js" />
+    <Content Include="ClientSource\Scripts\Core\jquery-ui.js" />
     <Content Include="ClientSource\Scripts\Core\jquery.dataTables.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\jquery.watermark.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.uicore.js" Condition=" '$(Configuration)' == 'Debug' " />
@@ -1612,6 +1614,7 @@
     <Content Include="ClientSource\Scripts\Modules\jQuery-Fancytree\jquery.fancytree-all.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jquery.numberformatter.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQuery-NumberFormatter\jshashtable-2.1.js" Condition=" '$(Configuration)' == 'Debug' " />
+    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-2.4.3.js" />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-DynaTree\jquery.dynatree.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\jQueryUI-TimePicker\jquery-ui-timepicker-addon.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Modules\Shadowbox\shadowbox.js" Condition=" '$(Configuration)' == 'Debug' " />
@@ -1754,6 +1757,13 @@
     <Content Include="ClientSource\Style\Images\AttachmentTypes\txt.png" />
     <Content Include="ClientSource\Style\Images\AttachmentTypes\video.png" />
     <Content Include="ClientSource\Style\Images\UnknownPhoto.png" />
+    <None Include="ClientSource\Style\jQueryUI\jquery-ui.less" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_444444_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_555555_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_777620_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_777777_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_cc0000_256x240.png" />
+    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_ffffff_256x240.png" />
     <Content Include="ClientSource\Style\Shadowbox.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1925,33 +1935,12 @@
     <Content Include="ClientSource\Style\jQueryUI\dynatree\ui.dynatree.min.css">
       <DependentUpon>ui.dynatree.css</DependentUpon>
     </Content>
-    <None Include="ClientSource\Style\jQueryUI\images\animated-overlay.gif" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_75_dadada_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_222222_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_2e83ff_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_454545_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_888888_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\images\ui-icons_cd0a0a_256x240.png" />
-    <None Include="ClientSource\Style\jQueryUI\jquery-ui.less" />
     <None Include="ClientSource\Style\normalize.less" />
     <None Include="ClientSource\Style\normalize.css">
       <DependentUpon>normalize.less</DependentUpon>
     </None>
     <None Include="ClientSource\Style\normalize.min.css">
       <DependentUpon>normalize.less</DependentUpon>
-    </None>
-    <None Include="ClientSource\Style\jQueryUI\jquery-ui.css">
-      <DependentUpon>jquery-ui.less</DependentUpon>
-    </None>
-    <None Include="ClientSource\Style\jQueryUI\jquery-ui.min.css">
-      <DependentUpon>jquery-ui.less</DependentUpon>
     </None>
     <None Include="ClientSource\Style\Public\HeldDevices.css">
       <DependentUpon>HeldDevices.less</DependentUpon>
@@ -2074,7 +2063,6 @@
     </None>
     <None Include="Properties\PublishProfiles\SRV-WEB03 Production.pubxml" />
     <None Include="ClientSource\Scripts\Modules\Highcharts\highcharts.src.js" />
-    <None Include="ClientSource\Scripts\Core\jquery-2.1.1.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\jquery.tinymce.min.js" />
     <None Include="ClientSource\Scripts\Modules\tinymce\license.txt" />
     <None Include="ClientSource\Scripts\Modules\tinymce\skins\lightgray\content.inline.min.css" />
@@ -2621,8 +2609,6 @@
     <None Include="ClientSource\Scripts\Core\jquery.validate.unobtrusive.js" />
     <None Include="ClientSource\Scripts\Modules\Knockout\knockout-3.1.0.js" />
     <None Include="ClientSource\Scripts\Core\modernizr-2.7.2.js" />
-    <None Include="ClientSource\Scripts\Core\jquery-ui-1.10.4.js" />
-    <None Include="ClientSource\Scripts\Modules\jQuery-SignalR\jquery.signalR-2.1.2.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

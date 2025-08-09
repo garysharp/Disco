@@ -336,21 +336,21 @@ WriteLiteral("    </div>\r\n</div>\r\n<script>\r\n    if (!document.DiscoFunctio
 "unction () {\r\n                const $this = $(this);\r\n                $this.find" +
 "(\'.timestamp\').livestamp(\'destroy\');\r\n                $this.remove();\r\n         " +
 "   });\r\n        }\r\n        function renderComment(c, quick, canRemove) {\r\n      " +
-"      let t = \'<div><span class=\"author\" />\';\r\n            if (canRemove)\r\n     " +
-"           t += \'<span class=\"remove fa fa-times-circle\" />\';\r\n            t += " +
-"\'<span class=\"timestamp\" /><div class=\"comment\" /></div>\';\r\n\r\n            const " +
-"e = $(t);\r\n            e.attr(\'data-commentid\', c.Id);\r\n            e.find(\'.aut" +
-"hor\').text(c.Author);\r\n            e.find(\'.timestamp\').text(c.TimestampFull).at" +
-"tr(\'title\', c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r\n            e.find" +
-"(\'.comment\').html(c.HtmlComments);\r\n\r\n            $commentOutput.append(e);\r\n\r\n " +
-"           if (!quick) {\r\n                e.animate({ backgroundColor: \'#ffff99\'" +
-" }, 500, function () {\r\n                    e.animate({ backgroundColor: \'#fafaf" +
-"a\' }, 500, function () {\r\n                        e.css(\'background-color\', \'\');" +
-"\r\n                    });\r\n                });\r\n                $commentOutput.a" +
-"nimate({ scrollTop: $commentOutput[0].scrollHeight }, 250)\r\n            }\r\n     " +
-"   }\r\n\r\n        document.DiscoFunctions.onCommentAdded = onCommentAdded;\r\n      " +
-"  document.DiscoFunctions.onCommentRemoved = onCommentRemoved;\r\n    });\r\n</scrip" +
-"t>\r\n");
+"      let t = \'<div><span class=\"author\"></span>\';\r\n            if (canRemove)\r\n" +
+"                t += \'<span class=\"remove fa fa-times-circle\"></span>\';\r\n       " +
+"     t += \'<span class=\"timestamp\"></span><div class=\"comment\"></div></div>\';\r\n\r" +
+"\n            const e = $(t);\r\n            e.attr(\'data-commentid\', c.Id);\r\n     " +
+"       e.find(\'.author\').text(c.Author);\r\n            e.find(\'.timestamp\').text(" +
+"c.TimestampFull).attr(\'title\', c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r" +
+"\n            e.find(\'.comment\').html(c.HtmlComments);\r\n\r\n            $commentOut" +
+"put.append(e);\r\n\r\n            if (!quick) {\r\n                e.animate({ backgro" +
+"undColor: \'#ffff99\' }, 500, function () {\r\n                    e.animate({ backg" +
+"roundColor: \'#fafafa\' }, 500, function () {\r\n                        e.css(\'back" +
+"ground-color\', \'\');\r\n                    });\r\n                });\r\n             " +
+"   $commentOutput.animate({ scrollTop: $commentOutput[0].scrollHeight }, 250)\r\n " +
+"           }\r\n        }\r\n\r\n        document.DiscoFunctions.onCommentAdded = onCo" +
+"mmentAdded;\r\n        document.DiscoFunctions.onCommentRemoved = onCommentRemoved" +
+";\r\n    });\r\n</script>\r\n");
 
             
             #line 106 "..\..\Views\Device\DeviceParts\_Comments.cshtml"

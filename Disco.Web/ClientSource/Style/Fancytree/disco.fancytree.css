@@ -475,6 +475,7 @@ span.fancytree-drop-target.fancytree-drop-reject {
 span.fancytree-node {
   padding: 1px;
   border: none;
+  box-sizing: border-box;
 }
 span.fancytree-node > span.fancytree-icon {
   background: none;

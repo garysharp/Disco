@@ -95,16 +95,23 @@ DiscoExpressionEditor.prototype = {
         this.expressionHtml = this.parseExpression(this.expression, this.expressionException);
         this.hostContainer.html(this.expressionHtml);
     },
-    validateExpression: function () {
+    validateExpression: async function () {
         var that = this;
         var e = that.getExpression();
-        $.getJSON(that.validateUrl, { Expression: e }, function (response, result) {
-            that.setException(response);
-            that.renderExpression();
 
-            if (that.expressionValidated)
-                that.expressionValidated(response.ExpressionValid, response);
-        })
+        const body = new FormData();
+        body.append('Expression', e);
+        body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+        const response = await fetch(that.validateUrl, {
+            method: 'POST',
+            body: body
+        });
+        const result = await response.json();
+        that.setException(result);
+        that.renderExpression();
+
+        if (that.expressionValidated)
+            that.expressionValidated(result.ExpressionValid, result);
     }
 }
 String.prototype.trim = function () {

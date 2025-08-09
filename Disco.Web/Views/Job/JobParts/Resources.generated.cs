@@ -933,24 +933,24 @@ WriteLiteral("\r\n            async function loadLiveComment(id) {\r\n\r\n      
 "300).queue(function () {\r\n                    const $this = $(this);\r\n          " +
 "          $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n                    $t" +
 "his.remove();\r\n                });\r\n            }\r\n            function addComme" +
-"nt(c, quick, canRemove) {\r\n                let t = \'<div><span class=\"author\" />" +
-"\';\r\n                if (canRemove)\r\n                    t += \'<span class=\"remov" +
-"e fa fa-times-circle\" />\';\r\n                t += \'<span class=\"timestamp\" /><div" +
-" class=\"comment\" /></div>\';\r\n\r\n                const e = $(t);\r\n                " +
-"e.attr(\'data-logid\', c.Id);\r\n                e.find(\'.author\').text(c.Author);\r\n" +
-"                e.find(\'.timestamp\').text(c.TimestampFull).attr(\'title\', c.Times" +
-"tampFull).livestamp(c.TimestampUnixEpoc);\r\n                e.find(\'.comment\').ht" +
-"ml(c.HtmlComments);\r\n\r\n                $CommentOutput.append(e);\r\n\r\n            " +
-"    if (!quick) {\r\n                    e.animate({ backgroundColor: \'#ffff99\' }," +
-" 500, function () {\r\n                        e.animate({ backgroundColor: \'#fafa" +
-"fa\' }, 500, function () {\r\n                            e.css(\'background-color\'," +
-" \'\');\r\n                        });\r\n                    });\r\n                   " +
-" $CommentOutput.animate({ scrollTop: $CommentOutput[0].scrollHeight }, 250)\r\n   " +
-"             }\r\n            }\r\n\r\n            // Add Globally Available Functions" +
-"\r\n            document.DiscoFunctions.liveLoadComment = function (id) {\r\n       " +
-"         loadLiveComment(id);\r\n            };\r\n            document.DiscoFunctio" +
-"ns.liveRemoveComment = liveRemoveComment;\r\n            //#endregion\r\n        });" +
-"\r\n    </script>\r\n");
+"nt(c, quick, canRemove) {\r\n                let t = \'<div><span class=\"author\"></" +
+"span>\';\r\n                if (canRemove)\r\n                    t += \'<span class=\"" +
+"remove fa fa-times-circle\"></span>\';\r\n                t += \'<span class=\"timesta" +
+"mp\"></span><div class=\"comment\"></div></div>\';\r\n\r\n                const e = $(t)" +
+";\r\n                e.attr(\'data-logid\', c.Id);\r\n                e.find(\'.author\'" +
+").text(c.Author);\r\n                e.find(\'.timestamp\').text(c.TimestampFull).at" +
+"tr(\'title\', c.TimestampFull).livestamp(c.TimestampUnixEpoc);\r\n                e." +
+"find(\'.comment\').html(c.HtmlComments);\r\n\r\n                $CommentOutput.append(" +
+"e);\r\n\r\n                if (!quick) {\r\n                    e.animate({ background" +
+"Color: \'#ffff99\' }, 500, function () {\r\n                        e.animate({ back" +
+"groundColor: \'#fafafa\' }, 500, function () {\r\n                            e.css(" +
+"\'background-color\', \'\');\r\n                        });\r\n                    });\r\n" +
+"                    $CommentOutput.animate({ scrollTop: $CommentOutput[0].scroll" +
+"Height }, 250)\r\n                }\r\n            }\r\n\r\n            // Add Globally " +
+"Available Functions\r\n            document.DiscoFunctions.liveLoadComment = funct" +
+"ion (id) {\r\n                loadLiveComment(id);\r\n            };\r\n            do" +
+"cument.DiscoFunctions.liveRemoveComment = liveRemoveComment;\r\n            //#end" +
+"region\r\n        });\r\n    </script>\r\n");
 
             
             #line 282 "..\..\Views\Job\JobParts\Resources.cshtml"

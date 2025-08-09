@@ -4,10 +4,6 @@
     "inputFile": "ClientSource/Style/Fancytree/disco.fancytree.less"
   },
   {
-    "outputFile": "ClientSource/Style/jQueryUI/jquery-ui.css",
-    "inputFile": "ClientSource/Style/jQueryUI/jquery-ui.less"
-  },
-  {
     "outputFile": "ClientSource/Style/Public/HeldDevices.css",
     "inputFile": "ClientSource/Style/Public/HeldDevices.less"
   },

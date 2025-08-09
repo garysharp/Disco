@@ -3,11 +3,11 @@
     "outputFileName": "ClientSource/Scripts/Core.js",
     "inputFiles": [
       "ClientSource/Scripts/Core/modernizr-2.7.2.js",
-      "ClientSource/Scripts/Core/jquery-2.1.1.js",
+      "ClientSource/Scripts/Core/jquery-3.7.1.js",
       "ClientSource/Scripts/Core/jquery.validate.js",
       "ClientSource/Scripts/Core/jquery.validate.unobtrusive.js",
       "ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js",
-      "ClientSource/Scripts/Core/jquery-ui-1.10.4.js",
+      "ClientSource/Scripts/Core/jquery-ui.js",
       "ClientSource/Scripts/Core/jquery.watermark.js",
       "ClientSource/Scripts/Core/jquery.dataTables.js",
       "ClientSource/Scripts/Core/moment-with-locales.js",
@@ -99,7 +99,7 @@
   {
     "outputFileName": "ClientSource/Scripts/Modules/jQuery-SignalR.js",
     "inputFiles": [
-      "ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.2.js",
+      "ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.4.3.js",
       "ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"
     ]
   },
