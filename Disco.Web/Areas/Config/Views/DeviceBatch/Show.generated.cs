@@ -2346,46 +2346,34 @@ WriteLiteral(@">
             
             #line default
             #line hidden
-WriteLiteral("\' };\r\n\r\n                            $.connection.hub.reconnecting(function () {\r\n" +
-"                                $Attachments.find(\'span.action.enabled\').addClas" +
-"s(\'disabled\');\r\n                            });\r\n                            $.c" +
-"onnection.hub.reconnected(function () {\r\n                                $Attach" +
-"ments.find(\'span.action.enabled\').removeClass(\'disabled\');\r\n                    " +
-"        });\r\n                            $.connection.hub.error(function (error)" +
-" {\r\n                                console.log(\'Server connection error: \' + er" +
-"ror);\r\n                            });\r\n                            $.connection" +
-".hub.disconnected(function () {\r\n                                // Disable UI\r\n" +
-"                                $Attachments.find(\'span.action.enabled\').addClas" +
-"s(\'disabled\');\r\n\r\n                                // Show Dialog Message\r\n      " +
-"                          if ($(\'.disconnected-dialog\').length == 0) {\r\n        " +
-"                            $(\'<div>\')\r\n                                        " +
-".addClass(\'dialog disconnected-dialog\')\r\n                                       " +
-" .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa fa-wifi fa-stack-1x\"></i><" +
-"i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disconnected from the Disco ICT" +
-" Server</h3><div>This page is not receiving live updates. Please ensure you are " +
-"connected to the server, then refresh this page to enable features.</div>\')\r\n   " +
-"                                     .dialog({\r\n                                " +
-"            resizable: false,\r\n                                            title" +
-": \'Disconnected\',\r\n                                            width: 400,\r\n    " +
-"                                        modal: true,\r\n                          " +
-"                  buttons: {\r\n                                                \'R" +
-"efresh Now\': function () {\r\n                                                    " +
-"$(this).dialog(\'option\', \'buttons\', null);\r\n                                    " +
-"                window.location.reload(true);\r\n                                 " +
-"               },\r\n                                                \'Close\': func" +
-"tion () {\r\n                                                    $(this).dialog(\'d" +
-"estroy\');\r\n                                                }\r\n                  " +
-"                          }\r\n                                        });\r\n      " +
-"                          }\r\n                            });\r\n\r\n                " +
-"            // Start Connection\r\n                            $.connection.hub.st" +
-"art(function () {\r\n                                $Attachments.find(\'span.actio" +
-"n.enabled\').removeClass(\'disabled\');\r\n                            });\r\n\r\n       " +
-"                     function onAddAttachment(id, quick) {\r\n                    " +
-"            var data = { id: id };\r\n                                $.ajax({\r\n  " +
-"                                  url: \'");
+WriteLiteral(@"' };
+
+                            $.connection.hub.reconnecting(function () {
+                                $Attachments.find('span.action.enabled').addClass('disabled');
+                            });
+                            $.connection.hub.reconnected(function () {
+                                $Attachments.find('span.action.enabled').removeClass('disabled');
+                            });
+                            $.connection.hub.error(function (error) {
+                                console.log('Server connection error: ' + error);
+                            });
+                            $.connection.hub.disconnected(function () {
+                                // Disable UI
+                                $Attachments.find('span.action.enabled').addClass('disabled');
+                            });
+
+                            // Start Connection
+                            $.connection.hub.start(function () {
+                                $Attachments.find('span.action.enabled').removeClass('disabled');
+                            });
+
+                            function onAddAttachment(id, quick) {
+                                var data = { id: id };
+                                $.ajax({
+                                    url: '");
 
             
-            #line 752 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 730 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                      Write(Url.Action(MVC.API.DeviceBatch.Attachment()));
 
             
@@ -2400,13 +2388,13 @@ WriteLiteral(@"',
 ");
 
             
-            #line 758 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 736 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 758 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 736 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                          if (canConfig)
                                         {
 
@@ -2420,7 +2408,7 @@ WriteLiteral("buildAttachment(a, true, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 761 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 739 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                         }
                                         else
                                         {
@@ -2435,7 +2423,7 @@ WriteLiteral("buildAttachment(a, false, quick);");
 WriteLiteral("\r\n");
 
             
-            #line 765 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 743 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                         }
 
             
@@ -2462,7 +2450,7 @@ WriteLiteral(@"                                        } else {
                                 e.attr('data-attachmentid', a.Id).attr('data-mimetype', a.MimeType).attr('href', '");
 
             
-            #line 784 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 762 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                               Write(Url.Action(MVC.API.DeviceBatch.AttachmentDownload()));
 
             
@@ -2493,7 +2481,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 806 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 784 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                      Write(Url.Action(MVC.API.DeviceBatch.AttachmentThumbnail()));
 
             
@@ -2539,13 +2527,13 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "                     }\r\n\r\n");
 
             
-            #line 858 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 836 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 858 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 836 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                          if (canConfig)
                         {
             
@@ -2608,7 +2596,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 "       ");
 
             
-            #line 930 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 908 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                }
 
             
@@ -2631,13 +2619,13 @@ WriteLiteral(@"
 ");
 
             
-            #line 945 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 923 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 945 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 923 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
          if (hideAdvanced)
         {
 
@@ -2671,7 +2659,7 @@ WriteLiteral(@">Show Advanced Options</button>
 ");
 
             
-            #line 961 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 939 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
         }
 
             
@@ -2687,7 +2675,7 @@ WriteLiteral(">\r\n            <th>\r\n                Linked Groups:\r\n       
 WriteLiteral("                    ");
 
             
-            #line 968 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 946 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -2705,7 +2693,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                    ");
 
             
-            #line 976 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 954 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                {
                    CanConfigure = canConfig,
@@ -2721,13 +2709,13 @@ WriteLiteral("                    ");
 WriteLiteral("\r\n");
 
             
-            #line 984 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 962 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 984 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 962 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                      if (canConfig)
                     {
                         
@@ -2735,14 +2723,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 986 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 964 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                    Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared));
 
             
             #line default
             #line hidden
             
-            #line 986 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 964 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                 
                     }
 
@@ -2752,7 +2740,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>\r\n");
 
             
-            #line 993 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 971 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views._DeviceGroupDocumentBulkGenerate, Model));
 
             
@@ -2765,13 +2753,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 995 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 973 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 995 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 973 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.CanDecommission)
     {
 
@@ -2797,13 +2785,13 @@ WriteLiteral(" title=\"Batch Device Decommission\"");
 WriteLiteral(">\r\n");
 
             
-            #line 999 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 977 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 999 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 977 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
              using (Html.BeginForm(MVC.API.Device.DeviceBatchDecommission(Model.DeviceBatch.Id)))
             {
                 
@@ -2811,14 +2799,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1001 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 979 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1001 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 979 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                         
 
             
@@ -2843,13 +2831,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1007 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 985 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1007 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 985 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                          foreach (DecommissionReasons decommissionReason in Enum.GetValues(typeof(DecommissionReasons)).Cast<DecommissionReasons>().OrderBy(r => r.ToString()))
                         {
 
@@ -2860,33 +2848,33 @@ WriteLiteral("                            <li>\r\n                              
 
 WriteLiteral(" type=\"radio\"");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 53759), Tuple.Create("\"", 53829)
-, Tuple.Create(Tuple.Create("", 53764), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 53764), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 52146), Tuple.Create("\"", 52216)
+, Tuple.Create(Tuple.Create("", 52151), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 52151), true)
             
-            #line 1010 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-               , Tuple.Create(Tuple.Create("", 53803), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 988 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+               , Tuple.Create(Tuple.Create("", 52190), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 53803), false)
+, 52190), false)
 );
 
 WriteLiteral("\r\n                                       name=\"decommissionReason\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 53896), Tuple.Create("\"", 53930)
+WriteAttribute("value", Tuple.Create(" value=\"", 52283), Tuple.Create("\"", 52317)
             
-            #line 1011 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 53904), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 989 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 52291), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 53904), false)
+, 52291), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 1011 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 989 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                 Write((decommissionReason == DecommissionReasons.EndOfLife) ? "checked=\"checked\"" : string.Empty);
 
             
@@ -2894,21 +2882,21 @@ WriteLiteral(" ");
             #line hidden
 WriteLiteral(" />\r\n                                <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 54070), Tuple.Create("\"", 54141)
-, Tuple.Create(Tuple.Create("", 54076), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 54076), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 52457), Tuple.Create("\"", 52528)
+, Tuple.Create(Tuple.Create("", 52463), Tuple.Create("DeviceBatch_Decommission_Dialog_Reason_", 52463), true)
             
-            #line 1012 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
-   , Tuple.Create(Tuple.Create("", 54115), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
+            #line 990 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+   , Tuple.Create(Tuple.Create("", 52502), Tuple.Create<System.Object, System.Int32>((int)decommissionReason
             
             #line default
             #line hidden
-, 54115), false)
+, 52502), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 1012 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 990 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                            Write(decommissionReason.ReasonMessage());
 
             
@@ -2917,7 +2905,7 @@ WriteLiteral(">");
 WriteLiteral("</label>\r\n                            </li>\r\n");
 
             
-            #line 1014 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 992 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                         }
 
             
@@ -2936,7 +2924,7 @@ WriteLiteral(" />\r\n                        Unassign devices users\r\n         
 "\r\n                </div>\r\n");
 
             
-            #line 1022 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1000 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
             }
 
             
@@ -2980,7 +2968,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 1053 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1031 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
     }
 
             
@@ -2989,7 +2977,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 1054 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1032 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.CanDelete)
     {
 
@@ -3017,13 +3005,13 @@ WriteLiteral(" title=\"Delete this Device Batch?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1058 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1036 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 1058 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1036 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
              using (Html.BeginForm(MVC.API.DeviceBatch.Delete(Model.DeviceBatch.Id, true)))
             {
                 
@@ -3031,14 +3019,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1060 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1038 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1060 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1038 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                         
             }
 
@@ -3086,7 +3074,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 1094 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1072 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
     }
 
             
@@ -3095,7 +3083,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 1095 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1073 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
      if (Model.DeviceCount > 0)
     {
         if (Authorization.Has(Claims.Device.Actions.Export))
@@ -3105,14 +3093,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1099 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1077 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
        Write(Html.ActionLinkButton("Export Devices", MVC.Device.Export(null, Disco.Models.Services.Devices.DeviceExportTypes.Batch, Model.DeviceBatch.Id)));
 
             
             #line default
             #line hidden
             
-            #line 1099 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1077 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                           
         }
         if (Authorization.Has(Claims.Device.Search) && Model.DeviceCount > 0)
@@ -3122,14 +3110,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 1103 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1081 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("View {0} Device{1}", Model.DeviceCount, (Model.DeviceCount != 1 ? "s" : null)), MVC.Search.Query(Model.DeviceBatch.Id.ToString(), "DeviceBatch")));
 
             
             #line default
             #line hidden
             
-            #line 1103 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
+            #line 1081 "..\..\Areas\Config\Views\DeviceBatch\Show.cshtml"
                                                                                                                                                                                                    
         }
     }

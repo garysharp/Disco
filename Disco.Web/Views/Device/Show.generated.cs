@@ -522,38 +522,21 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 ";\r\n                $.connection.hub.disconnected(function () {\r\n                " +
 "    // Disable UI\r\n                    $(\'#AttachmentsContainer\').find(\'span.act" +
 "ion.enabled\').addClass(\'disabled\');\r\n                    $(\'#Comments\').find(\'bu" +
-"tton\').prop(\'disabled\', true);\r\n\r\n                    // Show Dialog Message\r\n  " +
-"                  if ($(\'.disconnected-dialog\').length == 0) {\r\n                " +
-"        $(\'<div>\')\r\n                            .addClass(\'dialog disconnected-d" +
-"ialog\')\r\n                            .html(\'<h3><span class=\"fa-stack fa-lg\"><i " +
-"class=\"fa fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></" +
-"span>Disconnected from the Disco ICT Server</h3><div>This page is not receiving " +
-"live updates. Please ensure you are connected to the server, then refresh this p" +
-"age to enable features.</div>\')\r\n                            .dialog({\r\n        " +
-"                        resizable: false,\r\n                                title" +
-": \'Disconnected\',\r\n                                width: 400,\r\n                " +
-"                modal: true,\r\n                                buttons: {\r\n      " +
-"                              \'Refresh Now\': function () {\r\n                    " +
-"                    $(this).dialog(\'option\', \'buttons\', null);\r\n                " +
-"                        window.location.reload(true);\r\n                         " +
-"           },\r\n                                    \'Close\': function () {\r\n     " +
-"                                   $(this).dialog(\'destroy\');\r\n                 " +
-"                   }\r\n                                }\r\n                       " +
-"     });\r\n                    }\r\n                });\r\n\r\n                $.connec" +
-"tion.hub.reconnecting(function () {\r\n                    $(\'#AttachmentsContaine" +
-"r\').find(\'span.action.enabled\').addClass(\'disabled\');\r\n                    $(\'#C" +
-"omments\').find(\'button\').prop(\'disabled\', true);\r\n                });\r\n         " +
-"       $.connection.hub.reconnected(function () {\r\n                    $(\'#Attac" +
-"hmentsContainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n        " +
-"            $(\'#Comments\').find(\'button\').prop(\'disabled\', false);\r\n            " +
-"    });\r\n\r\n                // Start Connection\r\n                $.connection.hub" +
-".start(function () {\r\n                    $(\'#AttachmentsContainer\').find(\'span." +
-"action.enabled\').removeClass(\'disabled\');\r\n                    $(\'#Comments\').fi" +
-"nd(\'button\').prop(\'disabled\', false);\r\n                });\r\n            });\r\n   " +
-"     </script>\r\n");
+"tton\').prop(\'disabled\', true);\r\n                });\r\n\r\n                $.connect" +
+"ion.hub.reconnecting(function () {\r\n                    $(\'#AttachmentsContainer" +
+"\').find(\'span.action.enabled\').addClass(\'disabled\');\r\n                    $(\'#Co" +
+"mments\').find(\'button\').prop(\'disabled\', true);\r\n                });\r\n          " +
+"      $.connection.hub.reconnected(function () {\r\n                    $(\'#Attach" +
+"mentsContainer\').find(\'span.action.enabled\').removeClass(\'disabled\');\r\n         " +
+"           $(\'#Comments\').find(\'button\').prop(\'disabled\', false);\r\n             " +
+"   });\r\n\r\n                // Start Connection\r\n                $.connection.hub." +
+"start(function () {\r\n                    $(\'#AttachmentsContainer\').find(\'span.a" +
+"ction.enabled\').removeClass(\'disabled\');\r\n                    $(\'#Comments\').fin" +
+"d(\'button\').prop(\'disabled\', false);\r\n                });\r\n            });\r\n    " +
+"    </script>\r\n");
 
             
-            #line 200 "..\..\Views\Device\Show.cshtml"
+            #line 178 "..\..\Views\Device\Show.cshtml"
     }
 
             

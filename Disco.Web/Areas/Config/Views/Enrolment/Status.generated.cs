@@ -823,35 +823,33 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral("\' };\r\n            $.connection.hub.error(function (error) {\r\n                cons" +
-"ole.log(\'Server connection error: \' + error);\r\n            });\r\n            $.co" +
-"nnection.hub.disconnected(function (error) {\r\n                // Show Dialog Mes" +
-"sage\r\n                if ($(\'.disconnected-dialog\').length == 0) {\r\n            " +
-"        $(\'<div>\')\r\n                        .addClass(\'dialog disconnected-dialo" +
-"g\')\r\n                        .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"f" +
-"a fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Dis" +
-"connected from the Disco ICT Server</h3><div>This page is not receiving live upd" +
-"ates. Please ensure you are connected to the server, then refresh this page to e" +
-"nable features.</div>\')\r\n                        .dialog({\r\n                    " +
-"        resizable: false,\r\n                            title: \'Disconnected\',\r\n " +
-"                           width: 400,\r\n                            modal: true," +
-"\r\n                            buttons: {\r\n                                \'Refre" +
-"sh Now\': function () {\r\n                                    $(this).dialog(\'opti" +
-"on\', \'buttons\', null);\r\n                                    window.location.relo" +
-"ad(true);\r\n                                },\r\n                                \'" +
-"Close\': function () {\r\n                                    $(this).dialog(\'destr" +
-"oy\');\r\n                                }\r\n                            }\r\n       " +
-"                 });\r\n                }\r\n            });\r\n\r\n            $.connec" +
-"tion.hub.start()\r\n                .done(function () { isLive = true; });\r\n\r\n    " +
-"    }\r\n        $(\'#dialogSession\').on(\'click\', \'#formResolveSessionPending butto" +
-"n\', function (e) {\r\n            const $button = $(this);\r\n            const $for" +
-"m = $button.closest(\'form\');\r\n            const body = new FormData($form[0]);\r\n" +
-"            body.append(\'approve\', $button.val());\r\n            fetch($form.attr" +
-"(\'action\'), {\r\n                method: \'POST\',\r\n                body: body\r\n    " +
-"        }).then(function (response) {\r\n                if (!response.ok) {\r\n    " +
-"                alert(\'Failed to resolve pending session: \' + response.statusTex" +
-"t);\r\n                }\r\n            });\r\n        });\r\n        init();\r\n    });\r\n" +
-"</script>\r\n");
+WriteLiteral(@"' };
+            $.connection.hub.error(function (error) {
+                console.log('Server connection error: ' + error);
+            });
+
+            $.connection.hub.start()
+                .done(function () { isLive = true; });
+
+        }
+        $('#dialogSession').on('click', '#formResolveSessionPending button', function (e) {
+            const $button = $(this);
+            const $form = $button.closest('form');
+            const body = new FormData($form[0]);
+            body.append('approve', $button.val());
+            fetch($form.attr('action'), {
+                method: 'POST',
+                body: body
+            }).then(function (response) {
+                if (!response.ok) {
+                    alert('Failed to resolve pending session: ' + response.statusText);
+                }
+            });
+        });
+        init();
+    });
+</script>
+");
 
         }
     }

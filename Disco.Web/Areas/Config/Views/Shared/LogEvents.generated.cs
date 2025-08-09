@@ -331,28 +331,9 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "          };\r\n\r\n                    $.connection.hub.qs = {LogModules: logModule" +
 "LiveGroupName};\r\n                    $.connection.hub.error(function (error) {\r\n" +
 "                        console.log(\'Server connection error: \' + error);\r\n     " +
-"               });\r\n                    $.connection.hub.disconnected(function (" +
-") {\r\n                        // Show Dialog Message\r\n                        if " +
-"($(\'.disconnected-dialog\').length == 0) {\r\n                            $(\'<div>\'" +
-")\r\n                                .addClass(\'dialog disconnected-dialog\')\r\n    " +
-"                            .html(\'<h3><span class=\"fa-stack fa-lg\"><i class=\"fa" +
-" fa-wifi fa-stack-1x\"></i><i class=\"fa fa-ban fa-stack-2x error\"></i></span>Disc" +
-"onnected from the Disco ICT Server</h3><div>This page is not receiving live upda" +
-"tes. Please ensure you are connected to the server, then refresh this page to en" +
-"able features.</div>\')\r\n                                .dialog({\r\n             " +
-"                       resizable: false,\r\n                                    ti" +
-"tle: \'Disconnected\',\r\n                                    width: 400,\r\n         " +
-"                           modal: true,\r\n                                    but" +
-"tons: {\r\n                                        \'Refresh Now\': function () {\r\n " +
-"                                           $(this).dialog(\'option\', \'buttons\', n" +
-"ull);\r\n                                            window.location.reload(true);" +
-"\r\n                                        },\r\n                                  " +
-"      \'Close\': function () {\r\n                                            $(this" +
-").dialog(\'destroy\');\r\n                                        }\r\n               " +
-"                     }\r\n                                });\r\n                   " +
-"     }\r\n                    })\r\n\r\n                    $.connection.hub.start();\r" +
-"\n                }\r\n            }\r\n\r\n            loadInitialData();\r\n        });" +
-"\r\n    </script>\r\n</div>\r\n");
+"               });\r\n\r\n                    $.connection.hub.start();\r\n           " +
+"     }\r\n            }\r\n\r\n            loadInitialData();\r\n        });\r\n    </scri" +
+"pt>\r\n</div>\r\n");
 
         }
     }
