@@ -89,6 +89,39 @@ WriteAttribute("class", Tuple.Create(" class=\"", 562), Tuple.Create("\"", 615)
 , Tuple.Create(Tuple.Create(" ", 597), Tuple.Create("status-connecting", 598), true)
 );
 
+WriteLiteral(" data-antiforgery=\"");
+
+            
+            #line 17 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
+                                                                         Write(AntiForgeryExtensions.GetToken(Context));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-hubname=\"");
+
+            
+            #line 17 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
+                                                                                                                                  Write(Disco.Services.Jobs.Noticeboards.HeldDevices.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-dataurl=\"");
+
+            
+            #line 17 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
+                                                                                                                                                                                                      Write(Url.Action(MVC.Public.HeldDevices.HeldDevices()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n    <div");
 
 WriteLiteral(" id=\"page\"");
@@ -135,7 +168,7 @@ WriteLiteral(" id=\"inProcess\"");
 
 WriteLiteral(" class=\"list\"");
 
-WriteLiteral(">\r\n                <h3>In Process (<span");
+WriteLiteral(">\r\n                <h3>\r\n                    In Process (<span");
 
 WriteLiteral(" data-bind=\"text: inProcess().length\"");
 
@@ -159,7 +192,7 @@ WriteLiteral(" id=\"readyForReturn\"");
 
 WriteLiteral(" class=\"list\"");
 
-WriteLiteral(">\r\n                <h3>Ready for Return (<span");
+WriteLiteral(">\r\n                <h3>\r\n                    Ready for Return (<span");
 
 WriteLiteral(" data-bind=\"text: readyForReturn().length\"");
 
@@ -183,7 +216,7 @@ WriteLiteral(" id=\"waitingForUserAction\"");
 
 WriteLiteral(" class=\"list\"");
 
-WriteLiteral(">\r\n                <h3>Waiting for User Action (<span");
+WriteLiteral(">\r\n                <h3>\r\n                    Waiting for User Action (<span");
 
 WriteLiteral(" data-bind=\"text: waitingForUserAction().length\"");
 
@@ -246,208 +279,188 @@ WriteLiteral(">\r\n        <li data-bind=\"css: { alert: IsAlert }\">\r\n       
 "ueryString();\r\n\r\n                // Connect to Hub\r\n                hub = $.conn" +
 "ection.noticeboardUpdates;\r\n\r\n                // Map Functions\r\n                " +
 "hub.client.updateHeldDevice = updateHeldDevice;\r\n                hub.client.setT" +
-"heme = setTheme;\r\n\r\n                $.connection.hub.qs = { Noticeboard: \'");
-
-            
-            #line 133 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
-                                                  Write(Disco.Services.Jobs.Noticeboards.HeldDevices.Name);
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"' };
-                $.connection.hub.error(function (error) {
-                    console.log('Server connection error: ' + error);
-                });
-                $.connection.hub.disconnected(connectionError);
-
-                // Start Connection
-                $.connection.hub.start().fail(connectionError).done(loadData);
-            }
-
-            // Called after SignalR is connected
-            function loadData() {
-                $.getJSON('");
-
-            
-            #line 145 "..\..\Areas\Public\Views\HeldDevices\Noticeboard.cshtml"
-                       Write(Url.Action(MVC.Public.HeldDevices.HeldDevices()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\', null, function (data) {\r\n\r\n                    var inProcess = [];\r\n          " +
-"          var readyForReturn = [];\r\n                    var waitingForUserAction" +
-" = [];\r\n\r\n                    data.filter(function (heldDeviceItem) {\r\n         " +
-"               return includeItem(heldDeviceItem)\r\n                    }).forEac" +
-"h(function (heldDeviceItem) {\r\n                        if (isWaitingForUserActio" +
-"n(heldDeviceItem))\r\n                            waitingForUserAction.push(heldDe" +
-"viceItem);\r\n                        else if (isReadyForReturn(heldDeviceItem))\r\n" +
-"                            readyForReturn.push(heldDeviceItem);\r\n              " +
-"          else if (isInProcess(heldDeviceItem))\r\n                            inP" +
-"rocess.push(heldDeviceItem);\r\n                    });\r\n\r\n                    inP" +
-"rocess.sort(sortFunction);\r\n                    readyForReturn.sort(sortFunction" +
-");\r\n                    waitingForUserAction.sort(sortFunction);\r\n\r\n            " +
-"        viewModel = new noticeboardViewModel(inProcess, readyForReturn, waitingF" +
-"orUserAction);\r\n\r\n                    ko.applyBindings(viewModel);\r\n            " +
-"        viewModel.initialized = true;\r\n\r\n                    $(\'body\').removeCla" +
-"ss(\'status-connecting\');\r\n\r\n                    window.setTimeout(scheduleRotati" +
-"on, rotateSpeed);\r\n                });\r\n            }\r\n\r\n            // Called b" +
-"y SignalR\r\n            function updateHeldDevice(updates) {\r\n                if " +
-"(viewModel) {\r\n\r\n                    $.each(updates, function (deviceSerialNumbe" +
-"r, heldDeviceItem) {\r\n                        // Remove Existing\r\n              " +
-"          removeItem(deviceSerialNumber);\r\n\r\n                        // Add Item" +
-"\r\n                        addItem(heldDeviceItem);\r\n                    });\r\n   " +
-"             }\r\n            }\r\n\r\n            function removeItem(deviceSerialNum" +
-"ber) {\r\n                removeItemFromArray(viewModel.inProcess, deviceSerialNum" +
-"ber);\r\n                removeItemFromArray(viewModel.readyForReturn, deviceSeria" +
-"lNumber);\r\n                removeItemFromArray(viewModel.waitingForUserAction, d" +
-"eviceSerialNumber);\r\n            }\r\n\r\n            function addItem(heldDeviceIte" +
-"m) {\r\n                if (heldDeviceItem !== null &&\r\n                    heldDe" +
-"viceItem !== undefined &&\r\n                    includeItem(heldDeviceItem)) {\r\n\r" +
-"\n                    var array;\r\n\r\n                    if (isWaitingForUserActio" +
-"n(heldDeviceItem))\r\n                        array = viewModel.waitingForUserActi" +
-"on;\r\n                    else if (isReadyForReturn(heldDeviceItem))\r\n           " +
-"             array = viewModel.readyForReturn;\r\n                    else if (isI" +
-"nProcess(heldDeviceItem))\r\n                        array = viewModel.inProcess;\r" +
-"\n\r\n                    if (array().length === 0) {\r\n                        arra" +
-"y.push(heldDeviceItem);\r\n                    } else {\r\n                        v" +
-"ar index = findSortedInsertIndex(array, heldDeviceItem);\r\n                      " +
-"  if (index === -1)\r\n                            array.push(heldDeviceItem);\r\n  " +
-"                      else\r\n                            array.splice(index, 0, h" +
-"eldDeviceItem);\r\n                    }\r\n                }\r\n            }\r\n\r\n    " +
-"        function rotateArrays() {\r\n                rotateArray(viewModel.inProce" +
-"ss, $inProcessList);\r\n                rotateArray(viewModel.readyForReturn, $rea" +
-"dyForReturnList);\r\n                rotateArray(viewModel.waitingForUserAction, $" +
-"waitingForUserActionList);\r\n            }\r\n\r\n            function scheduleRotati" +
-"on() {\r\n                rotateArrays();\r\n\r\n                window.setTimeout(sch" +
-"eduleRotation, rotateSpeed);\r\n            }\r\n\r\n            function includeItem(" +
-"heldDeviceItem) {\r\n                if (itemFilters == null || itemFilters.length" +
-" == 0)\r\n                    return true;\r\n\r\n                return itemFilters.r" +
-"educe(function (previousValue, currentValue, index, array) {\r\n                  " +
-"  if (previousValue === false)\r\n                        return false;\r\n         " +
-"           return currentValue(heldDeviceItem);\r\n                }, true);\r\n    " +
-"        }\r\n\r\n            function setTheme(theme) {\r\n                if (!!fixed" +
-"Theme)\r\n                    return;\r\n\r\n                var $body = $(document.bo" +
-"dy);\r\n\r\n                // Existing classes\r\n                var c = $body.attr(" +
-"\'class\').split(\' \');\r\n                // Remove existing theme\r\n                " +
-"c = $.grep(c, function (i) { return (i.indexOf(\'theme-\') !== 0) });\r\n\r\n         " +
-"       c.push(\'theme-\' + theme);\r\n\r\n                $body.attr(\'class\', c.join(\'" +
-" \'));\r\n            }\r\n\r\n            function monitorMouseMove() {\r\n             " +
-"   var token = null,\r\n                    $body = $(document.body);\r\n\r\n         " +
-"       $body.mousemove(function () {\r\n                    if (!!token)\r\n        " +
-"                window.clearTimeout(token);\r\n                    else if ($body." +
-"css(\'cursor\') == \'none\')\r\n                        $body.css(\'cursor\', \'auto\');\r\n" +
-"\r\n                    token = window.setTimeout(function () {\r\n                 " +
-"       $body.css(\'cursor\', \'none\');\r\n                        token = null;\r\n    " +
-"                }, 3500);\r\n                });\r\n\r\n            }\r\n\r\n            f" +
-"unction applyQueryString() {\r\n                var queryStringParameters = getQue" +
-"ryStringParameters();\r\n\r\n                if (queryStringParameters !== null) {\r\n" +
-"                    var filters = [];\r\n\r\n                    $.each(queryStringP" +
-"arameters, function (key, value) {\r\n                        switch (key.toLowerC" +
-"ase()) {\r\n                            case \'components\':\r\n                      " +
-"          const showComponents = value.split(\",\");\r\n                            " +
-"    if (showComponents.length > 0) {\r\n                                    const " +
-"components = [\'inProcess\', \'readyForReturn\', \'waitingForUserAction\'];\r\n         " +
-"                           components.forEach(function (component) {\r\n          " +
-"                              if (!showComponents.includes(component)) {\r\n      " +
-"                                      $(\'body\').addClass(\'hide-\' + component);\r\n" +
-"                                        }\r\n                                    }" +
+"heme = setTheme;\r\n\r\n                $.connection.hub.qs = { Noticeboard: documen" +
+"t.body.dataset.hubname };\r\n                $.connection.hub.error(function (erro" +
+"r) {\r\n                    console.log(\'Server connection error: \' + error);\r\n   " +
+"             });\r\n                $.connection.hub.disconnected(connectionError)" +
+";\r\n\r\n                // Start Connection\r\n                $.connection.hub.start" +
+"().fail(connectionError).done(function () { loadData(); });\r\n            }\r\n\r\n  " +
+"          // Called after SignalR is connected\r\n            async function loadD" +
+"ata() {\r\n\r\n                const body = new FormData();\r\n                body.ap" +
+"pend(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n        " +
+"        const response = await fetch(document.body.dataset.dataurl, {\r\n         " +
+"           method: \'POST\',\r\n                    body: body\r\n                });\r" +
+"\n                const data = await response.json();\r\n\r\n                var inPr" +
+"ocess = [];\r\n                var readyForReturn = [];\r\n                var waiti" +
+"ngForUserAction = [];\r\n\r\n                data.filter(function (heldDeviceItem) {" +
+"\r\n                    return includeItem(heldDeviceItem)\r\n                }).for" +
+"Each(function (heldDeviceItem) {\r\n                    if (isWaitingForUserAction" +
+"(heldDeviceItem))\r\n                        waitingForUserAction.push(heldDeviceI" +
+"tem);\r\n                    else if (isReadyForReturn(heldDeviceItem))\r\n         " +
+"               readyForReturn.push(heldDeviceItem);\r\n                    else if" +
+" (isInProcess(heldDeviceItem))\r\n                        inProcess.push(heldDevic" +
+"eItem);\r\n                });\r\n\r\n                inProcess.sort(sortFunction);\r\n " +
+"               readyForReturn.sort(sortFunction);\r\n                waitingForUse" +
+"rAction.sort(sortFunction);\r\n\r\n                viewModel = new noticeboardViewMo" +
+"del(inProcess, readyForReturn, waitingForUserAction);\r\n\r\n                ko.appl" +
+"yBindings(viewModel);\r\n                viewModel.initialized = true;\r\n\r\n        " +
+"        $(\'body\').removeClass(\'status-connecting\');\r\n\r\n                window.se" +
+"tTimeout(scheduleRotation, rotateSpeed);\r\n            }\r\n\r\n            // Called" +
+" by SignalR\r\n            function updateHeldDevice(updates) {\r\n                i" +
+"f (viewModel) {\r\n\r\n                    $.each(updates, function (deviceSerialNum" +
+"ber, heldDeviceItem) {\r\n                        // Remove Existing\r\n            " +
+"            removeItem(deviceSerialNumber);\r\n\r\n                        // Add It" +
+"em\r\n                        addItem(heldDeviceItem);\r\n                    });\r\n " +
+"               }\r\n            }\r\n\r\n            function removeItem(deviceSerialN" +
+"umber) {\r\n                removeItemFromArray(viewModel.inProcess, deviceSerialN" +
+"umber);\r\n                removeItemFromArray(viewModel.readyForReturn, deviceSer" +
+"ialNumber);\r\n                removeItemFromArray(viewModel.waitingForUserAction," +
+" deviceSerialNumber);\r\n            }\r\n\r\n            function addItem(heldDeviceI" +
+"tem) {\r\n                if (heldDeviceItem !== null &&\r\n                    held" +
+"DeviceItem !== undefined &&\r\n                    includeItem(heldDeviceItem)) {\r" +
+"\n\r\n                    var array;\r\n\r\n                    if (isWaitingForUserAct" +
+"ion(heldDeviceItem))\r\n                        array = viewModel.waitingForUserAc" +
+"tion;\r\n                    else if (isReadyForReturn(heldDeviceItem))\r\n         " +
+"               array = viewModel.readyForReturn;\r\n                    else if (i" +
+"sInProcess(heldDeviceItem))\r\n                        array = viewModel.inProcess" +
+";\r\n\r\n                    if (array().length === 0) {\r\n                        ar" +
+"ray.push(heldDeviceItem);\r\n                    } else {\r\n                       " +
+" var index = findSortedInsertIndex(array, heldDeviceItem);\r\n                    " +
+"    if (index === -1)\r\n                            array.push(heldDeviceItem);\r\n" +
+"                        else\r\n                            array.splice(index, 0," +
+" heldDeviceItem);\r\n                    }\r\n                }\r\n            }\r\n\r\n  " +
+"          function rotateArrays() {\r\n                rotateArray(viewModel.inPro" +
+"cess, $inProcessList);\r\n                rotateArray(viewModel.readyForReturn, $r" +
+"eadyForReturnList);\r\n                rotateArray(viewModel.waitingForUserAction," +
+" $waitingForUserActionList);\r\n            }\r\n\r\n            function scheduleRota" +
+"tion() {\r\n                rotateArrays();\r\n\r\n                window.setTimeout(s" +
+"cheduleRotation, rotateSpeed);\r\n            }\r\n\r\n            function includeIte" +
+"m(heldDeviceItem) {\r\n                if (itemFilters == null || itemFilters.leng" +
+"th == 0)\r\n                    return true;\r\n\r\n                return itemFilters" +
+".reduce(function (previousValue, currentValue, index, array) {\r\n                " +
+"    if (previousValue === false)\r\n                        return false;\r\n       " +
+"             return currentValue(heldDeviceItem);\r\n                }, true);\r\n  " +
+"          }\r\n\r\n            function setTheme(theme) {\r\n                if (!!fix" +
+"edTheme)\r\n                    return;\r\n\r\n                var $body = $(document." +
+"body);\r\n\r\n                // Existing classes\r\n                var c = $body.att" +
+"r(\'class\').split(\' \');\r\n                // Remove existing theme\r\n              " +
+"  c = $.grep(c, function (i) { return (i.indexOf(\'theme-\') !== 0) });\r\n\r\n       " +
+"         c.push(\'theme-\' + theme);\r\n\r\n                $body.attr(\'class\', c.join" +
+"(\' \'));\r\n            }\r\n\r\n            function monitorMouseMove() {\r\n           " +
+"     var token = null,\r\n                    $body = $(document.body);\r\n\r\n       " +
+"         $body.mousemove(function () {\r\n                    if (!!token)\r\n      " +
+"                  window.clearTimeout(token);\r\n                    else if ($bod" +
+"y.css(\'cursor\') == \'none\')\r\n                        $body.css(\'cursor\', \'auto\');" +
+"\r\n\r\n                    token = window.setTimeout(function () {\r\n               " +
+"         $body.css(\'cursor\', \'none\');\r\n                        token = null;\r\n  " +
+"                  }, 3500);\r\n                });\r\n\r\n            }\r\n\r\n           " +
+" function applyQueryString() {\r\n                var queryStringParameters = getQ" +
+"ueryStringParameters();\r\n\r\n                if (queryStringParameters !== null) {" +
+"\r\n                    var filters = [];\r\n\r\n                    $.each(queryStrin" +
+"gParameters, function (key, value) {\r\n                        switch (key.toLowe" +
+"rCase()) {\r\n                            case \'components\':\r\n                    " +
+"            const showComponents = value.split(\",\");\r\n                          " +
+"      if (showComponents.length > 0) {\r\n                                    cons" +
+"t components = [\'inProcess\', \'readyForReturn\', \'waitingForUserAction\'];\r\n       " +
+"                             components.forEach(function (component) {\r\n        " +
+"                                if (!showComponents.includes(component)) {\r\n    " +
+"                                        $(\'body\').addClass(\'hide-\' + component);" +
+"\r\n                                        }\r\n                                   " +
+" });\r\n                                }\r\n                                break;\r" +
+"\n                            case \'theme\': // THEME\r\n                           " +
+"     setTheme(value);\r\n                                fixedTheme = value;\r\n    " +
+"                            break;\r\n                            case \'deviceaddr" +
+"essinclude\': // FILTER: Device Address Include\r\n                                " +
+"var deviceAddresses = value.split(\",\").map(function (v) { return v.toLowerCase()" +
+"; });\r\n                                if (deviceAddresses.length > 0) {\r\n      " +
+"                              filters.push(function (heldDeviceItem) {\r\n        " +
+"                                // false if DeviceAddressShortName is null\r\n    " +
+"                                    if (!heldDeviceItem.DeviceAddressShortName)\r" +
+"\n                                            return false;\r\n\r\n                  " +
+"                      // true if DeviceAddressShortName is included\r\n           " +
+"                             return $.inArray(heldDeviceItem.DeviceAddressShortN" +
+"ame.toLowerCase(), deviceAddresses) >= 0;\r\n                                    }" +
 ");\r\n                                }\r\n                                break;\r\n " +
-"                           case \'theme\': // THEME\r\n                             " +
-"   setTheme(value);\r\n                                fixedTheme = value;\r\n      " +
-"                          break;\r\n                            case \'deviceaddres" +
-"sinclude\': // FILTER: Device Address Include\r\n                                va" +
-"r deviceAddresses = value.split(\",\").map(function (v) { return v.toLowerCase(); " +
-"});\r\n                                if (deviceAddresses.length > 0) {\r\n        " +
-"                            filters.push(function (heldDeviceItem) {\r\n          " +
-"                              // false if DeviceAddressShortName is null\r\n      " +
-"                                  if (!heldDeviceItem.DeviceAddressShortName)\r\n " +
-"                                           return false;\r\n\r\n                    " +
-"                    // true if DeviceAddressShortName is included\r\n             " +
-"                           return $.inArray(heldDeviceItem.DeviceAddressShortNam" +
-"e.toLowerCase(), deviceAddresses) >= 0;\r\n                                    });" +
-"\r\n                                }\r\n                                break;\r\n   " +
-"                         case \'deviceaddressexclude\': // FILTER: Device Address " +
-"Exclude\r\n                                var deviceAddresses = value.split(\",\")." +
-"map(function (v) { return v.toLowerCase(); });\r\n                                " +
-"if (deviceAddresses.length > 0) {\r\n                                    filters.p" +
-"ush(function (heldDeviceItem) {\r\n                                        // true" +
-" if DeviceAddressShortName is null\r\n                                        if (" +
-"!heldDeviceItem.DeviceAddressShortName)\r\n                                       " +
-"     return true;\r\n\r\n                                        // true if DeviceAd" +
-"dressShortName is excluded\r\n                                        return $.inA" +
-"rray(heldDeviceItem.DeviceAddressShortName.toLowerCase(), deviceAddresses) < 0;\r" +
-"\n                                    });\r\n                                }\r\n   " +
-"                             break;\r\n                            case \'devicepro" +
-"fileinclude\': // FILTER: Device Profile Include\r\n                               " +
-" var deviceProfiles = value.split(\",\").map(function (v) { return parseInt(v); })" +
-";\r\n                                if (deviceProfiles.length > 0) {\r\n           " +
-"                         filters.push(function (heldDeviceItem) {\r\n             " +
-"                           // true if DeviceProfileId is included\r\n             " +
-"                           return $.inArray(heldDeviceItem.DeviceProfileId, devi" +
-"ceProfiles) >= 0;\r\n                                    });\r\n                    " +
-"            }\r\n                                break;\r\n                         " +
-"   case \'deviceprofileexclude\': // FILTER: Device Profile Exclude\r\n             " +
-"                   var deviceProfiles = value.split(\",\").map(function (v) { retu" +
-"rn parseInt(v); });\r\n                                if (deviceProfiles.length >" +
-" 0) {\r\n                                    filters.push(function (heldDeviceItem" +
-") {\r\n                                        // true if DeviceProfileId is exclu" +
-"ded\r\n                                        return $.inArray(heldDeviceItem.Dev" +
-"iceProfileId, deviceProfiles) < 0;\r\n                                    });\r\n   " +
-"                             }\r\n                                break;\r\n        " +
-"                }\r\n                    });\r\n\r\n                    if (filters.le" +
-"ngth > 0)\r\n                        itemFilters = filters;\r\n                    e" +
-"lse\r\n                        itemFilters = null;\r\n                }\r\n           " +
-" }\r\n\r\n            function connectionError() {\r\n                try {\r\n         " +
-"           $(\'body\').addClass(\'status-error\');\r\n                } catch (e) {\r\n " +
-"                   // Ignore\r\n                }\r\n\r\n                window.setTim" +
-"eout(function () {\r\n                    window.location.reload(true);\r\n         " +
-"       }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n            function" +
-" rotateArray(koArray, element) {\r\n                var items = koArray();\r\n\r\n    " +
-"            if (items.length <= 1)\r\n                    return 0;\r\n\r\n           " +
-"     if (element.height() < (element.parent().height() - 30)) {\r\n\r\n             " +
-"       if (findUnsortedArrayTopIndex(items) !== 0)\r\n                        koAr" +
-"ray.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if small & sorted" +
-" correctly\r\n                    return;\r\n                }\r\n\r\n                //" +
-" Move Last Item to Top\r\n                var item = koArray.pop();\r\n             " +
-"   koArray.unshift(item);\r\n            }\r\n            function removeItemFromArr" +
-"ay(koArray, deviceSerialNumber) {\r\n                var items = koArray();\r\n     " +
-"           for (var i = 0; i < items.length; i++) {\r\n                    if (ite" +
-"ms[i].DeviceSerialNumber == deviceSerialNumber) {\r\n                        koArr" +
-"ay.splice(i, 1);\r\n                        items = koArray();\r\n                  " +
-"      i--;\r\n                    }\r\n                }\r\n            }\r\n           " +
-" function findUnsortedArrayTopIndex(items) {\r\n                // Only one Item\r\n" +
-"                if (items.length <= 1)\r\n                    return 0;\r\n\r\n       " +
-"         for (var i = 1; i < items.length; i++) {\r\n                    var s = s" +
-"ortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n          " +
-"              return i;\r\n                }\r\n\r\n                return 0;\r\n       " +
-"     }\r\n            function findSortedInsertIndex(koArray, heldDeviceItem) {\r\n " +
-"               var items = koArray();\r\n                var startIndex = findUnso" +
-"rtedArrayTopIndex(items);\r\n                for (var i = startIndex; i < items.le" +
-"ngth; i++) {\r\n                    var s = sortFunction(heldDeviceItem, items[i])" +
-";\r\n                    if (s <= 0)\r\n                        return i;\r\n         " +
-"       }\r\n                if (startIndex !== 0) {\r\n                    for (var " +
-"i = 0; i < startIndex; i++) {\r\n                        var s = sortFunction(held" +
-"DeviceItem, items[i]);\r\n                        if (s <= 0)\r\n                   " +
-"         return i;\r\n                    }\r\n                    return startIndex" +
-";\r\n                } else {\r\n                    return -1;\r\n                }\r\n" +
-"            }\r\n            function sortFunction(l, r) {\r\n                return" +
-" l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? 0 : (l" +
-".DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)\r\n" +
-"            }\r\n            function isInProcess(i) {\r\n                return !i." +
-"ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n            function " +
-"isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingForU" +
-"serAction;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n   " +
-"             return i.WaitingForUserAction;\r\n            }\r\n            function" +
-" getQueryStringParameters() {\r\n\r\n                if (window.location.search.leng" +
-"th === 0)\r\n                    return null;\r\n\r\n                var params = {};\r" +
-"\n                window.location.search.substr(1).split(\"&\").forEach(function (p" +
-"air) {\r\n                    if (pair === \"\") return;\r\n                    var pa" +
-"rts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] && decod" +
-"eURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n             " +
-"   return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </scri" +
-"pt>\r\n</body>\r\n</html>");
+"                           case \'deviceaddressexclude\': // FILTER: Device Addres" +
+"s Exclude\r\n                                var deviceAddresses = value.split(\",\"" +
+").map(function (v) { return v.toLowerCase(); });\r\n                              " +
+"  if (deviceAddresses.length > 0) {\r\n                                    filters" +
+".push(function (heldDeviceItem) {\r\n                                        // tr" +
+"ue if DeviceAddressShortName is null\r\n                                        if" +
+" (!heldDeviceItem.DeviceAddressShortName)\r\n                                     " +
+"       return true;\r\n\r\n                                        // true if Device" +
+"AddressShortName is excluded\r\n                                        return $.i" +
+"nArray(heldDeviceItem.DeviceAddressShortName.toLowerCase(), deviceAddresses) < 0" +
+";\r\n                                    });\r\n                                }\r\n " +
+"                               break;\r\n                            case \'devicep" +
+"rofileinclude\': // FILTER: Device Profile Include\r\n                             " +
+"   var deviceProfiles = value.split(\",\").map(function (v) { return parseInt(v); " +
+"});\r\n                                if (deviceProfiles.length > 0) {\r\n         " +
+"                           filters.push(function (heldDeviceItem) {\r\n           " +
+"                             // true if DeviceProfileId is included\r\n           " +
+"                             return $.inArray(heldDeviceItem.DeviceProfileId, de" +
+"viceProfiles) >= 0;\r\n                                    });\r\n                  " +
+"              }\r\n                                break;\r\n                       " +
+"     case \'deviceprofileexclude\': // FILTER: Device Profile Exclude\r\n           " +
+"                     var deviceProfiles = value.split(\",\").map(function (v) { re" +
+"turn parseInt(v); });\r\n                                if (deviceProfiles.length" +
+" > 0) {\r\n                                    filters.push(function (heldDeviceIt" +
+"em) {\r\n                                        // true if DeviceProfileId is exc" +
+"luded\r\n                                        return $.inArray(heldDeviceItem.D" +
+"eviceProfileId, deviceProfiles) < 0;\r\n                                    });\r\n " +
+"                               }\r\n                                break;\r\n      " +
+"                  }\r\n                    });\r\n\r\n                    if (filters." +
+"length > 0)\r\n                        itemFilters = filters;\r\n                   " +
+" else\r\n                        itemFilters = null;\r\n                }\r\n         " +
+"   }\r\n\r\n            function connectionError() {\r\n                try {\r\n       " +
+"             $(\'body\').addClass(\'status-error\');\r\n                } catch (e) {\r" +
+"\n                    // Ignore\r\n                }\r\n\r\n                window.setT" +
+"imeout(function () {\r\n                    window.location.reload(true);\r\n       " +
+"         }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n            functi" +
+"on rotateArray(koArray, element) {\r\n                var items = koArray();\r\n\r\n  " +
+"              if (items.length <= 1)\r\n                    return 0;\r\n\r\n         " +
+"       if (element.height() < (element.parent().height() - 30)) {\r\n\r\n           " +
+"         if (findUnsortedArrayTopIndex(items) !== 0)\r\n                        ko" +
+"Array.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if small & sort" +
+"ed correctly\r\n                    return;\r\n                }\r\n\r\n                " +
+"// Move Last Item to Top\r\n                var item = koArray.pop();\r\n           " +
+"     koArray.unshift(item);\r\n            }\r\n            function removeItemFromA" +
+"rray(koArray, deviceSerialNumber) {\r\n                var items = koArray();\r\n   " +
+"             for (var i = 0; i < items.length; i++) {\r\n                    if (i" +
+"tems[i].DeviceSerialNumber == deviceSerialNumber) {\r\n                        koA" +
+"rray.splice(i, 1);\r\n                        items = koArray();\r\n                " +
+"        i--;\r\n                    }\r\n                }\r\n            }\r\n         " +
+"   function findUnsortedArrayTopIndex(items) {\r\n                // Only one Item" +
+"\r\n                if (items.length <= 1)\r\n                    return 0;\r\n\r\n     " +
+"           for (var i = 1; i < items.length; i++) {\r\n                    var s =" +
+" sortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n        " +
+"                return i;\r\n                }\r\n\r\n                return 0;\r\n     " +
+"       }\r\n            function findSortedInsertIndex(koArray, heldDeviceItem) {\r" +
+"\n                var items = koArray();\r\n                var startIndex = findUn" +
+"sortedArrayTopIndex(items);\r\n                for (var i = startIndex; i < items." +
+"length; i++) {\r\n                    var s = sortFunction(heldDeviceItem, items[i" +
+"]);\r\n                    if (s <= 0)\r\n                        return i;\r\n       " +
+"         }\r\n                if (startIndex !== 0) {\r\n                    for (va" +
+"r i = 0; i < startIndex; i++) {\r\n                        var s = sortFunction(he" +
+"ldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n                 " +
+"           return i;\r\n                    }\r\n                    return startInd" +
+"ex;\r\n                } else {\r\n                    return -1;\r\n                }" +
+"\r\n            }\r\n            function sortFunction(l, r) {\r\n                retu" +
+"rn l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? 0 : " +
+"(l.DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)" +
+"\r\n            }\r\n            function isInProcess(i) {\r\n                return !" +
+"i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n            functio" +
+"n isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingFo" +
+"rUserAction;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n " +
+"               return i.WaitingForUserAction;\r\n            }\r\n            functi" +
+"on getQueryStringParameters() {\r\n\r\n                if (window.location.search.le" +
+"ngth === 0)\r\n                    return null;\r\n\r\n                var params = {}" +
+";\r\n                window.location.search.substr(1).split(\"&\").forEach(function " +
+"(pair) {\r\n                    if (pair === \"\") return;\r\n                    var " +
+"parts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] && dec" +
+"odeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n           " +
+"     return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </sc" +
+"ript>\r\n</body>\r\n</html>\r\n");
 
         }
     }

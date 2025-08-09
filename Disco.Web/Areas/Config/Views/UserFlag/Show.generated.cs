@@ -2356,6 +2356,17 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Bulk Assign Users\"");
 
+WriteLiteral(" data-assignedurl=\"");
+
+            
+            #line 774 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+                                                                                                                     Write(Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" class=\"brief\"");
@@ -2510,48 +2521,31 @@ WriteLiteral("            <script>\r\n                $(function () {\r\n       
 "nst $form = assignUserIds.closest(\'form\');\r\n                        if (mode == " +
 "\"Override\") {\r\n                            $form.attr(\'action\', $form.attr(\'data" +
 "-overrideaction\'));\r\n\r\n                            assignDialog.addClass(\'loadin" +
-"g\');\r\n                            $.getJSON(\'");
+"g\');\r\n                            const body = new FormData();\r\n                " +
+"            body.append(\'__RequestVerificationToken\', document.body.dataset.anti" +
+"forgery);\r\n                            fetch(assignDialog.attr(\'data-assignedurl" +
+"\'), {\r\n                                method: \'POST\',\r\n                        " +
+"        body: body\r\n                            }).then(r => {\r\n                " +
+"                assignDialog.removeClass(\'loading\');\r\n                          " +
+"      if (!r.ok) {\r\n                                    alert(\'Unable to load cu" +
+"rrent assignments:\\n\' + r.statusText);\r\n                                    assi" +
+"gnDialog.dialog(\'close\');\r\n                                } else {\r\n           " +
+"                         r.json().then(j => {\r\n                                 " +
+"       if (!j) {\r\n                                            assignUserIds.val(" +
+"\'\');\r\n                                        } else {\r\n                        " +
+"                    assignUserIds.val(j.join(\'\\n\'));\r\n                          " +
+"              }\r\n                                    })\r\n                       " +
+"         }\r\n                            });\r\n                        }\r\n        " +
+"                else // Assume Add\r\n                        {\r\n                 " +
+"           $form.attr(\'action\', $form.attr(\'data-addaction\'));\r\n                " +
+"        }\r\n\r\n                        assignDialog.dialog(\'open\');\r\n             " +
+"       }\r\n\r\n                    $(\'#Config_UserFlags_BulkAssign_Button\').click(f" +
+"unction () {\r\n                        showModeDialog();\r\n                       " +
+" return false;\r\n                    });\r\n                });\r\n            </scri" +
+"pt>\r\n");
 
             
-            #line 859 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
-                                  Write(Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"', function (response, result) {
-                                assignDialog.removeClass('loading');
-
-                                if (result != 'success') {
-                                    alert('Unable to load current assignments:\n' + response);
-                                    assignDialog.dialog('close');
-                                } else {
-                                    if (!!response) {
-                                        assignUserIds.val(response.join('\n'));
-                                    } else {
-                                        assignUserIds.val('');
-                                    }
-                                }
-                            });
-                        }
-                        else // Assume Add
-                        {
-                            $form.attr('action', $form.attr('data-addaction'));
-                        }
-
-                        assignDialog.dialog('open');
-                    }
-
-                    $('#Config_UserFlags_BulkAssign_Button').click(function () {
-                        showModeDialog();
-                        return false;
-                    });
-                });
-            </script>
-");
-
-            
-            #line 888 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 894 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         }
 
             
@@ -2560,7 +2554,7 @@ WriteLiteral(@"', function (response, result) {
 WriteLiteral("        ");
 
             
-            #line 889 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 895 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
          if (canDelete)
         {
 
@@ -2588,13 +2582,13 @@ WriteLiteral(" class=\"dialog\"");
 WriteLiteral(">\r\n");
 
             
-            #line 893 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 899 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 893 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 899 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                  using (Html.BeginForm(MVC.API.UserFlag.Delete(Model.UserFlag.Id, true)))
                 {
                     
@@ -2602,14 +2596,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 895 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 901 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 895 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 901 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                             
                 }
 
@@ -2624,13 +2618,13 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 "covered.<br />\r\n                    <br />\r\n");
 
             
-            #line 901 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 907 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 901 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 907 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                      if (Model.CurrentAssignmentCount > 0)
                     {
 
@@ -2640,7 +2634,7 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 WriteLiteral("                        <strong>");
 
             
-            #line 903 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 909 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                            Write(Model.CurrentAssignmentCount);
 
             
@@ -2649,7 +2643,7 @@ WriteLiteral("                        <strong>");
 WriteLiteral(" user");
 
             
-            #line 903 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 909 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                               Write(Model.CurrentAssignmentCount != 1 ? "s are" : " is");
 
             
@@ -2662,7 +2656,7 @@ WriteLiteral("                        <br />\r\n");
 WriteLiteral("                        <br />\r\n");
 
             
-            #line 906 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 912 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                     }
 
             
@@ -2703,7 +2697,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 936 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 942 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
         }
 
             
@@ -2712,7 +2706,7 @@ WriteLiteral(@">
 WriteLiteral("        ");
 
             
-            #line 937 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 943 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
          if (canShowUsers)
         {
             
@@ -2720,14 +2714,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 939 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 945 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("Show {0} user{1}", Model.CurrentAssignmentCount, (Model.CurrentAssignmentCount == 1 ? null : "s")), MVC.Search.Query(Model.UserFlag.Id.ToString(), "UserFlag"), "Config_UserFlags_Actions_ShowUsers_Button"));
 
             
             #line default
             #line hidden
             
-            #line 939 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 945 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
                                                                                                                                                                                                                                                               
         }
 
@@ -2737,7 +2731,7 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 942 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
+            #line 948 "..\..\Areas\Config\Views\UserFlag\Show.cshtml"
 }
 
             

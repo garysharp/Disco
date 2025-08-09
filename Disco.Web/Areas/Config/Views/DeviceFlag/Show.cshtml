@@ -771,7 +771,7 @@
                     </div>
                 </div>
             </div>
-            <div id="Config_DeviceFlags_BulkAssign_AssignDialog" class="dialog" title="Bulk Assign Devices">
+            <div id="Config_DeviceFlags_BulkAssign_AssignDialog" class="dialog" title="Bulk Assign Devices" data-assignedurl="@Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id))">
                 <div class="brief">
                     <div>
                         Enter multiple <strong>Device Serial Numbers</strong> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
@@ -846,18 +846,24 @@
                             $form.attr('action', $form.attr('data-overrideaction'));
 
                             assignDialog.addClass('loading');
-                            $.getJSON('@Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id))', function (response, result) {
+                            const body = new FormData();
+                            body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                            fetch(assignDialog.attr('data-assignedurl'), {
+                                method: 'POST',
+                                body: body
+                            }).then(r => {
                                 assignDialog.removeClass('loading');
-
-                                if (result != 'success') {
-                                    alert('Unable to load current assignments:\n' + response);
+                                if (!r.ok) {
+                                    alert('Unable to load current assignments:\n' + r.statusText);
                                     assignDialog.dialog('close');
                                 } else {
-                                    if (!!response) {
-                                        assignDeviceSerialNumbers.val(response.join('\n'));
-                                    } else {
-                                        assignDeviceSerialNumbers.val('');
-                                    }
+                                    r.json().then(j => {
+                                        if (!j) {
+                                            assignDeviceSerialNumbers.val('');
+                                        } else {
+                                            assignDeviceSerialNumbers.val(j.join('\n'));
+                                        }
+                                    })
                                 }
                             });
                         }

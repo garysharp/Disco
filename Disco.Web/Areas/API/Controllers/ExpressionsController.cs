@@ -9,14 +9,16 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class ExpressionsController : AuthorizedDatabaseController
     {
-        [HttpPost, DiscoAuthorize(Claims.DiscoAdminAccount)]
+        [DiscoAuthorize(Claims.DiscoAdminAccount)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult ValidateExpression(string Expression)
         {
             var part = new EvaluateExpressionPart(Expression);
             return Json(Models.Expressions.ValidateExpressionModel.FromEvaluateExpressionPart(part));
         }
 
-        [HttpPost, DiscoAuthorize(Claims.Config.Show), ValidateAntiForgeryToken]
+        [DiscoAuthorize(Claims.Config.Show)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult TypeDescriptor(string type, bool staticMembersOnly = false)
         {
             if (string.IsNullOrWhiteSpace(type))

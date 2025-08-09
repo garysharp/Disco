@@ -308,6 +308,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [DiscoAuthorizeAny(Claims.Config.System.ConfigureActiveDirectory, Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DomainOrganisationalUnits()
         {
             var domainOUs = ActiveDirectory.RetrieveADOrganisationalUnitStructure()

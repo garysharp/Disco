@@ -402,6 +402,7 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
         [DiscoAuthorizeAll(Claims.Config.UserFlag.Configure, Claims.User.Actions.AddFlags, Claims.User.Actions.RemoveFlags, Claims.User.ShowFlagAssignments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AssignedUsers(int id)
         {
             if (id < 0)

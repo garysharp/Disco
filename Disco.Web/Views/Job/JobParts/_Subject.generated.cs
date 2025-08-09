@@ -140,40 +140,40 @@ WriteLiteral(">Expected:</span>\r\n                                </td>\r\n    
             #line hidden
             
             #line 29 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                   Write(Html.TextBoxFor(m => m.Job.ExpectedClosedDate, "{0:yyyy/MM/dd hh:mm tt}", new { @class = "small discreet" }));
+                                   Write(Html.TextBoxFor(m => m.Job.ExpectedClosedDate, "{0:yyyy/MM/dd HH:mm}", new { @class = "small discreet" }));
 
             
             #line default
             #line hidden
             
             #line 29 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                      
+                                                                                                                                                   
             
             #line default
             #line hidden
             
             #line 29 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                 Write(AjaxHelpers.AjaxSave());
+                                                                                                                                              Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
             #line 29 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                              
+                                                                                                                                                                           
             
             #line default
             #line hidden
             
             #line 29 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                         Write(AjaxHelpers.AjaxLoader());
+                                                                                                                                                                      Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
             #line 29 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                                                       
+                                                                                                                                                                                                    
 
             
             #line default
@@ -183,67 +183,35 @@ WriteLiteral("                                        <script");
 WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
-                                        $(function () {
-                                            var $ajaxSave = $('#Job_ExpectedClosedDate').next('.ajaxSave');
-                                            var dateFieldChangeToken = null;
-                                            var dateFieldValue = $('#Job_ExpectedClosedDate').val();
-                                            $('#Job_ExpectedClosedDate')
-                                                .watermark('Unknown')
-                                                .datetimepicker({
-                                                    ampm: true,
-                                                    stepMinute: 1,
-                                                    hour: 9,
-                                                    minDate: ");
+                                            $(function () {
+                                                var dateField = $('#Job_ExpectedClosedDate');
+                                                document.DiscoFunctions.DateChangeHelper(
+                                                dateField,
+                                                'Unknown',
+                                                '");
 
             
-            #line 41 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                         Write(Model.Job.OpenedDate.ToJavascriptDate());
+            #line 36 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                             Write(Url.Action(MVC.API.Job.UpdateExpectedClosedDate(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
-WriteLiteral(@",
-                                                    changeYear: true,
-                                                    changeMonth: true,
-                                                    dateFormat: 'yy/mm/dd'
-                                                }).change(function () {
-                                                    var $this = $(this);
-                                                    var dateText = $this.val();
-                                                    if (dateFieldValue.toLowerCase() != dateText.toLowerCase()) {
-                                                        dateFieldValue = dateText;
-                                                        if (dateFieldChangeToken)
-                                                            window.clearTimeout(dateFieldChangeToken);
-                                                        dateFieldChangeToken = window.setTimeout(function () {
-                                                            $ajaxSave.hide();
-                                                            var $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
-                                                            var data = { ExpectedClosedDate: dateText };
-                                                            $.getJSON('");
+WriteLiteral("\',\r\n                                                \'ExpectedClosedDate\',\r\n      " +
+"                                          \'");
 
             
-            #line 56 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                   Write(Url.Action(MVC.API.Job.UpdateExpectedClosedDate(Model.Job.Id, null)));
+            #line 38 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                             Write(Model.Job.OpenedDate.ToString("o"));
 
             
             #line default
             #line hidden
-WriteLiteral(@"', data, function (response, result) {
-                                                                if (result != 'success' || response != 'OK') {
-                                                                    alert('Unable to change Expected Closed Date:\n' + response);
-                                                                    $ajaxLoading.hide();
-                                                                } else {
-                                                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                                                }
-                                                            })
-                                                            dateFieldChangeToken = null;
-                                                        }, 750);
-                                                    }
-                                                });
-                                        });
-                                        </script>
-");
+WriteLiteral("\'\r\n                                                );\r\n                          " +
+"                  });\r\n                                        </script>\r\n");
 
             
-            #line 70 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 42 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     }
                                     else
                                     {
@@ -252,14 +220,14 @@ WriteLiteral(@"', data, function (response, result) {
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 45 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                    Write(CommonHelpers.FriendlyDate(Model.Job.ExpectedClosedDate));
 
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 45 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                  
                                     }
 
@@ -269,7 +237,7 @@ WriteLiteral(@"', data, function (response, result) {
 WriteLiteral("                                </td>\r\n                            </tr>\r\n");
 
             
-            #line 77 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 49 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -278,7 +246,7 @@ WriteLiteral("                                </td>\r\n                         
 WriteLiteral("                        ");
 
             
-            #line 78 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 50 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          if (Model.Job.ClosedDate.HasValue)
                         {
 
@@ -294,7 +262,7 @@ WriteLiteral(" id=\"Job_Show_Job_Dates_Closed\"");
 WriteLiteral(">");
 
             
-            #line 84 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 56 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                     Write(CommonHelpers.FriendlyDateAndTitleUser(Model.Job.ClosedDate, Model.Job.ClosedTechUser));
 
             
@@ -303,7 +271,7 @@ WriteLiteral(">");
 WriteLiteral("</span></td>\r\n                            </tr>\r\n");
 
             
-            #line 86 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 58 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -317,20 +285,20 @@ WriteLiteral(" class=\"status\"");
 
 WriteLiteral(">\r\n                    <h2");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 5823), Tuple.Create("\"", 5852)
+WriteAttribute("title", Tuple.Create(" title=\"", 3292), Tuple.Create("\"", 3321)
             
-            #line 90 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 5831), Tuple.Create<System.Object, System.Int32>(Model.Job.JobType.Id
+            #line 62 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 3300), Tuple.Create<System.Object, System.Int32>(Model.Job.JobType.Id
             
             #line default
             #line hidden
-, 5831), false)
+, 3300), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 90 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 62 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                  Write(Model.Job.JobType.Description);
 
             
@@ -343,13 +311,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n                        <tr>\r\n");
 
             
-            #line 93 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 65 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 93 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 65 "..\..\Views\Job\JobParts\_Subject.cshtml"
                               
                                 var jobSubTypeFirst = (int)Math.Ceiling((double)(Model.Job.JobSubTypes.Count + 1) / 2);
                             
@@ -363,13 +331,13 @@ WriteLiteral(" id=\"Job_Show_Job_SubTypes_1\"");
 WriteLiteral(">\r\n");
 
             
-            #line 98 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 70 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 98 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 70 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                      foreach (var jobSubType in Model.Job.JobSubTypes.Take(jobSubTypeFirst))
                                     {
 
@@ -378,20 +346,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6440), Tuple.Create("\"", 6462)
+WriteAttribute("title", Tuple.Create(" title=\"", 3909), Tuple.Create("\"", 3931)
             
-            #line 100 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 6448), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
+            #line 72 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 3917), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
             
             #line default
             #line hidden
-, 6448), false)
+, 3917), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 100 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 72 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                               Write(jobSubType.Description);
 
             
@@ -400,7 +368,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 101 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 73 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     }
 
             
@@ -414,13 +382,13 @@ WriteLiteral(" id=\"Job_Show_Job_SubTypes_2\"");
 WriteLiteral(">\r\n");
 
             
-            #line 106 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 78 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 106 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 78 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                      foreach (var jobSubType in Model.Job.JobSubTypes.Skip(jobSubTypeFirst))
                                     {
 
@@ -429,20 +397,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                        <li");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 6900), Tuple.Create("\"", 6922)
+WriteAttribute("title", Tuple.Create(" title=\"", 4369), Tuple.Create("\"", 4391)
             
-            #line 108 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 6908), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
+            #line 80 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 4377), Tuple.Create<System.Object, System.Int32>(jobSubType.Id
             
             #line default
             #line hidden
-, 6908), false)
+, 4377), false)
 );
 
 WriteLiteral(">");
 
             
-            #line 108 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 80 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                               Write(jobSubType.Description);
 
             
@@ -451,7 +419,7 @@ WriteLiteral(">");
 WriteLiteral("</li>\r\n");
 
             
-            #line 109 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 81 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     }
 
             
@@ -460,13 +428,13 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                                </ul>\r\n");
 
             
-            #line 111 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 83 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 111 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 83 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                  if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes) && !Model.Job.ClosedDate.HasValue)
                                 {
 
@@ -482,7 +450,7 @@ WriteLiteral(" id=\"Job_Show_Job_SubTypes_Update\"");
 WriteLiteral(">Update Sub Types</a>\r\n");
 
             
-            #line 114 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 86 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
 
             
@@ -492,13 +460,13 @@ WriteLiteral("                            </td>\r\n                        </tr>
 "     </table>\r\n");
 
             
-            #line 118 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 90 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 118 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 90 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Authorization.Has(Claims.Job.Actions.UpdateSubTypes))
                     {
 
@@ -518,7 +486,7 @@ WriteLiteral(">\r\n                            <div>\r\n                        
 WriteLiteral("                                    ");
 
             
-            #line 123 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 95 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                Write(Model.Job.JobType.Description);
 
             
@@ -527,13 +495,13 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n                                </h2>\r\n");
 
             
-            #line 125 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 97 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 125 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 97 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                  using (Html.BeginForm(MVC.API.Job.UpdateSubTypes(Model.Job.Id, redirect: true), FormMethod.Post, new { id = "formUpdateJobTypes" }))
                                 {
                                     
@@ -541,28 +509,28 @@ WriteLiteral("\r\n                                </h2>\r\n");
             #line default
             #line hidden
             
-            #line 127 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 99 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 127 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 99 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                             
                                     
             
             #line default
             #line hidden
             
-            #line 128 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 100 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                Write(CommonHelpers.CheckBoxList("SubTypes", Model.UpdatableJobSubTypes.ToSelectListItems(Model.Job.JobSubTypes.ToList()), 3));
 
             
             #line default
             #line hidden
             
-            #line 128 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 100 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                             
 
             
@@ -591,7 +559,7 @@ WriteLiteral(">Add Components for newly added Sub Types</label>\r\n             
 "      </div>\r\n");
 
             
-            #line 134 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 106 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
 
             
@@ -623,7 +591,7 @@ WriteLiteral("                        <script>\r\n                            $(
 "                 });\r\n                        </script>\r\n");
 
             
-            #line 166 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 138 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -632,13 +600,13 @@ WriteLiteral("                        <script>\r\n                            $(
 WriteLiteral("                </div>\r\n");
 
             
-            #line 168 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 140 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 168 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 140 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Authorization.Has(Claims.Job.Actions.GenerateDocuments))
                 {
 
@@ -656,7 +624,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                        ");
 
             
-            #line 171 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 143 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.Partial(MVC.Shared.Views._GenerateDocumentControl, Model.GenerateDocumentControlModel));
 
             
@@ -665,7 +633,7 @@ WriteLiteral("                        ");
 WriteLiteral("\r\n                    </div>\r\n");
 
             
-            #line 173 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 145 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -674,13 +642,13 @@ WriteLiteral("\r\n                    </div>\r\n");
 WriteLiteral("            </div>\r\n        </td>\r\n");
 
             
-            #line 176 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 148 "..\..\Views\Job\JobParts\_Subject.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 176 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 148 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.Device != null)
         {
 
@@ -700,27 +668,27 @@ WriteLiteral(" title=\"Serial Number\"");
 WriteLiteral(">\r\n                        <span data-clipboard>\r\n");
 
             
-            #line 182 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 154 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 182 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 154 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              if (Authorization.Has(Claims.Device.Show))
                             {
             
             #line default
             #line hidden
             
-            #line 183 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 155 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         Write(Html.ActionLink(Model.Job.DeviceSerialNumber, MVC.Device.Show(Model.Job.DeviceSerialNumber)));
 
             
             #line default
             #line hidden
             
-            #line 183 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 155 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                           }
                         else
                         {
@@ -728,14 +696,14 @@ WriteLiteral(">\r\n                        <span data-clipboard>\r\n");
             #line default
             #line hidden
             
-            #line 185 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 157 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     Write(Model.Job.DeviceSerialNumber);
 
             
             #line default
             #line hidden
             
-            #line 185 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 157 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                       }
 
             
@@ -756,14 +724,14 @@ WriteLiteral(" id=\"Job_Show_Device_Model_Image\"");
 
 WriteLiteral(" alt=\"Model Image\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 11708), Tuple.Create("\"", 11826)
+WriteAttribute("src", Tuple.Create(" src=\"", 9177), Tuple.Create("\"", 9295)
             
-            #line 190 "..\..\Views\Job\JobParts\_Subject.cshtml"
-        , Tuple.Create(Tuple.Create("", 11714), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))
+            #line 162 "..\..\Views\Job\JobParts\_Subject.cshtml"
+         , Tuple.Create(Tuple.Create("", 9183), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DeviceModel.Image(Model.Job.Device.DeviceModelId, Model.Job.Device.DeviceModel.ImageHash()))
             
             #line default
             #line hidden
-, 11714), false)
+, 9183), false)
 );
 
 WriteLiteral(" />\r\n                            <div");
@@ -775,7 +743,7 @@ WriteLiteral(" title=\"Computer Name\"");
 WriteLiteral("><span data-clipboard>");
 
             
-            #line 191 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 163 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                          Write(Model.Job.Device.ComputerName);
 
             
@@ -790,7 +758,7 @@ WriteLiteral(" title=\"Model\"");
 WriteLiteral(">");
 
             
-            #line 192 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 164 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                      Write(Html.ActionLink(Model.Job.Device.DeviceModel.ToString(), MVC.Config.DeviceModel.Index(Model.Job.Device.DeviceModelId)));
 
             
@@ -799,13 +767,13 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 193 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 165 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 193 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 165 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              if (Model.Job.Device.DeviceBatch != null)
                             {
 
@@ -821,7 +789,7 @@ WriteLiteral(" title=\"Batch\"");
 WriteLiteral(">");
 
             
-            #line 195 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 167 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                          Write(Html.ActionLink(Model.Job.Device.DeviceBatch.Name, MVC.Config.DeviceBatch.Index(Model.Job.Device.DeviceBatchId)));
 
             
@@ -830,7 +798,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 196 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 168 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             }
 
             
@@ -839,7 +807,7 @@ WriteLiteral("</div>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 197 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 169 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              if (Model.Job.Device.DeviceBatch != null)
                             {
                                 if (Model.Job.JobTypeId == JobType.JobTypeIds.HWar)
@@ -860,7 +828,7 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HWar_ValidUntil\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 203 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 175 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                   Write(Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToUnixEpoc());
 
             
@@ -871,7 +839,7 @@ WriteLiteral("\"");
 WriteLiteral(">");
 
             
-            #line 203 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 175 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                  Write(Model.Job.Device.DeviceBatch.WarrantyValidUntil.ToFullDateTime("Unknown"));
 
             
@@ -880,13 +848,13 @@ WriteLiteral(">");
 WriteLiteral("</span></div>\r\n");
 
             
-            #line 204 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 176 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 204 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 176 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                          if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.WarrantyDetails))
                                         {
 
@@ -907,23 +875,23 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HWar_Details_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 13558), Tuple.Create("\"", 13623)
-, Tuple.Create(Tuple.Create("", 13566), Tuple.Create("Warranty", 13566), true)
-, Tuple.Create(Tuple.Create(" ", 13574), Tuple.Create("Details", 13575), true)
-, Tuple.Create(Tuple.Create(" ", 13582), Tuple.Create("for", 13583), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 11027), Tuple.Create("\"", 11092)
+, Tuple.Create(Tuple.Create("", 11035), Tuple.Create("Warranty", 11035), true)
+, Tuple.Create(Tuple.Create(" ", 11043), Tuple.Create("Details", 11044), true)
+, Tuple.Create(Tuple.Create(" ", 11051), Tuple.Create("for", 11052), true)
             
-            #line 207 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                            , Tuple.Create(Tuple.Create(" ", 13586), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
+            #line 179 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                                            , Tuple.Create(Tuple.Create(" ", 11055), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
             
             #line default
             #line hidden
-, 13587), false)
+, 11056), false)
 );
 
 WriteLiteral(">\r\n                                                <div>");
 
             
-            #line 208 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 180 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                  Write(new HtmlString(Model.Job.Device.DeviceBatch.WarrantyDetails));
 
             
@@ -953,7 +921,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 225 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 197 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         }
 
             
@@ -962,7 +930,7 @@ WriteLiteral(@">
 WriteLiteral("                                    </div>\r\n");
 
             
-            #line 227 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 199 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
                                 if (Model.Job.JobTypeId == JobType.JobTypeIds.HNWar)
                                 {
@@ -982,7 +950,7 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HNWar_InsuranceSupplier\"");
 WriteLiteral(">");
 
             
-            #line 232 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 204 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                              Write(Model.Job.Device.DeviceBatch.InsuranceSupplier);
 
             
@@ -995,7 +963,7 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HNWar_ValidUntil\"");
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 233 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 205 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                    Write(Model.Job.Device.DeviceBatch.InsuredUntil.ToUnixEpoc());
 
             
@@ -1006,7 +974,7 @@ WriteLiteral("\"");
 WriteLiteral(">");
 
             
-            #line 233 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 205 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                             Write(Model.Job.Device.DeviceBatch.InsuredUntil.ToFullDateTime("Unknown"));
 
             
@@ -1015,13 +983,13 @@ WriteLiteral(">");
 WriteLiteral("</span></div>\r\n");
 
             
-            #line 234 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 206 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 234 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 206 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                          if (!string.IsNullOrWhiteSpace(Model.Job.Device.DeviceBatch.InsuranceDetails))
                                         {
 
@@ -1042,23 +1010,23 @@ WriteLiteral(" id=\"Job_Show_Device_Details_HNWar_Details_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 16110), Tuple.Create("\"", 16176)
-, Tuple.Create(Tuple.Create("", 16118), Tuple.Create("Insurance", 16118), true)
-, Tuple.Create(Tuple.Create(" ", 16127), Tuple.Create("Details", 16128), true)
-, Tuple.Create(Tuple.Create(" ", 16135), Tuple.Create("for", 16136), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 13579), Tuple.Create("\"", 13645)
+, Tuple.Create(Tuple.Create("", 13587), Tuple.Create("Insurance", 13587), true)
+, Tuple.Create(Tuple.Create(" ", 13596), Tuple.Create("Details", 13597), true)
+, Tuple.Create(Tuple.Create(" ", 13604), Tuple.Create("for", 13605), true)
             
-            #line 237 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                              , Tuple.Create(Tuple.Create(" ", 16139), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
+            #line 209 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                                              , Tuple.Create(Tuple.Create(" ", 13608), Tuple.Create<System.Object, System.Int32>(Model.Job.Device.DeviceBatch.Name
             
             #line default
             #line hidden
-, 16140), false)
+, 13609), false)
 );
 
 WriteLiteral(">\r\n                                                <div>");
 
             
-            #line 238 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 210 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                  Write(new HtmlString(Model.Job.Device.DeviceBatch.InsuranceDetails));
 
             
@@ -1088,7 +1056,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 255 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 227 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         }
 
             
@@ -1097,7 +1065,7 @@ WriteLiteral(@">
 WriteLiteral("                                    </div>\r\n");
 
             
-            #line 257 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 229 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
                             }
 
@@ -1107,7 +1075,7 @@ WriteLiteral("                                    </div>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 259 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 231 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              if (Model.Job.Device.DeviceFlagAssignments.CanShowAny())
                             {
 
@@ -1121,13 +1089,13 @@ WriteLiteral(" id=\"Job_Show_Device_Flags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 262 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 234 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 262 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 234 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                      foreach (var flag in Model.Job.Device.DeviceFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, DeviceFlagService.GetDeviceFlag(f.DeviceFlagId))))
                                     {
                                         if (flag.Item2.permission.CanShow())
@@ -1138,26 +1106,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 18225), Tuple.Create("\"", 18305)
-, Tuple.Create(Tuple.Create("", 18233), Tuple.Create("flag", 18233), true)
-, Tuple.Create(Tuple.Create(" ", 18237), Tuple.Create("fa", 18238), true)
-, Tuple.Create(Tuple.Create(" ", 18240), Tuple.Create("fa-", 18241), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 15694), Tuple.Create("\"", 15774)
+, Tuple.Create(Tuple.Create("", 15702), Tuple.Create("flag", 15702), true)
+, Tuple.Create(Tuple.Create(" ", 15706), Tuple.Create("fa", 15707), true)
+, Tuple.Create(Tuple.Create(" ", 15709), Tuple.Create("fa-", 15710), true)
             
-            #line 266 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 18244), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
-            
-            #line default
-            #line hidden
-, 18244), false)
-, Tuple.Create(Tuple.Create(" ", 18267), Tuple.Create("fa-fw", 18268), true)
-, Tuple.Create(Tuple.Create(" ", 18273), Tuple.Create("d-", 18274), true)
-            
-            #line 266 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                 , Tuple.Create(Tuple.Create("", 18276), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
+            #line 238 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 15713), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
             
             #line default
             #line hidden
-, 18276), false)
+, 15713), false)
+, Tuple.Create(Tuple.Create(" ", 15736), Tuple.Create("fa-fw", 15737), true)
+, Tuple.Create(Tuple.Create(" ", 15742), Tuple.Create("d-", 15743), true)
+            
+            #line 238 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                 , Tuple.Create(Tuple.Create("", 15745), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
+            
+            #line default
+            #line hidden
+, 15745), false)
 );
 
 WriteLiteral(">\r\n                                                <span");
@@ -1171,7 +1139,7 @@ WriteLiteral(" class=\"name\"");
 WriteLiteral(">");
 
             
-            #line 268 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 240 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                   Write(flag.Item2.flag.Name);
 
             
@@ -1180,7 +1148,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 268 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 240 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                     if (flag.Item1.Comments != null)
                                                     {
             
@@ -1193,7 +1161,7 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 269 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 241 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                        Write(flag.Item1.Comments.ToHtmlComment());
 
             
@@ -1202,7 +1170,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 269 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 241 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                        }
             
             #line default
@@ -1214,7 +1182,7 @@ WriteLiteral(" class=\"added\"");
 WriteLiteral(">");
 
             
-            #line 269 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 241 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                        Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
 
             
@@ -1224,7 +1192,7 @@ WriteLiteral("</span>\r\n                                                </span>
 "                             </i>\r\n");
 
             
-            #line 272 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 244 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         }
                                     }
 
@@ -1264,7 +1232,7 @@ WriteLiteral(">\r\n                                        $(function () {\r\n  
 "           </div>\r\n");
 
             
-            #line 305 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 277 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             }
 
             
@@ -1273,13 +1241,13 @@ WriteLiteral(">\r\n                                        $(function () {\r\n  
 WriteLiteral("                        </div>\r\n                    </div>\r\n");
 
             
-            #line 308 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 280 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 308 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 280 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Model.Job.DeviceHeld.HasValue)
                     {
                         var canEditLocation = Authorization.Has(Claims.Job.Properties.DeviceHeldLocation);
@@ -1306,7 +1274,7 @@ WriteLiteral(" id=\"Job_Show_Device_DeviceHeld_Location\"");
 WriteLiteral(" data-locationsurl=\"");
 
             
-            #line 316 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 288 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                      Write(Url.Action(MVC.API.Job.DeviceHeldLocations()));
 
             
@@ -1317,7 +1285,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-updateurl=\"");
 
             
-            #line 316 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 288 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                      Write(Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null)));
 
             
@@ -1328,13 +1296,13 @@ WriteLiteral("\"");
 WriteLiteral(">\r\n");
 
             
-            #line 317 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 289 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                             
             
             #line default
             #line hidden
             
-            #line 317 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 289 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                              if (canEditLocation)
                                             {
                                                 switch (Model.LocationMode)
@@ -1346,14 +1314,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 323 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 295 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                    Write(Html.TextBoxFor(m => m.Job.DeviceHeldLocation, new { @class = "small discreet" }));
 
             
             #line default
             #line hidden
             
-            #line 323 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 295 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                           
                                                         break;
                                                     case LocationModes.RestrictedList:
@@ -1368,14 +1336,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 332 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 304 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                    Write(Html.DropDownListFor(m => m.Job.DeviceHeldLocation, listOptions, new { @class = "small discreet" }));
 
             
             #line default
             #line hidden
             
-            #line 332 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 304 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                             ;
                                                         break;
                                                 }
@@ -1384,27 +1352,27 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 335 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 307 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                            Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 335 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 307 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                         
             
             #line default
             #line hidden
             
-            #line 335 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 307 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                    Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 335 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 307 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                  
                                             }
                                             else if (string.IsNullOrEmpty(Model.Job.DeviceHeldLocation))
@@ -1420,7 +1388,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None/Unknown&gt;</span>\r\n");
 
             
-            #line 340 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 312 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                             }
                                             else
                                             {
@@ -1429,14 +1397,14 @@ WriteLiteral(">&lt;None/Unknown&gt;</span>\r\n");
             #line default
             #line hidden
             
-            #line 343 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 315 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                            Write(Model.Job.DeviceHeldLocation);
 
             
             #line default
             #line hidden
             
-            #line 343 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 315 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                              
                                             }
 
@@ -1455,7 +1423,7 @@ WriteLiteral(" id=\"Job_Show_Device_DeviceHeld_DeviceHeld\"");
 WriteLiteral(">");
 
             
-            #line 350 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 322 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                     Write(CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceHeld, Model.Job.DeviceHeldTechUser));
 
             
@@ -1464,13 +1432,13 @@ WriteLiteral(">");
 WriteLiteral("</span></td>\r\n                                </tr>\r\n");
 
             
-            #line 352 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 324 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 352 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 324 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                  if (Model.Job.DeviceReadyForReturn.HasValue)
                                 {
 
@@ -1485,7 +1453,7 @@ WriteLiteral(" id=\"Job_Show_Device_DeviceHeld_DeviceReadyForReturn\"");
 WriteLiteral(">");
 
             
-            #line 356 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 328 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                   Write(CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceReadyForReturn, Model.Job.DeviceReadyForReturnTechUser));
 
             
@@ -1494,7 +1462,7 @@ WriteLiteral(">");
 WriteLiteral("</span></td>\r\n                                    </tr>\r\n");
 
             
-            #line 358 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 330 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
 
             
@@ -1503,7 +1471,7 @@ WriteLiteral("</span></td>\r\n                                    </tr>\r\n");
 WriteLiteral("                                ");
 
             
-            #line 359 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 331 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                  if (Model.Job.DeviceReturnedDate.HasValue)
                                 {
 
@@ -1518,7 +1486,7 @@ WriteLiteral(" id=\"Job_Show_Device_DeviceHeld_DeviceReturnedDate\"");
 WriteLiteral(">");
 
             
-            #line 363 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 335 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                 Write(CommonHelpers.FriendlyDateAndTitleUser(Model.Job.DeviceReturnedDate, Model.Job.DeviceReturnedTechUser));
 
             
@@ -1527,7 +1495,7 @@ WriteLiteral(">");
 WriteLiteral("</span></td>\r\n                                    </tr>\r\n");
 
             
-            #line 365 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 337 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
 
             
@@ -1536,13 +1504,13 @@ WriteLiteral("</span></td>\r\n                                    </tr>\r\n");
 WriteLiteral("                            </table>\r\n");
 
             
-            #line 367 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 339 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 367 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 339 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              if (canEditLocation)
                             {
 
@@ -1556,13 +1524,13 @@ WriteLiteral(" type=\"text/javascript\"");
 WriteLiteral(">\r\n                                    $(function () {\r\n");
 
             
-            #line 371 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 343 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 371 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 343 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                          switch (Model.LocationMode)
                                         {
                                             case LocationModes.Unrestricted:
@@ -1661,7 +1629,7 @@ WriteLiteral("\r\n                                        const $deviceHeldLocat
 WriteLiteral("\r\n");
 
             
-            #line 463 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 435 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 break;
                                             case LocationModes.RestrictedList:
 
@@ -1677,7 +1645,7 @@ WriteLiteral(@"
                                             '");
 
             
-            #line 469 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 441 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                         Write(Url.Action(MVC.API.Job.UpdateDeviceHeldLocation(Model.Job.Id, null)));
 
             
@@ -1689,7 +1657,7 @@ WriteLiteral("\',\r\n                                            \'DeviceHeldLoc
 WriteLiteral("\r\n");
 
             
-            #line 472 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 444 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 break;
                                         }
 
@@ -1700,7 +1668,7 @@ WriteLiteral("\r\n\r\n                                    });\r\n               
 "ript>\r\n");
 
             
-            #line 478 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 450 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             }
 
             
@@ -1709,7 +1677,7 @@ WriteLiteral("\r\n\r\n                                    });\r\n               
 WriteLiteral("                        </div>\r\n");
 
             
-            #line 480 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 452 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -1718,7 +1686,7 @@ WriteLiteral("                        </div>\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n");
 
             
-            #line 483 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 455 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             
@@ -1727,7 +1695,7 @@ WriteLiteral("                </div>\r\n            </td>\r\n");
 WriteLiteral("        ");
 
             
-            #line 484 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 456 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.User != null)
         {
 
@@ -1741,13 +1709,13 @@ WriteLiteral(" id=\"Job_Show_User\"");
 WriteLiteral(">\r\n                <div>\r\n");
 
             
-            #line 488 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 460 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 488 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 460 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Model.HasUserPhoto)
                     {
 
@@ -1762,20 +1730,20 @@ WriteLiteral(">\r\n                            <img");
 
 WriteLiteral(" id=\"Job_Show_User_Photo\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 34649), Tuple.Create("\"", 34704)
+WriteAttribute("src", Tuple.Create(" src=\"", 32118), Tuple.Create("\"", 32173)
             
-            #line 491 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 34655), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.Photo(Model.Job.UserId))
+            #line 463 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 32124), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.User.Photo(Model.Job.UserId))
             
             #line default
             #line hidden
-, 34655), false)
+, 32124), false)
 );
 
 WriteLiteral(" />\r\n                        </div>\r\n");
 
             
-            #line 493 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 465 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -1790,27 +1758,27 @@ WriteLiteral(" title=\"Display Name\"");
 WriteLiteral(">\r\n                        <span data-clipboard>\r\n");
 
             
-            #line 496 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 468 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 496 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 468 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              if (Authorization.Has(Claims.User.Show))
                             {
             
             #line default
             #line hidden
             
-            #line 497 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 469 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         Write(Html.ActionLink(Model.Job.User.DisplayName, MVC.User.Show(Model.Job.UserId)));
 
             
             #line default
             #line hidden
             
-            #line 497 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 469 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                           }
                         else
                         {
@@ -1818,14 +1786,14 @@ WriteLiteral(">\r\n                        <span data-clipboard>\r\n");
             #line default
             #line hidden
             
-            #line 499 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 471 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     Write(Model.Job.User.DisplayName);
 
             
             #line default
             #line hidden
             
-            #line 499 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 471 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     }
 
             
@@ -1841,7 +1809,7 @@ WriteLiteral(" title=\"Id\"");
 WriteLiteral("><span data-clipboard>");
 
             
-            #line 502 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 474 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                           Write(Model.Job.User.FriendlyId());
 
             
@@ -1850,13 +1818,13 @@ WriteLiteral("><span data-clipboard>");
 WriteLiteral("</span></div>\r\n");
 
             
-            #line 503 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 475 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 503 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 475 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Authorization.Has(Claims.User.ShowDetails))
                     {
                         if (!string.IsNullOrWhiteSpace(Model.Job.User.PhoneNumber))
@@ -1872,21 +1840,21 @@ WriteLiteral(" title=\"Phone Number\"");
 
 WriteLiteral(">Phone: <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 35606), Tuple.Create("\"", 35644)
-, Tuple.Create(Tuple.Create("", 35613), Tuple.Create("tel:", 35613), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 33075), Tuple.Create("\"", 33113)
+, Tuple.Create(Tuple.Create("", 33082), Tuple.Create("tel:", 33082), true)
             
-            #line 506 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                     , Tuple.Create(Tuple.Create("", 35617), Tuple.Create<System.Object, System.Int32>(Model.Job.User.PhoneNumber
+            #line 478 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                     , Tuple.Create(Tuple.Create("", 33086), Tuple.Create<System.Object, System.Int32>(Model.Job.User.PhoneNumber
             
             #line default
             #line hidden
-, 35617), false)
+, 33086), false)
 );
 
 WriteLiteral(" data-clipboard>");
 
             
-            #line 506 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 478 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                              Write(Model.Job.User.PhoneNumber);
 
             
@@ -1895,7 +1863,7 @@ WriteLiteral(" data-clipboard>");
 WriteLiteral("</a></div>");
 
             
-            #line 506 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 478 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                        }
                     if (!string.IsNullOrWhiteSpace(Model.Job.User.EmailAddress))
                     {
@@ -1910,21 +1878,21 @@ WriteLiteral(" title=\"Email Address\"");
 
 WriteLiteral(">Email: <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 35872), Tuple.Create("\"", 35916)
-, Tuple.Create(Tuple.Create("", 35879), Tuple.Create("mailto:", 35879), true)
+WriteAttribute("href", Tuple.Create(" href=\"", 33341), Tuple.Create("\"", 33385)
+, Tuple.Create(Tuple.Create("", 33348), Tuple.Create("mailto:", 33348), true)
             
-            #line 508 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                       , Tuple.Create(Tuple.Create("", 35886), Tuple.Create<System.Object, System.Int32>(Model.Job.User.EmailAddress
+            #line 480 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                       , Tuple.Create(Tuple.Create("", 33355), Tuple.Create<System.Object, System.Int32>(Model.Job.User.EmailAddress
             
             #line default
             #line hidden
-, 35886), false)
+, 33355), false)
 );
 
 WriteLiteral(" data-clipboard=\"");
 
             
-            #line 508 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 480 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                   Write(Model.Job.User.DisplayName);
 
             
@@ -1933,7 +1901,7 @@ WriteLiteral(" data-clipboard=\"");
 WriteLiteral(" &lt;");
 
             
-            #line 508 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 480 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                   Write(Model.Job.User.EmailAddress);
 
             
@@ -1944,7 +1912,7 @@ WriteLiteral("&gt;\"");
 WriteLiteral(">");
 
             
-            #line 508 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 480 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                                     Write(Model.Job.User.EmailAddress);
 
             
@@ -1953,7 +1921,7 @@ WriteLiteral(">");
 WriteLiteral("</a></div>");
 
             
-            #line 508 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 480 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                                                                                }
             }
 
@@ -1963,7 +1931,7 @@ WriteLiteral("</a></div>");
 WriteLiteral("                    ");
 
             
-            #line 510 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 482 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Model.Job.User.UserFlagAssignments.CanShowAny())
                     {
 
@@ -1977,13 +1945,13 @@ WriteLiteral(" id=\"Job_Show_User_Flags\"");
 WriteLiteral(">\r\n");
 
             
-            #line 513 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 485 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 513 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 485 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              foreach (var flag in Model.Job.User.UserFlagAssignments.Where(f => !f.RemovedDate.HasValue).Select(f => Tuple.Create(f, UserFlagService.GetUserFlag(f.UserFlagId))))
                             {
                                 if (flag.Item2.permission.CanShow())
@@ -1994,26 +1962,26 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 36579), Tuple.Create("\"", 36659)
-, Tuple.Create(Tuple.Create("", 36587), Tuple.Create("flag", 36587), true)
-, Tuple.Create(Tuple.Create(" ", 36591), Tuple.Create("fa", 36592), true)
-, Tuple.Create(Tuple.Create(" ", 36594), Tuple.Create("fa-", 36595), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 34048), Tuple.Create("\"", 34128)
+, Tuple.Create(Tuple.Create("", 34056), Tuple.Create("flag", 34056), true)
+, Tuple.Create(Tuple.Create(" ", 34060), Tuple.Create("fa", 34061), true)
+, Tuple.Create(Tuple.Create(" ", 34063), Tuple.Create("fa-", 34064), true)
             
-            #line 517 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 36598), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
-            
-            #line default
-            #line hidden
-, 36598), false)
-, Tuple.Create(Tuple.Create(" ", 36621), Tuple.Create("fa-fw", 36622), true)
-, Tuple.Create(Tuple.Create(" ", 36627), Tuple.Create("d-", 36628), true)
-            
-            #line 517 "..\..\Views\Job\JobParts\_Subject.cshtml"
-         , Tuple.Create(Tuple.Create("", 36630), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
+            #line 489 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 34067), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.Icon
             
             #line default
             #line hidden
-, 36630), false)
+, 34067), false)
+, Tuple.Create(Tuple.Create(" ", 34090), Tuple.Create("fa-fw", 34091), true)
+, Tuple.Create(Tuple.Create(" ", 34096), Tuple.Create("d-", 34097), true)
+            
+            #line 489 "..\..\Views\Job\JobParts\_Subject.cshtml"
+         , Tuple.Create(Tuple.Create("", 34099), Tuple.Create<System.Object, System.Int32>(flag.Item2.flag.IconColour
+            
+            #line default
+            #line hidden
+, 34099), false)
 );
 
 WriteLiteral(">\r\n                                        <span");
@@ -2027,7 +1995,7 @@ WriteLiteral(" class=\"name\"");
 WriteLiteral(">");
 
             
-            #line 519 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 491 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                           Write(flag.Item2.flag.Name);
 
             
@@ -2036,7 +2004,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 519 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 491 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                             if (flag.Item1.Comments != null)
                                             {
             
@@ -2049,7 +2017,7 @@ WriteLiteral(" class=\"comments\"");
 WriteLiteral(">");
 
             
-            #line 520 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 492 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                Write(flag.Item1.Comments.ToHtmlComment());
 
             
@@ -2058,7 +2026,7 @@ WriteLiteral(">");
 WriteLiteral("</span>");
 
             
-            #line 520 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 492 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                }
             
             #line default
@@ -2070,7 +2038,7 @@ WriteLiteral(" class=\"added\"");
 WriteLiteral(">");
 
             
-            #line 520 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 492 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
 
             
@@ -2080,7 +2048,7 @@ WriteLiteral("</span>\r\n                                        </span>\r\n    
 "             </i>\r\n");
 
             
-            #line 523 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 495 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
                             }
 
@@ -2117,7 +2085,7 @@ WriteLiteral(">\r\n                                $(function () {\r\n          
 "         </div>\r\n");
 
             
-            #line 556 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 528 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -2126,7 +2094,7 @@ WriteLiteral(">\r\n                                $(function () {\r\n          
 WriteLiteral("                    ");
 
             
-            #line 557 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 529 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Model.Job.WaitingForUserAction.HasValue)
                     {
 
@@ -2145,7 +2113,7 @@ WriteLiteral(">\r\n                            <h4>Awaiting Action</h4>\r\n     
 WriteLiteral(" data-livestamp=\"");
 
             
-            #line 561 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 533 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     Write(Model.Job.WaitingForUserAction.ToUnixEpoc());
 
             
@@ -2156,7 +2124,7 @@ WriteLiteral("\"");
 WriteLiteral(">");
 
             
-            #line 561 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 533 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                   Write(Model.Job.WaitingForUserAction.ToFullDateTime());
 
             
@@ -2165,7 +2133,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                        </div>\r\n");
 
             
-            #line 563 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 535 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -2174,7 +2142,7 @@ WriteLiteral("</span>\r\n                        </div>\r\n");
 WriteLiteral("                    ");
 
             
-            #line 564 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 536 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      if (Model.UserDetails != null && Model.UserDetails.Count(d => !d.Key.EndsWith("&")) > 0)
                     {
 
@@ -2190,13 +2158,13 @@ WriteLiteral(" class=\"status clearfix\"");
 WriteLiteral(">\r\n");
 
             
-            #line 567 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 539 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 567 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 539 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              foreach (var detail in Model.UserDetails.Where(d => !d.Key.EndsWith("&")))
                             {
 
@@ -2207,7 +2175,7 @@ WriteLiteral("                                <div>\r\n                         
 "g>");
 
             
-            #line 570 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 542 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                        Write(detail.Key.TrimEnd('*'));
 
             
@@ -2216,13 +2184,13 @@ WriteLiteral("                                <div>\r\n                         
 WriteLiteral(":</strong>\r\n");
 
             
-            #line 571 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 543 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 571 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 543 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                      if (detail.Key.EndsWith("*"))
                                     {
 
@@ -2244,7 +2212,7 @@ WriteLiteral(" class=\"reveal hidden\"");
 WriteLiteral(">");
 
             
-            #line 574 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 546 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                Write(Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail));
 
             
@@ -2253,7 +2221,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 575 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 547 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                     }
                                     else
                                     {
@@ -2262,14 +2230,14 @@ WriteLiteral("</span>\r\n");
             #line default
             #line hidden
             
-            #line 578 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 550 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                    Write(Html.Partial(MVC.Shared.Views._CustomDetailValueRender, detail));
 
             
             #line default
             #line hidden
             
-            #line 578 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 550 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                         
                                     }
 
@@ -2279,7 +2247,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("                                </div>\r\n");
 
             
-            #line 581 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 553 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             }
 
             
@@ -2304,7 +2272,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 594 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 566 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -2313,7 +2281,7 @@ WriteLiteral(@">
 WriteLiteral("                </div>\r\n            </td>\r\n");
 
             
-            #line 597 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 569 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             
@@ -2330,13 +2298,13 @@ WriteLiteral(" id=\"Job_Show_Job_Actions\"");
 WriteLiteral(">\r\n");
 
             
-            #line 601 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 573 "..\..\Views\Job\JobParts\_Subject.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 601 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 573 "..\..\Views\Job\JobParts\_Subject.cshtml"
               
                 List<string> CanCloseForcedReasons;
                 if (Model.Job.CanCloseForced(out CanCloseForcedReasons))
@@ -2346,14 +2314,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 605 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 577 "..\..\Views\Job\JobParts\_Subject.cshtml"
                Write(Html.ActionLinkSmallButton("Forcibly Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button"));
 
             
             #line default
             #line hidden
             
-            #line 605 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 577 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                   
 
             
@@ -2383,13 +2351,13 @@ WriteLiteral("></i><strong>Are you sure?</strong>\r\n                           
 "                  <ul>\r\n");
 
             
-            #line 612 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 584 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 612 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 584 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                  foreach (var reason in CanCloseForcedReasons)
                                 {
 
@@ -2399,7 +2367,7 @@ WriteLiteral("></i><strong>Are you sure?</strong>\r\n                           
 WriteLiteral("                                    <li>");
 
             
-            #line 614 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 586 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                    Write(reason);
 
             
@@ -2408,7 +2376,7 @@ WriteLiteral("                                    <li>");
 WriteLiteral("</li>\r\n");
 
             
-            #line 615 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 587 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                 }
 
             
@@ -2417,13 +2385,13 @@ WriteLiteral("</li>\r\n");
 WriteLiteral("                            </ul>\r\n                        </div>\r\n");
 
             
-            #line 618 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 590 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 618 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 590 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.ForceClose(Model.Job.Id, null, true)))
                         {
                             
@@ -2431,14 +2399,14 @@ WriteLiteral("                            </ul>\r\n                        </div
             #line default
             #line hidden
             
-            #line 620 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 592 "..\..\Views\Job\JobParts\_Subject.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 620 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 592 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     
 
             
@@ -2455,7 +2423,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 625 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 597 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -2490,7 +2458,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "                  </script>\r\n");
 
             
-            #line 658 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 630 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
             
             
@@ -2499,13 +2467,13 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("\r\n\r\n");
 
             
-            #line 661 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 633 "..\..\Views\Job\JobParts\_Subject.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 661 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 633 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanCloseNormally())
             {
 
@@ -2533,13 +2501,13 @@ WriteLiteral(" title=\"Close this Job?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 665 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 637 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 665 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 637 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Job.Close(Model.Job.Id, true)))
                     {
                         
@@ -2547,14 +2515,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 667 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 639 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 667 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 639 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
                     }
 
@@ -2603,7 +2571,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 702 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 674 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -2612,7 +2580,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 703 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 675 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanReopen())
             {
 
@@ -2640,13 +2608,13 @@ WriteLiteral(" title=\"Reopen this Job?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 707 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 679 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 707 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 679 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Job.Reopen(Model.Job.Id, true)))
                     {
                         
@@ -2654,14 +2622,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 709 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 681 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 709 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 681 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
                     }
 
@@ -2710,7 +2678,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 744 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 716 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -2719,7 +2687,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 745 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 717 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanDelete())
             {
 
@@ -2747,13 +2715,13 @@ WriteLiteral(" title=\"Delete this Job?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 749 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 721 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 749 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 721 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Job.Delete(Model.Job.Id, true)))
                     {
                         
@@ -2761,14 +2729,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 751 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 723 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 751 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 723 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
                     }
 
@@ -2818,7 +2786,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 786 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 758 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -2827,7 +2795,7 @@ WriteLiteral(@">
 WriteLiteral("            ");
 
             
-            #line 787 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 759 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanAddQueues() && Model.AvailableQueues != null && Model.AvailableQueues.Count > 0)
             {
 
@@ -2841,14 +2809,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 795 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 767 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Add to Queue", MVC.API.JobQueueJob.AddJob(), "Job_Show_Job_Actions_AddQueue_Button"));
 
             
             #line default
             #line hidden
             
-            #line 795 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 767 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                  
 
             
@@ -2865,13 +2833,13 @@ WriteLiteral(" title=\"Add Job to Queue\"");
 WriteLiteral(">\r\n");
 
             
-            #line 797 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 769 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 797 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 769 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.JobQueueJob.AddJob()))
                     {
                         
@@ -2879,14 +2847,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 799 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 771 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 799 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 771 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -2910,14 +2878,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"JobId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 52288), Tuple.Create("\"", 52309)
+WriteAttribute("value", Tuple.Create(" value=\"", 49757), Tuple.Create("\"", 49778)
             
-            #line 801 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                , Tuple.Create(Tuple.Create("", 52296), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
+            #line 773 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                , Tuple.Create(Tuple.Create("", 49765), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
             
             #line default
             #line hidden
-, 52296), false)
+, 49765), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -2929,13 +2897,13 @@ WriteLiteral(" class=\"queuePicker\"");
 WriteLiteral(">\r\n");
 
             
-            #line 803 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 775 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 803 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 775 "..\..\Views\Job\JobParts\_Subject.cshtml"
                              foreach (var jobQueue in Model.AvailableQueues.OrderBy(jq => jq.Name))
                             {
 
@@ -2949,7 +2917,7 @@ WriteLiteral(" class=\"queue\"");
 WriteLiteral(" data-queueid=\"");
 
             
-            #line 805 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 777 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                              Write(jobQueue.Id);
 
             
@@ -2960,7 +2928,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-queuesla=\"");
 
             
-            #line 805 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 777 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                             Write(jobQueue.DefaultSLAExpiry.HasValue ? jobQueue.DefaultSLAExpiry.Value.ToString() : null);
 
             
@@ -2971,7 +2939,7 @@ WriteLiteral("\"");
 WriteLiteral(" data-queuepriority=\"");
 
             
-            #line 805 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 777 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                            Write(jobQueue.Priority.ToString());
 
             
@@ -2981,32 +2949,32 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 52778), Tuple.Create("\"", 52845)
-, Tuple.Create(Tuple.Create("", 52786), Tuple.Create("fa", 52786), true)
-, Tuple.Create(Tuple.Create(" ", 52788), Tuple.Create("fa-", 52789), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 50247), Tuple.Create("\"", 50314)
+, Tuple.Create(Tuple.Create("", 50255), Tuple.Create("fa", 50255), true)
+, Tuple.Create(Tuple.Create(" ", 50257), Tuple.Create("fa-", 50258), true)
             
-            #line 806 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 52792), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
-            
-            #line default
-            #line hidden
-, 52792), false)
-, Tuple.Create(Tuple.Create(" ", 52808), Tuple.Create("fa-fw", 52809), true)
-, Tuple.Create(Tuple.Create(" ", 52814), Tuple.Create("fa-lg", 52815), true)
-, Tuple.Create(Tuple.Create(" ", 52820), Tuple.Create("d-", 52821), true)
-            
-            #line 806 "..\..\Views\Job\JobParts\_Subject.cshtml"
-   , Tuple.Create(Tuple.Create("", 52823), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
+            #line 778 "..\..\Views\Job\JobParts\_Subject.cshtml"
+, Tuple.Create(Tuple.Create("", 50261), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
             
             #line default
             #line hidden
-, 52823), false)
+, 50261), false)
+, Tuple.Create(Tuple.Create(" ", 50277), Tuple.Create("fa-fw", 50278), true)
+, Tuple.Create(Tuple.Create(" ", 50283), Tuple.Create("fa-lg", 50284), true)
+, Tuple.Create(Tuple.Create(" ", 50289), Tuple.Create("d-", 50290), true)
+            
+            #line 778 "..\..\Views\Job\JobParts\_Subject.cshtml"
+   , Tuple.Create(Tuple.Create("", 50292), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
+            
+            #line default
+            #line hidden
+, 50292), false)
 );
 
 WriteLiteral("></i>");
 
             
-            #line 806 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 778 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                           Write(jobQueue.Name);
 
             
@@ -3015,7 +2983,7 @@ WriteLiteral("></i>");
 WriteLiteral("\r\n                                </div>\r\n");
 
             
-            #line 808 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 780 "..\..\Views\Job\JobParts\_Subject.cshtml"
                             }
 
             
@@ -3033,7 +3001,7 @@ WriteLiteral(">\r\n                            <div>\r\n                        
 WriteLiteral("                                ");
 
             
-            #line 813 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
                            Write(Html.DropDownList("Priority", priorityItems, new { id = "Job_Show_Job_Actions_AddQueue_Priority" }));
 
             
@@ -3041,27 +3009,27 @@ WriteLiteral("                                ");
             #line hidden
 WriteLiteral(" <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 53242), Tuple.Create("\"", 53290)
-, Tuple.Create(Tuple.Create("", 53250), Tuple.Create("fa", 53250), true)
-, Tuple.Create(Tuple.Create(" ", 53252), Tuple.Create("d-priority-", 53253), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 50711), Tuple.Create("\"", 50759)
+, Tuple.Create(Tuple.Create("", 50719), Tuple.Create("fa", 50719), true)
+, Tuple.Create(Tuple.Create(" ", 50721), Tuple.Create("d-priority-", 50722), true)
             
-            #line 813 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                             , Tuple.Create(Tuple.Create("", 53264), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
+            #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                                                             , Tuple.Create(Tuple.Create("", 50733), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
             
             #line default
             #line hidden
-, 53264), false)
+, 50733), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 53291), Tuple.Create("\"", 53324)
+WriteAttribute("title", Tuple.Create(" title=\"", 50760), Tuple.Create("\"", 50793)
             
-            #line 813 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                , Tuple.Create(Tuple.Create("", 53299), Tuple.Create<System.Object, System.Int32>(priorityValue
+            #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                                                                                                , Tuple.Create(Tuple.Create("", 50768), Tuple.Create<System.Object, System.Int32>(priorityValue
             
             #line default
             #line hidden
-, 53299), false)
-, Tuple.Create(Tuple.Create(" ", 53315), Tuple.Create("Priority", 53316), true)
+, 50768), false)
+, Tuple.Create(Tuple.Create(" ", 50784), Tuple.Create("Priority", 50785), true)
 );
 
 WriteLiteral("></i>\r\n                            </div>\r\n                            <div>\r\n   " +
@@ -3070,7 +3038,7 @@ WriteLiteral("></i>\r\n                            </div>\r\n                   
 WriteLiteral("                                ");
 
             
-            #line 817 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 789 "..\..\Views\Job\JobParts\_Subject.cshtml"
                            Write(Html.DropDownList("SLAExpiresMinutes", slaOptions, new { id = "Job_Show_Job_Actions_AddQueue_SLAExpiresMinutes" }));
 
             
@@ -3088,7 +3056,7 @@ WriteLiteral("></textarea>\r\n                            </div>\r\n            
 "\n");
 
             
-            #line 824 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 796 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
 
             
@@ -3149,7 +3117,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "        });\r\n                    });\r\n                </script>\r\n");
 
             
-            #line 902 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 874 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -3158,7 +3126,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("            ");
 
             
-            #line 903 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 875 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogWarranty())
             {
                 
@@ -3166,14 +3134,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 905 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 877 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Lodge Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button"));
 
             
             #line default
             #line hidden
             
-            #line 905 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 877 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                        
             }
 
@@ -3183,7 +3151,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 907 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 879 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanWarrantyCompleted())
             {
                 
@@ -3191,14 +3159,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 909 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 881 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Warranty Complete", MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_WarrantyComplete_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 909 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 881 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                      
             }
 
@@ -3208,7 +3176,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 911 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 883 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogInsurance())
             {
                 
@@ -3216,14 +3184,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 913 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Lodge Insurance", MVC.Job.LogInsurance(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogInsurance_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 913 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                    
             }
 
@@ -3233,7 +3201,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 915 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 887 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogRepair())
             {
                 
@@ -3241,14 +3209,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 917 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 889 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Lodge Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button"));
 
             
             #line default
             #line hidden
             
-            #line 917 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 889 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                  
             }
 
@@ -3258,7 +3226,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 919 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 891 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanRepairComplete())
             {
                 
@@ -3266,14 +3234,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 921 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 893 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Repairs Complete", MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_RepairComplete_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 921 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 893 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                                                      
             }
 
@@ -3283,7 +3251,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 923 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 895 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanConvertHWarToHNWar())
             {
 
@@ -3311,13 +3279,13 @@ WriteLiteral(" title=\"Convert this Job?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 927 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 899 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 927 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 899 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Job.ConvertHWarToHNWar(Model.Job.Id, true)))
                     {
                         
@@ -3325,14 +3293,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 929 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 901 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 929 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 901 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
                     }
 
@@ -3383,7 +3351,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 966 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 938 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -3392,13 +3360,13 @@ WriteLiteral(@">
 WriteLiteral("        </td>\r\n");
 
             
-            #line 968 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 940 "..\..\Views\Job\JobParts\_Subject.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 968 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 940 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.Device != null)
         {
 
@@ -3412,13 +3380,13 @@ WriteLiteral(" id=\"Job_Show_Device_Actions\"");
 WriteLiteral(">\r\n");
 
             
-            #line 971 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 943 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 971 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 943 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceHeld())
                 {
                     using (Html.BeginForm(MVC.API.Job.DeviceHeld(Model.Job.Id, true)))
@@ -3428,14 +3396,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 975 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 947 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 975 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 947 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -3452,7 +3420,7 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(">Device Held</button>\r\n");
 
             
-            #line 977 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 949 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
                 }
 
@@ -3462,7 +3430,7 @@ WriteLiteral(">Device Held</button>\r\n");
 WriteLiteral("                ");
 
             
-            #line 979 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 951 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceReadyForReturn())
                 {
                     using (Html.BeginForm(MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true)))
@@ -3472,14 +3440,14 @@ WriteLiteral("                ");
             #line default
             #line hidden
             
-            #line 983 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 955 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 983 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 955 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -3496,7 +3464,7 @@ WriteLiteral(" class=\"button small alert\"");
 WriteLiteral(">Device Ready For Return</button>\r\n");
 
             
-            #line 985 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 957 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
                 }
 
@@ -3506,7 +3474,7 @@ WriteLiteral(">Device Ready For Return</button>\r\n");
 WriteLiteral("                ");
 
             
-            #line 987 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 959 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceReturned())
                 {
                     using (Html.BeginForm(MVC.API.Job.DeviceReturned(Model.Job.Id, true)))
@@ -3516,14 +3484,14 @@ WriteLiteral("                ");
             #line default
             #line hidden
             
-            #line 991 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 963 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 991 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 963 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -3535,22 +3503,22 @@ WriteLiteral(" id=\"Job_Show_Device_Actions_DeviceReturned_Button\"");
 
 WriteLiteral(" type=\"submit\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 62566), Tuple.Create("\"", 62642)
-, Tuple.Create(Tuple.Create("", 62574), Tuple.Create("button", 62574), true)
-, Tuple.Create(Tuple.Create(" ", 62580), Tuple.Create("small", 62581), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 60035), Tuple.Create("\"", 60111)
+, Tuple.Create(Tuple.Create("", 60043), Tuple.Create("button", 60043), true)
+, Tuple.Create(Tuple.Create(" ", 60049), Tuple.Create("small", 60050), true)
             
-            #line 992 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                    , Tuple.Create(Tuple.Create(" ", 62586), Tuple.Create<System.Object, System.Int32>(Model.Job.CanDeviceReadyForReturn() ? null : "alert"
+            #line 964 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                    , Tuple.Create(Tuple.Create(" ", 60055), Tuple.Create<System.Object, System.Int32>(Model.Job.CanDeviceReadyForReturn() ? null : "alert"
             
             #line default
             #line hidden
-, 62587), false)
+, 60056), false)
 );
 
 WriteLiteral(">Device Returned</button>\r\n");
 
             
-            #line 993 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 965 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
                 }
 
@@ -3560,7 +3528,7 @@ WriteLiteral(">Device Returned</button>\r\n");
 WriteLiteral("            </td>\r\n");
 
             
-            #line 996 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 968 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             
@@ -3569,7 +3537,7 @@ WriteLiteral("            </td>\r\n");
 WriteLiteral("        ");
 
             
-            #line 997 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 969 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.User != null)
         {
 
@@ -3583,13 +3551,13 @@ WriteLiteral(" id=\"Job_Show_User_Actions\"");
 WriteLiteral(">\r\n\r\n\r\n");
 
             
-            #line 1002 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 974 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 1002 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 974 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanWaitingForUserAction())
                 {
 
@@ -3617,13 +3585,13 @@ WriteLiteral(" title=\"Waiting for User Action\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1006 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 978 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1006 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 978 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.WaitingForUserAction(Model.Job.Id, null, true)))
                         {
                             
@@ -3631,14 +3599,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1008 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 980 "..\..\Views\Job\JobParts\_Subject.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1008 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 980 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     
 
             
@@ -3655,7 +3623,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 1013 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 985 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -3690,7 +3658,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "                    });\r\n                    </script>\r\n");
 
             
-            #line 1046 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1018 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -3699,7 +3667,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("                ");
 
             
-            #line 1047 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1019 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanNotWaitingForUserAction())
                 {
 
@@ -3727,13 +3695,13 @@ WriteLiteral(" title=\"Not Waiting for User Action\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1051 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1023 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1051 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1023 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.NotWaitingForUserAction(Model.Job.Id, null, true)))
                         {
                             
@@ -3741,14 +3709,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1053 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1025 "..\..\Views\Job\JobParts\_Subject.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1053 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1025 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     
 
             
@@ -3765,7 +3733,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 1058 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1030 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -3801,7 +3769,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "    });\r\n                    </script>\r\n");
 
             
-            #line 1092 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1064 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -3810,7 +3778,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("\r\n            </td>\r\n");
 
             
-            #line 1095 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1067 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             

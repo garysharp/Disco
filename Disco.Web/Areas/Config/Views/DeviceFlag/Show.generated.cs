@@ -2357,6 +2357,17 @@ WriteLiteral(" class=\"dialog\"");
 
 WriteLiteral(" title=\"Bulk Assign Devices\"");
 
+WriteLiteral(" data-assignedurl=\"");
+
+            
+            #line 774 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+                                                                                                                         Write(Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id)));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n                <div");
 
 WriteLiteral(" class=\"brief\"");
@@ -2467,48 +2478,31 @@ WriteLiteral("            <script>\r\n                $(function () {\r\n       
 "ers.closest(\'form\');\r\n                        if (mode == \"Override\") {\r\n       " +
 "                     $form.attr(\'action\', $form.attr(\'data-overrideaction\'));\r\n\r" +
 "\n                            assignDialog.addClass(\'loading\');\r\n                " +
-"            $.getJSON(\'");
+"            const body = new FormData();\r\n                            body.appen" +
+"d(\'__RequestVerificationToken\', document.body.dataset.antiforgery);\r\n           " +
+"                 fetch(assignDialog.attr(\'data-assignedurl\'), {\r\n               " +
+"                 method: \'POST\',\r\n                                body: body\r\n  " +
+"                          }).then(r => {\r\n                                assign" +
+"Dialog.removeClass(\'loading\');\r\n                                if (!r.ok) {\r\n  " +
+"                                  alert(\'Unable to load current assignments:\\n\' " +
+"+ r.statusText);\r\n                                    assignDialog.dialog(\'close" +
+"\');\r\n                                } else {\r\n                                 " +
+"   r.json().then(j => {\r\n                                        if (!j) {\r\n    " +
+"                                        assignDeviceSerialNumbers.val(\'\');\r\n    " +
+"                                    } else {\r\n                                  " +
+"          assignDeviceSerialNumbers.val(j.join(\'\\n\'));\r\n                        " +
+"                }\r\n                                    })\r\n                     " +
+"           }\r\n                            });\r\n                        }\r\n      " +
+"                  else // Assume Add\r\n                        {\r\n               " +
+"             $form.attr(\'action\', $form.attr(\'data-addaction\'));\r\n              " +
+"          }\r\n\r\n                        assignDialog.dialog(\'open\');\r\n           " +
+"         }\r\n\r\n                    $(\'#Config_DeviceFlags_BulkAssign_Button\').cli" +
+"ck(function () {\r\n                        showModeDialog();\r\n                   " +
+"     return false;\r\n                    });\r\n                });\r\n            </" +
+"script>\r\n");
 
             
-            #line 849 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
-                                  Write(Url.Action(MVC.API.DeviceFlag.AssignedDevices(Model.DeviceFlag.Id)));
-
-            
-            #line default
-            #line hidden
-WriteLiteral(@"', function (response, result) {
-                                assignDialog.removeClass('loading');
-
-                                if (result != 'success') {
-                                    alert('Unable to load current assignments:\n' + response);
-                                    assignDialog.dialog('close');
-                                } else {
-                                    if (!!response) {
-                                        assignDeviceSerialNumbers.val(response.join('\n'));
-                                    } else {
-                                        assignDeviceSerialNumbers.val('');
-                                    }
-                                }
-                            });
-                        }
-                        else // Assume Add
-                        {
-                            $form.attr('action', $form.attr('data-addaction'));
-                        }
-
-                        assignDialog.dialog('open');
-                    }
-
-                    $('#Config_DeviceFlags_BulkAssign_Button').click(function () {
-                        showModeDialog();
-                        return false;
-                    });
-                });
-            </script>
-");
-
-            
-            #line 878 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 884 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         }
 
             
@@ -2517,7 +2511,7 @@ WriteLiteral(@"', function (response, result) {
 WriteLiteral("        ");
 
             
-            #line 879 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 885 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canDelete)
         {
 
@@ -2545,13 +2539,13 @@ WriteLiteral(" title=\"Delete this Device Flag?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 883 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 889 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 883 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 889 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                  using (Html.BeginForm(MVC.API.DeviceFlag.Delete(Model.DeviceFlag.Id, true)))
                 {
                     
@@ -2559,14 +2553,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 885 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 891 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 885 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 891 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                             
                 }
 
@@ -2581,13 +2575,13 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 "covered.<br />\r\n                    <br />\r\n");
 
             
-            #line 891 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 897 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 891 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 897 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                      if (Model.CurrentAssignmentCount > 0)
                     {
 
@@ -2597,7 +2591,7 @@ WriteLiteral("></i>\r\n                    This item will be permanently deleted
 WriteLiteral("                        <strong>");
 
             
-            #line 893 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 899 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                            Write(Model.CurrentAssignmentCount);
 
             
@@ -2606,7 +2600,7 @@ WriteLiteral("                        <strong>");
 WriteLiteral(" device");
 
             
-            #line 893 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 899 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                 Write(Model.CurrentAssignmentCount != 1 ? "s are" : " is");
 
             
@@ -2619,7 +2613,7 @@ WriteLiteral("                        <br />\r\n");
 WriteLiteral("                        <br />\r\n");
 
             
-            #line 896 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 902 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                     }
 
             
@@ -2660,7 +2654,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 926 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 932 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
         }
 
             
@@ -2669,7 +2663,7 @@ WriteLiteral(@">
 WriteLiteral("        ");
 
             
-            #line 927 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 933 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
          if (canShowDevices)
         {
             
@@ -2677,14 +2671,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 929 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 935 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
        Write(Html.ActionLinkButton(string.Format("Show {0} device{1}", Model.CurrentAssignmentCount, (Model.CurrentAssignmentCount == 1 ? null : "s")), MVC.Search.Query(Model.DeviceFlag.Id.ToString(), "DeviceFlag"), "Config_DeviceFlags_Actions_ShowDevices_Button"));
 
             
             #line default
             #line hidden
             
-            #line 929 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 935 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
                                                                                                                                                                                                                                                                         
         }
 
@@ -2694,7 +2688,7 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 932 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
+            #line 938 "..\..\Areas\Config\Views\DeviceFlag\Show.cshtml"
 }
 
             

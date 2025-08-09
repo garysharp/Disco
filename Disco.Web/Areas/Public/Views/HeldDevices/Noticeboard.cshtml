@@ -14,7 +14,7 @@
     <title>Disco ICT - Held Devices</title>
     @Html.BundleRenderDeferred()
 </head>
-<body class="theme-@(Model.DefaultTheme) status-connecting">
+<body class="theme-@(Model.DefaultTheme) status-connecting" data-antiforgery="@AntiForgeryExtensions.GetToken(Context)" data-hubname="@(Disco.Services.Jobs.Noticeboards.HeldDevices.Name)" data-dataurl="@(Url.Action(MVC.Public.HeldDevices.HeldDevices()))">
     <div id="page">
         <header id="header">
             <div id="heading">Held Devices</div>
@@ -26,7 +26,8 @@
         </header>
         <section id="mainSection">
             <div id="inProcess" class="list">
-                <h3>In Process (<span data-bind="text: inProcess().length"></span>)
+                <h3>
+                    In Process (<span data-bind="text: inProcess().length"></span>)
                 </h3>
                 <div class="content">
                     <!-- ko if: inProcess().length == 0 -->
@@ -36,7 +37,8 @@
                 </div>
             </div>
             <div id="readyForReturn" class="list">
-                <h3>Ready for Return (<span data-bind="text: readyForReturn().length"></span>)
+                <h3>
+                    Ready for Return (<span data-bind="text: readyForReturn().length"></span>)
                 </h3>
                 <div class="content">
                     <!-- ko if: readyForReturn().length == 0 -->
@@ -46,7 +48,8 @@
                 </div>
             </div>
             <div id="waitingForUserAction" class="list">
-                <h3>Waiting for User Action (<span data-bind="text: waitingForUserAction().length"></span>)
+                <h3>
+                    Waiting for User Action (<span data-bind="text: waitingForUserAction().length"></span>)
                 </h3>
                 <div class="content">
                     <!-- ko if: waitingForUserAction().length == 0 -->
@@ -130,48 +133,54 @@
                 hub.client.updateHeldDevice = updateHeldDevice;
                 hub.client.setTheme = setTheme;
 
-                $.connection.hub.qs = { Noticeboard: '@(Disco.Services.Jobs.Noticeboards.HeldDevices.Name)' };
+                $.connection.hub.qs = { Noticeboard: document.body.dataset.hubname };
                 $.connection.hub.error(function (error) {
                     console.log('Server connection error: ' + error);
                 });
                 $.connection.hub.disconnected(connectionError);
 
                 // Start Connection
-                $.connection.hub.start().fail(connectionError).done(loadData);
+                $.connection.hub.start().fail(connectionError).done(function () { loadData(); });
             }
 
             // Called after SignalR is connected
-            function loadData() {
-                $.getJSON('@(Url.Action(MVC.Public.HeldDevices.HeldDevices()))', null, function (data) {
+            async function loadData() {
 
-                    var inProcess = [];
-                    var readyForReturn = [];
-                    var waitingForUserAction = [];
-
-                    data.filter(function (heldDeviceItem) {
-                        return includeItem(heldDeviceItem)
-                    }).forEach(function (heldDeviceItem) {
-                        if (isWaitingForUserAction(heldDeviceItem))
-                            waitingForUserAction.push(heldDeviceItem);
-                        else if (isReadyForReturn(heldDeviceItem))
-                            readyForReturn.push(heldDeviceItem);
-                        else if (isInProcess(heldDeviceItem))
-                            inProcess.push(heldDeviceItem);
-                    });
-
-                    inProcess.sort(sortFunction);
-                    readyForReturn.sort(sortFunction);
-                    waitingForUserAction.sort(sortFunction);
-
-                    viewModel = new noticeboardViewModel(inProcess, readyForReturn, waitingForUserAction);
-
-                    ko.applyBindings(viewModel);
-                    viewModel.initialized = true;
-
-                    $('body').removeClass('status-connecting');
-
-                    window.setTimeout(scheduleRotation, rotateSpeed);
+                const body = new FormData();
+                body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                const response = await fetch(document.body.dataset.dataurl, {
+                    method: 'POST',
+                    body: body
                 });
+                const data = await response.json();
+
+                var inProcess = [];
+                var readyForReturn = [];
+                var waitingForUserAction = [];
+
+                data.filter(function (heldDeviceItem) {
+                    return includeItem(heldDeviceItem)
+                }).forEach(function (heldDeviceItem) {
+                    if (isWaitingForUserAction(heldDeviceItem))
+                        waitingForUserAction.push(heldDeviceItem);
+                    else if (isReadyForReturn(heldDeviceItem))
+                        readyForReturn.push(heldDeviceItem);
+                    else if (isInProcess(heldDeviceItem))
+                        inProcess.push(heldDeviceItem);
+                });
+
+                inProcess.sort(sortFunction);
+                readyForReturn.sort(sortFunction);
+                waitingForUserAction.sort(sortFunction);
+
+                viewModel = new noticeboardViewModel(inProcess, readyForReturn, waitingForUserAction);
+
+                ko.applyBindings(viewModel);
+                viewModel.initialized = true;
+
+                $('body').removeClass('status-connecting');
+
+                window.setTimeout(scheduleRotation, rotateSpeed);
             }
 
             // Called by SignalR

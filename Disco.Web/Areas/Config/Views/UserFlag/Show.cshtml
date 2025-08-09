@@ -771,7 +771,7 @@
                     </div>
                 </div>
             </div>
-            <div id="Config_UserFlags_BulkAssign_AssignDialog" class="dialog" title="Bulk Assign Users">
+            <div id="Config_UserFlags_BulkAssign_AssignDialog" class="dialog" title="Bulk Assign Users" data-assignedurl="@Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id))">
                 <div class="brief">
                     <div>
                         Enter multiple <strong>User Ids</strong> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
@@ -856,18 +856,24 @@
                             $form.attr('action', $form.attr('data-overrideaction'));
 
                             assignDialog.addClass('loading');
-                            $.getJSON('@Url.Action(MVC.API.UserFlag.AssignedUsers(Model.UserFlag.Id))', function (response, result) {
+                            const body = new FormData();
+                            body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                            fetch(assignDialog.attr('data-assignedurl'), {
+                                method: 'POST',
+                                body: body
+                            }).then(r => {
                                 assignDialog.removeClass('loading');
-
-                                if (result != 'success') {
-                                    alert('Unable to load current assignments:\n' + response);
+                                if (!r.ok) {
+                                    alert('Unable to load current assignments:\n' + r.statusText);
                                     assignDialog.dialog('close');
                                 } else {
-                                    if (!!response) {
-                                        assignUserIds.val(response.join('\n'));
-                                    } else {
-                                        assignUserIds.val('');
-                                    }
+                                    r.json().then(j => {
+                                        if (!j) {
+                                            assignUserIds.val('');
+                                        } else {
+                                            assignUserIds.val(j.join('\n'));
+                                        }
+                                    })
                                 }
                             });
                         }

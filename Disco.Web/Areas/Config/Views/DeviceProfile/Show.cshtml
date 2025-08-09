@@ -561,8 +561,8 @@
                             @Model.FriendlyOrganisationalUnitName
                         </span>
                     </div>
-                    <a id="changeOrganisationalUnit" href="#" class="button small">Change</a>@AjaxHelpers.AjaxLoader()
-                    <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog">
+                    <button id="changeOrganisationalUnit" type="button" class="button small">Change</button>@AjaxHelpers.AjaxLoader()
+                    <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog" data-url="@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))">
                         <div id="dialogOrganisationalUnit_Loading">
                             @AjaxHelpers.AjaxLoader() Loading Organisational Units
                         </div>
@@ -580,9 +580,9 @@
                     <script type="text/javascript">
                         $(function () {
                             var ouValue = $('#DeviceProfile_OrganisationalUnit').attr('data-value');
-                            var $ouTree = null;
-                            var ouTree = null;
-                            var $dialog = null;
+                            let $ouTree = null;
+                            let ouTree = null;
+                            let $dialog = null;
                             var $enforceCheckbox;
                             var ouSet = function (ou) {
                                 const $form = $dialog.find('form');
@@ -606,12 +606,13 @@
 
                                         var li = ouNode.li;
                                         var liOffset = li.offsetParent;
-                                        if (li.offsetTop + li.offsetHeight > liOffset.offsetHeight)
+                                        if (liOffset && li.offsetTop + li.offsetHeight > liOffset.offsetHeight) {
                                             $(liOffset).animate({ 'scrollTop': li.offsetTop - liOffset.offsetHeight + li.offsetHeight + 4 }, 'fast');
+                                        }
                                     }
                                 }
                             }
-                            var ouChange = function () {
+                            var ouChange = async function () {
                                 if (!$dialog) {
                                     $dialog = $('#dialogOrganisationalUnit').dialog({
                                         autoOpen: false,
@@ -630,63 +631,61 @@
 
                                     $enforceCheckbox = $('#enforceOrganisationalUnit');
 
-                                    $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
-                                        $loading.hide();
+                                    const body = new FormData();
+                                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                    const response = await fetch($dialog.attr('data-url'), {
+                                        method: 'POST',
+                                        body: body
+                                    });
+                                    const data = await response.json();
+                                    $loading.hide();
 
-                                        // Make 'Domains' unselectable
-                                        $.each(data, function (i, node) {
-                                            node.unselectable = true;
-                                        });
+                                    // Make 'Domains' unselectable
+                                    $.each(data, function (i, node) {
+                                        node.unselectable = true;
+                                    });
 
-                                        ouTree = $ouTree.fancytree({
-                                            source: data,
-                                            checkbox: false,
-                                            selectMode: 1,
-                                            keyboard: false,
-                                            fx: null
-                                        }).fancytree('getTree');
+                                    ouTree = $ouTree.fancytree({
+                                        source: data,
+                                        checkbox: false,
+                                        selectMode: 1,
+                                        keyboard: false,
+                                        fx: null
+                                    }).fancytree('getTree');
 
-                                        ouTree.$container.css('position', 'relative');
+                                    ouTree.$container.css('position', 'relative');
 
-                                        // Set Buttons
-                                        $dialog.dialog('option', 'buttons', {
-                                            'Use Default Computers Container': function () {
+                                    // Set Buttons
+                                    $dialog.dialog('option', 'buttons', {
+                                        'Use Default Computers Container': function () {
+                                            var $this = $(this);
+                                            $this.css('overflow', 'hidden');
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
+                                            ouSet('');
+                                        },
+                                        'Save': function () {
+                                            var node = ouTree.getActiveNode();
+                                            if (node && node.key.substr(0, 3).toLowerCase() == 'ou=') {
                                                 var $this = $(this);
                                                 $this.css('overflow', 'hidden');
                                                 $this.dialog("disable");
                                                 $this.dialog("option", "buttons", null);
-                                                ouSet('');
-                                            },
-                                            'Save': function () {
-                                                var node = ouTree.getActiveNode();
-                                                if (node && node.key.substr(0, 3).toLowerCase() == 'ou=') {
-                                                    var $this = $(this);
-                                                    $this.css('overflow', 'hidden');
-                                                    $this.dialog("disable");
-                                                    $this.dialog("option", "buttons", null);
-                                                    ouSet(node.key);
-                                                } else {
-                                                    alert('Select an Organisational Unit to Save')
-                                                }
+                                                ouSet(node.key);
+                                            } else {
+                                                alert('Select an Organisational Unit to Save')
                                             }
-                                        });
-
-                                        // Expand
-                                        expandAndFocusNode(ouValue);
-
-                                        ouTree.options.fx = { height: "toggle", duration: 200 };
+                                        }
                                     });
+
+                                    // Expand
+                                    expandAndFocusNode(ouValue);
+
+                                    ouTree.options.fx = { height: "toggle", duration: 200 };
                                 }
                                 $dialog.dialog('open');
 
                                 $enforceCheckbox.prop('checked', $('#DeviceProfile_EnforceOrganisationalUnit').prop('checked'));
-
-                                if (ouTree) {
-                                    // Expand
-                                    expandAndFocusNode(ouValue);
-                                }
-
-                                return false;
                             };
 
                             $('#changeOrganisationalUnit').click(ouChange);

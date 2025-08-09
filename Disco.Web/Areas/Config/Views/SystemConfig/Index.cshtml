@@ -545,9 +545,9 @@
                 {
                     <div>
                         <hr />
-                        <a id="Config_System_AD_SearchScope_Update" href="#" class="button small">Update</a>
+                        <button id="Config_System_AD_SearchScope_Update" type="button" class="button small">Update</button>
                     </div>
-                    <div id="Config_System_AD_SearchScope_Dialog" class="dialog" title="Search Scope">
+                    <div id="Config_System_AD_SearchScope_Dialog" class="dialog" title="Search Scope" data-url="@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))">
                         <div id="Config_System_AD_SearchScope_Dialog_Loading">
                             @AjaxHelpers.AjaxLoader() Loading Organisational Units
                         </div>
@@ -589,7 +589,7 @@
                                 }
                             }
 
-                            function update() {
+                            async function update() {
 
                                 if (!$dialog) {
                                     $dialog = $('#Config_System_AD_SearchScope_Dialog').dialog({
@@ -608,51 +608,55 @@
                                     $dialog.css('overflow', 'visible');
                                     $tree.css('height', '100%');
 
-                                    $.getJSON('@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))', null, function (data) {
-                                        $loading.hide();
+                                    const body = new FormData();
+                                    body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
+                                    const response = await fetch($dialog.attr('data-url'), {
+                                        method: 'POST',
+                                        body: body
+                                    });
+                                    const data = await response.json();
+                                    $loading.hide();
 
-                                        tree = $tree.fancytree({
-                                            source: data,
-                                            checkbox: true,
-                                            selectMode: 2,
-                                            keyboard: false,
-                                            fx: null
-                                        }).fancytree('getTree');
+                                    tree = $tree.fancytree({
+                                        source: data,
+                                        checkbox: true,
+                                        selectMode: 2,
+                                        keyboard: false,
+                                        fx: null
+                                    }).fancytree('getTree');
 
-                                        tree.$container.css('position', 'relative');
+                                    tree.$container.css('position', 'relative');
 
-                                        // Set Buttons
-                                        $dialog.dialog('option', 'buttons', {
-                                            'Search Entire Directory': function () {
-                                                var $this = $(this);
-                                                $this.css('overflow', 'hidden');
-                                                $this.dialog("disable");
-                                                $this.dialog("option", "buttons", null);
+                                    // Set Buttons
+                                    $dialog.dialog('option', 'buttons', {
+                                        'Search Entire Directory': function () {
+                                            var $this = $(this);
+                                            $this.css('overflow', 'hidden');
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
 
-                                                var $form = $dialog.find('form');
-                                                $form.submit();
-                                            },
-                                            'Save': function () {
-                                                var $this = $(this);
-                                                $this.css('overflow', 'hidden');
-                                                $this.dialog("disable");
-                                                $this.dialog("option", "buttons", null);
+                                            var $form = $dialog.find('form');
+                                            $form.submit();
+                                        },
+                                        'Save': function () {
+                                            var $this = $(this);
+                                            $this.css('overflow', 'hidden');
+                                            $this.dialog("disable");
+                                            $this.dialog("option", "buttons", null);
 
-                                                var nodes = tree.getSelectedNodes();
-                                                var $form = $dialog.find('form');
-                                                $.each(nodes, function (i, node) {
-                                                    $('<input>').attr({ 'type': 'hidden', 'name': 'Containers', 'value': node.key }).appendTo($form);
-                                                });
-                                                $form.submit();
-                                            }
-                                        });
-
-                                        // Select & Expand
-                                        selectDistinguishedNames();
-
-                                        tree.options.fx = { height: "toggle", duration: 200 };
+                                            var nodes = tree.getSelectedNodes();
+                                            var $form = $dialog.find('form');
+                                            $.each(nodes, function (i, node) {
+                                                $('<input>').attr({ 'type': 'hidden', 'name': 'Containers', 'value': node.key }).appendTo($form);
+                                            });
+                                            $form.submit();
+                                        }
                                     });
 
+                                    // Select & Expand
+                                    selectDistinguishedNames();
+
+                                    tree.options.fx = { height: "toggle", duration: 200 };
                                 }
 
                                 selectDistinguishedNames();

@@ -26,46 +26,18 @@
                                 <td>
                                     @if (Authorization.Has(Claims.Job.Properties.ExpectedClosedDate))
                                     {
-                                        @Html.TextBoxFor(m => m.Job.ExpectedClosedDate, "{0:yyyy/MM/dd hh:mm tt}", new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
+                                        @Html.TextBoxFor(m => m.Job.ExpectedClosedDate, "{0:yyyy/MM/dd HH:mm}", new { @class = "small discreet" }) @AjaxHelpers.AjaxSave() @AjaxHelpers.AjaxLoader()
                                         <script type="text/javascript">
-                                        $(function () {
-                                            var $ajaxSave = $('#Job_ExpectedClosedDate').next('.ajaxSave');
-                                            var dateFieldChangeToken = null;
-                                            var dateFieldValue = $('#Job_ExpectedClosedDate').val();
-                                            $('#Job_ExpectedClosedDate')
-                                                .watermark('Unknown')
-                                                .datetimepicker({
-                                                    ampm: true,
-                                                    stepMinute: 1,
-                                                    hour: 9,
-                                                    minDate: @(Model.Job.OpenedDate.ToJavascriptDate()),
-                                                    changeYear: true,
-                                                    changeMonth: true,
-                                                    dateFormat: 'yy/mm/dd'
-                                                }).change(function () {
-                                                    var $this = $(this);
-                                                    var dateText = $this.val();
-                                                    if (dateFieldValue.toLowerCase() != dateText.toLowerCase()) {
-                                                        dateFieldValue = dateText;
-                                                        if (dateFieldChangeToken)
-                                                            window.clearTimeout(dateFieldChangeToken);
-                                                        dateFieldChangeToken = window.setTimeout(function () {
-                                                            $ajaxSave.hide();
-                                                            var $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
-                                                            var data = { ExpectedClosedDate: dateText };
-                                                            $.getJSON('@(Url.Action(MVC.API.Job.UpdateExpectedClosedDate(Model.Job.Id, null)))', data, function (response, result) {
-                                                                if (result != 'success' || response != 'OK') {
-                                                                    alert('Unable to change Expected Closed Date:\n' + response);
-                                                                    $ajaxLoading.hide();
-                                                                } else {
-                                                                    $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                                                }
-                                                            })
-                                                            dateFieldChangeToken = null;
-                                                        }, 750);
-                                                    }
-                                                });
-                                        });
+                                            $(function () {
+                                                var dateField = $('#Job_ExpectedClosedDate');
+                                                document.DiscoFunctions.DateChangeHelper(
+                                                dateField,
+                                                'Unknown',
+                                                '@(Url.Action(MVC.API.Job.UpdateExpectedClosedDate(Model.Job.Id, null)))',
+                                                'ExpectedClosedDate',
+                                                '@(Model.Job.OpenedDate.ToString("o"))'
+                                                );
+                                            });
                                         </script>
                                     }
                                     else

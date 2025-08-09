@@ -397,6 +397,7 @@ namespace Disco.Web.Areas.API.Controllers
             return RedirectToAction(MVC.Config.Logging.TaskStatus(taskStatus.SessionId));
         }
         [DiscoAuthorizeAll(Claims.Config.DeviceFlag.Configure, Claims.Device.Actions.AddFlags, Claims.Device.Actions.RemoveFlags, Claims.Device.ShowFlagAssignments)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult AssignedDevices(int id)
         {
             if (id < 0)
