@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Disco.Models.Repository
 {
@@ -65,6 +66,36 @@ namespace Disco.Models.Repository
 
         [NotMapped]
         public AttachmentTypes HasAttachmentType { get { return AttachmentTypes.User; } }
+
+        /// <summary>
+        /// A list of the current device assignments, ordered by the most recent assignment date.
+        /// </summary>
+        [NotMapped]
+        public IList<DeviceUserAssignment> CurrentDeviceAssignments
+        {
+            get
+            {
+                return DeviceUserAssignments?
+                    .Where(dua => dua.UnassignedDate == null)
+                    .OrderByDescending(dua => dua.AssignedDate)
+                    .ToList() ?? new List<DeviceUserAssignment>();
+            }
+        }
+
+        /// <summary>
+        /// The most recent, current device assignment. Null if there are no current assignments.
+        /// </summary>
+        [NotMapped]
+        public DeviceUserAssignment LatestCurrentDeviceAssignment
+        {
+            get
+            {
+                return DeviceUserAssignments
+                    .Where(dua => dua.UnassignedDate == null)
+                    .OrderByDescending(dua => dua.AssignedDate)
+                    .FirstOrDefault();
+            }
+        }
 
         public override string ToString()
             => $"{DisplayName} ({UserId})";
