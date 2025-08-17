@@ -1,36 +1,36 @@
 ﻿$(() => {
-    const users = [];
-    const $table = $('#DocumentTemplate_BulkGenerate table');
-
+    const records = [];
+    const $table = $('#DocumentTemplate_BulkGenerate_Records');
+    const scope = $table.attr('data-scope');
     function redrawTable() {
-        if (users.length > 0) {
+        if (records.length > 0) {
             $table.find('tbody tr:first-child').hide();
         }
         const $tbody = $table.find('tbody');
         let checkedCount = 0;
-        for (var i = 0; i < users.length; i++) {
-            var user = users[i];
-            if (user.checkbox === undefined) {
-                const tr = $('<tr><td><input id="BulkGenerate_User_' + i.toString() + '" type="checkbox" /></td><td><label for="BulkGenerate_User_' + i.toString() + '"></label></td><td><span class="name"></span></td><td><span class="scope"></span></td></tr>');
+        for (var i = 0; i < records.length; i++) {
+            var record = records[i];
+            if (record.checkbox === undefined) {
+                const tr = $('<tr><td><input id="BulkGenerate_User_' + i.toString() + '" type="checkbox" /></td><td><label for="BulkGenerate_User_' + i.toString() + '"></label></td><td class="name"><span class="name"></span></td><td><span class="scope"></span></td></tr>');
                 const checkbox = tr.find('input')[0];
                 const label = tr.find('label');
                 const name = tr.find('span.name');
                 const scope = tr.find('span.scope');
-                label.text(user.Id);
-                scope.text(user.Scope);
-                if (!user.IsError) {
+                label.text(record.Id);
+                scope.text(record.Scope);
+                if (!record.IsError) {
                     checkbox.checked = true;
-                    name.text(user.DisplayName);
+                    name.text(record.UserDisplayName);
                     checkedCount++;
                 } else {
                     tr.addClass('error');
                     checkbox.checked = false;
                     checkbox.disabled = true;
                 }
-                user.checkbox = checkbox;
+                record.checkbox = checkbox;
                 $tbody.append(tr);
             } else {
-                if (!user.IsError && user.checkbox.checked) {
+                if (!record.IsError && record.checkbox.checked) {
                     checkedCount++;
                 }
             }
@@ -42,13 +42,13 @@
         }
     }
 
-    function addUsers(r) {
+    function addRecords(r) {
         let changeCount = 0;
         for (var i = 0; i < r.length; i++) {
-            const user = r[i];
-            const record = users.find(u => u.Id === user.Id);
-            if (record === undefined || user.IsError) {
-                users.push(user);
+            const item = r[i];
+            const record = records.find(u => u.Id === item.Id);
+            if (record === undefined || item.IsError) {
+                records.push(item);
                 changeCount++;
             } else if (record.checkbox !== undefined && !record.checkbox.checked && !record.IsError) {
                 record.checkbox.checked = true;
@@ -60,11 +60,11 @@
         }
     }
 
-    function excludeUsers(r) {
+    function excludeRecords(r) {
         let changeCount = 0;
         for (var i = 0; i < r.length; i++) {
             const user = r[i];
-            const record = users.find(u => u.Id === user.Id);
+            const record = records.find(u => u.Id === user.Id);
             if (record !== undefined && record.checkbox !== undefined) {
                 record.checkbox.checked = false;
                 changeCount++;
@@ -75,12 +75,12 @@
         }
     }
 
-    function excludeOtherUsers(r) {
+    function excludeOtherRecords(r) {
         let changeCount = 0;
-        for (var i = 0; i < users.length; i++) {
-            const user = users[i];
-            if (!r.find(u => u.Id === user.Id)) {
-                user.checkbox.checked = false;
+        for (var i = 0; i < records.length; i++) {
+            const record = records[i];
+            if (!r.find(u => u.Id === record.Id)) {
+                record.checkbox.checked = false;
                 changeCount++;
             }
         }
@@ -94,15 +94,15 @@
     });
 
     $('#BulkGenerate').click(e => {
-        let userIds = [];
-        for (var i = 0; i < users.length; i++) {
-            var user = users[i];
-            if (!user.IsError && user.checkbox !== undefined && user.checkbox.checked) {
-                userIds.push(user.Id);
+        let dataIds = [];
+        for (var i = 0; i < records.length; i++) {
+            var record = records[i];
+            if (!record.IsError && record.checkbox !== undefined && record.checkbox.checked) {
+                dataIds.push(record.Id);
             }
         }
-        if (userIds.length > 0) {
-            $('#DocumentTemplate_BulkGenerate_DataIds').val(userIds.join('\r\n'));
+        if (dataIds.length > 0) {
+            $('#DocumentTemplate_BulkGenerate_DataIds').val(dataIds.join('\r\n'));
             $('#BulkGenerate').closest('form').submit();
         }
     });
@@ -113,45 +113,91 @@
 
         let dialog = dialogAddUsers;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 if (form.reportValidity()) {
                     const body = new FormData(form);
-                    fetch(form.action, {
-                        method: 'POST',
-                        body: body
-                    })
-                        .then(r => r.json())
-                        .then(r => {
-                            applier(r);
-                            dialog.find('textarea').html('').val('');
-                            dialog.dialog("close");
-                            dialog.dialog("enable");
-                        })
-                        .catch(reason => {
-                            alert('Failed to validate users: ' + reason);
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: body
                         });
+                        const results = await response.json();
+                        applier(results);
+                        dialog.find('textarea').html('').val('');
+                        dialog.dialog("close");
+                    } catch (e) {
+                        alert('Failed to validate users: ' + e);
+                    }
                 }
-                dialog.dialog("disable");
             }
+            const target = scope === 'user' ? 'Users' : 'Assigned Devices';
+            const buttons = {};
+            buttons[`Exclude Other ${target}`] = function () {
+                action(excludeOtherRecords);
+            };
+            buttons[`Exclude ${target}`] = function () {
+                action(excludeRecords);
+            };
+            buttons[`Add ${target}`] = function () {
+                action(addRecords);
+            };
+
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUsers').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
-                width: 460,
+                width: 550,
+                buttons: buttons
+            });
+            dialogAddUsers = dialog;
+        }
+        dialog.dialog('open');
+        return false;
+    });
+
+    let dialogAddDevices = null;
+    $('#AddDevices').click(e => {
+        e.preventDefault();
+
+        let dialog = dialogAddDevices;
+        if (!dialog) {
+            const action = async function (applier) {
+                const form = dialog.find('form')[0];
+                if (form.reportValidity()) {
+                    const body = new FormData(form);
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: body
+                        });
+                        const results = await response.json();
+                        applier(results);
+                        dialog.find('textarea').html('').val('');
+                        dialog.dialog("close");
+                    } catch (e) {
+                        alert('Failed to validate devices: ' + e);
+                    }
+                }
+            }
+            dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddDevices').dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                width: 550,
                 buttons: {
-                    "Exclude Other Users": function () {
-                        action(excludeOtherUsers);
+                    "Exclude Unmatched Devices": function () {
+                        action(excludeOtherRecords);
                     },
-                    "Exclude Users": function () {
-                        action(excludeUsers);
+                    "Exclude Devices": function () {
+                        action(excludeRecords);
                     },
-                    "Add Users": function () {
-                        action(addUsers);
+                    "Add Devices": function () {
+                        action(addRecords);
                     }
                 }
             });
-            dialogAddUsers = dialog;
+            dialogAddDevices = dialog;
         }
         dialog.dialog('open');
         return false;
@@ -163,41 +209,38 @@
 
         let dialog = dialogAddGroupMembers;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 if (form.reportValidity()) {
                     const body = new FormData(form);
-                    fetch(form.action, {
-                        method: 'POST',
-                        body: body
-                    })
-                        .then(r => r.json())
-                        .then(r => {
-                            applier(r);
-                            dialog.find('input[type="text"]').val('');
-                            dialog.dialog("close");
-                            dialog.dialog("enable");
-                        })
-                        .catch(reason => {
-                            alert('Failed to validate group: ' + reason);
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: body
                         });
+                        const result = await response.json();
+                        applier(result);
+                        dialog.find('input[type="text"]').val('');
+                        dialog.dialog("close");
+                    } catch (e) {
+                        alert('Failed to validate group: ' + e);
+                    }
                 }
-                dialog.dialog("disable");
             }
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
-                width: 460,
+                width: 550,
                 buttons: {
                     "Exclude Non-Group Members": function () {
-                        action(excludeOtherUsers);
+                        action(excludeOtherRecords);
                     },
                     "Exclude Group Members": function () {
-                        action(excludeUsers);
+                        action(excludeRecords);
                     },
                     "Add Group Members": function () {
-                        action(addUsers);
+                        action(addRecords);
                     }
                 }
             });
@@ -227,42 +270,39 @@
 
         let dialog = dialogAddUserFlag;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 if (form.reportValidity()) {
                     const body = new FormData(form);
-                    fetch(form.action, {
-                        method: 'POST',
-                        body: body
-                    })
-                        .then(r => r.json())
-                        .then(r => {
-                            applier(r);
-                            dialog.find('input[name="flagId"]').val('');
-                            dialog.find('div.item').removeClass('selected');
-                            dialog.dialog("close");
-                            dialog.dialog("enable");
-                        })
-                        .catch(reason => {
-                            alert('Failed to validate user flag: ' + reason);
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: body
                         });
+                        const result = await response.json();
+                        applier(result);
+                        dialog.find('input[name="flagId"]').val('');
+                        dialog.find('div.item').removeClass('selected');
+                        dialog.dialog("close");
+                    } catch (e) {
+                        alert('Failed to validate user flag: ' + e);
+                    }
                 }
-                dialog.dialog("disable");
             }
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUserFlag').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
-                width: 460,
+                width: 550,
                 buttons: {
                     "Exclude Unassigned Users": function () {
-                        action(excludeOtherUsers);
+                        action(excludeOtherRecords);
                     },
                     "Exclude Assigned Users": function () {
-                        action(excludeUsers);
+                        action(excludeRecords);
                     },
                     "Add Assigned Users": function () {
-                        action(addUsers);
+                        action(addRecords);
                     }
                 }
             });
@@ -281,52 +321,107 @@
         return false;
     });
 
+    let dialogAddDeviceFlag = null;
+    $('#AddDeviceFlag').click(e => {
+        e.preventDefault();
+
+        let dialog = dialogAddDeviceFlag;
+        if (!dialog) {
+            const action = async function (applier) {
+                const form = dialog.find('form')[0];
+                if (form.reportValidity()) {
+                    const body = new FormData(form);
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: body
+                        });
+                        const result = await response.json();
+                        applier(result);
+                        dialog.find('input[name="flagId"]').val('');
+                        dialog.find('div.item').removeClass('selected');
+                        dialog.dialog("close");
+                    } catch (e) {
+                        alert('Failed to validate device flag: ' + e);
+                    }
+                }
+            }
+            dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddDeviceFlag').dialog({
+                resizable: false,
+                modal: true,
+                autoOpen: false,
+                width: 550,
+                buttons: {
+                    "Exclude Unassigned Devices": function () {
+                        action(excludeOtherRecords);
+                    },
+                    "Exclude Assigned Devices": function () {
+                        action(excludeRecords);
+                    },
+                    "Add Assigned Devices": function () {
+                        action(addRecords);
+                    }
+                }
+            });
+            const $input = dialog.find('input[name="flagId"]');
+            dialog.on('click', 'div.item:not(.disabled)', e => {
+                e.preventDefault();
+                const $target = $(e.currentTarget);
+                $input.val($target.attr('data-userflagid'));
+                dialog.find('div.item').removeClass('selected');
+                $target.addClass('selected');
+                return false;
+            });
+            dialogAddDeviceFlag = dialog;
+        }
+        dialog.dialog('open');
+        return false;
+    });
+
     let dialogAddDeviceProfile = null;
     $('#AddDeviceProfile').click(e => {
         e.preventDefault();
         let dialog = dialogAddDeviceProfile;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 const input = dialog.find('input[name="deviceProfileId"]');
                 if (input.val()) {
                     if (form.reportValidity()) {
                         const body = new FormData(form);
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: body
-                        })
-                            .then(r => r.json())
-                            .then(r => {
-                                applier(r);
-                                input.val('');
-                                dialog.find('div.item').removeClass('selected');
-                                dialog.dialog("close");
-                                dialog.dialog("enable");
-                            })
-                            .catch(reason => {
-                                alert('Failed to validate device profile: ' + reason);
+                        try {
+                            const response = await fetch(form.action, {
+                                method: 'POST',
+                                body: body
                             });
-                        dialog.dialog("disable");
+                            const result = await response.json();
+                            applier(result);
+                            input.val('');
+                            dialog.find('div.item').removeClass('selected');
+                            dialog.dialog("close");
+                        } catch (e) {
+                            alert('Failed to validate device profile: ' + e);
+                        }
                     }
                 }
             }
+            const target = scope === 'user' ? 'Assigned Users' : 'Devices';
+            const buttons = {};
+            buttons[`Exclude Other ${target}`] = function () {
+                action(excludeOtherRecords);
+            };
+            buttons[`Exclude ${target}`] = function () {
+                action(excludeRecords);
+            };
+            buttons[`Add ${target}`] = function () {
+                action(addRecords);
+            };
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddDeviceProfile').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
-                width: 460,
-                buttons: {
-                    "Exclude Unassigned Users": function () {
-                        action(excludeOtherUsers);
-                    },
-                    "Exclude Assigned Users": function () {
-                        action(excludeUsers);
-                    },
-                    "Add Assigned Users": function () {
-                        action(addUsers);
-                    }
-                }
+                width: 550,
+                buttons: buttons
             });
             const $input = dialog.find('input[name="deviceProfileId"]');
             dialog.on('click', 'div.item:not(.disabled)', e => {
@@ -348,47 +443,45 @@
         e.preventDefault();
         let dialog = dialogAddDeviceBatch;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 const input = dialog.find('input[name="deviceBatchId"]');
                 if (input.val()) {
                     if (form.reportValidity()) {
                         const body = new FormData(form);
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: body
-                        })
-                            .then(r => r.json())
-                            .then(r => {
-                                applier(r);
-                                input.val('');
-                                dialog.find('div.item').removeClass('selected');
-                                dialog.dialog("close");
-                                dialog.dialog("enable");
-                            })
-                            .catch(reason => {
-                                alert('Failed to validate device batch: ' + reason);
+                        try {
+                            const response = await fetch(form.action, {
+                                method: 'POST',
+                                body: body
                             });
-                        dialog.dialog("disable");
+                            const result = await response.json();
+                            applier(result);
+                            input.val('');
+                            dialog.find('div.item').removeClass('selected');
+                            dialog.dialog("close");
+                        } catch (e) {
+                            alert('Failed to validate device batch: ' + e);
+                        }
                     }
                 }
             }
+            const target = scope === 'user' ? 'Assigned Users' : 'Devices';
+            const buttons = {};
+            buttons[`Exclude Other ${target}`] = function () {
+                action(excludeOtherRecords);
+            };
+            buttons[`Exclude ${target}`] = function () {
+                action(excludeRecords);
+            };
+            buttons[`Add ${target}`] = function () {
+                action(addRecords);
+            };
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddDeviceBatch').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
-                width: 460,
-                buttons: {
-                    "Exclude Unassigned Users": function () {
-                        action(excludeOtherUsers);
-                    },
-                    "Exclude Assigned Users": function () {
-                        action(excludeUsers);
-                    },
-                    "Add Assigned Users": function () {
-                        action(addUsers);
-                    }
-                }
+                width: 550,
+                buttons: buttons
             });
             const $input = dialog.find('input[name="deviceBatchId"]');
             dialog.on('click', 'div.item:not(.disabled)', e => {
@@ -410,47 +503,45 @@
         e.preventDefault();
         let dialog = dialogAddDocumentAttachment;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 const input = dialog.find('input[name="documentTemplateId"]');
                 if (input.val()) {
                     if (form.reportValidity()) {
                         const body = new FormData(form);
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: body
-                        })
-                            .then(r => r.json())
-                            .then(r => {
-                                applier(r);
-                                input.val('');
-                                dialog.find('div.item').removeClass('selected');
-                                dialog.dialog("close");
-                                dialog.dialog("enable");
-                            })
-                            .catch(reason => {
-                                alert('Failed to validate device batch: ' + reason);
+                        try {
+                            const response = await fetch(form.action, {
+                                method: 'POST',
+                                body: body
                             });
-                        dialog.dialog("disable");
+                            const result = await response.json();
+                            applier(result);
+                            input.val('');
+                            dialog.find('div.item').removeClass('selected');
+                            dialog.dialog("close");
+                        } catch (e) {
+                            alert('Failed to validate device batch: ' + e);
+                        }
                     }
                 }
             }
+            const target = scope === 'user' ? 'Users' : 'Devices';
+            const buttons = {};
+            buttons[`Exclude Unassigned ${target}`] = function () {
+                action(excludeOtherRecords);
+            };
+            buttons[`Exclude Assigned ${target}`] = function () {
+                action(excludeRecords);
+            };
+            buttons[`Add Assigned ${target}`] = function () {
+                action(addRecords);
+            };
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
-                width: 460,
-                buttons: {
-                    "Exclude Unassigned Users": function () {
-                        action(excludeOtherUsers);
-                    },
-                    "Exclude Assigned Users": function () {
-                        action(excludeUsers);
-                    },
-                    "Add Assigned Users": function () {
-                        action(addUsers);
-                    }
-                }
+                width: 550,
+                buttons: buttons
             });
             const $input = dialog.find('input[name="documentTemplateId"]');
             dialog.on('click', 'div.item:not(.disabled)', e => {
@@ -472,49 +563,47 @@
         e.preventDefault();
         let dialog = dialogAddUserDetail;
         if (!dialog) {
-            const action = function (applier) {
+            const action = async function (applier) {
                 const form = dialog.find('form')[0];
                 const key = $(form).find('input[name="key"]');
                 if (key.val()) {
                     if (form.reportValidity()) {
                         const body = new FormData(form);
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: body
-                        })
-                            .then(r => r.json())
-                            .then(r => {
-                                applier(r);
-                                key.val('');
-                                $(form).find('input[name="value"]').val('');
-                                $('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value').empty();
-                                dialog.find('div.item').removeClass('selected');
-                                dialog.dialog("close");
-                                dialog.dialog("enable");
-                            })
-                            .catch(reason => {
-                                alert('Failed to validate user detail: ' + reason);
+                        try {
+                            const response = await fetch(form.action, {
+                                method: 'POST',
+                                body: body
                             });
-                        dialog.dialog("disable");
+                            const result = await response.json();
+                            applier(result);
+                            key.val('');
+                            $(form).find('input[name="value"]').val('');
+                            $('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value').empty();
+                            dialog.find('div.item').removeClass('selected');
+                            dialog.dialog("close");
+                        } catch (e) {
+                            alert('Failed to validate user detail: ' + e);
+                        }
                     }
                 }
             }
+            const target = scope === 'user' ? 'Users' : 'Devices';
+            const buttons = {};
+            buttons[`Exclude Unmatched ${target}`] = function () {
+                action(excludeOtherRecords);
+            };
+            buttons[`Exclude Matched ${target}`] = function () {
+                action(excludeRecords);
+            };
+            buttons[`Add Matched ${target}`] = function () {
+                action(addRecords);
+            };
             dialog = $('#DocumentTemplate_BulkGenerate_Dialog_AddUserDetail').dialog({
                 resizable: false,
                 modal: true,
                 autoOpen: false,
                 width: 690,
-                buttons: {
-                    "Exclude Unmatched Users": function () {
-                        action(excludeOtherUsers);
-                    },
-                    "Exclude Matched Users": function () {
-                        action(excludeUsers);
-                    },
-                    "Add Matched Users": function () {
-                        action(addUsers);
-                    }
-                }
+                buttons: buttons
             });
             const $key = dialog.find('input[name="key"]');
             const $value = dialog.find('input[name="value"]');

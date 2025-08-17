@@ -186,8 +186,10 @@ namespace Disco.Web.Areas.Config.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _BulkGenerateShared = "_BulkGenerateShared";
                 public readonly string _ExpressionsTable = "_ExpressionsTable";
-                public readonly string BulkGenerate = "BulkGenerate";
+                public readonly string BulkGenerateDevice = "BulkGenerateDevice";
+                public readonly string BulkGenerateUser = "BulkGenerateUser";
                 public readonly string Create = "Create";
                 public readonly string CreatePackage = "CreatePackage";
                 public readonly string Export = "Export";
@@ -197,8 +199,10 @@ namespace Disco.Web.Areas.Config.Controllers
                 public readonly string ShowPackage = "ShowPackage";
                 public readonly string UndetectedPages = "UndetectedPages";
             }
+            public readonly string _BulkGenerateShared = "~/Areas/Config/Views/DocumentTemplate/_BulkGenerateShared.cshtml";
             public readonly string _ExpressionsTable = "~/Areas/Config/Views/DocumentTemplate/_ExpressionsTable.cshtml";
-            public readonly string BulkGenerate = "~/Areas/Config/Views/DocumentTemplate/BulkGenerate.cshtml";
+            public readonly string BulkGenerateDevice = "~/Areas/Config/Views/DocumentTemplate/BulkGenerateDevice.cshtml";
+            public readonly string BulkGenerateUser = "~/Areas/Config/Views/DocumentTemplate/BulkGenerateUser.cshtml";
             public readonly string Create = "~/Areas/Config/Views/DocumentTemplate/Create.cshtml";
             public readonly string CreatePackage = "~/Areas/Config/Views/DocumentTemplate/CreatePackage.cshtml";
             public readonly string Export = "~/Areas/Config/Views/DocumentTemplate/Export.cshtml";

@@ -1,5 +1,4 @@
-﻿using Disco.Models.Repository;
-using Disco.Models.Services.Jobs.JobQueues;
+﻿using Disco.Models.Services.Jobs.JobQueues;
 using Disco.Models.UI.Config.JobQueue;
 using Disco.Services.Authorization;
 using Disco.Services.Extensions;

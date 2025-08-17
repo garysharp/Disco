@@ -1,5 +1,4 @@
 ﻿using Disco.Models.Areas.Config.UI.DeviceFlag;
-using Disco.Models.Repository;
 using Disco.Models.Services.Devices.DeviceFlag;
 using Disco.Models.UI.Config.DeviceFlag;
 using Disco.Services.Authorization;

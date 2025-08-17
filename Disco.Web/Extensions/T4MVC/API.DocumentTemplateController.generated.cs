@@ -205,6 +205,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddDevices()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDevices);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult BulkGenerateAddGroupMembers()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddGroupMembers);
@@ -214,6 +220,12 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual System.Web.Mvc.ActionResult BulkGenerateAddUserFlag()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUserFlag);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkGenerateAddDeviceFlag()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceFlag);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -340,8 +352,10 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string BulkGenerate = "BulkGenerate";
             public readonly string BulkGenerateDownload = "BulkGenerateDownload";
             public readonly string BulkGenerateAddUsers = "BulkGenerateAddUsers";
+            public readonly string BulkGenerateAddDevices = "BulkGenerateAddDevices";
             public readonly string BulkGenerateAddGroupMembers = "BulkGenerateAddGroupMembers";
             public readonly string BulkGenerateAddUserFlag = "BulkGenerateAddUserFlag";
+            public readonly string BulkGenerateAddDeviceFlag = "BulkGenerateAddDeviceFlag";
             public readonly string BulkGenerateAddDeviceProfile = "BulkGenerateAddDeviceProfile";
             public readonly string BulkGenerateAddDeviceBatch = "BulkGenerateAddDeviceBatch";
             public readonly string BulkGenerateAddDocumentAttachment = "BulkGenerateAddDocumentAttachment";
@@ -386,8 +400,10 @@ namespace Disco.Web.Areas.API.Controllers
             public const string BulkGenerate = "BulkGenerate";
             public const string BulkGenerateDownload = "BulkGenerateDownload";
             public const string BulkGenerateAddUsers = "BulkGenerateAddUsers";
+            public const string BulkGenerateAddDevices = "BulkGenerateAddDevices";
             public const string BulkGenerateAddGroupMembers = "BulkGenerateAddGroupMembers";
             public const string BulkGenerateAddUserFlag = "BulkGenerateAddUserFlag";
+            public const string BulkGenerateAddDeviceFlag = "BulkGenerateAddDeviceFlag";
             public const string BulkGenerateAddDeviceProfile = "BulkGenerateAddDeviceProfile";
             public const string BulkGenerateAddDeviceBatch = "BulkGenerateAddDeviceBatch";
             public const string BulkGenerateAddDocumentAttachment = "BulkGenerateAddDocumentAttachment";
@@ -635,7 +651,16 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_BulkGenerateAddUsers
         {
+            public readonly string scope = "scope";
             public readonly string userIds = "userIds";
+        }
+        static readonly ActionParamsClass_BulkGenerateAddDevices s_params_BulkGenerateAddDevices = new ActionParamsClass_BulkGenerateAddDevices();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddDevices BulkGenerateAddDevicesParams { get { return s_params_BulkGenerateAddDevices; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddDevices
+        {
+            public readonly string deviceSerialNumbers = "deviceSerialNumbers";
         }
         static readonly ActionParamsClass_BulkGenerateAddGroupMembers s_params_BulkGenerateAddGroupMembers = new ActionParamsClass_BulkGenerateAddGroupMembers();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -653,12 +678,21 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string flagId = "flagId";
         }
+        static readonly ActionParamsClass_BulkGenerateAddDeviceFlag s_params_BulkGenerateAddDeviceFlag = new ActionParamsClass_BulkGenerateAddDeviceFlag();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkGenerateAddDeviceFlag BulkGenerateAddDeviceFlagParams { get { return s_params_BulkGenerateAddDeviceFlag; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkGenerateAddDeviceFlag
+        {
+            public readonly string flagId = "flagId";
+        }
         static readonly ActionParamsClass_BulkGenerateAddDeviceProfile s_params_BulkGenerateAddDeviceProfile = new ActionParamsClass_BulkGenerateAddDeviceProfile();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_BulkGenerateAddDeviceProfile BulkGenerateAddDeviceProfileParams { get { return s_params_BulkGenerateAddDeviceProfile; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_BulkGenerateAddDeviceProfile
         {
+            public readonly string scope = "scope";
             public readonly string deviceProfileId = "deviceProfileId";
         }
         static readonly ActionParamsClass_BulkGenerateAddDeviceBatch s_params_BulkGenerateAddDeviceBatch = new ActionParamsClass_BulkGenerateAddDeviceBatch();
@@ -667,6 +701,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_BulkGenerateAddDeviceBatch
         {
+            public readonly string scope = "scope";
             public readonly string deviceBatchId = "deviceBatchId";
         }
         static readonly ActionParamsClass_BulkGenerateAddDocumentAttachment s_params_BulkGenerateAddDocumentAttachment = new ActionParamsClass_BulkGenerateAddDocumentAttachment();
@@ -675,6 +710,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_BulkGenerateAddDocumentAttachment
         {
+            public readonly string scope = "scope";
             public readonly string documentTemplateId = "documentTemplateId";
             public readonly string threshold = "threshold";
         }
@@ -692,6 +728,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_BulkGenerateAddUserDetail
         {
+            public readonly string scope = "scope";
             public readonly string key = "key";
             public readonly string value = "value";
         }
@@ -1135,14 +1172,27 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void BulkGenerateAddUsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string userIds);
+        partial void BulkGenerateAddUsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string scope, string userIds);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerateAddUsers(string userIds)
+        public override System.Web.Mvc.ActionResult BulkGenerateAddUsers(string scope, string userIds)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUsers);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "scope", scope);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userIds", userIds);
-            BulkGenerateAddUsersOverride(callInfo, userIds);
+            BulkGenerateAddUsersOverride(callInfo, scope, userIds);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddDevicesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string deviceSerialNumbers);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDevices(string deviceSerialNumbers)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDevices);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceSerialNumbers", deviceSerialNumbers);
+            BulkGenerateAddDevicesOverride(callInfo, deviceSerialNumbers);
             return callInfo;
         }
 
@@ -1171,39 +1221,54 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void BulkGenerateAddDeviceProfileOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int deviceProfileId);
+        partial void BulkGenerateAddDeviceFlagOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int flagId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceProfile(int deviceProfileId)
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceFlag(int flagId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceFlag);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "flagId", flagId);
+            BulkGenerateAddDeviceFlagOverride(callInfo, flagId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkGenerateAddDeviceProfileOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string scope, int deviceProfileId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceProfile(string scope, int deviceProfileId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceProfile);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "scope", scope);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceProfileId", deviceProfileId);
-            BulkGenerateAddDeviceProfileOverride(callInfo, deviceProfileId);
+            BulkGenerateAddDeviceProfileOverride(callInfo, scope, deviceProfileId);
             return callInfo;
         }
 
         [NonAction]
-        partial void BulkGenerateAddDeviceBatchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int deviceBatchId);
+        partial void BulkGenerateAddDeviceBatchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string scope, int deviceBatchId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceBatch(int deviceBatchId)
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDeviceBatch(string scope, int deviceBatchId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDeviceBatch);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "scope", scope);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceBatchId", deviceBatchId);
-            BulkGenerateAddDeviceBatchOverride(callInfo, deviceBatchId);
+            BulkGenerateAddDeviceBatchOverride(callInfo, scope, deviceBatchId);
             return callInfo;
         }
 
         [NonAction]
-        partial void BulkGenerateAddDocumentAttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string documentTemplateId, System.DateTime? threshold);
+        partial void BulkGenerateAddDocumentAttachmentOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string scope, string documentTemplateId, System.DateTime? threshold);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerateAddDocumentAttachment(string documentTemplateId, System.DateTime? threshold)
+        public override System.Web.Mvc.ActionResult BulkGenerateAddDocumentAttachment(string scope, string documentTemplateId, System.DateTime? threshold)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddDocumentAttachment);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "scope", scope);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "documentTemplateId", documentTemplateId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "threshold", threshold);
-            BulkGenerateAddDocumentAttachmentOverride(callInfo, documentTemplateId, threshold);
+            BulkGenerateAddDocumentAttachmentOverride(callInfo, scope, documentTemplateId, threshold);
             return callInfo;
         }
 
@@ -1220,15 +1285,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void BulkGenerateAddUserDetailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string key, string value);
+        partial void BulkGenerateAddUserDetailOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string scope, string key, string value);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult BulkGenerateAddUserDetail(string key, string value)
+        public override System.Web.Mvc.ActionResult BulkGenerateAddUserDetail(string scope, string key, string value)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkGenerateAddUserDetail);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "scope", scope);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
-            BulkGenerateAddUserDetailOverride(callInfo, key, value);
+            BulkGenerateAddUserDetailOverride(callInfo, scope, key, value);
             return callInfo;
         }
 

@@ -209,7 +209,7 @@ namespace Disco.Web.Areas.Config.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Id", "A Document Template Package with this Id already exists.");
+                    ModelState.AddModelError(nameof(model.Id), "A Document Template Package with this Id already exists.");
                 }
             }
 
@@ -219,67 +219,134 @@ namespace Disco.Web.Areas.Config.Controllers
             return View(model);
         }
 
-        public static ConfigDocumentTemplateBulkGenerate BuildBulkGenerateModel(DocumentTemplate documentTemplate, DiscoDataContext database, AuthorizationToken authorization)
+        public static (string viewName, ConfigDocumentTemplateBulkGenerate model) BuildBulkGenerateModel(DocumentTemplate documentTemplate, DiscoDataContext database, AuthorizationToken authorization)
         {
-            var model = new BulkGenerateModel()
-            {
-                DocumentTemplate = documentTemplate,
-            };
+            BulkGenerateModel model;
+            string viewName;
 
-            model.TemplatePageCount = model.DocumentTemplate.PdfPageHasAttachmentId(database).Count;
-            model.UserFlags = database.UserFlags.Select(f => new ItemWithCount<UserFlag>()
+            if (documentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
             {
-                Item = f,
-                Count = f.UserFlagAssignments.Where(a => a.RemovedDate == null).Count(),
-            }).ToList();
-            model.DeviceProfiles = database.DeviceProfiles.Select(p => new ItemWithCount<DeviceProfile>()
-            {
-                Item = p,
-                Count = p.Devices.Where(d => d.AssignedUserId != null).Count(),
-            }).ToList();
-            model.DeviceBatches = database.DeviceBatches.Select(p => new ItemWithCount<DeviceBatch>()
-            {
-                Item = p,
-                Count = p.Devices.Where(d => d.AssignedUserId != null).Count(),
-            }).ToList();
-            model.DocumentTemplates = database.DocumentTemplates.Select(dt => new ItemWithCount<DocumentTemplate>()
-            {
-                Item = dt,
-            }).ToList();
-            foreach (var record in model.DocumentTemplates)
-            {
-                switch (record.Item.AttachmentType)
+                authorization.Require(Claims.User.Actions.GenerateDocuments);
+                model = new BulkGenerateUserModel()
                 {
-                    case AttachmentTypes.Device:
-                        record.Count = database.DeviceAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Device.AssignedUser).Distinct().Count();
-                        break;
-                    case AttachmentTypes.Job:
-                        record.Count = database.JobAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Job.User).Distinct().Count();
-                        break;
-                    case AttachmentTypes.User:
-                        record.Count = database.UserAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.User).Distinct().Count();
-                        break;
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-            if (authorization.Has(Claims.User.ShowDetails))
-            {
-                model.UserDetails = database.UserDetails.Where(d => d.Scope == "Details").GroupBy(d => d.Key).Select(g => new ItemWithCount<string>()
+                    UserFlags = database.UserFlags.Select(f => new ItemWithCount<UserFlag>()
+                    {
+                        Item = f,
+                        Count = f.UserFlagAssignments.Where(a => a.RemovedDate == null).Count(),
+                    }).ToList(),
+                };
+                model.DeviceProfiles = database.DeviceProfiles.Select(p => new ItemWithCount<DeviceProfile>()
                 {
-                    Item = g.Key,
-                    Count = g.Count(),
+                    Item = p,
+                    Count = p.Devices.Where(d => d.AssignedUserId != null).Count(),
                 }).ToList();
+                model.DeviceBatches = database.DeviceBatches.Select(p => new ItemWithCount<DeviceBatch>()
+                {
+                    Item = p,
+                    Count = p.Devices.Where(d => d.AssignedUserId != null).Count(),
+                }).ToList();
+                model.DocumentTemplates = database.DocumentTemplates.Select(dt => new ItemWithCount<DocumentTemplate>()
+                {
+                    Item = dt,
+                }).ToList();
+                foreach (var record in model.DocumentTemplates)
+                {
+                    switch (record.Item.AttachmentType)
+                    {
+                        case AttachmentTypes.Device:
+                            record.Count = database.DeviceAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Device.AssignedUser).Distinct().Count();
+                            break;
+                        case AttachmentTypes.Job:
+                            record.Count = database.JobAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Job.User).Distinct().Count();
+                            break;
+                        case AttachmentTypes.User:
+                            record.Count = database.UserAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.User).Distinct().Count();
+                            break;
+                        default:
+                            throw new NotSupportedException();
+                    }
+                }
+                if (authorization.Has(Claims.User.ShowDetails))
+                {
+                    model.UserDetails = database.UserDetails.Where(d => d.Scope == "Details").GroupBy(d => d.Key).Select(g => new ItemWithCount<string>()
+                    {
+                        Item = g.Key,
+                        Count = g.Count(),
+                    }).ToList();
+                }
+                else
+                {
+                    model.UserDetails = new List<ItemWithCount<string>>();
+                }
+                viewName = MVC.Config.DocumentTemplate.Views.BulkGenerateUser;
+            }
+            else if (documentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Device)
+            {
+                authorization.Require(Claims.Device.Actions.GenerateDocuments);
+                model = new BulkGenerateDeviceModel()
+                {
+                    DeviceFlags = database.DeviceFlags.Select(f => new ItemWithCount<DeviceFlag>()
+                    {
+                        Item = f,
+                        Count = f.DeviceFlagAssignments.Where(a => a.RemovedDate == null).Count(),
+                    }).ToList(),
+                };
+                model.DeviceProfiles = database.DeviceProfiles.Select(p => new ItemWithCount<DeviceProfile>()
+                {
+                    Item = p,
+                    Count = p.Devices.Count(),
+                }).ToList();
+                model.DeviceBatches = database.DeviceBatches.Select(p => new ItemWithCount<DeviceBatch>()
+                {
+                    Item = p,
+                    Count = p.Devices.Count(),
+                }).ToList();
+                model.DocumentTemplates = database.DocumentTemplates.Select(dt => new ItemWithCount<DocumentTemplate>()
+                {
+                    Item = dt,
+                }).ToList();
+                foreach (var record in model.DocumentTemplates)
+                {
+                    switch (record.Item.AttachmentType)
+                    {
+                        case AttachmentTypes.Device:
+                            record.Count = database.DeviceAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Device).Distinct().Count();
+                            break;
+                        case AttachmentTypes.Job:
+                            record.Count = database.JobAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).Select(a => a.Job.Device).Distinct().Count();
+                            break;
+                        case AttachmentTypes.User:
+                            record.Count = database.UserAttachments.Where(a => a.DocumentTemplateId == record.Item.Id).SelectMany(a => a.User.DeviceUserAssignments).Where(a => a.UnassignedDate == null).Select(a => a.DeviceSerialNumber).Distinct().Count();
+                            break;
+                        default:
+                            throw new NotSupportedException();
+                    }
+                }
+                if (authorization.Has(Claims.User.ShowDetails))
+                {
+                    model.UserDetails = database.UserDetails.Where(d => d.Scope == "Details").GroupBy(d => d.Key).Select(g => new ItemWithCount<string>()
+                    {
+                        Item = g.Key,
+                        Count = g.Select(i => i.User).SelectMany(u => u.DeviceUserAssignments).Where(a => a.UnassignedDate == null).Count(),
+                    }).ToList();
+                }
+                else
+                {
+                    model.UserDetails = new List<ItemWithCount<string>>();
+                }
+                viewName = MVC.Config.DocumentTemplate.Views.BulkGenerateDevice;
             }
             else
-            {
-                model.UserDetails = new List<ItemWithCount<string>>();
-            }
+                throw new NotSupportedException("Only user and device scoped document templates can be bulk generated using this method");
 
-            return model;
+            model.DocumentTemplate = documentTemplate;
+
+            model.TemplatePageCount = model.DocumentTemplate.PdfPageHasAttachmentId(database).Count;
+
+            return (viewName, model);
         }
 
-        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments)]
+        [DiscoAuthorizeAll(Claims.Config.DocumentTemplate.BulkGenerate)]
         public virtual ActionResult BulkGenerate(string id)
         {
             var documentTemplate = Database.DocumentTemplates.FirstOrDefault(at => at.Id == id);
@@ -287,16 +354,15 @@ namespace Disco.Web.Areas.Config.Controllers
             if (documentTemplate == null)
                 throw new ArgumentException("Invalid Document Template Id", nameof(id));
 
-            if (documentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.User)
+            if (documentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.User && documentTemplate.Scope != DocumentTemplate.DocumentTemplateScopes.Device)
                 throw new NotSupportedException("Only user-scoped document templates can be bulk generated using this method");
 
-
-            var model = BuildBulkGenerateModel(documentTemplate, Database, Authorization);
+            var (viewName, model) = BuildBulkGenerateModel(documentTemplate, Database, Authorization);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions(ControllerContext, model);
 
-            return View(MVC.Config.DocumentTemplate.Views.BulkGenerate, model);
+            return View(viewName, model);
         }
 
         [HttpGet]

@@ -3289,7 +3289,7 @@ WriteLiteral("            ");
             #line 1040 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (canBulkGenerate)
             {
-                if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
+                if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User || Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Device)
                 {
                     
             
@@ -3328,16 +3328,16 @@ WriteLiteral(" id=\"dialogBulkGenerate\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 62559), Tuple.Create("\"", 62610)
-, Tuple.Create(Tuple.Create("", 62567), Tuple.Create("Bulk", 62567), true)
-, Tuple.Create(Tuple.Create(" ", 62571), Tuple.Create("Generate:", 62572), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 62641), Tuple.Create("\"", 62692)
+, Tuple.Create(Tuple.Create("", 62649), Tuple.Create("Bulk", 62649), true)
+, Tuple.Create(Tuple.Create(" ", 62653), Tuple.Create("Generate:", 62654), true)
             
             #line 1049 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                          , Tuple.Create(Tuple.Create(" ", 62581), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+                          , Tuple.Create(Tuple.Create(" ", 62663), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 62582), false)
+, 62664), false)
 );
 
 WriteLiteral(">\r\n                        <div");
@@ -3631,14 +3631,14 @@ WriteLiteral(" title=\"Download Bulk Documents\"");
 
 WriteLiteral(">\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 67770), Tuple.Create("\"", 67907)
+WriteAttribute("href", Tuple.Create(" href=\"", 67852), Tuple.Create("\"", 67989)
             
             #line 1138 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 67777), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId.Value, Model.BulkGenerateDownloadFilename))
+, Tuple.Create(Tuple.Create("", 67859), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId.Value, Model.BulkGenerateDownloadFilename))
             
             #line default
             #line hidden
-, 67777), false)
+, 67859), false)
 );
 
 WriteLiteral(" class=\"button\"");

@@ -1,0 +1,62 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.BulkGenerateUserModel
+@using Disco.Services.Interop.ActiveDirectory;
+@{
+    Authorization.RequireAll(Claims.Config.DocumentTemplate.BulkGenerate, Claims.User.Actions.GenerateDocuments);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), Model.DocumentTemplate.Description, MVC.Config.DocumentTemplate.Index(Model.DocumentTemplate.Id), "Bulk Generate");
+    Html.BundleDeferred("~/ClientScripts/Modules/Disco-DocumentBulkGenerate");
+}
+<div id="DocumentTemplate_BulkGenerate">
+    <div class="actions">
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)))
+        {
+            if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
+            {
+                <input id="DocumentTemplate_BulkGenerate_InsertBlankPage" type="checkbox" name="InsertBlankPage" value="True" checked /><label for="DocumentTemplate_BulkGenerate_InsertBlankPage">Insert Blank Pages for Double-Sided Printing</label>
+            }
+            <input id="DocumentTemplate_BulkGenerate_DataIds" name="DataIds" type="hidden" />
+            <button id="BulkGenerate" class="button" disabled>Bulk Generate</button>
+            @Html.AntiForgeryToken()
+        }
+        <br />
+        <button id="AddUsers" class="button small">Add Users</button>
+        <button id="AddGroupMembers" class="button small">Add Group Members</button>
+        @if (Model.UserFlags.Any(f => f.Count > 0))
+        {
+            <button id="AddUserFlag" class="button small">Add With User Flag</button>
+        }
+        @if (Model.DeviceProfiles.Any(b => b.Count > 0))
+        {
+            <button id="AddDeviceProfile" class="button small">Add With Device Profile</button>
+        }
+        @if (Model.DeviceBatches.Any(b => b.Count > 0))
+        {
+            <button id="AddDeviceBatch" class="button small">Add With Device Batch</button>
+        }
+        @if (Model.DocumentTemplates.Any(b => b.Count > 0))
+        {
+            <button id="AddDocumentAttachment" class="button small">Add With Document Attachment</button>
+        }
+        @if (Model.UserDetails.Any(b => b.Count > 0))
+        {
+            <button id="AddUserDetail" class="button small">Add With User Detail</button>
+        }
+    </div>
+    <table id="DocumentTemplate_BulkGenerate_Records" class="genericData" data-scope="user">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th>Username</th>
+                <th class="name">Name</th>
+                <th>Scope</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="when-none">
+                <td colspan="4">Add Users</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@Html.Partial(MVC.Config.DocumentTemplate.Views._BulkGenerateShared, Model)

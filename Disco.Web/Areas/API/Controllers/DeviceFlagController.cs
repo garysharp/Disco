@@ -5,7 +5,6 @@ using Disco.Services.Devices.DeviceFlags;
 using Disco.Services.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Tasks;
-using Disco.Services.Users.UserFlags;
 using Disco.Services.Web;
 using Disco.Web.Areas.API.Models.Shared;
 using Disco.Web.Areas.Config.Models.DeviceFlag;

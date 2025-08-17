@@ -171,8 +171,8 @@ namespace Links
                 public static readonly string disco_uicore_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.uicore.min.js") ? Url("disco.uicore.min.js") : Url("disco.uicore.js");
                 public static readonly string disco_unobtrusiveValidation_extensions_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
                 public static readonly string disco_unobtrusiveValidation_extensions_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco.unobtrusiveValidation.extensions.min.js") ? Url("disco.unobtrusiveValidation.extensions.min.js") : Url("disco.unobtrusiveValidation.extensions.js");
-                public static readonly string jquery_2_1_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-2.1.1.min.js") ? Url("jquery-2.1.1.min.js") : Url("jquery-2.1.1.js");
-                public static readonly string jquery_ui_1_10_4_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui-1.10.4.min.js") ? Url("jquery-ui-1.10.4.min.js") : Url("jquery-ui-1.10.4.js");
+                public static readonly string jquery_3_7_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-3.7.1.min.js") ? Url("jquery-3.7.1.min.js") : Url("jquery-3.7.1.js");
+                public static readonly string jquery_ui_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui.min.js") ? Url("jquery-ui.min.js") : Url("jquery-ui.js");
                 public static readonly string jquery_dataTables_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
                 public static readonly string jquery_dataTables_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.dataTables.min.js") ? Url("jquery.dataTables.min.js") : Url("jquery.dataTables.js");
                 public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
@@ -354,7 +354,7 @@ namespace Links
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
                     public static readonly string disco_hubs_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
                     public static readonly string disco_hubs_js_ = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/disco-hubs.min.js") ? Url("disco-hubs.min.js") : Url("disco-hubs.js");
-                    public static readonly string jquery_signalR_2_1_2_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.signalR-2.1.2.min.js") ? Url("jquery.signalR-2.1.2.min.js") : Url("jquery.signalR-2.1.2.js");
+                    public static readonly string jquery_signalR_2_4_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.signalR-2.4.3.min.js") ? Url("jquery.signalR-2.4.3.min.js") : Url("jquery.signalR-2.4.3.js");
                 }
             
                 public static readonly string jQuery_SignalR_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jQuery-SignalR.min.js") ? Url("jQuery-SignalR.min.js") : Url("jQuery-SignalR.js");
@@ -725,25 +725,15 @@ namespace Links
                     public const string UrlPath = "~/ClientSource/Style/jQueryUI/images";
                     public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
                     public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-                    public static readonly string animated_overlay_gif = Url("animated-overlay.gif");
-                    public static readonly string ui_bg_flat_0_aaaaaa_40x100_png = Url("ui-bg_flat_0_aaaaaa_40x100.png");
-                    public static readonly string ui_bg_flat_75_ffffff_40x100_png = Url("ui-bg_flat_75_ffffff_40x100.png");
-                    public static readonly string ui_bg_glass_55_fbf9ee_1x400_png = Url("ui-bg_glass_55_fbf9ee_1x400.png");
-                    public static readonly string ui_bg_glass_65_ffffff_1x400_png = Url("ui-bg_glass_65_ffffff_1x400.png");
-                    public static readonly string ui_bg_glass_75_dadada_1x400_png = Url("ui-bg_glass_75_dadada_1x400.png");
-                    public static readonly string ui_bg_glass_75_e6e6e6_1x400_png = Url("ui-bg_glass_75_e6e6e6_1x400.png");
-                    public static readonly string ui_bg_glass_95_fef1ec_1x400_png = Url("ui-bg_glass_95_fef1ec_1x400.png");
-                    public static readonly string ui_bg_highlight_soft_75_cccccc_1x100_png = Url("ui-bg_highlight-soft_75_cccccc_1x100.png");
-                    public static readonly string ui_icons_222222_256x240_png = Url("ui-icons_222222_256x240.png");
-                    public static readonly string ui_icons_2e83ff_256x240_png = Url("ui-icons_2e83ff_256x240.png");
-                    public static readonly string ui_icons_454545_256x240_png = Url("ui-icons_454545_256x240.png");
-                    public static readonly string ui_icons_888888_256x240_png = Url("ui-icons_888888_256x240.png");
-                    public static readonly string ui_icons_cd0a0a_256x240_png = Url("ui-icons_cd0a0a_256x240.png");
+                    public static readonly string ui_icons_444444_256x240_png = Url("ui-icons_444444_256x240.png");
+                    public static readonly string ui_icons_555555_256x240_png = Url("ui-icons_555555_256x240.png");
+                    public static readonly string ui_icons_777620_256x240_png = Url("ui-icons_777620_256x240.png");
+                    public static readonly string ui_icons_777777_256x240_png = Url("ui-icons_777777_256x240.png");
+                    public static readonly string ui_icons_cc0000_256x240_png = Url("ui-icons_cc0000_256x240.png");
+                    public static readonly string ui_icons_ffffff_256x240_png = Url("ui-icons_ffffff_256x240.png");
                 }
             
                 public static readonly string jquery_ui_less = Url("jquery-ui.less");
-                public static readonly string jquery_ui_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-ui.min.css") ? Url("jquery-ui.min.css") : Url("jquery-ui.css");
-                public static readonly string jquery_ui_min_css = Url("jquery-ui.min.css");
             }
         
             public static readonly string jQueryUIExtensions_less = Url("jQueryUIExtensions.less");
@@ -913,8 +903,8 @@ namespace Links
                         public const string disco_uicore_js_ = "~/ClientSource/Scripts/Core/disco.uicore.js"; 
                         public const string disco_unobtrusiveValidation_extensions_js = "~/ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js"; 
                         public const string disco_unobtrusiveValidation_extensions_js_ = "~/ClientSource/Scripts/Core/disco.unobtrusiveValidation.extensions.js"; 
-                        public const string jquery_2_1_1_js = "~/ClientSource/Scripts/Core/jquery-2.1.1.js"; 
-                        public const string jquery_ui_1_10_4_js = "~/ClientSource/Scripts/Core/jquery-ui-1.10.4.js"; 
+                        public const string jquery_3_7_1_js = "~/ClientSource/Scripts/Core/jquery-3.7.1.js"; 
+                        public const string jquery_ui_js = "~/ClientSource/Scripts/Core/jquery-ui.js"; 
                         public const string jquery_dataTables_js = "~/ClientSource/Scripts/Core/jquery.dataTables.js"; 
                         public const string jquery_dataTables_js_ = "~/ClientSource/Scripts/Core/jquery.dataTables.js"; 
                         public const string jquery_validate_js = "~/ClientSource/Scripts/Core/jquery.validate.js"; 
@@ -1038,7 +1028,7 @@ namespace Links
                         {
                             public const string disco_hubs_js = "~/ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"; 
                             public const string disco_hubs_js_ = "~/ClientSource/Scripts/Modules/jQuery-SignalR/disco-hubs.js"; 
-                            public const string jquery_signalR_2_1_2_js = "~/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.1.2.js"; 
+                            public const string jquery_signalR_2_4_3_js = "~/ClientSource/Scripts/Modules/jQuery-SignalR/jquery.signalR-2.4.3.js"; 
                         }
                     }
                     public static partial class jQueryUI_DynaTree 

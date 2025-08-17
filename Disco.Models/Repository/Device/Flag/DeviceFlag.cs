@@ -1,5 +1,4 @@
-﻿using Disco.Models.Services.Authorization;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

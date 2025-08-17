@@ -2,7 +2,6 @@
 using Disco.Models.UI.Config.DeviceBatch;
 using Disco.Services;
 using Disco.Services.Authorization;
-using Disco.Services.Devices;
 using Disco.Services.Devices.ManagedGroups;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;

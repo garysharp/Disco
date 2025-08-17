@@ -1981,13 +1981,16 @@ h1.Config_DocumentTemplates {
   padding-bottom: 0.5em;
   text-align: right;
 }
-#DocumentTemplate_BulkGenerate table {
+#DocumentTemplate_BulkGenerate_Records {
   max-width: 850px;
   margin: auto;
 }
-#DocumentTemplate_BulkGenerate table tr.when-none {
+#DocumentTemplate_BulkGenerate_Records tr.when-none {
   text-align: center;
   font-style: italic;
+}
+#DocumentTemplate_BulkGenerate_Records[data-scope="device"] .name {
+  display: none;
 }
 .dialog-item-picker {
   height: 300px;

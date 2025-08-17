@@ -1,0 +1,302 @@
+﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.BulkGenerateModel
+@using Disco.Services.Interop.ActiveDirectory;
+@{
+    if (Model == null)
+    {
+        throw new ArgumentNullException("Model", "Model cannot be null.");
+    }
+    var userModel = Model as Disco.Web.Areas.Config.Models.DocumentTemplate.BulkGenerateUserModel;
+    var deviceModel = Model as Disco.Web.Areas.Config.Models.DocumentTemplate.BulkGenerateDeviceModel;
+    string scope;
+    if (userModel != null)
+    {
+        scope = "user";
+    }
+    else if (deviceModel != null)
+    {
+        scope = "device";
+    }
+    else
+    {
+        throw new InvalidOperationException("Unexpected model: " + Model.GetType().FullName);
+    }
+}
+<div id="DocumentTemplate_BulkGenerate_Dialog_AddUsers" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Users">
+    <div class="brief">
+        <div>
+            Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+        </div>
+        @if (userModel != null)
+        {
+            <div>
+                Security Groups can also be included. Members will be resolved and added.
+            </div>
+        }
+        @if (deviceModel != null)
+        {
+            <div>
+                Devices associated with the users will be added.
+            </div>
+        }
+        <div class="examples clearfix">
+            <h4>Examples:</h4>
+            <div class="example1 code">
+                user6<br />
+                smi0099<br />
+                @(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith<br />
+                @if (userModel != null)
+                {
+                    <text>Domain Admins</text>
+                }
+            </div>
+            <div class="example2 code">
+                user6,smi0099,@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith
+            </div>
+            <div class="example3 code">
+                user6;smi0099;@(ActiveDirectory.Context.PrimaryDomain.NetBiosName)\rsmith
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUsers()))
+    {
+        <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="userIds"></div>
+        <textarea id="inputBulkGenerateDataIds" name="userIds" data-val="true" data-val-required="Identifiers are required" required></textarea>
+        <input type="hidden" name="scope" value="@scope" />
+        @Html.AntiForgeryToken()
+    }
+</div>
+
+@if (deviceModel != null)
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddDevices" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Devices">
+        <div class="brief">
+            <div>
+                Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+            </div>
+            <div class="examples clearfix">
+                <h4>Examples:</h4>
+                <div class="example1 code">
+                    LAPTOP-12345<br />
+                    TAB-987654<br />
+                    PHONE-ABC321
+                </div>
+                <div class="example2 code">
+                    LAPTOP-12345,TAB-987654,PHONE-ABC321
+                </div>
+                <div class="example3 code">
+                    LAPTOP-12345;TAB-987654;PHONE-ABC321
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDevices()))
+        {
+            <div class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="userIds"></div>
+            <textarea name="deviceSerialNumbers" data-val="true" data-val-required="Identifiers are required" required></textarea>
+            <input type="hidden" name="scope" value="@scope" />
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (userModel != null)
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Group Members">
+        <div class="brief">
+            <div>
+                Add all members of a group (including recursive members) to the bulk generation.
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers()))
+        {
+            <table class="input">
+                <tbody>
+                    <tr>
+                        <th>
+                            <label for="DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers_Group">Group:</label>
+                        </th>
+                        <td>
+                            <input id="DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers_Group" type="text" name="groupId" data-autocomplete-src="@(Url.Action(MVC.API.System.SearchGroupSubjects()))" required />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (userModel != null && userModel.UserFlags.Any(f => f.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserFlag" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add User Flag">
+        <div class="brief">
+            <div>
+                Add all users associated with the flag to the bulk generation.
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag()))
+        {
+            <input name="flagId" type="hidden" required />
+            <div class="dialog-item-picker">
+                @foreach (var flag in userModel.UserFlags)
+                {
+                    <div class="item @(flag.Count == 0 ? "disabled" : null)" data-userflagid="@flag.Item.Id">
+                        <i class="fa fa-@(flag.Item.Icon) fa-fw fa-lg d-@(flag.Item.IconColour)"></i>@flag.Item.Name <small>(@flag.Count.ToString("N0") @scope@(flag.Count == 1 ? null : "s"))</small>
+                    </div>
+
+                }
+            </div>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (deviceModel != null && deviceModel.DeviceFlags.Any(f => f.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddDeviceFlag" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add Device Flag">
+        <div class="brief">
+            <div>
+                Add all devices associated with the flag to the bulk generation.
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceFlag()))
+        {
+            <input name="flagId" type="hidden" required />
+            <div class="dialog-item-picker">
+                @foreach (var flag in deviceModel.DeviceFlags)
+                {
+                    <div class="item @(flag.Count == 0 ? "disabled" : null)" data-userflagid="@flag.Item.Id">
+                        <i class="fa fa-@(flag.Item.Icon) fa-fw fa-lg d-@(flag.Item.IconColour)"></i>@flag.Item.Name <small>(@flag.Count.ToString("N0") @scope@(flag.Count == 1 ? null : "s"))</small>
+                    </div>
+
+                }
+            </div>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (Model.DeviceProfiles.Any(b => b.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddDeviceProfile" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Device Profile">
+        @if (userModel != null)
+        {
+            <div class="brief">
+                <div>
+                    Add all users associated with a device in the selected profile to the bulk generation.
+                </div>
+            </div>
+        }
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile()))
+        {
+            <input name="deviceProfileId" type="hidden" required />
+            <div class="dialog-item-picker">
+                @foreach (var profile in Model.DeviceProfiles)
+                {
+                    <div class="item @(profile.Count == 0 ? "disabled" : null)" data-id="@profile.Item.Id">
+                        <i class="fa fa-cog fa-fw fa-lg"></i>@profile.Item.Name <small>(@profile.Count.ToString("N0") @scope@(profile.Count == 1 ? null : "s"))</small>
+                    </div>
+                }
+            </div>
+            <input type="hidden" name="scope" value="@scope" />
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (Model.DeviceBatches.Any(b => b.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddDeviceBatch" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Device Batch">
+        <div class="brief">
+            <div>
+                Add all users associated with a device in the selected batch to the bulk generation.
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch()))
+        {
+            <input name="deviceBatchId" type="hidden" required />
+            <div class="dialog-item-picker">
+                @foreach (var batch in Model.DeviceBatches)
+                {
+                    <div class="item @(batch.Count == 0 ? "disabled" : null)" data-id="@batch.Item.Id">
+                        <i class="fa fa-cog fa-fw fa-lg"></i>@batch.Item.Name <small>(@batch.Count.ToString("N0") @scope@(batch.Count == 1 ? null : "s"))</small>
+                    </div>
+                }
+            </div>
+            <input type="hidden" name="scope" value="@scope" />
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (Model.DocumentTemplates.Any(b => b.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Document Attachment">
+        <div class="brief">
+            <div>
+                Add all users associated with an attachment of the selected document template to the bulk generation.
+            </div>
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment()))
+        {
+            <input name="documentTemplateId" type="hidden" required />
+            <div class="dialog-item-picker">
+                @foreach (var template in Model.DocumentTemplates)
+                {
+                    <div class="item @(template.Count == 0 ? "disabled" : null)" data-id="@template.Item.Id">
+                        <i class="fa fa-file-text-o fa-fw fa-lg"></i>@template.Item.Id: @template.Item.Description <small>(@template.Count.ToString("N0") @scope@(template.Count == 1 ? null : "s"))</small>
+                    </div>
+                }
+            </div>
+            <div class="sub">
+                <label for="DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment_Threshold">Attachment Added After <small>(optional)</small></label>
+                <input id="DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment_Threshold" name="threshold" type="date" />
+            </div>
+            <input type="hidden" name="scope" value="@scope" />
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+@if (Model.UserDetails.Any(b => b.Count > 0))
+{
+    <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserDetail" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by User Detail">
+        <div class="brief">
+            @if (userModel != null)
+            {
+                <div>
+                    Add all users with a matching user detail to the bulk generation.
+                </div>
+            }
+            @if (deviceModel != null)
+            {
+                <div>
+                    Add all devices assigned to users with a matching user detail to the bulk generation.
+                </div>
+            }
+        </div>
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserDetail()))
+        {
+            <input name="key" type="hidden" required />
+            <input name="value" type="hidden" />
+
+            <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Key" class="dialog-item-picker" style="width: 49%; float: left;">
+                @foreach (var key in Model.UserDetails)
+                {
+                    <div class="item @(key.Count == 0 ? "disabled" : null)" data-id="@key.Item">
+                        <i class="fa fa-info fa-fw fa-lg"></i>@key.Item.TrimEnd('*', '&') <small>(@key.Count.ToString("N0") @scope@(key.Count == 1 ? null : "s"))</small>
+                    </div>
+                }
+            </div>
+            <input type="hidden" name="scope" value="@scope" />
+            @Html.AntiForgeryToken()
+        }
+        @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateGetUserDetailValues()))
+        {
+            <input name="key" type="hidden" required />
+
+            <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserDetail_Value" class="dialog-item-picker" style="width: 49%; float: left; margin-left: 1%;">
+            </div>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}

@@ -222,7 +222,7 @@
     <Compile Include="Areas\API\Models\Activation\CallbackModel.cs" />
     <Compile Include="Areas\API\Models\DeviceModel\TestComputerNameTemplateModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\AddOnImportUserFlagRuleModel.cs" />
-    <Compile Include="Areas\API\Models\DocumentTemplate\BulkGenerateUserModel.cs" />
+    <Compile Include="Areas\API\Models\DocumentTemplate\BulkGenerateItemModel.cs" />
     <Compile Include="Areas\API\Models\DocumentTemplate\DocumentHandlersModel.cs" />
     <Compile Include="Areas\API\Models\Job\DeviceHeldLocationModel.cs" />
     <Compile Include="Areas\API\Models\Shared\SubjectDescriptorModel.cs" />
@@ -293,10 +293,15 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Areas\Config\Views\DocumentTemplate\BulkGenerate.generated.cs">
+    <Compile Include="Areas\Config\Views\DocumentTemplate\BulkGenerateDevice.generated.cs">
+      <DependentUpon>BulkGenerateDevice.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BulkGenerate.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\BulkGenerateUser.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BulkGenerateUser.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\DocumentTemplate\CreatePackage.generated.cs">
       <DependentUpon>CreatePackage.cshtml</DependentUpon>
@@ -312,6 +317,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ShowPackage.cshtml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Config\Views\DocumentTemplate\_BulkGenerateShared.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>_BulkGenerateShared.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Areas\Config\Views\Export\_Edit.generated.cs">
       <DependentUpon>_Edit.cshtml</DependentUpon>
@@ -1393,9 +1403,13 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
     </None>
-    <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerate.cshtml">
+    <Content Include="Areas\Config\Views\DocumentTemplate\BulkGenerateDevice.cshtml">
       <Generator>RazorGenerator</Generator>
-      <LastGenOutput>BulkGenerate.generated.cs</LastGenOutput>
+      <LastGenOutput>BulkGenerateDevice.generated.cs</LastGenOutput>
+    </Content>
+    <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerateUser.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>BulkGenerateUser.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\DocumentTemplate\Export.cshtml">
       <Generator>RazorGenerator</Generator>
@@ -1408,6 +1422,10 @@
     <None Include="Areas\Config\Views\DocumentTemplate\CreatePackage.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>CreatePackage.generated.cs</LastGenOutput>
+    </None>
+    <None Include="Areas\Config\Views\DocumentTemplate\_BulkGenerateShared.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>_BulkGenerateShared.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\Export\Create.cshtml">
       <Generator>RazorGenerator</Generator>

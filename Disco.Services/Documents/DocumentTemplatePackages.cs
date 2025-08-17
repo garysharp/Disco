@@ -1,7 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
-using Disco.Models.UI.Config.DocumentTemplate;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

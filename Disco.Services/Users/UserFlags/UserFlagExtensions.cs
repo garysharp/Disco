@@ -1,6 +1,5 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
-using Disco.Services.Authorization;
 using Disco.Services.Expressions;
 using Disco.Services.Logging;
 using Disco.Services.Users;

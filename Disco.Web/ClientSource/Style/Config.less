@@ -2386,14 +2386,20 @@ h1.Config_DocumentTemplates {
         padding-bottom: .5em;
         text-align: right;
     }
+}
 
-    table {
-        max-width: 850px;
-        margin: auto;
+#DocumentTemplate_BulkGenerate_Records {
+    max-width: 850px;
+    margin: auto;
 
-        tr.when-none {
-            text-align: center;
-            font-style: italic;
+    tr.when-none {
+        text-align: center;
+        font-style: italic;
+    }
+
+    &[data-scope="device"] {
+        .name {
+            display: none;
         }
     }
 }

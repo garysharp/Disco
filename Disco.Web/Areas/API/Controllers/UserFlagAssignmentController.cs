@@ -1,6 +1,5 @@
 ﻿using Disco.Models.Repository;
 using Disco.Services;
-using Disco.Services.Authorization;
 using Disco.Services.Web;
 using System;
 using System.Data.Entity;

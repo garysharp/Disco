@@ -1039,7 +1039,7 @@
             }
             @if (canBulkGenerate)
             {
-                if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User)
+                if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User || Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Device)
                 {
                     @Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id))
                 }
