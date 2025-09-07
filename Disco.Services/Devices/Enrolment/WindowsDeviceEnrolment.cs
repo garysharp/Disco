@@ -501,6 +501,8 @@ namespace Disco.Services.Devices.Enrolment
                     response.AllowBootstrapperUninstall = true;
                 }
 
+                response.SetAssignedUserForLogon = device.DeviceProfile.SetAssignedUserForLogon;
+
                 // Provision Certificates
                 if (!string.IsNullOrEmpty(device.DeviceProfile.CertificateProviders) ||
                     !string.IsNullOrEmpty(device.DeviceProfile.CertificateAuthorityProviders))

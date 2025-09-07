@@ -22,6 +22,7 @@ namespace Disco.Models.ClientServices
         public string AssignedUserDescription { get; set; }
 
         public bool AssignedUserIsLocalAdmin { get; set; }
+        public bool SetAssignedUserForLogon { get; set; }
 
         public string OfflineDomainJoinManifest { get; set; }
 

@@ -38,6 +38,7 @@ namespace Disco.Models.Repository
         public bool ProvisionADAccount { get; set; }
 
         public bool AssignedUserLocalAdmin { get; set; }
+        public bool SetAssignedUserForLogon { get; set; }
 
         public bool AllowUntrustedReimageJobEnrolment { get; set; }
 

@@ -151,6 +151,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateSetAssignedUserForLogon()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSetAssignedUserForLogon);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateAssignedUserLocalAdmin()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUserLocalAdmin);
@@ -222,6 +228,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public readonly string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
+            public readonly string UpdateSetAssignedUserForLogon = "UpdateSetAssignedUserForLogon";
             public readonly string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public readonly string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
             public readonly string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
@@ -249,6 +256,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public const string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
+            public const string UpdateSetAssignedUserForLogon = "UpdateSetAssignedUserForLogon";
             public const string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public const string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
             public const string UpdateDevicesLinkedGroup = "UpdateDevicesLinkedGroup";
@@ -409,6 +417,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string ProvisionADAccount = "ProvisionADAccount";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateSetAssignedUserForLogon s_params_UpdateSetAssignedUserForLogon = new ActionParamsClass_UpdateSetAssignedUserForLogon();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateSetAssignedUserForLogon UpdateSetAssignedUserForLogonParams { get { return s_params_UpdateSetAssignedUserForLogon; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateSetAssignedUserForLogon
+        {
+            public readonly string id = "id";
+            public readonly string setAssignedUserForLogon = "setAssignedUserForLogon";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateAssignedUserLocalAdmin s_params_UpdateAssignedUserLocalAdmin = new ActionParamsClass_UpdateAssignedUserLocalAdmin();
@@ -706,6 +724,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProvisionADAccount", ProvisionADAccount);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateProvisionADAccountOverride(callInfo, id, ProvisionADAccount, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateSetAssignedUserForLogonOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string setAssignedUserForLogon, bool? redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateSetAssignedUserForLogon(int id, string setAssignedUserForLogon, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSetAssignedUserForLogon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "setAssignedUserForLogon", setAssignedUserForLogon);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateSetAssignedUserForLogonOverride(callInfo, id, setAssignedUserForLogon, redirect);
             return callInfo;
         }
 

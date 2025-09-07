@@ -22,22 +22,23 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DeviceProfileController : AuthorizedDatabaseController
     {
-        const string pDescription = "description";
-        const string pName = "name";
-        const string pShortName = "shortname";
-        const string pDistributionType = "distributiontype";
-        const string pCertificateProviders = "certificateproviders";
-        const string pCertificateAuthorityProviders = "certificateauthorityproviders";
-        const string pWirelessProfileProviders = "wirelessprofileproviders";
-        const string pOrganisationalUnit = "organisationalunit";
-        const string pDefaultOrganisationAddress = "defaultorganisationaddress";
-        const string pEnforceComputerNameConvention = "enforcecomputernameconvention";
-        const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
-        const string pProvisionADAccount = "provisionadaccount";
-        const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
-        const string pAllowUntrustedReimageJobEnrolment = "allowuntrustedreimagejobrnrolment";
-        const string pDevicesLinkedGroup = "deviceslinkedgroup";
-        const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
+        private const string pDescription = "description";
+        private const string pName = "name";
+        private const string pShortName = "shortname";
+        private const string pDistributionType = "distributiontype";
+        private const string pCertificateProviders = "certificateproviders";
+        private const string pCertificateAuthorityProviders = "certificateauthorityproviders";
+        private const string pWirelessProfileProviders = "wirelessprofileproviders";
+        private const string pOrganisationalUnit = "organisationalunit";
+        private const string pDefaultOrganisationAddress = "defaultorganisationaddress";
+        private const string pEnforceComputerNameConvention = "enforcecomputernameconvention";
+        private const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
+        private const string pProvisionADAccount = "provisionadaccount";
+        private const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
+        private const string pSetAssignedUserForLogon = "setassigneduserforlogon";
+        private const string pAllowUntrustedReimageJobEnrolment = "allowuntrustedreimagejobrnrolment";
+        private const string pDevicesLinkedGroup = "deviceslinkedgroup";
+        private const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -94,6 +95,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pAssignedUserLocalAdmin:
                             UpdateAssignedUserLocalAdmin(deviceProfile, value);
+                            break;
+                        case pSetAssignedUserForLogon:
+                            UpdateSetAssignedUserForLogon(deviceProfile, value);
                             break;
                         case pAllowUntrustedReimageJobEnrolment:
                             UpdateAllowUntrustedReimageJobEnrolment(deviceProfile, value);
@@ -345,6 +349,13 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, bool? redirect = null)
         {
             return Update(id, pProvisionADAccount, ProvisionADAccount, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateSetAssignedUserForLogon(int id, string setAssignedUserForLogon = null, bool? redirect = null)
+        {
+            return Update(id, pSetAssignedUserForLogon, setAssignedUserForLogon, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
@@ -660,6 +671,18 @@ namespace Disco.Web.Areas.API.Controllers
             if (bool.TryParse(assignedUserLocalAdmin, out var bValue))
             {
                 deviceProfile.AssignedUserLocalAdmin = bValue;
+
+                Database.SaveChanges();
+                return;
+            }
+            throw new Exception("Invalid Boolean Value");
+        }
+
+        private void UpdateSetAssignedUserForLogon(DeviceProfile deviceProfile, string setAssignedUserForLogon)
+        {
+            if (bool.TryParse(setAssignedUserForLogon, out var bValue))
+            {
+                deviceProfile.SetAssignedUserForLogon = bValue;
 
                 Database.SaveChanges();
                 return;

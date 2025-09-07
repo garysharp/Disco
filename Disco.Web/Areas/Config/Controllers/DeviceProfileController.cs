@@ -134,7 +134,8 @@ namespace Disco.Web.Areas.Config.Controllers
                         ProvisionADAccount = true,
                         ComputerNameTemplate = DeviceProfile.DefaultComputerNameTemplate,
                         DistributionType = DeviceProfile.DistributionTypes.OneToMany,
-                        OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer
+                        OrganisationalUnit = ActiveDirectory.Context.PrimaryDomain.DefaultComputerContainer,
+                        SetAssignedUserForLogon = true,
                     };
 
                     Database.DeviceProfiles.Add(deviceProfile);

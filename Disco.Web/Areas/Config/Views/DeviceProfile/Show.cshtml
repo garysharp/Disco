@@ -261,6 +261,35 @@
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {
+                        <input id="DeviceProfile_SetAssignedUserForLogon" type="checkbox" @(Model.DeviceProfile.SetAssignedUserForLogon ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                        <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_SetAssignedUserForLogon'),
+                                null,
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateSetAssignedUserForLogon(Model.DeviceProfile.Id))',
+                                'setAssignedUserForLogon'
+                            );
+                        });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_SetAssignedUserForLogon" type="checkbox" @(Model.DeviceProfile.SetAssignedUserForLogon ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_SetAssignedUserForLogon">
+                        Set Assigned User for Logon
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>When enabled the assigned user details will be pre-populated at the device logon screen.
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
                         <input id="DeviceProfile_AllowUntrustedReimageJobEnrolment" type="checkbox" @(Model.DeviceProfile.AllowUntrustedReimageJobEnrolment ? new MvcHtmlString("checked=\"checked\" ") : null) />
                         <script type="text/javascript">
                             $(function () {

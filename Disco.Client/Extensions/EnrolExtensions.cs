@@ -134,7 +134,10 @@ namespace Disco.Client.Extensions
 
                 if (enrolResponse.AssignedUserIsLocalAdmin)
                     LocalAuthentication.AddLocalGroupMembership("Administrators", enrolResponse.AssignedUserSID, enrolResponse.AssignedUserUsername, enrolResponse.AssignedUserDomain);
+            }
 
+            if (enrolResponse.SetAssignedUserForLogon && !string.IsNullOrEmpty(enrolResponse.AssignedUserDomain) && !string.IsNullOrEmpty(enrolResponse.AssignedUserUsername))
+            {
                 // Make Windows think this user was the last to logon
                 using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
                 {
