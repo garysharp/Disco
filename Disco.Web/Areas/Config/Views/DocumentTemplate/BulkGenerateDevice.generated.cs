@@ -262,7 +262,7 @@ WriteLiteral(" id=\"AddUsers\"");
 
 WriteLiteral(" class=\"button small\"");
 
-WriteLiteral(">Add With Assigned User</button>\r\n");
+WriteLiteral(">Add With Assigned Users</button>\r\n");
 
             
             #line 39 "..\..\Areas\Config\Views\DocumentTemplate\BulkGenerateDevice.cshtml"

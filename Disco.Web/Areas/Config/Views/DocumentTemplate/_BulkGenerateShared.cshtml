@@ -1,4 +1,4 @@
-﻿@model Disco.Web.Areas.Config.Models.DocumentTemplate.BulkGenerateModel
+﻿@model Disco.Models.UI.Config.DocumentTemplate.ConfigDocumentTemplateBulkGenerate
 @using Disco.Services.Interop.ActiveDirectory;
 @{
     if (Model == null)
@@ -24,18 +24,18 @@
 <div id="DocumentTemplate_BulkGenerate_Dialog_AddUsers" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Users">
     <div class="brief">
         <div>
-            Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+            Enter multiple <span class="scopeDescBulkGenerate">User Ids</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>)
         </div>
         @if (userModel != null)
         {
             <div>
-                Security Groups can also be included. Members will be resolved and added.
+                Security Groups can also be included. Members will be resolved and added
             </div>
         }
         @if (deviceModel != null)
         {
             <div>
-                Devices associated with the users will be added.
+                Devices associated with the users will be added
             </div>
         }
         <div class="examples clearfix">
@@ -71,7 +71,7 @@
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddDevices" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Devices">
         <div class="brief">
             <div>
-                Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>).
+                Enter multiple <span class="scopeDescBulkGenerate">Device Serial Numbers</span> separated by <code>&lt;new line&gt;</code>, commas (<code>,</code>) or semicolons (<code>;</code>)
             </div>
             <div class="examples clearfix">
                 <h4>Examples:</h4>
@@ -103,7 +103,7 @@
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddGroupMembers" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Group Members">
         <div class="brief">
             <div>
-                Add all members of a group (including recursive members) to the bulk generation.
+                Add all members of a group (including recursive members)
             </div>
         </div>
         @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddGroupMembers()))
@@ -130,7 +130,7 @@
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddUserFlag" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add User Flag">
         <div class="brief">
             <div>
-                Add all users associated with the flag to the bulk generation.
+                Add all users associated with the flag
             </div>
         </div>
         @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddUserFlag()))
@@ -155,7 +155,7 @@
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddDeviceFlag" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add Device Flag">
         <div class="brief">
             <div>
-                Add all devices associated with the flag to the bulk generation.
+                Add all devices associated with the flag
             </div>
         </div>
         @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceFlag()))
@@ -178,14 +178,20 @@
 @if (Model.DeviceProfiles.Any(b => b.Count > 0))
 {
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddDeviceProfile" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Device Profile">
-        @if (userModel != null)
-        {
-            <div class="brief">
+        <div class="brief">
+            @if (userModel != null)
+            {
                 <div>
-                    Add all users associated with a device in the selected profile to the bulk generation.
+                    Add all users associated with a device in the selected profile
                 </div>
-            </div>
-        }
+            }
+            @if (deviceModel != null)
+            {
+                <div>
+                    Add all devices in the selected profile
+                </div>
+            }
+        </div>
         @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceProfile()))
         {
             <input name="deviceProfileId" type="hidden" required />
@@ -207,9 +213,18 @@
 {
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddDeviceBatch" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Device Batch">
         <div class="brief">
-            <div>
-                Add all users associated with a device in the selected batch to the bulk generation.
-            </div>
+            @if (userModel != null)
+            {
+                <div>
+                    Add all users associated with a device in the selected batch
+                </div>
+            }
+            @if (deviceModel != null)
+            {
+                <div>
+                    Add all devices in the selected batch
+                </div>
+            })
         </div>
         @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDeviceBatch()))
         {
@@ -232,9 +247,18 @@
 {
     <div id="DocumentTemplate_BulkGenerate_Dialog_AddDocumentAttachment" class="dialog dialog-bulk-generate" title="@(Model.DocumentTemplate.Description): Add by Document Attachment">
         <div class="brief">
-            <div>
-                Add all users associated with an attachment of the selected document template to the bulk generation.
-            </div>
+            @if (userModel != null)
+            {
+                <div>
+                    Add all users associated with an attachment of the selected document template
+                </div>
+            }
+            @if (deviceModel != null)
+            {
+                <div>
+                    Add all devices associated with an attachment of the selected document template
+                </div>
+            })
         </div>
         @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerateAddDocumentAttachment()))
         {
@@ -264,13 +288,13 @@
             @if (userModel != null)
             {
                 <div>
-                    Add all users with a matching user detail to the bulk generation.
+                    Add all users with a matching user detail
                 </div>
             }
             @if (deviceModel != null)
             {
                 <div>
-                    Add all devices assigned to users with a matching user detail to the bulk generation.
+                    Add all devices assigned to users with a matching user detail
                 </div>
             }
         </div>

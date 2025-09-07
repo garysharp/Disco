@@ -907,17 +907,17 @@ else
                                     dataType: 'json',
                                     url: url,
                                     data: data,
-                                    complete: function (response, result) {
-                                        if (result != 'success') {
-                                            alert('Unable to change email settings:\nCheck logs for more information');
-                                            ajaxLoading.hide();
-                                        } else {
+                                    complete: function (response) {
+                                        if (response.status === 200) {
                                             ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
                                             if (!!$('#EmailSmtpServer').val()) {
                                                 testButton.removeAttr('disabled');
                                             } else {
                                                 testButton.attr('disabled', 'disabled');
                                             }
+                                        } else {
+                                            alert('Unable to change email settings:\nCheck logs for more information');
+                                            ajaxLoading.hide();
                                         }
                                     }
                                 });

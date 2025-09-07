@@ -882,8 +882,9 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = user.UserId,
-                        UserEmailAddress = user.EmailAddress,
+                        UserId = user.UserId,
                         UserDisplayName = user.DisplayName,
+                        UserEmailAddress = user.EmailAddress,
                         Scope = $"Matched '{dataId}'",
                         IsError = false,
                     });
@@ -912,6 +913,7 @@ namespace Disco.Web.Areas.API.Controllers
                             results.Add(new BulkGenerateItemModel()
                             {
                                 Id = adUser.Id,
+                                UserId = adUser.Id,
                                 UserDisplayName = adUser.DisplayName,
                                 UserEmailAddress = adUser.Email,
                                 Scope = $"Group Member '{group.Name}'",
@@ -959,8 +961,9 @@ namespace Disco.Web.Areas.API.Controllers
                             results.Add(new BulkGenerateItemModel()
                             {
                                 Id = assignment.DeviceSerialNumber,
-                                UserEmailAddress = dbUser.EmailAddress,
+                                UserId = dbUser.UserId,
                                 UserDisplayName = dbUser.DisplayName,
+                                UserEmailAddress = dbUser.EmailAddress,
                                 Scope = $"Matched assigned user '{dataId}'",
                                 IsError = false,
                             });
@@ -998,8 +1001,9 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = device.SerialNumber,
-                        UserEmailAddress = user?.EmailAddress,
+                        UserId = user?.UserId,
                         UserDisplayName = user?.DisplayName,
+                        UserEmailAddress = user?.EmailAddress,
                         Scope = $"Matched '{deviceSerialNumber}'",
                         IsError = false,
                     });
@@ -1048,6 +1052,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = adUser.Id,
+                        UserId = adUser.Id,
                         UserDisplayName = adUser.DisplayName,
                         UserEmailAddress = adUser.Email,
                         Scope = $"Group Member '{group.Name}'",
@@ -1060,6 +1065,7 @@ namespace Disco.Web.Areas.API.Controllers
                 results.Add(new BulkGenerateItemModel()
                 {
                     Id = user.Id,
+                    UserId = user.Id,
                     UserDisplayName = user.DisplayName,
                     UserEmailAddress = user.Email,
                     Scope = $"Matched '{groupId}'",
@@ -1126,8 +1132,9 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.UserId,
-                            UserEmailAddress = user?.EmailAddress,
+                            UserId = user?.UserId,
                             UserDisplayName = user?.DisplayName,
+                            UserEmailAddress = user?.EmailAddress,
                             Scope = $"Assigned User Flag '{flag.Name}'",
                             IsError = false,
                         });
@@ -1184,8 +1191,9 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.DeviceSerialNumber,
-                            UserEmailAddress = user?.EmailAddress,
+                            UserId = user?.UserId,
                             UserDisplayName = user?.DisplayName,
+                            UserEmailAddress = user?.EmailAddress,
                             Scope = $"Assigned User Flag '{flag.Name}'",
                             IsError = false,
                         });
@@ -1250,6 +1258,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = user.UserId,
+                        UserId = user.UserId,
                         UserDisplayName = user.DisplayName,
                         UserEmailAddress = user.EmailAddress,
                         Scope = $"Device Profile '{profile.Name}' Matches Assigned Device '{assignment.SerialNumber}'",
@@ -1284,6 +1293,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = device.SerialNumber,
+                        UserId = user?.UserId,
                         UserDisplayName = user?.DisplayName,
                         UserEmailAddress = user?.EmailAddress,
                         Scope = $"Device Profile '{profile.Name}'",
@@ -1347,6 +1357,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = assignment.AssignedUserId,
+                        UserId = user?.UserId,
                         UserDisplayName = user.DisplayName,
                         UserEmailAddress = user.EmailAddress,
                         Scope = $"Device Batch '{batch.Name}' Matches Assigned Device '{assignment.SerialNumber}'",
@@ -1380,6 +1391,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = device.SerialNumber,
+                        UserId = user?.UserId,
                         UserDisplayName = user?.DisplayName,
                         UserEmailAddress = user?.EmailAddress,
                         Scope = $"Device Batch '{batch.Name}'",
@@ -1439,6 +1451,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.Device.AssignedUserId,
+                            UserId = user.UserId,
                             UserDisplayName = user.DisplayName,
                             UserEmailAddress = user.EmailAddress,
                             Scope = $"Document Template '{template.Id}' Attachment Matches Assigned Device '{assignment.Device.SerialNumber}'",
@@ -1460,6 +1473,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.Job.UserId,
+                            UserId = user.UserId,
                             UserDisplayName = user.DisplayName,
                             UserEmailAddress = user.EmailAddress,
                             Scope = $"Document Template '{template.Id}' Attachment Matches Job '{assignment.Job.Id}'",
@@ -1481,6 +1495,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.UserId,
+                            UserId = user.UserId,
                             UserDisplayName = user.DisplayName,
                             UserEmailAddress = user.EmailAddress,
                             Scope = $"Document Template '{template.Id}' Attachment Matches User",
@@ -1542,6 +1557,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.DeviceSerialNumber,
+                            UserId = user?.UserId,
                             UserDisplayName = user?.DisplayName,
                             UserEmailAddress = user?.EmailAddress,
                             Scope = $"Document Template '{template.Id}'",
@@ -1563,6 +1579,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.Job.DeviceSerialNumber,
+                            UserId = user?.UserId,
                             UserDisplayName = user?.DisplayName,
                             UserEmailAddress = user?.EmailAddress,
                             Scope = $"Document Template '{template.Id}' Attachment Matches Job '{assignment.Job.Id}'",
@@ -1589,6 +1606,7 @@ namespace Disco.Web.Areas.API.Controllers
                                 results.Add(new BulkGenerateItemModel()
                                 {
                                     Id = userDeviceAssignment.DeviceSerialNumber,
+                                    UserId = user.UserId,
                                     UserDisplayName = user.DisplayName,
                                     UserEmailAddress = user.EmailAddress,
                                     Scope = $"Document Template '{template.Id}' Attachment Matches User '{user.UserId}'",
@@ -1688,6 +1706,7 @@ namespace Disco.Web.Areas.API.Controllers
                     results.Add(new BulkGenerateItemModel()
                     {
                         Id = user.UserId,
+                        UserId = user.UserId,
                         UserDisplayName = user.DisplayName,
                         UserEmailAddress = user.EmailAddress,
                         Scope = $"User Detail '{key}'{(string.IsNullOrWhiteSpace(value) ? null : $" with the value '{value}'")} Matches User",
@@ -1727,6 +1746,7 @@ namespace Disco.Web.Areas.API.Controllers
                         results.Add(new BulkGenerateItemModel()
                         {
                             Id = assignment.DeviceSerialNumber,
+                            UserId = user.UserId,
                             UserDisplayName = user.DisplayName,
                             UserEmailAddress = user.EmailAddress,
                             Scope = $"User Detail '{key}'{(string.IsNullOrWhiteSpace(value) ? null : $" with the value '{value}'")} Matches User '{user.UserId}'",

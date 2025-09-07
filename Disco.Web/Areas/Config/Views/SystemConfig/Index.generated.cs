@@ -2753,46 +2753,46 @@ WriteLiteral("\';\r\n                                var data = {\r\n           
 "                               type: \'POST\',\r\n                                  " +
 "  dataType: \'json\',\r\n                                    url: url,\r\n            " +
 "                        data: data,\r\n                                    complet" +
-"e: function (response, result) {\r\n                                        if (re" +
-"sult != \'success\') {\r\n                                            alert(\'Unable " +
-"to change email settings:\\nCheck logs for more information\');\r\n                 " +
-"                           ajaxLoading.hide();\r\n                                " +
-"        } else {\r\n                                            ajaxLoading.hide()" +
+"e: function (response) {\r\n                                        if (response.s" +
+"tatus === 200) {\r\n                                            ajaxLoading.hide()" +
 ".next(\'.ajaxOk\').show().delay(\'fast\').fadeOut(\'slow\');\r\n                        " +
 "                    if (!!$(\'#EmailSmtpServer\').val()) {\r\n                      " +
 "                          testButton.removeAttr(\'disabled\');\r\n                  " +
 "                          } else {\r\n                                            " +
 "    testButton.attr(\'disabled\', \'disabled\');\r\n                                  " +
-"          }\r\n                                        }\r\n                        " +
-"            }\r\n                                });\r\n                            " +
-"});\r\n\r\n                            testButton.closest(\'table\').find(\'td>input\')." +
-"change(function () {\r\n                                testButton.attr(\'disabled\'" +
-", \'disabled\');\r\n                            });\r\n                            tes" +
-"tButton.click(function () {\r\n                                if (!testDialog) {\r" +
-"\n                                    testDialog = $(\'#Config_System_Email_Test_D" +
-"ialog\')\r\n                                        .dialog({\r\n                    " +
-"                        resizable: false,\r\n                                     " +
-"       height: 180,\r\n                                            modal: true,\r\n " +
-"                                           autoOpen: false,\r\n                   " +
-"                         buttons: {\r\n                                           " +
-"     Send: function () {\r\n                                                    va" +
-"r $this = $(this);\r\n                                                    var reci" +
-"pientInput = $(\'#Config_System_Email_Test_Recipient\');\r\n                        " +
-"                            if (!!recipientInput.val()) {\r\n                     " +
-"                                   $this.dialog(\"disable\");\r\n                   " +
-"                                     $this.dialog(\"option\", \"buttons\", null);\r\n " +
-"                                                       recipientInput.closest(\'f" +
-"orm\').submit()\r\n                                                    } else {\r\n  " +
-"                                                      alert(\'Enter the recipient" +
-" address for the test email\');\r\n                                                " +
-"    }\r\n                                                },\r\n                     " +
-"                           Cancel: function () {\r\n                              " +
-"                      $(this).dialog(\"close\");\r\n                                " +
-"                }\r\n                                            }\r\n              " +
-"                          });\r\n                                }\r\n              " +
-"                  testDialog.dialog(\'open\');\r\n                            });\r\n\r" +
-"\n                        });\r\n                    </script>\r\n                </t" +
-"d>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
+"          }\r\n                                        } else {\r\n                 " +
+"                           alert(\'Unable to change email settings:\\nCheck logs f" +
+"or more information\');\r\n                                            ajaxLoading." +
+"hide();\r\n                                        }\r\n                            " +
+"        }\r\n                                });\r\n                            });\r" +
+"\n\r\n                            testButton.closest(\'table\').find(\'td>input\').chan" +
+"ge(function () {\r\n                                testButton.attr(\'disabled\', \'d" +
+"isabled\');\r\n                            });\r\n                            testBut" +
+"ton.click(function () {\r\n                                if (!testDialog) {\r\n   " +
+"                                 testDialog = $(\'#Config_System_Email_Test_Dialo" +
+"g\')\r\n                                        .dialog({\r\n                        " +
+"                    resizable: false,\r\n                                         " +
+"   height: 180,\r\n                                            modal: true,\r\n     " +
+"                                       autoOpen: false,\r\n                       " +
+"                     buttons: {\r\n                                               " +
+" Send: function () {\r\n                                                    var $t" +
+"his = $(this);\r\n                                                    var recipien" +
+"tInput = $(\'#Config_System_Email_Test_Recipient\');\r\n                            " +
+"                        if (!!recipientInput.val()) {\r\n                         " +
+"                               $this.dialog(\"disable\");\r\n                       " +
+"                                 $this.dialog(\"option\", \"buttons\", null);\r\n     " +
+"                                                   recipientInput.closest(\'form\'" +
+").submit()\r\n                                                    } else {\r\n      " +
+"                                                  alert(\'Enter the recipient add" +
+"ress for the test email\');\r\n                                                    " +
+"}\r\n                                                },\r\n                         " +
+"                       Cancel: function () {\r\n                                  " +
+"                  $(this).dialog(\"close\");\r\n                                    " +
+"            }\r\n                                            }\r\n                  " +
+"                      });\r\n                                }\r\n                  " +
+"              testDialog.dialog(\'open\');\r\n                            });\r\n\r\n   " +
+"                     });\r\n                    </script>\r\n                </td>\r\n" +
+"            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
             #line 964 "..\..\Areas\Config\Views\SystemConfig\Index.cshtml"
