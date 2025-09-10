@@ -281,8 +281,8 @@ WriteLiteral("\';\r\n\r\n        var view = $(\'#Logging_Task_Status\');\r\n    
 "sHub.client.updateTaskStatus = vm.Update;\r\n\r\n            $.connection.hub.qs = {" +
 " TaskSessionId: sessionId };\r\n            $.connection.hub.error(function (error" +
 ") {\r\n                console.log(\'Server connection error: \' + error);\r\n        " +
-"    });\r\n\r\n            $.connection.hub.start()\r\n                .fail(onHubFail" +
-"ed);\r\n        }\r\n\r\n    });\r\n</script>\r\n");
+"    });\r\n\r\n            $.connection.hub.start();\r\n        }\r\n\r\n    });\r\n</script" +
+">\r\n");
 
         }
     }

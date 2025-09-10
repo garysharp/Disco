@@ -29,7 +29,7 @@ if (!document.DiscoFunctions.PropertyChangeHelper) {
                     const body = new FormData();
                     body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
 
-                    if (!data) {
+                    if (data) {
                         for (const prop in data) {
                             body.append(prop, data[prop]);
                         }

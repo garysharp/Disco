@@ -1403,10 +1403,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Create.generated.cs</LastGenOutput>
     </None>
-    <Content Include="Areas\Config\Views\DocumentTemplate\BulkGenerateDevice.cshtml">
+    <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerateDevice.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>BulkGenerateDevice.generated.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Areas\Config\Views\DocumentTemplate\BulkGenerateUser.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>BulkGenerateUser.generated.cs</LastGenOutput>
@@ -1572,7 +1572,7 @@
     <Content Include="ClientSource\Scripts\Core\disco.moment.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.unobtrusiveValidation.extensions.js" Condition=" '$(Configuration)' == 'Debug' " />
     <None Include="ClientSource\Scripts\Core\jquery-3.7.1.js" />
-    <Content Include="ClientSource\Scripts\Core\jquery-ui.js" />
+    <None Include="ClientSource\Scripts\Core\jquery-ui.js" />
     <Content Include="ClientSource\Scripts\Core\jquery.dataTables.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\jquery.watermark.js" Condition=" '$(Configuration)' == 'Debug' " />
     <Content Include="ClientSource\Scripts\Core\disco.uicore.js" Condition=" '$(Configuration)' == 'Debug' " />

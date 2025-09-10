@@ -250,8 +250,7 @@
                 console.log('Server connection error: ' + error);
             });
 
-            $.connection.hub.start()
-                .fail(onHubFailed);
+            $.connection.hub.start();
         }
 
     });
