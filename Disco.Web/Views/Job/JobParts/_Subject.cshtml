@@ -574,7 +574,7 @@
                 List<string> CanCloseForcedReasons;
                 if (Model.Job.CanCloseForced(out CanCloseForcedReasons))
                 {
-                    @Html.ActionLinkSmallButton("Forcibly Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button")
+                    <button id="Job_Show_Job_Actions_ForceClose_Button" class="button small">Forcibly Close</button>
                     <div id="Job_Show_Job_Actions_ForceClose_Dialog" class="dialog" title="Forcibly Close this Job?">
                         <div class="info-box error">
                             <p class="fa-p">
@@ -764,7 +764,7 @@
 
                 var slaOptions = Disco.Services.Jobs.JobQueues.JobQueueService.SlaOptions.Select(o => new SelectListItem() { Text = o.Value, Value = o.Key.ToString() }).ToList();
 
-                @Html.ActionLinkSmallButton("Add to Queue", MVC.API.JobQueueJob.AddJob(), "Job_Show_Job_Actions_AddQueue_Button")
+                <button id="Job_Show_Job_Actions_AddQueue_Button" class="button small">Add to Queue</button>
                 <div id="Job_Show_Job_Actions_AddQueue_Dialog" class="dialog" title="Add Job to Queue">
                     @using (Html.BeginForm(MVC.API.JobQueueJob.AddJob()))
                     {
@@ -825,9 +825,7 @@
                             $('#Job_Show_Job_Actions_AddQueue_Comment').focus().select();
                         }
 
-                        button.attr('href', '#').click(function (e) {
-                            e.preventDefault();
-
+                        button.click(function (e) {
                             if (!buttonDialog) {
                                 buttonDialog = $('#Job_Show_Job_Actions_AddQueue_Dialog');
                                 buttonDialog.dialog({
@@ -867,7 +865,6 @@
                             }
 
                             buttonDialog.dialog('open');
-                            return false;
                         });
                     });
                 </script>
@@ -878,7 +875,11 @@
             }
             @if (Model.Job.CanWarrantyCompleted())
             {
-                @Html.ActionLinkSmallButton("Warranty Complete", MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_WarrantyComplete_Button", "alert")
+                using (Html.BeginForm(MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true)))
+                {
+                    @Html.AntiForgeryToken()
+                    <button id="Job_Show_Job_Actions_WarrantyComplete_Button" class="button small alert" type="submit">Warranty Complete</button>
+                }
             }
             @if (Model.Job.CanLogInsurance())
             {
@@ -890,7 +891,11 @@
             }
             @if (Model.Job.CanRepairComplete())
             {
-                @Html.ActionLinkSmallButton("Repairs Complete", MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_RepairComplete_Button", "alert")
+                using (Html.BeginForm(MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, "Now", true)))
+                {
+                    @Html.AntiForgeryToken()
+                    <button id="Job_Show_Job_Actions_RepairComplete_Button" class="button small alert" type="submit">Repairs Complete</button>
+                }
             }
             @if (Model.Job.CanConvertHWarToHNWar())
             {

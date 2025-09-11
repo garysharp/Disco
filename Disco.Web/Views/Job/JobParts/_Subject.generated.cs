@@ -2309,24 +2309,18 @@ WriteLiteral(">\r\n");
                 List<string> CanCloseForcedReasons;
                 if (Model.Job.CanCloseForced(out CanCloseForcedReasons))
                 {
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 577 "..\..\Views\Job\JobParts\_Subject.cshtml"
-               Write(Html.ActionLinkSmallButton("Forcibly Close", MVC.API.Job.Close(Model.Job.Id, true), "Job_Show_Job_Actions_ForceClose_Button"));
 
             
             #line default
             #line hidden
-            
-            #line 577 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                  
+WriteLiteral("                    <button");
 
-            
-            #line default
-            #line hidden
+WriteLiteral(" id=\"Job_Show_Job_Actions_ForceClose_Button\"");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(">Forcibly Close</button>\r\n");
+
 WriteLiteral("                    <div");
 
 WriteLiteral(" id=\"Job_Show_Job_Actions_ForceClose_Dialog\"");
@@ -2804,24 +2798,18 @@ WriteLiteral("            ");
 
                 var slaOptions = Disco.Services.Jobs.JobQueues.JobQueueService.SlaOptions.Select(o => new SelectListItem() { Text = o.Value, Value = o.Key.ToString() }).ToList();
 
-                
-            
-            #line default
-            #line hidden
-            
-            #line 767 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Add to Queue", MVC.API.JobQueueJob.AddJob(), "Job_Show_Job_Actions_AddQueue_Button"));
 
             
             #line default
             #line hidden
-            
-            #line 767 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                 
+WriteLiteral("                <button");
 
-            
-            #line default
-            #line hidden
+WriteLiteral(" id=\"Job_Show_Job_Actions_AddQueue_Button\"");
+
+WriteLiteral(" class=\"button small\"");
+
+WriteLiteral(">Add to Queue</button>\r\n");
+
 WriteLiteral("                <div");
 
 WriteLiteral(" id=\"Job_Show_Job_Actions_AddQueue_Dialog\"");
@@ -2878,14 +2866,14 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"JobId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 49757), Tuple.Create("\"", 49778)
+WriteAttribute("value", Tuple.Create(" value=\"", 49706), Tuple.Create("\"", 49727)
             
             #line 773 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                , Tuple.Create(Tuple.Create("", 49765), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
+                                , Tuple.Create(Tuple.Create("", 49714), Tuple.Create<System.Object, System.Int32>(Model.Job.Id
             
             #line default
             #line hidden
-, 49765), false)
+, 49714), false)
 );
 
 WriteLiteral(" />\r\n");
@@ -2949,26 +2937,26 @@ WriteLiteral("\"");
 
 WriteLiteral(">\r\n                                    <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 50247), Tuple.Create("\"", 50314)
-, Tuple.Create(Tuple.Create("", 50255), Tuple.Create("fa", 50255), true)
-, Tuple.Create(Tuple.Create(" ", 50257), Tuple.Create("fa-", 50258), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 50196), Tuple.Create("\"", 50263)
+, Tuple.Create(Tuple.Create("", 50204), Tuple.Create("fa", 50204), true)
+, Tuple.Create(Tuple.Create(" ", 50206), Tuple.Create("fa-", 50207), true)
             
             #line 778 "..\..\Views\Job\JobParts\_Subject.cshtml"
-, Tuple.Create(Tuple.Create("", 50261), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
+, Tuple.Create(Tuple.Create("", 50210), Tuple.Create<System.Object, System.Int32>(jobQueue.Icon
             
             #line default
             #line hidden
-, 50261), false)
-, Tuple.Create(Tuple.Create(" ", 50277), Tuple.Create("fa-fw", 50278), true)
-, Tuple.Create(Tuple.Create(" ", 50283), Tuple.Create("fa-lg", 50284), true)
-, Tuple.Create(Tuple.Create(" ", 50289), Tuple.Create("d-", 50290), true)
+, 50210), false)
+, Tuple.Create(Tuple.Create(" ", 50226), Tuple.Create("fa-fw", 50227), true)
+, Tuple.Create(Tuple.Create(" ", 50232), Tuple.Create("fa-lg", 50233), true)
+, Tuple.Create(Tuple.Create(" ", 50238), Tuple.Create("d-", 50239), true)
             
             #line 778 "..\..\Views\Job\JobParts\_Subject.cshtml"
-   , Tuple.Create(Tuple.Create("", 50292), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
+   , Tuple.Create(Tuple.Create("", 50241), Tuple.Create<System.Object, System.Int32>(jobQueue.IconColour
             
             #line default
             #line hidden
-, 50292), false)
+, 50241), false)
 );
 
 WriteLiteral("></i>");
@@ -3009,27 +2997,27 @@ WriteLiteral("                                ");
             #line hidden
 WriteLiteral(" <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 50711), Tuple.Create("\"", 50759)
-, Tuple.Create(Tuple.Create("", 50719), Tuple.Create("fa", 50719), true)
-, Tuple.Create(Tuple.Create(" ", 50721), Tuple.Create("d-priority-", 50722), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 50660), Tuple.Create("\"", 50708)
+, Tuple.Create(Tuple.Create("", 50668), Tuple.Create("fa", 50668), true)
+, Tuple.Create(Tuple.Create(" ", 50670), Tuple.Create("d-priority-", 50671), true)
             
             #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                             , Tuple.Create(Tuple.Create("", 50733), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
+                                                                             , Tuple.Create(Tuple.Create("", 50682), Tuple.Create<System.Object, System.Int32>(priorityValue.ToLower()
             
             #line default
             #line hidden
-, 50733), false)
+, 50682), false)
 );
 
-WriteAttribute("title", Tuple.Create(" title=\"", 50760), Tuple.Create("\"", 50793)
+WriteAttribute("title", Tuple.Create(" title=\"", 50709), Tuple.Create("\"", 50742)
             
             #line 785 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                , Tuple.Create(Tuple.Create("", 50768), Tuple.Create<System.Object, System.Int32>(priorityValue
+                                                                                                                , Tuple.Create(Tuple.Create("", 50717), Tuple.Create<System.Object, System.Int32>(priorityValue
             
             #line default
             #line hidden
-, 50768), false)
-, Tuple.Create(Tuple.Create(" ", 50784), Tuple.Create("Priority", 50785), true)
+, 50717), false)
+, Tuple.Create(Tuple.Create(" ", 50733), Tuple.Create("Priority", 50734), true)
 );
 
 WriteLiteral("></i>\r\n                            </div>\r\n                            <div>\r\n   " +
@@ -3083,41 +3071,40 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 "            $(\'#Job_Show_Job_Actions_AddQueue_SLAExpiresMinutes\').val(queueSLA);" +
 "\r\n\r\n                            details.show();\r\n\r\n                            $" +
 "(\'#Job_Show_Job_Actions_AddQueue_Comment\').focus().select();\r\n                  " +
-"      }\r\n\r\n                        button.attr(\'href\', \'#\').click(function (e) {" +
-"\r\n                            e.preventDefault();\r\n\r\n                           " +
-" if (!buttonDialog) {\r\n                                buttonDialog = $(\'#Job_Sh" +
-"ow_Job_Actions_AddQueue_Dialog\');\r\n                                buttonDialog." +
-"dialog({\r\n                                    width: 600,\r\n                     " +
-"               height: 410,\r\n                                    resizable: fals" +
-"e,\r\n                                    modal: true,\r\n                          " +
-"          autoOpen: false,\r\n                                    buttons: {\r\n    " +
-"                                    Cancel: function () {\r\n                     " +
-"                       $(this).dialog(\"close\");\r\n                               " +
-"         },\r\n                                        \"Add to Queue\": function ()" +
-" {\r\n                                            if (!!queueId.val()) {\r\n        " +
-"                                        $(this)\r\n                               " +
-"                     .dialog(\"option\", \"buttons\", null)\r\n                       " +
-"                             .find(\'form\').trigger(\'submit\');\r\n                 " +
-"                           } else {\r\n                                           " +
-"     alert(\'Select a Job Queue\');\r\n                                            }" +
-"\r\n                                        }\r\n                                   " +
-" }\r\n                                });\r\n\r\n                                queue" +
-"Picker = buttonDialog.find(\'.queuePicker\');\r\n                                que" +
-"ueId = $(\'#Job_Show_Job_Actions_AddQueue_Dialog_Id\');\r\n                         " +
-"       details = buttonDialog.find(\'.details\');\r\n\r\n                             " +
-"   var priorityList = $(\'#Job_Show_Job_Actions_AddQueue_Priority\');\r\n           " +
-"                     priorityList.change(function () {\r\n                        " +
-"            var icon = priorityList.closest(\'div\').find(\'i\').first();\r\n         " +
-"                           icon[0].className = \'\';\r\n                            " +
-"        icon.addClass(\'fa d-priority-\' + priorityList.val().toLowerCase()).attr(" +
-"\'title\', priorityList.val() + \' Priority\');\r\n                                });" +
-"\r\n\r\n                                queuePicker.on(\'click\', \'div.queue\', queueSe" +
-"lected);\r\n                            }\r\n\r\n                            buttonDia" +
-"log.dialog(\'open\');\r\n                            return false;\r\n                " +
-"        });\r\n                    });\r\n                </script>\r\n");
+"      }\r\n\r\n                        button.click(function (e) {\r\n                " +
+"            if (!buttonDialog) {\r\n                                buttonDialog =" +
+" $(\'#Job_Show_Job_Actions_AddQueue_Dialog\');\r\n                                bu" +
+"ttonDialog.dialog({\r\n                                    width: 600,\r\n          " +
+"                          height: 410,\r\n                                    resi" +
+"zable: false,\r\n                                    modal: true,\r\n               " +
+"                     autoOpen: false,\r\n                                    butto" +
+"ns: {\r\n                                        Cancel: function () {\r\n          " +
+"                                  $(this).dialog(\"close\");\r\n                    " +
+"                    },\r\n                                        \"Add to Queue\": " +
+"function () {\r\n                                            if (!!queueId.val()) " +
+"{\r\n                                                $(this)\r\n                    " +
+"                                .dialog(\"option\", \"buttons\", null)\r\n            " +
+"                                        .find(\'form\').trigger(\'submit\');\r\n      " +
+"                                      } else {\r\n                                " +
+"                alert(\'Select a Job Queue\');\r\n                                  " +
+"          }\r\n                                        }\r\n                        " +
+"            }\r\n                                });\r\n\r\n                          " +
+"      queuePicker = buttonDialog.find(\'.queuePicker\');\r\n                        " +
+"        queueId = $(\'#Job_Show_Job_Actions_AddQueue_Dialog_Id\');\r\n              " +
+"                  details = buttonDialog.find(\'.details\');\r\n\r\n                  " +
+"              var priorityList = $(\'#Job_Show_Job_Actions_AddQueue_Priority\');\r\n" +
+"                                priorityList.change(function () {\r\n             " +
+"                       var icon = priorityList.closest(\'div\').find(\'i\').first();" +
+"\r\n                                    icon[0].className = \'\';\r\n                 " +
+"                   icon.addClass(\'fa d-priority-\' + priorityList.val().toLowerCa" +
+"se()).attr(\'title\', priorityList.val() + \' Priority\');\r\n                        " +
+"        });\r\n\r\n                                queuePicker.on(\'click\', \'div.queu" +
+"e\', queueSelected);\r\n                            }\r\n\r\n                          " +
+"  buttonDialog.dialog(\'open\');\r\n                        });\r\n                   " +
+" });\r\n                </script>\r\n");
 
             
-            #line 874 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 871 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -3126,7 +3113,7 @@ WriteLiteral(">\r\n                    $(function () {\r\n                      
 WriteLiteral("            ");
 
             
-            #line 875 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 872 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogWarranty())
             {
                 
@@ -3134,14 +3121,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 877 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 874 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Lodge Warranty", MVC.Job.LogWarranty(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogWarranty_Button"));
 
             
             #line default
             #line hidden
             
-            #line 877 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 874 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                        
             }
 
@@ -3151,23 +3138,42 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 879 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 876 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanWarrantyCompleted())
             {
-                
+                using (Html.BeginForm(MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true)))
+                {
+                    
             
             #line default
             #line hidden
             
-            #line 881 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Warranty Complete", MVC.API.Job.UpdateWarrantyExternalCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_WarrantyComplete_Button", "alert"));
+            #line 880 "..\..\Views\Job\JobParts\_Subject.cshtml"
+               Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 881 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                                                     
+            #line 880 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <button");
+
+WriteLiteral(" id=\"Job_Show_Job_Actions_WarrantyComplete_Button\"");
+
+WriteLiteral(" class=\"button small alert\"");
+
+WriteLiteral(" type=\"submit\"");
+
+WriteLiteral(">Warranty Complete</button>\r\n");
+
+            
+            #line 882 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                }
             }
 
             
@@ -3176,7 +3182,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 883 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 884 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogInsurance())
             {
                 
@@ -3184,14 +3190,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 886 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Lodge Insurance", MVC.Job.LogInsurance(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogInsurance_Button", "alert"));
 
             
             #line default
             #line hidden
             
-            #line 885 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 886 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                                    
             }
 
@@ -3201,7 +3207,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 887 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 888 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanLogRepair())
             {
                 
@@ -3209,14 +3215,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 889 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 890 "..\..\Views\Job\JobParts\_Subject.cshtml"
            Write(Html.ActionLinkSmallButton("Lodge Repair", MVC.Job.LogRepair(Model.Job.Id, null, null), "Job_Show_Job_Actions_LogRepair_Button"));
 
             
             #line default
             #line hidden
             
-            #line 889 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 890 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                                                                                                                  
             }
 
@@ -3226,23 +3232,42 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 891 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 892 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanRepairComplete())
             {
-                
+                using (Html.BeginForm(MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, "Now", true)))
+                {
+                    
             
             #line default
             #line hidden
             
-            #line 893 "..\..\Views\Job\JobParts\_Subject.cshtml"
-           Write(Html.ActionLinkSmallButton("Repairs Complete", MVC.API.Job.UpdateNonWarrantyRepairerCompletedDate(Model.Job.Id, "Now", true), "Job_Show_Job_Actions_RepairComplete_Button", "alert"));
+            #line 896 "..\..\Views\Job\JobParts\_Subject.cshtml"
+               Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 893 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                                                                                                                                                                                     
+            #line 896 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                            
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    <button");
+
+WriteLiteral(" id=\"Job_Show_Job_Actions_RepairComplete_Button\"");
+
+WriteLiteral(" class=\"button small alert\"");
+
+WriteLiteral(" type=\"submit\"");
+
+WriteLiteral(">Repairs Complete</button>\r\n");
+
+            
+            #line 898 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                }
             }
 
             
@@ -3251,7 +3276,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 895 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 900 "..\..\Views\Job\JobParts\_Subject.cshtml"
              if (Model.Job.CanConvertHWarToHNWar())
             {
 
@@ -3279,13 +3304,13 @@ WriteLiteral(" title=\"Convert this Job?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 899 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 904 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 899 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 904 "..\..\Views\Job\JobParts\_Subject.cshtml"
                      using (Html.BeginForm(MVC.API.Job.ConvertHWarToHNWar(Model.Job.Id, true)))
                     {
                         
@@ -3293,14 +3318,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 901 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 906 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 901 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 906 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
                     }
 
@@ -3351,7 +3376,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 938 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 943 "..\..\Views\Job\JobParts\_Subject.cshtml"
             }
 
             
@@ -3360,13 +3385,13 @@ WriteLiteral(@">
 WriteLiteral("        </td>\r\n");
 
             
-            #line 940 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 945 "..\..\Views\Job\JobParts\_Subject.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 940 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 945 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.Device != null)
         {
 
@@ -3380,13 +3405,13 @@ WriteLiteral(" id=\"Job_Show_Device_Actions\"");
 WriteLiteral(">\r\n");
 
             
-            #line 943 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 948 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 943 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 948 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceHeld())
                 {
                     using (Html.BeginForm(MVC.API.Job.DeviceHeld(Model.Job.Id, true)))
@@ -3396,14 +3421,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 947 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 952 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 947 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 952 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -3420,7 +3445,7 @@ WriteLiteral(" class=\"button small\"");
 WriteLiteral(">Device Held</button>\r\n");
 
             
-            #line 949 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 954 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
                 }
 
@@ -3430,7 +3455,7 @@ WriteLiteral(">Device Held</button>\r\n");
 WriteLiteral("                ");
 
             
-            #line 951 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 956 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceReadyForReturn())
                 {
                     using (Html.BeginForm(MVC.API.Job.DeviceReadyForReturn(Model.Job.Id, true)))
@@ -3440,14 +3465,14 @@ WriteLiteral("                ");
             #line default
             #line hidden
             
-            #line 955 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 960 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 955 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 960 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -3464,7 +3489,7 @@ WriteLiteral(" class=\"button small alert\"");
 WriteLiteral(">Device Ready For Return</button>\r\n");
 
             
-            #line 957 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 962 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
                 }
 
@@ -3474,7 +3499,7 @@ WriteLiteral(">Device Ready For Return</button>\r\n");
 WriteLiteral("                ");
 
             
-            #line 959 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 964 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanDeviceReturned())
                 {
                     using (Html.BeginForm(MVC.API.Job.DeviceReturned(Model.Job.Id, true)))
@@ -3484,14 +3509,14 @@ WriteLiteral("                ");
             #line default
             #line hidden
             
-            #line 963 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 968 "..\..\Views\Job\JobParts\_Subject.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 963 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 968 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                 
 
             
@@ -3503,22 +3528,22 @@ WriteLiteral(" id=\"Job_Show_Device_Actions_DeviceReturned_Button\"");
 
 WriteLiteral(" type=\"submit\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 60035), Tuple.Create("\"", 60111)
-, Tuple.Create(Tuple.Create("", 60043), Tuple.Create("button", 60043), true)
-, Tuple.Create(Tuple.Create(" ", 60049), Tuple.Create("small", 60050), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 60168), Tuple.Create("\"", 60244)
+, Tuple.Create(Tuple.Create("", 60176), Tuple.Create("button", 60176), true)
+, Tuple.Create(Tuple.Create(" ", 60182), Tuple.Create("small", 60183), true)
             
-            #line 964 "..\..\Views\Job\JobParts\_Subject.cshtml"
-                                    , Tuple.Create(Tuple.Create(" ", 60055), Tuple.Create<System.Object, System.Int32>(Model.Job.CanDeviceReadyForReturn() ? null : "alert"
+            #line 969 "..\..\Views\Job\JobParts\_Subject.cshtml"
+                                    , Tuple.Create(Tuple.Create(" ", 60188), Tuple.Create<System.Object, System.Int32>(Model.Job.CanDeviceReadyForReturn() ? null : "alert"
             
             #line default
             #line hidden
-, 60056), false)
+, 60189), false)
 );
 
 WriteLiteral(">Device Returned</button>\r\n");
 
             
-            #line 965 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 970 "..\..\Views\Job\JobParts\_Subject.cshtml"
                     }
                 }
 
@@ -3528,7 +3553,7 @@ WriteLiteral(">Device Returned</button>\r\n");
 WriteLiteral("            </td>\r\n");
 
             
-            #line 968 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 973 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             
@@ -3537,7 +3562,7 @@ WriteLiteral("            </td>\r\n");
 WriteLiteral("        ");
 
             
-            #line 969 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 974 "..\..\Views\Job\JobParts\_Subject.cshtml"
          if (Model.Job.User != null)
         {
 
@@ -3551,13 +3576,13 @@ WriteLiteral(" id=\"Job_Show_User_Actions\"");
 WriteLiteral(">\r\n\r\n\r\n");
 
             
-            #line 974 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 979 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 974 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 979 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanWaitingForUserAction())
                 {
 
@@ -3585,13 +3610,13 @@ WriteLiteral(" title=\"Waiting for User Action\"");
 WriteLiteral(">\r\n");
 
             
-            #line 978 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 983 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 978 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 983 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.WaitingForUserAction(Model.Job.Id, null, true)))
                         {
                             
@@ -3599,14 +3624,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 980 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 985 "..\..\Views\Job\JobParts\_Subject.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 980 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 985 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     
 
             
@@ -3623,7 +3648,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 985 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 990 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -3658,7 +3683,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "                    });\r\n                    </script>\r\n");
 
             
-            #line 1018 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1023 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -3667,7 +3692,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("                ");
 
             
-            #line 1019 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1024 "..\..\Views\Job\JobParts\_Subject.cshtml"
                  if (Model.Job.CanNotWaitingForUserAction())
                 {
 
@@ -3695,13 +3720,13 @@ WriteLiteral(" title=\"Not Waiting for User Action\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1023 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1028 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1023 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1028 "..\..\Views\Job\JobParts\_Subject.cshtml"
                          using (Html.BeginForm(MVC.API.Job.NotWaitingForUserAction(Model.Job.Id, null, true)))
                         {
                             
@@ -3709,14 +3734,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1025 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1030 "..\..\Views\Job\JobParts\_Subject.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1025 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1030 "..\..\Views\Job\JobParts\_Subject.cshtml"
                                                     
 
             
@@ -3733,7 +3758,7 @@ WriteLiteral(" class=\"block\"");
 WriteLiteral("></textarea>\r\n                            </p>\r\n");
 
             
-            #line 1030 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1035 "..\..\Views\Job\JobParts\_Subject.cshtml"
                         }
 
             
@@ -3769,7 +3794,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "    });\r\n                    </script>\r\n");
 
             
-            #line 1064 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1069 "..\..\Views\Job\JobParts\_Subject.cshtml"
                 }
 
             
@@ -3778,7 +3803,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 WriteLiteral("\r\n            </td>\r\n");
 
             
-            #line 1067 "..\..\Views\Job\JobParts\_Subject.cshtml"
+            #line 1072 "..\..\Views\Job\JobParts\_Subject.cshtml"
         }
 
             

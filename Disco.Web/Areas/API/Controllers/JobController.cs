@@ -27,54 +27,54 @@ namespace Disco.Web.Areas.API.Controllers
     {
 
         #region Property Constants
-        const string pExpectedClosedDate = "expectedcloseddate";
-        const string pDeviceHeldLocation = "deviceheldlocation";
-        const string pFlags = "flags";
+        private const string pExpectedClosedDate = "expectedcloseddate";
+        private const string pDeviceHeldLocation = "deviceheldlocation";
+        private const string pFlags = "flags";
 
-        const string pNonWarrantyAccountingChargeRequired = "nonwarrantyaccountingchargerequired";
-        const string pNonWarrantyAccountingChargeAdded = "nonwarrantyaccountingchargeadded";
-        const string pNonWarrantyAccountingChargePaid = "nonwarrantyaccountingchargepaid";
-        const string pNonWarrantyPurchaseOrderRaised = "nonwarrantypurchaseorderraised";
-        const string pNonWarrantyPurchaseOrderReference = "nonwarrantypurchaseorderreference";
-        const string pNonWarrantyPurchaseOrderSent = "nonwarrantypurchaseordersent";
-        const string pNonWarrantyInvoiceReceived = "nonwarrantyinvoicereceived";
-        const string pNonWarrantyRepairerName = "nonwarrantyrepairername";
-        const string pNonWarrantyRepairerLoggedDate = "nonwarrantyrepairerloggeddate";
-        const string pNonWarrantyRepairerReference = "nonwarrantyrepairerreference";
-        const string pNonWarrantyRepairerCompletedDate = "nonwarrantyrepairercompleteddate";
-        const string pNonWarrantyIsInsuranceClaim = "nonwarrantyinsuranceisinsuranceclaim";
+        private const string pNonWarrantyAccountingChargeRequired = "nonwarrantyaccountingchargerequired";
+        private const string pNonWarrantyAccountingChargeAdded = "nonwarrantyaccountingchargeadded";
+        private const string pNonWarrantyAccountingChargePaid = "nonwarrantyaccountingchargepaid";
+        private const string pNonWarrantyPurchaseOrderRaised = "nonwarrantypurchaseorderraised";
+        private const string pNonWarrantyPurchaseOrderReference = "nonwarrantypurchaseorderreference";
+        private const string pNonWarrantyPurchaseOrderSent = "nonwarrantypurchaseordersent";
+        private const string pNonWarrantyInvoiceReceived = "nonwarrantyinvoicereceived";
+        private const string pNonWarrantyRepairerName = "nonwarrantyrepairername";
+        private const string pNonWarrantyRepairerLoggedDate = "nonwarrantyrepairerloggeddate";
+        private const string pNonWarrantyRepairerReference = "nonwarrantyrepairerreference";
+        private const string pNonWarrantyRepairerCompletedDate = "nonwarrantyrepairercompleteddate";
+        private const string pNonWarrantyIsInsuranceClaim = "nonwarrantyinsuranceisinsuranceclaim";
 
-        const string pInsuranceLossOrDamageDate = "insurancelossordamagedate";
-        const string pInsuranceEventLocation = "insuranceeventlocation";
-        const string pInsuranceDescription = "insurancedescription";
-        const string pInsuranceThirdPartyCaused = "insurancethirdpartycaused";
-        const string pInsuranceThirdPartyCausedName = "insurancethirdpartycausedname";
-        const string pInsuranceThirdPartyCausedWhy = "insurancethirdpartycausedwhy";
-        const string pInsuranceWitnessesNamesAddresses = "insurancewitnessesnamesaddresses";
-        const string pInsuranceBurglaryTheftMethodOfEntry = "insuranceburglarytheftmethodofentry";
-        const string pInsurancePropertyLastSeenDate = "insurancepropertylastseendate";
-        const string pInsurancePoliceNotified = "insurancepolicenotified";
-        const string pInsurancePoliceNotifiedStation = "insurancepolicenotifiedstation";
-        const string pInsurancePoliceNotifiedDate = "insurancepolicenotifieddate";
-        const string pInsurancePoliceNotifiedCrimeReportNo = "insurancepolicenotifiedcrimereportno";
-        const string pInsuranceRecoverReduceAction = "insurancerecoverreduceaction";
-        const string pInsuranceOtherInterestedParties = "insuranceotherinterestedparties";
-        const string pInsuranceDateOfPurchase = "insurancedateofpurchase";
-        const string pInsuranceClaimFormSentDate = "insuranceclaimformsentdate";
-        const string pInsuranceClaimFormSentUserId = "insuranceclaimformsentuserid";
+        private const string pInsuranceLossOrDamageDate = "insurancelossordamagedate";
+        private const string pInsuranceEventLocation = "insuranceeventlocation";
+        private const string pInsuranceDescription = "insurancedescription";
+        private const string pInsuranceThirdPartyCaused = "insurancethirdpartycaused";
+        private const string pInsuranceThirdPartyCausedName = "insurancethirdpartycausedname";
+        private const string pInsuranceThirdPartyCausedWhy = "insurancethirdpartycausedwhy";
+        private const string pInsuranceWitnessesNamesAddresses = "insurancewitnessesnamesaddresses";
+        private const string pInsuranceBurglaryTheftMethodOfEntry = "insuranceburglarytheftmethodofentry";
+        private const string pInsurancePropertyLastSeenDate = "insurancepropertylastseendate";
+        private const string pInsurancePoliceNotified = "insurancepolicenotified";
+        private const string pInsurancePoliceNotifiedStation = "insurancepolicenotifiedstation";
+        private const string pInsurancePoliceNotifiedDate = "insurancepolicenotifieddate";
+        private const string pInsurancePoliceNotifiedCrimeReportNo = "insurancepolicenotifiedcrimereportno";
+        private const string pInsuranceRecoverReduceAction = "insurancerecoverreduceaction";
+        private const string pInsuranceOtherInterestedParties = "insuranceotherinterestedparties";
+        private const string pInsuranceDateOfPurchase = "insurancedateofpurchase";
+        private const string pInsuranceClaimFormSentDate = "insuranceclaimformsentdate";
+        private const string pInsuranceClaimFormSentUserId = "insuranceclaimformsentuserid";
 
-        const string pWarrantyExternalName = "warrantyexternalname";
-        const string pWarrantyExternalLoggedDate = "warrantyexternalloggeddate";
-        const string pWarrantyExternalReference = "warrantyexternalreference";
-        const string pWarrantyExternalCompletedDate = "warrantyexternalcompleteddate";
+        private const string pWarrantyExternalName = "warrantyexternalname";
+        private const string pWarrantyExternalLoggedDate = "warrantyexternalloggeddate";
+        private const string pWarrantyExternalReference = "warrantyexternalreference";
+        private const string pWarrantyExternalCompletedDate = "warrantyexternalcompleteddate";
 
-        const string pJobDetailsTabResources = "jobDetailTab-Resources";
-        const string pJobDetailsTabComponents = "jobDetailTab-Components";
-        const string pJobDetailsTabNonWarrantyFinance = "jobDetailTab-NonWarrantyFinance";
-        const string pJobDetailsTabNonWarrantyRepairs = "jobDetailTab-NonWarrantyRepairs";
-        const string pJobDetailsTabNonWarrantyInsurance = "jobDetailTab-NonWarrantyInsurance";
-        const string pJobDetailsTabWarranty = "jobDetailTab-Warranty";
-        const string pJobDetailsTabFlags = "jobDetailTab-Flags";
+        private const string pJobDetailsTabResources = "jobDetailTab-Resources";
+        private const string pJobDetailsTabComponents = "jobDetailTab-Components";
+        private const string pJobDetailsTabNonWarrantyFinance = "jobDetailTab-NonWarrantyFinance";
+        private const string pJobDetailsTabNonWarrantyRepairs = "jobDetailTab-NonWarrantyRepairs";
+        private const string pJobDetailsTabNonWarrantyInsurance = "jobDetailTab-NonWarrantyInsurance";
+        private const string pJobDetailsTabWarranty = "jobDetailTab-Warranty";
+        private const string pJobDetailsTabFlags = "jobDetailTab-Flags";
 
         #endregion
 
@@ -917,6 +917,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrEmpty(RepairerLoggedDate))
             {
                 job.JobMetaNonWarranty.RepairerLoggedDate = null;
+                job.JobMetaNonWarranty.RepairerCompletedDate = null;
             }
             else
             {

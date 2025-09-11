@@ -645,13 +645,19 @@
             </th>
             <td>
                 <div style="padding: 8px; text-align: center">
-                    @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+                    @using (Html.BeginForm(MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, !Model.Job.JobMetaNonWarranty.IsInsuranceClaim, true)))
                     {
-                        @Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true))
-                    }
-                    else
-                    {
-                        @Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true))
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="button">
+                            @if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+                            {
+                                @:Remove Insurance Claim
+                            }
+                            else
+                            {
+                                @:Add Insurance Claim
+                            }
+                        </button>
                     }
                 </div>
             </td>

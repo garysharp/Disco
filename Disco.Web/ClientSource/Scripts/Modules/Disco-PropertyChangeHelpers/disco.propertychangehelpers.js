@@ -250,10 +250,11 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater) {
     function dateDialogGet() {
         if (!dialog) {
             dialog = $('<div>').attr({ 'class': 'dialog' })
-            dialogForm = $('<form>').attr({ 'action': '/', 'method': 'post' }).appendTo(dialog);
+            dialogForm = $('<form>').attr({ 'action': updateUrl, 'method': 'post' }).appendTo(dialog);
+            $('<input>').attr({ 'type': 'hidden', 'name': '__RequestVerificationToken' }).val(document.body.dataset.antiforgery).appendTo(dialogForm);
             var dialogBody = $('<p>').appendTo(dialogForm);
             dialogHeader = $('<h3>').attr('autofocus', 'autofocus').appendTo(dialogBody);
-            dialogDatePropertyNameBox = $('<input>').attr({ 'type': 'hidden', 'name': 'key' }).appendTo(dialogBody);
+            dialogDatePropertyNameBox = $('<input>').attr({ 'type': 'hidden', 'name': 'key', 'value': updatePropertyName }).appendTo(dialogBody);
             dialogDateBox = $('<input>').attr({ 'type': 'datetime', 'name': 'value' }).css({ 'display': 'block', 'margin-top': 15, 'margin-left': 'auto', 'margin-right': 'auto' }).appendTo(dialogBody);
             $('<input>').attr({ 'type': 'hidden', 'name': 'redirect' }).val('true').appendTo(dialogBody);
 
@@ -336,11 +337,8 @@ if (!document.DiscoFunctions.DateDialogCreateUpdater) {
             }
         } else {
             // Post Form & Redirect
-            dialog.dialog("disable");
             dialog.dialog("option", "buttons", null);
 
-            dialogDatePropertyNameBox.val(updatePropertyName);
-            dialogForm.attr('action', updateUrl);
             dialogForm.submit();
         }
     }

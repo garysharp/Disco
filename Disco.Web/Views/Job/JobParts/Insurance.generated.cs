@@ -1971,7 +1971,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 648 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                     if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+                     using (Html.BeginForm(MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, !Model.Job.JobMetaNonWarranty.IsInsuranceClaim, true)))
                     {
                         
             
@@ -1979,31 +1979,68 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 650 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.ActionLinkButton("Remove Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, false, true)));
+                   Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
             #line 650 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                                                                                                  
-                    }
-                    else
-                    {
-                        
-            
-            #line default
-            #line hidden
-            
-            #line 654 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                   Write(Html.ActionLinkButton("Add Insurance Claim", MVC.API.Job.UpdateNonWarrantyIsInsuranceClaim(Model.Job.Id, true, true)));
+                                                
 
             
             #line default
             #line hidden
+WriteLiteral("                        <button");
+
+WriteLiteral(" type=\"submit\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">\r\n");
+
             
-            #line 654 "..\..\Views\Job\JobParts\Insurance.cshtml"
-                                                                                                                                              
+            #line 652 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 652 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                             if (Model.Job.JobMetaNonWarranty.IsInsuranceClaim)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                ");
+
+WriteLiteral("Remove Insurance Claim\r\n");
+
+            
+            #line 655 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                            }
+                            else
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                ");
+
+WriteLiteral("Add Insurance Claim\r\n");
+
+            
+            #line 659 "..\..\Views\Job\JobParts\Insurance.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        </button>\r\n");
+
+            
+            #line 661 "..\..\Views\Job\JobParts\Insurance.cshtml"
                     }
 
             
@@ -2012,7 +2049,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                </div>\r\n            </td>\r\n        </tr>\r\n");
 
             
-            #line 659 "..\..\Views\Job\JobParts\Insurance.cshtml"
+            #line 665 "..\..\Views\Job\JobParts\Insurance.cshtml"
     }
 
             
