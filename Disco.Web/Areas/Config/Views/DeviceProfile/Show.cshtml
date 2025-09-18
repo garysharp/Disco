@@ -232,6 +232,35 @@
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {
+                        <input id="DeviceProfile_ProvisionFromOtherDomain" type="checkbox" @(Model.DeviceProfile.ProvisionFromOtherDomain ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                        <script type="text/javascript">
+                        $(function () {
+                            document.DiscoFunctions.PropertyChangeHelper(
+                                $('#DeviceProfile_ProvisionFromOtherDomain'),
+                                null,
+                                '@Url.Action(MVC.API.DeviceProfile.UpdateProvisionFromOtherDomain(Model.DeviceProfile.Id))',
+                                'ProvisionFromOtherDomain'
+                            );
+                        });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_ProvisionFromOtherDomain" type="checkbox" @(Model.DeviceProfile.ProvisionFromOtherDomain ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_ProvisionFromOtherDomain">
+                        Provision from another Domain
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                    <div class="info-box">
+                        <p class="fa-p">
+                            <i class="fa fa-info-circle"></i>When enabled, devices joined to another domain will be enrolled. Based on other policies this may change the domain they are bound to (eg. Provision Active Directory Account)
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
                         <input id="DeviceProfile_AssignedUserLocalAdmin" type="checkbox" @(Model.DeviceProfile.AssignedUserLocalAdmin ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
                         <script type="text/javascript">
                             $(function () {

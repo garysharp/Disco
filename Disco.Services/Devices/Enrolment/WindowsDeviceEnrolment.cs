@@ -226,39 +226,45 @@ namespace Disco.Services.Devices.Enrolment
                         throw;
                     }
                 }
+
+                int deviceProfileId;
+                if (response.DeviceProfileId.HasValue)
+                    deviceProfileId = response.DeviceProfileId.Value;
+                else if (device != null)
+                    deviceProfileId = device.DeviceProfileId;
+                else
+                    deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+                var deviceProfile = Database.DeviceProfiles.Find(deviceProfileId)
+                    ?? throw new InvalidOperationException($"Device profile {deviceProfileId} was not found, please check your default profile configuration");
+
                 if (Request.IsPartOfDomain && !string.IsNullOrWhiteSpace(Request.ComputerName))
                 {
-                    EnrolmentLog.LogSessionProgress(sessionId, 20, "Loading Active Directory Computer Account");
-                    Guid? uuidGuid = null;
-                    Guid? macAddressGuid = null;
-                    if (!string.IsNullOrEmpty(Request.Hardware.UUID))
-                        uuidGuid = ADMachineAccount.NetbootGUIDFromUUID(Request.Hardware.UUID);
+                    if (ActiveDirectory.Context.TryGetDomainByName(Request.DNSDomainName, out domain))
+                    {
+                        EnrolmentLog.LogSessionProgress(sessionId, 20, "Loading Active Directory Computer Account");
+                        Guid? uuidGuid = null;
+                        Guid? macAddressGuid = null;
+                        if (!string.IsNullOrEmpty(Request.Hardware.UUID))
+                            uuidGuid = ADMachineAccount.NetbootGUIDFromUUID(Request.Hardware.UUID);
 
-                    // Use non-Wlan Adapter with fastest speed
-                    var macAddress = Request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
-                    if (!string.IsNullOrEmpty(macAddress))
-                        macAddressGuid = ADMachineAccount.NetbootGUIDFromMACAddress(macAddress);
+                        // Use non-Wlan Adapter with fastest speed
+                        var macAddress = Request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
+                        if (!string.IsNullOrEmpty(macAddress))
+                            macAddressGuid = ADMachineAccount.NetbootGUIDFromMACAddress(macAddress);
 
-                    if (domain == null)
-                        domain = ActiveDirectory.Context.GetDomainByName(Request.DNSDomainName);
+                        var requestDeviceId = $@"{domain.NetBiosName}\{Request.ComputerName}";
 
-                    var requestDeviceId = $@"{domain.NetBiosName}\{Request.ComputerName}";
-
-                    adMachineAccount = domainController.Value.RetrieveADMachineAccount(requestDeviceId, uuidGuid, macAddressGuid);
+                        adMachineAccount = domainController.Value.RetrieveADMachineAccount(requestDeviceId, uuidGuid, macAddressGuid);
+                    }
+                    else if (!deviceProfile.ProvisionFromOtherDomain)
+                    {
+                        throw new EnrolmentSafeException($"The specified domain name '{Request.DNSDomainName}' is not recognized or reachable.");
+                    }
                 }
                 if (device == null)
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "New Device, Creating Disco Instance");
                     EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.SerialNumber);
-
-                    int deviceProfileId;
-                    if (response.DeviceProfileId.HasValue)
-                        deviceProfileId = response.DeviceProfileId.Value;
-                    else
-                        deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
-
-                    var deviceProfile = Database.DeviceProfiles.Find(deviceProfileId)
-                        ?? throw new InvalidOperationException($"Device profile {deviceProfileId} was not found, please check your default profile configuration");
 
                     var deviceBatch = default(DeviceBatch);
                     if (response.DeviceBatchId.HasValue)
@@ -300,14 +306,10 @@ namespace Disco.Services.Devices.Enrolment
 
                     device.DeviceModel = deviceModel;
 
-                    if (response.DeviceProfileId.HasValue && device.DeviceProfile.Id != response.DeviceProfileId.Value)
+                    if (device.DeviceProfile.Id != deviceProfileId)
                     {
-                        var deviceProfile = Database.DeviceProfiles.Find(response.DeviceProfileId.Value);
-                        if (deviceProfile != null)
-                        {
-                            device.DeviceProfile = deviceProfile;
-                            device.DeviceProfileId = deviceProfile.Id;
-                        }
+                        device.DeviceProfile = deviceProfile;
+                        device.DeviceProfileId = deviceProfile.Id;
                     }
 
                     if (response.DeviceBatchId.HasValue && device.DeviceBatch?.Id != response.DeviceBatchId.Value)

@@ -36,7 +36,7 @@ namespace Disco.Models.Repository
 
         // 2012-06-28 G#
         public bool ProvisionADAccount { get; set; }
-
+        public bool ProvisionFromOtherDomain { get; set; }
         public bool AssignedUserLocalAdmin { get; set; }
         public bool SetAssignedUserForLogon { get; set; }
 

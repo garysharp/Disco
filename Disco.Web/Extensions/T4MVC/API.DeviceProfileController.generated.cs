@@ -151,6 +151,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateProvisionFromOtherDomain()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProvisionFromOtherDomain);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateSetAssignedUserForLogon()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateSetAssignedUserForLogon);
@@ -228,6 +234,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public readonly string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
+            public readonly string UpdateProvisionFromOtherDomain = "UpdateProvisionFromOtherDomain";
             public readonly string UpdateSetAssignedUserForLogon = "UpdateSetAssignedUserForLogon";
             public readonly string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public readonly string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
@@ -256,6 +263,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public const string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
+            public const string UpdateProvisionFromOtherDomain = "UpdateProvisionFromOtherDomain";
             public const string UpdateSetAssignedUserForLogon = "UpdateSetAssignedUserForLogon";
             public const string UpdateAssignedUserLocalAdmin = "UpdateAssignedUserLocalAdmin";
             public const string UpdateAllowUntrustedReimageJobEnrolment = "UpdateAllowUntrustedReimageJobEnrolment";
@@ -417,6 +425,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string ProvisionADAccount = "ProvisionADAccount";
+            public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_UpdateProvisionFromOtherDomain s_params_UpdateProvisionFromOtherDomain = new ActionParamsClass_UpdateProvisionFromOtherDomain();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateProvisionFromOtherDomain UpdateProvisionFromOtherDomainParams { get { return s_params_UpdateProvisionFromOtherDomain; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateProvisionFromOtherDomain
+        {
+            public readonly string id = "id";
+            public readonly string ProvisionFromOtherDomain = "ProvisionFromOtherDomain";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateSetAssignedUserForLogon s_params_UpdateSetAssignedUserForLogon = new ActionParamsClass_UpdateSetAssignedUserForLogon();
@@ -724,6 +742,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProvisionADAccount", ProvisionADAccount);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
             UpdateProvisionADAccountOverride(callInfo, id, ProvisionADAccount, redirect);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateProvisionFromOtherDomainOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string ProvisionFromOtherDomain, bool? redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateProvisionFromOtherDomain(int id, string ProvisionFromOtherDomain, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateProvisionFromOtherDomain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ProvisionFromOtherDomain", ProvisionFromOtherDomain);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateProvisionFromOtherDomainOverride(callInfo, id, ProvisionFromOtherDomain, redirect);
             return callInfo;
         }
 

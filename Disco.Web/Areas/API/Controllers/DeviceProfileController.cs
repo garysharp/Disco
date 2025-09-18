@@ -34,6 +34,7 @@ namespace Disco.Web.Areas.API.Controllers
         private const string pEnforceComputerNameConvention = "enforcecomputernameconvention";
         private const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
         private const string pProvisionADAccount = "provisionadaccount";
+        private const string pProvisionFromOtherDomain = "provisionfromotherdomain";
         private const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
         private const string pSetAssignedUserForLogon = "setassigneduserforlogon";
         private const string pAllowUntrustedReimageJobEnrolment = "allowuntrustedreimagejobrnrolment";
@@ -92,6 +93,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pProvisionADAccount:
                             UpdateProvisionADAccount(deviceProfile, value);
+                            break;
+                        case pProvisionFromOtherDomain:
+                            UpdateProvisionFromOtherDomain(deviceProfile, value);
                             break;
                         case pAssignedUserLocalAdmin:
                             UpdateAssignedUserLocalAdmin(deviceProfile, value);
@@ -349,6 +353,13 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult UpdateProvisionADAccount(int id, string ProvisionADAccount = null, bool? redirect = null)
         {
             return Update(id, pProvisionADAccount, ProvisionADAccount, redirect);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateProvisionFromOtherDomain(int id, string ProvisionFromOtherDomain = null, bool? redirect = null)
+        {
+            return Update(id, pProvisionFromOtherDomain, ProvisionFromOtherDomain, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
@@ -659,6 +670,18 @@ namespace Disco.Web.Areas.API.Controllers
             if (bool.TryParse(provisionADAccount, out var bValue))
             {
                 deviceProfile.ProvisionADAccount = bValue;
+
+                Database.SaveChanges();
+                return;
+            }
+            throw new Exception("Invalid Boolean Value");
+        }
+
+        private void UpdateProvisionFromOtherDomain(DeviceProfile deviceProfile, string provisionFromOtherDomain)
+        {
+            if (bool.TryParse(provisionFromOtherDomain, out var bValue))
+            {
+                deviceProfile.ProvisionFromOtherDomain = bValue;
 
                 Database.SaveChanges();
                 return;
