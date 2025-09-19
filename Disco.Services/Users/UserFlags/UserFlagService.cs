@@ -238,7 +238,7 @@ namespace Disco.Services.Users.UserFlags
 
                     var chunkResults = chunk.Select((user, index) =>
                     {
-                        status.UpdateStatus((chunkIndexOffset + index) * progressInterval, string.Format("Assigning Flag: {0}", user.ToString()));
+                        status.UpdateStatus((chunkIndexOffset + index) * progressInterval, $"Assigning Flag: {user}");
 
                         return user.OnAddUserFlagUnsafe(database, userFlag, techUser, comments);
                     }).ToList();

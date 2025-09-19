@@ -249,7 +249,7 @@
                                         <input id="User_Show_Details_Actions_AddFlag_Dialog_Filter" type="text" placeholder="Filter" autocomplete="off" />
                                         @foreach (var userFlag in Model.AvailableUserFlags.OrderBy(jq => jq.Name))
                                         {
-                                            <div class="flag" data-userflagid="@(userFlag.Id)" data-userflagname="@userFlag.Name">
+                                            <div class="flag" data-userflagid="@(userFlag.Id)" data-userflagname="@userFlag.Name" data-userflagcanremove="@Model.User.CanRemoveUserFlag(userFlag)" data-userflagremovedays="@userFlag.DefaultRemoveDays">
                                                 <i class="fa fa-@(userFlag.Icon) fa-fw fa-lg d-@(userFlag.IconColour)"></i>@userFlag.Name
                                             </div>
                                         }
@@ -258,6 +258,11 @@
                                         <div>
                                             <h4>Comments</h4>
                                             <textarea name="Comments" id="User_Show_Details_Actions_AddFlag_Dialog_Comments"></textarea>
+                                        </div>
+                                        <div>
+                                            <h4>Remove On</h4>
+                                            <input name="RemoveDate" id="User_Show_Details_Actions_AddFlag_Dialog_RemoveDate" type="date" min="@(DateTime.Today.AddDays(1).ToString("yyyy-MM-dd"))" />
+                                            <span>12:00 AM</span>
                                         </div>
                                     </div>
                                 }
@@ -270,6 +275,7 @@
                                     let flagPicker = null;
                                     let flagAddId = null;
                                     let flagAddComments = null;
+                                    let flagAddRemoveDate = null;
                                     let details = null;
 
                                     function flagSelected() {
@@ -279,6 +285,26 @@
                                         flag.addClass('selected');
 
                                         flagAddId.val(flag.attr('data-userflagid'));
+
+                                        const removeDays = flag.attr('data-userflagremovedays');
+                                        if (removeDays) {
+                                            const date = new Date();
+                                            date.setDate(date.getDate() + parseInt(removeDays) - 1);
+                                            flagAddRemoveDate[0].valueAsDate = date;
+                                            flagAddRemoveDate.trigger('change');
+                                        } else {
+                                            flagAddRemoveDate[0].valueAsDate = null;
+                                            flagAddRemoveDate.trigger('change');
+                                        }
+                                        flagAddRemoveDate.closest('div').show();
+                                        if (flag.attr('data-userflagcanremove') === 'True') {
+                                            flagAddRemoveDate.prop('disabled', false);
+                                        } else {
+                                            flagAddRemoveDate.prop('disabled', true);
+                                            if (!removeDays) {
+                                                flagAddRemoveDate.closest('div').hide();
+                                            }
+                                        }
 
                                         details.show();
 
@@ -314,6 +340,7 @@
 
                                             flagAddId = $('#User_Show_Details_Actions_AddFlag_Dialog_Id');
                                             flagAddComments = buttonDialog.find('#User_Show_Details_Actions_AddFlag_Dialog_Comments');
+                                            flagAddRemoveDate = buttonDialog.find('#User_Show_Details_Actions_AddFlag_Dialog_RemoveDate');
                                             flagPicker = buttonDialog.find('.flagPicker');
                                             details = buttonDialog.find('.details');
 
@@ -334,6 +361,13 @@
                                             });
 
                                             flagPicker.on('click', 'div.flag', flagSelected);
+                                            flagAddRemoveDate.on('change', function () {
+                                                if (flagAddRemoveDate.val()) {
+                                                    flagAddRemoveDate.next('span').show();
+                                                } else {
+                                                    flagAddRemoveDate.next('span').hide();
+                                                }
+                                            });
                                         }
 
                                         $('#User_Show_Details_Actions_AddFlag_Dialog_Filter').val('');

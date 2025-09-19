@@ -13,19 +13,26 @@ namespace Disco.Services
     public static class UserFlagExtensions
     {
 
-        #region Edit Comments
+        #region Edit
         public static bool CanEdit(this UserFlagAssignment fa)
         {
             var (_, permission) = UserFlagService.GetUserFlag(fa.UserFlagId);
 
             return permission.CanEdit();
         }
-        public static void OnEdit(this UserFlagAssignment fa, string comments)
+        public static void OnEdit(this UserFlagAssignment fa, string comments, DateTime? removeDate)
         {
             if (!fa.CanEdit())
                 throw new InvalidOperationException("Editing comments for user flags is denied");
 
             fa.Comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim();
+
+            if (fa.CanRemove() && removeDate != fa.RemoveDate &&
+                (!removeDate.HasValue || removeDate.Value >= DateTime.Today))
+            {
+                fa.RemoveDate = removeDate?.Date;
+                fa.RemoveUserId = UserService.CurrentUser.UserId;
+            }
         }
         #endregion
 
@@ -49,11 +56,23 @@ namespace Disco.Services
 
         public static void OnRemoveUnsafe(this UserFlagAssignment fa, DiscoDataContext database, User removingUser)
         {
+            OnRemoveUnsafe(fa, database, removingUser, false);
+        }
+
+        internal static void OnRemoveUnsafe(this UserFlagAssignment fa, DiscoDataContext database, User removingUser, bool isScheduled)
+        {
             fa = database.UserFlagAssignments.First(a => a.Id == fa.Id);
             removingUser = database.Users.First(u => u.UserId == removingUser.UserId);
 
             fa.RemovedDate = DateTime.Now;
             fa.RemovedUserId = removingUser.UserId;
+
+            if (!isScheduled)
+            {
+                fa.RemoveDate = null;
+                fa.RemoveUser = null;
+                fa.RemoveUserId = null;
+            }
 
             if (!string.IsNullOrWhiteSpace(fa.UserFlag.OnUnassignmentExpression))
             {
@@ -88,13 +107,39 @@ namespace Disco.Services
         }
         public static UserFlagAssignment OnAddUserFlag(this User u, DiscoDataContext database, UserFlag flag, string comments)
         {
+            var removeDate = (DateTime?)null;
+            if (flag.DefaultRemoveDays.HasValue)
+                removeDate = DateTime.Today.AddDays(flag.DefaultRemoveDays.Value);
+
+            return OnAddUserFlag(u, database, flag, comments, removeDate);
+        }
+        public static UserFlagAssignment OnAddUserFlag(this User u, DiscoDataContext database, UserFlag flag, string comments, DateTime? removeDate)
+        {
             if (!u.CanAddUserFlag(flag))
                 throw new InvalidOperationException("Adding user flag is denied");
 
-            return u.OnAddUserFlagUnsafe(database, flag, UserService.CurrentUser, comments);
+            if (u.CanRemoveUserFlag(flag))
+                return u.OnAddUserFlagUnsafe(database, flag, UserService.CurrentUser, comments, removeDate);
+            else
+                return u.OnAddUserFlagUnsafe(database, flag, UserService.CurrentUser, comments);
+        }
+        public static bool CanRemoveUserFlag(this User u, UserFlag flag)
+        {
+            var (_, permission) = UserFlagService.GetUserFlag(flag.Id);
+
+            return permission.CanRemove();
         }
 
         public static UserFlagAssignment OnAddUserFlagUnsafe(this User u, DiscoDataContext database, UserFlag flag, User addingUser, string comments)
+        {
+            var removeDate = (DateTime?)null;
+            if (flag.DefaultRemoveDays.HasValue)
+                removeDate = DateTime.Today.AddDays(flag.DefaultRemoveDays.Value);
+
+            return OnAddUserFlagUnsafe(u, database, flag, addingUser, comments, removeDate);
+        }
+
+        public static UserFlagAssignment OnAddUserFlagUnsafe(this User u, DiscoDataContext database, UserFlag flag, User addingUser, string comments, DateTime? removeDate)
         {
             flag = database.UserFlags.First(f => f.Id == flag.Id);
             u = database.Users.First(user => user.UserId == u.UserId);
@@ -109,6 +154,13 @@ namespace Disco.Services
                 AddedUserId = addingUser.UserId,
                 Comments = string.IsNullOrWhiteSpace(comments) ? null : comments.Trim()
             };
+
+            if (removeDate.HasValue)
+            {
+                fa.RemoveDate = removeDate.Value.Date;
+                fa.RemoveUser = addingUser;
+                fa.RemoveUserId = addingUser.UserId;
+            }
 
             database.UserFlagAssignments.Add(fa);
 

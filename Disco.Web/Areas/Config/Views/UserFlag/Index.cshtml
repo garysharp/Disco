@@ -3,7 +3,7 @@
     Authorization.Require(Claims.Config.UserFlag.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags");
     var showTags = Model.UserFlags.Keys.Any(i => i.UserDevicesLinkedGroup != null || i.UsersLinkedGroup != null ||
-        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null);
+        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null || i.DefaultRemoveDays.HasValue);
 }
 <div id="Config_UserFlags_Index">
     @if (Model.UserFlags.Count == 0)
@@ -58,6 +58,10 @@
                             @if (item.OnAssignmentExpression != null || item.OnUnassignmentExpression != null)
                             {
                                 <i class="fa fa-bolt fa-lg alert" title="Has Expressions"></i>
+                            }
+                            @if (item.DefaultRemoveDays.HasValue)
+                            {
+                                <i class="fa fa-clock-o fa-lg" title="Has Default Unassignment"></i>
                             }
                         </td>
                     }

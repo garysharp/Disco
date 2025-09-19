@@ -49,7 +49,7 @@ namespace Disco.Web.Areas.Config.Views.UserFlag
     Authorization.Require(Claims.Config.UserFlag.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "User Flags");
     var showTags = Model.UserFlags.Keys.Any(i => i.UserDevicesLinkedGroup != null || i.UsersLinkedGroup != null ||
-        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null);
+        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null || i.DefaultRemoveDays.HasValue);
 
             
             #line default
@@ -141,37 +141,37 @@ WriteLiteral("            </tr>\r\n");
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1211), Tuple.Create("\"", 1265)
+WriteAttribute("href", Tuple.Create(" href=\"", 1243), Tuple.Create("\"", 1297)
             
             #line 33 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1218), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Index(item.Id))
+, Tuple.Create(Tuple.Create("", 1250), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Index(item.Id))
             
             #line default
             #line hidden
-, 1218), false)
+, 1250), false)
 );
 
 WriteLiteral(">\r\n                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1299), Tuple.Create("\"", 1352)
-, Tuple.Create(Tuple.Create("", 1307), Tuple.Create("fa", 1307), true)
-, Tuple.Create(Tuple.Create(" ", 1309), Tuple.Create("fa-", 1310), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1331), Tuple.Create("\"", 1384)
+, Tuple.Create(Tuple.Create("", 1339), Tuple.Create("fa", 1339), true)
+, Tuple.Create(Tuple.Create(" ", 1341), Tuple.Create("fa-", 1342), true)
             
             #line 34 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1313), Tuple.Create<System.Object, System.Int32>(item.Icon
+, Tuple.Create(Tuple.Create("", 1345), Tuple.Create<System.Object, System.Int32>(item.Icon
             
             #line default
             #line hidden
-, 1313), false)
-, Tuple.Create(Tuple.Create(" ", 1325), Tuple.Create("fa-lg", 1326), true)
-, Tuple.Create(Tuple.Create(" ", 1331), Tuple.Create("d-", 1332), true)
+, 1345), false)
+, Tuple.Create(Tuple.Create(" ", 1357), Tuple.Create("fa-lg", 1358), true)
+, Tuple.Create(Tuple.Create(" ", 1363), Tuple.Create("d-", 1364), true)
             
             #line 34 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1334), Tuple.Create<System.Object, System.Int32>(item.IconColour
+, Tuple.Create(Tuple.Create("", 1366), Tuple.Create<System.Object, System.Int32>(item.IconColour
             
             #line default
             #line hidden
-, 1334), false)
+, 1366), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -315,10 +315,35 @@ WriteLiteral("></i>\r\n");
             
             #line default
             #line hidden
+WriteLiteral("                            ");
+
+            
+            #line 62 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                             if (item.DefaultRemoveDays.HasValue)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <i");
+
+WriteLiteral(" class=\"fa fa-clock-o fa-lg\"");
+
+WriteLiteral(" title=\"Has Default Unassignment\"");
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 65 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
 WriteLiteral("                        </td>\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 67 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                     }
 
             
@@ -327,7 +352,7 @@ WriteLiteral("                        </td>\r\n");
 WriteLiteral("                </tr>\r\n");
 
             
-            #line 65 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 69 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
             }
 
             
@@ -336,7 +361,7 @@ WriteLiteral("                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 67 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 71 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
     }
 
             
@@ -349,13 +374,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 69 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 73 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 69 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 73 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
      if (Authorization.Has(Claims.Config.UserFlag.Export) && Model.UserFlags.Count > 0)
     {
         
@@ -363,14 +388,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 71 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
    Write(Html.ActionLinkButton("Export", MVC.Config.UserFlag.Export()));
 
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 75 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                                                                       
     }
 
@@ -380,7 +405,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 73 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 77 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
      if (Authorization.Has(Claims.Config.UserFlag.Create))
     {
         
@@ -388,14 +413,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 75 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 79 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
    Write(Html.ActionLinkButton("Create User Flag", MVC.Config.UserFlag.Create()));
 
             
             #line default
             #line hidden
             
-            #line 75 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
+            #line 79 "..\..\Areas\Config\Views\UserFlag\Index.cshtml"
                                                                                 
     }
 

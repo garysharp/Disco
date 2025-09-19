@@ -10,6 +10,7 @@ using Disco.Web.Areas.API.Models.Shared;
 using Disco.Web.Areas.Config.Models.DeviceFlag;
 using Disco.Web.Extensions;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -17,12 +18,13 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DeviceFlagController : AuthorizedDatabaseController
     {
-        const string pName = "name";
-        const string pDescription = "description";
-        const string pIcon = "icon";
-        const string pIconColour = "iconcolour";
-        const string pOnAssignmentExpression = "onassignmentexpression";
-        const string pOnUnassignmentExpression = "onunassignmentexpression";
+        private const string pName = "name";
+        private const string pDescription = "description";
+        private const string pIcon = "icon";
+        private const string pIconColour = "iconcolour";
+        private const string pDefaultRemoveDays = "defaultremovedays";
+        private const string pOnAssignmentExpression = "onassignmentexpression";
+        private const string pOnUnassignmentExpression = "onunassignmentexpression";
 
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -52,6 +54,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pIconColour:
                             UpdateIconColour(flag, value);
+                            break;
+                        case pDefaultRemoveDays:
+                            UpdateDefaultRemoveDays(flag, value);
                             break;
                         case pOnAssignmentExpression:
                             UpdateOnAssignmentExpression(flag, value);
@@ -140,6 +145,12 @@ namespace Disco.Web.Areas.API.Controllers
                 else
                     return BadRequest(ex.Message);
             }
+        }
+        [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateDefaultRemoveDays(int id, [Range(1, int.MaxValue)] int? defaultRemoveDays = null, bool? redirect = null)
+        {
+            return Update(id, pDefaultRemoveDays, defaultRemoveDays?.ToString(), redirect);
         }
         [DiscoAuthorize(Claims.Config.DeviceFlag.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -278,6 +289,23 @@ namespace Disco.Web.Areas.API.Controllers
                 deviceFlag.Description = description;
                 DeviceFlagService.Update(Database, deviceFlag);
             }
+        }
+
+        private void UpdateDefaultRemoveDays(DeviceFlag deviceFlag, string defaultRemoveDays)
+        {
+            if (string.IsNullOrWhiteSpace(defaultRemoveDays))
+            {
+                deviceFlag.DefaultRemoveDays = null;
+            }
+            else
+            {
+                if (!int.TryParse(defaultRemoveDays, out var days) || days < 1)
+                    throw new ArgumentOutOfRangeException(nameof(defaultRemoveDays), "Unable to parse days");
+
+                deviceFlag.DefaultRemoveDays = days;
+            }
+
+            DeviceFlagService.Update(Database, deviceFlag);
         }
 
         private void UpdateOnAssignmentExpression(DeviceFlag deviceFlag, string onAssignmentExpression)

@@ -36,7 +36,7 @@ namespace Disco.Models.Repository
             get => FlagPermission.FromFlag(this);
             set => PermissionsJson = value?.ToJson();
         }
-
+        [Range(0, int.MaxValue)]
         public int? DefaultRemoveDays { get; set; }
 
         public virtual IList<UserFlagAssignment> UserFlagAssignments { get; set; }

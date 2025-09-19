@@ -96,7 +96,7 @@ WriteLiteral(">Added</th>\r\n                <th");
 
 WriteLiteral(" class=\"sla\"");
 
-WriteLiteral(">Comments</th>\r\n                <th");
+WriteLiteral(">Detail</th>\r\n                <th");
 
 WriteLiteral(" class=\"removed\"");
 
@@ -140,15 +140,37 @@ WriteLiteral(" data-flagassignmentaddeddate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 967), Tuple.Create("\"", 1030)
+WriteAttribute("class", Tuple.Create(" class=\"", 965), Tuple.Create("\"", 1028)
             
             #line 19 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-                                                           , Tuple.Create(Tuple.Create("", 975), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
+                                                           , Tuple.Create(Tuple.Create("", 973), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
             
             #line default
             #line hidden
-, 975), false)
+, 973), false)
 );
+
+WriteLiteral(" data-canremove=\"");
+
+            
+            #line 19 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                                                                                                                                                                                             Write(fa.Item1.CanRemove());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-removeon=\"");
+
+            
+            #line 19 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                                                                                                                                                                                                                                    Write(fa.Item1.RemoveDate.HasValue ? fa.Item1.RemoveDate.Value.ToString("yyyy-MM-dd") : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
 
 WriteLiteral(">\r\n                    <td");
 
@@ -156,26 +178,26 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1099), Tuple.Create("\"", 1176)
-, Tuple.Create(Tuple.Create("", 1107), Tuple.Create("fa", 1107), true)
-, Tuple.Create(Tuple.Create(" ", 1109), Tuple.Create("fa-", 1110), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1242), Tuple.Create("\"", 1319)
+, Tuple.Create(Tuple.Create("", 1250), Tuple.Create("fa", 1250), true)
+, Tuple.Create(Tuple.Create(" ", 1252), Tuple.Create("fa-", 1253), true)
             
             #line 21 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1113), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.Icon
+, Tuple.Create(Tuple.Create("", 1256), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.Icon
             
             #line default
             #line hidden
-, 1113), false)
-, Tuple.Create(Tuple.Create(" ", 1134), Tuple.Create("fa-fw", 1135), true)
-, Tuple.Create(Tuple.Create(" ", 1140), Tuple.Create("fa-lg", 1141), true)
-, Tuple.Create(Tuple.Create(" ", 1146), Tuple.Create("d-", 1147), true)
+, 1256), false)
+, Tuple.Create(Tuple.Create(" ", 1277), Tuple.Create("fa-fw", 1278), true)
+, Tuple.Create(Tuple.Create(" ", 1283), Tuple.Create("fa-lg", 1284), true)
+, Tuple.Create(Tuple.Create(" ", 1289), Tuple.Create("d-", 1290), true)
             
             #line 21 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1149), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.IconColour
+, Tuple.Create(Tuple.Create("", 1292), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.IconColour
             
             #line default
             #line hidden
-, 1149), false)
+, 1292), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -380,29 +402,72 @@ WriteLiteral("</div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                    </td>\r\n                    <td");
+WriteLiteral("                        ");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2763), Tuple.Create("\"", 2826)
-, Tuple.Create(Tuple.Create("", 2771), Tuple.Create("removed", 2771), true)
             
-            #line 53 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 2778), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
+            #line 52 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                         if (!fa.Item1.RemovedDate.HasValue && fa.Item1.RemoveDate.HasValue)
+                        {
+
             
             #line default
             #line hidden
-, 2778), false)
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"removeDate\"");
+
+WriteLiteral(" data-date=\"");
+
+            
+            #line 54 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                                          Write(fa.Item1.RemoveDate.Value.ToString("yyyy-MM-dd"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">Removing ");
+
+            
+            #line 54 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                                                                                                      Write(CommonHelpers.FriendlyDate(fa.Item1.RemoveDate.Value));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
+
+            
+            #line 55 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 3239), Tuple.Create("\"", 3302)
+, Tuple.Create(Tuple.Create("", 3247), Tuple.Create("removed", 3247), true)
+            
+            #line 57 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 3254), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
+            
+            #line default
+            #line hidden
+, 3254), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 54 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 58 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 54 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 58 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                          if (fa.Item1.RemovedDate.HasValue)
                         {
                             
@@ -410,15 +475,26 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 56 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 60 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                        Write(CommonHelpers.FriendlyDateAndUser(fa.Item1.RemovedDate.Value, fa.Item1.RemovedUser));
 
             
             #line default
             #line hidden
             
-            #line 56 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 60 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                                                                                 
+                            if (fa.Item1.RemoveDate.HasValue)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <em>(scheduled)</em>\r\n");
+
+            
+            #line 64 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                            }
                             if (fa.Item1.OnUnassignmentExpressionResult != null)
                             {
 
@@ -432,7 +508,7 @@ WriteLiteral(" class=\"expressionResult\"");
 WriteLiteral(">");
 
             
-            #line 59 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 67 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                          Write(fa.Item1.OnUnassignmentExpressionResult);
 
             
@@ -441,7 +517,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 60 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 68 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                             }
                         }
                         else if (fa.Item1.CanRemove())
@@ -450,16 +526,16 @@ WriteLiteral("</div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                            <a");
+WriteLiteral("                            <button");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button small remove\"");
 
-WriteLiteral(">Remove</a>\r\n");
+WriteLiteral(">Remove</button>\r\n");
 
             
-            #line 65 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 73 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                         }
 
             
@@ -468,7 +544,7 @@ WriteLiteral(">Remove</a>\r\n");
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 68 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 76 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             }
 
             
@@ -487,13 +563,13 @@ WriteLiteral(" title=\"Remove this flag from the device?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 71 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 79 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 79 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
              using (Html.BeginForm(MVC.API.DeviceFlagAssignment.RemoveDevice()))
             {
                 
@@ -501,14 +577,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 81 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 81 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                         
 
             
@@ -533,7 +609,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n                </p>\r\n");
 
             
-            #line 78 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 86 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             }
 
             
@@ -547,33 +623,33 @@ WriteLiteral(" id=\"Device_Show_Flags_Actions_EditComments_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteLiteral(" title=\"Edit the Comments\"");
+WriteLiteral(" title=\"Edit Details\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 81 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 89 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 81 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
-             using (Html.BeginForm(MVC.API.DeviceFlagAssignment.UpdateComments()))
+            #line 89 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+             using (Html.BeginForm(MVC.API.DeviceFlagAssignment.Edit()))
             {
                 
             
             #line default
             #line hidden
             
-            #line 83 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 91 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 83 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 91 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                         
 
             
@@ -613,8 +689,29 @@ WriteLiteral(" class=\"block\"");
 
 WriteLiteral("></textarea>\r\n                </p>\r\n");
 
+WriteLiteral("                <div>\r\n                    <h4>Remove On</h4>\r\n                  " +
+"  <input");
+
+WriteLiteral(" name=\"RemoveDate\"");
+
+WriteLiteral(" id=\"Device_Show_Flags_Actions_EditComments_Dialog_RemoveDate\"");
+
+WriteLiteral(" type=\"date\"");
+
+WriteAttribute("min", Tuple.Create(" min=\"", 5593), Tuple.Create("\"", 5650)
             
-            #line 90 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 100 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+                                             , Tuple.Create(Tuple.Create("", 5599), Tuple.Create<System.Object, System.Int32>(DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")
+            
+            #line default
+            #line hidden
+, 5599), false)
+);
+
+WriteLiteral(" />\r\n                    <span>12:00 AM</span>\r\n                </div>\r\n");
+
+            
+            #line 103 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
             }
 
             
@@ -626,53 +723,65 @@ WriteLiteral("        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n            $(function () {\r\n                var deviceFlags = $(\'#deviceFlags" +
-"\');\r\n\r\n                var dialog = null;\r\n                var dialogEditComment" +
-"s = null;\r\n\r\n                deviceFlags.on(\'click\', \'a.remove\', function (e) {\r" +
-"\n                    var $this = $(this);\r\n                    var DeviceFlagAss" +
-"ignmentId = $this.closest(\'tr\').attr(\'data-deviceflagassignmentid\');\r\n\r\n        " +
-"            if (!dialog) {\r\n                        dialog = $(\'#Device_Show_Fla" +
-"gs_Actions_Remove_Dialog\');\r\n                        dialog.dialog({\r\n          " +
-"                  resizable: false,\r\n                            modal: true,\r\n " +
-"                           autoOpen: false,\r\n                            buttons" +
-": {\r\n                                \"Remove Flag\": function () {\r\n             " +
-"                       var $this = $(this);\r\n                                   " +
-" $this.dialog(\"disable\");\r\n                                    $this.dialog(\"opt" +
-"ion\", \"buttons\", null);\r\n                                    $this.find(\'form\')." +
-"submit();\r\n                                },\r\n                                C" +
-"ancel: function () {\r\n                                    $(this).dialog(\"close\"" +
-");\r\n                                }\r\n                            }\r\n          " +
-"              });\r\n                    }\r\n\r\n                    $(\'#Device_Show_" +
-"Flags_Actions_Remove_Dialog_Id\').val(DeviceFlagAssignmentId);\r\n                 " +
-"   dialog.dialog(\'open\');\r\n\r\n                    e.preventDefault();\r\n          " +
-"          return false;\r\n                });\r\n\r\n                deviceFlags.on(\'" +
-"click\', \'td.comments i.fa-edit\', function (e) {\r\n                    var $this =" +
-" $(this);\r\n                    var DeviceFlagAssignmentId = $this.closest(\'tr\')." +
-"attr(\'data-deviceflagassignmentid\');\r\n\r\n                    if (!dialogEditComme" +
-"nts) {\r\n                        dialogEditComments = $(\'#Device_Show_Flags_Actio" +
-"ns_EditComments_Dialog\');\r\n                        dialogEditComments.dialog({\r\n" +
-"                            resizable: false,\r\n                            modal" +
-": true,\r\n                            width: 320,\r\n                            au" +
-"toOpen: false,\r\n                            buttons: {\r\n                        " +
-"        \"Save Changes\": function () {\r\n                                    var $" +
-"this = $(this);\r\n                                    $this.dialog(\"disable\");\r\n " +
-"                                   $this.dialog(\"option\", \"buttons\", null);\r\n   " +
-"                                 $this.find(\'form\').submit();\r\n                 " +
-"               },\r\n                                Cancel: function () {\r\n      " +
-"                              $(this).dialog(\"close\");\r\n                        " +
-"        }\r\n                            }\r\n                        });\r\n         " +
-"           }\r\n\r\n                    var $comments = $this.closest(\'td\').find(\'.c" +
-"ommentsRaw\');\r\n                    if ($comments.hasClass(\'smallMessage\')) {\r\n  " +
-"                      $(\'#Device_Show_Flags_Actions_EditComments_Dialog_Comments" +
-"\').val(\'\');\r\n                    } else {\r\n                        $(\'#Device_Sh" +
-"ow_Flags_Actions_EditComments_Dialog_Comments\').val($comments.text());\r\n        " +
-"            }\r\n\r\n                    $(\'#Device_Show_Flags_Actions_EditComments_" +
-"Dialog_Id\').val(DeviceFlagAssignmentId);\r\n                    dialogEditComments" +
-".dialog(\'open\');\r\n                    e.preventDefault();\r\n                    r" +
-"eturn false;\r\n                });\r\n            });\r\n        </script>\r\n");
+WriteLiteral(">\r\n            $(function () {\r\n                const deviceFlags = $(\'#deviceFla" +
+"gs\');\r\n\r\n                let dialog = null;\r\n                let dialogEditComme" +
+"nts = null;\r\n\r\n                deviceFlags.on(\'click\', \'button.remove\', function" +
+" (e) {\r\n                    const $this = $(this);\r\n                    const De" +
+"viceFlagAssignmentId = $this.closest(\'tr\').attr(\'data-deviceflagassignmentid\');\r" +
+"\n\r\n                    if (!dialog) {\r\n                        dialog = $(\'#Devi" +
+"ce_Show_Flags_Actions_Remove_Dialog\');\r\n                        dialog.dialog({\r" +
+"\n                            resizable: false,\r\n                            moda" +
+"l: true,\r\n                            autoOpen: false,\r\n                        " +
+"    buttons: {\r\n                                \"Remove Flag\": function () {\r\n  " +
+"                                  const $this = $(this);\r\n                      " +
+"              $this.dialog(\"disable\");\r\n                                    $thi" +
+"s.dialog(\"option\", \"buttons\", null);\r\n                                    $this." +
+"find(\'form\').submit();\r\n                                },\r\n                    " +
+"            Cancel: function () {\r\n                                    $(this).d" +
+"ialog(\"close\");\r\n                                }\r\n                            " +
+"}\r\n                        });\r\n                    }\r\n\r\n                    $(\'" +
+"#Device_Show_Flags_Actions_Remove_Dialog_Id\').val(DeviceFlagAssignmentId);\r\n    " +
+"                dialog.dialog(\'open\');\r\n\r\n                    e.preventDefault()" +
+";\r\n                    return false;\r\n                });\r\n\r\n                dev" +
+"iceFlags.on(\'click\', \'td.comments i.fa-edit\', function (e) {\r\n                  " +
+"  const $this = $(this);\r\n                    const $row = $this.closest(\'tr\');\r" +
+"\n                    const DeviceFlagAssignmentId = $row.attr(\'data-deviceflagas" +
+"signmentid\');\r\n                    const canRemove = $row.attr(\'data-canremove\')" +
+" === \'True\';\r\n                    const removeOn = $row.attr(\'data-removeon\');\r\n" +
+"\r\n                    if (!dialogEditComments) {\r\n                        dialog" +
+"EditComments = $(\'#Device_Show_Flags_Actions_EditComments_Dialog\');\r\n           " +
+"             dialogEditComments.dialog({\r\n                            resizable:" +
+" false,\r\n                            modal: true,\r\n                            w" +
+"idth: 320,\r\n                            autoOpen: false,\r\n                      " +
+"      buttons: {\r\n                                \"Save Changes\": function () {\r" +
+"\n                                    const $this = $(this);\r\n                   " +
+"                 $this.dialog(\"disable\");\r\n                                    $" +
+"this.dialog(\"option\", \"buttons\", null);\r\n                                    $th" +
+"is.find(\'form\').submit();\r\n                                },\r\n                 " +
+"               Cancel: function () {\r\n                                    $(this" +
+").dialog(\"close\");\r\n                                }\r\n                         " +
+"   }\r\n                        });\r\n                    }\r\n\r\n                    " +
+"const $comments = $this.closest(\'td\').find(\'.commentsRaw\');\r\n                   " +
+" if ($comments.hasClass(\'smallMessage\')) {\r\n                        $(\'#Device_S" +
+"how_Flags_Actions_EditComments_Dialog_Comments\').val(\'\');\r\n                    }" +
+" else {\r\n                        $(\'#Device_Show_Flags_Actions_EditComments_Dial" +
+"og_Comments\').val($comments.text());\r\n                    }\r\n\r\n                 " +
+"   const removeOnInput = $(\'#Device_Show_Flags_Actions_EditComments_Dialog_Remov" +
+"eDate\');\r\n                    if (canRemove) {\r\n                        removeOn" +
+"Input.prop(\'disabled\', false);\r\n                        if (removeOn) {\r\n       " +
+"                     removeOnInput.val(removeOn);\r\n                        } els" +
+"e {\r\n                            removeOnInput.val(\'\');\r\n                       " +
+" }\r\n                        removeOnInput.closest(\'div\').css(\'display\', \'block\')" +
+";\r\n                    } else {\r\n                        removeOnInput.prop(\'dis" +
+"abled\', true);\r\n                        removeOnInput.val(\'\');\r\n                " +
+"        removeOnInput.closest(\'div\').css(\'display\', \'none\');\r\n                  " +
+"  }\r\n\r\n                    $(\'#Device_Show_Flags_Actions_EditComments_Dialog_Id\'" +
+").val(DeviceFlagAssignmentId);\r\n                    dialogEditComments.dialog(\'o" +
+"pen\');\r\n                    e.preventDefault();\r\n                    return fals" +
+"e;\r\n                });\r\n            });\r\n        </script>\r\n");
 
             
-            #line 169 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 200 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
     }
     else
     {
@@ -687,7 +796,7 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">This device has no associated flags</div>\r\n");
 
             
-            #line 173 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 204 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
     }
 
             
@@ -697,7 +806,7 @@ WriteLiteral("    <script>\r\n        $(\'#DeviceDetailTabItems\').append(\'<li>
 "ilTab-Flags\">Flags [");
 
             
-            #line 175 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
+            #line 206 "..\..\Views\Device\DeviceParts\_Flags.cshtml"
                                                                                   Write(activeAssignmentCount);
 
             

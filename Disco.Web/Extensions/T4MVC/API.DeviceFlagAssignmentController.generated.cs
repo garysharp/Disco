@@ -61,15 +61,9 @@ namespace Disco.Web.Areas.API.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Update()
+        public virtual System.Web.Mvc.ActionResult Edit()
         {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UpdateComments()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateComments);
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -99,8 +93,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string Update = "Update";
-            public readonly string UpdateComments = "UpdateComments";
+            public readonly string Edit = "Edit";
             public readonly string AddDevice = "AddDevice";
             public readonly string RemoveDevice = "RemoveDevice";
         }
@@ -108,32 +101,21 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string Update = "Update";
-            public const string UpdateComments = "UpdateComments";
+            public const string Edit = "Edit";
             public const string AddDevice = "AddDevice";
             public const string RemoveDevice = "RemoveDevice";
         }
 
 
-        static readonly ActionParamsClass_Update s_params_Update = new ActionParamsClass_Update();
+        static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Update UpdateParams { get { return s_params_Update; } }
+        public ActionParamsClass_Edit EditParams { get { return s_params_Edit; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Update
+        public class ActionParamsClass_Edit
         {
             public readonly string id = "id";
-            public readonly string key = "key";
-            public readonly string value = "value";
-            public readonly string redirect = "redirect";
-        }
-        static readonly ActionParamsClass_UpdateComments s_params_UpdateComments = new ActionParamsClass_UpdateComments();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UpdateComments UpdateCommentsParams { get { return s_params_UpdateComments; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UpdateComments
-        {
-            public readonly string id = "id";
-            public readonly string Comments = "Comments";
+            public readonly string comments = "comments";
+            public readonly string removeDate = "removeDate";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_AddDevice s_params_AddDevice = new ActionParamsClass_AddDevice();
@@ -145,6 +127,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string deviceSerialNumber = "deviceSerialNumber";
             public readonly string comments = "comments";
+            public readonly string removeDate = "removeDate";
         }
         static readonly ActionParamsClass_RemoveDevice s_params_RemoveDevice = new ActionParamsClass_RemoveDevice();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -174,45 +157,32 @@ namespace Disco.Web.Areas.API.Controllers
         public T4MVC_DeviceFlagAssignmentController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void UpdateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string key, string value, bool? redirect);
+        partial void EditOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string comments, System.DateTime? removeDate, bool? redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Update(int id, string key, string value, bool? redirect)
+        public override System.Web.Mvc.ActionResult Edit(int id, string comments, System.DateTime? removeDate, bool? redirect)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "removeDate", removeDate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateOverride(callInfo, id, key, value, redirect);
+            EditOverride(callInfo, id, comments, removeDate, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateCommentsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string Comments, bool? redirect);
+        partial void AddDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string deviceSerialNumber, string comments, System.DateTime? removeDate);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateComments(int id, string Comments, bool? redirect)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateComments);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Comments", Comments);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateCommentsOverride(callInfo, id, Comments, redirect);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void AddDeviceOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string deviceSerialNumber, string comments);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult AddDevice(int id, string deviceSerialNumber, string comments)
+        public override System.Web.Mvc.ActionResult AddDevice(int id, string deviceSerialNumber, string comments, System.DateTime? removeDate)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AddDevice);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "deviceSerialNumber", deviceSerialNumber);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
-            AddDeviceOverride(callInfo, id, deviceSerialNumber, comments);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "removeDate", removeDate);
+            AddDeviceOverride(callInfo, id, deviceSerialNumber, comments, removeDate);
             return callInfo;
         }
 

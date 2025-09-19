@@ -1,5 +1,4 @@
-﻿using Disco.Models.Repository;
-using Disco.Services;
+﻿using Disco.Services;
 using Disco.Services.Web;
 using System;
 using System.Data.Entity;
@@ -10,34 +9,25 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class UserFlagAssignmentController : AuthorizedDatabaseController
     {
-        const string pComments = "comments";
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult Update(int id, string key, string value = null, bool? redirect = null)
+        public virtual ActionResult Edit(int id, string comments, DateTime? removeDate, bool? redirect = null)
         {
             try
             {
                 if (id < 0)
                     throw new ArgumentOutOfRangeException(nameof(id));
-                if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException(nameof(key));
+
                 var userFlagAssignment = Database.UserFlagAssignments
                     .Include(a => a.UserFlag)
-                    .FirstOrDefault(a => a.Id == id);
-                if (userFlagAssignment != null)
-                {
-                    switch (key.ToLower())
-                    {
-                        case pComments:
-                            UpdateComments(userFlagAssignment, value);
-                            break;
-                        default:
-                            throw new Exception("Invalid Update Key");
-                    }
-                }
-                else
-                {
-                    throw new Exception("Invalid User Flag Assignment Id");
-                }
+                    .FirstOrDefault(a => a.Id == id)
+                    ?? throw new Exception("Invalid User Flag Assignment Id");
+
+                if (!userFlagAssignment.CanEdit())
+                    throw new InvalidOperationException("Editing comments for user flags is denied");
+
+                userFlagAssignment.OnEdit(comments, removeDate);
+                Database.SaveChanges();
+
                 if (redirect.HasValue && redirect.Value)
                     return Redirect($"{Url.Action(MVC.User.Show(userFlagAssignment.UserId))}#UserDetailTab-Flags");
                 else
@@ -52,44 +42,31 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
-        #region Update Shortcut Methods
-        [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateComments(int id, string Comments = null, bool? redirect = null)
-        {
-            return Update(id, pComments, Comments, redirect);
-        }
-        #endregion
-
-        #region Update Properties
-        private void UpdateComments(UserFlagAssignment userFlagAssignment, string comments)
-        {
-            if (!userFlagAssignment.CanEdit())
-                throw new InvalidOperationException("Editing comments for user flags is denied");
-
-            userFlagAssignment.OnEdit(comments);
-            Database.SaveChanges();
-        }
-        #endregion
-
         #region Actions
 
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult AddUser(int id, string UserId, string Comments)
+        public virtual ActionResult AddUser(int id, string UserId, string Comments, DateTime? RemoveDate)
         {
             Database.Configuration.LazyLoadingEnabled = true;
 
-            var userFlag = Database.UserFlags.Find(id);
-            if (userFlag == null)
-                throw new ArgumentException("Invalid User Flag Id", nameof(id));
+            var userFlag = Database.UserFlags.Find(id)
+                ?? throw new ArgumentException("Invalid User Flag Id", nameof(id));
 
-            var user = Database.Users.Include(u => u.UserFlagAssignments).FirstOrDefault(u => u.UserId == UserId);
-            if (user == null)
-                throw new ArgumentException("Invalid User Id", nameof(UserId));
+            var user = Database.Users
+                .Include(u => u.UserFlagAssignments)
+                .FirstOrDefault(u => u.UserId == UserId)
+                ?? throw new ArgumentException("Invalid User Id", nameof(UserId));
 
             if (!user.CanAddUserFlag(userFlag))
                 return Unauthorized("Adding user flag is denied");
 
-            var userFlagAssignment = user.OnAddUserFlag(Database, userFlag, Comments);
+            if (RemoveDate.HasValue && RemoveDate.Value < DateTime.Today.AddDays(1))
+                RemoveDate = null;
+
+            if (user.CanRemoveUserFlag(userFlag))
+                user.OnAddUserFlag(Database, userFlag, Comments, RemoveDate);
+            else
+                user.OnAddUserFlag(Database, userFlag, Comments);
 
             Database.SaveChanges();
 
@@ -103,9 +80,8 @@ namespace Disco.Web.Areas.API.Controllers
 
             var userFlagAssignment = Database.UserFlagAssignments
                 .Include(a => a.UserFlag)
-                .FirstOrDefault(a => a.Id == id);
-            if (userFlagAssignment == null)
-                throw new ArgumentException("Invalid User Flag Assignment Id", nameof(id));
+                .FirstOrDefault(a => a.Id == id)
+                ?? throw new ArgumentException("Invalid User Flag Assignment Id", nameof(id));
 
             if (!userFlagAssignment.CanRemove())
                 return Unauthorized("Removing user flag assignment is denied");

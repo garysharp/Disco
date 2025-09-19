@@ -212,6 +212,50 @@
                 }
             </td>
         </tr>
+        <tr>
+            <th>
+                Scheduled Unassignment:
+            </th>
+            <td>
+                @if (canConfig)
+                {
+                    <input id="DeviceFlag_DefaultRemoveDays" type="number" min="1" max="@int.MaxValue" value="@Model.DeviceFlag.DefaultRemoveDays" />
+                    @AjaxHelpers.AjaxSave()
+                    @AjaxHelpers.AjaxLoader()
+                    @:days
+                    <script type="text/javascript">
+                $(function () {
+                    document.DiscoFunctions.PropertyChangeHelper(
+                        $('#DeviceFlag_DefaultRemoveDays'),
+                        'Invalid Value',
+                        '@(Url.Action(MVC.API.DeviceFlag.UpdateDefaultRemoveDays(Model.DeviceFlag.Id)))',
+                        'defaultRemoveDays'
+                    );
+                });
+                    </script>
+                }
+                else
+                {
+                    if (Model.DeviceFlag.DefaultRemoveDays.HasValue)
+                    {
+                        <span><strong>@Model.DeviceFlag.DefaultRemoveDays</strong> days</span>
+                    }
+                    else
+                    {
+                        <span><em>Not Enabled</em></span>
+                    }
+                }
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>
+                        Optionally specify the number of days a flag is removed from a device.
+                        If one (1), the flag will be removed that night (midnight).<br />
+                        If the user has permission, the date can be adjusted when assigning the flag.
+                        Changing this value does not affect existing assignments.
+                    </p>
+                </div>
+            </td>
+        </tr>
         @if (hideAdvanced)
         {
             <tr>

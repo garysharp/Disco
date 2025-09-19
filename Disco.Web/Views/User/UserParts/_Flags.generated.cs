@@ -96,7 +96,7 @@ WriteLiteral(">Added</th>\r\n                <th");
 
 WriteLiteral(" class=\"sla\"");
 
-WriteLiteral(">Comments</th>\r\n                <th");
+WriteLiteral(">Detail</th>\r\n                <th");
 
 WriteLiteral(" class=\"removed\"");
 
@@ -140,15 +140,37 @@ WriteLiteral(" data-flagassignmentaddeddate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 943), Tuple.Create("\"", 1006)
+WriteAttribute("class", Tuple.Create(" class=\"", 941), Tuple.Create("\"", 1004)
             
             #line 19 "..\..\Views\User\UserParts\_Flags.cshtml"
-                                                         , Tuple.Create(Tuple.Create("", 951), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
+                                                         , Tuple.Create(Tuple.Create("", 949), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? "added" : "removed"
             
             #line default
             #line hidden
-, 951), false)
+, 949), false)
 );
+
+WriteLiteral(" data-canremove=\"");
+
+            
+            #line 19 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                                                                                                                                                                                           Write(fa.Item1.CanRemove());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-removeon=\"");
+
+            
+            #line 19 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                                                                                                                                                                                                                                  Write(fa.Item1.RemoveDate.HasValue ? fa.Item1.RemoveDate.Value.ToString("yyyy-MM-dd") : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
 
 WriteLiteral(">\r\n                    <td");
 
@@ -156,26 +178,26 @@ WriteLiteral(" class=\"name\"");
 
 WriteLiteral(">\r\n                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1075), Tuple.Create("\"", 1152)
-, Tuple.Create(Tuple.Create("", 1083), Tuple.Create("fa", 1083), true)
-, Tuple.Create(Tuple.Create(" ", 1085), Tuple.Create("fa-", 1086), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1218), Tuple.Create("\"", 1295)
+, Tuple.Create(Tuple.Create("", 1226), Tuple.Create("fa", 1226), true)
+, Tuple.Create(Tuple.Create(" ", 1228), Tuple.Create("fa-", 1229), true)
             
             #line 21 "..\..\Views\User\UserParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1089), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.Icon
+, Tuple.Create(Tuple.Create("", 1232), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.Icon
             
             #line default
             #line hidden
-, 1089), false)
-, Tuple.Create(Tuple.Create(" ", 1110), Tuple.Create("fa-fw", 1111), true)
-, Tuple.Create(Tuple.Create(" ", 1116), Tuple.Create("fa-lg", 1117), true)
-, Tuple.Create(Tuple.Create(" ", 1122), Tuple.Create("d-", 1123), true)
+, 1232), false)
+, Tuple.Create(Tuple.Create(" ", 1253), Tuple.Create("fa-fw", 1254), true)
+, Tuple.Create(Tuple.Create(" ", 1259), Tuple.Create("fa-lg", 1260), true)
+, Tuple.Create(Tuple.Create(" ", 1265), Tuple.Create("d-", 1266), true)
             
             #line 21 "..\..\Views\User\UserParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 1125), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.IconColour
+, Tuple.Create(Tuple.Create("", 1268), Tuple.Create<System.Object, System.Int32>(fa.Item2.flag.IconColour
             
             #line default
             #line hidden
-, 1125), false)
+, 1268), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -380,29 +402,72 @@ WriteLiteral("</div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                    </td>\r\n                    <td");
+WriteLiteral("                        ");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 2735), Tuple.Create("\"", 2798)
-, Tuple.Create(Tuple.Create("", 2743), Tuple.Create("removed", 2743), true)
             
-            #line 53 "..\..\Views\User\UserParts\_Flags.cshtml"
-, Tuple.Create(Tuple.Create("", 2750), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
+            #line 52 "..\..\Views\User\UserParts\_Flags.cshtml"
+                         if (!fa.Item1.RemovedDate.HasValue && fa.Item1.RemoveDate.HasValue)
+                        {
+
             
             #line default
             #line hidden
-, 2750), false)
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"removeDate\"");
+
+WriteLiteral(" data-date=\"");
+
+            
+            #line 54 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                                          Write(fa.Item1.RemoveDate.Value.ToString("yyyy-MM-dd"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(">Removing ");
+
+            
+            #line 54 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                                                                                                      Write(CommonHelpers.FriendlyDate(fa.Item1.RemoveDate.Value));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n");
+
+            
+            #line 55 "..\..\Views\User\UserParts\_Flags.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </td>\r\n                    <td");
+
+WriteAttribute("class", Tuple.Create(" class=\"", 3211), Tuple.Create("\"", 3274)
+, Tuple.Create(Tuple.Create("", 3219), Tuple.Create("removed", 3219), true)
+            
+            #line 57 "..\..\Views\User\UserParts\_Flags.cshtml"
+, Tuple.Create(Tuple.Create("", 3226), Tuple.Create<System.Object, System.Int32>(!fa.Item1.RemovedDate.HasValue ? " na" : null
+            
+            #line default
+            #line hidden
+, 3226), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 54 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 58 "..\..\Views\User\UserParts\_Flags.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 54 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 58 "..\..\Views\User\UserParts\_Flags.cshtml"
                          if (fa.Item1.RemovedDate.HasValue)
                         {
                             
@@ -410,15 +475,26 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 56 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 60 "..\..\Views\User\UserParts\_Flags.cshtml"
                        Write(CommonHelpers.FriendlyDateAndUser(fa.Item1.RemovedDate.Value, fa.Item1.RemovedUser));
 
             
             #line default
             #line hidden
             
-            #line 56 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 60 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                                                                                 
+                            if (fa.Item1.RemoveDate.HasValue)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <em>(scheduled)</em>\r\n");
+
+            
+            #line 64 "..\..\Views\User\UserParts\_Flags.cshtml"
+                            }
                             if (fa.Item1.OnUnassignmentExpressionResult != null)
                             {
 
@@ -432,7 +508,7 @@ WriteLiteral(" class=\"expressionResult\"");
 WriteLiteral(">");
 
             
-            #line 59 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 67 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                          Write(fa.Item1.OnUnassignmentExpressionResult);
 
             
@@ -441,7 +517,7 @@ WriteLiteral(">");
 WriteLiteral("</div>\r\n");
 
             
-            #line 60 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 68 "..\..\Views\User\UserParts\_Flags.cshtml"
                             }
                         }
                         else if (fa.Item1.CanRemove())
@@ -450,16 +526,16 @@ WriteLiteral("</div>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                            <a");
+WriteLiteral("                            <button");
 
-WriteLiteral(" href=\"#\"");
+WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button small remove\"");
 
-WriteLiteral(">Remove</a>\r\n");
+WriteLiteral(">Remove</button>\r\n");
 
             
-            #line 65 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 73 "..\..\Views\User\UserParts\_Flags.cshtml"
                         }
 
             
@@ -468,7 +544,7 @@ WriteLiteral(">Remove</a>\r\n");
 WriteLiteral("                    </td>\r\n                </tr>\r\n");
 
             
-            #line 68 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 76 "..\..\Views\User\UserParts\_Flags.cshtml"
             }
 
             
@@ -487,13 +563,13 @@ WriteLiteral(" title=\"Remove this flag from the user?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 71 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 79 "..\..\Views\User\UserParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 79 "..\..\Views\User\UserParts\_Flags.cshtml"
              using (Html.BeginForm(MVC.API.UserFlagAssignment.RemoveUser()))
             {
                 
@@ -501,14 +577,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 81 "..\..\Views\User\UserParts\_Flags.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 73 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 81 "..\..\Views\User\UserParts\_Flags.cshtml"
                                         
 
             
@@ -533,7 +609,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-lg\"");
 WriteLiteral("></i>&nbsp;Are you sure?\r\n                </p>\r\n");
 
             
-            #line 78 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 86 "..\..\Views\User\UserParts\_Flags.cshtml"
             }
 
             
@@ -547,33 +623,33 @@ WriteLiteral(" id=\"User_Show_Flags_Actions_EditComments_Dialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteLiteral(" title=\"Edit the Comments\"");
+WriteLiteral(" title=\"Edit Details\"");
 
 WriteLiteral(">\r\n");
 
             
-            #line 81 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 89 "..\..\Views\User\UserParts\_Flags.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 81 "..\..\Views\User\UserParts\_Flags.cshtml"
-             using (Html.BeginForm(MVC.API.UserFlagAssignment.UpdateComments()))
+            #line 89 "..\..\Views\User\UserParts\_Flags.cshtml"
+             using (Html.BeginForm(MVC.API.UserFlagAssignment.Edit()))
             {
                 
             
             #line default
             #line hidden
             
-            #line 83 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 91 "..\..\Views\User\UserParts\_Flags.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 83 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 91 "..\..\Views\User\UserParts\_Flags.cshtml"
                                         
 
             
@@ -613,8 +689,29 @@ WriteLiteral(" class=\"block\"");
 
 WriteLiteral("></textarea>\r\n                </p>\r\n");
 
+WriteLiteral("                <div>\r\n                    <h4>Remove On</h4>\r\n                  " +
+"  <input");
+
+WriteLiteral(" name=\"RemoveDate\"");
+
+WriteLiteral(" id=\"User_Show_Flags_Actions_EditComments_Dialog_RemoveDate\"");
+
+WriteLiteral(" type=\"date\"");
+
+WriteAttribute("min", Tuple.Create(" min=\"", 5545), Tuple.Create("\"", 5602)
             
-            #line 90 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 100 "..\..\Views\User\UserParts\_Flags.cshtml"
+                                           , Tuple.Create(Tuple.Create("", 5551), Tuple.Create<System.Object, System.Int32>(DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")
+            
+            #line default
+            #line hidden
+, 5551), false)
+);
+
+WriteLiteral(" />\r\n                    <span>12:00 AM</span>\r\n                </div>\r\n");
+
+            
+            #line 103 "..\..\Views\User\UserParts\_Flags.cshtml"
             }
 
             
@@ -626,53 +723,65 @@ WriteLiteral("        <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(">\r\n            $(function () {\r\n                var userFlags = $(\'#userFlags\');\r" +
-"\n\r\n                var dialog = null;\r\n                var dialogEditComments = " +
-"null;\r\n\r\n                userFlags.on(\'click\', \'a.remove\', function (e) {\r\n     " +
-"               var $this = $(this);\r\n                    var UserFlagAssignmentI" +
-"d = $this.closest(\'tr\').attr(\'data-userflagassignmentid\');\r\n\r\n                  " +
-"  if (!dialog) {\r\n                        dialog = $(\'#User_Show_Flags_Actions_R" +
-"emove_Dialog\');\r\n                        dialog.dialog({\r\n                      " +
-"      resizable: false,\r\n                            modal: true,\r\n             " +
-"               autoOpen: false,\r\n                            buttons: {\r\n       " +
-"                         \"Remove Flag\": function () {\r\n                         " +
-"           var $this = $(this);\r\n                                    $this.dialo" +
-"g(\"disable\");\r\n                                    $this.dialog(\"option\", \"butto" +
-"ns\", null);\r\n                                    $this.find(\'form\').submit();\r\n " +
-"                               },\r\n                                Cancel: funct" +
-"ion () {\r\n                                    $(this).dialog(\"close\");\r\n        " +
-"                        }\r\n                            }\r\n                      " +
-"  });\r\n                    }\r\n\r\n                    $(\'#User_Show_Flags_Actions_" +
-"Remove_Dialog_Id\').val(UserFlagAssignmentId);\r\n                    dialog.dialog" +
-"(\'open\');\r\n\r\n                    e.preventDefault();\r\n                    return" +
-" false;\r\n                });\r\n\r\n                userFlags.on(\'click\', \'td.commen" +
-"ts i.fa-edit\', function (e) {\r\n                    var $this = $(this);\r\n       " +
-"             var UserFlagAssignmentId = $this.closest(\'tr\').attr(\'data-userflaga" +
-"ssignmentid\');\r\n\r\n                    if (!dialogEditComments) {\r\n              " +
-"          dialogEditComments = $(\'#User_Show_Flags_Actions_EditComments_Dialog\')" +
-";\r\n                        dialogEditComments.dialog({\r\n                        " +
-"    resizable: false,\r\n                            modal: true,\r\n               " +
-"             width: 320,\r\n                            autoOpen: false,\r\n        " +
-"                    buttons: {\r\n                                \"Save Changes\": " +
-"function () {\r\n                                    var $this = $(this);\r\n       " +
-"                             $this.dialog(\"disable\");\r\n                         " +
-"           $this.dialog(\"option\", \"buttons\", null);\r\n                           " +
-"         $this.find(\'form\').submit();\r\n                                },\r\n     " +
-"                           Cancel: function () {\r\n                              " +
-"      $(this).dialog(\"close\");\r\n                                }\r\n             " +
-"               }\r\n                        });\r\n                    }\r\n\r\n        " +
-"            var $comments = $this.closest(\'td\').find(\'.commentsRaw\');\r\n         " +
-"           if ($comments.hasClass(\'smallMessage\')) {\r\n                        $(" +
-"\'#User_Show_Flags_Actions_EditComments_Dialog_Comments\').val(\'\');\r\n             " +
-"       } else {\r\n                        $(\'#User_Show_Flags_Actions_EditComment" +
-"s_Dialog_Comments\').val($comments.text());\r\n                    }\r\n\r\n           " +
-"         $(\'#User_Show_Flags_Actions_EditComments_Dialog_Id\').val(UserFlagAssign" +
-"mentId);\r\n                    dialogEditComments.dialog(\'open\');\r\n              " +
-"      e.preventDefault();\r\n                    return false;\r\n                })" +
-";\r\n            });\r\n        </script>\r\n");
+WriteLiteral(">\r\n            $(function () {\r\n                const userFlags = $(\'#userFlags\')" +
+";\r\n\r\n                let dialog = null;\r\n                let dialogEditComments " +
+"= null;\r\n\r\n                userFlags.on(\'click\', \'button.remove\', function (e) {" +
+"\r\n                    const $this = $(this);\r\n                    const UserFlag" +
+"AssignmentId = $this.closest(\'tr\').attr(\'data-userflagassignmentid\');\r\n\r\n       " +
+"             if (!dialog) {\r\n                        dialog = $(\'#User_Show_Flag" +
+"s_Actions_Remove_Dialog\');\r\n                        dialog.dialog({\r\n           " +
+"                 resizable: false,\r\n                            modal: true,\r\n  " +
+"                          autoOpen: false,\r\n                            buttons:" +
+" {\r\n                                \"Remove Flag\": function () {\r\n              " +
+"                      const $this = $(this);\r\n                                  " +
+"  $this.dialog(\"disable\");\r\n                                    $this.dialog(\"op" +
+"tion\", \"buttons\", null);\r\n                                    $this.find(\'form\')" +
+".submit();\r\n                                },\r\n                                " +
+"Cancel: function () {\r\n                                    $(this).dialog(\"close" +
+"\");\r\n                                }\r\n                            }\r\n         " +
+"               });\r\n                    }\r\n\r\n                    $(\'#User_Show_F" +
+"lags_Actions_Remove_Dialog_Id\').val(UserFlagAssignmentId);\r\n                    " +
+"dialog.dialog(\'open\');\r\n\r\n                    e.preventDefault();\r\n             " +
+"       return false;\r\n                });\r\n\r\n                userFlags.on(\'click" +
+"\', \'td.comments i.fa-edit\', function (e) {\r\n                    const $this = $(" +
+"this);\r\n                    const $row = $this.closest(\'tr\');\r\n                 " +
+"   const UserFlagAssignmentId = $row.attr(\'data-userflagassignmentid\');\r\n       " +
+"             const canRemove = $row.attr(\'data-canremove\') === \'True\';\r\n        " +
+"            const removeOn = $row.attr(\'data-removeon\');\r\n\r\n                    " +
+"if (!dialogEditComments) {\r\n                        dialogEditComments = $(\'#Use" +
+"r_Show_Flags_Actions_EditComments_Dialog\');\r\n                        dialogEditC" +
+"omments.dialog({\r\n                            resizable: false,\r\n               " +
+"             modal: true,\r\n                            width: 320,\r\n            " +
+"                autoOpen: false,\r\n                            buttons: {\r\n      " +
+"                          \"Save Changes\": function () {\r\n                       " +
+"             var $this = $(this);\r\n                                    $this.dia" +
+"log(\"disable\");\r\n                                    $this.dialog(\"option\", \"but" +
+"tons\", null);\r\n                                    $this.find(\'form\').submit();\r" +
+"\n                                },\r\n                                Cancel: fun" +
+"ction () {\r\n                                    $(this).dialog(\"close\");\r\n      " +
+"                          }\r\n                            }\r\n                    " +
+"    });\r\n                    }\r\n\r\n                    var $comments = $this.clos" +
+"est(\'td\').find(\'.commentsRaw\');\r\n                    if ($comments.hasClass(\'sma" +
+"llMessage\')) {\r\n                        $(\'#User_Show_Flags_Actions_EditComments" +
+"_Dialog_Comments\').val(\'\');\r\n                    } else {\r\n                     " +
+"   $(\'#User_Show_Flags_Actions_EditComments_Dialog_Comments\').val($comments.text" +
+"());\r\n                    }\r\n\r\n                    const removeOnInput = $(\'#Use" +
+"r_Show_Flags_Actions_EditComments_Dialog_RemoveDate\');\r\n                    if (" +
+"canRemove) {\r\n                        removeOnInput.prop(\'disabled\', false);\r\n  " +
+"                      if (removeOn) {\r\n                            removeOnInput" +
+".val(removeOn);\r\n                        } else {\r\n                            r" +
+"emoveOnInput.val(\'\');\r\n                        }\r\n                        remove" +
+"OnInput.closest(\'div\').css(\'display\', \'block\');\r\n                    } else {\r\n " +
+"                       removeOnInput.prop(\'disabled\', true);\r\n                  " +
+"      removeOnInput.val(\'\');\r\n                        removeOnInput.closest(\'div" +
+"\').css(\'display\', \'none\');\r\n                    }\r\n\r\n                    $(\'#Use" +
+"r_Show_Flags_Actions_EditComments_Dialog_Id\').val(UserFlagAssignmentId);\r\n      " +
+"              dialogEditComments.dialog(\'open\');\r\n                    e.preventD" +
+"efault();\r\n                    return false;\r\n                });\r\n            }" +
+");\r\n        </script>\r\n");
 
             
-            #line 169 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 200 "..\..\Views\User\UserParts\_Flags.cshtml"
     }
     else
     {
@@ -687,7 +796,7 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">This user has no associated flags</div>\r\n");
 
             
-            #line 173 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 204 "..\..\Views\User\UserParts\_Flags.cshtml"
     }
 
             
@@ -697,7 +806,7 @@ WriteLiteral("    <script>\r\n        $(\'#UserDetailTabItems\').append(\'<li><a
 "b-Flags\">Flags [");
 
             
-            #line 175 "..\..\Views\User\UserParts\_Flags.cshtml"
+            #line 206 "..\..\Views\User\UserParts\_Flags.cshtml"
                                                                               Write(activeAssignmentCount);
 
             

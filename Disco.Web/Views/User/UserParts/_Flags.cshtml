@@ -11,12 +11,12 @@
             <tr>
                 <th class="name">Name</th>
                 <th class="added">Added</th>
-                <th class="sla">Comments</th>
+                <th class="sla">Detail</th>
                 <th class="removed">Removed</th>
             </tr>
             @foreach (var fa in flagAssignments.OrderByDescending(a => a.Item1.AddedDate))
             {
-                <tr data-userflagassignmentid="@fa.Item1.Id" data-flagassignmentaddeddate="@(fa.Item1.AddedDate.ToString("s"))" class="@(!fa.Item1.RemovedDate.HasValue ? "added" : "removed")">
+                <tr data-userflagassignmentid="@fa.Item1.Id" data-flagassignmentaddeddate="@(fa.Item1.AddedDate.ToString("s"))" class="@(!fa.Item1.RemovedDate.HasValue ? "added" : "removed")" data-canremove="@fa.Item1.CanRemove()" data-removeon="@(fa.Item1.RemoveDate.HasValue ? fa.Item1.RemoveDate.Value.ToString("yyyy-MM-dd") : null)">
                     <td class="name">
                         <i class="fa fa-@(fa.Item2.flag.Icon) fa-fw fa-lg d-@(fa.Item2.flag.IconColour)"></i>
                         @if (Authorization.Has(Claims.Config.UserFlag.Show))
@@ -49,11 +49,19 @@
                             <div class="comments">@fa.Item1.Comments.ToHtmlComment()</div>
                             <div class="commentsRaw">@fa.Item1.Comments</div>
                         }
+                        @if (!fa.Item1.RemovedDate.HasValue && fa.Item1.RemoveDate.HasValue)
+                        {
+                            <div class="removeDate" data-date="@fa.Item1.RemoveDate.Value.ToString("yyyy-MM-dd")">Removing @CommonHelpers.FriendlyDate(fa.Item1.RemoveDate.Value)</div>
+                        }
                     </td>
                     <td class="removed@(!fa.Item1.RemovedDate.HasValue ? " na" : null)">
                         @if (fa.Item1.RemovedDate.HasValue)
                         {
                             @CommonHelpers.FriendlyDateAndUser(fa.Item1.RemovedDate.Value, fa.Item1.RemovedUser)
+                            if (fa.Item1.RemoveDate.HasValue)
+                            {
+                                <em>(scheduled)</em>
+                            }
                             if (fa.Item1.OnUnassignmentExpressionResult != null)
                             {
                                 <div class="expressionResult">@fa.Item1.OnUnassignmentExpressionResult</div>
@@ -61,7 +69,7 @@
                         }
                         else if (fa.Item1.CanRemove())
                         {
-                            <a href="#" class="button small remove">Remove</a>
+                            <button type="button" class="button small remove">Remove</button>
                         }
                     </td>
                 </tr>
@@ -77,8 +85,8 @@
                 </p>
             }
         </div>
-        <div id="User_Show_Flags_Actions_EditComments_Dialog" class="dialog" title="Edit the Comments">
-            @using (Html.BeginForm(MVC.API.UserFlagAssignment.UpdateComments()))
+        <div id="User_Show_Flags_Actions_EditComments_Dialog" class="dialog" title="Edit Details">
+            @using (Html.BeginForm(MVC.API.UserFlagAssignment.Edit()))
             {
                 @Html.AntiForgeryToken()
                 <input id="User_Show_Flags_Actions_EditComments_Dialog_Id" type="hidden" name="id" value="" />
@@ -87,18 +95,23 @@
                 <p>
                     <textarea id="User_Show_Flags_Actions_EditComments_Dialog_Comments" name="Comments" class="block"></textarea>
                 </p>
+                <div>
+                    <h4>Remove On</h4>
+                    <input name="RemoveDate" id="User_Show_Flags_Actions_EditComments_Dialog_RemoveDate" type="date" min="@(DateTime.Today.AddDays(1).ToString("yyyy-MM-dd"))" />
+                    <span>12:00 AM</span>
+                </div>
             }
         </div>
         <script type="text/javascript">
             $(function () {
-                var userFlags = $('#userFlags');
+                const userFlags = $('#userFlags');
 
-                var dialog = null;
-                var dialogEditComments = null;
+                let dialog = null;
+                let dialogEditComments = null;
 
-                userFlags.on('click', 'a.remove', function (e) {
-                    var $this = $(this);
-                    var UserFlagAssignmentId = $this.closest('tr').attr('data-userflagassignmentid');
+                userFlags.on('click', 'button.remove', function (e) {
+                    const $this = $(this);
+                    const UserFlagAssignmentId = $this.closest('tr').attr('data-userflagassignmentid');
 
                     if (!dialog) {
                         dialog = $('#User_Show_Flags_Actions_Remove_Dialog');
@@ -108,7 +121,7 @@
                             autoOpen: false,
                             buttons: {
                                 "Remove Flag": function () {
-                                    var $this = $(this);
+                                    const $this = $(this);
                                     $this.dialog("disable");
                                     $this.dialog("option", "buttons", null);
                                     $this.find('form').submit();
@@ -128,8 +141,11 @@
                 });
 
                 userFlags.on('click', 'td.comments i.fa-edit', function (e) {
-                    var $this = $(this);
-                    var UserFlagAssignmentId = $this.closest('tr').attr('data-userflagassignmentid');
+                    const $this = $(this);
+                    const $row = $this.closest('tr');
+                    const UserFlagAssignmentId = $row.attr('data-userflagassignmentid');
+                    const canRemove = $row.attr('data-canremove') === 'True';
+                    const removeOn = $row.attr('data-removeon');
 
                     if (!dialogEditComments) {
                         dialogEditComments = $('#User_Show_Flags_Actions_EditComments_Dialog');
@@ -157,6 +173,21 @@
                         $('#User_Show_Flags_Actions_EditComments_Dialog_Comments').val('');
                     } else {
                         $('#User_Show_Flags_Actions_EditComments_Dialog_Comments').val($comments.text());
+                    }
+
+                    const removeOnInput = $('#User_Show_Flags_Actions_EditComments_Dialog_RemoveDate');
+                    if (canRemove) {
+                        removeOnInput.prop('disabled', false);
+                        if (removeOn) {
+                            removeOnInput.val(removeOn);
+                        } else {
+                            removeOnInput.val('');
+                        }
+                        removeOnInput.closest('div').css('display', 'block');
+                    } else {
+                        removeOnInput.prop('disabled', true);
+                        removeOnInput.val('');
+                        removeOnInput.closest('div').css('display', 'none');
                     }
 
                     $('#User_Show_Flags_Actions_EditComments_Dialog_Id').val(UserFlagAssignmentId);

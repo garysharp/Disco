@@ -49,7 +49,7 @@ namespace Disco.Web.Areas.Config.Views.DeviceFlag
     Authorization.Require(Claims.Config.DeviceFlag.Show);
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Device Flags");
     var showTags = Model.DeviceFlags.Keys.Any(i => i.DevicesLinkedGroup != null || i.DeviceUsersLinkedGroup != null ||
-        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null);
+        i.OnAssignmentExpression != null || i.OnUnassignmentExpression != null || i.DefaultRemoveDays.HasValue);
 
             
             #line default
@@ -141,37 +141,37 @@ WriteLiteral("            </tr>\r\n");
             #line hidden
 WriteLiteral("                <tr>\r\n                    <td>\r\n                        <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1229), Tuple.Create("\"", 1285)
+WriteAttribute("href", Tuple.Create(" href=\"", 1261), Tuple.Create("\"", 1317)
             
             #line 33 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1236), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DeviceFlag.Index(item.Id))
+, Tuple.Create(Tuple.Create("", 1268), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DeviceFlag.Index(item.Id))
             
             #line default
             #line hidden
-, 1236), false)
+, 1268), false)
 );
 
 WriteLiteral(">\r\n                            <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 1319), Tuple.Create("\"", 1372)
-, Tuple.Create(Tuple.Create("", 1327), Tuple.Create("fa", 1327), true)
-, Tuple.Create(Tuple.Create(" ", 1329), Tuple.Create("fa-", 1330), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 1351), Tuple.Create("\"", 1404)
+, Tuple.Create(Tuple.Create("", 1359), Tuple.Create("fa", 1359), true)
+, Tuple.Create(Tuple.Create(" ", 1361), Tuple.Create("fa-", 1362), true)
             
             #line 34 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1333), Tuple.Create<System.Object, System.Int32>(item.Icon
+, Tuple.Create(Tuple.Create("", 1365), Tuple.Create<System.Object, System.Int32>(item.Icon
             
             #line default
             #line hidden
-, 1333), false)
-, Tuple.Create(Tuple.Create(" ", 1345), Tuple.Create("fa-lg", 1346), true)
-, Tuple.Create(Tuple.Create(" ", 1351), Tuple.Create("d-", 1352), true)
+, 1365), false)
+, Tuple.Create(Tuple.Create(" ", 1377), Tuple.Create("fa-lg", 1378), true)
+, Tuple.Create(Tuple.Create(" ", 1383), Tuple.Create("d-", 1384), true)
             
             #line 34 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 1354), Tuple.Create<System.Object, System.Int32>(item.IconColour
+, Tuple.Create(Tuple.Create("", 1386), Tuple.Create<System.Object, System.Int32>(item.IconColour
             
             #line default
             #line hidden
-, 1354), false)
+, 1386), false)
 );
 
 WriteLiteral("></i>\r\n");
@@ -315,10 +315,35 @@ WriteLiteral("></i>\r\n");
             
             #line default
             #line hidden
+WriteLiteral("                            ");
+
+            
+            #line 62 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+                             if (item.DefaultRemoveDays.HasValue)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <i");
+
+WriteLiteral(" class=\"fa fa-clock-o fa-lg\"");
+
+WriteLiteral(" title=\"Has Default Unassignment\"");
+
+WriteLiteral("></i>\r\n");
+
+            
+            #line 65 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
 WriteLiteral("                        </td>\r\n");
 
             
-            #line 63 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 67 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
                     }
 
             
@@ -327,7 +352,7 @@ WriteLiteral("                        </td>\r\n");
 WriteLiteral("                </tr>\r\n");
 
             
-            #line 65 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 69 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
             }
 
             
@@ -336,7 +361,7 @@ WriteLiteral("                </tr>\r\n");
 WriteLiteral("        </table>\r\n");
 
             
-            #line 67 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 71 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
     }
 
             
@@ -349,13 +374,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 69 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 73 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 69 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 73 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
      if (Authorization.Has(Claims.Config.DeviceFlag.Export) && Model.DeviceFlags.Count > 0)
     {
         
@@ -363,14 +388,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 71 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 75 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
    Write(Html.ActionLinkButton("Export", MVC.Config.DeviceFlag.Export()));
 
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 75 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
                                                                         
     }
 
@@ -380,7 +405,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 73 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 77 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
      if (Authorization.Has(Claims.Config.DeviceFlag.Create))
     {
         
@@ -388,14 +413,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 75 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 79 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
    Write(Html.ActionLinkButton("Create Device Flag", MVC.Config.DeviceFlag.Create()));
 
             
             #line default
             #line hidden
             
-            #line 75 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
+            #line 79 "..\..\Areas\Config\Views\DeviceFlag\Index.cshtml"
                                                                                     
     }
 

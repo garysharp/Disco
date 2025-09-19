@@ -348,6 +348,7 @@
     <Compile Include="Devices\DeviceDetailExtensions.cs" />
     <Compile Include="Devices\DeviceExtensions.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagExport.cs" />
+    <Compile Include="Devices\DeviceFlags\FlagRemovalTask.cs" />
     <Compile Include="Devices\DeviceModelExtensions.cs" />
     <Compile Include="Devices\DeviceProfileExtensions.cs" />
     <Compile Include="Devices\DeviceBatchUpdatesHub.cs" />

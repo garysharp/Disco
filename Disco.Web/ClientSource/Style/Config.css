@@ -2054,3 +2054,7 @@ h1.Config_DocumentTemplates {
   margin-top: 4px;
   font-size: 0.8em;
 }
+#UserFlag_DefaultRemoveDays,
+#DeviceFlag_DefaultRemoveDays {
+  width: 50px;
+}
