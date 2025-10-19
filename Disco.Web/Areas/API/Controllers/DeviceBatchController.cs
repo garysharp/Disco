@@ -18,22 +18,22 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DeviceBatchController : AuthorizedDatabaseController
     {
-        const string pName = "name";
-        const string pPurchaseDate = "purchasedate";
-        const string pSupplier = "supplier";
-        const string pPurchaseDetails = "purchasedetails";
-        const string pUnitCost = "unitcost";
-        const string pUnitQuantity = "unitquantity";
-        const string pDefaultDeviceModelId = "defaultdevicemodelid";
-        const string pWarrantyValidUntil = "warrantyvaliduntil";
-        const string pWarrantyDetails = "warrantydetails";
-        const string pInsuredDate = "insureddate";
-        const string pInsuranceSupplier = "insurancesupplier";
-        const string pInsuredUntil = "insureduntil";
-        const string pInsuranceDetails = "insurancedetails";
-        const string pComments = "comments";
-        const string pDevicesLinkedGroup = "deviceslinkedgroup";
-        const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
+        private const string pName = "name";
+        private const string pPurchaseDate = "purchasedate";
+        private const string pSupplier = "supplier";
+        private const string pPurchaseDetails = "purchasedetails";
+        private const string pUnitCost = "unitcost";
+        private const string pUnitQuantity = "unitquantity";
+        private const string pDefaultDeviceModelId = "defaultdevicemodelid";
+        private const string pWarrantyValidUntil = "warrantyvaliduntil";
+        private const string pWarrantyDetails = "warrantydetails";
+        private const string pInsuredDate = "insureddate";
+        private const string pInsuranceSupplier = "insurancesupplier";
+        private const string pInsuredUntil = "insureduntil";
+        private const string pInsuranceDetails = "insurancedetails";
+        private const string pComments = "comments";
+        private const string pDevicesLinkedGroup = "deviceslinkedgroup";
+        private const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -582,6 +582,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             var batchesInformation = Database.DeviceBatches.Select(db => new
             {
+                Id = db.Id,
                 Name = db.Name,
                 Comments = db.Comments,
                 PurchaseDate = db.PurchaseDate,
@@ -614,7 +615,7 @@ namespace Disco.Web.Areas.API.Controllers
                     description = bi.Comments ?? string.Empty,
                     color = ColorTranslator.ToHtml(color),
                     image = Url.Action(MVC.API.DeviceModel.Image(bi.DefaultModelId)),
-                    link = Url.Action(MVC.Config.DeviceBatch.Index(bi.DefaultModelId))
+                    link = Url.Action(MVC.Config.DeviceBatch.Index(bi.Id))
                 });
             }
 
