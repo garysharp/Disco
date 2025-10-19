@@ -233,6 +233,7 @@ namespace Disco.Web.Controllers
                 .Include(d => d.AssignedUser.UserFlagAssignments)
                 .Include(d => d.AssignedUser.UserDetails)
                 .Include(d => d.DeviceCertificates)
+                .Include(d => d.DeviceComments.Select(c => c.TechUser))
                 .Include(d => d.DeviceAttachments.Select(a => a.TechUser))
                 .Include(d => d.DeviceAttachments.Select(a => a.DocumentTemplate))
                 .Include(d => d.DeviceFlagAssignments.Select(a => a.DeviceFlag))
