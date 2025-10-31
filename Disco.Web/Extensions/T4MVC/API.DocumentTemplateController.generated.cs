@@ -283,6 +283,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult BulkDownload()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkDownload);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult GenerateDocumentHandlerUi()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GenerateDocumentHandlerUi);
@@ -365,6 +371,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string Delete = "Delete";
             public readonly string RemoveOnImportUserFlagRule = "RemoveOnImportUserFlagRule";
             public readonly string AddOnImportUserFlagRule = "AddOnImportUserFlagRule";
+            public readonly string BulkDownload = "BulkDownload";
             public readonly string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
             public readonly string DocumentHandlers = "DocumentHandlers";
             public readonly string Export = "Export";
@@ -413,6 +420,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string Delete = "Delete";
             public const string RemoveOnImportUserFlagRule = "RemoveOnImportUserFlagRule";
             public const string AddOnImportUserFlagRule = "AddOnImportUserFlagRule";
+            public const string BulkDownload = "BulkDownload";
             public const string GenerateDocumentHandlerUi = "GenerateDocumentHandlerUi";
             public const string DocumentHandlers = "DocumentHandlers";
             public const string Export = "Export";
@@ -769,6 +777,16 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string addFlag = "addFlag";
             public readonly string userFlagId = "userFlagId";
             public readonly string comments = "comments";
+        }
+        static readonly ActionParamsClass_BulkDownload s_params_BulkDownload = new ActionParamsClass_BulkDownload();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_BulkDownload BulkDownloadParams { get { return s_params_BulkDownload; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_BulkDownload
+        {
+            public readonly string id = "id";
+            public readonly string latestOnly = "latestOnly";
+            public readonly string threshold = "threshold";
         }
         static readonly ActionParamsClass_GenerateDocumentHandlerUi s_params_GenerateDocumentHandlerUi = new ActionParamsClass_GenerateDocumentHandlerUi();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1349,6 +1367,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "userFlagId", userFlagId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "comments", comments);
             AddOnImportUserFlagRuleOverride(callInfo, id, addFlag, userFlagId, comments);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void BulkDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, bool? latestOnly, System.DateTime? threshold);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult BulkDownload(string id, bool? latestOnly, System.DateTime? threshold)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.BulkDownload);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "latestOnly", latestOnly);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "threshold", threshold);
+            BulkDownloadOverride(callInfo, id, latestOnly, threshold);
             return callInfo;
         }
 

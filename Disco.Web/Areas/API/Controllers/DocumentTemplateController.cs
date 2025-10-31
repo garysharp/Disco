@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -1879,6 +1880,82 @@ namespace Disco.Web.Areas.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult BulkDownload([Required] string id, bool? latestOnly = null, DateTime? threshold = null)
+        {
+            var template = Database.DocumentTemplates.FirstOrDefault(t => t.Id == id)
+                ?? throw new ArgumentException("Unknown document template", nameof(id));
+
+            var attachments = BulkDownloadRetrieveAttachments(template, latestOnly ?? false, threshold);
+
+            var responseStream = new MemoryStream();
+            using (var archive = new ZipArchive(responseStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var attachment in attachments)
+                {
+                    var repoFileName = attachment.RepositoryFilename(Database);
+                    if (System.IO.File.Exists(repoFileName))
+                    {
+                        var entry = archive.CreateEntry($"{attachment.Reference.ToString().Replace('\\', '_')}-{attachment.Timestamp:yyyyMMdd-HHmmss}_{attachment.Filename}", CompressionLevel.Fastest);
+                        entry.LastWriteTime = attachment.Timestamp;
+                        using (var entryStream = entry.Open())
+                        {
+                            using (var attachmentStream = System.IO.File.OpenRead(repoFileName))
+                            {
+                                attachmentStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+                }
+            }
+            responseStream.Position = 0;
+            return File(responseStream, "application/zip", $"{template.Id}_Attachments_{DateTime.Now:yyyyMMdd-HHmmss}.zip");
+        }
+        private List<IAttachment> BulkDownloadRetrieveAttachments(DocumentTemplate template, bool latestOnly, DateTime? threshold)
+        {
+            List<IAttachment> attachments;
+
+            switch (template.Scope)
+            {
+                case DocumentTemplate.DocumentTemplateScopes.Device:
+                    Authorization.Require(Claims.Device.ShowAttachments);
+                    var deviceQuery = Database.DeviceAttachments
+                        .Where(a => a.DocumentTemplateId == template.Id);
+                    if (threshold.HasValue)
+                        deviceQuery = deviceQuery.Where(a => a.Timestamp >= threshold.Value);
+                    attachments = deviceQuery.OrderBy(a => a.Timestamp).ToList<IAttachment>();
+                    break;
+                case DocumentTemplate.DocumentTemplateScopes.Job:
+                    Authorization.Require(Claims.Job.ShowAttachments);
+                    var jobQuery = Database.JobAttachments
+                        .Where(a => a.DocumentTemplateId == template.Id);
+                    if (threshold.HasValue)
+                        jobQuery = jobQuery.Where(a => a.Timestamp >= threshold.Value);
+                    attachments = jobQuery.OrderBy(a => a.Timestamp).ToList<IAttachment>();
+                    break;
+                case DocumentTemplate.DocumentTemplateScopes.User:
+                    Authorization.Require(Claims.User.ShowAttachments);
+                    var userQuery = Database.UserAttachments
+                        .Where(a => a.DocumentTemplateId == template.Id);
+                    if (threshold.HasValue)
+                        userQuery = userQuery.Where(a => a.Timestamp >= threshold.Value);
+                    attachments = userQuery.OrderBy(a => a.Timestamp).ToList<IAttachment>();
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
+
+            if (latestOnly)
+            {
+                attachments.Reverse();
+                attachments = attachments.GroupBy(a => a.Reference).Select(a => a.First()).OrderBy(a => a.Timestamp).ToList();
+            }
+
+            return attachments;
+        }
+
 
         #endregion
 

@@ -16,26 +16,25 @@
         Model.TemplateExpressions.All(e => e.All(p => !p.ParseError) &&
         !Model.OnImportUserFlagRules.Any());
 
-    #region Can Bulk Generate
-    var canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate);
-    if (canBulkGenerate)
+    var canBulkGenerate = false;
+    var canBulkDownload = false;
+    switch (Model.DocumentTemplate.Scope)
     {
-        switch (Model.DocumentTemplate.Scope)
-        {
-            case DocumentTemplate.DocumentTemplateScopes.Device:
-                canBulkGenerate = Authorization.Has(Claims.Device.Actions.GenerateDocuments);
-                break;
-            case DocumentTemplate.DocumentTemplateScopes.Job:
-                canBulkGenerate = Authorization.Has(Claims.Job.Actions.GenerateDocuments);
-                break;
-            case DocumentTemplate.DocumentTemplateScopes.User:
-                canBulkGenerate = Authorization.Has(Claims.User.Actions.GenerateDocuments);
-                break;
-            default:
-                throw new InvalidOperationException("Invalid DocumentType Scope");
-        }
+        case DocumentTemplate.DocumentTemplateScopes.Device:
+            canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate) && Authorization.Has(Claims.Device.Actions.GenerateDocuments);
+            canBulkDownload = Authorization.Has(Claims.Device.ShowAttachments) && Model.StoredInstanceCount > 0;
+            break;
+        case DocumentTemplate.DocumentTemplateScopes.Job:
+            canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate) && Authorization.Has(Claims.Job.Actions.GenerateDocuments);
+            canBulkDownload = Authorization.Has(Claims.Job.ShowAttachments) && Model.StoredInstanceCount > 0;
+            break;
+        case DocumentTemplate.DocumentTemplateScopes.User:
+            canBulkGenerate = Authorization.Has(Claims.Config.DocumentTemplate.BulkGenerate) && Authorization.Has(Claims.User.Actions.GenerateDocuments);
+            canBulkDownload = Authorization.Has(Claims.User.ShowAttachments) && Model.StoredInstanceCount > 0;
+            break;
+        default:
+            throw new InvalidOperationException("Invalid DocumentType Scope");
     }
-    #endregion
 
     ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "Document Templates", MVC.Config.DocumentTemplate.Index(null), Model.DocumentTemplate.Description);
 
@@ -1037,6 +1036,66 @@
             {
                 @Html.ActionLinkButton("Export Instances", MVC.Config.DocumentTemplate.Export(Model.DocumentTemplate.Id, null))
             }
+            @if (canBulkDownload)
+            {
+                <button id="dialogBulkDownloadButton" type="button" class="button">Download Instances</button>
+                <div id="dialogBulkDownload" class="dialog" title="Download Instances: @(Model.DocumentTemplate.Id)">
+                    @using (Html.BeginForm(MVC.API.DocumentTemplate.BulkDownload(Model.DocumentTemplate.Id)))
+                    {
+                        @Html.AntiForgeryToken()
+                        <h3>Scope</h3>
+                        <ul class="none">
+                            <li>
+                                <label><input type="radio" name="latestOnly" value="True" checked /> Latest @Model.DocumentTemplate.Scope Attachment</label>
+                            </li>
+                            <li>
+                                <label><input type="radio" name="latestOnly" value="False" /> All @Model.DocumentTemplate.Scope Attachments</label>
+                            </li>
+                        </ul>
+                        <br />
+                        <h3>Threshold</h3>
+                        <div>
+                            <label>Only On or After <input type="date" name="threshold" value="@DateTime.Now.ToString("yyyy")-01-01" /></label>
+                        </div>
+                    }
+                </div>
+
+                <script>
+                    $(function () {
+                        let dialog;
+                        $('#dialogBulkDownloadButton').on('click', function () {
+                            if (!dialog) {
+                                dialog = $('#dialogBulkDownload').dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    autoOpen: false,
+                                    width: 460,
+                                    buttons: {
+                                        Close: function () {
+                                            $(this).dialog("close");
+                                        },
+                                        "Download Instances": function () {
+                                            const $this = $(this);
+                                            const $form = $this.find('form');
+                                            $form.trigger('submit');
+                                            $form.find('input').prop('disabled', true);
+                                            $this.closest('.ui-dialog').find('.ui-dialog-buttonset button').prop('disabled', true).addClass('ui-state-disabled');
+                                            window.setTimeout(function () {
+                                                $this.dialog("close");
+                                            }, 1500);
+                                        }
+                                    }
+                                });
+                            }
+
+                            dialog.dialog('open');
+                            dialog.find('form').find('input').prop('disabled', false);
+                            dialog.closest('.ui-dialog').find('.ui-dialog-buttonset button').prop('disabled', false).removeClass('ui-state-disabled');
+                            return false;
+                        });
+                    });
+                </script>
+            }
             @if (canBulkGenerate)
             {
                 if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User || Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Device)
@@ -1045,7 +1104,7 @@
                 }
                 else
                 {
-                    <a id="buttonBulkGenerate" href="#" class="button">Bulk Generate</a>
+                    <button id="buttonBulkGenerate" type="button" class="button">Bulk Generate</button>
                     <div id="dialogBulkGenerate" class="dialog dialog-bulk-generate" title="Bulk Generate: @(Model.DocumentTemplate.Id)">
                         <div class="brief">
                             @switch (Model.DocumentTemplate.Scope)
