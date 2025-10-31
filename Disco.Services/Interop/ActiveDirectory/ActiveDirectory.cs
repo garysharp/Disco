@@ -16,7 +16,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         private static ActiveDirectoryContext context;
         private static ActiveDirectoryGroupCache groupCache;
-        private static object contextInitializingLock = new object();
+        private static readonly object contextInitializingLock = new object();
 
         public static void Initialize(DiscoDataContext Database)
         {
@@ -157,6 +157,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         #region Organisational Units
+        [Obsolete("Retrieve as needed using RetrieveADOrganisationUnits(parentDistinguishedName)")]
         public static IEnumerable<Tuple<ADDomain, List<ADOrganisationalUnit>>> RetrieveADOrganisationalUnitStructure()
         {
             return Context.Domains

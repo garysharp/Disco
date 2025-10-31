@@ -13,6 +13,7 @@ namespace Disco.Web.Models.Shared
         public bool unselectable { get; set; }
         public FancyTreeNode[] children { get; set; }
         public string tooltip { get; set; }
+        public bool lazy { get; set; }
 
         public static FancyTreeNode FromClaimNavigatorItem(IClaimNavigatorItem Item, bool Unselectable)
         {

@@ -620,7 +620,7 @@
                         </span>
                     </div>
                     <button id="changeOrganisationalUnit" type="button" class="button small">Change</button>@AjaxHelpers.AjaxLoader()
-                    <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog" data-url="@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))">
+                    <div id="dialogOrganisationalUnit" title="Organisational Unit" class="dialog" data-url="@(Url.Action(MVC.API.System.DomainOrganisationalUnitTree()))" data-urllazy="@(Url.Action(MVC.API.System.DomainOrganisationalUnits()))">
                         <div id="dialogOrganisationalUnit_Loading">
                             @AjaxHelpers.AjaxLoader() Loading Organisational Units
                         </div>
@@ -690,6 +690,7 @@
                                     $enforceCheckbox = $('#enforceOrganisationalUnit');
 
                                     const body = new FormData();
+                                    body.append('expandNode', ouValue);
                                     body.append('__RequestVerificationToken', document.body.dataset.antiforgery);
                                     const response = await fetch($dialog.attr('data-url'), {
                                         method: 'POST',
@@ -698,17 +699,23 @@
                                     const data = await response.json();
                                     $loading.hide();
 
-                                    // Make 'Domains' unselectable
-                                    $.each(data, function (i, node) {
-                                        node.unselectable = true;
-                                    });
-
                                     ouTree = $ouTree.fancytree({
                                         source: data,
                                         checkbox: false,
                                         selectMode: 1,
                                         keyboard: false,
-                                        fx: null
+                                        fx: null,
+                                        lazyload: function (event, data) {
+                                            data.result = {
+                                                url: $dialog.attr('data-urllazy'),
+                                                method: 'POST',
+                                                cache: false,
+                                                data: {
+                                                    node: data.node.key,
+                                                    '__RequestVerificationToken': document.body.dataset.antiforgery
+                                                }
+                                            };
+                                        }
                                     }).fancytree('getTree');
 
                                     ouTree.$container.css('position', 'relative');

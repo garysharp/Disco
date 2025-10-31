@@ -109,6 +109,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult DomainOrganisationalUnits()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DomainOrganisationalUnits);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult SearchSubjects()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SearchSubjects);
@@ -179,6 +185,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
             public readonly string UpdateActiveDirectorySearchAllServers = "UpdateActiveDirectorySearchAllServers";
             public readonly string UpdateActiveDirectorySearchWildcardSuffixOnly = "UpdateActiveDirectorySearchWildcardSuffixOnly";
+            public readonly string DomainOrganisationalUnitTree = "DomainOrganisationalUnitTree";
             public readonly string DomainOrganisationalUnits = "DomainOrganisationalUnits";
             public readonly string SearchSubjects = "SearchSubjects";
             public readonly string SearchGroupSubjects = "SearchGroupSubjects";
@@ -206,6 +213,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateActiveDirectorySearchScope = "UpdateActiveDirectorySearchScope";
             public const string UpdateActiveDirectorySearchAllServers = "UpdateActiveDirectorySearchAllServers";
             public const string UpdateActiveDirectorySearchWildcardSuffixOnly = "UpdateActiveDirectorySearchWildcardSuffixOnly";
+            public const string DomainOrganisationalUnitTree = "DomainOrganisationalUnitTree";
             public const string DomainOrganisationalUnits = "DomainOrganisationalUnits";
             public const string SearchSubjects = "SearchSubjects";
             public const string SearchGroupSubjects = "SearchGroupSubjects";
@@ -300,6 +308,22 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string SearchWildcardSuffixOnly = "SearchWildcardSuffixOnly";
             public readonly string redirect = "redirect";
+        }
+        static readonly ActionParamsClass_DomainOrganisationalUnitTree s_params_DomainOrganisationalUnitTree = new ActionParamsClass_DomainOrganisationalUnitTree();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DomainOrganisationalUnitTree DomainOrganisationalUnitTreeParams { get { return s_params_DomainOrganisationalUnitTree; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DomainOrganisationalUnitTree
+        {
+            public readonly string expandNode = "expandNode";
+        }
+        static readonly ActionParamsClass_DomainOrganisationalUnits s_params_DomainOrganisationalUnits = new ActionParamsClass_DomainOrganisationalUnits();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_DomainOrganisationalUnits DomainOrganisationalUnitsParams { get { return s_params_DomainOrganisationalUnits; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_DomainOrganisationalUnits
+        {
+            public readonly string node = "node";
         }
         static readonly ActionParamsClass_SearchSubjects s_params_SearchSubjects = new ActionParamsClass_SearchSubjects();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -578,13 +602,26 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void DomainOrganisationalUnitsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void DomainOrganisationalUnitTreeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string expandNode);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult DomainOrganisationalUnits()
+        public override System.Web.Mvc.ActionResult DomainOrganisationalUnitTree(string expandNode)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DomainOrganisationalUnitTree);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "expandNode", expandNode);
+            DomainOrganisationalUnitTreeOverride(callInfo, expandNode);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DomainOrganisationalUnitsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string node);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DomainOrganisationalUnits(string node)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DomainOrganisationalUnits);
-            DomainOrganisationalUnitsOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "node", node);
+            DomainOrganisationalUnitsOverride(callInfo, node);
             return callInfo;
         }
 

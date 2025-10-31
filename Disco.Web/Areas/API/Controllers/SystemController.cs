@@ -7,6 +7,7 @@ using Disco.Services.Messaging;
 using Disco.Services.Users;
 using Disco.Services.Web;
 using Disco.Web.Areas.API.Models.Shared;
+using Disco.Web.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -309,16 +310,99 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorizeAny(Claims.Config.System.ConfigureActiveDirectory, Claims.Config.DeviceProfile.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult DomainOrganisationalUnits()
+        public virtual ActionResult DomainOrganisationalUnitTree(string expandNode = null)
         {
-            var domainOUs = ActiveDirectory.RetrieveADOrganisationalUnitStructure()
-                .Select(d => new Models.System.DomainOrganisationalUnitsModel() { Domain = d.Item1, OrganisationalUnits = d.Item2 })
-                .Select(ous => ous.ToFancyTreeNode()).ToList();
+            List<FancyTreeNode> nodes;
+
+            nodes = ActiveDirectory.Context.Domains
+                .Select(d => new FancyTreeNode()
+                {
+                    key = d.DistinguishedName,
+                    title = d.NetBiosName,
+                    folder = true,
+                    tooltip = d.Name,
+                    children = d.GetAvailableDomainController().RetrieveADOrganisationUnits()
+                        .Select(ou => new FancyTreeNode()
+                        {
+                            key = ou.DistinguishedName,
+                            title = ou.Name,
+                            folder = true,
+                            tooltip = ou.DistinguishedName,
+                            unselectable = false,
+                            expanded = false,
+                            lazy = true,
+                        }).ToArray(),
+                    unselectable = true,
+                    expanded = true,
+                    lazy = false,
+                }).ToList();
+            if (!string.IsNullOrWhiteSpace(expandNode) && ActiveDirectory.Context.TryGetDomainFromDistinguishedName(expandNode, out var domain))
+            {
+                // domain node
+                var node = nodes.FirstOrDefault(n => n.key.Equals(domain.DistinguishedName, StringComparison.OrdinalIgnoreCase));
+                if (node != null)
+                {
+                    var domainController = domain.GetAvailableDomainController();
+                    var ouIndex = expandNode.Length;
+                    do
+                    {
+                        ouIndex = expandNode.LastIndexOf("OU=", ouIndex - 1, StringComparison.OrdinalIgnoreCase);
+                        if (ouIndex >= 0)
+                        {
+                            var dn = expandNode.Substring(ouIndex);
+
+                            node = node.children.FirstOrDefault(n => n.key.Equals(dn, StringComparison.OrdinalIgnoreCase));
+                            if (node != null)
+                            {
+                                node.children = domainController.RetrieveADOrganisationUnits(dn).Select(ou => new FancyTreeNode()
+                                {
+                                    key = ou.DistinguishedName,
+                                    title = ou.Name,
+                                    folder = true,
+                                    tooltip = ou.DistinguishedName,
+                                    unselectable = false,
+                                    expanded = false,
+                                    lazy = true,
+                                }).ToArray();
+                                node.expanded = true;
+                                node.lazy = false;
+                            }
+                        }
+                    } while (node != null && ouIndex > 0);
+                }
+            }
 
             return new JsonResult()
             {
-                Data = domainOUs,
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                Data = nodes,
+                MaxJsonLength = int.MaxValue
+            };
+        }
+
+        [DiscoAuthorizeAny(Claims.Config.System.ConfigureActiveDirectory, Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult DomainOrganisationalUnits(string node)
+        {
+            if (string.IsNullOrWhiteSpace(node))
+                throw new ArgumentNullException("node");
+            if (!ActiveDirectory.Context.TryGetDomainFromDistinguishedName(node, out var domain))
+                throw new ArgumentException("Invalid node distinguished name", "node");
+
+            var domainController = domain.GetAvailableDomainController();
+            var nodes = domainController.RetrieveADOrganisationUnits(node).Select(ou => new FancyTreeNode()
+            {
+                key = ou.DistinguishedName,
+                title = ou.Name,
+                folder = true,
+                tooltip = ou.DistinguishedName,
+                unselectable = false,
+                expanded = false,
+                lazy = true,
+            }).ToArray();
+
+            return new JsonResult()
+            {
+                Data = nodes,
                 MaxJsonLength = int.MaxValue
             };
         }

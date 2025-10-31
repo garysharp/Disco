@@ -13,7 +13,7 @@ namespace Disco.Services.Interop.ActiveDirectory
     public class ADDomainController
     {
         private const string LdapPathTemplate = @"LDAP://{0}/{1}";
-        private ActiveDirectoryContext context;
+        private readonly ActiveDirectoryContext context;
 
         public DomainController DomainController { get; private set; }
         public ADDomain Domain { get; private set; }
@@ -100,25 +100,25 @@ namespace Disco.Services.Interop.ActiveDirectory
             return results;
         }
 
-        internal IEnumerable<ADSearchResult> SearchInternal(string SearchRoot, string LdapFilter, string[] LoadProperties, int? ResultLimit)
+        internal IEnumerable<ADSearchResult> SearchInternal(string searchRoot, string ldapFilter, string[] loadProperties, int? resultLimit, bool searchSubtree = true)
         {
-            if (string.IsNullOrEmpty(SearchRoot))
+            if (string.IsNullOrEmpty(searchRoot))
                 throw new ArgumentNullException("SearchRoot");
-            if (string.IsNullOrEmpty(LdapFilter))
+            if (string.IsNullOrEmpty(ldapFilter))
                 throw new ArgumentNullException("LdapFilter");
-            if (ResultLimit.HasValue && ResultLimit.Value < 1)
+            if (resultLimit.HasValue && resultLimit.Value < 1)
                 throw new ArgumentOutOfRangeException("ResultLimit", "The ResultLimit must be 1 or greater");
 
-            using (ADDirectoryEntry rootEntry = RetrieveDirectoryEntry(SearchRoot))
+            using (ADDirectoryEntry rootEntry = RetrieveDirectoryEntry(searchRoot))
             {
-                using (DirectorySearcher searcher = new DirectorySearcher(rootEntry.Entry, LdapFilter, LoadProperties, System.DirectoryServices.SearchScope.Subtree))
+                using (DirectorySearcher searcher = new DirectorySearcher(rootEntry.Entry, ldapFilter, loadProperties, searchSubtree ? System.DirectoryServices.SearchScope.Subtree : System.DirectoryServices.SearchScope.OneLevel))
                 {
                     searcher.PageSize = 500;
 
-                    if (ResultLimit.HasValue)
-                        searcher.SizeLimit = ResultLimit.Value;
+                    if (resultLimit.HasValue)
+                        searcher.SizeLimit = resultLimit.Value;
 
-                    return searcher.FindAll().Cast<SearchResult>().Select(result => new ADSearchResult(Domain, this, SearchRoot, LdapFilter, result));
+                    return searcher.FindAll().Cast<SearchResult>().Select(result => new ADSearchResult(Domain, this, searchRoot, ldapFilter, result));
                 }
             }
         }
@@ -225,7 +225,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (SecurityIdentifier == null)
                 throw new ArgumentNullException("SecurityIdentifier");
             if (!SecurityIdentifier.IsEqualDomainSid(Domain.SecurityIdentifier))
-                throw new ArgumentException($"The specified Security Identifier [{SecurityIdentifier.ToString()}] does not belong to this domain [{Domain.Name}]", "SecurityIdentifier");
+                throw new ArgumentException($"The specified Security Identifier [{SecurityIdentifier}] does not belong to this domain [{Domain.Name}]", "SecurityIdentifier");
 
             var sidBinaryString = SecurityIdentifier.ToBinaryString();
 
@@ -295,6 +295,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         private const string OrganisationalUnitsLdapFilter = "(objectCategory=organizationalUnit)";
         private static readonly string[] OrganisationalUnitsLoadProperties = { "name", "distinguishedName" };
 
+        [Obsolete("Retrieve as needed using RetrieveADOrganisationUnits(parentDistinguishedName)")]
         public List<ADOrganisationalUnit> RetrieveADOrganisationalUnitStructure()
         {
             Dictionary<string, List<ADOrganisationalUnit>> resultTree = new Dictionary<string, List<ADOrganisationalUnit>>();
@@ -318,6 +319,15 @@ namespace Disco.Services.Interop.ActiveDirectory
             }
 
             return indexedChildren[Domain.DistinguishedName];
+        }
+
+        public List<ADOrganisationalUnit> RetrieveADOrganisationUnits(string parentDistinguishedName = null)
+        {
+            if (parentDistinguishedName is null)
+                parentDistinguishedName = Domain.DistinguishedName;
+
+            return SearchInternal(parentDistinguishedName, OrganisationalUnitsLdapFilter, OrganisationalUnitsLoadProperties, null, false)
+                .Select(r => r.AsADOrganisationalUnit()).OrderBy(ou => ou.Name).ToList();
         }
         #endregion
 
