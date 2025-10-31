@@ -1,7 +1,9 @@
 ﻿using Disco.Models.UI.Config.JobPreferences;
 using Disco.Services.Authorization;
+using Disco.Services.Jobs.JobQueues;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Disco.Web.Areas.Config.Controllers
@@ -23,6 +25,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 OnCreateExpression = Database.DiscoConfiguration.JobPreferences.OnCreateExpression,
                 OnDeviceReadyForReturnExpression = Database.DiscoConfiguration.JobPreferences.OnDeviceReadyForReturnExpression,
                 OnCloseExpression = Database.DiscoConfiguration.JobPreferences.OnCloseExpression,
+                DeviceProfiles = Database.DeviceProfiles.OrderBy(dp => dp.Name).ToList(),
+                OrganisationAddresses = Database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList(),
+                JobQueues = JobQueueService.GetQueues().Select(q => q.JobQueue).OrderBy(q => q.Name).ToList(),
             };
 
             // UI Extensions

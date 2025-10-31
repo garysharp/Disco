@@ -1,5 +1,4 @@
-﻿using Disco.Data.Repository;
-using Disco.Models.Services.Jobs;
+﻿using Disco.Models.Services.Jobs;
 using Disco.Models.UI.Config.JobPreferences;
 using Disco.Services.Extensions;
 using System;
@@ -32,21 +31,9 @@ namespace Disco.Web.Areas.Config.Models.JobPreferences
             return UIHelpers.NoticeboardThemes.ToList();
         }
 
-        public Lazy<List<Disco.Models.Repository.DeviceProfile>> DeviceProfiles = new Lazy<List<Disco.Models.Repository.DeviceProfile>>(() =>
-        {
-            using (var database = new DiscoDataContext())
-            {
-                return database.DeviceProfiles.OrderBy(a => a.Description).ToList();
-            }
-        });
-
-        public Lazy<List<Disco.Models.BI.Config.OrganisationAddress>> OrganisationAddresses = new Lazy<List<Disco.Models.BI.Config.OrganisationAddress>>(() =>
-        {
-            using (var database = new DiscoDataContext())
-            {
-                return database.DiscoConfiguration.OrganisationAddresses.Addresses.OrderBy(a => a.Name).ToList();
-            }
-        });
+        public List<Disco.Models.Repository.DeviceProfile> DeviceProfiles { get; set; }
+        public List<Disco.Models.BI.Config.OrganisationAddress> OrganisationAddresses { get; set; }
+        public List<Disco.Models.Repository.JobQueue> JobQueues { get; set; }
 
         public List<KeyValuePair<int, string>> LongRunningJobDaysThresholdOptions()
         {

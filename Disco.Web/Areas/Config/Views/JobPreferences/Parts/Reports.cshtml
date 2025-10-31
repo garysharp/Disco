@@ -93,8 +93,18 @@
                             <h3>Filter</h3>
                             <select id="Config_ReportPrefs_Builder_Filter">
                                 <option value="">&lt;None&gt;</option>
-                                <option value="DeviceProfile">Device Profile</option>
-                                <option value="DeviceAddress">Device Profile Address</option>
+                                @if (Model.DeviceProfiles.Any())
+                                {
+                                    <option value="DeviceProfile">Device Profile</option>
+                                }
+                                @if (Model.OrganisationAddresses.Any())
+                                {
+                                    <option value="DeviceAddress">Device Profile Address</option>
+                                }
+                                @if (Model.JobQueues.Any())
+                                {
+                                    <option value="JobQueue">Job Queue</option>
+                                }
                             </select>
                             <div class="options">
                                 <div class="method">
@@ -103,20 +113,30 @@
                                 </div>
                                 <div class="filter-option filter-DeviceProfile">
                                     <ul class="none">
-                                        @foreach (var deviceProfile in Model.DeviceProfiles.Value)
+                                        @foreach (var deviceProfile in Model.DeviceProfiles)
                                         {
                                             <li>
-                                                <input id="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)" type="checkbox" value="@deviceProfile.Id" /><label for="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)">@deviceProfile.Description</label>
+                                                <input id="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)" type="checkbox" value="@deviceProfile.Id" /><label for="Config_ReportPrefs_Builder_DP_@(deviceProfile.Id)">@deviceProfile.Name</label>
                                             </li>
                                         }
                                     </ul>
                                 </div>
                                 <div class="filter-option filter-DeviceAddress">
                                     <ul class="none">
-                                        @foreach (var address in Model.OrganisationAddresses.Value)
+                                        @foreach (var address in Model.OrganisationAddresses)
                                         {
                                             <li>
                                                 <input id="Config_ReportPrefs_Builder_OA_@(address.Id)" type="checkbox" value="@address.ShortName" /><label for="Config_ReportPrefs_Builder_OA_@(address.Id)">@address.Name (@address.ShortName)</label>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="filter-option filter-JobQueue">
+                                    <ul class="none">
+                                        @foreach (var queue in Model.JobQueues)
+                                        {
+                                            <li>
+                                                <input id="Config_ReportPrefs_Builder_JQ_@(queue.Id)" type="checkbox" value="@queue.Id" /><label for="Config_ReportPrefs_Builder_JQ_@(queue.Id)"><i class="fa fa-@(queue.Icon) d-@(queue.IconColour)"></i> @queue.Name</label>
                                             </li>
                                         }
                                     </ul>

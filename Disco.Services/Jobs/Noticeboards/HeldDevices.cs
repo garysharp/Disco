@@ -15,7 +15,7 @@ namespace Disco.Services.Jobs.Noticeboards
     {
         public const string Name = "HeldDevices";
 
-        private readonly static List<string> MonitorJobProperties = new List<string>() {
+        private static readonly List<string> MonitorJobProperties = new List<string>() {
             "DeviceSerialNumber",
             "UserId",
             "ExpectedClosedDate",
@@ -25,25 +25,25 @@ namespace Disco.Services.Jobs.Noticeboards
             "DeviceReadyForReturn",
             "DeviceReturnedDate"
         };
-        private readonly static List<string> MonitorJobMetaNonWarrantyProperties = new List<string>(){
+        private static readonly List<string> MonitorJobMetaNonWarrantyProperties = new List<string>(){
             "AccountingChargeRequiredDate",
             "AccountingChargeAddedDate",
             "AccountingChargePaidDate"
         };
-        private readonly static List<string> MonitorDeviceProperties = new List<string>(){
+        private static readonly List<string> MonitorDeviceProperties = new List<string>(){
             "Location",
             "DeviceProfileId",
             "DeviceDomainId",
             "AssignedUserId",
         };
-        private readonly static List<string> MonitorDeviceProfileProperties = new List<string>(){
+        private static readonly List<string> MonitorDeviceProfileProperties = new List<string>(){
             "DefaultOrganisationAddress"
         };
-        private readonly static List<string> MonitorUserProperties = new List<string>(){
+        private static readonly List<string> MonitorUserProperties = new List<string>(){
             "DisplayName"
         };
 
-        private static Subject<Tuple<List<string>, List<string>>> BufferedUpdateStream;
+        private static readonly Subject<Tuple<List<string>, List<string>>> BufferedUpdateStream;
 
         static HeldDevices()
         {
@@ -74,7 +74,9 @@ namespace Disco.Services.Jobs.Noticeboards
                     ) ||
                 (e.EntityType == typeof(User) &&
                     (e.EventType == RepositoryMonitorEventType.Modified && e.ModifiedProperties.Any(p => MonitorUserProperties.Contains(p)))
-                    )
+                    ) ||
+                (e.EntityType == typeof(JobQueueJob) &&
+                    (e.EventType == RepositoryMonitorEventType.Added || e.EventType == RepositoryMonitorEventType.Modified))
                 )
                 .Subscribe(RepositoryEvent);
         }
@@ -146,6 +148,15 @@ namespace Disco.Services.Jobs.Noticeboards
                         .Where(j => !j.ClosedDate.HasValue && j.Device.AssignedUserId == u.UserId)
                         .Select(j => j.DeviceSerialNumber)
                     );
+            }
+            else if (i.EntityType == typeof(JobQueueJob))
+            {
+                var jqj = (JobQueueJob)i.Entity;
+                var j = i.Database.Jobs.Find(jqj.JobId);
+                if (j != null && j.DeviceSerialNumber != null)
+                {
+                    deviceSerialNumbers.Add(j.DeviceSerialNumber);
+                }
             }
 
             if (deviceSerialNumbers.Count > 0 || userIds.Count > 0)

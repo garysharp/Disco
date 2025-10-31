@@ -114,7 +114,7 @@ WriteLiteral("                        ");
 
             
             #line 17 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-                   Write(item.DeviceComputerNameFriendly);
+                   Write(item.DeviceName);
 
             
             #line default
@@ -448,15 +448,15 @@ WriteLiteral("\r\n");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3397), Tuple.Create("\"", 3455)
-, Tuple.Create(Tuple.Create("", 3405), Tuple.Create("timestamp", 3405), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3381), Tuple.Create("\"", 3439)
+, Tuple.Create(Tuple.Create("", 3389), Tuple.Create("timestamp", 3389), true)
             
             #line 81 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 3414), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
+, Tuple.Create(Tuple.Create("", 3398), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
             
             #line default
             #line hidden
-, 3414), false)
+, 3398), false)
 );
 
 WriteLiteral(">Since ");
@@ -650,15 +650,15 @@ WriteLiteral("\r\n");
             #line hidden
 WriteLiteral("                    </td>\r\n                    <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 5022), Tuple.Create("\"", 5080)
-, Tuple.Create(Tuple.Create("", 5030), Tuple.Create("timestamp", 5030), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 5006), Tuple.Create("\"", 5064)
+, Tuple.Create(Tuple.Create("", 5014), Tuple.Create("timestamp", 5014), true)
             
             #line 119 "..\..\Areas\Public\Views\HeldDevices\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 5039), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
+, Tuple.Create(Tuple.Create("", 5023), Tuple.Create<System.Object, System.Int32>(item.IsAlert ? " Alert" : string.Empty
             
             #line default
             #line hidden
-, 5039), false)
+, 5023), false)
 );
 
 WriteLiteral(">Ready ");

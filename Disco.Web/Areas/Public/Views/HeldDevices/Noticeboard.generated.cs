@@ -409,58 +409,88 @@ WriteLiteral(">\r\n        <li data-bind=\"css: { alert: IsAlert }\">\r\n       
 "luded\r\n                                        return $.inArray(heldDeviceItem.D" +
 "eviceProfileId, deviceProfiles) < 0;\r\n                                    });\r\n " +
 "                               }\r\n                                break;\r\n      " +
-"                  }\r\n                    });\r\n\r\n                    if (filters." +
-"length > 0)\r\n                        itemFilters = filters;\r\n                   " +
-" else\r\n                        itemFilters = null;\r\n                }\r\n         " +
-"   }\r\n\r\n            function connectionError() {\r\n                try {\r\n       " +
-"             $(\'body\').addClass(\'status-error\');\r\n                } catch (e) {\r" +
-"\n                    // Ignore\r\n                }\r\n\r\n                window.setT" +
-"imeout(function () {\r\n                    window.location.reload(true);\r\n       " +
-"         }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n            functi" +
-"on rotateArray(koArray, element) {\r\n                var items = koArray();\r\n\r\n  " +
-"              if (items.length <= 1)\r\n                    return 0;\r\n\r\n         " +
-"       if (element.height() < (element.parent().height() - 30)) {\r\n\r\n           " +
-"         if (findUnsortedArrayTopIndex(items) !== 0)\r\n                        ko" +
-"Array.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if small & sort" +
-"ed correctly\r\n                    return;\r\n                }\r\n\r\n                " +
-"// Move Last Item to Top\r\n                var item = koArray.pop();\r\n           " +
-"     koArray.unshift(item);\r\n            }\r\n            function removeItemFromA" +
-"rray(koArray, deviceSerialNumber) {\r\n                var items = koArray();\r\n   " +
-"             for (var i = 0; i < items.length; i++) {\r\n                    if (i" +
-"tems[i].DeviceSerialNumber == deviceSerialNumber) {\r\n                        koA" +
-"rray.splice(i, 1);\r\n                        items = koArray();\r\n                " +
-"        i--;\r\n                    }\r\n                }\r\n            }\r\n         " +
-"   function findUnsortedArrayTopIndex(items) {\r\n                // Only one Item" +
+"                      case \'jobqueueinclude\': // FILTER: Job Queue Include\r\n    " +
+"                            var jobQueues = value.split(\",\").map(function (v) { " +
+"return parseInt(v); });\r\n                                if (jobQueues.length > " +
+"0) {\r\n                                    filters.push(function (heldDeviceItem)" +
+" {\r\n                                        // true if any JobQueueId is include" +
+"d\r\n                                        if (!heldDeviceItem.JobQueueIds)\r\n   " +
+"                                         return false; // not in any queues\r\n   " +
+"                                     var include = false;\r\n                     " +
+"                   $.each(jobQueues, function (i, v) {\r\n                        " +
+"                    if ($.inArray(v, heldDeviceItem.JobQueueIds) >= 0) {\r\n      " +
+"                                          include = true;\r\n                     " +
+"                           return false; // break\r\n                             " +
+"               }\r\n                                        });\r\n                 " +
+"                       return include;\r\n                                    });\r" +
+"\n                                }\r\n                                break;\r\n    " +
+"                        case \'jobqueueexclude\': // FILTER: Job Queue Exclude\r\n  " +
+"                              var jobQueues = value.split(\",\").map(function (v) " +
+"{ return parseInt(v); });\r\n                                if (jobQueues.length " +
+"> 0) {\r\n                                    filters.push(function (heldDeviceIte" +
+"m) {\r\n                                        // true if any JobQueueId is exclu" +
+"ded\r\n                                        if (!heldDeviceItem.JobQueueIds)\r\n " +
+"                                           return true; // not in any queues\r\n  " +
+"                                      var exclude = false;\r\n                    " +
+"                    $.each(jobQueues, function (i, v) {\r\n                       " +
+"                     if ($.inArray(v, heldDeviceItem.JobQueueIds) >= 0) {\r\n     " +
+"                                           exclude = true;\r\n                    " +
+"                            return false; // break\r\n                            " +
+"                }\r\n                                        });\r\n                " +
+"                        return !exclude;\r\n                                    })" +
+";\r\n                                }\r\n                                break;\r\n  " +
+"                      }\r\n                    });\r\n\r\n                    if (filt" +
+"ers.length > 0)\r\n                        itemFilters = filters;\r\n               " +
+"     else\r\n                        itemFilters = null;\r\n                }\r\n     " +
+"       }\r\n\r\n            function connectionError() {\r\n                try {\r\n   " +
+"                 $(\'body\').addClass(\'status-error\');\r\n                } catch (e" +
+") {\r\n                    // Ignore\r\n                }\r\n\r\n                window." +
+"setTimeout(function () {\r\n                    window.location.reload(true);\r\n   " +
+"             }, 10000);\r\n            }\r\n\r\n            // Helpers\r\n            fu" +
+"nction rotateArray(koArray, element) {\r\n                var items = koArray();\r\n" +
 "\r\n                if (items.length <= 1)\r\n                    return 0;\r\n\r\n     " +
-"           for (var i = 1; i < items.length; i++) {\r\n                    var s =" +
-" sortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n        " +
-"                return i;\r\n                }\r\n\r\n                return 0;\r\n     " +
-"       }\r\n            function findSortedInsertIndex(koArray, heldDeviceItem) {\r" +
-"\n                var items = koArray();\r\n                var startIndex = findUn" +
-"sortedArrayTopIndex(items);\r\n                for (var i = startIndex; i < items." +
-"length; i++) {\r\n                    var s = sortFunction(heldDeviceItem, items[i" +
-"]);\r\n                    if (s <= 0)\r\n                        return i;\r\n       " +
-"         }\r\n                if (startIndex !== 0) {\r\n                    for (va" +
-"r i = 0; i < startIndex; i++) {\r\n                        var s = sortFunction(he" +
-"ldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n                 " +
-"           return i;\r\n                    }\r\n                    return startInd" +
-"ex;\r\n                } else {\r\n                    return -1;\r\n                }" +
-"\r\n            }\r\n            function sortFunction(l, r) {\r\n                retu" +
-"rn l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? 0 : " +
-"(l.DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 : 1)" +
-"\r\n            }\r\n            function isInProcess(i) {\r\n                return !" +
-"i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n            functio" +
-"n isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingFo" +
-"rUserAction;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n " +
-"               return i.WaitingForUserAction;\r\n            }\r\n            functi" +
-"on getQueryStringParameters() {\r\n\r\n                if (window.location.search.le" +
-"ngth === 0)\r\n                    return null;\r\n\r\n                var params = {}" +
-";\r\n                window.location.search.substr(1).split(\"&\").forEach(function " +
-"(pair) {\r\n                    if (pair === \"\") return;\r\n                    var " +
-"parts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] && dec" +
-"odeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n           " +
-"     return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </sc" +
-"ript>\r\n</body>\r\n</html>\r\n");
+"           if (element.height() < (element.parent().height() - 30)) {\r\n\r\n       " +
+"             if (findUnsortedArrayTopIndex(items) !== 0)\r\n                      " +
+"  koArray.sort(sortFunction);\r\n\r\n                    // Don\'t rotate if small & " +
+"sorted correctly\r\n                    return;\r\n                }\r\n\r\n            " +
+"    // Move Last Item to Top\r\n                var item = koArray.pop();\r\n       " +
+"         koArray.unshift(item);\r\n            }\r\n            function removeItemF" +
+"romArray(koArray, deviceSerialNumber) {\r\n                var items = koArray();\r" +
+"\n                for (var i = 0; i < items.length; i++) {\r\n                    i" +
+"f (items[i].DeviceSerialNumber == deviceSerialNumber) {\r\n                       " +
+" koArray.splice(i, 1);\r\n                        items = koArray();\r\n            " +
+"            i--;\r\n                    }\r\n                }\r\n            }\r\n     " +
+"       function findUnsortedArrayTopIndex(items) {\r\n                // Only one " +
+"Item\r\n                if (items.length <= 1)\r\n                    return 0;\r\n\r\n " +
+"               for (var i = 1; i < items.length; i++) {\r\n                    var" +
+" s = sortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n    " +
+"                    return i;\r\n                }\r\n\r\n                return 0;\r\n " +
+"           }\r\n            function findSortedInsertIndex(koArray, heldDeviceItem" +
+") {\r\n                var items = koArray();\r\n                var startIndex = fi" +
+"ndUnsortedArrayTopIndex(items);\r\n                for (var i = startIndex; i < it" +
+"ems.length; i++) {\r\n                    var s = sortFunction(heldDeviceItem, ite" +
+"ms[i]);\r\n                    if (s <= 0)\r\n                        return i;\r\n   " +
+"             }\r\n                if (startIndex !== 0) {\r\n                    for" +
+" (var i = 0; i < startIndex; i++) {\r\n                        var s = sortFunctio" +
+"n(heldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n             " +
+"               return i;\r\n                    }\r\n                    return star" +
+"tIndex;\r\n                } else {\r\n                    return -1;\r\n             " +
+"   }\r\n            }\r\n            function sortFunction(l, r) {\r\n                " +
+"return l.DeviceDescription.toLowerCase() == r.DeviceDescription.toLowerCase() ? " +
+"0 : (l.DeviceDescription.toLowerCase() < r.DeviceDescription.toLowerCase() ? -1 " +
+": 1)\r\n            }\r\n            function isInProcess(i) {\r\n                retu" +
+"rn !i.ReadyForReturn && !i.WaitingForUserAction;\r\n            }\r\n            fun" +
+"ction isReadyForReturn(i) {\r\n                return i.ReadyForReturn && !i.Waiti" +
+"ngForUserAction;\r\n            }\r\n            function isWaitingForUserAction(i) " +
+"{\r\n                return i.WaitingForUserAction;\r\n            }\r\n            fu" +
+"nction getQueryStringParameters() {\r\n\r\n                if (window.location.searc" +
+"h.length === 0)\r\n                    return null;\r\n\r\n                var params " +
+"= {};\r\n                window.location.search.substr(1).split(\"&\").forEach(funct" +
+"ion (pair) {\r\n                    if (pair === \"\") return;\r\n                    " +
+"var parts = pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] &&" +
+" decodeURIComponent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n       " +
+"         return params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    " +
+"</script>\r\n</body>\r\n</html>\r\n");
 
         }
     }

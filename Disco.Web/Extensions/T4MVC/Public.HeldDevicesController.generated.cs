@@ -119,6 +119,8 @@ namespace Disco.Web.Areas.Public.Controllers
             public readonly string DeviceProfileExclude = "DeviceProfileExclude";
             public readonly string DeviceAddressInclude = "DeviceAddressInclude";
             public readonly string DeviceAddressExclude = "DeviceAddressExclude";
+            public readonly string JobQueueInclude = "JobQueueInclude";
+            public readonly string JobQueueExclude = "JobQueueExclude";
         }
         static readonly ActionParamsClass_HeldDevice s_params_HeldDevice = new ActionParamsClass_HeldDevice();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -152,17 +154,19 @@ namespace Disco.Web.Areas.Public.Controllers
         public T4MVC_HeldDevicesController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.List<int?> DeviceProfileInclude, System.Collections.Generic.List<int?> DeviceProfileExclude, System.Collections.Generic.List<string> DeviceAddressInclude, System.Collections.Generic.List<string> DeviceAddressExclude);
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string DeviceProfileInclude, string DeviceProfileExclude, string DeviceAddressInclude, string DeviceAddressExclude, string JobQueueInclude, string JobQueueExclude);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index(System.Collections.Generic.List<int?> DeviceProfileInclude, System.Collections.Generic.List<int?> DeviceProfileExclude, System.Collections.Generic.List<string> DeviceAddressInclude, System.Collections.Generic.List<string> DeviceAddressExclude)
+        public override System.Web.Mvc.ActionResult Index(string DeviceProfileInclude, string DeviceProfileExclude, string DeviceAddressInclude, string DeviceAddressExclude, string JobQueueInclude, string JobQueueExclude)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceProfileInclude", DeviceProfileInclude);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceProfileExclude", DeviceProfileExclude);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceAddressInclude", DeviceAddressInclude);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "DeviceAddressExclude", DeviceAddressExclude);
-            IndexOverride(callInfo, DeviceProfileInclude, DeviceProfileExclude, DeviceAddressInclude, DeviceAddressExclude);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobQueueInclude", JobQueueInclude);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "JobQueueExclude", JobQueueExclude);
+            IndexOverride(callInfo, DeviceProfileInclude, DeviceProfileExclude, DeviceAddressInclude, DeviceAddressExclude, JobQueueInclude, JobQueueExclude);
             return callInfo;
         }
 

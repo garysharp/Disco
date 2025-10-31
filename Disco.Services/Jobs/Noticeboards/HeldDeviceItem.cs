@@ -16,20 +16,22 @@ namespace Disco.Services.Jobs.Noticeboards
         public string DeviceSerialNumber { get; set; }
         public string DeviceComputerNameFriendly
         {
-            get
-            {
-                return DeviceComputerName == null ? null : ActiveDirectory.FriendlyAccountId(DeviceComputerName);
-            }
+            get => DeviceComputerName == null ? null : ActiveDirectory.FriendlyAccountId(DeviceComputerName);
             set { } // for XML Serialization
         }
         public string DeviceComputerName { get; set; }
+        public string DeviceName
+        {
+            get => DeviceComputerNameFriendly ?? DeviceSerialNumber;
+            set { }
+        }
 
         public string DeviceLocation { get; set; }
         public string DeviceDescription
         {
             get
             {
-                StringBuilder sb = new StringBuilder(DeviceComputerNameFriendly);
+                StringBuilder sb = new StringBuilder(DeviceName);
 
                 if (UserId != null)
                     sb.Append(" - ").Append(UserDisplayName).Append(" (").Append(UserIdFriendly).Append(")");
@@ -60,6 +62,7 @@ namespace Disco.Services.Jobs.Noticeboards
             }
             set { } // for XML Serialization
         }
+        public IEnumerable<int> JobQueueIds { get; set; }
 
         public string UserId { get; set; }
         public string UserIdFriendly
@@ -130,6 +133,7 @@ namespace Disco.Services.Jobs.Noticeboards
                     DeviceLocation = j.Device.Location,
                     DeviceProfileId = j.Device.DeviceProfileId,
                     DeviceAddressId = j.Device.DeviceProfile.DefaultOrganisationAddress,
+                    JobQueueIds = j.JobQueues.Where(q => q.RemovedDate == null).Select(q => q.JobQueueId),
                     UserId = j.Device.AssignedUserId,
                     UserDisplayName = j.Device.AssignedUser.DisplayName,
                     WaitingForUserAction = j.WaitingForUserAction.HasValue || ((j.JobMetaNonWarranty.AccountingChargeRequiredDate.HasValue || j.JobMetaNonWarranty.AccountingChargeAddedDate.HasValue) && !j.JobMetaNonWarranty.AccountingChargePaidDate.HasValue),

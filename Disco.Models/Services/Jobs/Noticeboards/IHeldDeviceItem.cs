@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Disco.Models.Services.Jobs.Noticeboards
 {
@@ -9,6 +10,7 @@ namespace Disco.Models.Services.Jobs.Noticeboards
         string DeviceSerialNumber { get; }
         string DeviceComputerNameFriendly { get; }
         string DeviceComputerName { get; }
+        string DeviceName { get; }
 
         string DeviceLocation { get; }
         string DeviceDescription { get; }
@@ -16,6 +18,7 @@ namespace Disco.Models.Services.Jobs.Noticeboards
         int DeviceProfileId { get; }
         int? DeviceAddressId { get; }
         string DeviceAddressShortName { get; }
+        IEnumerable<int> JobQueueIds { get; }
 
         string UserId { get; }
         string UserIdFriendly { get; }

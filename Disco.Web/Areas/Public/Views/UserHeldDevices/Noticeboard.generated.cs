@@ -408,58 +408,88 @@ WriteLiteral(">\r\n        <li data-bind=\"css: { alert: IsAlert }\">\r\n       
 "     // true if DeviceProfileId is excluded\r\n                                   " +
 "     return $.inArray(heldDeviceItem.DeviceProfileId, deviceProfiles) < 0;\r\n    " +
 "                                });\r\n                                }\r\n        " +
-"                        break;\r\n                        }\r\n                    }" +
-");\r\n\r\n                    if (filters.length > 0)\r\n                        itemF" +
-"ilters = filters;\r\n                    else\r\n                        itemFilters" +
-" = null;\r\n                }\r\n            }\r\n\r\n            function connectionErr" +
-"or() {\r\n                try {\r\n                    $(\'body\').addClass(\'status-er" +
-"ror\');\r\n                } catch (e) {\r\n                    // Ignore\r\n          " +
-"      }\r\n\r\n                window.setTimeout(function () {\r\n                    " +
-"window.location.reload(true);\r\n                }, 10000);\r\n            }\r\n\r\n    " +
-"        // Helpers\r\n            function rotateArray(koArray, element) {\r\n      " +
-"          var items = koArray();\r\n\r\n                if (items.length <= 1)\r\n    " +
-"                return 0;\r\n\r\n                if (element.height() < (element.par" +
-"ent().height() - 30)) {\r\n\r\n                    if (findUnsortedArrayTopIndex(ite" +
-"ms) !== 0)\r\n                        koArray.sort(sortFunction);\r\n\r\n             " +
-"       // Don\'t rotate if small & sorted correctly\r\n                    return;\r" +
-"\n                }\r\n\r\n                // Move Last Item to Top\r\n                " +
-"var item = koArray.pop();\r\n                koArray.unshift(item);\r\n            }" +
-"\r\n            function removeItemFromArray(koArray, UserId) {\r\n                v" +
-"ar items = koArray();\r\n                for (var i = 0; i < items.length; i++) {\r" +
-"\n                    if (items[i].UserId == UserId) {\r\n                        k" +
-"oArray.splice(i, 1);\r\n                        items = koArray();\r\n              " +
-"          i--;\r\n                    }\r\n                }\r\n            }\r\n       " +
-"     function findUnsortedArrayTopIndex(items) {\r\n                // Only one It" +
-"em\r\n                if (items.length <= 1)\r\n                    return 0;\r\n\r\n   " +
-"             for (var i = 1; i < items.length; i++) {\r\n                    var s" +
-" = sortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n      " +
-"                  return i;\r\n                }\r\n\r\n                return 0;\r\n   " +
-"         }\r\n            function findSortedInsertIndex(koArray, heldDeviceItem) " +
-"{\r\n                var items = koArray();\r\n                var startIndex = find" +
-"UnsortedArrayTopIndex(items);\r\n                for (var i = startIndex; i < item" +
-"s.length; i++) {\r\n                    var s = sortFunction(heldDeviceItem, items" +
-"[i]);\r\n                    if (s <= 0)\r\n                        return i;\r\n     " +
-"           }\r\n                if (startIndex !== 0) {\r\n                    for (" +
-"var i = 0; i < startIndex; i++) {\r\n                        var s = sortFunction(" +
-"heldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n               " +
-"             return i;\r\n                    }\r\n                    return startI" +
-"ndex;\r\n                } else {\r\n                    return -1;\r\n               " +
-" }\r\n            }\r\n            function sortFunction(l, r) {\r\n                re" +
-"turn l.UserIdFriendly.toLowerCase() == r.UserIdFriendly.toLowerCase() ? 0 : (l.U" +
-"serIdFriendly.toLowerCase() < r.UserIdFriendly.toLowerCase() ? -1 : 1)\r\n        " +
-"    }\r\n            function isInProcess(i) {\r\n                return !i.ReadyFor" +
-"Return && !i.WaitingForUserAction;\r\n            }\r\n            function isReadyF" +
-"orReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingForUserActio" +
-"n;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n           " +
-"     return i.WaitingForUserAction;\r\n            }\r\n            function getQuer" +
-"yStringParameters() {\r\n\r\n                if (window.location.search.length === 0" +
-")\r\n                    return null;\r\n\r\n                var params = {};\r\n       " +
-"         window.location.search.substr(1).split(\"&\").forEach(function (pair) {\r\n" +
-"                    if (pair === \"\") return;\r\n                    var parts = pa" +
-"ir.split(\"=\");\r\n                    params[parts[0]] = parts[1] && decodeURIComp" +
-"onent(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n                retur" +
-"n params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </script>\r\n</b" +
-"ody>\r\n</html>\r\n");
+"                        break;\r\n                            case \'jobqueueinclud" +
+"e\': // FILTER: Job Queue Include\r\n                                var jobQueues " +
+"= value.split(\",\").map(function (v) { return parseInt(v); });\r\n                 " +
+"               if (jobQueues.length > 0) {\r\n                                    " +
+"filters.push(function (heldDeviceItem) {\r\n                                      " +
+"  // true if any JobQueueId is included\r\n                                       " +
+" if (!heldDeviceItem.JobQueueIds)\r\n                                            r" +
+"eturn false; // not in any queues\r\n                                        var i" +
+"nclude = false;\r\n                                        $.each(jobQueues, funct" +
+"ion (i, v) {\r\n                                            if ($.inArray(v, heldD" +
+"eviceItem.JobQueueIds) >= 0) {\r\n                                                " +
+"include = true;\r\n                                                return false; /" +
+"/ break\r\n                                            }\r\n                        " +
+"                });\r\n                                        return include;\r\n  " +
+"                                  });\r\n                                }\r\n      " +
+"                          break;\r\n                            case \'jobqueueexcl" +
+"ude\': // FILTER: Job Queue Exclude\r\n                                var jobQueue" +
+"s = value.split(\",\").map(function (v) { return parseInt(v); });\r\n               " +
+"                 if (jobQueues.length > 0) {\r\n                                  " +
+"  filters.push(function (heldDeviceItem) {\r\n                                    " +
+"    // true if any JobQueueId is excluded\r\n                                     " +
+"   if (!heldDeviceItem.JobQueueIds)\r\n                                           " +
+" return true; // not in any queues\r\n                                        var " +
+"exclude = false;\r\n                                        $.each(jobQueues, func" +
+"tion (i, v) {\r\n                                            if ($.inArray(v, held" +
+"DeviceItem.JobQueueIds) >= 0) {\r\n                                               " +
+" exclude = true;\r\n                                                return false; " +
+"// break\r\n                                            }\r\n                       " +
+"                 });\r\n                                        return !exclude;\r\n" +
+"                                    });\r\n                                }\r\n    " +
+"                            break;\r\n                        }\r\n                 " +
+"   });\r\n\r\n                    if (filters.length > 0)\r\n                        i" +
+"temFilters = filters;\r\n                    else\r\n                        itemFil" +
+"ters = null;\r\n                }\r\n            }\r\n\r\n            function connectio" +
+"nError() {\r\n                try {\r\n                    $(\'body\').addClass(\'statu" +
+"s-error\');\r\n                } catch (e) {\r\n                    // Ignore\r\n      " +
+"          }\r\n\r\n                window.setTimeout(function () {\r\n                " +
+"    window.location.reload(true);\r\n                }, 10000);\r\n            }\r\n\r\n" +
+"            // Helpers\r\n            function rotateArray(koArray, element) {\r\n  " +
+"              var items = koArray();\r\n\r\n                if (items.length <= 1)\r\n" +
+"                    return 0;\r\n\r\n                if (element.height() < (element" +
+".parent().height() - 30)) {\r\n\r\n                    if (findUnsortedArrayTopIndex" +
+"(items) !== 0)\r\n                        koArray.sort(sortFunction);\r\n\r\n         " +
+"           // Don\'t rotate if small & sorted correctly\r\n                    retu" +
+"rn;\r\n                }\r\n\r\n                // Move Last Item to Top\r\n            " +
+"    var item = koArray.pop();\r\n                koArray.unshift(item);\r\n         " +
+"   }\r\n            function removeItemFromArray(koArray, UserId) {\r\n             " +
+"   var items = koArray();\r\n                for (var i = 0; i < items.length; i++" +
+") {\r\n                    if (items[i].UserId == UserId) {\r\n                     " +
+"   koArray.splice(i, 1);\r\n                        items = koArray();\r\n          " +
+"              i--;\r\n                    }\r\n                }\r\n            }\r\n   " +
+"         function findUnsortedArrayTopIndex(items) {\r\n                // Only on" +
+"e Item\r\n                if (items.length <= 1)\r\n                    return 0;\r\n\r" +
+"\n                for (var i = 1; i < items.length; i++) {\r\n                    v" +
+"ar s = sortFunction(items[i - 1], items[i]);\r\n                    if (s > 0)\r\n  " +
+"                      return i;\r\n                }\r\n\r\n                return 0;\r" +
+"\n            }\r\n            function findSortedInsertIndex(koArray, heldDeviceIt" +
+"em) {\r\n                var items = koArray();\r\n                var startIndex = " +
+"findUnsortedArrayTopIndex(items);\r\n                for (var i = startIndex; i < " +
+"items.length; i++) {\r\n                    var s = sortFunction(heldDeviceItem, i" +
+"tems[i]);\r\n                    if (s <= 0)\r\n                        return i;\r\n " +
+"               }\r\n                if (startIndex !== 0) {\r\n                    f" +
+"or (var i = 0; i < startIndex; i++) {\r\n                        var s = sortFunct" +
+"ion(heldDeviceItem, items[i]);\r\n                        if (s <= 0)\r\n           " +
+"                 return i;\r\n                    }\r\n                    return st" +
+"artIndex;\r\n                } else {\r\n                    return -1;\r\n           " +
+"     }\r\n            }\r\n            function sortFunction(l, r) {\r\n              " +
+"  return l.UserIdFriendly.toLowerCase() == r.UserIdFriendly.toLowerCase() ? 0 : " +
+"(l.UserIdFriendly.toLowerCase() < r.UserIdFriendly.toLowerCase() ? -1 : 1)\r\n    " +
+"        }\r\n            function isInProcess(i) {\r\n                return !i.Read" +
+"yForReturn && !i.WaitingForUserAction;\r\n            }\r\n            function isRe" +
+"adyForReturn(i) {\r\n                return i.ReadyForReturn && !i.WaitingForUserA" +
+"ction;\r\n            }\r\n            function isWaitingForUserAction(i) {\r\n       " +
+"         return i.WaitingForUserAction;\r\n            }\r\n            function get" +
+"QueryStringParameters() {\r\n\r\n                if (window.location.search.length =" +
+"== 0)\r\n                    return null;\r\n\r\n                var params = {};\r\n   " +
+"             window.location.search.substr(1).split(\"&\").forEach(function (pair)" +
+" {\r\n                    if (pair === \"\") return;\r\n                    var parts " +
+"= pair.split(\"=\");\r\n                    params[parts[0]] = parts[1] && decodeURI" +
+"Component(parts[1].replace(/\\+/g, \" \"));\r\n                });\r\n                r" +
+"eturn params;\r\n            }\r\n\r\n            init();\r\n        });\r\n    </script>\r" +
+"\n</body>\r\n</html>\r\n");
 
         }
     }

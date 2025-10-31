@@ -353,6 +353,42 @@
                                     });
                                 }
                                 break;
+                            case 'jobqueueinclude': // FILTER: Job Queue Include
+                                var jobQueues = value.split(",").map(function (v) { return parseInt(v); });
+                                if (jobQueues.length > 0) {
+                                    filters.push(function (heldDeviceItem) {
+                                        // true if any JobQueueId is included
+                                        if (!heldDeviceItem.JobQueueIds)
+                                            return false; // not in any queues
+                                        var include = false;
+                                        $.each(jobQueues, function (i, v) {
+                                            if ($.inArray(v, heldDeviceItem.JobQueueIds) >= 0) {
+                                                include = true;
+                                                return false; // break
+                                            }
+                                        });
+                                        return include;
+                                    });
+                                }
+                                break;
+                            case 'jobqueueexclude': // FILTER: Job Queue Exclude
+                                var jobQueues = value.split(",").map(function (v) { return parseInt(v); });
+                                if (jobQueues.length > 0) {
+                                    filters.push(function (heldDeviceItem) {
+                                        // true if any JobQueueId is excluded
+                                        if (!heldDeviceItem.JobQueueIds)
+                                            return true; // not in any queues
+                                        var exclude = false;
+                                        $.each(jobQueues, function (i, v) {
+                                            if ($.inArray(v, heldDeviceItem.JobQueueIds) >= 0) {
+                                                exclude = true;
+                                                return false; // break
+                                            }
+                                        });
+                                        return !exclude;
+                                    });
+                                }
+                                break;
                         }
                     });
 
