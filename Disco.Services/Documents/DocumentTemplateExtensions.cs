@@ -149,27 +149,28 @@ namespace Disco.Services
             template = database.DocumentTemplates.Find(templateId);
             if (template == null)
                 throw new ArgumentException("Invalid document template id", nameof(templateId));
+            if (!Enum.TryParse(template.Scope, out AttachmentTypes scope))
+                throw new InvalidOperationException("Unknown DocumentType Scope");
 
             // validate authorization
-            switch (template.Scope)
+            switch (scope)
             {
-                case DocumentTemplate.DocumentTemplateScopes.Device:
+                case AttachmentTypes.Device:
                     authorization.Require(Claims.Device.Actions.GenerateDocuments);
                     break;
-                case DocumentTemplate.DocumentTemplateScopes.Job:
+                case AttachmentTypes.Job:
                     authorization.Require(Claims.Job.Actions.GenerateDocuments);
                     break;
-                case DocumentTemplate.DocumentTemplateScopes.User:
+                case AttachmentTypes.User:
                     authorization.Require(Claims.User.Actions.GenerateDocuments);
                     break;
                 default:
-                    throw new InvalidOperationException("Unknown DocumentType Scope");
+                    throw new InvalidOperationException("Unsupported DocumentType Scope");
             }
 
             // resolve target
-            target = template.ResolveScopeTarget(database, targetId, out targetUser);
-            if (target == null)
-                throw new ArgumentException("Target not found", nameof(targetId));
+            target = template.ResolveScopeTarget(database, targetId, out targetUser)
+                ?? throw new ArgumentException("Target not found", nameof(targetId));
         }
 
         public static IEnumerable<OnImportUserFlagRule> GetOnImportUserFlagRuleDetails(this DocumentTemplate template, DiscoDataContext database)

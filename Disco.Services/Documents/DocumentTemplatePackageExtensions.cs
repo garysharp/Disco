@@ -1,6 +1,8 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Documents;
+using Disco.Services.Authorization;
+using Disco.Services.Documents;
 using Disco.Services.Expressions;
 using System;
 using System.Collections.Generic;
@@ -139,12 +141,46 @@ namespace Disco.Services
         }
 
         public static IAttachmentTarget ResolveScopeTarget(this DocumentTemplatePackage templatePackage, DiscoDataContext database, string targetId)
+            => templatePackage.ResolveScopeTarget(database, targetId, out _);
+
+        public static IAttachmentTarget ResolveScopeTarget(this DocumentTemplatePackage templatePackage, DiscoDataContext database, string targetId, out User targetUser)
         {
             if (templatePackage == null)
                 throw new ArgumentNullException(nameof(templatePackage));
 
-            return templatePackage.Scope.ResolveScopeTarget(database, targetId);
+            return templatePackage.Scope.ResolveScopeTarget(database, targetId, out targetUser);
         }
 
+        public static void GetPackageAndTarget(DiscoDataContext database, AuthorizationToken authorization, string packageId, string targetId, out DocumentTemplatePackage package, out IAttachmentTarget target, out User targetUser)
+        {
+            if (string.IsNullOrWhiteSpace(packageId))
+                throw new ArgumentNullException(nameof(packageId));
+            if (string.IsNullOrWhiteSpace(targetId))
+                throw new ArgumentNullException(nameof(targetId));
+
+            // get template
+            package = DocumentTemplatePackages.GetPackage(packageId)
+                ?? throw new ArgumentException("Invalid document template package id", nameof(packageId));
+
+            // validate authorization
+            switch (package.Scope)
+            {
+                case AttachmentTypes.Device:
+                    authorization.Require(Claims.Device.Actions.GenerateDocuments);
+                    break;
+                case AttachmentTypes.Job:
+                    authorization.Require(Claims.Job.Actions.GenerateDocuments);
+                    break;
+                case AttachmentTypes.User:
+                    authorization.Require(Claims.User.Actions.GenerateDocuments);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unsupported DocumentType Scope");
+            }
+
+            // resolve target
+            target = package.ResolveScopeTarget(database, targetId, out targetUser)
+                ?? throw new ArgumentException("Target not found", nameof(targetId));
+        }
     }
 }

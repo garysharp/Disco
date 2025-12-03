@@ -1961,9 +1961,9 @@ namespace Disco.Web.Areas.API.Controllers
 
         #region Handlers
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult GenerateDocumentHandlerUi(string templateId, string targetId, string handlerId)
+        public virtual ActionResult GenerateDocumentHandlerUi(string id, string targetId, string handlerId)
         {
-            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, templateId, targetId, out var template, out var target, out var targetUser);
+            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, targetId, out var template, out var target, out var targetUser);
 
             var handlerManifest = Plugins.GetPluginFeature(handlerId, typeof(DocumentHandlerProviderFeature));
 
@@ -1984,9 +1984,9 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult DocumentHandlers(string templateId, string targetId)
+        public virtual ActionResult DocumentHandlers(string id, string targetId)
         {
-            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, templateId, targetId, out var template, out var target, out _);
+            Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, targetId, out var template, out var target, out _);
 
             var handlers = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature))
                 .SelectMany(f =>

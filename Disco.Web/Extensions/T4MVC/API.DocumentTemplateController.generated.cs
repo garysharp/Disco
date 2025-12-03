@@ -794,7 +794,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_GenerateDocumentHandlerUi
         {
-            public readonly string templateId = "templateId";
+            public readonly string id = "id";
             public readonly string targetId = "targetId";
             public readonly string handlerId = "handlerId";
         }
@@ -804,7 +804,7 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_DocumentHandlers
         {
-            public readonly string templateId = "templateId";
+            public readonly string id = "id";
             public readonly string targetId = "targetId";
         }
         static readonly ActionParamsClass_Export s_params_Export = new ActionParamsClass_Export();
@@ -1385,29 +1385,29 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void GenerateDocumentHandlerUiOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string templateId, string targetId, string handlerId);
+        partial void GenerateDocumentHandlerUiOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string targetId, string handlerId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult GenerateDocumentHandlerUi(string templateId, string targetId, string handlerId)
+        public override System.Web.Mvc.ActionResult GenerateDocumentHandlerUi(string id, string targetId, string handlerId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.GenerateDocumentHandlerUi);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "templateId", templateId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "handlerId", handlerId);
-            GenerateDocumentHandlerUiOverride(callInfo, templateId, targetId, handlerId);
+            GenerateDocumentHandlerUiOverride(callInfo, id, targetId, handlerId);
             return callInfo;
         }
 
         [NonAction]
-        partial void DocumentHandlersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string templateId, string targetId);
+        partial void DocumentHandlersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string targetId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult DocumentHandlers(string templateId, string targetId)
+        public override System.Web.Mvc.ActionResult DocumentHandlers(string id, string targetId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DocumentHandlers);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "templateId", templateId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
-            DocumentHandlersOverride(callInfo, templateId, targetId);
+            DocumentHandlersOverride(callInfo, id, targetId);
             return callInfo;
         }
 

@@ -125,6 +125,17 @@ WriteLiteral(" data-handlersurl=\"");
             #line hidden
 WriteLiteral("\"");
 
+WriteLiteral(" data-handlerspackageurl=\"");
+
+            
+            #line 8 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                              Write(Url.Action(MVC.API.DocumentTemplatePackage.DocumentHandlers()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(">\r\n");
 
 WriteLiteral("        ");

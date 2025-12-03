@@ -9,13 +9,14 @@
         const generatePackageUrl = $container.attr('data-generatepackageurl');
         const handlersPresent = $container.attr('data-handlerspresent') === 'true';
         const handlersUrl = $container.attr('data-handlersurl');
+        const handlersPackageUrl = $container.attr('data-handlerspackageurl');
         let $handlersDialog = null;
         let lastTemplateId = null;
 
         const downloadPdf = function (templateId) {
             let action = generatePdfUrl;
             if (templateId.lastIndexOf('Package:', 0) === 0) {
-                templateId + templateId.substring(8);
+                templateId = templateId.substring(8);
                 action = generatePackageUrl;
             }
 
@@ -35,6 +36,12 @@
         }
 
         const updateHandlers = function (templateId) {
+            let action = handlersUrl;
+            if (templateId.lastIndexOf('Package:', 0) === 0) {
+                templateId = templateId.substring(8);
+                action = handlersPackageUrl;
+            }
+
             const $handlerPicker = $handlersDialog.find('.handlerPicker');
             const $loadingUi = $handlersDialog.find('#Document_Generation_Dialog_Handlers_Loading');
 
@@ -43,9 +50,9 @@
 
             var formData = new FormData();
             formData.append('__RequestVerificationToken', document.body.dataset.antiforgery);
-            formData.append('templateId', decodeURI(templateId));
+            formData.append('id', decodeURI(templateId));
             formData.append('targetId', decodeURI(targetId));
-            fetch(handlersUrl, {
+            fetch(action, {
                 method: 'POST',
                 body: formData
             }).then(r => r.json())

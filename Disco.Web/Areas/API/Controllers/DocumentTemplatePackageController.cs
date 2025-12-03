@@ -4,8 +4,11 @@ using Disco.Models.Services.Documents;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Documents;
+using Disco.Services.Plugins;
+using Disco.Services.Plugins.Features.DocumentHandlerProvider;
 using Disco.Services.Users;
 using Disco.Services.Web;
+using Disco.Web.Areas.API.Models.DocumentTemplate;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -469,6 +472,66 @@ namespace Disco.Web.Areas.API.Controllers
             }
         }
 
+        #endregion
+
+        #region Handlers
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult GenerateDocumentHandlerUi(string id, string targetId, string handlerId)
+        {
+            DocumentTemplatePackageExtensions.GetPackageAndTarget(Database, Authorization, id, targetId, out var package, out var target, out var targetUser);
+
+            var handlerManifest = Plugins.GetPluginFeature(handlerId, typeof(DocumentHandlerProviderFeature));
+
+            using (var handler = handlerManifest.CreateInstance<DocumentHandlerProviderFeature>())
+            {
+                if (!handler.CanHandle(package, target))
+                    throw new NotSupportedException("Handler does not support this Document Template and Target");
+
+                var handlerPartialView = handler.GenerationOptionsUi;
+
+                if (handlerPartialView == null)
+                    throw new NotSupportedException("Handler does not have a Generation Options UI");
+
+                var model = handler.GetGenerationOptionsUiModel(package, target, targetUser, CurrentUser);
+
+                return this.PrecompiledPartialView(handlerPartialView, model);
+            }
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult DocumentHandlers(string id, string targetId)
+        {
+            DocumentTemplatePackageExtensions.GetPackageAndTarget(Database, Authorization, id, targetId, out var package, out var target, out _);
+
+            var handlers = Plugins.GetPluginFeatures(typeof(DocumentHandlerProviderFeature))
+                .SelectMany(f =>
+                {
+                    using (var handler = f.CreateInstance<DocumentHandlerProviderFeature>())
+                    {
+                        if (handler.CanHandle(package, target))
+                            return OneOf.Create(new DocumentHandlerModel()
+                            {
+                                Id = f.Id,
+                                Title = handler.HandlerTitle,
+                                Description = handler.HandlerDescription,
+                                UiUrl = handler.GenerationOptionsUi == null ? null : Url.Action(MVC.API.DocumentTemplatePackage.GenerateDocumentHandlerUi(package.Id, target.AttachmentReferenceId, f.Id)),
+                                Icon = handler.GenerationOptionsIcon,
+                            });
+                    }
+                    return Enumerable.Empty<DocumentHandlerModel>();
+                }).ToList();
+
+            var model = new DocumentHandlersModel()
+            {
+                TemplateId = package.Id,
+                TemplateName = package.Description,
+                TargetId = target.AttachmentReferenceId,
+                TargetName = target.ToString(),
+                Handlers = handlers,
+            };
+
+            return Json(model);
+        }
         #endregion
     }
 }
