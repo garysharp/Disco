@@ -6,8 +6,7 @@
 }
 <table id="jobNonWarrantyFinance">
     <tr>
-        <th style="width: 200px;">Accounting Charge Required
-        </th>
+        <th style="width: 200px;">Accounting Charge Required</th>
         <td>
             @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredDate, "Not Required", "Job_JobMetaNonWarranty_AccountingChargeRequiredDate")
             <span id="Job_JobMetaNonWarranty_AccountingChargeRequiredUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUser.ToString()))</span>
@@ -15,8 +14,7 @@
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">Accounting Charge Added
-        </th>
+        <th style="width: 200px;">Accounting Charge Added</th>
         <td>
             @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargeAddedDate, "Not Added", "Job_JobMetaNonWarranty_AccountingChargeAddedDate")
             <span id="Job_JobMetaNonWarranty_AccountingChargeAddedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeAddedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeAddedUser.ToString()))</span>
@@ -24,8 +22,7 @@
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">Accounting Charge Paid
-        </th>
+        <th style="width: 200px;">Accounting Charge Paid</th>
         <td>
             @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargePaidDate, "Not Paid", "Job_JobMetaNonWarranty_AccountingChargePaidDate")
             <span id="Job_JobMetaNonWarranty_AccountingChargePaidUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargePaidUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargePaidUser.ToString()))</span>
@@ -33,8 +30,7 @@
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">Purchase Order Raised
-        </th>
+        <th style="width: 200px;">Purchase Order Raised</th>
         <td>
             @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedDate, "Not Raised", "Job_JobMetaNonWarranty_PurchaseOrderRaisedDate")
             <span id="Job_JobMetaNonWarranty_PurchaseOrderRaisedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUser.ToString()))</span>
@@ -42,8 +38,7 @@
         </td>
     </tr>
     <tr>
-        <th>Purchase Order Reference
-        </th>
+        <th>Purchase Order Reference</th>
         <td>
             @if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderReference))
             {
@@ -52,41 +47,11 @@
                 @AjaxHelpers.AjaxLoader()
                 <script type="text/javascript">
                     $(function () {
-                        var $purchaseOrderReference = $('#Job_JobMetaNonWarranty_PurchaseOrderReference');
-                        var $ajaxSave = $purchaseOrderReference.next('.ajaxSave');
-                        $purchaseOrderReference
-                        .watermark('No Reference')
-                        .focus(function () { $purchaseOrderReference.select() })
-                        .keydown(function (e) {
-                            $ajaxSave.show();
-                            if (e.which == 13) {
-                                $(this).blur();
-                            }
-                        }).blur(function () {
-                            $ajaxSave.hide();
-                        })
-                        .change(function () {
-                            $ajaxSave.hide();
-                            $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
-                            var data = { PurchaseOrderReference: $purchaseOrderReference.val() };
-                            $.ajax({
-                                url: '@Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderReference(Model.Job.Id, null))',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d == 'OK') {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                    } else {
-                                        $ajaxLoading.hide();
-                                        alert('Unable to update purchase order reference: ' + d);
-                                    }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to update purchase order reference: ' + textStatus);
-                                    $ajaxLoading.hide();
-                                }
-                            });
-                        });
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaNonWarranty_PurchaseOrderReference'),
+                            'No Reference',
+                            '@(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderReference(Model.Job.Id, null)))',
+                            'PurchaseOrderReference');
                     });
                 </script>
             }
@@ -94,18 +59,17 @@
             {
                 if (string.IsNullOrWhiteSpace(Model.Job.JobMetaNonWarranty.PurchaseOrderReference))
                 {
-                <span class="smallMessage">&lt;Unknown/None&gt;</span>
+                    <span class="smallMessage">&lt;Unknown/None&gt;</span>
                 }
                 else
                 {
-                @Model.Job.JobMetaNonWarranty.PurchaseOrderReference
+                    @Model.Job.JobMetaNonWarranty.PurchaseOrderReference
                 }
             }
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">Purchase Order Sent
-        </th>
+        <th style="width: 200px;">Purchase Order Sent</th>
         <td>
             @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.PurchaseOrderSentDate, "Not Sent", "Job_JobMetaNonWarranty_PurchaseOrderSentDate")
             <span id="Job_JobMetaNonWarranty_PurchaseOrderSentUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderSentUser.ToString()))</span>
@@ -113,8 +77,7 @@
         </td>
     </tr>
     <tr>
-        <th style="width: 200px;">Invoice Received
-        </th>
+        <th style="width: 200px;">Invoice Received</th>
         <td>
             @CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.InvoiceReceivedDate, "Not Received", "Job_JobMetaNonWarranty_InvoiceReceivedDate")
             <span id="Job_JobMetaNonWarranty_InvoiceReceivedUser">@(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.InvoiceReceivedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.InvoiceReceivedUser.ToString()))</span>

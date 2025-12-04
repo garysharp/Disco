@@ -61,12 +61,12 @@ WriteLiteral(">\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Accounting Charge Required\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Accounting Charge Required</th>\r\n        <td>\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 12 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 11 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredDate, "Not Required", "Job_JobMetaNonWarranty_AccountingChargeRequiredDate"));
 
             
@@ -79,7 +79,7 @@ WriteLiteral(" id=\"Job_JobMetaNonWarranty_AccountingChargeRequiredUser\"");
 WriteLiteral(">");
 
             
-            #line 13 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 12 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                        Write(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeRequiredUser.ToString()));
 
             
@@ -90,7 +90,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("            ");
 
             
-            #line 14 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 13 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -100,12 +100,12 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Accounting Charge Added\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Accounting Charge Added</th>\r\n        <td>\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 21 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 19 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargeAddedDate, "Not Added", "Job_JobMetaNonWarranty_AccountingChargeAddedDate"));
 
             
@@ -118,7 +118,7 @@ WriteLiteral(" id=\"Job_JobMetaNonWarranty_AccountingChargeAddedUser\"");
 WriteLiteral(">");
 
             
-            #line 22 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 20 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                     Write(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargeAddedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargeAddedUser.ToString()));
 
             
@@ -129,7 +129,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("            ");
 
             
-            #line 23 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 21 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -139,12 +139,12 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Accounting Charge Paid\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Accounting Charge Paid</th>\r\n        <td>\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 30 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 27 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.AccountingChargePaidDate, "Not Paid", "Job_JobMetaNonWarranty_AccountingChargePaidDate"));
 
             
@@ -157,7 +157,7 @@ WriteLiteral(" id=\"Job_JobMetaNonWarranty_AccountingChargePaidUser\"");
 WriteLiteral(">");
 
             
-            #line 31 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 28 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                    Write(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.AccountingChargePaidUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.AccountingChargePaidUser.ToString()));
 
             
@@ -168,7 +168,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("            ");
 
             
-            #line 32 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 29 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -178,12 +178,12 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Purchase Order Raised\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Purchase Order Raised</th>\r\n        <td>\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 39 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 35 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedDate, "Not Raised", "Job_JobMetaNonWarranty_PurchaseOrderRaisedDate"));
 
             
@@ -196,7 +196,7 @@ WriteLiteral(" id=\"Job_JobMetaNonWarranty_PurchaseOrderRaisedUser\"");
 WriteLiteral(">");
 
             
-            #line 40 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 36 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                   Write(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderRaisedUser.ToString()));
 
             
@@ -207,23 +207,23 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("            ");
 
             
-            #line 41 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 37 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>Purchase Order Reference\r\n     " +
-"   </th>\r\n        <td>\r\n");
+WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>Purchase Order Reference</th>\r\n" +
+"        <td>\r\n");
 
             
-            #line 48 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 43 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 48 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 43 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
              if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderReference))
             {
                 
@@ -231,42 +231,42 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th>Purchase
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 45 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
            Write(Html.TextBoxFor(m => m.Job.JobMetaNonWarranty.PurchaseOrderReference));
 
             
             #line default
             #line hidden
             
-            #line 50 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 45 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                       
                 
             
             #line default
             #line hidden
             
-            #line 51 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 46 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
            Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 51 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 46 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                        
                 
             
             #line default
             #line hidden
             
-            #line 52 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 47 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
            Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 52 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 47 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                          
 
             
@@ -278,56 +278,23 @@ WriteLiteral(" type=\"text/javascript\"");
 
 WriteLiteral(@">
                     $(function () {
-                        var $purchaseOrderReference = $('#Job_JobMetaNonWarranty_PurchaseOrderReference');
-                        var $ajaxSave = $purchaseOrderReference.next('.ajaxSave');
-                        $purchaseOrderReference
-                        .watermark('No Reference')
-                        .focus(function () { $purchaseOrderReference.select() })
-                        .keydown(function (e) {
-                            $ajaxSave.show();
-                            if (e.which == 13) {
-                                $(this).blur();
-                            }
-                        }).blur(function () {
-                            $ajaxSave.hide();
-                        })
-                        .change(function () {
-                            $ajaxSave.hide();
-                            $ajaxLoading = $ajaxSave.next('.ajaxLoading').show();
-                            var data = { PurchaseOrderReference: $purchaseOrderReference.val() };
-                            $.ajax({
-                                url: '");
+                        document.DiscoFunctions.PropertyChangeHelper(
+                            $('#Job_JobMetaNonWarranty_PurchaseOrderReference'),
+                            'No Reference',
+                            '");
 
             
-            #line 73 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
-                                 Write(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderReference(Model.Job.Id, null)));
+            #line 53 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+                         Write(Url.Action(MVC.API.Job.UpdateNonWarrantyPurchaseOrderReference(Model.Job.Id, null)));
 
             
             #line default
             #line hidden
-WriteLiteral(@"',
-                                dataType: 'json',
-                                data: data,
-                                success: function (d) {
-                                    if (d == 'OK') {
-                                        $ajaxLoading.hide().next('.ajaxOk').show().delay('fast').fadeOut('slow');
-                                    } else {
-                                        $ajaxLoading.hide();
-                                        alert('Unable to update purchase order reference: ' + d);
-                                    }
-                                },
-                                error: function (jqXHR, textStatus, errorThrown) {
-                                    alert('Unable to update purchase order reference: ' + textStatus);
-                                    $ajaxLoading.hide();
-                                }
-                            });
-                        });
-                    });
-                </script>
-");
+WriteLiteral("\',\r\n                            \'PurchaseOrderReference\');\r\n                    }" +
+");\r\n                </script>\r\n");
 
             
-            #line 92 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 57 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
             }
             else
             {
@@ -337,31 +304,31 @@ WriteLiteral(@"',
             
             #line default
             #line hidden
-WriteLiteral("                <span");
+WriteLiteral("                    <span");
 
 WriteLiteral(" class=\"smallMessage\"");
 
 WriteLiteral(">&lt;Unknown/None&gt;</span>\r\n");
 
             
-            #line 98 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 63 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                 }
                 else
                 {
-                
+                    
             
             #line default
             #line hidden
             
-            #line 101 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
-           Write(Model.Job.JobMetaNonWarranty.PurchaseOrderReference);
+            #line 66 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+               Write(Model.Job.JobMetaNonWarranty.PurchaseOrderReference);
 
             
             #line default
             #line hidden
             
-            #line 101 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
-                                                                    
+            #line 66 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+                                                                        
                 }
             }
 
@@ -372,12 +339,12 @@ WriteLiteral("        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Purchase Order Sent\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Purchase Order Sent</th>\r\n        <td>\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 110 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 74 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.PurchaseOrderSentDate, "Not Sent", "Job_JobMetaNonWarranty_PurchaseOrderSentDate"));
 
             
@@ -390,7 +357,7 @@ WriteLiteral(" id=\"Job_JobMetaNonWarranty_PurchaseOrderSentUser\"");
 WriteLiteral(">");
 
             
-            #line 111 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 75 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                 Write(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.PurchaseOrderSentUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.PurchaseOrderSentUser.ToString()));
 
             
@@ -401,7 +368,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("            ");
 
             
-            #line 112 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 76 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -411,12 +378,12 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <th");
 
 WriteLiteral(" style=\"width: 200px;\"");
 
-WriteLiteral(">Invoice Received\r\n        </th>\r\n        <td>\r\n");
+WriteLiteral(">Invoice Received</th>\r\n        <td>\r\n");
 
 WriteLiteral("            ");
 
             
-            #line 119 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 82 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(CommonHelpers.FriendlyDate(Model.Job.JobMetaNonWarranty.InvoiceReceivedDate, "Not Received", "Job_JobMetaNonWarranty_InvoiceReceivedDate"));
 
             
@@ -429,7 +396,7 @@ WriteLiteral(" id=\"Job_JobMetaNonWarranty_InvoiceReceivedUser\"");
 WriteLiteral(">");
 
             
-            #line 120 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 83 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                               Write(string.IsNullOrEmpty(Model.Job.JobMetaNonWarranty.InvoiceReceivedUserId) ? string.Empty : string.Format("by {0}", Model.Job.JobMetaNonWarranty.InvoiceReceivedUser.ToString()));
 
             
@@ -440,7 +407,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("            ");
 
             
-            #line 121 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 84 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
        Write(AjaxHelpers.AjaxLoader());
 
             
@@ -450,7 +417,7 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n</table>\r\n<script>\r\n    $(fu
 "updateUrl = \'");
 
             
-            #line 127 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 90 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                      Write(Url.Action(MVC.API.Job.Update(Model.Job.Id, null)));
 
             
@@ -459,7 +426,7 @@ WriteLiteral("\r\n        </td>\r\n    </tr>\r\n</table>\r\n<script>\r\n    $(fu
 WriteLiteral("\';\r\n        var jobOpenDate = \'");
 
             
-            #line 128 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 91 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                        Write(Model.Job.OpenedDate.ToISO8601());
 
             
@@ -468,13 +435,13 @@ WriteLiteral("\';\r\n        var jobOpenDate = \'");
 WriteLiteral("\';\r\n\r\n");
 
             
-            #line 130 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 93 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 130 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 93 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
          if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeRequired))
         {
             
@@ -483,7 +450,7 @@ WriteLiteral("\';\r\n\r\n");
 WriteLiteral(@"document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accounting Charge Required', 'Job_JobMetaNonWarranty_AccountingChargeRequiredDate', 'Job_JobMetaNonWarranty_AccountingChargeRequiredUser', 'NonWarrantyAccountingChargeRequired', 'Not Required', jobOpenDate, false);");
 
             
-            #line 131 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 94 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                                                                                                                                                                                                                                         }
 
             
@@ -492,7 +459,7 @@ WriteLiteral(@"document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accou
 WriteLiteral("        ");
 
             
-            #line 132 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 95 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
          if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.AccountingChargeAdded))
         {
             
@@ -501,7 +468,7 @@ WriteLiteral("        ");
 WriteLiteral(@"document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accounting Charge Added', 'Job_JobMetaNonWarranty_AccountingChargeAddedDate', 'Job_JobMetaNonWarranty_AccountingChargeAddedUser', 'NonWarrantyAccountingChargeAdded', 'Not Added', jobOpenDate, false);");
 
             
-            #line 133 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 96 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                                                                                                                                                                                                                          }
 
             
@@ -510,7 +477,7 @@ WriteLiteral(@"document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, 'Accou
 WriteLiteral("        ");
 
             
-            #line 134 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 97 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
          if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.AccountingChargePaid))
         {
             
@@ -522,7 +489,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Accou
 "Date, false);");
 
             
-            #line 135 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 98 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                                                                                                                                                                                                                     }
 
             
@@ -531,7 +498,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Accou
 WriteLiteral("        ");
 
             
-            #line 136 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 99 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
          if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderRaised))
         {
             
@@ -543,7 +510,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Purch
 "te, true);");
 
             
-            #line 137 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 100 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                                                                                                                                                                                                                  }
 
             
@@ -552,7 +519,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Purch
 WriteLiteral("        ");
 
             
-            #line 138 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 101 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
          if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.PurchaseOrderSent))
         {
             
@@ -564,7 +531,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Purch
 "");
 
             
-            #line 139 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 102 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                                                                                                                                                                                                        }
 
             
@@ -573,7 +540,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Purch
 WriteLiteral("        ");
 
             
-            #line 140 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 103 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
          if (Authorization.Has(Claims.Job.Properties.NonWarrantyProperties.InvoiceReceived))
         {
             
@@ -584,7 +551,7 @@ WriteLiteral("document.DiscoFunctions.DateDialogCreateUpdater(updateUrl, \'Invoi
 "vedUser\', \'NonWarrantyInvoiceReceived\', \'Not Received\', jobOpenDate, true);");
 
             
-            #line 141 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
+            #line 104 "..\..\Views\Job\JobParts\NonWarrantyFinance.cshtml"
                                                                                                                                                                                                                                                                   }
 
             
