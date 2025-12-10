@@ -1738,12 +1738,17 @@ WriteLiteral(">");
             
             #line default
             #line hidden
-WriteLiteral("</span>");
+WriteLiteral("</span>\r\n");
 
             
-            #line 484 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                    if (flag.Item1.Comments != null)
-                                                                                    {
+            #line 485 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                    
+            
+            #line default
+            #line hidden
+            
+            #line 485 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                     if (flag.Item1.Comments != null) {
             
             #line default
             #line hidden
@@ -1755,7 +1760,7 @@ WriteLiteral(">");
 
             
             #line 485 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                       Write(flag.Item1.Comments.ToHtmlComment());
+                                                                                                                                         Write(flag.Item1.Comments.ToHtmlComment());
 
             
             #line default
@@ -1764,19 +1769,21 @@ WriteLiteral("</span>");
 
             
             #line 485 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                                       }
+                                                                                                                                                                                         }
+
             
             #line default
             #line hidden
-WriteLiteral("<span");
+WriteLiteral("                                                                                 " +
+"   <span");
 
 WriteLiteral(" class=\"added\"");
 
 WriteLiteral(">");
 
             
-            #line 485 "..\..\Views\User\UserParts\_Subject.cshtml"
-                                                                                                                                                                       Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
+            #line 486 "..\..\Views\User\UserParts\_Subject.cshtml"
+                                                                                                   Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
 
             
             #line default
@@ -1786,7 +1793,7 @@ WriteLiteral("</span>\r\n                                                       
 "             </i>\r\n");
 
             
-            #line 488 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 489 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                                         }
                                                                     }
 
@@ -1840,7 +1847,7 @@ WriteLiteral(">\r\n                                                             
 "           </tr>\r\n");
 
             
-            #line 523 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 524 "..\..\Views\User\UserParts\_Subject.cshtml"
                                                     }
 
             
@@ -1851,7 +1858,7 @@ WriteLiteral("                                                </tbody>\r\n      
 "                                   </div>\r\n");
 
             
-            #line 528 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 529 "..\..\Views\User\UserParts\_Subject.cshtml"
                                 }
                             }
                             else
@@ -1867,7 +1874,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Current Device Assignments</span>\r\n");
 
             
-            #line 533 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 534 "..\..\Views\User\UserParts\_Subject.cshtml"
                             }
 
             
@@ -1877,7 +1884,7 @@ WriteLiteral("                        </div>\r\n                    </div>\r\n  
 "\r\n");
 
             
-            #line 537 "..\..\Views\User\UserParts\_Subject.cshtml"
+            #line 538 "..\..\Views\User\UserParts\_Subject.cshtml"
             }
 
             

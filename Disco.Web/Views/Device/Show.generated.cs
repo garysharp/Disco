@@ -192,12 +192,17 @@ WriteLiteral(">");
             
             #line default
             #line hidden
-WriteLiteral("</span>");
+WriteLiteral("</span>\r\n");
 
             
-            #line 31 "..\..\Views\Device\Show.cshtml"
-                                                                            if (flag.Item1.Comments != null)
-                            {
+            #line 32 "..\..\Views\Device\Show.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 32 "..\..\Views\Device\Show.cshtml"
+                             if (flag.Item1.Comments != null) {
             
             #line default
             #line hidden
@@ -209,7 +214,7 @@ WriteLiteral(">");
 
             
             #line 32 "..\..\Views\Device\Show.cshtml"
-                                               Write(flag.Item1.Comments.ToHtmlComment());
+                                                                                 Write(flag.Item1.Comments.ToHtmlComment());
 
             
             #line default
@@ -218,19 +223,20 @@ WriteLiteral("</span>");
 
             
             #line 32 "..\..\Views\Device\Show.cshtml"
-                                                                                               }
+                                                                                                                                 }
+
             
             #line default
             #line hidden
-WriteLiteral("<span");
+WriteLiteral("                            <span");
 
 WriteLiteral(" class=\"added\"");
 
 WriteLiteral(">");
 
             
-            #line 32 "..\..\Views\Device\Show.cshtml"
-                                                                                                               Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser));
+            #line 33 "..\..\Views\Device\Show.cshtml"
+                                           Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser));
 
             
             #line default
@@ -238,7 +244,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n                        </span>\r\n                    </i>\r\n");
 
             
-            #line 35 "..\..\Views\Device\Show.cshtml"
+            #line 36 "..\..\Views\Device\Show.cshtml"
                 }
             }
 
@@ -285,7 +291,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 69 "..\..\Views\Device\Show.cshtml"
+            #line 70 "..\..\Views\Device\Show.cshtml"
     }
 
             
@@ -294,7 +300,7 @@ WriteLiteral(@">
 WriteLiteral("    ");
 
             
-            #line 70 "..\..\Views\Device\Show.cshtml"
+            #line 71 "..\..\Views\Device\Show.cshtml"
 Write(Html.Partial(MVC.Device.Views.DeviceParts._Subject, Model));
 
             
@@ -335,13 +341,13 @@ WriteLiteral(" id=\"DeviceDetailTabItems\"");
 WriteLiteral("></ul>\r\n");
 
             
-            #line 106 "..\..\Views\Device\Show.cshtml"
+            #line 107 "..\..\Views\Device\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 106 "..\..\Views\Device\Show.cshtml"
+            #line 107 "..\..\Views\Device\Show.cshtml"
          if (Authorization.HasAny(Claims.Device.ShowComments, Claims.Device.ShowJobs))
         {
             
@@ -349,14 +355,14 @@ WriteLiteral("></ul>\r\n");
             #line default
             #line hidden
             
-            #line 108 "..\..\Views\Device\Show.cshtml"
+            #line 109 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._CommentsAndJobs, Model));
 
             
             #line default
             #line hidden
             
-            #line 108 "..\..\Views\Device\Show.cshtml"
+            #line 109 "..\..\Views\Device\Show.cshtml"
                                                                                
         }
 
@@ -366,7 +372,7 @@ WriteLiteral("></ul>\r\n");
 WriteLiteral("        ");
 
             
-            #line 110 "..\..\Views\Device\Show.cshtml"
+            #line 111 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowDetails))
         {
             
@@ -374,14 +380,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 112 "..\..\Views\Device\Show.cshtml"
+            #line 113 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Details, Model));
 
             
             #line default
             #line hidden
             
-            #line 112 "..\..\Views\Device\Show.cshtml"
+            #line 113 "..\..\Views\Device\Show.cshtml"
                                                                        
         }
 
@@ -391,7 +397,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 114 "..\..\Views\Device\Show.cshtml"
+            #line 115 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowAssignmentHistory))
         {
             
@@ -399,14 +405,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 116 "..\..\Views\Device\Show.cshtml"
+            #line 117 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._AssignmentHistory, Model));
 
             
             #line default
             #line hidden
             
-            #line 116 "..\..\Views\Device\Show.cshtml"
+            #line 117 "..\..\Views\Device\Show.cshtml"
                                                                                  
         }
 
@@ -416,7 +422,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 118 "..\..\Views\Device\Show.cshtml"
+            #line 119 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowAttachments))
         {
             
@@ -424,14 +430,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 120 "..\..\Views\Device\Show.cshtml"
+            #line 121 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Resources, Model));
 
             
             #line default
             #line hidden
             
-            #line 120 "..\..\Views\Device\Show.cshtml"
+            #line 121 "..\..\Views\Device\Show.cshtml"
                                                                          
         }
 
@@ -441,7 +447,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 122 "..\..\Views\Device\Show.cshtml"
+            #line 123 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowFlagAssignments) || Model.Device.DeviceFlagAssignments.CanShowAny())
         {
             
@@ -449,14 +455,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 124 "..\..\Views\Device\Show.cshtml"
+            #line 125 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Flags, Model));
 
             
             #line default
             #line hidden
             
-            #line 124 "..\..\Views\Device\Show.cshtml"
+            #line 125 "..\..\Views\Device\Show.cshtml"
                                                                      
         }
 
@@ -466,7 +472,7 @@ WriteLiteral("        ");
 WriteLiteral("        ");
 
             
-            #line 126 "..\..\Views\Device\Show.cshtml"
+            #line 127 "..\..\Views\Device\Show.cshtml"
          if (Authorization.Has(Claims.Device.ShowCertificates))
         {
             
@@ -474,14 +480,14 @@ WriteLiteral("        ");
             #line default
             #line hidden
             
-            #line 128 "..\..\Views\Device\Show.cshtml"
+            #line 129 "..\..\Views\Device\Show.cshtml"
        Write(Html.Partial(MVC.Device.Views.DeviceParts._Certificates, Model));
 
             
             #line default
             #line hidden
             
-            #line 128 "..\..\Views\Device\Show.cshtml"
+            #line 129 "..\..\Views\Device\Show.cshtml"
                                                                             
         }
 
@@ -491,13 +497,13 @@ WriteLiteral("        ");
 WriteLiteral("    </div>\r\n");
 
             
-            #line 131 "..\..\Views\Device\Show.cshtml"
+            #line 132 "..\..\Views\Device\Show.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 131 "..\..\Views\Device\Show.cshtml"
+            #line 132 "..\..\Views\Device\Show.cshtml"
      if (requiresLive)
     {
 
@@ -536,7 +542,7 @@ WriteLiteral("        <script>\r\n            $(function () {\r\n               
 "    </script>\r\n");
 
             
-            #line 178 "..\..\Views\Device\Show.cshtml"
+            #line 179 "..\..\Views\Device\Show.cshtml"
     }
 
             

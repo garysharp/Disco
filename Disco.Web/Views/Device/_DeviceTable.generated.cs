@@ -250,12 +250,17 @@ WriteLiteral(">");
             
             #line default
             #line hidden
-WriteLiteral("</span>");
+WriteLiteral("</span>\r\n");
 
             
-            #line 44 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                                                    if (flag.Item1.Comments != null)
-                                                    {
+            #line 45 "..\..\Views\Device\_DeviceTable.cshtml"
+                                                    
+            
+            #line default
+            #line hidden
+            
+            #line 45 "..\..\Views\Device\_DeviceTable.cshtml"
+                                                     if (flag.Item1.Comments != null) {
             
             #line default
             #line hidden
@@ -267,7 +272,7 @@ WriteLiteral(">");
 
             
             #line 45 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                       Write(flag.Item1.Comments.ToHtmlComment());
+                                                                                                         Write(flag.Item1.Comments.ToHtmlComment());
 
             
             #line default
@@ -276,19 +281,19 @@ WriteLiteral("</span>");
 
             
             #line 45 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                                                                       }
+                                                                                                                                                         }
             
             #line default
             #line hidden
-WriteLiteral("<span");
+WriteLiteral("\r\n                                                    <span");
 
 WriteLiteral(" class=\"added\"");
 
 WriteLiteral(">");
 
             
-            #line 45 "..\..\Views\Device\_DeviceTable.cshtml"
-                                                                                                                                       Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
+            #line 46 "..\..\Views\Device\_DeviceTable.cshtml"
+                                                                   Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
 
             
             #line default
@@ -297,13 +302,13 @@ WriteLiteral("</span>\r\n                                                </span>
 "                             </i>\r\n");
 
             
-            #line 48 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 49 "..\..\Views\Device\_DeviceTable.cshtml"
                                         }
             
             #line default
             #line hidden
             
-            #line 48 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 49 "..\..\Views\Device\_DeviceTable.cshtml"
                                          
                                     }
 
@@ -313,7 +318,7 @@ WriteLiteral("</span>\r\n                                                </span>
 WriteLiteral("                                </div>\r\n");
 
             
-            #line 51 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 52 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
 
             
@@ -324,7 +329,7 @@ WriteLiteral("                        </td>\r\n                        <td>\r\n"
 WriteLiteral("                            ");
 
             
-            #line 54 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 55 "..\..\Views\Device\_DeviceTable.cshtml"
                        Write(item.AssetNumber);
 
             
@@ -333,27 +338,27 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </td>\r\n                        <td>\r\n");
 
             
-            #line 57 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 58 "..\..\Views\Device\_DeviceTable.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 57 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 58 "..\..\Views\Device\_DeviceTable.cshtml"
                              if (item.DecommissionedDate.HasValue)
                             {
             
             #line default
             #line hidden
             
-            #line 58 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 59 "..\..\Views\Device\_DeviceTable.cshtml"
                         Write(CommonHelpers.FriendlyDate(item.DecommissionedDate.Value));
 
             
             #line default
             #line hidden
             
-            #line 58 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 59 "..\..\Views\Device\_DeviceTable.cshtml"
                                                                                        }
 
             
@@ -362,13 +367,13 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                        </td>\r\n                        <td>\r\n");
 
             
-            #line 61 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 62 "..\..\Views\Device\_DeviceTable.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 61 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 62 "..\..\Views\Device\_DeviceTable.cshtml"
                              if (string.IsNullOrWhiteSpace(item.ComputerName))
                             {
 
@@ -382,7 +387,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 64 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 65 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
                             else
                             {
@@ -391,14 +396,14 @@ WriteLiteral(">Unknown</span>\r\n");
             #line default
             #line hidden
             
-            #line 67 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 68 "..\..\Views\Device\_DeviceTable.cshtml"
                            Write(item.ComputerName);
 
             
             #line default
             #line hidden
             
-            #line 67 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 68 "..\..\Views\Device\_DeviceTable.cshtml"
                                                   
                             }
 
@@ -408,13 +413,13 @@ WriteLiteral(">Unknown</span>\r\n");
 WriteLiteral("                        </td>\r\n                        <td>\r\n");
 
             
-            #line 71 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 72 "..\..\Views\Device\_DeviceTable.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 71 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 72 "..\..\Views\Device\_DeviceTable.cshtml"
                              if (item.DeviceModelDescription != null)
                             {
 
@@ -424,7 +429,7 @@ WriteLiteral("                        </td>\r\n                        <td>\r\n"
 WriteLiteral("                                <span>");
 
             
-            #line 73 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 74 "..\..\Views\Device\_DeviceTable.cshtml"
                                  Write(item.DeviceModelDescription);
 
             
@@ -433,7 +438,7 @@ WriteLiteral("                                <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 74 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 75 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
                             else
                             {
@@ -448,7 +453,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">Unknown</span>\r\n");
 
             
-            #line 78 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 79 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
 
             
@@ -459,7 +464,7 @@ WriteLiteral("                        </td>\r\n                        <td>\r\n"
 WriteLiteral("                            ");
 
             
-            #line 81 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 82 "..\..\Views\Device\_DeviceTable.cshtml"
                        Write(item.DeviceProfileName);
 
             
@@ -468,13 +473,13 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </td>\r\n                        <td>\r\n");
 
             
-            #line 84 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 85 "..\..\Views\Device\_DeviceTable.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 84 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 85 "..\..\Views\Device\_DeviceTable.cshtml"
                              if (item.DeviceBatchName != null)
                             {
 
@@ -484,7 +489,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                                <span>");
 
             
-            #line 86 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 87 "..\..\Views\Device\_DeviceTable.cshtml"
                                  Write(item.DeviceBatchName);
 
             
@@ -493,7 +498,7 @@ WriteLiteral("                                <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 87 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 88 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
                             else
                             {
@@ -508,7 +513,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">N/A</span>\r\n");
 
             
-            #line 91 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 92 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
 
             
@@ -517,13 +522,13 @@ WriteLiteral(">N/A</span>\r\n");
 WriteLiteral("                        </td>\r\n                        <td>\r\n");
 
             
-            #line 94 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 95 "..\..\Views\Device\_DeviceTable.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 94 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 95 "..\..\Views\Device\_DeviceTable.cshtml"
                              if (string.IsNullOrEmpty(item.AssignedUserId))
                             {
 
@@ -537,7 +542,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">N/A</span>\r\n");
 
             
-            #line 97 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 98 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
                             else
                             {
@@ -548,13 +553,13 @@ WriteLiteral(">N/A</span>\r\n");
 WriteLiteral("                                <span>\r\n");
 
             
-            #line 101 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 102 "..\..\Views\Device\_DeviceTable.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 101 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 102 "..\..\Views\Device\_DeviceTable.cshtml"
                                      if (canShowUsers)
                                     {
                                         
@@ -562,14 +567,14 @@ WriteLiteral("                                <span>\r\n");
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 104 "..\..\Views\Device\_DeviceTable.cshtml"
                                    Write(Html.ActionLink(item.AssignedUserDescription, MVC.User.Show(item.AssignedUserId)));
 
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 104 "..\..\Views\Device\_DeviceTable.cshtml"
                                                                                                                           
                                     }
                                     else
@@ -579,14 +584,14 @@ WriteLiteral("                                <span>\r\n");
             #line default
             #line hidden
             
-            #line 107 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 108 "..\..\Views\Device\_DeviceTable.cshtml"
                                    Write(item.AssignedUserDescription);
 
             
             #line default
             #line hidden
             
-            #line 107 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 108 "..\..\Views\Device\_DeviceTable.cshtml"
                                                                      
                                     }
 
@@ -596,7 +601,7 @@ WriteLiteral("                                <span>\r\n");
 WriteLiteral("                                </span>\r\n");
 
             
-            #line 110 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 111 "..\..\Views\Device\_DeviceTable.cshtml"
                             }
 
             
@@ -607,7 +612,7 @@ WriteLiteral("                        </td>\r\n                        <td>\r\n"
 WriteLiteral("                            ");
 
             
-            #line 113 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 114 "..\..\Views\Device\_DeviceTable.cshtml"
                        Write(item.JobCount);
 
             
@@ -616,7 +621,7 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n");
 
             
-            #line 116 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 117 "..\..\Views\Device\_DeviceTable.cshtml"
                 }
 
             
@@ -651,7 +656,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var userTable 
 "  });\r\n        </script>\r\n");
 
             
-            #line 158 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 159 "..\..\Views\Device\_DeviceTable.cshtml"
     }
     else
     {
@@ -666,7 +671,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Devices Found</span>\r\n");
 
             
-            #line 162 "..\..\Views\Device\_DeviceTable.cshtml"
+            #line 163 "..\..\Views\Device\_DeviceTable.cshtml"
     }
 
             

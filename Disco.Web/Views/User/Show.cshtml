@@ -22,8 +22,9 @@
                 {
                     <i class="flag fa fa-@(flag.Item2.flag.Icon) fa-fw fa-lg d-@(flag.Item2.flag.IconColour)">
                         <span class="details">
-                            <span class="name">@flag.Item2.flag.Name</span>@if (flag.Item1.Comments != null)
-                            {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}<span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
+                            <span class="name">@flag.Item2.flag.Name</span>
+                            @if (flag.Item1.Comments != null) {<span class="comments">@flag.Item1.Comments.ToHtmlComment()</span>}
+                            <span class="added">@CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUser)</span>
                         </span>
                     </i>
                 }

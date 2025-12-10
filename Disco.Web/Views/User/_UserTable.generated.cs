@@ -242,12 +242,17 @@ WriteLiteral(">");
             
             #line default
             #line hidden
-WriteLiteral("</span>");
+WriteLiteral("</span>\r\n");
 
             
-            #line 54 "..\..\Views\User\_UserTable.cshtml"
-                                                                                                    if (flag.Item1.Comments != null)
-                                                    {
+            #line 55 "..\..\Views\User\_UserTable.cshtml"
+                                                    
+            
+            #line default
+            #line hidden
+            
+            #line 55 "..\..\Views\User\_UserTable.cshtml"
+                                                     if (flag.Item1.Comments != null) {
             
             #line default
             #line hidden
@@ -259,7 +264,7 @@ WriteLiteral(">");
 
             
             #line 55 "..\..\Views\User\_UserTable.cshtml"
-                                                                       Write(flag.Item1.Comments.ToHtmlComment());
+                                                                                                         Write(flag.Item1.Comments.ToHtmlComment());
 
             
             #line default
@@ -268,19 +273,20 @@ WriteLiteral("</span>");
 
             
             #line 55 "..\..\Views\User\_UserTable.cshtml"
-                                                                                                                       }
+                                                                                                                                                         }
+
             
             #line default
             #line hidden
-WriteLiteral("<span");
+WriteLiteral("                                                    <span");
 
 WriteLiteral(" class=\"added\"");
 
 WriteLiteral(">");
 
             
-            #line 55 "..\..\Views\User\_UserTable.cshtml"
-                                                                                                                                       Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
+            #line 56 "..\..\Views\User\_UserTable.cshtml"
+                                                                   Write(CommonHelpers.FriendlyDateAndUser(flag.Item1.AddedDate, flag.Item1.AddedUserId));
 
             
             #line default
@@ -289,7 +295,7 @@ WriteLiteral("</span>\r\n                                                </span>
 "                             </i>\r\n");
 
             
-            #line 58 "..\..\Views\User\_UserTable.cshtml"
+            #line 59 "..\..\Views\User\_UserTable.cshtml"
                                         }
                                     }
 
@@ -299,7 +305,7 @@ WriteLiteral("</span>\r\n                                                </span>
 WriteLiteral("                                </div>\r\n");
 
             
-            #line 61 "..\..\Views\User\_UserTable.cshtml"
+            #line 62 "..\..\Views\User\_UserTable.cshtml"
                             }
 
             
@@ -310,7 +316,7 @@ WriteLiteral("                        </td>\r\n                        <td>\r\n"
 WriteLiteral("                            ");
 
             
-            #line 64 "..\..\Views\User\_UserTable.cshtml"
+            #line 65 "..\..\Views\User\_UserTable.cshtml"
                        Write(item.Surname);
 
             
@@ -321,7 +327,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                            ");
 
             
-            #line 67 "..\..\Views\User\_UserTable.cshtml"
+            #line 68 "..\..\Views\User\_UserTable.cshtml"
                        Write(item.GivenName);
 
             
@@ -332,7 +338,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                            ");
 
             
-            #line 70 "..\..\Views\User\_UserTable.cshtml"
+            #line 71 "..\..\Views\User\_UserTable.cshtml"
                        Write(item.DisplayName);
 
             
@@ -343,7 +349,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                            ");
 
             
-            #line 73 "..\..\Views\User\_UserTable.cshtml"
+            #line 74 "..\..\Views\User\_UserTable.cshtml"
                        Write(item.AssignedDevicesCount);
 
             
@@ -354,7 +360,7 @@ WriteLiteral("\r\n                        </td>\r\n                        <td>\
 WriteLiteral("                            ");
 
             
-            #line 76 "..\..\Views\User\_UserTable.cshtml"
+            #line 77 "..\..\Views\User\_UserTable.cshtml"
                        Write(item.JobCountOpen);
 
             
@@ -363,7 +369,7 @@ WriteLiteral("                            ");
 WriteLiteral(" ");
 
             
-            #line 76 "..\..\Views\User\_UserTable.cshtml"
+            #line 77 "..\..\Views\User\_UserTable.cshtml"
                                                 if (item.JobCount > item.JobCountOpen)
                             {
 
@@ -377,7 +383,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">(");
 
             
-            #line 78 "..\..\Views\User\_UserTable.cshtml"
+            #line 79 "..\..\Views\User\_UserTable.cshtml"
                                                         Write(item.JobCount - item.JobCountOpen);
 
             
@@ -386,7 +392,7 @@ WriteLiteral(">(");
 WriteLiteral(" Closed)</span>\r\n");
 
             
-            #line 79 "..\..\Views\User\_UserTable.cshtml"
+            #line 80 "..\..\Views\User\_UserTable.cshtml"
                             }
 
             
@@ -395,7 +401,7 @@ WriteLiteral(" Closed)</span>\r\n");
 WriteLiteral("                        </td>\r\n                    </tr>\r\n");
 
             
-            #line 82 "..\..\Views\User\_UserTable.cshtml"
+            #line 83 "..\..\Views\User\_UserTable.cshtml"
                 }
 
             
@@ -430,7 +436,7 @@ WriteLiteral(">\r\n            $(function () {\r\n                var userTable 
 "\n        </script>\r\n");
 
             
-            #line 124 "..\..\Views\User\_UserTable.cshtml"
+            #line 125 "..\..\Views\User\_UserTable.cshtml"
     }
     else
     {
@@ -445,7 +451,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">No Users Found</span>\r\n");
 
             
-            #line 128 "..\..\Views\User\_UserTable.cshtml"
+            #line 129 "..\..\Views\User\_UserTable.cshtml"
     }
 
             
