@@ -30,7 +30,9 @@ namespace Disco.Web.Areas.Config.Controllers
                 DeploymentId = Guid.Parse(Database.DiscoConfiguration.DeploymentId),
                 CorrelationId = Guid.NewGuid(),
                 UserId = CurrentUser.UserId,
+                Timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
             };
+            model.Proof = service.CalculateCallbackProof(model.CorrelationId, model.UserId, model.Timestamp);
 
             return View(model);
         }

@@ -61,12 +61,6 @@ namespace Disco.Web.Areas.API.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult TestCallback()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TestCallback);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Complete()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Complete);
@@ -88,7 +82,6 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string TestCallback = "TestCallback";
             public readonly string Begin = "Begin";
             public readonly string Complete = "Complete";
         }
@@ -96,17 +89,16 @@ namespace Disco.Web.Areas.API.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string TestCallback = "TestCallback";
             public const string Begin = "Begin";
             public const string Complete = "Complete";
         }
 
 
-        static readonly ActionParamsClass_TestCallback s_params_TestCallback = new ActionParamsClass_TestCallback();
+        static readonly ActionParamsClass_Begin s_params_Begin = new ActionParamsClass_Begin();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_TestCallback TestCallbackParams { get { return s_params_TestCallback; } }
+        public ActionParamsClass_Begin BeginParams { get { return s_params_Begin; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_TestCallback
+        public class ActionParamsClass_Begin
         {
             public readonly string model = "model";
         }
@@ -131,10 +123,8 @@ namespace Disco.Web.Areas.API.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string _ActivateCallback = "_ActivateCallback";
                 public readonly string Begin = "Begin";
             }
-            public readonly string _ActivateCallback = "~/Areas/API/Views/Activation/_ActivateCallback.cshtml";
             public readonly string Begin = "~/Areas/API/Views/Activation/Begin.cshtml";
         }
     }
@@ -145,15 +135,15 @@ namespace Disco.Web.Areas.API.Controllers
         public T4MVC_ActivationController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void TestCallbackOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.API.Models.Activation.CallbackModel model);
+        partial void BeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.API.Models.Activation.CallbackModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult TestCallback(Disco.Web.Areas.API.Models.Activation.CallbackModel model)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> Begin(Disco.Web.Areas.API.Models.Activation.CallbackModel model)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.TestCallback);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Begin);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            TestCallbackOverride(callInfo, model);
-            return callInfo;
+            BeginOverride(callInfo, model);
+            return System.Threading.Tasks.Task.FromResult(callInfo as System.Web.Mvc.ActionResult);
         }
 
         [NonAction]

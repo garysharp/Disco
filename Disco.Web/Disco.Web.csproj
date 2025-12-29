@@ -442,11 +442,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Areas\API\Views\Activation\_ActivateCallback.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>_ActivateCallback.cshtml</DependentUpon>
-    </Compile>
     <Compile Include="Areas\Config\Views\UserFlag\Create.generated.cs">
       <DependentUpon>Create.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -1517,10 +1512,6 @@
     <None Include="Areas\API\Views\Activation\Begin.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>Begin.generated.cs</LastGenOutput>
-    </None>
-    <None Include="Areas\API\Views\Activation\_ActivateCallback.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>_ActivateCallback.generated.cs</LastGenOutput>
     </None>
     <None Include="Areas\Config\Views\UserFlag\Create.cshtml">
       <Generator>RazorGenerator</Generator>

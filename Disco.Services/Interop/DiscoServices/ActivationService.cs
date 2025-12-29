@@ -42,6 +42,24 @@ namespace Disco.Services.Interop.DiscoServices
         public Uri GetCallbackUrl()
             => new Uri(DiscoServiceHelpers.ActivationServiceUrl, "/api/callback");
 
+        public string CalculateCallbackProof(Guid correlationId, string userId, long timestamp)
+        {
+            var deploymentId = Guid.Parse(database.DiscoConfiguration.DeploymentId);
+            var secret = Guid.Parse(database.DiscoConfiguration.DeploymentSecret);
+            using (var hmac = new HMACSHA256(secret.ToByteArray()))
+            {
+                var data = new MemoryStream();
+                data.Write(deploymentId.ToByteArray(), 0, 16);
+                data.Write(correlationId.ToByteArray(), 0, 16);
+                var userIdBytes = Encoding.UTF8.GetBytes(userId);
+                data.Write(BitConverter.GetBytes(userIdBytes.Length), 0, 4);
+                data.Write(userIdBytes, 0, userIdBytes.Length);
+                data.Write(BitConverter.GetBytes(timestamp), 0, 8);
+                var hash = hmac.ComputeHash(data.ToArray());
+                return Convert.ToBase64String(hash).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+            }
+        }
+
         /// <summary>
         /// Begin the activation process
         /// </summary>

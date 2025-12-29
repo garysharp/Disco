@@ -68,44 +68,47 @@ WriteLiteral(">\r\n        <h2><i");
 WriteLiteral(" class=\"fa fa-lg fa-cog fa-spin\"");
 
 WriteLiteral("></i> Testing Connectivity to Disco ICT Online Services</h2>\r\n    </div>\r\n</div>\r" +
-"\n\r\n<iframe");
-
-WriteLiteral(" name=\"callbackFrame\"");
-
-WriteLiteral(" class=\"hidden\"");
-
-WriteLiteral(">\r\n</iframe>\r\n\r\n<form");
+"\n\r\n<form");
 
 WriteLiteral(" id=\"callbackSubmit\"");
 
-WriteAttribute("action", Tuple.Create(" action=\"", 563), Tuple.Create("\"", 590)
+WriteAttribute("action", Tuple.Create(" action=\"", 504), Tuple.Create("\"", 531)
             
-            #line 17 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-, Tuple.Create(Tuple.Create("", 572), Tuple.Create<System.Object, System.Int32>(Model.CallbackUrl
+            #line 14 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 513), Tuple.Create<System.Object, System.Int32>(Model.CallbackUrl
             
             #line default
             #line hidden
-, 572), false)
+, 513), false)
 );
 
 WriteLiteral(" method=\"post\"");
 
-WriteLiteral(" target=\"callbackFrame\"");
+WriteLiteral(" data-failedurl=\"");
+
+            
+            #line 14 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+                                                                               Write(Url.Action(MVC.Config.SystemConfig.Index()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
 
 WriteLiteral(">\r\n    <input");
 
 WriteLiteral(" type=\"hidden\"");
 
-WriteLiteral(" name=\"callbackUrl\"");
+WriteLiteral(" name=\"correlationId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 674), Tuple.Create("\"", 752)
+WriteAttribute("value", Tuple.Create(" value=\"", 656), Tuple.Create("\"", 684)
             
-            #line 18 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-, Tuple.Create(Tuple.Create("", 682), Tuple.Create<System.Object, System.Int32>(new Uri(Request.Url, Url.Action(MVC.API.Activation.TestCallback()))
+            #line 15 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 664), Tuple.Create<System.Object, System.Int32>(Model.CorrelationId
             
             #line default
             #line hidden
-, 682), false)
+, 664), false)
 );
 
 WriteLiteral(" />\r\n    <input");
@@ -114,30 +117,46 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"deploymentId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 802), Tuple.Create("\"", 829)
+WriteAttribute("value", Tuple.Create(" value=\"", 734), Tuple.Create("\"", 761)
             
-            #line 19 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-, Tuple.Create(Tuple.Create("", 810), Tuple.Create<System.Object, System.Int32>(Model.DeploymentId
+            #line 16 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 742), Tuple.Create<System.Object, System.Int32>(Model.DeploymentId
             
             #line default
             #line hidden
-, 810), false)
+, 742), false)
 );
 
 WriteLiteral(" />\r\n    <input");
 
 WriteLiteral(" type=\"hidden\"");
 
-WriteLiteral(" name=\"correlationId\"");
+WriteLiteral(" name=\"timestamp\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 880), Tuple.Create("\"", 908)
+WriteAttribute("value", Tuple.Create(" value=\"", 808), Tuple.Create("\"", 832)
             
-            #line 20 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-, Tuple.Create(Tuple.Create("", 888), Tuple.Create<System.Object, System.Int32>(Model.CorrelationId
+            #line 17 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 816), Tuple.Create<System.Object, System.Int32>(Model.Timestamp
             
             #line default
             #line hidden
-, 888), false)
+, 816), false)
+);
+
+WriteLiteral(" />\r\n    <input");
+
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"proof\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 875), Tuple.Create("\"", 895)
+            
+            #line 18 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 883), Tuple.Create<System.Object, System.Int32>(Model.Proof
+            
+            #line default
+            #line hidden
+, 883), false)
 );
 
 WriteLiteral(" />\r\n    <input");
@@ -146,81 +165,43 @@ WriteLiteral(" type=\"hidden\"");
 
 WriteLiteral(" name=\"userId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 952), Tuple.Create("\"", 973)
+WriteAttribute("value", Tuple.Create(" value=\"", 939), Tuple.Create("\"", 960)
             
-            #line 21 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-, Tuple.Create(Tuple.Create("", 960), Tuple.Create<System.Object, System.Int32>(Model.UserId
+            #line 19 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 947), Tuple.Create<System.Object, System.Int32>(Model.UserId
             
             #line default
             #line hidden
-, 960), false)
+, 947), false)
 );
 
-WriteLiteral(" />\r\n</form>\r\n\r\n");
+WriteLiteral(" />\r\n    <input");
 
+WriteLiteral(" type=\"hidden\"");
+
+WriteLiteral(" name=\"callbackUrl\"");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 1009), Tuple.Create("\"", 1080)
             
-            #line 24 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
- using (Html.BeginForm(MVC.API.Activation.Begin(), FormMethod.Post, new { id = "activationBegin"}))
-{
-    
+            #line 20 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
+, Tuple.Create(Tuple.Create("", 1017), Tuple.Create<System.Object, System.Int32>(new Uri(Request.Url, Url.Action(MVC.API.Activation.Begin()))
             
             #line default
             #line hidden
-            
-            #line 26 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-Write(Html.AntiForgeryToken());
-
-            
-            #line default
-            #line hidden
-            
-            #line 26 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-                            
-}
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n<a");
-
-WriteLiteral(" id=\"callbackFailedUrl\"");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 1154), Tuple.Create("\"", 1205)
-            
-            #line 29 "..\..\Areas\Config\Views\SystemConfig\Activate.cshtml"
-, Tuple.Create(Tuple.Create("", 1161), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.SystemConfig.Index())
-            
-            #line default
-            #line hidden
-, 1161), false)
+, 1017), false)
 );
 
-WriteLiteral(" class=\"hidden\"");
-
-WriteLiteral(@"></a>
+WriteLiteral(@" />
+</form>
 
 <script>
     $(function () {
         const callbackForm = $('#callbackSubmit');
-        const callbackFailedUrl = $('#callbackFailedUrl').attr('href');
+        const callbackFailedUrl = callbackForm.attr('data-failedurl');
         const timeout = window.setTimeout(function () {
             alert('A timeout occurred while communicating with Online Services. Please try a different device/browser or try again later.');
             window.location.href = callbackFailedUrl;
-        }, 1000 * 35);
-        window.activateCallbackResponse = function (deploymentId, correlationId, userId) {
-            window.clearTimeout(timeout);
-
-            const originalDeploymentId = callbackForm.find('input[name=""deploymentId""]').val();
-            const originalCorrelationId = callbackForm.find('input[name=""correlationId""]').val();
-            const originalUserId = callbackForm.find('input[name=""userId""]').val();
-
-            if (deploymentId !== originalDeploymentId || correlationId !== originalCorrelationId || userId !== originalUserId) {
-                alert('Invalid response when communicating with Online Services. Please try a different device/browser or try again later.');
-                window.location.href = callbackFailedUrl;
-            }
-
-            $('#activationBegin').trigger('submit');
-        };
+        }, 1000 * 18);
         callbackForm.trigger('submit');
     });
 </script>

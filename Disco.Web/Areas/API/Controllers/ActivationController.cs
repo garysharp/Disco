@@ -12,10 +12,22 @@ namespace Disco.Web.Areas.API.Controllers
     [DiscoAuthorize(Claims.DiscoAdminAccount)]
     public partial class ActivationController : AuthorizedDatabaseController
     {
-        [HttpPost]
-        public virtual ActionResult TestCallback(CallbackModel model)
+        [HttpGet]
+        public virtual async Task<ActionResult> Begin(CallbackModel model)
         {
-            return this.PrecompiledPartialView<Views.Activation._ActivateCallback>(model);
+            // validate timestamp
+            var thresholdStart = DateTimeOffset.UtcNow.AddSeconds(-20).ToUnixTimeMilliseconds();
+            var thresholdEnd = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            if (model.Timestamp < thresholdStart || model.Timestamp > thresholdEnd)
+                return new HttpStatusCodeResult(400, "Invalid timestamp");
+
+            // validate proof
+            var service = new ActivationService(Database);
+            var expectedProof = service.CalculateCallbackProof(model.CorrelationId, model.UserId, model.Timestamp);
+            if (model.Proof != expectedProof)
+                return new HttpStatusCodeResult(400, "Invalid proof");
+
+            return await Begin();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -33,7 +45,7 @@ namespace Disco.Web.Areas.API.Controllers
                 RedirectUrl = challengeModel.RedirectUrl
             };
 
-            return View(model);
+            return View(MVC.API.Activation.Views.Begin, model);
         }
 
         [HttpGet]

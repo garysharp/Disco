@@ -43,7 +43,10 @@ namespace Disco.Services.Interop.DiscoServices
 
             connection.Closed += ex =>
             {
-                SystemLog.LogException("Online Services: Connection Closed", ex);
+                if (ex != null)
+                    SystemLog.LogException("Online Services: Connection Closed", ex);
+                else
+                    SystemLog.LogInformation("Online Services: Connection Closed");
                 return Task.CompletedTask;
             };
             connection.Reconnected += connectionId =>
@@ -53,7 +56,11 @@ namespace Disco.Services.Interop.DiscoServices
             };
             connection.Reconnecting += ex =>
             {
-                SystemLog.LogInformation("Online Services: Connection Reconnecting");
+                if (ex != null)
+                    SystemLog.LogException("Online Services: Connection Reconnecting", ex);
+                else
+                    SystemLog.LogInformation("Online Services: Connection Reconnecting");
+
                 return Task.CompletedTask;
             };
         }
