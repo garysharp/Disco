@@ -484,6 +484,7 @@
     <Compile Include="Interop\ActiveDirectory\IADObject.cs" />
     <Compile Include="Interop\DiscoServices\ActivationCleanupTask.cs" />
     <Compile Include="Interop\DiscoServices\ActivationService.cs" />
+    <Compile Include="Interop\DiscoServices\AuthenticationSessionScope.cs" />
     <Compile Include="Interop\DiscoServices\DiscoServiceHelpers.cs" />
     <Compile Include="Interop\DiscoServices\Jobs.cs" />
     <Compile Include="Interop\DiscoServices\LicenseValidationTask.cs" />

@@ -1,7 +1,9 @@
 ﻿using Disco.Data.Repository;
+using Disco.Models.Repository;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,7 +16,7 @@ namespace Disco.Services.Interop.DiscoServices
 {
     public static class OnlineServicesAuthentication
     {
-        private static SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private static readonly Guid deploymentId;
         private static Guid? activationId;
         private static byte[] key;
@@ -31,11 +33,12 @@ namespace Disco.Services.Interop.DiscoServices
         }
 
         public static bool IsActivated => activationId.HasValue;
+        internal static byte[] Key => key.ToArray() ?? throw new InvalidOperationException("Not activated");
 
         public static string GetToken()
             => GetTokenAsync().Result;
 
-        public async static Task<string> GetTokenAsync()
+        public static async Task<string> GetTokenAsync()
         {
             var localExpires = tokenExpires;
             var localToken = token;
@@ -56,40 +59,40 @@ namespace Disco.Services.Interop.DiscoServices
                 if (!IsActivated)
                     throw new InvalidOperationException("Not activated");
 
-                using (var httpClient = new HttpClient())
+                var timeStamp = DateTime.UtcNow.ToUnixEpoc();
+                var iv = new byte[32];
+                using (var rng = RandomNumberGenerator.Create())
+                    rng.GetBytes(iv);
+
+                var dataStream = new MemoryStream(16 + 16 + 8 + iv.Length);
+                dataStream.Write(deploymentId.ToByteArray(), 0, 16);
+                dataStream.Write(activationId.Value.ToByteArray(), 0, 16);
+                dataStream.Write(BitConverter.GetBytes(timeStamp), 0, 8);
+                dataStream.Write(iv, 0, iv.Length);
+                byte[] hash;
+                using (var hasher = SHA256.Create())
+                    hash = hasher.ComputeHash(dataStream.ToArray());
+
+                var signature = ActivationService.SignHash(key, hash);
+
+                var body = new AuthenticationRequest()
                 {
-                    httpClient.BaseAddress = DiscoServiceHelpers.ActivationServiceUrl;
-                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    DeploymentId = deploymentId,
+                    ActivationId = activationId.Value,
+                    TimeStamp = timeStamp,
+                    IV = iv,
+                    Signature = signature,
+                };
+                var requestJson = JsonConvert.SerializeObject(body);
 
-                    var timeStamp = DateTime.UtcNow.ToUnixEpoc();
-                    var iv = new byte[32];
-                    using (var rng = RandomNumberGenerator.Create())
-                        rng.GetBytes(iv);
+                using (var request = new ByteArrayContent(Encoding.UTF8.GetBytes(requestJson)))
+                {
+                    request.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                    var dataStream = new MemoryStream(16 + 16 + 8 + iv.Length);
-                    dataStream.Write(deploymentId.ToByteArray(), 0, 16);
-                    dataStream.Write(activationId.Value.ToByteArray(), 0, 16);
-                    dataStream.Write(BitConverter.GetBytes(timeStamp), 0, 8);
-                    dataStream.Write(iv, 0, iv.Length);
-                    byte[] hash;
-                    using (var hasher = SHA256.Create())
-                        hash = hasher.ComputeHash(dataStream.ToArray());
-
-                    var signature = ActivationService.SignHash(key, hash);
-
-                    var body = new AuthenticationRequest()
+                    using (var httpClient = new HttpClient())
                     {
-                        DeploymentId = deploymentId,
-                        ActivationId = activationId.Value,
-                        TimeStamp = timeStamp,
-                        IV = iv,
-                        Signature = signature,
-                    };
-                    var requestJson = JsonConvert.SerializeObject(body);
-
-                    using (var request = new ByteArrayContent(Encoding.UTF8.GetBytes(requestJson)))
-                    {
-                        request.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        httpClient.BaseAddress = DiscoServiceHelpers.ActivationServiceUrl;
+                        httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                         var response = await httpClient.PostAsync("/api/authenticate", request);
 
@@ -118,6 +121,32 @@ namespace Disco.Services.Interop.DiscoServices
             {
                 semaphore.Release();
             }
+        }
+
+        public static async Task<Uri> CreateSession(AuthenticationSessionScope scope, User user, Uri returnUrl)
+        {
+            if (!IsActivated)
+                throw new InvalidOperationException("Not activated");
+
+            var request = new AuthenticationSessionRequest()
+            {
+                DeploymentId = deploymentId,
+                ActivationId = activationId.Value,
+                TimeStamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
+                Scope = scope,
+                UserId = user.UserId,
+                UserName = user.DisplayName ?? string.Empty,
+                UserEmail = user.EmailAddress,
+                UserPhone = user.PhoneNumber,
+                ReturnUrl = returnUrl.ToString(),
+            };
+
+            var response = await ActivationService.Post<AuthenticationSessionResponse>($"/api/authenticate/session", request);
+
+            if (response.Success)
+                return new Uri(response.Endpoint);
+            else
+                throw new InvalidOperationException($"Failed to create authentication session: {response.ErrorMessage}");
         }
 
         internal static void UpdateActivation(DiscoDataContext database)
@@ -163,6 +192,26 @@ namespace Disco.Services.Interop.DiscoServices
             public bool Success { get; set; }
             public string Token { get; set; }
             public int? ExpiresInSeconds { get; set; }
+            public string ErrorMessage { get; set; }
+        }
+
+        private class AuthenticationSessionRequest
+        {
+            public Guid DeploymentId { get; set; }
+            public Guid ActivationId { get; set; }
+            public long TimeStamp { get; set; }
+            public AuthenticationSessionScope Scope { get; set; }
+            public string UserId { get; set; }
+            public string UserName { get; set; }
+            public string UserEmail { get; set; }
+            public string UserPhone { get; set; }
+            public string ReturnUrl { get; set; }
+        }
+
+        private class AuthenticationSessionResponse
+        {
+            public bool Success { get; set; }
+            public string Endpoint { get; set; }
             public string ErrorMessage { get; set; }
         }
     }
