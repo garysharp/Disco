@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 
 namespace Disco.Services.Expressions
@@ -200,18 +201,31 @@ namespace Disco.Services.Expressions
             var detailsService = new DetailsProviderService(Database);
             if (target != null)
             {
+                var detailsTarget = default(User);
                 if (target is User targetUser)
-                {
-                    detailsVariables.Add("UserDetails", new LazyDictionary(() => detailsService.GetDetails(targetUser)));
-                }
+                    detailsTarget = targetUser;
                 else if (target is Job targetJob)
-                {
-                    detailsVariables.Add("UserDetails", targetJob.User == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetJob.User)));
-                }
+                    detailsTarget = targetJob.User;
                 else if (target is Device targetDevice)
-                {
-                    detailsVariables.Add("UserDetails", targetDevice.AssignedUser == null ? (IDictionary<string, string>)new Dictionary<string, string>() : new LazyDictionary(() => detailsService.GetDetails(targetDevice.AssignedUser)));
-                }
+                    detailsTarget = targetDevice.AssignedUser;
+
+                if (detailsTarget != null)
+                    detailsVariables.Add("UserDetails", new LazyDictionary(() =>
+                    {
+                        var details = detailsService.GetDetails(detailsTarget);
+                        foreach (var key in details.Keys.ToList())
+                        {
+                            if (key.EndsWith("*") || key.EndsWith("&"))
+                            {
+                                var baseKey = key.Substring(0, key.Length - 1);
+                                if (!details.ContainsKey(baseKey))
+                                    details[baseKey] = details[key];
+                            }
+                        }
+                        return details;
+                    }));
+                else
+                    detailsVariables.Add("UserDetails", new Dictionary<string, string>());
             }
 
             return new Hashtable(detailsVariables)
