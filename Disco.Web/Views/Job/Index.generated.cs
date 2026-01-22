@@ -306,38 +306,6 @@ WriteLiteral("\r\n    </div>\r\n");
             #line hidden
             
             #line 148 "..\..\Views\Job\Index.cshtml"
- if (Authorization.Has(Claims.Job.Actions.Export))
-{
-
-            
-            #line default
-            #line hidden
-WriteLiteral("    <div");
-
-WriteLiteral(" class=\"actionBar\"");
-
-WriteLiteral(">\r\n");
-
-WriteLiteral("        ");
-
-            
-            #line 151 "..\..\Views\Job\Index.cshtml"
-   Write(Html.ActionLinkButton("Export Jobs", MVC.Job.Export()));
-
-            
-            #line default
-            #line hidden
-WriteLiteral("\r\n    </div>\r\n");
-
-            
-            #line 153 "..\..\Views\Job\Index.cshtml"
-}
-
-            
-            #line default
-            #line hidden
-            
-            #line 154 "..\..\Views\Job\Index.cshtml"
  if (Model.PendingEnrolments != null && Model.PendingEnrolments.Count > 0 && Authorization.Has(Claims.Device.Actions.EnrolDevices))
 {
 
@@ -355,14 +323,14 @@ WriteLiteral(" class=\"fa fa-exclamation-circle info\"");
 WriteLiteral("></i>\r\n        <div>There are device enrolments pending approval.</div>\r\n        " +
 "<a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6926), Tuple.Create("\"", 6975)
+WriteAttribute("href", Tuple.Create(" href=\"", 6762), Tuple.Create("\"", 6811)
             
-            #line 159 "..\..\Views\Job\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 6933), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
+            #line 153 "..\..\Views\Job\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 6769), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.Enrolment.Status())
             
             #line default
             #line hidden
-, 6933), false)
+, 6769), false)
 );
 
 WriteLiteral(" class=\"button small alert\"");
@@ -377,8 +345,41 @@ WriteLiteral("    <script>\r\n        $(function () {\r\n            var layout_
 "  </script>\r\n");
 
             
+            #line 163 "..\..\Views\Job\Index.cshtml"
+}
+
+            
+            #line default
+            #line hidden
+            
+            #line 164 "..\..\Views\Job\Index.cshtml"
+ if (Authorization.Has(Claims.Job.Actions.Export))
+{
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    <div");
+
+WriteLiteral(" class=\"actionBar\"");
+
+WriteLiteral(">\r\n");
+
+WriteLiteral("        ");
+
+            
+            #line 167 "..\..\Views\Job\Index.cshtml"
+   Write(Html.ActionLinkButton("Export Jobs", MVC.Job.Export()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n    </div>\r\n");
+
+            
             #line 169 "..\..\Views\Job\Index.cshtml"
 }
+
             
             #line default
             #line hidden
