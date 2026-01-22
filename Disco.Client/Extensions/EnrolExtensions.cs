@@ -7,9 +7,8 @@ using System.IO;
 
 namespace Disco.Client.Extensions
 {
-    public static class EnrolExtensions
+    internal static class EnrolExtensions
     {
-
         public static void Build(this Enrol enrol)
         {
             enrol.ComputerName = Environment.MachineName;
@@ -99,7 +98,7 @@ namespace Disco.Client.Extensions
                     File.Delete(odjFile);
 
                 // Flush Logged-On History
-                if (!string.IsNullOrEmpty(enrolResponse.DomainName))
+                if (enrolResponse.SetAssignedUserForLogon && !string.IsNullOrEmpty(enrolResponse.DomainName))
                 {
                     using (RegistryKey regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
                     {
