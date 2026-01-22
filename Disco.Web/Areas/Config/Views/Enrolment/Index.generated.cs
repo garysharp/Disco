@@ -451,10 +451,26 @@ WriteLiteral(">\r\n                    curl&nbsp;<a");
 
 WriteLiteral(" target=\"_blank\"");
 
-WriteLiteral(" href=\"http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol\"");
+WriteAttribute("href", Tuple.Create(" href=\"", 4881), Tuple.Create("\"", 4906)
+            
+            #line 124 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+, Tuple.Create(Tuple.Create("", 4888), Tuple.Create<System.Object, System.Int32>(Model.MacEnrolUrl
+            
+            #line default
+            #line hidden
+, 4888), false)
+);
 
-WriteLiteral(">http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol</a>\r\n          " +
-"      </div>\r\n                <span");
+WriteLiteral(">");
+
+            
+            #line 124 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                      Write(Model.MacEnrolUrl);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</a>\r\n                </div>\r\n                <span");
 
 WriteLiteral(" class=\"smallText\"");
 
@@ -486,10 +502,521 @@ WriteLiteral(" class=\"code\"");
 
 WriteLiteral(">&lt;script&gt;</span>\r\n                    tag embedded on the organisation\'s in" +
 "tranet.\r\n                </span>\r\n            </td>\r\n        </tr>\r\n    </table>" +
-"\r\n</div>\r\n");
+"\r\n</div>\r\n<div");
+
+WriteLiteral(" class=\"form\"");
+
+WriteLiteral(" style=\"width: 530px; margin-top: 15px\"");
+
+WriteLiteral(">\r\n    <h2>Bootstrapper Server Discovery</h2>\r\n    <table>\r\n        <tr>\r\n       " +
+"     <td>\r\n                <div>\r\n                    The Disco ICT\r\n");
 
             
-            #line 136 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 143 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 143 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                     if (Authorization.Has(Claims.Config.Enrolment.DownloadBootstrapper))
+                    {
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 145 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                   Write(Html.ActionLink("Bootstrapper", MVC.Services.Client.Bootstrapper()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 145 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                                            
+                    }
+                    else
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                        ");
+
+WriteLiteral("Bootstrapper");
+
+WriteLiteral("\r\n");
+
+            
+            #line 150 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    is used to enrol devices. It is strongly recommended that HTT" +
+"PS be used for all communication.\r\n                    the\r\n                    " +
+"The ");
+
+            
+            #line 153 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                   Write(Html.ActionLink("Hosting", Model.HostingPluginInstalled ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"
+                    plugin can be used to automate deployment of HTTPS certificates.
+                </div>
+                <div>
+                    The Bootstrapper discovers the server using the first successful method (in order):
+                </div>
+                <ol>
+                    <li>
+                        <h5>Manually Specified</h5>
+                        <div>
+                            The server url can be specified at the command line. The url must use HTTPS. For example:
+                        </div>
+                        <div");
+
+WriteLiteral(" class=\"code\"");
+
+WriteLiteral(">Disco.ClientBootstrapper.exe https://");
+
+            
+            #line 165 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                          Write(Request.Url.Authority);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</div>\r\n                    </li>\r\n                    <li>\r\n                    " +
+"    <h5>DNS Service Location (SRV) Record</h5>\r\n                        Expected" +
+" Record Name: <strong><code>");
+
+            
+            #line 169 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                       Write(Model.DnsSrvRecordName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</code></strong>\r\n");
+
+            
+            #line 170 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 170 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                         if (Model.IsServicesEducationVicGovAuDomain)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"smallText\"");
+
+WriteLiteral(">\r\n                                This mechanism is not supported in the shared " +
+"education.vic.gov.au domain and can be ignored.\r\n                            </d" +
+"iv>\r\n");
+
+            
+            #line 175 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                        }
+                        else
+                        {
+                            if (Model.DnsSrvRecordValue == null)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                                    <span");
+
+WriteLiteral(" class=\"error\"");
+
+WriteLiteral(">\r\n                                        No Service Location (SRV) record found" +
+".\r\n                                    </span>\r\n");
+
+            
+            #line 184 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 184 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                     if (Request.IsSecureConnection)
+                                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        <span>\r\n                                 " +
+"           Please create a DNS Service Location (SRV) record:\r\n                 " +
+"                       </span>\r\n");
+
+WriteLiteral("                                        <table");
+
+WriteLiteral(" class=\"none\"");
+
+WriteLiteral(@">
+                                            <tr>
+                                                <th>Service:</th>
+                                                <td><code>_discoict</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Protocol:</th>
+                                                <td><code>_tcp</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Priority:</th>
+                                                <td><code>0</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Weight:</th>
+                                                <td><code>0</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Port:</th>
+                                                <td><code>");
+
+            
+            #line 208 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                     Write(Request.Url.Port);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Host offering this service:</th>
+                                                <td><code>");
+
+            
+            #line 212 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                     Write(Request.Url.Host);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</code></td>\r\n                                            </tr>\r\n                " +
+"                        </table>\r\n");
+
+            
+            #line 215 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                    }
+                                    else
+                                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                                        <div>
+                                            Please configure and connect with HTTPS.
+                                            <span>
+                                                You can enable HTTPS automation using the
+");
+
+WriteLiteral("                                                ");
+
+            
+            #line 222 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                           Write(Html.ActionLink("Hosting", Model.HostingPluginInstalled ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                                                plugin.\r\n                      " +
+"                      </span>\r\n                                        </div>\r\n");
+
+            
+            #line 226 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                </div>\r\n");
+
+            
+            #line 228 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                            }
+                            else
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <div>\r\n                                    Value:" +
+" <strong><code>https://");
+
+            
+            #line 232 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                            Write(Model.DnsSrvRecordValue);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</code></strong>\r\n");
+
+            
+            #line 233 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                    
+            
+            #line default
+            #line hidden
+            
+            #line 233 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                     if (Request.IsSecureConnection && !string.Equals(Model.DnsSrvRecordValue, Request.Url.Authority, StringComparison.OrdinalIgnoreCase))
+                                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        <div");
+
+WriteLiteral(" class=\"info-box error\"");
+
+WriteLiteral(">\r\n                                            <i");
+
+WriteLiteral(" class=\"fa fa-exclamation\"");
+
+WriteLiteral("></i> The Service Location (SRV) record does not match the way you are currently " +
+"accessing the server: <code>");
+
+            
+            #line 236 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                                                                                                                                Write(Request.Url.Authority);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</code>.\r\n                                        </div>\r\n");
+
+            
+            #line 238 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                </div>\r\n");
+
+            
+            #line 240 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                            }
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </li>\r\n");
+
+            
+            #line 243 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                    
+            
+            #line default
+            #line hidden
+            
+            #line 243 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                     if (Model.IsVicSmartDeployment)
+                    {
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                        <li>
+                            <h5>Victorian Government Schools VicSmart Discovery</h5>
+                            If the Bootstrapper detects it is running inside the VicSmart network, it will query Online Services for the Disco ICT server address based on the subnets assigned to each school.
+                            This is configured in the ");
+
+            
+            #line 248 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                 Write(Html.ActionLink("Hosting", Model.HostingPluginInstalled ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                            plugin.\r\n                        </li>\r\n");
+
+            
+            #line 251 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                    }
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                    <li>
+                        <h5>Legacy Discovery</h5>
+                        <div>
+                            The Bootstrapper will attempt to send an ICMP ping to &quot;<code>disco</code>&quot;. If the ping is successful, it will attempt to connect to <code>http://disco:9292/</code>.
+                        </div>
+                        <div>
+");
+
+            
+            #line 258 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                            
+            
+            #line default
+            #line hidden
+            
+            #line 258 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                             if (canConfig)
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <input");
+
+WriteLiteral(" id=\"Enrolment_LegacyDiscovery\"");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" ");
+
+            
+            #line 260 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                                  Write(Model.LegacyDiscoveryEnabled ? "checked" : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" />\r\n");
+
+WriteLiteral("                                <script");
+
+WriteLiteral(" type=\"text/javascript\"");
+
+WriteLiteral(@">
+                                    $(function () {
+                                        document.DiscoFunctions.PropertyChangeHelper(
+                                            $('#Enrolment_LegacyDiscovery'),
+                                            null,
+                                            '");
+
+            
+            #line 266 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                        Write(Url.Action(MVC.API.Enrolment.LegacyDiscovery()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\',\r\n                                            \'enabled\'\r\n                      " +
+"                  );\r\n                                    });\r\n                 " +
+"               </script>\r\n");
+
+            
+            #line 271 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                            }
+                            else
+                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                <input");
+
+WriteLiteral(" id=\"Enrolment_LegacyDiscovery\"");
+
+WriteLiteral(" type=\"checkbox\"");
+
+WriteLiteral(" ");
+
+            
+            #line 274 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                                                                                  Write(Model.LegacyDiscoveryEnabled ? "checked" : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" disabled=\"disabled\" />\r\n");
+
+            
+            #line 275 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <label");
+
+WriteLiteral(" for=\"Enrolment_LegacyDiscovery\"");
+
+WriteLiteral(">\r\n                                Legacy Discovery Enabled\r\n                    " +
+"        </label>\r\n");
+
+WriteLiteral("                            ");
+
+            
+            #line 279 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                       Write(AjaxHelpers.AjaxLoader());
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\r\n                        </div>\r\n");
+
+            
+            #line 281 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 281 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                         if ((Model.IsServicesEducationVicGovAuDomain || Model.DnsSrvRecordValue != null) && Model.LegacyDiscoveryEnabled)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <div");
+
+WriteLiteral(" class=\"info-box error\"");
+
+WriteLiteral(">\r\n                                <i");
+
+WriteLiteral(" class=\"fa fa-exclamation-triangle\"");
+
+WriteLiteral("></i>\r\n                                It is not recommended to have Legacy Disco" +
+"very enabled. Please use the latest Bootstrapper and disable this option.\r\n     " +
+"                       </div>\r\n");
+
+            
+            #line 287 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"                        <div>
+                            This method is not secure and is only provided for backwards compatibility. In time this method will be removed.
+                        </div>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+</div>
+");
+
+            
+            #line 297 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
  if (canShowStatus && Authorization.Has(Claims.Config.Logging.Show))
 {
 
@@ -499,13 +1026,13 @@ WriteLiteral(">&lt;script&gt;</span>\r\n                    tag embedded on the 
 WriteLiteral("    <h2>Live Enrolment Logging</h2>\r\n");
 
             
-            #line 139 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 300 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 139 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 300 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
 Write(Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config.Models.Shared.LogEventsModel()
 {
     IsLive = true,
@@ -519,7 +1046,7 @@ Write(Html.Partial(MVC.Config.Shared.Views.LogEvents, new Disco.Web.Areas.Config
             #line default
             #line hidden
             
-            #line 146 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 307 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
   
 }
 
@@ -533,13 +1060,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 149 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 310 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 149 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 310 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
      if (Authorization.Has(Claims.Config.Enrolment.DownloadBootstrapper))
     {
         
@@ -547,14 +1074,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 151 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 312 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
    Write(Html.ActionLinkButton("Download Bootstrapper", MVC.Services.Client.Bootstrapper()));
 
             
             #line default
             #line hidden
             
-            #line 151 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 312 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                                                                                            
     }
 
@@ -564,7 +1091,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("    ");
 
             
-            #line 153 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 314 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
      if (canShowStatus)
     {
         
@@ -572,14 +1099,14 @@ WriteLiteral("    ");
             #line default
             #line hidden
             
-            #line 155 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 316 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
    Write(Html.ActionLinkButton("Enrolment Status", MVC.Config.Enrolment.Status()));
 
             
             #line default
             #line hidden
             
-            #line 155 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
+            #line 316 "..\..\Areas\Config\Views\Enrolment\Index.cshtml"
                                                                                  
     }
 

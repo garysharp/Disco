@@ -7,22 +7,22 @@ namespace Disco.ClientBootstrapper
     {
 
         private delegate void dUpdateStatus(string Heading, string SubHeading, string Message, bool? ShowProgress, int? Progress);
-        private dUpdateStatus mUpdateStatus;
+        private readonly dUpdateStatus mUpdateStatus;
 
         public FormStatus()
         {
             InitializeComponent();
 
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            this.labelVersion.Text = $"v{version.ToString(3)}";
+            labelVersion.Text = $"v{version.ToString(3)}";
 
-            this.FormClosed += new FormClosedEventHandler(FormStatus_FormClosed);
+            FormClosed += new FormClosedEventHandler(FormStatus_FormClosed);
 
             mUpdateStatus = new dUpdateStatus(UpdateStatusDo);
             Cursor.Hide();
         }
 
-        void FormStatus_FormClosed(object sender, FormClosedEventArgs e)
+        private void FormStatus_FormClosed(object sender, FormClosedEventArgs e)
         {
             Cursor.Show();
             Program.ExitApplication();
@@ -32,43 +32,43 @@ namespace Disco.ClientBootstrapper
         {
             try
             {
-                this.Invoke(mUpdateStatus, Heading, SubHeading, Message, ShowProgress, Progress);
+                Invoke(mUpdateStatus, Heading, SubHeading, Message, ShowProgress, Progress);
             }
             catch (Exception) { }
         }
         private void UpdateStatusDo(string Heading, string SubHeading, string Message, bool? ShowProgress, int? Progress)
         {
             if (Heading != null)
-                if (this.labelHeading.Text != Heading)
-                    this.labelHeading.Text = Heading;
+                if (labelHeading.Text != Heading)
+                    labelHeading.Text = Heading;
             if (SubHeading != null)
-                if (this.labelSubHeading.Text != SubHeading)
-                    this.labelSubHeading.Text = SubHeading;
+                if (labelSubHeading.Text != SubHeading)
+                    labelSubHeading.Text = SubHeading;
             if (Message != null)
-                if (this.labelMessage.Text != Message)
-                    this.labelMessage.Text = Message;
+                if (labelMessage.Text != Message)
+                    labelMessage.Text = Message;
 
             if (ShowProgress.HasValue)
             {
                 if (ShowProgress.Value)
                 {
-                    this.progressBar.Visible = true;
+                    progressBar.Visible = true;
                     if (Progress.HasValue)
                     {
                         if (Progress.Value >= 0)
                         {
-                            this.progressBar.Value = Math.Min(Progress.Value, 100);
-                            this.progressBar.Style = ProgressBarStyle.Continuous;
+                            progressBar.Value = Math.Min(Progress.Value, 100);
+                            progressBar.Style = ProgressBarStyle.Continuous;
                         }
                         else
                         {
-                            this.progressBar.Style = ProgressBarStyle.Marquee;
+                            progressBar.Style = ProgressBarStyle.Marquee;
                         }
                     }
                 }
                 else
                 {
-                    this.progressBar.Visible = false;
+                    progressBar.Visible = false;
                 }
             }
         }

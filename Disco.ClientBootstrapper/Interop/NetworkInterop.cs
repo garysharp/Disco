@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Disco.ClientBootstrapper.Interop
 {
-    static class NetworkInterop
+    internal static class NetworkInterop
     {
 
         #region PInvoke
@@ -164,30 +167,35 @@ namespace Disco.ClientBootstrapper.Interop
             }
         }
 
-        public static bool PingDiscoIct(string ServerName)
+        public static bool HasNetworkConnectivity()
         {
-            using (Ping p = new Ping())
+            var nics = NetworkInterface.GetAllNetworkInterfaces()
+               .Where(ni => ni.OperationalStatus == OperationalStatus.Up)
+               .ToList();
+
+            foreach (var nic in nics)
             {
-                try
+                if (nic.Supports(NetworkInterfaceComponent.IPv4))
                 {
-                    PingReply pr = p.Send(ServerName, 2000);
-                    if (pr.Status == IPStatus.Success)
-                        return true;
-                    else
-                        return false;
-                }
-                catch (Exception)
-                {
-                    return false;
+                    var ipProps = nic.GetIPProperties();
+                    var ipv4Props = ipProps.GetIPv4Properties();
+                    if (ipv4Props.IsAutomaticPrivateAddressingActive)
+                        continue;
+
+                    return ipProps.UnicastAddresses
+                        .Where(ua => ua.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        .Any();
                 }
             }
+
+            return false;
         }
 
-        public static void ConfigureWireless()
+        public static async Task ConfigureWireless(CancellationToken cancellationToken)
         {
             // Add Certificates
             Program.Status.UpdateStatus(null, null, "Configuring Wireless Certificates");
-            CertificateInterop.AddTempCerts();
+            await CertificateInterop.AddTempCerts(cancellationToken);
 
             // Add Wireless Profiles
             Program.Status.UpdateStatus(null, null, "Configuring Wireless Profiles");
@@ -208,15 +216,16 @@ namespace Disco.ClientBootstrapper.Interop
                     {
                         foreach (var inlineWirelessProfile in wirelessInlineProfiles)
                         {
+                            cancellationToken.ThrowIfCancellationRequested();
                             if (inlineWirelessProfile.AddProfile(wlanHandle, na.Guid))
                             {
                                 Program.Status.UpdateStatus(null, null, $"Added Wireless Profile: {inlineWirelessProfile.ProfileName}");
-                                Program.SleepThread(500, false);
+                                await Program.SleepThread(500, false, cancellationToken);
                             }
                             else
                             {
                                 Program.Status.UpdateStatus(null, null, $"Unable to add Wireless Profile: {inlineWirelessProfile.ProfileName}");
-                                Program.SleepThread(5000, false);
+                                await Program.SleepThread(5000, false, cancellationToken);
                             }
                         }
                     }
@@ -246,14 +255,15 @@ namespace Disco.ClientBootstrapper.Interop
 
         private static List<WirelessProfile> GetInlineWirelessProfiles()
         {
-            var inlineProfileFiles = System.IO.Directory.EnumerateFiles(Program.InlinePath.Value, "WLAN_Profile_*.xml").ToList();
+            var directoryPath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+            var inlineProfileFiles = Directory.EnumerateFiles(directoryPath, "WLAN_Profile_*.xml").ToList();
             var inlineProfiles = new List<WirelessProfile>(inlineProfileFiles.Count);
             foreach (var filename in inlineProfileFiles)
             {
                 var profile = new WirelessProfile()
                 {
                     Filename = filename,
-                    ProfileXml = System.IO.File.ReadAllText(filename)
+                    ProfileXml = File.ReadAllText(filename)
                 };
                 var profileXml = new XmlDocument();
                 profileXml.LoadXml(profile.ProfileXml);

@@ -1,54 +1,49 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Disco.ClientBootstrapper
 {
-    class InstallLoop
+    internal class InstallLoop
     {
+        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private readonly string installLocation;
+        private readonly string wimImageId;
+        private readonly string tempPath;
+        private readonly Action completeCallback;
+        private readonly Uri forcedServerUrl;
 
-        public Thread LoopThread;
-        public delegate void CompleteCallback();
-        private CompleteCallback mCompleteCallback;
-        private string InstallLocation;
-        private string WimImageId;
-        private string TempPath;
-
-        public InstallLoop(string InstallLocation, string WimImageId, string TempPath)
+        public InstallLoop(string installLocation, string wimImageId, string tempPath, Action completeCallback, Uri forcedServerUrl)
         {
-            this.InstallLocation = InstallLocation;
-            this.WimImageId = WimImageId;
-            this.TempPath = TempPath;
+            this.installLocation = installLocation;
+            this.wimImageId = wimImageId;
+            this.tempPath = tempPath;
+            this.completeCallback = completeCallback;
+            this.forcedServerUrl = forcedServerUrl;
         }
 
-        public void Start(CompleteCallback Callback)
+        public void Start()
         {
-            mCompleteCallback = Callback;
-            LoopThread = new Thread(new ThreadStart(loopHost));
-            LoopThread.Start();
-        }
-        private void loopHost()
-        {
-            try
+            var cancellationToken = cancellationTokenSource.Token;
+            Task.Run(async () =>
             {
-
-                //Program.Status.UpdateStatus(null, null, "Testing UI");
-                //Program.SleepThread(5000, false);
-                Interop.InstallInterop.Install(InstallLocation, WimImageId, TempPath);
-                if (mCompleteCallback != null)
+                try
                 {
-                    mCompleteCallback.BeginInvoke(null, null);
+                    await Interop.InstallInterop.Install(installLocation, wimImageId, tempPath, forcedServerUrl, cancellationToken);
+                    completeCallback?.BeginInvoke(null, null);
                 }
-            }
-            catch (Exception ex)
-            {
-                if (ex.GetType() == typeof(ThreadAbortException))
-                    return;
-                if (ex.GetType() == typeof(ThreadInterruptedException))
-                    return;
-                Program.WriteAppError(ex);
-                throw;
-            }
+                catch (Exception ex)
+                {
+                    if (ex.GetType() == typeof(ThreadAbortException))
+                        return;
+                    if (ex.GetType() == typeof(ThreadInterruptedException))
+                        return;
+                    if (ex.GetType() == typeof(OperationCanceledException))
+                        return;
+                    Program.WriteAppError(ex);
+                    throw;
+                }
+            }, cancellationToken);
         }
-
     }
 }

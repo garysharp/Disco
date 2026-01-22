@@ -14,5 +14,11 @@ namespace Disco.Data.Configuration.Modules
             get => Get(DeviceExportOptions.DefaultOptions());
             set => Set(value);
         }
+
+        public bool EnrollmentLegacyDiscoveryDisabled
+        {
+            get => Get(false);
+            set => Set(value);
+        }
     }
 }

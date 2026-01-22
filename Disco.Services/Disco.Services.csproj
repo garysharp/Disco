@@ -497,6 +497,14 @@
     <Compile Include="Interop\DiscoServices\Upload\UploadOnlineClient.cs" />
     <Compile Include="Interop\DiscoServices\Upload\UploadOnlineService.cs" />
     <Compile Include="Interop\DiscoServices\Upload\UploadOnlineSyncTask.cs" />
+    <Compile Include="Interop\DNS\ADnsRecord.cs" />
+    <Compile Include="Interop\DNS\CnameDnsRecord.cs" />
+    <Compile Include="Interop\DNS\DnsRecord.cs" />
+    <Compile Include="Interop\DNS\DnsRecordType.cs" />
+    <Compile Include="Interop\DNS\DnsService.cs" />
+    <Compile Include="Interop\DNS\NativeDns.cs" />
+    <Compile Include="Interop\DNS\SrvDnsRecord.cs" />
+    <Compile Include="Interop\DNS\TxtDnsRecord.cs" />
     <Compile Include="Interop\IIS\PreserveIisBindingsTask.cs" />
     <Compile Include="Interop\MimeTypes.cs" />
     <Compile Include="Interop\VicEduDept\VicSmart.cs" />

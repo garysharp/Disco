@@ -88,5 +88,21 @@ namespace Disco.Web.Areas.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [DiscoAuthorize(Claims.Config.Enrolment.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult LegacyDiscovery(bool enabled)
+        {
+            try
+            {
+                Database.DiscoConfiguration.Devices.EnrollmentLegacyDiscoveryDisabled = !enabled;
+                Database.SaveChanges();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

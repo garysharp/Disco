@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.ClientServices;
 using Disco.Models.Repository;
+using Disco.Models.Services.Devices;
 using Disco.Services.Authorization;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Users;
@@ -18,6 +19,18 @@ namespace Disco.Services.Devices.Enrolment
         private static readonly string pendingIdentifierAlphabet = "23456789ABCDEFGHJKMNPQRSTWXYZ";
         private static readonly Random pendingIdentifierRng = new Random();
         private static readonly ConcurrentDictionary<string, EnrolResponse> pendingEnrolments = new ConcurrentDictionary<string, EnrolResponse>();
+        private static readonly Dictionary<DeviceEnrolmentServerDiscoveryMethod, int> discoveryMethodStatistics = Enum.GetValues(typeof(DeviceEnrolmentServerDiscoveryMethod)).Cast<DeviceEnrolmentServerDiscoveryMethod>().ToDictionary(k => k, k => 0);
+
+        public static string GetDnsServiceLocationRecordName()
+            => $"_discoict._tcp.{ActiveDirectory.Context.PrimaryDomain.Name}";
+
+        public static void IncrementDiscoveryMethod(DeviceEnrolmentServerDiscoveryMethod method)
+        {
+            discoveryMethodStatistics[method]++;
+        }
+
+        public static IEnumerable<KeyValuePair<DeviceEnrolmentServerDiscoveryMethod, int>> GetDiscoveryMethodStatistics()
+            => discoveryMethodStatistics.AsEnumerable();
 
         private static void CleanupPendingEnrolments()
         {

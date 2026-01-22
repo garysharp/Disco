@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Disco.ClientBootstrapper.Interop
 {
@@ -20,12 +22,12 @@ namespace Disco.ClientBootstrapper.Interop
                 //Remove(StoreName.Root, StoreLocation.LocalMachine, _tempCerts);
             }
         }
-        public static void AddTempCerts()
+        public static async Task AddTempCerts(CancellationToken cancellationToken)
         {
             if (_tempCerts == null)
                 _tempCerts = new List<string>();
 
-            var inlineCertificateLocation = Program.InlinePath.Value;
+            var inlineCertificateLocation = Path.GetDirectoryName(typeof(Program).Assembly.Location);
 
             // Root Certificates
             try
@@ -35,6 +37,7 @@ namespace Disco.ClientBootstrapper.Interop
                 {
                     foreach (var certFile in CertFiles)
                     {
+                        cancellationToken.ThrowIfCancellationRequested();
                         var cert = new X509Certificate2(File.ReadAllBytes(certFile), "password");
                         var result = Add(StoreName.Root, StoreLocation.LocalMachine, cert);
                         if (result)
@@ -42,7 +45,7 @@ namespace Disco.ClientBootstrapper.Interop
                             if (Path.GetFileNameWithoutExtension(certFile).ToLower().Contains("temp"))
                                 _tempCerts.Add(cert.SerialNumber);
                             Program.Status.UpdateStatus(null, null, $"Added Root Certificate: {cert.ShortSubjectName()}");
-                            Program.SleepThread(500, false);
+                            await Program.SleepThread(500, false, cancellationToken);
                         }
                     }
                 }
@@ -60,6 +63,7 @@ namespace Disco.ClientBootstrapper.Interop
                 {
                     foreach (var certFile in CertFiles)
                     {
+                        cancellationToken.ThrowIfCancellationRequested();
                         var cert = new X509Certificate2(File.ReadAllBytes(certFile), "password");
                         var result = Add(StoreName.CertificateAuthority, StoreLocation.LocalMachine, cert);
                         if (result)
@@ -67,7 +71,7 @@ namespace Disco.ClientBootstrapper.Interop
                             if (Path.GetFileNameWithoutExtension(certFile).ToLower().Contains("temp"))
                                 _tempCerts.Add(cert.SerialNumber);
                             Program.Status.UpdateStatus(null, null, $"Added Intermediate Certificate: {cert.ShortSubjectName()}");
-                            Program.SleepThread(500, false);
+                            await Program.SleepThread(500, false, cancellationToken);
                         }
                     }
                 }
@@ -85,6 +89,7 @@ namespace Disco.ClientBootstrapper.Interop
                 {
                     foreach (var certFile in CertFiles)
                     {
+                        cancellationToken.ThrowIfCancellationRequested();
                         var cert = new X509Certificate2(File.ReadAllBytes(certFile), "password", X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
                         var result = Add(StoreName.My, StoreLocation.LocalMachine, cert);
                         if (result)
@@ -92,7 +97,7 @@ namespace Disco.ClientBootstrapper.Interop
                             if (Path.GetFileNameWithoutExtension(certFile).ToLower().Contains("temp"))
                                 _tempCerts.Add(cert.SerialNumber);
                             Program.Status.UpdateStatus(null, null, $"Added Host Certificate: {cert.ShortSubjectName()}");
-                            Program.SleepThread(500, false);
+                            await Program.SleepThread(500, false, cancellationToken);
                         }
                     }
                 }

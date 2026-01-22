@@ -141,6 +141,7 @@
     <Compile Include="Extensions\EnrolExtensions.cs" />
     <Compile Include="Extensions\WhoAmIExtensions.cs" />
     <Compile Include="Interop\Certificates.cs" />
+    <Compile Include="Interop\EndpointDiscovery.cs" />
     <Compile Include="Interop\Hardware.cs" />
     <Compile Include="Interop\LocalAuthentication.cs" />
     <Compile Include="Interop\Native\NetworkConnectionStatuses.cs" />

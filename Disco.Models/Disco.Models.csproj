@@ -62,6 +62,7 @@
     <Compile Include="Repository\FlagType.cs" />
     <Compile Include="Repository\User\UserComment.cs" />
     <Compile Include="Repository\FlagPermission.cs" />
+    <Compile Include="Services\Devices\DeviceEnrolmentServerDiscoveryMethod.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportOptions.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportRecord.cs" />
     <Compile Include="Services\Documents\DocumentExportOptions.cs" />

@@ -90,6 +90,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Disco.Client\Interop\EndpointDiscovery.cs">
+      <Link>Interop\EndpointDiscovery.cs</Link>
+    </Compile>
     <Compile Include="..\Resources\Libraries\DotNetZip\Source\BZip2\BitWriter.cs">
       <Link>DotNetZip\BZip2\BitWriter.cs</Link>
     </Compile>

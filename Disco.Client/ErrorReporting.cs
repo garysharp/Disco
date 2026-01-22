@@ -10,19 +10,18 @@ namespace Disco.Client
 {
     public static class ErrorReporting
     {
-        private const string ServicePathTemplate = "http://DISCO:9292/Services/Client/ClientError";
         public static string DeviceIdentifier { get; set; }
         public static string EnrolmentSessionId { get; set; }
 
-        public static void ReportError(Exception Ex, bool ReportToServer)
+        public static void ReportError(Exception exception, bool reportToServer)
         {
-            bool isClientServiceException = Ex is ClientServiceException;
+            bool isClientServiceException = exception is ClientServiceException;
 
             ErrorReport report = new ErrorReport()
             {
                 DeviceIdentifier = DeviceIdentifier,
                 SessionId = EnrolmentSessionId,
-                JsonException = Ex.IntenseExceptionSerialization()
+                JsonException = exception.IntenseExceptionSerialization()
             };
 
             try
@@ -38,7 +37,7 @@ namespace Disco.Client
             catch (Exception) { }
 
             // Don't log server errors back to the server
-            if (!isClientServiceException && ReportToServer)
+            if (!isClientServiceException && reportToServer)
             {
                 try
                 {
@@ -49,7 +48,7 @@ namespace Disco.Client
 
             try
             {
-                Presentation.WriteFatalError(Ex);
+                Presentation.WriteFatalError(exception);
             }
             catch (Exception) { }
         }
@@ -85,7 +84,9 @@ namespace Disco.Client
             string reportJson = JsonConvert.SerializeObject(report);
             string reportResponse;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ServicePathTemplate);
+            var serverUri = new Uri(Program.ServerUrl ?? new Uri("http://disco:9292"), "/Services/Client/ClientError");
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serverUri);
             request.UserAgent = $"Disco-Client/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
             request.ContentType = "application/json";
             request.Method = WebRequestMethods.Http.Post;

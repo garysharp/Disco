@@ -1,30 +1,23 @@
 ﻿using Disco.Models.ClientServices;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
 
 namespace Disco.Client.Extensions
 {
-    public static class ClientServicesExtensions
+    internal static class ClientServicesExtensions
     {
-        //#if DEBUG
-        //        public const string ServicePathAuthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Authenticated/{0}";
-        //        public const string ServicePathUnauthenticatedTemplate = "http://WS-GSHARP:57252/Services/Client/Unauthenticated/{0}";
-        //#else
-        public const string ServicePathAuthenticatedTemplate = "http://DISCO:9292/Services/Client/Authenticated/{0}";
-        public const string ServicePathUnauthenticatedTemplate = "http://DISCO:9292/Services/Client/Unauthenticated/{0}";
-        //#endif
-
-        public static ResponseType Post<ResponseType>(this ServiceBase<ResponseType> Service, bool Authenticated)
+        public static ResponseType Post<ResponseType>(this ServiceBase<ResponseType> service, bool authenticated)
         {
             ResponseType serviceResponse;
-            string serviceUrl;
+            Uri serviceUrl;
 
-            if (Authenticated)
-                serviceUrl = string.Format(ServicePathAuthenticatedTemplate, Service.Feature);
+            if (authenticated)
+                serviceUrl = new Uri(Program.ServerUrl, $"/Services/Client/Authenticated/{service.Feature}");
             else
-                serviceUrl = string.Format(ServicePathUnauthenticatedTemplate, Service.Feature);
+                serviceUrl = new Uri(Program.ServerUrl, $"/Services/Client/Unauthenticated/{service.Feature}");
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serviceUrl);
             request.UserAgent = $"Disco-Client/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}";
@@ -39,7 +32,7 @@ namespace Disco.Client.Extensions
             {
                 using (var jsonWriter = new JsonTextWriter(requestWriter))
                 {
-                    jsonSerializer.Serialize(jsonWriter, Service);
+                    jsonSerializer.Serialize(jsonWriter, service);
                 }
             }
 

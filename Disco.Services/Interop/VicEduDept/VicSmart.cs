@@ -1,13 +1,51 @@
 ﻿using Disco.Services.Interop.DiscoServices;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Xml.Linq;
 
 namespace Disco.Services.Interop.VicEduDept
 {
     public class VicSmart
     {
+        public static bool IsVicSmartDeployment()
+        {
+            var nics = NetworkInterface.GetAllNetworkInterfaces()
+               .Where(ni => ni.OperationalStatus == OperationalStatus.Up)
+               .ToList();
+
+            bool found10Net = false;
+            foreach (var nic in nics)
+            {
+                if (nic.Supports(NetworkInterfaceComponent.IPv4))
+                {
+                    var ipProps = nic.GetIPProperties();
+                    var ipv4Props = ipProps.GetIPv4Properties();
+                    if (ipv4Props.IsAutomaticPrivateAddressingActive)
+                        continue;
+
+                    found10Net = ipProps.UnicastAddresses
+                        .Where(ua =>
+                            ua.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork &&
+                            ua.Address.GetAddressBytes()[0] == 10)
+                        .Any();
+                    if (found10Net)
+                        break;
+                }
+            }
+            if (!found10Net)
+                return false;
+
+            try
+            {
+                var entry = Dns.GetHostEntry("broadband.doe.wan");
+                return entry.AddressList.Length > 0;
+            }
+            catch (Exception)
+            { return false; } // Fail on error
+        }
 
         /// <summary>
         /// Queries DoE VicSmart Service to detect the current site.

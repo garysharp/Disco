@@ -4,15 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Disco.ClientBootstrapper.Interop
 {
     public static class InstallInterop
     {
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
+        private static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
         [Flags]
-        enum MoveFileFlags
+        private enum MoveFileFlags
         {
             MOVEFILE_REPLACE_EXISTING = 0x00000001,
             MOVEFILE_COPY_ALLOWED = 0x00000002,
@@ -22,19 +24,19 @@ namespace Disco.ClientBootstrapper.Interop
             MOVEFILE_FAIL_IF_NOT_TRACKABLE = 0x00000020
         }
 
-        private static void Install(string RootFilesystemLocation, RegistryKey RootRegistryLocation, string FilesystemInstallLocation, string VirtualRootFilesystemLocation)
+        private static async Task Install(string rootFilesystemLocation, RegistryKey rootRegistryLocation, string filesystemInstallLocation, string virtualRootFilesystemLocation, Uri forcedServerUrl, CancellationToken cancellationToken)
         {
             var SourceLocation = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var InstallLocation = Path.Combine(RootFilesystemLocation, FilesystemInstallLocation);
-            var BootstrapperCmdLinePath = Path.Combine(VirtualRootFilesystemLocation, FilesystemInstallLocation, "Disco.ClientBootstrapper.exe");
+            var InstallLocation = Path.Combine(rootFilesystemLocation, filesystemInstallLocation);
+            var BootstrapperCmdLinePath = Path.Combine(virtualRootFilesystemLocation, filesystemInstallLocation, "Disco.ClientBootstrapper.exe");
 
-            var GroupPolicyScriptsIniLocation = Path.Combine(RootFilesystemLocation, "Windows\\System32\\GroupPolicy\\Machine\\Scripts\\scripts.ini");
-            var GroupPolicyScriptsIniBackupLocation = Path.Combine(RootFilesystemLocation, "Windows\\System32\\GroupPolicy\\Machine\\Scripts\\disco_scripts.ini");
+            var GroupPolicyScriptsIniLocation = Path.Combine(rootFilesystemLocation, @"Windows\System32\GroupPolicy\Machine\Scripts\scripts.ini");
+            var GroupPolicyScriptsIniBackupLocation = Path.Combine(rootFilesystemLocation, @"Windows\System32\GroupPolicy\Machine\Scripts\disco_scripts.ini");
 
             // Create file system Location
             #region "Create File System Location"
             Program.Status.UpdateStatus(null, null, "Creating Installation Location");
-            Program.SleepThread(500, false);
+            await Program.SleepThread(500, false, cancellationToken);
             if (Directory.Exists(InstallLocation))
             {
                 // Try and Delete Directory
@@ -52,19 +54,23 @@ namespace Disco.ClientBootstrapper.Interop
                 var installDir = Directory.CreateDirectory(InstallLocation);
                 installDir.Attributes = installDir.Attributes | FileAttributes.Hidden;
             }
+            cancellationToken.ThrowIfCancellationRequested();
             #endregion
 
             // Copy files to file system location
             #region "Copy to File System"
             Program.Status.UpdateStatus(null, null, "Copying Files");
-            Program.SleepThread(500, false);
+            await Program.SleepThread(500, false, cancellationToken);
 
             // Copy Bootstrapper
             // ie: Executing Assembly
             File.Copy(System.Reflection.Assembly.GetExecutingAssembly().Location, Path.Combine(InstallLocation, "Disco.ClientBootstrapper.exe"));
 
+            cancellationToken.ThrowIfCancellationRequested();
+
             foreach (var file in Directory.EnumerateFiles(SourceLocation))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var fileName = Path.GetFileName(file);
 
                 // Only Copy Certain Files
@@ -86,7 +92,7 @@ namespace Disco.ClientBootstrapper.Interop
             // Backup & Create Group Policy Scripts.ini
             #region "Group Policy Scripts.ini"
             Program.Status.UpdateStatus(null, null, "Creating Group Policy Script Entry");
-            Program.SleepThread(500, false);
+            await Program.SleepThread(500, false, cancellationToken);
             // Backup
             if (!File.Exists(GroupPolicyScriptsIniBackupLocation))
             {
@@ -95,6 +101,7 @@ namespace Disco.ClientBootstrapper.Interop
                     File.Move(GroupPolicyScriptsIniLocation, GroupPolicyScriptsIniBackupLocation);
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Create
             if (File.Exists(GroupPolicyScriptsIniLocation))
@@ -105,56 +112,67 @@ namespace Disco.ClientBootstrapper.Interop
             {
                 using (var scriptsIniStreamWriter = new StreamWriter(scriptsIniStream, Encoding.Unicode))
                 {
-                    scriptsIniStreamWriter.Write($"[Startup]{Environment.NewLine}0CmdLine={BootstrapperCmdLinePath}{Environment.NewLine}0Parameters=/AllowUninstall");
-                    scriptsIniStreamWriter.Flush();
+                    scriptsIniStreamWriter.WriteLine("[Startup]");
+                    scriptsIniStreamWriter.WriteLine($"0CmdLine={BootstrapperCmdLinePath}");
+                    if (forcedServerUrl == null)
+                        scriptsIniStreamWriter.WriteLine("0Parameters=/AllowUninstall");
+                    else
+                        scriptsIniStreamWriter.WriteLine($"0Parameters=/AllowUninstall {forcedServerUrl}");
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
             #endregion
 
             // Backup & Create Group Policy Registry
             #region "Group Policy Registry"
             Program.Status.UpdateStatus(null, null, "Creating Group Policy Registry Entries");
-            Program.SleepThread(500, false);
+            await Program.SleepThread(500, false, cancellationToken);
             // Backup Scripts
-            using (var regGroupPolicy = RootRegistryLocation.OpenSubKey("Microsoft\\Windows\\CurrentVersion\\Group Policy", true))
+            using (var regGroupPolicy = rootRegistryLocation.OpenSubKey(@"Microsoft\Windows\CurrentVersion\Group Policy", true))
             {
                 if (regGroupPolicy != null && regGroupPolicy.GetSubKeyNames().Contains("Scripts") && !regGroupPolicy.GetSubKeyNames().Contains("Disco_Scripts"))
                 {
                     RegistryUtilities.RenameSubKey(regGroupPolicy, "Scripts", "Disco_Scripts");
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Create Scripts
-            RootRegistryLocation.CreateSubKey("Microsoft\\Windows\\CurrentVersion\\Group Policy\\Scripts\\Shutdown").Dispose();
-            using (var regScriptsStartup = RootRegistryLocation.CreateSubKey("Microsoft\\Windows\\CurrentVersion\\Group Policy\\Scripts\\Startup\\0"))
+            rootRegistryLocation.CreateSubKey(@"Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Shutdown").Dispose();
+            using (var regScriptsStartup = rootRegistryLocation.CreateSubKey(@"Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Startup\0"))
             {
                 regScriptsStartup.SetValue("GPO-ID", "LocalGPO", RegistryValueKind.String);
                 regScriptsStartup.SetValue("SOM-ID", "Local", RegistryValueKind.String);
-                regScriptsStartup.SetValue("FileSysPath", Path.Combine(Environment.SystemDirectory, "GroupPolicy\\Machine"), RegistryValueKind.String);
+                regScriptsStartup.SetValue("FileSysPath", Path.Combine(Environment.SystemDirectory, @"GroupPolicy\Machine"), RegistryValueKind.String);
                 regScriptsStartup.SetValue("DisplayName", "Local Group Policy", RegistryValueKind.String);
                 regScriptsStartup.SetValue("GPOName", "Local Group Policy", RegistryValueKind.String);
                 regScriptsStartup.SetValue("PSScriptOrder", 1, RegistryValueKind.DWord);
                 using (var regScriptsStartup0 = regScriptsStartup.CreateSubKey("0"))
                 {
                     regScriptsStartup0.SetValue("Script", BootstrapperCmdLinePath, RegistryValueKind.String);
-                    regScriptsStartup0.SetValue("Parameters", "/AllowUninstall", RegistryValueKind.String);
+                    if (forcedServerUrl == null)
+                        regScriptsStartup0.SetValue("Parameters", "/AllowUninstall", RegistryValueKind.String);
+                    else
+                        regScriptsStartup0.SetValue("Parameters", $"/AllowUninstall {forcedServerUrl}", RegistryValueKind.String);
                     regScriptsStartup0.SetValue("IsPowershell", 0, RegistryValueKind.DWord);
                     regScriptsStartup0.SetValue("ExecTime", new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, RegistryValueKind.Binary);
                 }
             }
-            RootRegistryLocation.CreateSubKey("Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine\\Scripts\\Shutdown").Dispose();
+            rootRegistryLocation.CreateSubKey(@"Microsoft\Windows\CurrentVersion\Group Policy\State\Machine\Scripts\Shutdown").Dispose();
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Backup Scripts State
-            using (var regGroupPolicy = RootRegistryLocation.OpenSubKey("Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine", true))
+            using (var regGroupPolicy = rootRegistryLocation.OpenSubKey(@"Microsoft\Windows\CurrentVersion\Group Policy\State\Machine", true))
             {
                 if (regGroupPolicy != null && regGroupPolicy.GetSubKeyNames().Contains("Scripts") && !regGroupPolicy.GetSubKeyNames().Contains("Disco_Scripts"))
                 {
                     RegistryUtilities.RenameSubKey(regGroupPolicy, "Scripts", "Disco_Scripts");
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
 
             // Create Scripts State
-            using (var regStateScriptsStartup = RootRegistryLocation.CreateSubKey("Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine\\Scripts\\Startup\\0"))
+            using (var regStateScriptsStartup = rootRegistryLocation.CreateSubKey(@"Microsoft\Windows\CurrentVersion\Group Policy\State\Machine\Scripts\Startup\0"))
             {
                 regStateScriptsStartup.SetValue("GPO-ID", "LocalGPO", RegistryValueKind.String);
                 regStateScriptsStartup.SetValue("SOM-ID", "Local", RegistryValueKind.String);
@@ -165,17 +183,21 @@ namespace Disco.ClientBootstrapper.Interop
                 using (var regStateScriptsStartup0 = regStateScriptsStartup.CreateSubKey("0"))
                 {
                     regStateScriptsStartup0.SetValue("Script", BootstrapperCmdLinePath, RegistryValueKind.String);
-                    regStateScriptsStartup0.SetValue("Parameters", "/AllowUninstall", RegistryValueKind.String);
+                    if (forcedServerUrl == null)
+                        regStateScriptsStartup0.SetValue("Parameters", "/AllowUninstall", RegistryValueKind.String);
+                    else
+                        regStateScriptsStartup0.SetValue("Parameters", $"/AllowUninstall {forcedServerUrl}", RegistryValueKind.String);
                     regStateScriptsStartup0.SetValue("ExecTime", new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, RegistryValueKind.Binary);
                 }
             }
+            cancellationToken.ThrowIfCancellationRequested();
             #endregion
 
             // Set Registry Startup Environment Policies
             #region "Registry Startup Policies"
             Program.Status.UpdateStatus(null, null, "Creating Startup Policy Registry Entries");
-            Program.SleepThread(500, false);
-            using (var regWinlogon = RootRegistryLocation.OpenSubKey("Microsoft\\Windows NT\\CurrentVersion\\Winlogon", true))
+            await Program.SleepThread(500, false, cancellationToken);
+            using (var regWinlogon = rootRegistryLocation.OpenSubKey(@"Microsoft\Windows NT\CurrentVersion\Winlogon", true))
             {
                 regWinlogon.SetValue("HideStartupScripts", 0, RegistryValueKind.DWord);
                 regWinlogon.SetValue("RunStartupScriptSync", 1, RegistryValueKind.DWord);
@@ -183,62 +205,70 @@ namespace Disco.ClientBootstrapper.Interop
             #endregion
         }
 
-        public static void Install(string InstallLocation, string WimImageId, string TempPath)
+        public static async Task Install(string installLocation, string wimImageId, string tempPath, Uri forcedServerUrl, CancellationToken cancellationToken)
         {
             Program.Status.UpdateStatus("Installing Bootstrapper", "Starting", "Please wait...", false);
 
-            if (string.IsNullOrWhiteSpace(InstallLocation))
-                InstallLocation = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "Disco");
+            if (string.IsNullOrWhiteSpace(installLocation))
+                installLocation = Path.Combine(Path.GetPathRoot(Environment.SystemDirectory), "Disco");
 
-            if (InstallLocation.EndsWith(".wim", StringComparison.OrdinalIgnoreCase))
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (installLocation.EndsWith(".wim", StringComparison.OrdinalIgnoreCase))
             {
                 // Offline File System (WIM)
-                Program.Status.UpdateStatus("Installing Bootstrapper (Offline)", "Installing", $"Install Location: {InstallLocation}");
-                Program.SleepThread(1000, false);
+                Program.Status.UpdateStatus("Installing Bootstrapper (Offline)", "Installing", $"Install Location: {installLocation}");
+                await Program.SleepThread(1000, false, cancellationToken);
 
                 // Mount WIM
                 int wimImageIndex = 0;
-                using (var wim = new WIMInterop.WindowsImageContainer(InstallLocation, WIMInterop.WindowsImageContainer.CreateFileMode.OpenExisting, WIMInterop.WindowsImageContainer.CreateFileAccess.Write))
+                using (var wim = new WIMInterop.WindowsImageContainer(installLocation, WIMInterop.WindowsImageContainer.CreateFileMode.OpenExisting, WIMInterop.WindowsImageContainer.CreateFileAccess.Write))
                 {
-                    if (WimImageId == null)
-                        WimImageId = "1";
-                    if (!int.TryParse(WimImageId, out wimImageIndex))
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (wimImageId == null)
+                        wimImageId = "1";
+                    if (!int.TryParse(wimImageId, out wimImageIndex))
                     {
-                        Program.Status.UpdateStatus(null, "Analysing WIM", $"Looking for Image Name: {WimImageId}");
-                        Program.SleepThread(500, false);
+                        Program.Status.UpdateStatus(null, "Analysing WIM", $"Looking for Image Name: {wimImageId}");
+                        await Program.SleepThread(500, false, cancellationToken);
                         for (int i = 0; i < wim.ImageCount; i++)
                         {
                             var wimImageInfo = new System.Xml.XmlDocument();
                             using (var wimImage = wim[i])
                                 wimImageInfo.LoadXml(wimImage.ImageInformation);
                             var wimImageInfoName = wimImageInfo.SelectSingleNode("//IMAGE/NAME");
-                            if (wimImageInfoName != null && wimImageInfoName.InnerText.Equals(WimImageId, StringComparison.OrdinalIgnoreCase))
+                            if (wimImageInfoName != null && wimImageInfoName.InnerText.Equals(wimImageId, StringComparison.OrdinalIgnoreCase))
                             {
                                 wimImageIndex = i + 1;
-                                Program.Status.UpdateStatus(null, "Analysing WIM", $"Found Image Id '{WimImageId}' at Index {wimImageIndex}");
-                                Program.SleepThread(500, false);
+                                Program.Status.UpdateStatus(null, "Analysing WIM", $"Found Image Id '{wimImageId}' at Index {wimImageIndex}");
+                                await Program.SleepThread(500, false, cancellationToken);
                                 break;
                             }
                         }
                     }
                 }
+                cancellationToken.ThrowIfCancellationRequested();
                 if (wimImageIndex == 0)
                 {
-                    Program.Status.UpdateStatus(null, "Error", $"Unable to load WIM Image Id: {WimImageId}");
-                    Program.SleepThread(5000, false);
+                    Program.Status.UpdateStatus(null, "Error", $"Unable to load WIM Image Id: {wimImageId}");
+                    await Program.SleepThread(5000, false, cancellationToken);
                     return;
                 }
 
                 // Get Temp Path
-                var wimMountPath = Path.Combine(TempPath ?? Path.GetTempPath(), "DiscoClientBootstrapperWimMount");
+                var wimMountPath = Path.Combine(tempPath ?? Path.GetTempPath(), "DiscoClientBootstrapperWimMount");
                 if (Directory.Exists(wimMountPath))
                     Directory.Delete(wimMountPath, true);
                 Directory.CreateDirectory(wimMountPath);
 
-                var wimTempMountPath = Path.Combine(TempPath ?? Path.GetTempPath(), "DiscoClientBootstrapperWimTempMount");
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var wimTempMountPath = Path.Combine(tempPath ?? Path.GetTempPath(), "DiscoClientBootstrapperWimTempMount");
                 if (Directory.Exists(wimTempMountPath))
                     Directory.Delete(wimTempMountPath, true);
                 Directory.CreateDirectory(wimTempMountPath);
+
+                cancellationToken.ThrowIfCancellationRequested();
 
                 bool wimCommitChanges = true;
                 WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback m_MessageCallback = null;
@@ -246,31 +276,39 @@ namespace Disco.ClientBootstrapper.Interop
                 {
                     // Mount WIM
                     Program.Status.UpdateStatus(null, "Mounting WIM", $"Mounting WIM Image to '{wimMountPath}'");
-                    Program.SleepThread(500, false);
+                    await Program.SleepThread(500, false, cancellationToken);
                     m_MessageCallback = new WIMInterop.WindowsImageContainer.NativeMethods.MessageCallback(WimImageEventMessagePump);
                     WIMInterop.WindowsImageContainer.NativeMethods.RegisterCallback(m_MessageCallback);
 
-                    WIMInterop.WindowsImageContainer.NativeMethods.MountImage(wimMountPath, InstallLocation, wimImageIndex, wimTempMountPath);
+                    WIMInterop.WindowsImageContainer.NativeMethods.MountImage(wimMountPath, installLocation, wimImageIndex, wimTempMountPath);
 
                     // Load Local Machine Registry
                     var wimHivePath = Path.Combine(wimMountPath, "Windows\\System32\\config\\SOFTWARE");
                     Program.Status.UpdateStatus(null, "Mounting Offline Registry Hive", $"Mounting Offline Registry Hive at '{wimHivePath}'");
-                    Program.SleepThread(500, false);
+                    await Program.SleepThread(500, false, cancellationToken);
                     using (var wimReg = new RegistryInterop(RegistryInterop.RegistryHives.HKEY_LOCAL_MACHINE, "DiscoClientBootstrapperWimHive", wimHivePath))
                     {
-                        using (RegistryKey rootRegistryLocation = Registry.LocalMachine.OpenSubKey("DiscoClientBootstrapperWimHive", true))
+                        try
                         {
-                            string rootFileSystemLocation = wimMountPath;
-                            string fileSystemInstallLocation = "Disco";
-                            string virtualRootFileSystemLocation = "C:\\";
+                            cancellationToken.ThrowIfCancellationRequested();
+                            using (RegistryKey rootRegistryLocation = Registry.LocalMachine.OpenSubKey("DiscoClientBootstrapperWimHive", true))
+                            {
+                                string rootFileSystemLocation = wimMountPath;
+                                string fileSystemInstallLocation = "Disco";
+                                string virtualRootFileSystemLocation = "C:\\";
 
-                            Install(rootFileSystemLocation, rootRegistryLocation, fileSystemInstallLocation, virtualRootFileSystemLocation);
+                                cancellationToken.ThrowIfCancellationRequested();
+                                await Install(rootFileSystemLocation, rootRegistryLocation, fileSystemInstallLocation, virtualRootFileSystemLocation, forcedServerUrl, cancellationToken);
+                                cancellationToken.ThrowIfCancellationRequested();
+                            }
                         }
-
-                        // Unload Local Machine Registry
-                        Program.Status.UpdateStatus(null, "Unmounting Offline Registry Hive", $"Unmounting Offline Registry Hive at '{wimHivePath}'");
-                        Program.SleepThread(500, false);
-                        wimReg.Unload();
+                        finally
+                        {
+                            // Unload Local Machine Registry
+                            Program.Status.UpdateStatus(null, "Unmounting Offline Registry Hive", $"Unmounting Offline Registry Hive at '{wimHivePath}'");
+                            await Program.SleepThread(500, false, cancellationToken);
+                            wimReg.Unload();
+                        }
                     }
                 }
                 catch (Exception)
@@ -282,8 +320,8 @@ namespace Disco.ClientBootstrapper.Interop
                 {
                     // Unmount WIM
                     Program.Status.UpdateStatus(null, "Unmounting WIM", $"Unmounting WIM Image at '{wimMountPath}'");
-                    Program.SleepThread(500, false);
-                    WIMInterop.WindowsImageContainer.NativeMethods.DismountImage(wimMountPath, InstallLocation, wimImageIndex, wimCommitChanges);
+                    await Program.SleepThread(500, false, cancellationToken);
+                    WIMInterop.WindowsImageContainer.NativeMethods.DismountImage(wimMountPath, installLocation, wimImageIndex, wimCommitChanges);
 
                     if (m_MessageCallback != null)
                     {
@@ -295,23 +333,25 @@ namespace Disco.ClientBootstrapper.Interop
                         Directory.Delete(wimMountPath, true);
                     if (Directory.Exists(wimTempMountPath))
                         Directory.Delete(wimTempMountPath, true);
+
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
             }
             else
             {
                 // Online File System
-                Program.Status.UpdateStatus("Installing Bootstrapper (Online)", "Installing", $"Install Location: {InstallLocation}", true, -1);
-                Program.SleepThread(1000, false);
-                string rootFileSystemLocation = Path.GetPathRoot(InstallLocation);
+                Program.Status.UpdateStatus("Installing Bootstrapper (Online)", "Installing", $"Install Location: {installLocation}", true, -1);
+                await Program.SleepThread(1000, false, cancellationToken);
+                string rootFileSystemLocation = Path.GetPathRoot(installLocation);
                 RegistryKey rootRegistryLocation = Registry.LocalMachine.OpenSubKey("SOFTWARE", true);
-                string fileSystemInstallLocation = InstallLocation.Substring(rootFileSystemLocation.Length);
+                string fileSystemInstallLocation = installLocation.Substring(rootFileSystemLocation.Length);
 
-                Install(rootFileSystemLocation, rootRegistryLocation, fileSystemInstallLocation, rootFileSystemLocation);
+                await Install(rootFileSystemLocation, rootRegistryLocation, fileSystemInstallLocation, rootFileSystemLocation, forcedServerUrl, cancellationToken);
                 Program.Status.UpdateStatus(null, "Online File System Installation Complete", string.Empty, true, -1);
-                Program.SleepThread(1000, false);
+                await Program.SleepThread(1000, false, cancellationToken);
             }
             Program.Status.UpdateStatus(null, "Complete", "Finished Installing Bootstrapper");
-            Program.SleepThread(1500, false);
+            await Program.SleepThread(1500, false, cancellationToken);
         }
 
         private static uint WimImageEventMessagePump(
@@ -349,41 +389,28 @@ namespace Disco.ClientBootstrapper.Interop
             return status;
         }
 
-        public static void Uninstall()
+        public static async Task Uninstall(CancellationToken cancellationToken)
         {
             // Application Directory
-            var appDirectory = Program.InlinePath.Value;
-            if (Program.AllowUninstall && !appDirectory.StartsWith("\\\\"))
+            var appDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+            if (Program.AllowUninstall && !appDirectory.StartsWith(@"\\"))
             {
                 Program.Status.UpdateStatus("System Preparation (Bootstrapper)", "Uninstalling Bootstrapper...", string.Empty, false, 0);
-                Program.SleepThread(1000, true);
-                //var uninstallScriptLocation = System.IO.Path.Combine(appDirectory, "UninstallBootstrapper.vbs");
-                //if (System.IO.File.Exists(uninstallScriptLocation))
-                //{
-                //    var bootstrapperPID = System.Diagnostics.Process.GetCurrentProcess().Id;
-                //    var cscriptPath = System.IO.Path.Combine(Environment.SystemDirectory, "cscript.exe");
-                //    var cscriptArgs = string.Format("\"{0}\" /WaitForProcessID:{1}", uninstallScriptLocation, bootstrapperPID);
-
-                //    var startProc = new ProcessStartInfo(cscriptPath, cscriptArgs);
-                //    startProc.WorkingDirectory = Environment.SystemDirectory;
-                //    startProc.WindowStyle = ProcessWindowStyle.Hidden;
-
-                //    Process.Start(startProc);
-                //}
+                await Program.SleepThread(1000, true, cancellationToken);
 
                 // Remove Registry Entries
-                using (var regWinlogon = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon", true))
+                using (var regWinlogon = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon", true))
                 {
                     regWinlogon.DeleteValue("HideStartupScripts", false);
                     regWinlogon.DeleteValue("RunStartupScriptSync", false);
                 }
-                Registry.LocalMachine.DeleteSubKeyTree("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy\\Scripts\\Shutdown", false);
-                Registry.LocalMachine.DeleteSubKeyTree("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy\\Scripts\\Startup", false);
-                Registry.LocalMachine.DeleteSubKeyTree("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine\\Scripts\\Shutdown", false);
-                Registry.LocalMachine.DeleteSubKeyTree("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine\\Scripts\\Startup", false);
+                Registry.LocalMachine.DeleteSubKeyTree(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Shutdown", false);
+                Registry.LocalMachine.DeleteSubKeyTree(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Startup", false);
+                Registry.LocalMachine.DeleteSubKeyTree(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\State\Machine\Scripts\Shutdown", false);
+                Registry.LocalMachine.DeleteSubKeyTree(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\State\Machine\Scripts\Startup", false);
 
                 // Restore Registry Backups
-                using (var regGroupPolicy = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy", true))
+                using (var regGroupPolicy = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy", true))
                 {
                     if (regGroupPolicy != null && regGroupPolicy.GetSubKeyNames().Contains("Disco_Scripts"))
                     {
@@ -391,7 +418,7 @@ namespace Disco.ClientBootstrapper.Interop
                         RegistryUtilities.RenameSubKey(regGroupPolicy, "Disco_Scripts", "Scripts");
                     }
                 }
-                using (var regGroupPolicy = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Group Policy\\State\\Machine", true))
+                using (var regGroupPolicy = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\State\Machine", true))
                 {
                     if (regGroupPolicy != null && regGroupPolicy.GetSubKeyNames().Contains("Disco_Scripts"))
                     {
@@ -401,10 +428,10 @@ namespace Disco.ClientBootstrapper.Interop
                 }
 
                 // Delete Group Policy Script File
-                var groupPolicyScriptsPath = Path.Combine(Environment.SystemDirectory, "GroupPolicy\\Machine\\Scripts\\scripts.ini");
+                var groupPolicyScriptsPath = Path.Combine(Environment.SystemDirectory, @"GroupPolicy\Machine\Scripts\scripts.ini");
                 if (File.Exists(groupPolicyScriptsPath))
                     File.Delete(groupPolicyScriptsPath);
-                var groupPolicyScriptsBackupPath = Path.Combine(Environment.SystemDirectory, "GroupPolicy\\Machine\\Scripts\\disco_scripts.ini");
+                var groupPolicyScriptsBackupPath = Path.Combine(Environment.SystemDirectory, @"GroupPolicy\Machine\Scripts\disco_scripts.ini");
                 if (File.Exists(groupPolicyScriptsBackupPath))
                     File.Move(groupPolicyScriptsBackupPath, groupPolicyScriptsPath);
 

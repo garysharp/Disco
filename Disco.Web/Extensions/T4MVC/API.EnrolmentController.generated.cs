@@ -83,6 +83,12 @@ namespace Disco.Web.Areas.API.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshPassword);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult LegacyDiscovery()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LegacyDiscovery);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public EnrolmentController Actions { get { return MVC.API.Enrolment; } }
@@ -103,6 +109,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string PendingTimeoutMinutes = "PendingTimeoutMinutes";
             public readonly string MacSshUsername = "MacSshUsername";
             public readonly string MacSshPassword = "MacSshPassword";
+            public readonly string LegacyDiscovery = "LegacyDiscovery";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -112,6 +119,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string PendingTimeoutMinutes = "PendingTimeoutMinutes";
             public const string MacSshUsername = "MacSshUsername";
             public const string MacSshPassword = "MacSshPassword";
+            public const string LegacyDiscovery = "LegacyDiscovery";
         }
 
 
@@ -150,6 +158,14 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_MacSshPassword
         {
             public readonly string MacSshPassword = "MacSshPassword";
+        }
+        static readonly ActionParamsClass_LegacyDiscovery s_params_LegacyDiscovery = new ActionParamsClass_LegacyDiscovery();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_LegacyDiscovery LegacyDiscoveryParams { get { return s_params_LegacyDiscovery; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_LegacyDiscovery
+        {
+            public readonly string enabled = "enabled";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -219,6 +235,18 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.MacSshPassword);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "MacSshPassword", MacSshPassword);
             MacSshPasswordOverride(callInfo, MacSshPassword);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LegacyDiscoveryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, bool enabled);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LegacyDiscovery(bool enabled)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LegacyDiscovery);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "enabled", enabled);
+            LegacyDiscoveryOverride(callInfo, enabled);
             return callInfo;
         }
 

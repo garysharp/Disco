@@ -1,6 +1,7 @@
 ﻿using Disco.Client.Extensions;
 using Disco.Client.Interop;
 using System;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -26,7 +27,7 @@ namespace Disco.Client
         }
         public static void UpdateStatus(string SubHeading, string Message, bool ShowProgress, int Progress)
         {
-            Console.WriteLine($"#{SubHeading.EscapeMessage()},{Message.EscapeMessage()},{ShowProgress.ToString()},{Progress.ToString()}");
+            Console.WriteLine($"#{SubHeading.EscapeMessage()},{Message.EscapeMessage()},{ShowProgress},{Progress}");
         }
         public static void TryDelay(int Milliseconds)
         {
@@ -38,6 +39,11 @@ namespace Disco.Client
         {
             StringBuilder message = new StringBuilder();
             message.AppendLine($"Version: {Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}");
+            message.Append($"Server: {Program.ServerUrl})");
+            if (Program.ServerUrl.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                message.AppendLine(" [Secure]");
+            else
+                message.AppendLine(" [Insecure]");
             message.AppendLine($"Device: {Hardware.Information.SerialNumber} ({Hardware.Information.Manufacturer} {Hardware.Information.Model})");
             Console.ForegroundColor = ConsoleColor.Yellow;
             UpdateStatus("Preparation Client Started", message.ToString(), false, 0);
@@ -48,11 +54,17 @@ namespace Disco.Client
         {
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            ClientServiceException clientServiceException = ex as ClientServiceException;
-            if (clientServiceException != null)
+            if (ex is ClientServiceException clientServiceException)
             {
                 UpdateStatus($"An error occurred during {clientServiceException.ServiceFeature}",
                     clientServiceException.Message, false, 0);
+            }
+            else if (ex is WebException exWeb &&
+                exWeb.Response is HttpWebResponse webResponse &&
+                webResponse.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                UpdateStatus("Something went wrong on the server",
+                "Review logs for more information (Configuration > Logging)", false, 0);
             }
             else
             {

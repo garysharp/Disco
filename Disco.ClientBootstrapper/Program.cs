@@ -1,36 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Disco.ClientBootstrapper
 {
-    static class Program
+    internal static class Program
     {
-        public static IStatus Status { get; set; }
-        public static BootstrapperLoop BootstrapperLoop { get; set; }
-        public static InstallLoop InstallLoop { get; set; }
+        private static readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        public static IStatus Status { get; private set; }
 
         public static List<string> PostBootstrapperActions { get; set; }
-        public static bool AllowUninstall { get; set; }
-        public static bool ApplicationExiting { get; set; }
-        public static Lazy<string> InlinePath = new Lazy<string>(() =>
-        {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-        });
+        public static bool AllowUninstall { get; private set; }
+        public static Uri ForcedServerUrl { get; private set; } = null;
 
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+
 
             if (args.Length > 0)
             {
+#if DEBUG
+                if (args.Any(a => a.Equals("debug", StringComparison.OrdinalIgnoreCase)))
+                {
+                    do
+                    {
+                        Console.WriteLine("Waiting for Debugger to Attach");
+                        Thread.Sleep(1000);
+                    } while (!System.Diagnostics.Debugger.IsAttached);
+                }
+#endif
+
+                if (args.Any(a => a.StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
+                    throw new ArgumentException("Only HTTPS URLs are supported for a forced server URL.");
+                var forcedServerArg = args.FirstOrDefault(a => a.StartsWith("https://", StringComparison.OrdinalIgnoreCase));
+                if (forcedServerArg != null)
+                {
+                    if (Uri.TryCreate(forcedServerArg, UriKind.Absolute, out var forcedUri))
+                        ForcedServerUrl = forcedUri;
+                    else
+                        throw new ArgumentException("The provided forced server URL is not valid.");
+                }
+
                 switch (args[0].ToLower())
                 {
                     case "/install":
@@ -46,14 +68,17 @@ namespace Disco.ClientBootstrapper
                             wimImage = args[2];
                         if (args.Length > 3)
                             tempPath = args[3];
-                        InstallLoop = new InstallLoop(installLocation, wimImage, tempPath);
-                        InstallLoop.Start(new InstallLoop.CompleteCallback(InstallComplete));
+                        var installLoop = new InstallLoop(installLocation, wimImage, tempPath, InstallComplete, ForcedServerUrl);
+                        installLoop.Start();
                         Application.Run();
                         return;
                     case "/uninstall":
                         AllowUninstall = true;
                         Status = new NullStatus();
-                        Interop.InstallInterop.Uninstall();
+                        Task.Run(async () =>
+                        {
+                            await Interop.InstallInterop.Uninstall(cancellationTokenSource.Token);
+                        }).Wait(cancellationTokenSource.Token);
                         return;
                     case "/allowuninstall":
                         AllowUninstall = true;
@@ -71,13 +96,13 @@ namespace Disco.ClientBootstrapper
                 statusForm.Show();
             }
 
-            BootstrapperLoop = new BootstrapperLoop(Status, new BootstrapperLoop.LoopCompleteCallback(LoopComplete));
-            BootstrapperLoop.Start();
+            var bootstrapperLoop = new BootstrapperLoop(Status, ForcedServerUrl, LoopComplete, cancellationTokenSource.Token);
+            bootstrapperLoop.Start();
 
             Application.Run();
         }
 
-        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
+        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             WriteAppError(e.Exception);
         }
@@ -100,7 +125,7 @@ namespace Disco.ClientBootstrapper
             catch (Exception) { }
         }
 
-        public static void LoopComplete()
+        public static async Task LoopComplete(CancellationToken cancellationToken)
         {
             // Run Post Actions
             if (PostBootstrapperActions != null)
@@ -108,32 +133,32 @@ namespace Disco.ClientBootstrapper
                 // Check Uninstall
                 if (AllowUninstall && PostBootstrapperActions.Contains("UninstallBootstrapper"))
                 {
-                    Interop.InstallInterop.Uninstall();
+                    await Interop.InstallInterop.Uninstall(cancellationToken);
                 }
 
                 // Check ShutdownActions
                 if (PostBootstrapperActions.Contains("Shutdown"))
                 {
                     Status.UpdateStatus("System Preparation (Bootstrapper)", "Shutting Down; Finished...", string.Empty, false, 0);
-                    SleepThread(4000, true);
+                    await SleepThread(4000, true, cancellationToken);
                     Interop.ShutdownInterop.Shutdown();
                 }
                 else if (PostBootstrapperActions.Contains("Reboot"))
                 {
                     Status.UpdateStatus("System Preparation (Bootstrapper)", "Rebooting; Finished...", string.Empty, false, 0);
-                    SleepThread(4000, true);
+                    await SleepThread(4000, true, cancellationToken);
                     Interop.ShutdownInterop.Reboot();
                 }
                 else
                 {
                     Status.UpdateStatus("System Preparation (Bootstrapper)", "Starting System; Finished...", string.Empty, false, 0);
-                    SleepThread(2000, true);
+                    await SleepThread(2000, true, cancellationToken);
                 }
             }
             else
             {
                 Status.UpdateStatus("System Preparation (Bootstrapper)", "Starting System; Finished...", string.Empty, false, 0);
-                SleepThread(2000, true);
+                await SleepThread(2000, true, cancellationToken);
             }
 
             ExitApplication();
@@ -146,33 +171,12 @@ namespace Disco.ClientBootstrapper
 
         public static void ExitApplication()
         {
-            if (!ApplicationExiting)
-            {
-                ApplicationExiting = true;
-                if (BootstrapperLoop != null)
-                {
-                    if (BootstrapperLoop.LoopThread != null)
-                    {
-                        if (BootstrapperLoop.LoopThread.ThreadState == ThreadState.WaitSleepJoin)
-                        {
-                            BootstrapperLoop.LoopThread.Interrupt();
-                        }
-                        if (BootstrapperLoop.LoopThread.ThreadState == ThreadState.Running)
-                        {
-                            BootstrapperLoop.LoopThread.Abort();
-                        }
-                    }
-                }
-                Application.Exit();
-            }
+            if (!cancellationTokenSource.IsCancellationRequested)
+                cancellationTokenSource.Cancel();
+            Application.Exit();
         }
 
-        public static void Trace(string Format, params string[] args)
-        {
-            System.Diagnostics.Debug.WriteLine(Format, args);
-        }
-
-        public static void SleepThread(int millisecondsTimeout, bool updateUI)
+        public static async Task SleepThread(int millisecondsTimeout, bool updateUI, CancellationToken cancellationToken)
         {
             if (updateUI)
             {
@@ -180,12 +184,12 @@ namespace Disco.ClientBootstrapper
                 {
                     int progress = Convert.ToInt32(((Convert.ToDouble(i) / Convert.ToDouble(millisecondsTimeout)) * 100));
                     Status.UpdateStatus(null, null, null, true, progress);
-                    Thread.Sleep(500);
+                    await Task.Delay(500, cancellationToken);
                 }
             }
             else
             {
-                Thread.Sleep(millisecondsTimeout);
+                await Task.Delay(millisecondsTimeout, cancellationToken);
             }
         }
     }

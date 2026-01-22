@@ -121,7 +121,7 @@
                     able to connect to the requesting Apple Mac client via <a target="_blank" href="http://en.wikipedia.org/wiki/Secure_Shell">SSH</a>. Enter/Script the following command:
                 </span>
                 <div class="code">
-                    curl&nbsp;<a target="_blank" href="http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol">http://disco:9292/Services/Client/Unauthenticated/MacSecureEnrol</a>
+                    curl&nbsp;<a target="_blank" href="@Model.MacEnrolUrl">@Model.MacEnrolUrl</a>
                 </div>
                 <span class="smallText">This url will return a <a target="_blank" href="http://json.org/">JSON</a> response containing basic information about the enrolment.</span><br />
                 <span class="smallMessage">
@@ -129,6 +129,167 @@
                     such as an anchor (<span class="code">&lt;a&gt;</span>) or <span class="code">&lt;script&gt;</span>
                     tag embedded on the organisation's intranet.
                 </span>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="form" style="width: 530px; margin-top: 15px">
+    <h2>Bootstrapper Server Discovery</h2>
+    <table>
+        <tr>
+            <td>
+                <div>
+                    The Disco ICT
+                    @if (Authorization.Has(Claims.Config.Enrolment.DownloadBootstrapper))
+                    {
+                        @Html.ActionLink("Bootstrapper", MVC.Services.Client.Bootstrapper())
+                    }
+                    else
+                    {
+                        <text>Bootstrapper</text>
+                    }
+                    is used to enrol devices. It is strongly recommended that HTTPS be used for all communication.
+                    the
+                    The @Html.ActionLink("Hosting", Model.HostingPluginInstalled ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install())
+                    plugin can be used to automate deployment of HTTPS certificates.
+                </div>
+                <div>
+                    The Bootstrapper discovers the server using the first successful method (in order):
+                </div>
+                <ol>
+                    <li>
+                        <h5>Manually Specified</h5>
+                        <div>
+                            The server url can be specified at the command line. The url must use HTTPS. For example:
+                        </div>
+                        <div class="code">Disco.ClientBootstrapper.exe https://@Request.Url.Authority</div>
+                    </li>
+                    <li>
+                        <h5>DNS Service Location (SRV) Record</h5>
+                        Expected Record Name: <strong><code>@Model.DnsSrvRecordName</code></strong>
+                        @if (Model.IsServicesEducationVicGovAuDomain)
+                        {
+                            <div class="smallText">
+                                This mechanism is not supported in the shared education.vic.gov.au domain and can be ignored.
+                            </div>
+                        }
+                        else
+                        {
+                            if (Model.DnsSrvRecordValue == null)
+                            {
+                                <div class="info-box">
+                                    <span class="error">
+                                        No Service Location (SRV) record found.
+                                    </span>
+                                    @if (Request.IsSecureConnection)
+                                    {
+                                        <span>
+                                            Please create a DNS Service Location (SRV) record:
+                                        </span>
+                                        <table class="none">
+                                            <tr>
+                                                <th>Service:</th>
+                                                <td><code>_discoict</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Protocol:</th>
+                                                <td><code>_tcp</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Priority:</th>
+                                                <td><code>0</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Weight:</th>
+                                                <td><code>0</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Port:</th>
+                                                <td><code>@Request.Url.Port</code></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Host offering this service:</th>
+                                                <td><code>@Request.Url.Host</code></td>
+                                            </tr>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            Please configure and connect with HTTPS.
+                                            <span>
+                                                You can enable HTTPS automation using the
+                                                @Html.ActionLink("Hosting", Model.HostingPluginInstalled ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install())
+                                                plugin.
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    Value: <strong><code>https://@Model.DnsSrvRecordValue</code></strong>
+                                    @if (Request.IsSecureConnection && !string.Equals(Model.DnsSrvRecordValue, Request.Url.Authority, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        <div class="info-box error">
+                                            <i class="fa fa-exclamation"></i> The Service Location (SRV) record does not match the way you are currently accessing the server: <code>@Request.Url.Authority</code>.
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </li>
+                    @if (Model.IsVicSmartDeployment)
+                    {
+                        <li>
+                            <h5>Victorian Government Schools VicSmart Discovery</h5>
+                            If the Bootstrapper detects it is running inside the VicSmart network, it will query Online Services for the Disco ICT server address based on the subnets assigned to each school.
+                            This is configured in the @Html.ActionLink("Hosting", Model.HostingPluginInstalled ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install())
+                            plugin.
+                        </li>
+                    }
+                    <li>
+                        <h5>Legacy Discovery</h5>
+                        <div>
+                            The Bootstrapper will attempt to send an ICMP ping to &quot;<code>disco</code>&quot;. If the ping is successful, it will attempt to connect to <code>http://disco:9292/</code>.
+                        </div>
+                        <div>
+                            @if (canConfig)
+                            {
+                                <input id="Enrolment_LegacyDiscovery" type="checkbox" @(Model.LegacyDiscoveryEnabled ? "checked" : null) />
+                                <script type="text/javascript">
+                                    $(function () {
+                                        document.DiscoFunctions.PropertyChangeHelper(
+                                            $('#Enrolment_LegacyDiscovery'),
+                                            null,
+                                            '@Url.Action(MVC.API.Enrolment.LegacyDiscovery())',
+                                            'enabled'
+                                        );
+                                    });
+                                </script>
+                            }
+                            else
+                            {
+                                <input id="Enrolment_LegacyDiscovery" type="checkbox" @(Model.LegacyDiscoveryEnabled ? "checked" : null) disabled="disabled" />
+                            }
+                            <label for="Enrolment_LegacyDiscovery">
+                                Legacy Discovery Enabled
+                            </label>
+                            @AjaxHelpers.AjaxLoader()
+                        </div>
+                        @if ((Model.IsServicesEducationVicGovAuDomain || Model.DnsSrvRecordValue != null) && Model.LegacyDiscoveryEnabled)
+                        {
+                            <div class="info-box error">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                It is not recommended to have Legacy Discovery enabled. Please use the latest Bootstrapper and disable this option.
+                            </div>
+                        }
+                        <div>
+                            This method is not secure and is only provided for backwards compatibility. In time this method will be removed.
+                        </div>
+                    </li>
+                </ol>
             </td>
         </tr>
     </table>

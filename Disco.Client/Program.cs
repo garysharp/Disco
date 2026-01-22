@@ -1,6 +1,8 @@
 ﻿using Disco.Client.Extensions;
+using Disco.Client.Interop;
 using Disco.Models.ClientServices;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 
@@ -11,6 +13,9 @@ namespace Disco.Client
         public static bool IsAuthenticated { get; set; }
         public static bool RebootRequired { get; set; }
         public static bool AllowUninstall { get; set; }
+        public static int BootstrapperVersion { get; private set; } = 1;
+        public static int BootstrapperProcessId { get; private set; } = -1;
+        public static Uri ServerUrl { get; private set; }
 
         [STAThread]
         public static void Main(string[] args)
@@ -24,12 +29,15 @@ namespace Disco.Client
                 {
                     Console.WriteLine("Waiting for Debugger to Attach");
                     System.Threading.Thread.Sleep(1000);
-                } while (!System.Diagnostics.Debugger.IsAttached);
+                } while (!Debugger.IsAttached);
             }
 #endif
 
             // Initialize Environment Settings
-            SetupEnvironment();
+            SetupEnvironment(args);
+
+            if (ServerUrl == null)
+                keepProcessing = DiscoverDiscoIct();
 
             // Report to Bootstrapper
             Presentation.WriteBanner();
@@ -45,7 +53,7 @@ namespace Disco.Client
             Presentation.WriteFooter(RebootRequired, AllowUninstall, !keepProcessing);
         }
 
-        public static void SetupEnvironment()
+        public static void SetupEnvironment(string[] args)
         {
             // Hookup Unhandled Error Handling
             AppDomain.CurrentDomain.UnhandledException += ErrorReporting.CurrentDomain_UnhandledException;
@@ -54,19 +62,64 @@ namespace Disco.Client
             WebRequest.DefaultWebProxy = new WebProxy();
             // Override Http 100 Continue Behaviour
             ServicePointManager.Expect100Continue = false;
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
 
             // Assume success unless otherwise notified
             AllowUninstall = true;
 
+            if (args != null && args.Length == 3)
+            {
+                // Parse Bootstrapper Version
+                int parsedVersion;
+                if (int.TryParse(args[0], out parsedVersion))
+                    BootstrapperVersion = parsedVersion;
+                // Parse Bootstrapper Process ID
+                int parsedProcessId;
+                if (int.TryParse(args[1], out parsedProcessId))
+                    BootstrapperProcessId = parsedProcessId;
+                // Parse Server URL
+                Uri parsedUri;
+                if (Uri.TryCreate(args[2], UriKind.Absolute, out parsedUri))
+                    ServerUrl = parsedUri;
+            }
+            else
+            {
+                BootstrapperVersion = 1;
+                BootstrapperProcessId = -1;
+                ServerUrl = null;
+            }
+
             // Detect Disco.Bootstrapper - Create Enable UI Delay if Running
+            Presentation.DelayUI = false;
             try
             {
-                Presentation.DelayUI = (System.Diagnostics.Process.GetProcessesByName("Disco.ClientBootstrapper").Length > 0);
+                if (BootstrapperProcessId != -1)
+                {
+                    var parentProcess = Process.GetProcessById(BootstrapperProcessId);
+                    Presentation.DelayUI = !parentProcess.HasExited;
+                }
             }
             catch (Exception)
             {
-                Presentation.DelayUI = true; // Add Delays on Error
             }
+        }
+
+        public static bool DiscoverDiscoIct()
+        {
+            try
+            {
+                Presentation.UpdateStatus("Detecting Disco ICT", "Locating Disco ICT Server, Please wait...", true, -1);
+                Presentation.TryDelay(3000);
+                ServerUrl = EndpointDiscovery.DiscoverServer(null).Item1;
+
+                // Complete
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrorReporting.ReportError(ex, false);
+            }
+            return false;
         }
 
         public static bool WhoAmI()
@@ -144,7 +197,7 @@ namespace Disco.Client
                         var secondsConsumed = (DateTimeOffset.Now - startTime).TotalSeconds;
                         var progress = (int)((secondsConsumed / totalSeconds) * 100);
 
-                        Presentation.UpdateStatus($"Pending Device Enrolment Approval: {response.PendingIdentifier}", $"Waiting for enrolment session '{response.PendingIdentifier}' to be approved.{Environment.NewLine}Reason: {response.PendingReason}", true, progress);
+                        Presentation.UpdateStatus($"Pending Device Enrolment Approval: {response.PendingIdentifier}", $"Server: {Program.ServerUrl}{Environment.NewLine}Reason: {response.PendingReason}", true, progress);
                         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
                     }
                     else

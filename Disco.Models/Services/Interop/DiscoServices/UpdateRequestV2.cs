@@ -24,6 +24,7 @@ namespace Disco.Models.Services.Interop.DiscoServices
 
         public List<StatisticIntPair> Stat_JobIdentifiers { get; set; }
         public List<StatisticJob> Stat_Jobs { get; set; }
+        public List<StatisticInt> Stat_EnrollmentDiscovery { get; set; }
 
         public class StatisticIntPair
         {

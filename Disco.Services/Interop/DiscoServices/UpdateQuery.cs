@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Models.Services.Interop.DiscoServices;
+using Disco.Services.Devices.Enrolment;
 using Disco.Services.Tasks;
 using Newtonsoft.Json;
 using System;
@@ -221,6 +222,10 @@ namespace Disco.Services.Interop.DiscoServices
                     RepairerLogged = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerLoggedDate : j.RepairerLoggedDate,
                     RepairerCompleted = j.JobType == JobType.JobTypeIds.HWar ? j.WarrantyRepairerCompletedDate : j.RepairerCompletedDate
                 }).ToList();
+
+                m.Stat_EnrollmentDiscovery = WindowsDeviceEnrolment.GetDiscoveryMethodStatistics()
+                    .Where(s => s.Value != 0)
+                    .Select(s => new StatisticInt() { Key = s.Key.ToString(), Value = s.Value }).ToList();
             }
 
             m.InstalledPlugins = Plugins.Plugins.GetPlugins().Select(manifest => new StatisticString() { Key = manifest.Id, Value = manifest.VersionFormatted }).ToList();
