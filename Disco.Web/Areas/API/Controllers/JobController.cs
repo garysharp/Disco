@@ -1927,7 +1927,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Job Attachments
 
         [DiscoAuthorize(Claims.Job.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
-        public virtual ActionResult AttachmentDownload(int id)
+        public virtual ActionResult AttachmentDownload(int id, bool? inline = null)
         {
             var ja = Database.JobAttachments.Find(id);
             if (ja != null)
@@ -1935,7 +1935,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var filePath = ja.RepositoryFilename(Database);
                 if (System.IO.File.Exists(filePath))
                 {
-                    return File(filePath, ja.MimeType, ja.Filename);
+                    return File(filePath, ja.MimeType, (inline ?? false) ? null : ja.Filename);
                 }
                 else
                 {

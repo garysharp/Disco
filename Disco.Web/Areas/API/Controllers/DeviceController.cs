@@ -547,7 +547,7 @@ namespace Disco.Web.Areas.API.Controllers
         #region Device Attachments
 
         [DiscoAuthorize(Claims.Device.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
-        public virtual ActionResult AttachmentDownload(int id)
+        public virtual ActionResult AttachmentDownload(int id, bool? inline = null)
         {
             var da = Database.DeviceAttachments.Find(id);
             if (da != null)
@@ -555,7 +555,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var filePath = da.RepositoryFilename(Database);
                 if (System.IO.File.Exists(filePath))
                 {
-                    return File(filePath, da.MimeType, da.Filename);
+                    return File(filePath, da.MimeType, (inline ?? false) ? null : da.Filename);
                 }
                 else
                 {

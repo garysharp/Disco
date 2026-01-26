@@ -108,7 +108,7 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.User.ShowAttachments)]
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]
-        public virtual ActionResult AttachmentDownload(int id)
+        public virtual ActionResult AttachmentDownload(int id, bool? inline = null)
         {
             var ua = Database.UserAttachments.Find(id);
             if (ua != null)
@@ -116,7 +116,7 @@ namespace Disco.Web.Areas.API.Controllers
                 var filePath = ua.RepositoryFilename(Database);
                 if (System.IO.File.Exists(filePath))
                 {
-                    return File(filePath, ua.MimeType, ua.Filename);
+                    return File(filePath, ua.MimeType, (inline ?? false) ? null : ua.Filename);
                 }
                 else
                 {

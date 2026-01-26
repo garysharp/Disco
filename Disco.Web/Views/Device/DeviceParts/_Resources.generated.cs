@@ -491,25 +491,29 @@ WriteLiteral("                    </div>\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
-WriteLiteral(@">
-                        Shadowbox.init({
-                            skipSetup: true,
-                            modal: true
-                        });
-                        $(function () {
-                            const $Attachments = $('#Attachments');
-                            const $attachmentOutput = $Attachments.find('.attachmentOutput');
-                            let $attachmentDownloadHost = null;
-                            let $dialogRemoveAttachment = null;
-                            let attachmentUploader = null;
-
-                            function onAttachmentAdded(id, quick) {
-                                var data = { id: id };
-                                $.ajax({
-                                    url: '");
+WriteLiteral(">\r\n                        Shadowbox.init({\r\n                            skipSetu" +
+"p: true,\r\n                            modal: true,\r\n                            " +
+"onOpen: function (obj) {\r\n                                if (obj.player === \'if" +
+"rame\' && obj.content.indexOf(\'inline=True\') === -1) {\r\n                         " +
+"           obj.content += (obj.content.indexOf(\'?\') === -1 ? \'?\' : \'&\') + \'inlin" +
+"e=True\';\r\n                                }\r\n                                ret" +
+"urn true;\r\n                            },\r\n                            onChange:" +
+" function (obj) {\r\n                                if (obj.player === \'iframe\' &" +
+"& obj.content.indexOf(\'inline=True\') === -1) {\r\n                                " +
+"    obj.content += (obj.content.indexOf(\'?\') === -1 ? \'?\' : \'&\') + \'inline=True\'" +
+";\r\n                                }\r\n                                return tru" +
+"e;\r\n                            }\r\n                        });\r\n                " +
+"        $(function () {\r\n                            const $Attachments = $(\'#At" +
+"tachments\');\r\n                            const $attachmentOutput = $Attachments" +
+".find(\'.attachmentOutput\');\r\n                            let $attachmentDownload" +
+"Host = null;\r\n                            let $dialogRemoveAttachment = null;\r\n " +
+"                           let attachmentUploader = null;\r\n\r\n                   " +
+"         function onAttachmentAdded(id, quick) {\r\n                              " +
+"  var data = { id: id };\r\n                                $.ajax({\r\n            " +
+"                        url: \'");
 
             
-            #line 71 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 83 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.Device.Attachment()));
 
             
@@ -546,39 +550,36 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "href\', \'");
 
             
-            #line 106 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 118 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.Device.AttachmentDownload()));
 
             
             #line default
             #line hidden
-WriteLiteral(@"/' + a.Id);
-                                e.find('.comments').text(a.Description);
-                                e.find('.author').text(a.Author);
-                                e.find('.timestamp').text(a.TimestampFull).attr('title', a.TimestampFull).livestamp(a.TimestampUnixEpoc);
-                                if (canRemove)
-                                    e.find('.remove').click(removeAttachment);
-                                if (!quick)
-                                    e.hide();
-                                $attachmentOutput.prepend(e);
-                                onUpdate();
-                                if (!quick)
-                                    e.show('slow');
-                                if (a.MimeType.toLowerCase().indexOf('image/') == 0)
-                                    e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
-                                else
-                                    e.click(onDownload);
-
-                                // Add Thumbnail
-                                var buildThumbnail = function () {
-                                    var retryCount = 0;
-                                    var img = e.find('.icon img');
-
-                                    var setThumbnailUrl = function () {
-                                        img.attr('src', '");
+WriteLiteral("/\' + a.Id);\r\n                                e.find(\'.comments\').text(a.Descripti" +
+"on);\r\n                                e.find(\'.author\').text(a.Author);\r\n       " +
+"                         e.find(\'.timestamp\').text(a.TimestampFull).attr(\'title\'" +
+", a.TimestampFull).livestamp(a.TimestampUnixEpoc);\r\n                            " +
+"    if (canRemove)\r\n                                    e.find(\'.remove\').click(" +
+"removeAttachment);\r\n                                if (!quick)\r\n               " +
+"                     e.hide();\r\n                                $attachmentOutpu" +
+"t.prepend(e);\r\n                                onUpdate();\r\n                    " +
+"            if (!quick)\r\n                                    e.show(\'slow\');\r\n  " +
+"                              if (a.MimeType.toLowerCase().indexOf(\'image/\') == " +
+"0)\r\n                                    e.shadowbox({ gallery: \'attachments\', pl" +
+"ayer: \'img\', title: a.Description });\r\n                                else if (" +
+"a.MimeType.toLowerCase().indexOf(\'application/pdf\') == 0 && navigator.pdfViewerE" +
+"nabled)\r\n                                    e.shadowbox({ gallery: \'attachments" +
+"\', player: \'iframe\', title: a.Description });\r\n                                e" +
+"lse\r\n                                    e.click(onDownload);\r\n\r\n               " +
+"                 // Add Thumbnail\r\n                                var buildThum" +
+"bnail = function () {\r\n                                    var retryCount = 0;\r\n" +
+"                                    var img = e.find(\'.icon img\');\r\n\r\n          " +
+"                          var setThumbnailUrl = function () {\r\n                 " +
+"                       img.attr(\'src\', \'");
 
             
-            #line 129 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 143 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.Device.AttachmentThumbnail()));
 
             
@@ -617,61 +618,60 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "mentRemoved(id) {\r\n                                var a = $attachmentOutput.fin" +
 "d(\'a[data-attachmentid=\' + id + \']\');\r\n\r\n                                a.hide(" +
 "300).delay(300).queue(function () {\r\n                                    var $th" +
-"is = $(this);\r\n                                    if ($this.attr(\'data-mimetype" +
-"\').toLowerCase().indexOf(\'image/\') == 0)\r\n                                      " +
-"  Shadowbox.removeCache(this);\r\n                                    $this.find(\'" +
-".timestamp\').livestamp(\'destroy\');\r\n                                    $this.re" +
-"move();\r\n                                    onUpdate();\r\n                      " +
-"          });\r\n                            }\r\n\r\n                            func" +
-"tion onUpdate() {\r\n                                var attachmentCount = $attach" +
-"mentOutput.children(\'a\').length;\r\n                                var tabHeading" +
-" = \'Attachments [\' + attachmentCount + \']\';\r\n                                $(\'" +
-"#DeviceDetailTab-ResourcesLink\').text(tabHeading);\r\n                            " +
-"}\r\n\r\n                            $Attachments\r\n                                ." +
-"find(\'.attachmentInput span.download-all\')\r\n                                .on(" +
-"\'click\', function (event) {\r\n                                    const downloadA" +
-"llUrl = $Attachments.attr(\'data-downloadallurl\');\r\n                             " +
-"       const id = $Attachments.attr(\'data-id\');\r\n                               " +
-"     const $this = $(this);\r\n\r\n                                    if ($this.has" +
-"Class(\'fa-spinner\'))\r\n                                        return;\r\n\r\n       " +
-"                             $this\r\n                                        .rem" +
-"oveClass(\'fa-download\')\r\n                                        .addClass(\'fa-s" +
-"pinner fa-spin\');\r\n\r\n                                    if (!$attachmentDownloa" +
-"dHost) {\r\n                                        $attachmentDownloadHost = $(\'<" +
-"iframe>\')\r\n                                            .attr({ \'id\': \'Attachment" +
-"sDownloadHost\', \'name\': \'AttachmentsDownloadHost\', \'title\': \'Attachment Download" +
-" Host\' })\r\n                                            .addClass(\'hidden\')\r\n    " +
-"                                        .appendTo(\'body\')\r\n                     " +
-"                       .contents();\r\n                                    }\r\n    " +
-"                                const $form = $(\'<form>\')\r\n                     " +
-"                   .attr({\r\n                                            method: " +
-"\'POST\',\r\n                                            action: downloadAllUrl,\r\n  " +
-"                                          target: \'AttachmentsDownloadHost\'\r\n   " +
-"                                     })\r\n                                       " +
-" .append($(\'<input>\')\r\n                                            .attr({ type:" +
-" \'hidden\', name: \'__RequestVerificationToken\' })\r\n                              " +
-"              .val(document.body.dataset.antiforgery))\r\n                        " +
-"                .append($(\'<input>\')\r\n                                          " +
-"  .attr({ type: \'hidden\', name: \'id\' })\r\n                                       " +
-"     .val(id))\r\n                                        .appendTo(document.body)" +
-"\r\n                                        .trigger(\'submit\');\r\n\r\n               " +
-"                     window.setTimeout(function () {\r\n                          " +
-"              $this\r\n                                            .removeClass(\'f" +
-"a-spinner fa-spin\')\r\n                                            .addClass(\'fa-d" +
-"ownload\');\r\n                                        $form.remove();\r\n           " +
-"                         }, 2000);\r\n                                });\r\n\r\n     " +
-"                       document.DiscoFunctions.onAttachmentAdded = onAttachmentA" +
-"dded;\r\n                            document.DiscoFunctions.onAttachmentRemoved =" +
-" onAttachmentRemoved;\r\n\r\n");
+"is = $(this);\r\n                                    if (this[\'shadowboxCacheKey\']" +
+")\r\n                                        Shadowbox.removeCache(this);\r\n       " +
+"                             $this.find(\'.timestamp\').livestamp(\'destroy\');\r\n   " +
+"                                 $this.remove();\r\n                              " +
+"      onUpdate();\r\n                                });\r\n                        " +
+"    }\r\n\r\n                            function onUpdate() {\r\n                    " +
+"            var attachmentCount = $attachmentOutput.children(\'a\').length;\r\n     " +
+"                           var tabHeading = \'Attachments [\' + attachmentCount + " +
+"\']\';\r\n                                $(\'#DeviceDetailTab-ResourcesLink\').text(t" +
+"abHeading);\r\n                            }\r\n\r\n                            $Attac" +
+"hments\r\n                                .find(\'.attachmentInput span.download-al" +
+"l\')\r\n                                .on(\'click\', function (event) {\r\n          " +
+"                          const downloadAllUrl = $Attachments.attr(\'data-downloa" +
+"dallurl\');\r\n                                    const id = $Attachments.attr(\'da" +
+"ta-id\');\r\n                                    const $this = $(this);\r\n\r\n        " +
+"                            if ($this.hasClass(\'fa-spinner\'))\r\n                 " +
+"                       return;\r\n\r\n                                    $this\r\n   " +
+"                                     .removeClass(\'fa-download\')\r\n              " +
+"                          .addClass(\'fa-spinner fa-spin\');\r\n\r\n                  " +
+"                  if (!$attachmentDownloadHost) {\r\n                             " +
+"           $attachmentDownloadHost = $(\'<iframe>\')\r\n                            " +
+"                .attr({ \'id\': \'AttachmentsDownloadHost\', \'name\': \'AttachmentsDow" +
+"nloadHost\', \'title\': \'Attachment Download Host\' })\r\n                            " +
+"                .addClass(\'hidden\')\r\n                                           " +
+" .appendTo(\'body\')\r\n                                            .contents();\r\n  " +
+"                                  }\r\n                                    const $" +
+"form = $(\'<form>\')\r\n                                        .attr({\r\n           " +
+"                                 method: \'POST\',\r\n                              " +
+"              action: downloadAllUrl,\r\n                                         " +
+"   target: \'AttachmentsDownloadHost\'\r\n                                        })" +
+"\r\n                                        .append($(\'<input>\')\r\n                " +
+"                            .attr({ type: \'hidden\', name: \'__RequestVerification" +
+"Token\' })\r\n                                            .val(document.body.datase" +
+"t.antiforgery))\r\n                                        .append($(\'<input>\')\r\n " +
+"                                           .attr({ type: \'hidden\', name: \'id\' })" +
+"\r\n                                            .val(id))\r\n                       " +
+"                 .appendTo(document.body)\r\n                                     " +
+"   .trigger(\'submit\');\r\n\r\n                                    window.setTimeout(" +
+"function () {\r\n                                        $this\r\n                  " +
+"                          .removeClass(\'fa-spinner fa-spin\')\r\n                  " +
+"                          .addClass(\'fa-download\');\r\n                           " +
+"             $form.remove();\r\n                                    }, 2000);\r\n   " +
+"                             });\r\n\r\n                            document.DiscoFu" +
+"nctions.onAttachmentAdded = onAttachmentAdded;\r\n                            docu" +
+"ment.DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;\r\n\r\n");
 
             
-            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 249 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 249 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
@@ -718,7 +718,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 "                      //#endregion\r\n                            ");
 
             
-            #line 282 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 296 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    }
 
             
@@ -727,7 +727,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 283 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 297 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -770,7 +770,7 @@ WriteLiteral("\r\n                            //#region Remove Attachments\r\n  
 "       }\r\n                            //#endregion\r\n                        ");
 
             
-            #line 334 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 348 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -781,6 +781,8 @@ WriteLiteral(@"
                                 $this = $(this);
                                 if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
                                     $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                                else if ($this.attr('data-mimetype').toLowerCase().indexOf('application/pdf') == 0 && navigator.pdfViewerEnabled)
+                                    $this.shadowbox({ gallery: 'attachments', player: 'iframe', title: $this.find('.comments').text() });
                                 else
                                     $this.click(onDownload);
                             });
@@ -807,7 +809,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 355 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 371 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             

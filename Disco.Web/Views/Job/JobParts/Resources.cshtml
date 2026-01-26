@@ -289,7 +289,19 @@
     <script>
         Shadowbox.init({
             skipSetup: true,
-            modal: true
+            modal: true,
+            onOpen: function (obj) {
+                if (obj.player === 'iframe' && obj.content.indexOf('inline=True') === -1) {
+                    obj.content += (obj.content.indexOf('?') === -1 ? '?' : '&') + 'inline=True';
+                }
+                return true;
+            },
+            onChange: function (obj) {
+                if (obj.player === 'iframe' && obj.content.indexOf('inline=True') === -1) {
+                    obj.content += (obj.content.indexOf('?') === -1 ? '?' : '&') + 'inline=True';
+                }
+                return true;
+            }
         });
 
         if (!document.DiscoFunctions) {
@@ -466,6 +478,8 @@
                         e.show('slow');
                     if (a.MimeType.toLowerCase().indexOf('image/') == 0)
                         e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
+                    else if (a.MimeType.toLowerCase().indexOf('application/pdf') == 0 && navigator.pdfViewerEnabled)
+                        e.shadowbox({ gallery: 'attachments', player: 'iframe', title: a.Description });
                     else
                         e.click(onDownload);
 
@@ -520,7 +534,7 @@
                 var $element = $attachmentOutput.find('a[data-attachmentid="' + key + '"]');
                 if ($element.length > 0) {
                     $element.hide(300).delay(300).queue(function () {
-                        if ($element.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
+                        if (this['shadowboxCacheKey'])
                             Shadowbox.removeCache(this);
                         $element.remove();
                         document.DiscoFunctions.liveAfterUpdate();
@@ -532,6 +546,8 @@
                 $this = $(this);
                 if ($this.attr('data-mimetype').toLowerCase().indexOf('image/') == 0)
                     $this.shadowbox({ gallery: 'attachments', player: 'img', title: $this.find('.comments').text() });
+                else if ($this.attr('data-mimetype').toLowerCase().indexOf('application/pdf') == 0 && navigator.pdfViewerEnabled)
+                    $this.shadowbox({ gallery: 'attachments', player: 'iframe', title: $this.find('.comments').text() });
                 else
                     $this.click(onDownload);
             });

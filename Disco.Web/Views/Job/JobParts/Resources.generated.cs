@@ -1008,7 +1008,19 @@ WriteLiteral("\r\n            async function loadLiveComment(id) {\r\n\r\n      
 WriteLiteral(@"    <script>
         Shadowbox.init({
             skipSetup: true,
-            modal: true
+            modal: true,
+            onOpen: function (obj) {
+                if (obj.player === 'iframe' && obj.content.indexOf('inline=True') === -1) {
+                    obj.content += (obj.content.indexOf('?') === -1 ? '?' : '&') + 'inline=True';
+                }
+                return true;
+            },
+            onChange: function (obj) {
+                if (obj.player === 'iframe' && obj.content.indexOf('inline=True') === -1) {
+                    obj.content += (obj.content.indexOf('?') === -1 ? '?' : '&') + 'inline=True';
+                }
+                return true;
+            }
         });
 
         if (!document.DiscoFunctions) {
@@ -1019,7 +1031,7 @@ WriteLiteral(@"    <script>
             var jobId = parseInt('");
 
             
-            #line 300 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 312 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1036,13 +1048,13 @@ WriteLiteral(@"');
 ");
 
             
-            #line 308 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 320 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 308 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 320 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canAddAttachments)
             {
             
@@ -1080,7 +1092,7 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            attachmen
 "Tab.resourcesIndex);\r\n            });\r\n            //#endregion\r\n            ");
 
             
-            #line 355 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 367 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1089,13 +1101,13 @@ WriteLiteral("\r\n            //#region Add Attachments\r\n            attachmen
 WriteLiteral("\r\n");
 
             
-            #line 357 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 369 "..\..\Views\Job\JobParts\Resources.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 357 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 369 "..\..\Views\Job\JobParts\Resources.cshtml"
              if (canRemoveAnyAttachments || canRemoveOwnAttachments)
             {
             
@@ -1148,7 +1160,7 @@ WriteLiteral("></i>&nbsp;Are you sure?</p></div>\')\r\n                        .
 "          }\r\n\r\n            //#endregion\r\n\r\n            ");
 
             
-            #line 415 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 427 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
@@ -1158,7 +1170,7 @@ WriteLiteral("\r\n            function addAttachment(key, quick) {\r\n          
 "id: key };\r\n                $.ajax({\r\n                    url: \'");
 
             
-            #line 420 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 432 "..\..\Views\Job\JobParts\Resources.cshtml"
                      Write(Url.Action(MVC.API.Job.Attachment()));
 
             
@@ -1190,7 +1202,7 @@ WriteLiteral("\',\r\n                    dataType: \'json\',\r\n                
 "\', \'");
 
             
-            #line 455 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 467 "..\..\Views\Job\JobParts\Resources.cshtml"
                                                                                                   Write(Url.Action(MVC.API.Job.AttachmentDownload()));
 
             
@@ -1210,6 +1222,8 @@ WriteLiteral(@"/' + a.Id);
                         e.show('slow');
                     if (a.MimeType.toLowerCase().indexOf('image/') == 0)
                         e.shadowbox({ gallery: 'attachments', player: 'img', title: a.Description });
+                    else if (a.MimeType.toLowerCase().indexOf('application/pdf') == 0 && navigator.pdfViewerEnabled)
+                        e.shadowbox({ gallery: 'attachments', player: 'iframe', title: a.Description });
                     else
                         e.click(onDownload);
 
@@ -1222,7 +1236,7 @@ WriteLiteral(@"/' + a.Id);
                             img.attr('src', '");
 
             
-            #line 478 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 492 "..\..\Views\Job\JobParts\Resources.cshtml"
                                          Write(Url.Action(MVC.API.Job.AttachmentThumbnail()));
 
             
@@ -1255,51 +1269,54 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 "key) {\r\n                var $element = $attachmentOutput.find(\'a[data-attachment" +
 "id=\"\' + key + \'\"]\');\r\n                if ($element.length > 0) {\r\n              " +
 "      $element.hide(300).delay(300).queue(function () {\r\n                       " +
-" if ($element.attr(\'data-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n     " +
-"                       Shadowbox.removeCache(this);\r\n                        $el" +
-"ement.remove();\r\n                        document.DiscoFunctions.liveAfterUpdate" +
-"();\r\n                    });\r\n                }\r\n            }\r\n\r\n            $a" +
-"ttachmentOutput.children(\'a\').each(function () {\r\n                $this = $(this" +
-");\r\n                if ($this.attr(\'data-mimetype\').toLowerCase().indexOf(\'image" +
-"/\') == 0)\r\n                    $this.shadowbox({ gallery: \'attachments\', player:" +
-" \'img\', title: $this.find(\'.comments\').text() });\r\n                else\r\n       " +
-"             $this.click(onDownload);\r\n            });\r\n\r\n            $Attachmen" +
-"ts\r\n                .find(\'.attachmentInput span.download-all\')\r\n               " +
-" .on(\'click\', function (event) {\r\n                    const downloadAllUrl = $At" +
-"tachments.attr(\'data-downloadallurl\');\r\n                    const $this = $(this" +
-");\r\n\r\n                    if ($this.hasClass(\'fa-spinner\'))\r\n                   " +
-"     return;\r\n\r\n                    $this\r\n                        .removeClass(" +
-"\'fa-download\')\r\n                        .addClass(\'fa-spinner fa-spin\');\r\n\r\n    " +
-"                if (!$attachmentDownloadHost) {\r\n                        $attach" +
-"mentDownloadHost = $(\'<iframe>\')\r\n                            .attr({ \'id\': \'Att" +
-"achmentsDownloadHost\', \'name\': \'AttachmentsDownloadHost\', \'title\': \'Attachment D" +
-"ownload Host\' })\r\n                            .addClass(\'hidden\')\r\n             " +
-"               .appendTo(\'body\')\r\n                            .contents();\r\n    " +
-"                }\r\n                    const $form = $(\'<form>\')\r\n              " +
-"          .attr({\r\n                            method: \'POST\',\r\n                " +
-"            action: downloadAllUrl,\r\n                            target: \'Attach" +
-"mentsDownloadHost\'\r\n                        })\r\n                        .append(" +
-"$(\'<input>\')\r\n                            .attr({ type: \'hidden\', name: \'__Reque" +
-"stVerificationToken\' })\r\n                            .val(document.body.dataset." +
-"antiforgery))\r\n                        .appendTo(document.body)\r\n               " +
-"         .trigger(\'submit\');\r\n\r\n                    window.setTimeout(function (" +
-") {\r\n                        $this\r\n                            .removeClass(\'fa" +
-"-spinner fa-spin\')\r\n                            .addClass(\'fa-download\');\r\n     " +
-"                   $form.remove();\r\n                    }, 2000);\r\n             " +
-"   });\r\n\r\n            // Add Globally Available Functions\r\n            document." +
-"DiscoFunctions.liveAddAttachment = addAttachment;\r\n            document.DiscoFun" +
-"ctions.liveRemoveAttachment = removeAttachment;\r\n\r\n            //#endregion\r\n   " +
-"     });\r\n\r\n\r\n    </script>\r\n");
+" if (this[\'shadowboxCacheKey\'])\r\n                            Shadowbox.removeCac" +
+"he(this);\r\n                        $element.remove();\r\n                        d" +
+"ocument.DiscoFunctions.liveAfterUpdate();\r\n                    });\r\n            " +
+"    }\r\n            }\r\n\r\n            $attachmentOutput.children(\'a\').each(functio" +
+"n () {\r\n                $this = $(this);\r\n                if ($this.attr(\'data-m" +
+"imetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n                    $this.shado" +
+"wbox({ gallery: \'attachments\', player: \'img\', title: $this.find(\'.comments\').tex" +
+"t() });\r\n                else if ($this.attr(\'data-mimetype\').toLowerCase().inde" +
+"xOf(\'application/pdf\') == 0 && navigator.pdfViewerEnabled)\r\n                    " +
+"$this.shadowbox({ gallery: \'attachments\', player: \'iframe\', title: $this.find(\'." +
+"comments\').text() });\r\n                else\r\n                    $this.click(onD" +
+"ownload);\r\n            });\r\n\r\n            $Attachments\r\n                .find(\'." +
+"attachmentInput span.download-all\')\r\n                .on(\'click\', function (even" +
+"t) {\r\n                    const downloadAllUrl = $Attachments.attr(\'data-downloa" +
+"dallurl\');\r\n                    const $this = $(this);\r\n\r\n                    if" +
+" ($this.hasClass(\'fa-spinner\'))\r\n                        return;\r\n\r\n            " +
+"        $this\r\n                        .removeClass(\'fa-download\')\r\n            " +
+"            .addClass(\'fa-spinner fa-spin\');\r\n\r\n                    if (!$attach" +
+"mentDownloadHost) {\r\n                        $attachmentDownloadHost = $(\'<ifram" +
+"e>\')\r\n                            .attr({ \'id\': \'AttachmentsDownloadHost\', \'name" +
+"\': \'AttachmentsDownloadHost\', \'title\': \'Attachment Download Host\' })\r\n          " +
+"                  .addClass(\'hidden\')\r\n                            .appendTo(\'bo" +
+"dy\')\r\n                            .contents();\r\n                    }\r\n         " +
+"           const $form = $(\'<form>\')\r\n                        .attr({\r\n         " +
+"                   method: \'POST\',\r\n                            action: download" +
+"AllUrl,\r\n                            target: \'AttachmentsDownloadHost\'\r\n        " +
+"                })\r\n                        .append($(\'<input>\')\r\n              " +
+"              .attr({ type: \'hidden\', name: \'__RequestVerificationToken\' })\r\n   " +
+"                         .val(document.body.dataset.antiforgery))\r\n             " +
+"           .appendTo(document.body)\r\n                        .trigger(\'submit\');" +
+"\r\n\r\n                    window.setTimeout(function () {\r\n                       " +
+" $this\r\n                            .removeClass(\'fa-spinner fa-spin\')\r\n        " +
+"                    .addClass(\'fa-download\');\r\n                        $form.rem" +
+"ove();\r\n                    }, 2000);\r\n                });\r\n\r\n            // Add" +
+" Globally Available Functions\r\n            document.DiscoFunctions.liveAddAttach" +
+"ment = addAttachment;\r\n            document.DiscoFunctions.liveRemoveAttachment " +
+"= removeAttachment;\r\n\r\n            //#endregion\r\n        });\r\n\r\n\r\n    </script>\r" +
+"\n");
 
             
-            #line 588 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 604 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
 
             
             #line default
             #line hidden
             
-            #line 589 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 605 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs || canShowAttachments)
 {
 
@@ -1309,7 +1326,7 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                        };\
 WriteLiteral("    <script>\r\n        $(function () {\r\n            var jobId = parseInt(\'");
 
             
-            #line 593 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 609 "..\..\Views\Job\JobParts\Resources.cshtml"
                               Write(Model.Job.Id);
 
             
@@ -1319,7 +1336,7 @@ WriteLiteral("\');\r\n\r\n            //#region LiveEvents\r\n            var hu
 "dates;\r\n\r\n            // Map Functions\r\n");
 
             
-            #line 599 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 615 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowLogs)
 {
             
@@ -1330,14 +1347,14 @@ WriteLiteral("\r\n            hub.client.addLog = document.DiscoFunctions.liveLo
 "      ");
 
             
-            #line 603 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 619 "..\..\Views\Job\JobParts\Resources.cshtml"
                    }
 
             
             #line default
             #line hidden
             
-            #line 604 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 620 "..\..\Views\Job\JobParts\Resources.cshtml"
  if (canShowAttachments)
 {
             
@@ -1358,7 +1375,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 617 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 633 "..\..\Views\Job\JobParts\Resources.cshtml"
        }
 
             
@@ -1396,7 +1413,7 @@ WriteLiteral(@"
 ");
 
             
-            #line 647 "..\..\Views\Job\JobParts\Resources.cshtml"
+            #line 663 "..\..\Views\Job\JobParts\Resources.cshtml"
 }
             
             #line default

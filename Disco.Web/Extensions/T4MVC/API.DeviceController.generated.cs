@@ -544,6 +544,7 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_AttachmentDownload
         {
             public readonly string id = "id";
+            public readonly string inline = "inline";
         }
         static readonly ActionParamsClass_AttachmentDownloadAll s_params_AttachmentDownloadAll = new ActionParamsClass_AttachmentDownloadAll();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -945,14 +946,15 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id);
+        partial void AttachmentDownloadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, bool? inline);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult AttachmentDownload(int id)
+        public override System.Web.Mvc.ActionResult AttachmentDownload(int id, bool? inline)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            AttachmentDownloadOverride(callInfo, id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inline", inline);
+            AttachmentDownloadOverride(callInfo, id, inline);
             return callInfo;
         }
 
