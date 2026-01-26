@@ -32,8 +32,6 @@ namespace Disco.Web.Areas.API.Controllers
         private const string pInsuredUntil = "insureduntil";
         private const string pInsuranceDetails = "insurancedetails";
         private const string pComments = "comments";
-        private const string pDevicesLinkedGroup = "deviceslinkedgroup";
-        private const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -93,12 +91,6 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pComments:
                             UpdateComments(deviceBatch, value);
-                            break;
-                        case pDevicesLinkedGroup:
-                            UpdateDevicesLinkedGroup(deviceBatch, value);
-                            break;
-                        case pAssignedUsersLinkedGroup:
-                            UpdateAssignedUsersLinkedGroup(deviceBatch, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -224,18 +216,17 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        public virtual ActionResult UpdateDevicesLinkedGroup(int id, string groupId = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
-                var deviceBatch = Database.DeviceBatches.Find(id);
-                if (deviceBatch == null)
-                    throw new ArgumentException("Invalid Device Batch Id", "id");
+                var deviceBatch = Database.DeviceBatches.Find(id)
+                    ?? throw new ArgumentException("Invalid Device Batch Id", nameof(id));
 
-                var syncTaskStatus = UpdateDevicesLinkedGroup(deviceBatch, GroupId);
+                var syncTaskStatus = UpdateDevicesLinkedGroup(deviceBatch, groupId, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
                         return RedirectToAction(MVC.Config.DeviceBatch.Index(deviceBatch.Id));
@@ -257,18 +248,17 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [DiscoAuthorize(Claims.Config.DeviceBatch.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string groupId = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
-                var deviceBatch = Database.DeviceBatches.Find(id);
-                if (deviceBatch == null)
-                    throw new ArgumentException("Invalid Device Batch Id", "id");
+                var deviceBatch = Database.DeviceBatches.Find(id)
+                    ?? throw new ArgumentException("Invalid Device Batch Id", nameof(id));
 
-                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(deviceBatch, GroupId);
+                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(deviceBatch, groupId, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
                         return RedirectToAction(MVC.Config.DeviceBatch.Index(deviceBatch.Id));
@@ -486,9 +476,9 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceBatch DeviceBatch, string devicesLinkedGroup)
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceBatch DeviceBatch, string devicesLinkedGroup, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchDevicesManagedGroup.GetKey(DeviceBatch), devicesLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchDevicesManagedGroup.GetKey(DeviceBatch), devicesLinkedGroup, null, updateDescription);
 
             if (DeviceBatch.DevicesLinkedGroup != configJson)
             {
@@ -503,9 +493,9 @@ namespace Disco.Web.Areas.API.Controllers
             return null;
         }
 
-        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceBatch DeviceBatch, string assignedUsersLinkedGroup)
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceBatch DeviceBatch, string assignedUsersLinkedGroup, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchAssignedUsersManagedGroup.GetKey(DeviceBatch), assignedUsersLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceBatchAssignedUsersManagedGroup.GetKey(DeviceBatch), assignedUsersLinkedGroup, null, updateDescription);
 
             if (DeviceBatch.AssignedUsersLinkedGroup != configJson)
             {

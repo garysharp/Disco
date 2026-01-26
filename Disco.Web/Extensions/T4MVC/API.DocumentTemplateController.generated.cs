@@ -545,8 +545,9 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateDevicesLinkedGroup
         {
             public readonly string id = "id";
-            public readonly string GroupId = "GroupId";
-            public readonly string FilterBeginDate = "FilterBeginDate";
+            public readonly string groupId = "groupId";
+            public readonly string filterBeginDate = "filterBeginDate";
+            public readonly string updateDescription = "updateDescription";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateUsersLinkedGroup s_params_UpdateUsersLinkedGroup = new ActionParamsClass_UpdateUsersLinkedGroup();
@@ -556,8 +557,9 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateUsersLinkedGroup
         {
             public readonly string id = "id";
-            public readonly string GroupId = "GroupId";
-            public readonly string FilterBeginDate = "FilterBeginDate";
+            public readonly string groupId = "groupId";
+            public readonly string filterBeginDate = "filterBeginDate";
+            public readonly string updateDescription = "updateDescription";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_ImporterThumbnail s_params_ImporterThumbnail = new ActionParamsClass_ImporterThumbnail();
@@ -1016,32 +1018,34 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect);
+        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string groupId, System.DateTime? filterBeginDate, bool? updateDescription, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(string id, string groupId, System.DateTime? filterBeginDate, bool? updateDescription, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FilterBeginDate", FilterBeginDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "groupId", groupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "filterBeginDate", filterBeginDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "updateDescription", updateDescription);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateDevicesLinkedGroupOverride(callInfo, id, GroupId, FilterBeginDate, redirect);
+            UpdateDevicesLinkedGroupOverride(callInfo, id, groupId, filterBeginDate, updateDescription, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect);
+        partial void UpdateUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string groupId, System.DateTime? filterBeginDate, bool? updateDescription, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateUsersLinkedGroup(string id, string GroupId, System.DateTime? FilterBeginDate, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateUsersLinkedGroup(string id, string groupId, System.DateTime? filterBeginDate, bool? updateDescription, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateUsersLinkedGroup);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "FilterBeginDate", FilterBeginDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "groupId", groupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "filterBeginDate", filterBeginDate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "updateDescription", updateDescription);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateUsersLinkedGroupOverride(callInfo, id, GroupId, FilterBeginDate, redirect);
+            UpdateUsersLinkedGroupOverride(callInfo, id, groupId, filterBeginDate, updateDescription, redirect);
             return callInfo;
         }
 

@@ -177,22 +177,33 @@ WriteLiteral(" data-linkedgroupfilterdate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(" data-linkedroupdescription=\"");
+WriteLiteral(" data-linkedgroupdescription=\"");
 
             
             #line 25 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-                                                                                                                                                                                                                                                                                                                                                       Write(Model.CategoryDescription);
+                                                                                                                                                                                                                                                                                                                                                        Write(Model.CategoryDescription);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(" data-linkedroupupdateurl=\"");
+WriteLiteral(" data-linkedgroupupdateurl=\"");
 
             
             #line 25 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                               Write(Model.UpdateUrl);
+                                                                                                                                                                                                                                                                                                                                                                                                                 Write(Model.UpdateUrl);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-linkedgroupupdatedescription=\"");
+
+            
+            #line 25 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Write(Model.ManagedGroup.Configuration.UpdateDescription);
 
             
             #line default
@@ -303,22 +314,33 @@ WriteLiteral(" data-linkedgroupfilterdate=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(" data-linkedroupdescription=\"");
+WriteLiteral(" data-linkedgroupdescription=\"");
 
             
             #line 37 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-                                                                                                                                                                                                                                                                                                                                                       Write(Model.CategoryDescription);
+                                                                                                                                                                                                                                                                                                                                                        Write(Model.CategoryDescription);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(" data-linkedroupupdateurl=\"");
+WriteLiteral(" data-linkedgroupupdateurl=\"");
 
             
             #line 37 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                               Write(Model.UpdateUrl);
+                                                                                                                                                                                                                                                                                                                                                                                                                 Write(Model.UpdateUrl);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-linkedgroupupdatedescription=\"");
+
+            
+            #line 37 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Write(Model.ManagedGroup.Configuration.UpdateDescription);
 
             
             #line default
@@ -356,27 +378,29 @@ WriteLiteral(" data-linkedgroupfilterdateoption=\"");
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(" data-linkedroupdescription=\"");
+WriteLiteral(" data-linkedgroupdescription=\"");
 
             
             #line 42 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-                                                                                                                                                                                                          Write(Model.CategoryDescription);
+                                                                                                                                                                                                           Write(Model.CategoryDescription);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
 
-WriteLiteral(" data-linkedroupupdateurl=\"");
+WriteLiteral(" data-linkedgroupupdateurl=\"");
 
             
             #line 42 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-                                                                                                                                                                                                                                                                  Write(Model.UpdateUrl);
+                                                                                                                                                                                                                                                                    Write(Model.UpdateUrl);
 
             
             #line default
             #line hidden
 WriteLiteral("\"");
+
+WriteLiteral(" data-linkedgroupupdatedescription=\"True\"");
 
 WriteLiteral(">Link Group</button>\r\n");
 
@@ -398,14 +422,14 @@ WriteLiteral("                    <div");
 
 WriteLiteral(" class=\"code\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2966), Tuple.Create("\"", 2983)
+WriteAttribute("title", Tuple.Create(" title=\"", 3193), Tuple.Create("\"", 3210)
             
             #line 51 "..\..\Areas\Config\Views\Shared\LinkedGroupInstance.cshtml"
-, Tuple.Create(Tuple.Create("", 2974), Tuple.Create<System.Object, System.Int32>(group.Id
+, Tuple.Create(Tuple.Create("", 3201), Tuple.Create<System.Object, System.Int32>(group.Id
             
             #line default
             #line hidden
-, 2974), false)
+, 3201), false)
 );
 
 WriteLiteral(">\r\n                        <i");

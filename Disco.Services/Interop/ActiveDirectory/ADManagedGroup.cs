@@ -80,21 +80,23 @@ namespace Disco.Services.Interop.ActiveDirectory
             return JsonConvert.DeserializeObject<ADManagedGroupConfiguration>(ConfigurationJson);
         }
         public static string ValidConfigurationToJson(string GroupKey, string GroupId, DateTime? FilterBeginDate)
+            => ValidConfigurationToJson(GroupKey, GroupId, FilterBeginDate, true);
+        public static string ValidConfigurationToJson(string groupKey, string groupId, DateTime? filterBeginDate, bool updateDescription)
         {
-            if (string.IsNullOrWhiteSpace(GroupId))
-                GroupId = null;
+            if (string.IsNullOrWhiteSpace(groupId))
+                groupId = null;
 
-            if (GroupId != null)
-                GroupId = ActiveDirectory.Context.ManagedGroups.ValidateGroupId(GroupId, GroupKey);
-
-            if (GroupId == null)
+            if (groupId != null)
+                groupId = ActiveDirectory.Context.ManagedGroups.ValidateGroupId(groupId, groupKey);
+            if (groupId == null)
                 return null;
             else
                 return JsonConvert.SerializeObject(new ADManagedGroupConfiguration()
                 {
-                    GroupId = GroupId,
-                    FilterBeginDate = FilterBeginDate
-                }, new JsonSerializerSettings() { DefaultValueHandling = DefaultValueHandling.Ignore });
+                    GroupId = groupId,
+                    FilterBeginDate = filterBeginDate,
+                    UpdateDescription = updateDescription,
+                }, new JsonSerializerSettings());
         }
 
         public abstract void Dispose();

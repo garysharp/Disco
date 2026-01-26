@@ -443,7 +443,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateDevicesLinkedGroup
         {
             public readonly string id = "id";
-            public readonly string GroupId = "GroupId";
+            public readonly string groupId = "groupId";
+            public readonly string updateDescription = "updateDescription";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateAssignedUsersLinkedGroup s_params_UpdateAssignedUsersLinkedGroup = new ActionParamsClass_UpdateAssignedUsersLinkedGroup();
@@ -453,7 +454,8 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_UpdateAssignedUsersLinkedGroup
         {
             public readonly string id = "id";
-            public readonly string GroupId = "GroupId";
+            public readonly string groupId = "groupId";
+            public readonly string updateDescription = "updateDescription";
             public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
@@ -753,30 +755,32 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+        partial void UpdateDevicesLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string groupId, bool? updateDescription, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(int id, string GroupId, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateDevicesLinkedGroup(int id, string groupId, bool? updateDescription, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateDevicesLinkedGroup);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "groupId", groupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "updateDescription", updateDescription);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateDevicesLinkedGroupOverride(callInfo, id, GroupId, redirect);
+            UpdateDevicesLinkedGroupOverride(callInfo, id, groupId, updateDescription, redirect);
             return callInfo;
         }
 
         [NonAction]
-        partial void UpdateAssignedUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string GroupId, bool redirect);
+        partial void UpdateAssignedUsersLinkedGroupOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string groupId, bool? updateDescription, bool redirect);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId, bool redirect)
+        public override System.Web.Mvc.ActionResult UpdateAssignedUsersLinkedGroup(int id, string groupId, bool? updateDescription, bool redirect)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAssignedUsersLinkedGroup);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "GroupId", GroupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "groupId", groupId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "updateDescription", updateDescription);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
-            UpdateAssignedUsersLinkedGroupOverride(callInfo, id, GroupId, redirect);
+            UpdateAssignedUsersLinkedGroupOverride(callInfo, id, groupId, updateDescription, redirect);
             return callInfo;
         }
 

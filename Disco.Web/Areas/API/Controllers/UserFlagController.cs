@@ -166,25 +166,23 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
+        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string groupId = null, DateTime? filterBeginDate = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
                     throw new ArgumentOutOfRangeException(nameof(id));
 
-                var UserFlag = Database.UserFlags.Find(id);
-                if (UserFlag == null)
-                    throw new ArgumentException("Invalid User Flag Id", nameof(id));
+                var userFlag = Database.UserFlags.Find(id)
+                    ?? throw new ArgumentException("Invalid User Flag Id", nameof(id));
 
-
-                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(UserFlag, GroupId, FilterBeginDate);
+                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(userFlag, groupId, filterBeginDate, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
-                        return RedirectToAction(MVC.Config.UserFlag.Index(UserFlag.Id));
+                        return RedirectToAction(MVC.Config.UserFlag.Index(userFlag.Id));
                     else
                     {
-                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.UserFlag.Index(UserFlag.Id)));
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.UserFlag.Index(userFlag.Id)));
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
@@ -200,25 +198,23 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [DiscoAuthorize(Claims.Config.UserFlag.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateAssignedUserDevicesLinkedGroup(int id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
+        public virtual ActionResult UpdateAssignedUserDevicesLinkedGroup(int id, string groupId = null, DateTime? filterBeginDate = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
                     throw new ArgumentOutOfRangeException(nameof(id));
 
-                var UserFlag = Database.UserFlags.Find(id);
-                if (UserFlag == null)
-                    throw new ArgumentException("Invalid User Flag Id", nameof(id));
+                var userFlag = Database.UserFlags.Find(id)
+                    ?? throw new ArgumentException("Invalid User Flag Id", nameof(id));
 
-
-                var syncTaskStatus = UpdateAssignedUserDevicesLinkedGroup(UserFlag, GroupId, FilterBeginDate);
+                var syncTaskStatus = UpdateAssignedUserDevicesLinkedGroup(userFlag, groupId, filterBeginDate, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
-                        return RedirectToAction(MVC.Config.UserFlag.Index(UserFlag.Id));
+                        return RedirectToAction(MVC.Config.UserFlag.Index(userFlag.Id));
                     else
                     {
-                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.UserFlag.Index(UserFlag.Id)));
+                        syncTaskStatus.SetFinishedUrl(Url.Action(MVC.Config.UserFlag.Index(userFlag.Id)));
                         return RedirectToAction(MVC.Config.Logging.TaskStatus(syncTaskStatus.SessionId));
                     }
                 else
@@ -340,19 +336,19 @@ namespace Disco.Web.Areas.API.Controllers
             UserFlagService.Update(Database, UserFlag);
         }
 
-        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(UserFlag UserFlag, string AssignedUsersLinkedGroup, DateTime? FilterBeginDate)
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(UserFlag userFlag, string assignedUsersLinkedGroup, DateTime? filterBeginDate, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(UserFlagUsersManagedGroup.GetKey(UserFlag), AssignedUsersLinkedGroup, FilterBeginDate);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(UserFlagUsersManagedGroup.GetKey(userFlag), assignedUsersLinkedGroup, filterBeginDate, updateDescription);
 
-            if (UserFlag.UsersLinkedGroup != configJson)
+            if (userFlag.UsersLinkedGroup != configJson)
             {
-                UserFlag.UsersLinkedGroup = configJson;
-                UserFlagService.Update(Database, UserFlag);
+                userFlag.UsersLinkedGroup = configJson;
+                UserFlagService.Update(Database, userFlag);
 
-                if (UserFlag.UsersLinkedGroup != null)
+                if (userFlag.UsersLinkedGroup != null)
                 {
                     // Sync Group
-                    if (UserFlagUsersManagedGroup.TryGetManagedGroup(UserFlag, out var managedGroup))
+                    if (UserFlagUsersManagedGroup.TryGetManagedGroup(userFlag, out var managedGroup))
                     {
                         return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
                     }
@@ -361,19 +357,19 @@ namespace Disco.Web.Areas.API.Controllers
 
             return null;
         }
-        private ScheduledTaskStatus UpdateAssignedUserDevicesLinkedGroup(UserFlag UserFlag, string AssignedUserDevicesLinkedGroup, DateTime? FilterBeginDate)
+        private ScheduledTaskStatus UpdateAssignedUserDevicesLinkedGroup(UserFlag userFlag, string assignedUserDevicesLinkedGroup, DateTime? filterBeginDate, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(UserFlagUserDevicesManagedGroup.GetKey(UserFlag), AssignedUserDevicesLinkedGroup, FilterBeginDate);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(UserFlagUserDevicesManagedGroup.GetKey(userFlag), assignedUserDevicesLinkedGroup, filterBeginDate, updateDescription);
 
-            if (UserFlag.UserDevicesLinkedGroup != configJson)
+            if (userFlag.UserDevicesLinkedGroup != configJson)
             {
-                UserFlag.UserDevicesLinkedGroup = configJson;
-                UserFlagService.Update(Database, UserFlag);
+                userFlag.UserDevicesLinkedGroup = configJson;
+                UserFlagService.Update(Database, userFlag);
 
-                if (UserFlag.UserDevicesLinkedGroup != null)
+                if (userFlag.UserDevicesLinkedGroup != null)
                 {
                     // Sync Group
-                    if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(UserFlag, out var managedGroup))
+                    if (UserFlagUserDevicesManagedGroup.TryGetManagedGroup(userFlag, out var managedGroup))
                     {
                         return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
                     }

@@ -255,18 +255,17 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateDevicesLinkedGroup(string id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
+        public virtual ActionResult UpdateDevicesLinkedGroup(string id, string groupId = null, DateTime? filterBeginDate = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(id))
-                    throw new ArgumentNullException("id");
+                    throw new ArgumentNullException(nameof(id));
 
-                var documentTemplate = Database.DocumentTemplates.Find(id);
-                if (documentTemplate == null)
-                    throw new ArgumentException("Invalid Document Template Id", "id");
+                var documentTemplate = Database.DocumentTemplates.Find(id)
+                    ?? throw new ArgumentException("Invalid Document Template Id", nameof(id));
 
-                var syncTaskStatus = UpdateDevicesLinkedGroup(documentTemplate, GroupId, FilterBeginDate);
+                var syncTaskStatus = UpdateDevicesLinkedGroup(documentTemplate, groupId, filterBeginDate, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
                         return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
@@ -289,18 +288,17 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateUsersLinkedGroup(string id, string GroupId = null, DateTime? FilterBeginDate = null, bool redirect = false)
+        public virtual ActionResult UpdateUsersLinkedGroup(string id, string groupId = null, DateTime? filterBeginDate = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(id))
-                    throw new ArgumentNullException("id");
+                    throw new ArgumentNullException(nameof(id));
 
-                var documentTemplate = Database.DocumentTemplates.Find(id);
-                if (documentTemplate == null)
-                    throw new ArgumentException("Invalid Document Template Id", "id");
+                var documentTemplate = Database.DocumentTemplates.Find(id)
+                    ?? throw new ArgumentException("Invalid Document Template Id", nameof(id));
 
-                var syncTaskStatus = UpdateUsersLinkedGroup(documentTemplate, GroupId, FilterBeginDate);
+                var syncTaskStatus = UpdateUsersLinkedGroup(documentTemplate, groupId, filterBeginDate, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
                         return RedirectToAction(MVC.Config.DocumentTemplate.Index(documentTemplate.Id));
@@ -470,16 +468,16 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
-        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DocumentTemplate DocumentTemplate, string DevicesLinkedGroup, DateTime? FilterBeginDate)
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DocumentTemplate documentTemplate, string devicesLinkedGroup, DateTime? filterBeginDate, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DocumentTemplateDevicesManagedGroup.GetKey(DocumentTemplate), DevicesLinkedGroup, FilterBeginDate);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DocumentTemplateDevicesManagedGroup.GetKey(documentTemplate), devicesLinkedGroup, filterBeginDate, updateDescription);
 
-            if (DocumentTemplate.DevicesLinkedGroup != configJson)
+            if (documentTemplate.DevicesLinkedGroup != configJson)
             {
-                DocumentTemplate.DevicesLinkedGroup = configJson;
+                documentTemplate.DevicesLinkedGroup = configJson;
                 Database.SaveChanges();
 
-                var managedGroup = DocumentTemplateDevicesManagedGroup.Initialize(DocumentTemplate);
+                var managedGroup = DocumentTemplateDevicesManagedGroup.Initialize(documentTemplate);
                 if (managedGroup != null) // Sync Group
                     return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
             }
@@ -487,16 +485,16 @@ namespace Disco.Web.Areas.API.Controllers
             return null;
         }
 
-        private ScheduledTaskStatus UpdateUsersLinkedGroup(DocumentTemplate DocumentTemplate, string UsersLinkedGroup, DateTime? FilterBeginDate)
+        private ScheduledTaskStatus UpdateUsersLinkedGroup(DocumentTemplate documentTemplate, string usersLinkedGroup, DateTime? filterBeginDate, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DocumentTemplateUsersManagedGroup.GetKey(DocumentTemplate), UsersLinkedGroup, FilterBeginDate);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DocumentTemplateUsersManagedGroup.GetKey(documentTemplate), usersLinkedGroup, filterBeginDate, updateDescription);
 
-            if (DocumentTemplate.UsersLinkedGroup != configJson)
+            if (documentTemplate.UsersLinkedGroup != configJson)
             {
-                DocumentTemplate.UsersLinkedGroup = configJson;
+                documentTemplate.UsersLinkedGroup = configJson;
                 Database.SaveChanges();
 
-                var managedGroup = DocumentTemplateUsersManagedGroup.Initialize(DocumentTemplate);
+                var managedGroup = DocumentTemplateUsersManagedGroup.Initialize(documentTemplate);
                 if (managedGroup != null) // Sync Group
                     return ADManagedGroupsSyncTask.ScheduleSync(managedGroup);
             }

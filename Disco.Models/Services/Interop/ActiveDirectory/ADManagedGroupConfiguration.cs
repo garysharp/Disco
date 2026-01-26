@@ -6,5 +6,6 @@ namespace Disco.Models.Services.Interop.ActiveDirectory
     {
         public string GroupId { get; set; }
         public DateTime? FilterBeginDate { get; set; }
+        public bool UpdateDescription { get; set; } = true;
     }
 }

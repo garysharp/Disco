@@ -12,7 +12,7 @@
                         <label for="Config_LinkedGroup_Id">Linked Group:</label>
                     </th>
                     <td>
-                        <input id="Config_LinkedGroup_Id" type="text" name="GroupId" data-sourceurl="@(Url.Action(MVC.API.System.SearchGroupSubjects()))" />
+                        <input id="Config_LinkedGroup_Id" type="text" name="groupId" data-sourceurl="@(Url.Action(MVC.API.System.SearchGroupSubjects()))" />
                     </td>
                 </tr>
                 <tr>
@@ -20,7 +20,15 @@
                         <label for="Config_LinkedGroup_FilterDate">Filter Date: </label>
                     </th>
                     <td>
-                        <input id="Config_LinkedGroup_FilterDate" type="text" name="FilterBeginDate" placeholder="No Filter" autocomplete="off" />
+                        <input id="Config_LinkedGroup_FilterDate" type="text" name="filterBeginDate" placeholder="No Filter" autocomplete="off" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>&nbsp;</th>
+                    <td>
+                        <input id="Config_LinkedGroup_UpdateDescriptionOff" type="hidden" name="updateDescription" value="False" disabled />
+                        <input id="Config_LinkedGroup_UpdateDescription" type="checkbox" name="updateDescription" value="True" checked />
+                        <label for="Config_LinkedGroup_UpdateDescription">Update Group Description</label>
                     </td>
                 </tr>
             </tbody>
@@ -30,6 +38,7 @@
         <p class="fa-p">
             <i class="fa fa-exclamation-circle"></i><strong>Warning:</strong> This group will be managed by Disco ICT.<br />
             Any <strong>existing members will be removed from the group</strong>, and it will be automatically synchronized with related members.
+            If the 'Update Group Description' option is selected, the group's description will also be updated to reflect its managed status.
         </p>
     </div>
 </div>
@@ -38,9 +47,10 @@
         let dialog;
         let dialogGroupId;
         let dialogFilterDate;
+        let dialogUpdateDescription;
         let dialogTitle;
 
-        function showDialog(groupId, filterDateOption, filterDateValue, updateUrl, title) {
+        function showDialog(groupId, filterDateOption, filterDateValue, updateUrl, title, updateDescription) {
             if (dialog == null) {
                 dialog = $('#Config_LinkedGroup_Dialog').dialog({
                     width: 450,
@@ -55,6 +65,10 @@
                     changeYear: true,
                     changeMonth: true,
                     dateFormat: 'yy/mm/dd'
+                });
+
+                dialogUpdateDescription = $('#Config_LinkedGroup_UpdateDescription').on('change', function () {
+                    $('#Config_LinkedGroup_UpdateDescriptionOff').prop('disabled', $(this).prop('checked'));
                 });
 
                 dialogGroupId = $('#Config_LinkedGroup_Id');
@@ -109,6 +123,8 @@
                 dialogFilterDate.closest('tr').hide();
             }
 
+            dialogUpdateDescription.prop('checked', updateDescription);
+
             dialogTitle.text(title);
             dialog.dialog('option', 'buttons', dialogButtons);
             dialog.dialog('option', 'title', 'Linked Group: ' + title);
@@ -120,11 +136,12 @@
 
             var configuredGroupId = $this.attr('data-linkedgroupid');
             var configuredFilterBeginDate = $this.attr('data-linkedgroupfilterdate');
-            var filterDateOption = $this.attr('data-linkedgroupfilterdateoption') == 'True';
-            var description = $this.attr('data-linkedroupdescription');
-            var updateUrl = $this.attr('data-linkedroupupdateurl');
+            var filterDateOption = $this.attr('data-linkedgroupfilterdateoption') === 'True';
+            var description = $this.attr('data-linkedgroupdescription');
+            var updateUrl = $this.attr('data-linkedgroupupdateurl');
+            var updateDescription = $this.attr('data-linkedgroupupdatedescription') === 'True';
 
-            showDialog(configuredGroupId, filterDateOption, configuredFilterBeginDate, updateUrl, description);
+            showDialog(configuredGroupId, filterDateOption, configuredFilterBeginDate, updateUrl, description, updateDescription);
 
             return false;
         });

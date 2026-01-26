@@ -22,7 +22,7 @@
                     <div class="code" title="@group.Id">
                         <i class="fa fa-fw fa-lg fa-link success"></i>@group.Domain.FriendlyDistinguishedNamePath(group.DistinguishedName)
                     </div>
-                    <button type="button" class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
+                    <button type="button" class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedgroupdescription="@(Model.CategoryDescription)" data-linkedgroupupdateurl="@(Model.UpdateUrl)" data-linkedgroupupdatedescription="@(Model.ManagedGroup.Configuration.UpdateDescription)">Change Link</button>
                     using (Html.BeginForm(MVC.API.System.SyncActiveDirectoryManagedGroup(Model.ManagedGroup.Key, Context.Request.Path)))
                     {
                         @Html.AntiForgeryToken()
@@ -34,12 +34,12 @@
                     <div class="code error">
                         <i class="fa fa-fw fa-lg fa-unlink error"></i>Group Not Found: <strong class="code">@Model.ManagedGroup.Configuration.GroupId</strong>
                     </div>
-                    <button type="button" class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Change Link</button>
+                    <button type="button" class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="@(Model.ManagedGroup.Configuration.GroupId)" data-linkedgroupfilterdateoption="@(Model.ManagedGroup.IncludeFilterBeginDate)" data-linkedgroupfilterdate="@(Model.ManagedGroup.Configuration.FilterBeginDate)" data-linkedgroupdescription="@(Model.CategoryDescription)" data-linkedgroupupdateurl="@(Model.UpdateUrl)" data-linkedgroupupdatedescription="@(Model.ManagedGroup.Configuration.UpdateDescription)">Change Link</button>
                 }
             }
             else
             {
-                <button type="button" class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="" data-linkedgroupfilterdateoption="@(Model.IncludeFilterBeginDate)" data-linkedroupdescription="@(Model.CategoryDescription)" data-linkedroupupdateurl="@(Model.UpdateUrl)">Link Group</button>
+                <button type="button" class="button small Config_LinkedGroup_LinkButton" data-linkedgroupid="" data-linkedgroupfilterdateoption="@(Model.IncludeFilterBeginDate)" data-linkedgroupdescription="@(Model.CategoryDescription)" data-linkedgroupupdateurl="@(Model.UpdateUrl)" data-linkedgroupupdatedescription="True">Link Group</button>
             }
         }
         else

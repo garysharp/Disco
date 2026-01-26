@@ -38,8 +38,6 @@ namespace Disco.Web.Areas.API.Controllers
         private const string pAssignedUserLocalAdmin = "assigneduserlocaladmin";
         private const string pSetAssignedUserForLogon = "setassigneduserforlogon";
         private const string pAllowUntrustedReimageJobEnrolment = "allowuntrustedreimagejobrnrolment";
-        private const string pDevicesLinkedGroup = "deviceslinkedgroup";
-        private const string pAssignedUsersLinkedGroup = "assigneduserslinkedgroup";
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -105,12 +103,6 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pAllowUntrustedReimageJobEnrolment:
                             UpdateAllowUntrustedReimageJobEnrolment(deviceProfile, value);
-                            break;
-                        case pDevicesLinkedGroup:
-                            UpdateDevicesLinkedGroup(deviceProfile, value);
-                            break;
-                        case pAssignedUsersLinkedGroup:
-                            UpdateAssignedUsersLinkedGroup(deviceProfile, value);
                             break;
                         default:
                             throw new Exception("Invalid Update Key");
@@ -385,18 +377,17 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateDevicesLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        public virtual ActionResult UpdateDevicesLinkedGroup(int id, string groupId = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
-                var deviceProfile = Database.DeviceProfiles.Find(id);
-                if (deviceProfile == null)
-                    throw new ArgumentException("Invalid Device Profile Id", "id");
+                var deviceProfile = Database.DeviceProfiles.Find(id)
+                    ?? throw new ArgumentException("Invalid Device Profile Id", nameof(id));
 
-                var syncTaskStatus = UpdateDevicesLinkedGroup(deviceProfile, GroupId);
+                var syncTaskStatus = UpdateDevicesLinkedGroup(deviceProfile, groupId, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
                         return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
@@ -418,18 +409,17 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string GroupId = null, bool redirect = false)
+        public virtual ActionResult UpdateAssignedUsersLinkedGroup(int id, string groupId = null, bool? updateDescription = null, bool redirect = false)
         {
             try
             {
                 if (id < 0)
-                    throw new ArgumentOutOfRangeException("id");
+                    throw new ArgumentOutOfRangeException(nameof(id));
 
-                var deviceProfile = Database.DeviceProfiles.Find(id);
-                if (deviceProfile == null)
-                    throw new ArgumentException("Invalid Device Profile Id", "id");
+                var deviceProfile = Database.DeviceProfiles.Find(id)
+                    ?? throw new ArgumentException("Invalid Device Profile Id", nameof(id));
 
-                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(deviceProfile, GroupId);
+                var syncTaskStatus = UpdateAssignedUsersLinkedGroup(deviceProfile, groupId, updateDescription ?? true);
                 if (redirect)
                     if (syncTaskStatus == null)
                         return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
@@ -725,9 +715,9 @@ namespace Disco.Web.Areas.API.Controllers
             throw new Exception("Invalid Boolean Value");
         }
 
-        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceProfile deviceProfile, string devicesLinkedGroup)
+        private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceProfile deviceProfile, string devicesLinkedGroup, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileDevicesManagedGroup.GetKey(deviceProfile), devicesLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileDevicesManagedGroup.GetKey(deviceProfile), devicesLinkedGroup, null, updateDescription);
 
             if (deviceProfile.DevicesLinkedGroup != configJson)
             {
@@ -742,9 +732,9 @@ namespace Disco.Web.Areas.API.Controllers
             return null;
         }
 
-        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceProfile deviceProfile, string assignedUsersLinkedGroup)
+        private ScheduledTaskStatus UpdateAssignedUsersLinkedGroup(DeviceProfile deviceProfile, string assignedUsersLinkedGroup, bool updateDescription)
         {
-            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileAssignedUsersManagedGroup.GetKey(deviceProfile), assignedUsersLinkedGroup, null);
+            var configJson = ADManagedGroup.ValidConfigurationToJson(DeviceProfileAssignedUsersManagedGroup.GetKey(deviceProfile), assignedUsersLinkedGroup, null, updateDescription);
 
             if (deviceProfile.AssignedUsersLinkedGroup != configJson)
             {

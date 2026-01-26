@@ -13,9 +13,9 @@ namespace Disco.Services.Interop.ActiveDirectory
 
     public class ActiveDirectoryManagedGroups : IDisposable
     {
-        private ConcurrentDictionary<string, ADManagedGroup> managedGroups;
-        private Subject<ADManagedGroupScheduledAction> actionBuffer;
-        private IDisposable actionBufferSubscription;
+        private readonly ConcurrentDictionary<string, ADManagedGroup> managedGroups;
+        private readonly Subject<ADManagedGroupScheduledAction> actionBuffer;
+        private readonly IDisposable actionBufferSubscription;
 
         internal ActiveDirectoryManagedGroups()
         {
@@ -379,13 +379,16 @@ namespace Disco.Services.Interop.ActiveDirectory
                         throw new InvalidOperationException($"This group [{adGroup.DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
                     // Update Description
-                    var groupDescription = $"Disco ICT: {actionGroup.Item1.GroupDescription}";
-                    if (adGroupEntry.Entry.Properties.Value<string>("description") != groupDescription)
+                    if (actionGroup.Item1.Configuration.UpdateDescription)
                     {
-                        var adGroupEntryDescription = adGroupEntry.Entry.Properties["description"];
-                        if (adGroupEntryDescription.Count > 0)
-                            adGroupEntryDescription.Clear();
-                        adGroupEntryDescription.Add(groupDescription);
+                        var groupDescription = $"Disco ICT: {actionGroup.Item1.GroupDescription}";
+                        if (adGroupEntry.Entry.Properties.Value<string>("description") != groupDescription)
+                        {
+                            var adGroupEntryDescription = adGroupEntry.Entry.Properties["description"];
+                            if (adGroupEntryDescription.Count > 0)
+                                adGroupEntryDescription.Clear();
+                            adGroupEntryDescription.Add(groupDescription);
+                        }
                     }
 
                     // Sync Members
@@ -430,7 +433,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
     internal class ADManagedGroupScheduledAction
     {
-        private Func<DiscoDataContext, IEnumerable<string>> memberResolver;
+        private readonly Func<DiscoDataContext, IEnumerable<string>> memberResolver;
 
         public ADManagedGroup ManagedGroup { get; private set; }
         public ADManagedGroupScheduledActionType ActionType { get; private set; }
