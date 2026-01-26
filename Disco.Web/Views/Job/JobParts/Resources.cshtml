@@ -53,7 +53,7 @@
         @if (canShowAttachments)
         {
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Job.AttachmentOnlineUploadSession(Model.Job.Id)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")" data-removeurl="@Url.Action(MVC.API.Job.AttachmentRemove())">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Job.AttachmentUpload(Model.Job.Id, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Job.AttachmentOnlineUploadSession(Model.Job.Id)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")" data-removeurl="@Url.Action(MVC.API.Job.AttachmentRemove())" data-downloadallurl="@Url.Action(MVC.API.Job.AttachmentDownloadAll(Model.Job.Id))">
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -74,13 +74,17 @@
                             </a>
                         }
                     </div>
-                    @if (canAddAttachments)
-                    {
-                        <div class="Disco-AttachmentUpload-Progress"></div>
-                        <div class="attachmentInput clearfix">
+                    <div class="Disco-AttachmentUpload-Progress"></div>
+                    <div class="attachmentInput clearfix">
+                        @if (canAddAttachments)
+                        {
                             <span class="action enabled upload fa fa-upload disabled" title="Attach File"></span><span class="action enabled photo fa fa-camera disabled" title="Capture Image"></span><span class="action enabled online-upload fa fa-qrcode disabled" title="Upload with Online Services"></span>
-                        </div>
-                    }
+                        }
+                        @if (Model.Job.JobAttachments != null && Model.Job.JobAttachments.Count > 0)
+                        {
+                            <span class="action enabled download-all fa fa-download" title="Download All"></span>
+                        }
+                    </div>
                 </div>
             </td>
         }
@@ -298,6 +302,7 @@
             //#region Attachments
             var $Attachments = $('#Attachments');
             var $attachmentOutput = $Attachments.find('.attachmentOutput');
+            let $attachmentDownloadHost = null;
             let attachmentUploader = null;
 
             @if (canAddAttachments)
@@ -499,7 +504,7 @@
                     // use iFrame
                     if (!$attachmentDownloadHost) {
                         $attachmentDownloadHost = $('<iframe>')
-                            .attr({ 'src': url, 'title': 'Attachment Download Host' })
+                            .attr({ 'id': 'AttachmentsDownloadHost', 'name': 'AttachmentsDownloadHost', 'src': url, 'title': 'Attachment Download Host' })
                             .addClass('hidden')
                             .appendTo('body')
                             .contents();
@@ -530,6 +535,46 @@
                 else
                     $this.click(onDownload);
             });
+
+            $Attachments
+                .find('.attachmentInput span.download-all')
+                .on('click', function (event) {
+                    const downloadAllUrl = $Attachments.attr('data-downloadallurl');
+                    const $this = $(this);
+
+                    if ($this.hasClass('fa-spinner'))
+                        return;
+
+                    $this
+                        .removeClass('fa-download')
+                        .addClass('fa-spinner fa-spin');
+
+                    if (!$attachmentDownloadHost) {
+                        $attachmentDownloadHost = $('<iframe>')
+                            .attr({ 'id': 'AttachmentsDownloadHost', 'name': 'AttachmentsDownloadHost', 'title': 'Attachment Download Host' })
+                            .addClass('hidden')
+                            .appendTo('body')
+                            .contents();
+                    }
+                    const $form = $('<form>')
+                        .attr({
+                            method: 'POST',
+                            action: downloadAllUrl,
+                            target: 'AttachmentsDownloadHost'
+                        })
+                        .append($('<input>')
+                            .attr({ type: 'hidden', name: '__RequestVerificationToken' })
+                            .val(document.body.dataset.antiforgery))
+                        .appendTo(document.body)
+                        .trigger('submit');
+
+                    window.setTimeout(function () {
+                        $this
+                            .removeClass('fa-spinner fa-spin')
+                            .addClass('fa-download');
+                        $form.remove();
+                    }, 2000);
+                });
 
             // Add Globally Available Functions
             document.DiscoFunctions.liveAddAttachment = addAttachment;

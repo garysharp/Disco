@@ -602,7 +602,7 @@
 }
 #userShowResources #Attachments div.attachmentInput span.action {
   display: block;
-  margin: 0 4px 0 0;
+  margin: 1px 2px 1px 0;
   font-size: 1.5em;
   cursor: pointer;
   float: right;
@@ -625,6 +625,10 @@
   color: rgba(51, 51, 51, 0.2);
   background-color: inherit;
   border: 1px solid #fff;
+}
+#userShowResources #Attachments div.attachmentInput span.action.download-all {
+  margin-left: 2px;
+  float: left;
 }
 #User_Show_Details_Actions_CreateJob_Dialog #CreateJob_Assignments {
   margin-top: 6px;

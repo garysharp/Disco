@@ -16,6 +16,8 @@ using Disco.Web.Models.Device;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,15 +28,15 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DeviceController : AuthorizedDatabaseController
     {
-        const string pDeviceProfileId = "deviceprofileid";
-        const string pDeviceBatchId = "devicebatchid";
-        const string pAssetNumber = "assetnumber";
-        const string pAssignedUserId = "assigneduserid";
-        const string pLocation = "location";
-        const string pAllowUnauthenticatedEnrol = "allowunauthenticatedenrol";
-        const string pDetailACAdapter = "detailacadapter";
-        const string pDetailBattery = "detailbattery";
-        const string pDetailKeyboard = "detailkeyboard";
+        private const string pDeviceProfileId = "deviceprofileid";
+        private const string pDeviceBatchId = "devicebatchid";
+        private const string pAssetNumber = "assetnumber";
+        private const string pAssignedUserId = "assigneduserid";
+        private const string pLocation = "location";
+        private const string pAllowUnauthenticatedEnrol = "allowunauthenticatedenrol";
+        private const string pDetailACAdapter = "detailacadapter";
+        private const string pDetailBattery = "detailbattery";
+        private const string pDetailKeyboard = "detailkeyboard";
 
         [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult Update(string id, string key, string value = null, bool redirect = false)
@@ -561,6 +563,44 @@ namespace Disco.Web.Areas.API.Controllers
                 }
             }
             return HttpNotFound("Invalid Attachment Number");
+        }
+
+        [DiscoAuthorize(Claims.Device.ShowAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult AttachmentDownloadAll(string id)
+        {
+            var device = Database.Devices
+                .Include(u => u.DeviceAttachments)
+                .Where(u => u.SerialNumber == id)
+                .FirstOrDefault();
+
+            if (device == null || device.DeviceAttachments.Count == 0)
+                return NotFound();
+
+            var responseStream = new MemoryStream();
+            using (var archive = new ZipArchive(responseStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var attachment in device.DeviceAttachments)
+                {
+                    var repoFileName = attachment.RepositoryFilename(Database);
+                    if (System.IO.File.Exists(repoFileName))
+                    {
+                        var fileName = $"{Path.GetFileNameWithoutExtension(attachment.Filename)}-{attachment.Timestamp:yyyyMMdd-HHmmss}{Path.GetExtension(attachment.Filename)}";
+
+                        var entry = archive.CreateEntry(fileName, CompressionLevel.Fastest);
+                        entry.LastWriteTime = attachment.Timestamp;
+                        using (var entryStream = entry.Open())
+                        {
+                            using (var attachmentStream = System.IO.File.OpenRead(repoFileName))
+                            {
+                                attachmentStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+                }
+            }
+            responseStream.Position = 0;
+            return File(responseStream, "application/zip", $"{device.SerialNumber}_DeviceAttachments_{DateTime.Now:yyyyMMdd-HHmmss}.zip");
         }
 
         [DiscoAuthorize(Claims.Device.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]

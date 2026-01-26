@@ -175,6 +175,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AttachmentDownloadAll()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownloadAll);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult AttachmentThumbnail()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentThumbnail);
@@ -299,6 +305,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string CommentAdd = "CommentAdd";
             public readonly string CommentRemove = "CommentRemove";
             public readonly string AttachmentDownload = "AttachmentDownload";
+            public readonly string AttachmentDownloadAll = "AttachmentDownloadAll";
             public readonly string AttachmentThumbnail = "AttachmentThumbnail";
             public readonly string AttachmentUpload = "AttachmentUpload";
             public readonly string Attachment = "Attachment";
@@ -339,6 +346,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string CommentAdd = "CommentAdd";
             public const string CommentRemove = "CommentRemove";
             public const string AttachmentDownload = "AttachmentDownload";
+            public const string AttachmentDownloadAll = "AttachmentDownloadAll";
             public const string AttachmentThumbnail = "AttachmentThumbnail";
             public const string AttachmentUpload = "AttachmentUpload";
             public const string Attachment = "Attachment";
@@ -534,6 +542,14 @@ namespace Disco.Web.Areas.API.Controllers
         public ActionParamsClass_AttachmentDownload AttachmentDownloadParams { get { return s_params_AttachmentDownload; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_AttachmentDownload
+        {
+            public readonly string id = "id";
+        }
+        static readonly ActionParamsClass_AttachmentDownloadAll s_params_AttachmentDownloadAll = new ActionParamsClass_AttachmentDownloadAll();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AttachmentDownloadAll AttachmentDownloadAllParams { get { return s_params_AttachmentDownloadAll; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AttachmentDownloadAll
         {
             public readonly string id = "id";
         }
@@ -937,6 +953,18 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownload);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             AttachmentDownloadOverride(callInfo, id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AttachmentDownloadAllOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AttachmentDownloadAll(string id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AttachmentDownloadAll);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            AttachmentDownloadAllOverride(callInfo, id);
             return callInfo;
         }
 

@@ -18,7 +18,7 @@
     <table id="deviceShowResources">
         <tr>
             <td id="AttachmentsContainer">
-                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")" data-removeurl="@Url.Action(MVC.API.Device.AttachmentRemove())">
+                <div id="Attachments" class="@(canAddAttachments ? "canAddAttachments" : "cannotAddAttachments") @(canRemoveAnyAttachments ? "canRemoveAnyAttachments" : "cannotRemoveAnyAttachments") @(canRemoveOwnAttachments ? "canRemoveOwnAttachments" : "cannotRemoveOwnAttachments")" data-id="@Model.Device.SerialNumber" data-userid="@CurrentUser.UserId" data-uploadurl="@(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)))" data-onlineuploadurl="@(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)))" data-qrcodeurl="@Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js")" data-removeurl="@Url.Action(MVC.API.Device.AttachmentRemove())" data-downloadallurl="@Url.Action(MVC.API.Device.AttachmentDownloadAll(Model.Device.SerialNumber))">
                     <div class="Disco-AttachmentUpload-DropTarget">
                         <h2>Drop Attachments Here</h2>
                     </div>
@@ -42,13 +42,17 @@
                             }
                         }
                     </div>
-                    @if (canAddAttachments)
-                    {
-                        <div class="Disco-AttachmentUpload-Progress"></div>
-                        <div class="attachmentInput clearfix">
+                    <div class="Disco-AttachmentUpload-Progress"></div>
+                    <div class="attachmentInput clearfix">
+                        @if (canAddAttachments)
+                        {
                             <span class="action enabled upload fa fa-upload disabled" title="Attach File"></span><span class="action enabled photo fa fa-camera disabled" title="Capture Image"></span><span class="action enabled online-upload fa fa-qrcode disabled" title="Upload with Online Services"></span>
-                        </div>
-                    }
+                        }
+                        @if (Model.Device.DeviceAttachments != null && Model.Device.DeviceAttachments.Count > 0)
+                        {
+                            <span class="action enabled download-all fa fa-download" title="Download All"></span>
+                        }
+                    </div>
                     <script type="text/javascript">
                         Shadowbox.init({
                             skipSetup: true,
@@ -150,7 +154,7 @@
                                     // use iFrame
                                     if (!$attachmentDownloadHost) {
                                         $attachmentDownloadHost = $('<iframe>')
-                                            .attr({ 'src': url, 'title': 'Attachment Download Host' })
+                                            .attr({ 'id': 'AttachmentsDownloadHost', 'name': 'AttachmentsDownloadHost', 'src': url, 'title': 'Attachment Download Host' })
                                             .addClass('hidden')
                                             .appendTo('body')
                                             .contents();
@@ -180,6 +184,50 @@
                                 var tabHeading = 'Attachments [' + attachmentCount + ']';
                                 $('#DeviceDetailTab-ResourcesLink').text(tabHeading);
                             }
+
+                            $Attachments
+                                .find('.attachmentInput span.download-all')
+                                .on('click', function (event) {
+                                    const downloadAllUrl = $Attachments.attr('data-downloadallurl');
+                                    const id = $Attachments.attr('data-id');
+                                    const $this = $(this);
+
+                                    if ($this.hasClass('fa-spinner'))
+                                        return;
+
+                                    $this
+                                        .removeClass('fa-download')
+                                        .addClass('fa-spinner fa-spin');
+
+                                    if (!$attachmentDownloadHost) {
+                                        $attachmentDownloadHost = $('<iframe>')
+                                            .attr({ 'id': 'AttachmentsDownloadHost', 'name': 'AttachmentsDownloadHost', 'title': 'Attachment Download Host' })
+                                            .addClass('hidden')
+                                            .appendTo('body')
+                                            .contents();
+                                    }
+                                    const $form = $('<form>')
+                                        .attr({
+                                            method: 'POST',
+                                            action: downloadAllUrl,
+                                            target: 'AttachmentsDownloadHost'
+                                        })
+                                        .append($('<input>')
+                                            .attr({ type: 'hidden', name: '__RequestVerificationToken' })
+                                            .val(document.body.dataset.antiforgery))
+                                        .append($('<input>')
+                                            .attr({ type: 'hidden', name: 'id' })
+                                            .val(id))
+                                        .appendTo(document.body)
+                                        .trigger('submit');
+
+                                    window.setTimeout(function () {
+                                        $this
+                                            .removeClass('fa-spinner fa-spin')
+                                            .addClass('fa-download');
+                                        $form.remove();
+                                    }, 2000);
+                                });
 
                             document.DiscoFunctions.onAttachmentAdded = onAttachmentAdded;
                             document.DiscoFunctions.onAttachmentRemoved = onAttachmentRemoved;

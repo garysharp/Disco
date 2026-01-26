@@ -16,6 +16,8 @@ using Disco.Web.Models.Job;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Caching;
@@ -1941,6 +1943,44 @@ namespace Disco.Web.Areas.API.Controllers
                 }
             }
             return HttpNotFound("Invalid Attachment Number");
+        }
+
+        [DiscoAuthorize(Claims.Job.ShowAttachments)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult AttachmentDownloadAll(int id)
+        {
+            var job = Database.Jobs
+                .Include(u => u.JobAttachments)
+                .Where(u => u.Id == id)
+                .FirstOrDefault();
+
+            if (job == null || job.JobAttachments.Count == 0)
+                return NotFound();
+
+            var responseStream = new MemoryStream();
+            using (var archive = new ZipArchive(responseStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var attachment in job.JobAttachments)
+                {
+                    var repoFileName = attachment.RepositoryFilename(Database);
+                    if (System.IO.File.Exists(repoFileName))
+                    {
+                        var fileName = $"{Path.GetFileNameWithoutExtension(attachment.Filename)}-{attachment.Timestamp:yyyyMMdd-HHmmss}{Path.GetExtension(attachment.Filename)}";
+
+                        var entry = archive.CreateEntry(fileName, CompressionLevel.Fastest);
+                        entry.LastWriteTime = attachment.Timestamp;
+                        using (var entryStream = entry.Open())
+                        {
+                            using (var attachmentStream = System.IO.File.OpenRead(repoFileName))
+                            {
+                                attachmentStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+                }
+            }
+            responseStream.Position = 0;
+            return File(responseStream, "application/zip", $"{job.Id}_JobAttachments_{DateTime.Now:yyyyMMdd-HHmmss}.zip");
         }
 
         [DiscoAuthorize(Claims.Job.ShowAttachments), OutputCache(Location = System.Web.UI.OutputCacheLocation.Client, Duration = 172800)]

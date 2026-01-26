@@ -105,11 +105,22 @@ WriteAttribute("class", Tuple.Create(" class=\"", 820), Tuple.Create("\"", 1067)
 , 982), false)
 );
 
+WriteLiteral(" data-id=\"");
+
+            
+            #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                                                                                                                                                                                                                                                                                                  Write(Model.Device.SerialNumber);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
 WriteLiteral(" data-userid=\"");
 
             
             #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                                                                                                                                      Write(CurrentUser.UserId);
+                                                                                                                                                                                                                                                                                                                                           Write(CurrentUser.UserId);
 
             
             #line default
@@ -120,7 +131,7 @@ WriteLiteral(" data-uploadurl=\"");
 
             
             #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                                                                                                                                                                            Write(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)));
+                                                                                                                                                                                                                                                                                                                                                                                 Write(Url.Action(MVC.API.Device.AttachmentUpload(Model.Device.SerialNumber, null)));
 
             
             #line default
@@ -131,7 +142,7 @@ WriteLiteral(" data-onlineuploadurl=\"");
 
             
             #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                   Write(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Write(Url.Action(MVC.API.Device.AttachmentOnlineUploadSession(Model.Device.SerialNumber)));
 
             
             #line default
@@ -142,7 +153,7 @@ WriteLiteral(" data-qrcodeurl=\"");
 
             
             #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          Write(Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js"));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               Write(Url.Content("~/ClientSource/Scripts/Modules/qrcode.min.js"));
 
             
             #line default
@@ -153,7 +164,18 @@ WriteLiteral(" data-removeurl=\"");
 
             
             #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Write(Url.Action(MVC.API.Device.AttachmentRemove()));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Write(Url.Action(MVC.API.Device.AttachmentRemove()));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("\"");
+
+WriteLiteral(" data-downloadallurl=\"");
+
+            
+            #line 21 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Write(Url.Action(MVC.API.Device.AttachmentDownloadAll(Model.Device.SerialNumber)));
 
             
             #line default
@@ -189,14 +211,14 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 1930), Tuple.Create("\"", 1990)
+WriteAttribute("href", Tuple.Create(" href=\"", 2066), Tuple.Create("\"", 2126)
             
             #line 30 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 1937), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
+, Tuple.Create(Tuple.Create("", 2073), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentDownload(da.Id))
             
             #line default
             #line hidden
-, 1937), false)
+, 2073), false)
 );
 
 WriteLiteral(" data-attachmentid=\"");
@@ -225,28 +247,28 @@ WriteLiteral(">\r\n                                    <span");
 
 WriteLiteral(" class=\"icon\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2104), Tuple.Create("\"", 2124)
+WriteAttribute("title", Tuple.Create(" title=\"", 2240), Tuple.Create("\"", 2260)
             
             #line 31 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2112), Tuple.Create<System.Object, System.Int32>(da.Filename
+, Tuple.Create(Tuple.Create("", 2248), Tuple.Create<System.Object, System.Int32>(da.Filename
             
             #line default
             #line hidden
-, 2112), false)
+, 2248), false)
 );
 
 WriteLiteral(">\r\n                                        <img");
 
 WriteLiteral(" alt=\"Attachment Thumbnail\"");
 
-WriteAttribute("src", Tuple.Create(" src=\"", 2199), Tuple.Create("\"", 2261)
+WriteAttribute("src", Tuple.Create(" src=\"", 2335), Tuple.Create("\"", 2397)
             
             #line 32 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2205), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
+, Tuple.Create(Tuple.Create("", 2341), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.Device.AttachmentThumbnail(da.Id))
             
             #line default
             #line hidden
-, 2205), false)
+, 2341), false)
 );
 
 WriteLiteral(" />\r\n                                    </span>\r\n                               " +
@@ -254,14 +276,14 @@ WriteLiteral(" />\r\n                                    </span>\r\n            
 
 WriteLiteral(" class=\"comments\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 2370), Tuple.Create("\"", 2407)
+WriteAttribute("title", Tuple.Create(" title=\"", 2506), Tuple.Create("\"", 2543)
             
             #line 34 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-, Tuple.Create(Tuple.Create("", 2378), Tuple.Create<System.Object, System.Int32>(da.Comments ?? da.Filename
+, Tuple.Create(Tuple.Create("", 2514), Tuple.Create<System.Object, System.Int32>(da.Comments ?? da.Filename
             
             #line default
             #line hidden
-, 2378), false)
+, 2514), false)
 );
 
 WriteLiteral(">\r\n");
@@ -345,14 +367,14 @@ WriteLiteral("<span");
 
 WriteLiteral(" class=\"timestamp\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 3062), Tuple.Create("\"", 3100)
+WriteAttribute("title", Tuple.Create(" title=\"", 3198), Tuple.Create("\"", 3236)
             
             #line 40 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                                                 , Tuple.Create(Tuple.Create("", 3070), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
+                                                 , Tuple.Create(Tuple.Create("", 3206), Tuple.Create<System.Object, System.Int32>(da.Timestamp.ToFullDateTime()
             
             #line default
             #line hidden
-, 3070), false)
+, 3206), false)
 );
 
 WriteLiteral(" data-livestamp=\"");
@@ -385,60 +407,87 @@ WriteLiteral("</span>\r\n                                </a>\r\n");
             
             #line default
             #line hidden
-WriteLiteral("                    </div>\r\n");
-
-            
-            #line 45 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                    
-            
-            #line default
-            #line hidden
-            
-            #line 45 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                     if (canAddAttachments)
-                    {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                        <div");
+WriteLiteral("                    </div>\r\n                    <div");
 
 WriteLiteral(" class=\"Disco-AttachmentUpload-Progress\"");
 
-WriteLiteral("></div>\r\n");
-
-WriteLiteral("                        <div");
+WriteLiteral("></div>\r\n                    <div");
 
 WriteLiteral(" class=\"attachmentInput clearfix\"");
 
-WriteLiteral(">\r\n                            <span");
+WriteLiteral(">\r\n");
+
+            
+            #line 47 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                        
+            
+            #line default
+            #line hidden
+            
+            #line 47 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                         if (canAddAttachments)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
 
 WriteLiteral(" class=\"action enabled upload fa fa-upload disabled\"");
 
 WriteLiteral(" title=\"Attach File\"");
 
-WriteLiteral("></span><span");
+WriteLiteral("></span>");
+
+WriteLiteral("<span");
 
 WriteLiteral(" class=\"action enabled photo fa fa-camera disabled\"");
 
 WriteLiteral(" title=\"Capture Image\"");
 
-WriteLiteral("></span><span");
+WriteLiteral("></span>");
+
+WriteLiteral("<span");
 
 WriteLiteral(" class=\"action enabled online-upload fa fa-qrcode disabled\"");
 
 WriteLiteral(" title=\"Upload with Online Services\"");
 
-WriteLiteral("></span>\r\n                        </div>\r\n");
+WriteLiteral("></span>\r\n");
 
             
-            #line 51 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
-                    }
+            #line 50 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                        }
 
             
             #line default
             #line hidden
-WriteLiteral("                    <script");
+WriteLiteral("                        ");
+
+            
+            #line 51 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                         if (Model.Device.DeviceAttachments != null && Model.Device.DeviceAttachments.Count > 0)
+                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            <span");
+
+WriteLiteral(" class=\"action enabled download-all fa fa-download\"");
+
+WriteLiteral(" title=\"Download All\"");
+
+WriteLiteral("></span>\r\n");
+
+            
+            #line 54 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                    </div>\r\n                    <script");
 
 WriteLiteral(" type=\"text/javascript\"");
 
@@ -460,7 +509,7 @@ WriteLiteral(@">
                                     url: '");
 
             
-            #line 67 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 71 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                      Write(Url.Action(MVC.API.Device.Attachment()));
 
             
@@ -497,7 +546,7 @@ WriteLiteral("\',\r\n                                    dataType: \'json\',\r\n
 "href\', \'");
 
             
-            #line 102 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 106 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                               Write(Url.Action(MVC.API.Device.AttachmentDownload()));
 
             
@@ -529,7 +578,7 @@ WriteLiteral(@"/' + a.Id);
                                         img.attr('src', '");
 
             
-            #line 125 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 129 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                      Write(Url.Action(MVC.API.Device.AttachmentThumbnail()));
 
             
@@ -556,39 +605,73 @@ WriteLiteral("/\' + a.Id + \'?v=\' + retryCount);\r\n                           
 "atus=no,toolbar=no\');\r\n                                } else {\r\n               " +
 "                     // use iFrame\r\n                                    if (!$at" +
 "tachmentDownloadHost) {\r\n                                        $attachmentDown" +
-"loadHost = $(\'<iframe>\')\r\n                                            .attr({ \'s" +
-"rc\': url, \'title\': \'Attachment Download Host\' })\r\n                              " +
-"              .addClass(\'hidden\')\r\n                                            ." +
-"appendTo(\'body\')\r\n                                            .contents();\r\n    " +
-"                                } else {\r\n                                      " +
-"  $attachmentDownloadHost[0].location.href = url;\r\n                             " +
-"       }\r\n                                }\r\n\r\n                                r" +
-"eturn false;\r\n                            }\r\n\r\n                            funct" +
-"ion onAttachmentRemoved(id) {\r\n                                var a = $attachme" +
-"ntOutput.find(\'a[data-attachmentid=\' + id + \']\');\r\n\r\n                           " +
-"     a.hide(300).delay(300).queue(function () {\r\n                               " +
-"     var $this = $(this);\r\n                                    if ($this.attr(\'d" +
-"ata-mimetype\').toLowerCase().indexOf(\'image/\') == 0)\r\n                          " +
-"              Shadowbox.removeCache(this);\r\n                                    " +
-"$this.find(\'.timestamp\').livestamp(\'destroy\');\r\n                                " +
-"    $this.remove();\r\n                                    onUpdate();\r\n          " +
-"                      });\r\n                            }\r\n\r\n                    " +
-"        function onUpdate() {\r\n                                var attachmentCou" +
-"nt = $attachmentOutput.children(\'a\').length;\r\n                                va" +
-"r tabHeading = \'Attachments [\' + attachmentCount + \']\';\r\n                       " +
-"         $(\'#DeviceDetailTab-ResourcesLink\').text(tabHeading);\r\n                " +
-"            }\r\n\r\n                            document.DiscoFunctions.onAttachmen" +
-"tAdded = onAttachmentAdded;\r\n                            document.DiscoFunctions" +
-".onAttachmentRemoved = onAttachmentRemoved;\r\n\r\n");
+"loadHost = $(\'<iframe>\')\r\n                                            .attr({ \'i" +
+"d\': \'AttachmentsDownloadHost\', \'name\': \'AttachmentsDownloadHost\', \'src\': url, \'t" +
+"itle\': \'Attachment Download Host\' })\r\n                                          " +
+"  .addClass(\'hidden\')\r\n                                            .appendTo(\'bo" +
+"dy\')\r\n                                            .contents();\r\n                " +
+"                    } else {\r\n                                        $attachmen" +
+"tDownloadHost[0].location.href = url;\r\n                                    }\r\n  " +
+"                              }\r\n\r\n                                return false;" +
+"\r\n                            }\r\n\r\n                            function onAttach" +
+"mentRemoved(id) {\r\n                                var a = $attachmentOutput.fin" +
+"d(\'a[data-attachmentid=\' + id + \']\');\r\n\r\n                                a.hide(" +
+"300).delay(300).queue(function () {\r\n                                    var $th" +
+"is = $(this);\r\n                                    if ($this.attr(\'data-mimetype" +
+"\').toLowerCase().indexOf(\'image/\') == 0)\r\n                                      " +
+"  Shadowbox.removeCache(this);\r\n                                    $this.find(\'" +
+".timestamp\').livestamp(\'destroy\');\r\n                                    $this.re" +
+"move();\r\n                                    onUpdate();\r\n                      " +
+"          });\r\n                            }\r\n\r\n                            func" +
+"tion onUpdate() {\r\n                                var attachmentCount = $attach" +
+"mentOutput.children(\'a\').length;\r\n                                var tabHeading" +
+" = \'Attachments [\' + attachmentCount + \']\';\r\n                                $(\'" +
+"#DeviceDetailTab-ResourcesLink\').text(tabHeading);\r\n                            " +
+"}\r\n\r\n                            $Attachments\r\n                                ." +
+"find(\'.attachmentInput span.download-all\')\r\n                                .on(" +
+"\'click\', function (event) {\r\n                                    const downloadA" +
+"llUrl = $Attachments.attr(\'data-downloadallurl\');\r\n                             " +
+"       const id = $Attachments.attr(\'data-id\');\r\n                               " +
+"     const $this = $(this);\r\n\r\n                                    if ($this.has" +
+"Class(\'fa-spinner\'))\r\n                                        return;\r\n\r\n       " +
+"                             $this\r\n                                        .rem" +
+"oveClass(\'fa-download\')\r\n                                        .addClass(\'fa-s" +
+"pinner fa-spin\');\r\n\r\n                                    if (!$attachmentDownloa" +
+"dHost) {\r\n                                        $attachmentDownloadHost = $(\'<" +
+"iframe>\')\r\n                                            .attr({ \'id\': \'Attachment" +
+"sDownloadHost\', \'name\': \'AttachmentsDownloadHost\', \'title\': \'Attachment Download" +
+" Host\' })\r\n                                            .addClass(\'hidden\')\r\n    " +
+"                                        .appendTo(\'body\')\r\n                     " +
+"                       .contents();\r\n                                    }\r\n    " +
+"                                const $form = $(\'<form>\')\r\n                     " +
+"                   .attr({\r\n                                            method: " +
+"\'POST\',\r\n                                            action: downloadAllUrl,\r\n  " +
+"                                          target: \'AttachmentsDownloadHost\'\r\n   " +
+"                                     })\r\n                                       " +
+" .append($(\'<input>\')\r\n                                            .attr({ type:" +
+" \'hidden\', name: \'__RequestVerificationToken\' })\r\n                              " +
+"              .val(document.body.dataset.antiforgery))\r\n                        " +
+"                .append($(\'<input>\')\r\n                                          " +
+"  .attr({ type: \'hidden\', name: \'id\' })\r\n                                       " +
+"     .val(id))\r\n                                        .appendTo(document.body)" +
+"\r\n                                        .trigger(\'submit\');\r\n\r\n               " +
+"                     window.setTimeout(function () {\r\n                          " +
+"              $this\r\n                                            .removeClass(\'f" +
+"a-spinner fa-spin\')\r\n                                            .addClass(\'fa-d" +
+"ownload\');\r\n                                        $form.remove();\r\n           " +
+"                         }, 2000);\r\n                                });\r\n\r\n     " +
+"                       document.DiscoFunctions.onAttachmentAdded = onAttachmentA" +
+"dded;\r\n                            document.DiscoFunctions.onAttachmentRemoved =" +
+" onAttachmentRemoved;\r\n\r\n");
 
             
-            #line 187 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 187 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canAddAttachments)
                         {
             
@@ -635,7 +718,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 "                      //#endregion\r\n                            ");
 
             
-            #line 234 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 282 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                    }
 
             
@@ -644,7 +727,7 @@ WriteLiteral("\r\n                            //#region Add Attachments\r\n     
 WriteLiteral("                        ");
 
             
-            #line 235 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 283 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                          if (canRemoveAnyAttachments || canRemoveOwnAttachments)
                         {
             
@@ -687,7 +770,7 @@ WriteLiteral("\r\n                            //#region Remove Attachments\r\n  
 "       }\r\n                            //#endregion\r\n                        ");
 
             
-            #line 286 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 334 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                }
 
             
@@ -724,7 +807,7 @@ WriteLiteral("></i>&nbsp;Are you sure?\r\n        </p>\r\n    </div>\r\n    <scr
 "etailTab-ResourcesLink\">Attachments [");
 
             
-            #line 307 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
+            #line 355 "..\..\Views\Device\DeviceParts\_Resources.cshtml"
                                                                                                                                 Write(Model.Device.DeviceAttachments == null ? 0 : Model.Device.DeviceAttachments.Count);
 
             
