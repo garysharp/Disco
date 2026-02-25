@@ -188,7 +188,7 @@ namespace Disco.Services.Devices.Enrolment
                             {
                                 if (!authenticatedToken.Has(Claims.ComputerAccount))
                                     throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
-                                else if (!string.Equals($"{Request.ComputerName}$", authenticatedToken.User.UserId, StringComparison.OrdinalIgnoreCase))
+                                else if (!string.Equals($"{Request.ComputerName}$", authenticatedToken.User.DomainUsername, StringComparison.OrdinalIgnoreCase))
                                     throw new InvalidOperationException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Computer Name: {Request.ComputerName}; Auth User: {authenticatedToken.User.UserId})");
 
                                 if (domain == null && !ActiveDirectory.Context.TryGetDomainByName(Request.DNSDomainName, out domain))
