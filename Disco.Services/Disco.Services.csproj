@@ -464,6 +464,7 @@
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryGroupCache.cs" />
     <Compile Include="Interop\ActiveDirectory\ActiveDirectoryManagedGroups.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDeviceDescriptionUpdateTask.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADDeviceOfflineDomainJoining.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDirectoryEntry.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDiscoverServers.cs" />
     <Compile Include="Interop\ActiveDirectory\ADDomain.cs" />

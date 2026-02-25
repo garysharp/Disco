@@ -179,18 +179,6 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         #endregion
 
-        #region Actions
-
-        public static string OfflineDomainJoinProvision(string ComputerSamAccountName, string OrganisationalUnit, ref ADMachineAccount MachineAccount, out string DiagnosticInformation)
-        {
-            var domain = Context.GetDomainFromDistinguishedName(OrganisationalUnit);
-            var writableDomainController = domain.GetAvailableDomainController(RequireWritable: true);
-
-            return writableDomainController.OfflineDomainJoinProvision(ComputerSamAccountName, OrganisationalUnit, ref MachineAccount, out DiagnosticInformation);
-        }
-
-        #endregion
-
         #region Helpers
 
         public static string ParseDomainAccountId(string AccountId)

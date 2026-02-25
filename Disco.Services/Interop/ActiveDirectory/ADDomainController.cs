@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Security.Principal;
-using System.Text;
 
 namespace Disco.Services.Interop.ActiveDirectory
 {
@@ -352,93 +350,6 @@ namespace Disco.Services.Interop.ActiveDirectory
                 var pr = p.Send(Name, 1000);
                 return (pr.Status == IPStatus.Success);
             }
-        }
-
-        public string OfflineDomainJoinProvision(string ComputerSamAccountName, string OrganisationalUnit, ref ADMachineAccount MachineAccount, out string DiagnosticInformation)
-        {
-            if (MachineAccount != null && MachineAccount.IsCriticalSystemObject)
-                throw new InvalidOperationException($"This account {MachineAccount.DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
-
-            if (!IsWritable)
-                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.");
-
-            StringBuilder diagnosticInfo = new StringBuilder();
-            string DJoinResult = null;
-
-            if (!string.IsNullOrWhiteSpace(ComputerSamAccountName))
-                ComputerSamAccountName = ComputerSamAccountName.TrimEnd('$');
-            if (!string.IsNullOrWhiteSpace(ComputerSamAccountName) && ComputerSamAccountName.Contains('\\'))
-                ComputerSamAccountName = ComputerSamAccountName.Substring(ComputerSamAccountName.IndexOf('\\') + 1);
-
-            // NetBIOS Limit (16 characters; "{ComputerName}$"; 15 characters allowed)
-            if (string.IsNullOrWhiteSpace(ComputerSamAccountName) || ComputerSamAccountName.Length > 15)
-                throw new ArgumentException("Invalid Computer Name; > 0 and <= 15", "ComputerName");
-
-            // Ensure Specified OU Exists
-            if (!string.IsNullOrEmpty(OrganisationalUnit))
-            {
-                try
-                {
-                    using (var deOU = RetrieveDirectoryEntry(OrganisationalUnit, new string[] { "distinguishedName" }))
-                    {
-                        if (deOU == null)
-                            throw new Exception($"OU's Directory Entry couldn't be found at [{OrganisationalUnit}]");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentException($"An error occurred while trying to locate the specified OU: {OrganisationalUnit}", "OrganisationalUnit", ex);
-                }
-            }
-
-            if (MachineAccount != null)
-                MachineAccount.DeleteAccount(this);
-
-            string tempFileName = System.IO.Path.GetTempFileName();
-            string argumentOU = (!string.IsNullOrWhiteSpace(OrganisationalUnit)) ? $" /MACHINEOU \"{OrganisationalUnit}\"" : string.Empty;
-            string arguments = $"/PROVISION /DOMAIN \"{Domain.Name}\" /DCNAME \"{Name}\" /MACHINE \"{ComputerSamAccountName}\"{argumentOU} /REUSE /SAVEFILE \"{tempFileName}\"";
-            ProcessStartInfo commandStarter = new ProcessStartInfo("DJOIN.EXE", arguments)
-            {
-                CreateNoWindow = true,
-                ErrorDialog = false,
-                LoadUserProfile = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false
-            };
-            diagnosticInfo.AppendFormat($"DJOIN.EXE {arguments}");
-            diagnosticInfo.AppendLine();
-
-            string stdOutput;
-            string stdError;
-            using (Process commandProc = Process.Start(commandStarter))
-            {
-                commandProc.WaitForExit(20000);
-                stdOutput = commandProc.StandardOutput.ReadToEnd();
-                stdError = commandProc.StandardError.ReadToEnd();
-            }
-            if (!string.IsNullOrWhiteSpace(stdOutput))
-                diagnosticInfo.AppendLine(stdOutput);
-            if (!string.IsNullOrWhiteSpace(stdError))
-                diagnosticInfo.AppendLine(stdError);
-
-            if (System.IO.File.Exists(tempFileName))
-            {
-                DJoinResult = Convert.ToBase64String(System.IO.File.ReadAllBytes(tempFileName));
-                System.IO.File.Delete(tempFileName);
-            }
-            if (string.IsNullOrWhiteSpace(DJoinResult))
-                throw new InvalidOperationException(
-$@"Domain Join Unsuccessful
-Error: {stdError}
-Output: {stdOutput}");
-
-            DiagnosticInformation = diagnosticInfo.ToString();
-
-            // Reload Machine Account
-            MachineAccount = RetrieveADMachineAccount($@"{Domain.NetBiosName}\{ComputerSamAccountName}", (MachineAccount == null ? null : MachineAccount.LoadedProperties.Keys.ToArray()));
-
-            return DJoinResult;
         }
         #endregion
 

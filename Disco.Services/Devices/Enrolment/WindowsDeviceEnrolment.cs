@@ -188,9 +188,11 @@ namespace Disco.Services.Devices.Enrolment
                             {
                                 if (!authenticatedToken.Has(Claims.ComputerAccount))
                                     throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
+                                else if (!string.Equals($"{Request.ComputerName}$", authenticatedToken.User.UserId, StringComparison.OrdinalIgnoreCase))
+                                    throw new InvalidOperationException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Computer Name: {Request.ComputerName}; Auth User: {authenticatedToken.User.UserId})");
 
-                                if (domain == null)
-                                    domain = ActiveDirectory.Context.GetDomainByName(Request.DNSDomainName);
+                                if (domain == null && !ActiveDirectory.Context.TryGetDomainByName(Request.DNSDomainName, out domain))
+                                    throw new EnrolmentSafeException($"The specified domain name '{Request.DNSDomainName}' is not recognized or reachable.");
 
                                 if (!authenticatedToken.User.UserId.Equals($@"{domain.NetBiosName}\{Request.ComputerName}$", StringComparison.OrdinalIgnoreCase))
                                     throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
@@ -392,9 +394,7 @@ namespace Disco.Services.Devices.Enrolment
                         EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, device.SerialNumber, device.DeviceDomainId);
                         adMachineAccount = domainController.Value.RetrieveADMachineAccount(device.DeviceDomainId);
 
-                        response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out var offlineProvisionDiagnosicInfo);
-
-                        EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
+                        response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount);
 
                         response.RequireReboot = true;
                     }
@@ -441,10 +441,7 @@ namespace Disco.Services.Devices.Enrolment
                             response.ComputerName = calculatedAccountUsername;
 
                             // Create New Account
-
-                            response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount, out var offlineProvisionDiagnosicInfo);
-
-                            EnrolmentLog.LogSessionDiagnosticInformation(sessionId, offlineProvisionDiagnosicInfo);
+                            response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount);
 
                             response.RequireReboot = true;
                         }

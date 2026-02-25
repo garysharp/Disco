@@ -204,6 +204,29 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #region Actions
 
+        public void RenameAccount(ADDomainController writableDomainController, string newName)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException($"This account [{DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
+
+            if (!writableDomainController.IsWritable)
+                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Delete Account) requires a writable domain controller.");
+
+            using (ADDirectoryEntry adEntry = writableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+            {
+                var entry = adEntry.Entry;
+                entry.Properties["dNSHostName"][0] = $"{newName}.{Domain.Name}";
+                entry.Properties["sAMAccountName"][0] = $"{newName}$";
+                entry.CommitChanges();
+                entry.Rename($"CN={newName}");
+                entry.CommitChanges();
+
+                // Update Distinguished Name
+                Name = newName;
+                DistinguishedName = entry.Properties["distinguishedName"][0].ToString();
+            }
+        }
+
         public void DeleteAccount(ADDomainController WritableDomainController)
         {
             if (IsCriticalSystemObject)

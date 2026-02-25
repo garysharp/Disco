@@ -2,8 +2,7 @@
 using Disco.Models.ClientServices;
 using Microsoft.Win32;
 using System;
-using System.Diagnostics;
-using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Disco.Client.Extensions
 {
@@ -61,6 +60,28 @@ namespace Disco.Client.Extensions
             Program.AllowUninstall = enrolResponse.AllowBootstrapperUninstall;
         }
 
+        [Flags]
+        private enum NETSETUP_PROVISION_FLAGS : int
+        {
+            NETSETUP_PROVISION_DOWNLEVEL_PRIV_SUPPORT = 0x00000001,
+            NETSETUP_PROVISION_REUSE_ACCOUNT = 0x00000002,
+            NETSETUP_PROVISION_USE_DEFAULT_PASSWORD = 0x00000004,
+            NETSETUP_PROVISION_SKIP_ACCOUNT_SEARCH = 0x00000008,
+            NETSETUP_PROVISION_ROOT_CA_CERTS = 0x00000010,
+            NETSETUP_PROVISION_PERSISTENTSITE = 0x00000020,
+            NETSETUP_PROVISION_ONLINE_CALLER = 0x40000000,
+            NETSETUP_PROVISION_CHECK_PWD_ONLY = unchecked((int)0x80000000),
+        }
+
+        [DllImport("Netapi32.dll", CallingConvention = CallingConvention.Winapi)]
+        [return: MarshalAs(UnmanagedType.I4)]
+        private static extern int NetRequestOfflineDomainJoin(
+            [In] IntPtr pProvisionBinData,
+            [In, MarshalAs(UnmanagedType.I4)] int cbProvisionBinDataSize,
+            [In, MarshalAs(UnmanagedType.I4)] NETSETUP_PROVISION_FLAGS dwOptions,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string lpWindowsPath
+            );
+
         /// <summary>
         /// Processes a Client Service Enrol Response for Offline Domain Join Actions
         /// </summary>
@@ -72,30 +93,31 @@ namespace Disco.Client.Extensions
             {
                 Presentation.UpdateStatus("Enrolling Device", $"Performing Offline Domain Join:\r\nRenaming Computer: {Environment.MachineName} -> {enrolResponse.ComputerName}", true, -1, 1500);
 
-                string odjFile = Path.GetTempFileName();
-                File.WriteAllBytes(odjFile, Convert.FromBase64String(enrolResponse.OfflineDomainJoinManifest));
+                var provisionData = Convert.FromBase64String(enrolResponse.OfflineDomainJoinManifest);
+                string systemRoot = Environment.GetEnvironmentVariable("SystemRoot");
 
-                string odjWindowsPath = Environment.GetEnvironmentVariable("SystemRoot");
-                string odjProcessArguments = $"/REQUESTODJ /LOADFILE \"{odjFile}\" /WINDOWSPATH \"{odjWindowsPath}\" /LOCALOS";
-
-                ProcessStartInfo odjProcessStartInfo = new ProcessStartInfo("DJOIN.EXE", odjProcessArguments)
+                var provisionDataPointer = Marshal.AllocCoTaskMem(provisionData.Length);
+                Marshal.Copy(provisionData, 0, provisionDataPointer, provisionData.Length);
+                var joinResult = default(int);
+                try
                 {
-                    CreateNoWindow = true,
-                    ErrorDialog = false,
-                    LoadUserProfile = true,
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false
-                };
-                string odjResult;
-                using (Process odjProcess = System.Diagnostics.Process.Start(odjProcessStartInfo))
-                {
-                    odjResult = odjProcess.StandardOutput.ReadToEnd();
-                    odjProcess.WaitForExit(20000); // 20 Seconds
+                    joinResult = NetRequestOfflineDomainJoin(provisionDataPointer, provisionData.Length, NETSETUP_PROVISION_FLAGS.NETSETUP_PROVISION_ONLINE_CALLER, systemRoot);
                 }
-                Presentation.UpdateStatus("Enrolling Device", $"Offline Domain Join Result:\r\n{odjResult}", true, -1, 3000);
+                finally
+                {
+                    Marshal.FreeCoTaskMem(provisionDataPointer);
+                }
 
-                if (File.Exists(odjFile))
-                    File.Delete(odjFile);
+                if (joinResult != 0)
+                {
+                    var win32Exception = new System.ComponentModel.Win32Exception(joinResult);
+                    Presentation.UpdateStatus("Enrolling Device", $"Offline Domain Join Failed:\r\n{win32Exception.Message} [{joinResult}]", true, -1, 3000);
+                    throw new InvalidOperationException($"Offline Domain Join Failed:\r\n{win32Exception.Message} [{joinResult}]");
+                }
+                else
+                {
+                    Presentation.UpdateStatus("Enrolling Device", $"Offline Domain Join Succeeded", true, -1, 2000);
+                }
 
                 // Flush Logged-On History
                 if (enrolResponse.SetAssignedUserForLogon && !string.IsNullOrEmpty(enrolResponse.DomainName))
