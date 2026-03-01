@@ -1560,10 +1560,25 @@ textarea.block {
 }
 #Document_Generation_Dialog .details #Document_Generation_Dialog_Download_Container {
   text-align: center;
-  padding-top: 3em;
+}
+#Document_Generation_Dialog .details #Document_Generation_Dialog_Download_Container button {
+  display: block;
+  margin: 3em auto;
+}
+#Document_Generation_Dialog .details #Document_Generation_Dialog_Download_Container #Document_Generation_Dialog_View {
+  display: none;
 }
 #Document_Generation_Dialog .details #Document_Generation_Dialog_HandlerUI {
   display: none;
+}
+#Document_Generation_View_Dialog {
+  padding: 0;
+  overflow: hidden;
+}
+#Document_Generation_View_Dialog iframe {
+  border: none;
+  width: 100%;
+  height: 100%;
 }
 ul.list-group {
   background-color: #fff;

@@ -750,6 +750,7 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string id = "id";
             public readonly string targetId = "targetId";
+            public readonly string inline = "inline";
         }
         static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1321,15 +1322,16 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string targetId);
+        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string id, string targetId, bool? inline);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Generate(string id, string targetId)
+        public override System.Web.Mvc.ActionResult Generate(string id, string targetId, bool? inline)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "targetId", targetId);
-            GenerateOverride(callInfo, id, targetId);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "inline", inline);
+            GenerateOverride(callInfo, id, targetId, inline);
             return callInfo;
         }
 

@@ -19,12 +19,12 @@ namespace Disco.Web.Areas.API.Controllers
 {
     public partial class DocumentTemplatePackageController : AuthorizedDatabaseController
     {
-        const string pDescription = "description";
-        const string pScope = "scope";
-        const string pFilterExpression = "filterexpression";
-        const string pOnGenerateExpression = "ongenerateexpression";
-        const string pIsHidden = "ishidden";
-        const string pInsertBlankPages = "insertblankpages";
+        private const string pDescription = "description";
+        private const string pScope = "scope";
+        private const string pFilterExpression = "filterexpression";
+        private const string pOnGenerateExpression = "ongenerateexpression";
+        private const string pIsHidden = "ishidden";
+        private const string pInsertBlankPages = "insertblankpages";
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Configure)]
         [HttpPost, ValidateAntiForgeryToken]
@@ -396,7 +396,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult Generate(string id, string targetId)
+        public virtual ActionResult Generate(string id, string targetId, bool? inline = false)
         {
             if (string.IsNullOrWhiteSpace(id))
                 throw new ArgumentNullException(nameof(id));
@@ -435,7 +435,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
 
-            return File(document, "application/pdf", $"{package.Id}_{target.AttachmentReferenceId.Replace('\\', '_')}_{timestamp:yyyyMMdd-HHmmss}.pdf");
+            return File(document, "application/pdf", (inline ?? false) ? null : $"{package.Id}_{target.AttachmentReferenceId.Replace('\\', '_')}_{timestamp:yyyyMMdd-HHmmss}.pdf");
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Delete)]

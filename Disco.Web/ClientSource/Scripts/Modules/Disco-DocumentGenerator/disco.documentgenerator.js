@@ -12,6 +12,7 @@
         const handlersPackageUrl = $container.attr('data-handlerspackageurl');
         let $handlersDialog = null;
         let lastTemplateId = null;
+        let lastTemplateName = null;
 
         const downloadPdf = function (templateId) {
             let action = generatePdfUrl;
@@ -29,6 +30,36 @@
                 $generationHost[0].body.innerHTML = '<form method="post"><input type="hidden" name="__RequestVerificationToken" value="' + document.body.dataset.antiforgery + '"><input type="hidden" name="id"><input type="hidden" name="targetId"></form>';
             }
             const form = $generationHost[0].forms[0];
+            form.action = action;
+            form.id.value = templateId;
+            form.targetId.value = targetId;
+            form.submit();
+        }
+
+        const viewPdf = function (templateId, templateName) {
+            let action = generatePdfUrl;
+            if (templateId.lastIndexOf('Package:', 0) === 0) {
+                templateId = templateId.substring(8);
+                action = generatePackageUrl;
+            }
+
+            const $dialog = $('<div id="Document_Generation_View_Dialog" class="dialog">')
+                .appendTo(document.body)
+                .dialog({
+                    resizable: false,
+                    modal: true,
+                    autoOpen: true,
+                    width: 850,
+                    height: 700,
+                    title: 'Document: ' + templateName,
+                    close: function () {
+                        $dialog.dialog('destroy').remove();
+                    }
+                });
+            const $iframe = $('<iframe>').appendTo($dialog);
+            const $iframeContents = $iframe.contents()[0];
+            $iframeContents.body.innerHTML = '<form method="post"><input type="hidden" name="__RequestVerificationToken" value="' + document.body.dataset.antiforgery + '"><input type="hidden" name="id"><input type="hidden" name="targetId"><input type="hidden" name="inline" value="True"></form>';
+            const form = $iframeContents.forms[0];
             form.action = action;
             form.id.value = templateId;
             form.targetId.value = targetId;
@@ -71,6 +102,7 @@
             var templateId = $control.val();
             if (templateId) {
                 lastTemplateId = templateId;
+                lastTemplateName = $control[0].selectedOptions[0].label;
                 if (handlersPresent) {
                     if (!$handlersDialog) {
                         $handlersDialog = $container.find('#Document_Generation_Dialog');
@@ -91,7 +123,15 @@
                             downloadPdf(lastTemplateId);
                             $handlersDialog.dialog('close');
                             return false;
-                        })
+                        });
+                        if (navigator.pdfViewerEnabled) {
+                            $handlersDialog.find('#Document_Generation_Dialog_View').css('display', 'block').on('click', e => {
+                                e.preventDefault();
+                                $handlersDialog.dialog('close');
+                                viewPdf(lastTemplateId, lastTemplateName);
+                                return false;
+                            });
+                        }
                         const $handlerPicker = $handlersDialog.find('.handlerPicker');
                         const $Document_Generation_Dialog_Download_Container = $handlersDialog.find('#Document_Generation_Dialog_Download_Container');
                         const $Document_Generation_Dialog_HandlerUI = $handlersDialog.find('#Document_Generation_Dialog_HandlerUI');

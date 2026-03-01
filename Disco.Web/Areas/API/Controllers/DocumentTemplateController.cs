@@ -1774,7 +1774,7 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult Generate(string id, string targetId)
+        public virtual ActionResult Generate(string id, string targetId, bool? inline = null)
         {
             Disco.Services.DocumentTemplateExtensions.GetTemplateAndTarget(Database, Authorization, id, targetId, out var template, out var target, out _);
 
@@ -1787,7 +1787,7 @@ namespace Disco.Web.Areas.API.Controllers
             }
             Database.SaveChanges();
 
-            return File(document, "application/pdf", $"{template.Id}_{target.AttachmentReferenceId.Replace('\\', '_')}_{timestamp:yyyyMMdd-HHmmss}.pdf");
+            return File(document, "application/pdf", (inline ?? false) ? null : $"{template.Id}_{target.AttachmentReferenceId.Replace('\\', '_')}_{timestamp:yyyyMMdd-HHmmss}.pdf");
         }
 
         [DiscoAuthorize(Claims.Config.DocumentTemplate.Delete)]

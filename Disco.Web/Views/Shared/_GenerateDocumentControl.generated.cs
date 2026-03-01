@@ -211,15 +211,23 @@ WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Download Document</button>\r\n                    </div>\r\n                    <div" +
-"");
+WriteLiteral(">Download Document</button>\r\n                        <button");
+
+WriteLiteral(" id=\"Document_Generation_Dialog_View\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">View/Print Document</button>\r\n                    </div>\r\n                    <d" +
+"iv");
 
 WriteLiteral(" id=\"Document_Generation_Dialog_HandlerUI\"");
 
 WriteLiteral(">\r\n                    </div>\r\n                </div>\r\n            </div>\r\n");
 
             
-            #line 29 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+            #line 30 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
         }
 
             
@@ -228,7 +236,7 @@ WriteLiteral(">\r\n                    </div>\r\n                </div>\r\n     
 WriteLiteral("    </div>\r\n");
 
             
-            #line 31 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
+            #line 32 "..\..\Views\Shared\_GenerateDocumentControl.cshtml"
     Html.BundleDeferred("~/ClientScripts/Modules/Disco-DocumentGenerator");
 }
             
