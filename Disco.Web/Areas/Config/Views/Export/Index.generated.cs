@@ -420,148 +420,36 @@ WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 450px; padding: 100px 0;\"");
 
-WriteLiteral(">\r\n        <h2>No saved exports are configured</h2>\r\n        <div>\r\n");
+WriteLiteral(">\r\n        <h2>No saved exports are configured</h2>\r\n        <div");
 
-            
-            #line 81 "..\..\Areas\Config\Views\Export\Index.cshtml"
-            
-            
-            #line default
-            #line hidden
-            
-            #line 81 "..\..\Areas\Config\Views\Export\Index.cshtml"
-             if (Authorization.Has(Claims.Device.Actions.Export))
-            {
+WriteLiteral(" class=\"info-box\"");
 
-            
-            #line default
-            #line hidden
-WriteLiteral("                <a");
+WriteLiteral(">\r\n            <p");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 3626), Tuple.Create("\"", 3665)
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral("></i>\r\n                Visit any export page (eg. <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 3675), Tuple.Create("\"", 3714)
             
             #line 83 "..\..\Areas\Config\Views\Export\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 3633), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Export())
+, Tuple.Create(Tuple.Create("", 3682), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.Export())
             
             #line default
             #line hidden
-, 3633), false)
+, 3682), false)
 );
 
-WriteLiteral(" class=\"button small\"");
-
-WriteLiteral(">Device Export</a>\r\n");
-
-            
-            #line 84 "..\..\Areas\Config\Views\Export\Index.cshtml"
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            ");
-
-            
-            #line 85 "..\..\Areas\Config\Views\Export\Index.cshtml"
-             if (Authorization.Has(Claims.Job.Actions.Export))
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 3819), Tuple.Create("\"", 3855)
-            
-            #line 87 "..\..\Areas\Config\Views\Export\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 3826), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Job.Export())
-            
-            #line default
-            #line hidden
-, 3826), false)
-);
-
-WriteLiteral(" class=\"button small\"");
-
-WriteLiteral(">Job Export</a>\r\n");
+WriteLiteral(">Device Export</a>)\r\n                and click \"Save Export\" to create a saved ex" +
+"port that can be scheduled or run on demand.\r\n            </p>\r\n        </div>\r\n" +
+"    </div>\r\n");
 
             
             #line 88 "..\..\Areas\Config\Views\Export\Index.cshtml"
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            ");
-
-            
-            #line 89 "..\..\Areas\Config\Views\Export\Index.cshtml"
-             if (Authorization.Has(Claims.Config.UserFlag.Export))
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 4010), Tuple.Create("\"", 4058)
-            
-            #line 91 "..\..\Areas\Config\Views\Export\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 4017), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.UserFlag.Export())
-            
-            #line default
-            #line hidden
-, 4017), false)
-);
-
-WriteLiteral(" class=\"button small\"");
-
-WriteLiteral(">User Flag Export</a>\r\n");
-
-            
-            #line 92 "..\..\Areas\Config\Views\Export\Index.cshtml"
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("            ");
-
-            
-            #line 93 "..\..\Areas\Config\Views\Export\Index.cshtml"
-             if (Authorization.Has(Claims.Config.DeviceFlag.Export))
-            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                <a");
-
-WriteAttribute("href", Tuple.Create(" href=\"", 4221), Tuple.Create("\"", 4271)
-            
-            #line 95 "..\..\Areas\Config\Views\Export\Index.cshtml"
-, Tuple.Create(Tuple.Create("", 4228), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Config.DeviceFlag.Export())
-            
-            #line default
-            #line hidden
-, 4228), false)
-);
-
-WriteLiteral(" class=\"button small\"");
-
-WriteLiteral(">Device Flag Export</a>\r\n");
-
-            
-            #line 96 "..\..\Areas\Config\Views\Export\Index.cshtml"
-            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("        </div>\r\n    </div>\r\n");
-
-            
-            #line 99 "..\..\Areas\Config\Views\Export\Index.cshtml"
 }
 
             

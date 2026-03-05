@@ -77,23 +77,12 @@ else
 {
     <div class="form" style="width: 450px; padding: 100px 0;">
         <h2>No saved exports are configured</h2>
-        <div>
-            @if (Authorization.Has(Claims.Device.Actions.Export))
-            {
-                <a href="@Url.Action(MVC.Device.Export())" class="button small">Device Export</a>
-            }
-            @if (Authorization.Has(Claims.Job.Actions.Export))
-            {
-                <a href="@Url.Action(MVC.Job.Export())" class="button small">Job Export</a>
-            }
-            @if (Authorization.Has(Claims.Config.UserFlag.Export))
-            {
-                <a href="@Url.Action(MVC.Config.UserFlag.Export())" class="button small">User Flag Export</a>
-            }
-            @if (Authorization.Has(Claims.Config.DeviceFlag.Export))
-            {
-                <a href="@Url.Action(MVC.Config.DeviceFlag.Export())" class="button small">Device Flag Export</a>
-            }
+        <div class="info-box">
+            <p class="fa-p">
+                <i class="fa fa-fw fa-info-circle"></i>
+                Visit any export page (eg. <a href="@Url.Action(MVC.Device.Export())">Device Export</a>)
+                and click "Save Export" to create a saved export that can be scheduled or run on demand.
+            </p>
         </div>
     </div>
 }
