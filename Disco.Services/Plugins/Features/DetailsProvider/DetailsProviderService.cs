@@ -53,6 +53,14 @@ namespace Disco.Services.Plugins.Features.DetailsProvider
                     {
                         using (var originalImage = Image.FromStream(originalStream))
                         {
+                            if (originalImage.PropertyIdList.Contains(0x112))
+                            {
+                                var orientation = BitConverter.ToUInt16(originalImage.GetPropertyItem(0x112).Value, 0);
+                                if (orientation > 1 && orientation <= 8)
+                                {
+                                    originalImage.RotateFlip(GetRotateFlipTypeByOrientation(orientation));
+                                }
+                            }
                             using (var resizedImage = originalImage.ResizeImage(192, Brushes.White))
                             {
                                 using (var savedResizedImage = (MemoryStream)resizedImage.SaveJpg(85))
@@ -97,6 +105,31 @@ namespace Disco.Services.Plugins.Features.DetailsProvider
                     .Where(d => d.UserId == user.UserId &&
                             d.Scope == DetailsScope)
                     .ToDictionary(d => d.Key, d => d.Value, StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
+        private RotateFlipType GetRotateFlipTypeByOrientation(ushort orientation)
+        {
+            switch (orientation)
+            {
+                case 1:
+                    return RotateFlipType.RotateNoneFlipNone;
+                case 2:
+                    return RotateFlipType.RotateNoneFlipX;
+                case 3:
+                    return RotateFlipType.Rotate180FlipNone;
+                case 4:
+                    return RotateFlipType.RotateNoneFlipY;
+                case 5:
+                    return RotateFlipType.Rotate270FlipX;
+                case 6:
+                    return RotateFlipType.Rotate90FlipNone;
+                case 7:
+                    return RotateFlipType.Rotate90FlipX;
+                case 8:
+                    return RotateFlipType.Rotate270FlipNone;
+                default:
+                    return RotateFlipType.RotateNoneFlipNone;
             }
         }
     }
