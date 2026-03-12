@@ -34,6 +34,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -98,6 +101,7 @@
     <Compile Include="Services\Interop\DiscoServices\Activation\CallbackModel.cs" />
     <Compile Include="Services\Interop\DiscoServices\Activation\ChallengeModel.cs" />
     <Compile Include="Services\Interop\DiscoServices\IConnectNotification.cs" />
+    <Compile Include="Services\Interop\SsoConfiguration.cs" />
     <Compile Include="Services\Jobs\JobExportOptions.cs" />
     <Compile Include="Services\Jobs\JobExportRecord.cs" />
     <Compile Include="Services\Jobs\LocationModes.cs" />

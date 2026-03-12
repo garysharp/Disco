@@ -69,16 +69,28 @@ namespace Disco.Services.Interop.ActiveDirectory
                 }
             }
 
+            string oldComputerSamAccountName = default;
+            string oldDnsHostName = default;
             if (machineAccount != null && !string.Equals(machineAccount.Name, computerSamAccountName, StringComparison.Ordinal))
             {
                 // rename the account
-                machineAccount.RenameAccount(dc, computerSamAccountName);
+                machineAccount.RenameAccount(dc, computerSamAccountName, $"{computerSamAccountName}.{machineAccount.Domain.Name}", out oldComputerSamAccountName, out oldDnsHostName);
             }
 
             var result = NetProvisionComputerAccount(dc.Domain.Name, computerSamAccountName, string.IsNullOrWhiteSpace(organisationalUnit) ? null : organisationalUnit, dc.Name, NETSETUP_PROVISION_FLAGS.NETSETUP_PROVISION_REUSE_ACCOUNT, out var provisionDataPointer, out var provisionDataLength);
 
             if (result != 0)
             {
+                if (oldComputerSamAccountName != null)
+                {
+                    // restore the computer account's original name since provisioning failed
+                    try
+                    {
+                        machineAccount.RenameAccount(dc, oldComputerSamAccountName, oldDnsHostName, out _, out _);
+                    }
+                    catch { }
+                }
+
                 var win32Exception = new System.ComponentModel.Win32Exception(result);
                 throw new InvalidOperationException($"NetProvisionComputerAccount failed with error code {result}: {win32Exception.Message}");
             }

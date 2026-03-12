@@ -9,8 +9,6 @@ namespace Disco.Services.Interop.ActiveDirectory
     {
         internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "memberOf", "member" };
         internal static string LdapSearchFilterTemplate = "(&(objectCategory=Group)(|(sAMAccountName={0}*)(name={0}*)(cn={0}*)))";
-        internal const string LdapSamAccountNameFilterTemplate = "(&(objectCategory=Group)(sAMAccountName={0}))";
-        internal const string LdapSecurityIdentifierFilterTemplate = "(&(objectCategory=Group)(objectSid={0}))";
 
         public ADDomain Domain { get; private set; }
 

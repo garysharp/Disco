@@ -1,9 +1,13 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Services.Exporting;
+using Disco.Models.Services.Interop;
 using Disco.Models.Services.Interop.DiscoServices;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security;
+using System.Web.Configuration;
 
 namespace Disco.Data.Configuration
 {
@@ -26,15 +30,15 @@ namespace Disco.Data.Configuration
 
         #region Configuration Modules
 
-        private Lazy<Modules.BootstrapperConfiguration> moduleBootstrapperConfiguration;
-        private Lazy<Modules.DeviceProfilesConfiguration> moduleDeviceProfilesConfiguration;
-        private Lazy<Modules.OrganisationAddressesConfiguration> moduleOrganisationAddressesConfiguration;
-        private Lazy<Modules.JobPreferencesConfiguration> moduleJobPreferencesConfiguration;
-        private Lazy<Modules.ActiveDirectoryConfiguration> moduleActiveDirectoryConfiguration;
-        private Lazy<Modules.DevicesConfiguration> moduleDevicesConfiguration;
-        private Lazy<Modules.DocumentsConfiguration> moduleDocumentsConfiguration;
-        private Lazy<Modules.UserFlagsConfiguration> moduleUserFlagsConfiguration;
-        private Lazy<Modules.DeviceFlagsConfiguration> moduleDeviceFlagsConfiguration;
+        private readonly Lazy<Modules.BootstrapperConfiguration> moduleBootstrapperConfiguration;
+        private readonly Lazy<Modules.DeviceProfilesConfiguration> moduleDeviceProfilesConfiguration;
+        private readonly Lazy<Modules.OrganisationAddressesConfiguration> moduleOrganisationAddressesConfiguration;
+        private readonly Lazy<Modules.JobPreferencesConfiguration> moduleJobPreferencesConfiguration;
+        private readonly Lazy<Modules.ActiveDirectoryConfiguration> moduleActiveDirectoryConfiguration;
+        private readonly Lazy<Modules.DevicesConfiguration> moduleDevicesConfiguration;
+        private readonly Lazy<Modules.DocumentsConfiguration> moduleDocumentsConfiguration;
+        private readonly Lazy<Modules.UserFlagsConfiguration> moduleUserFlagsConfiguration;
+        private readonly Lazy<Modules.DeviceFlagsConfiguration> moduleDeviceFlagsConfiguration;
 
         public Modules.BootstrapperConfiguration Bootstrapper => moduleBootstrapperConfiguration.Value;
         public Modules.DeviceProfilesConfiguration DeviceProfiles => moduleDeviceProfilesConfiguration.Value;
@@ -353,6 +357,70 @@ namespace Disco.Data.Configuration
             get => Get(new List<SavedExport>());
             set => Set(value);
         }
+
+        #region SSO Configuration
+
+        public bool SsoAdministrativelyDisabled
+        {
+            get
+            {
+                // check for app setting override
+                if (bool.TryParse(WebConfigurationManager.AppSettings["DiscoDisableSSO"], out var disableSso) && disableSso)
+                    return true;
+
+                return false;
+            }
+        }
+
+        public bool SsoEnabled
+        {
+            get
+            {
+                try
+                {
+                    if (SsoAdministrativelyDisabled)
+                        return false;
+
+                    if (SsoConfiguration == null)
+                        return false;
+
+                    using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Disco", false))
+                    {
+                        var ssoEnabled = (int)key.GetValue("SsoEnabled", 0);
+                        return ssoEnabled == 1;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                try
+                {
+                    if (SsoAdministrativelyDisabled)
+                        value = false;
+
+                    using (var key = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Disco", true))
+                    {
+                        key.SetValue("SsoEnabled", value ? 1 : 0, RegistryValueKind.DWord);
+                    }
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    throw new SecurityException(@"Unable to write to the Registry Location: HKML\SOFTWARE\Disco[SsoEnabled]", ex);
+                }
+            }
+        }
+
+        public SsoConfiguration SsoConfiguration
+        {
+            get => Get<SsoConfiguration>(null);
+            set => Set(value);
+        }
+
+        #endregion
 
     }
 }

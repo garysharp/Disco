@@ -1,6 +1,7 @@
 ﻿using Disco.Services.Authorization;
 using Disco.Services.Interop.DiscoServices;
 using Disco.Services.Web;
+using Disco.Web.App_Start;
 using Disco.Web.Areas.Config.Models.SystemConfig;
 using System;
 using System.Web.Mvc;
@@ -35,6 +36,48 @@ namespace Disco.Web.Areas.Config.Controllers
             model.Proof = service.CalculateCallbackProof(model.CorrelationId, model.UserId, model.Timestamp);
 
             return View(model);
+        }
+
+        [DiscoAuthorize(Claims.DiscoAdminAccount), HttpGet]
+        public virtual ActionResult SSO(string session = null, string error = null)
+        {
+            if (!string.IsNullOrEmpty(error))
+                throw new InvalidOperationException("SSO test failed: " + error);
+
+            if (Database.DiscoConfiguration.SsoAdministrativelyDisabled)
+                return RedirectToAction(MVC.Config.SystemConfig.Index());
+
+            if (AuthenticationConfig.TryGetSuccessfulSessionConfiguration(session, out var ssoConfiguration))
+            {
+                var model = new SsoModel()
+                {
+                    Mode = SsoMode.Testing,
+                    ClientId = ssoConfiguration.ClientId,
+                    Authority = ssoConfiguration.Authority,
+                    TestedSession = session,
+                };
+                return View(model);
+            }
+
+            if (Database.DiscoConfiguration.SsoEnabled)
+            {
+                ssoConfiguration = Database.DiscoConfiguration.SsoConfiguration;
+                var model = new SsoModel()
+                {
+                    Mode = SsoMode.OpenIdConnect,
+                    ClientId = ssoConfiguration.ClientId,
+                    Authority = ssoConfiguration.Authority,
+                };
+                return View(model);
+            }
+            else
+            {
+                var model = new SsoModel()
+                {
+                    Mode = SsoMode.WindowsAuthentication,
+                };
+                return View(model);
+            }
         }
     }
 }

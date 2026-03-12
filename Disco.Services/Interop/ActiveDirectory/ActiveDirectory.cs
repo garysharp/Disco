@@ -74,6 +74,19 @@ namespace Disco.Services.Interop.ActiveDirectory
             return domain.GetAvailableDomainController().RetrieveADUserAccount(User.UserId, AdditionalProperties);
         }
 
+        public static ADUserAccount RetrieveADUserAccountByUserPrincipalName(string userPrincipalName, params string[] additionalProperties)
+        {
+            var user = Context.PrimaryDomain.GetAvailableDomainController().RetrieveADUserAccountByUserPrincipalName(userPrincipalName, additionalProperties);
+
+            if (user != null)
+                return user;
+
+            if (!Context.TryGetDomainForUserPrincipalName(userPrincipalName, out var domain, out _, out var distinguishedName))
+                return null;
+
+            return domain.GetAvailableDomainController().RetrieveADUserAccountByDistinguishedName(distinguishedName, additionalProperties);
+        }
+
         public static IEnumerable<ADUserAccount> SearchADUserAccounts(string Term, bool Quick, int? ResultLimit = DefaultSearchResultLimit, params string[] AdditionalProperties)
         {
             if (string.IsNullOrWhiteSpace(Term))

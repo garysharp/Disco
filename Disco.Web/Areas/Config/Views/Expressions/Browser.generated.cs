@@ -67,8 +67,19 @@ WriteLiteral(" target=\"_blank\"");
 
 WriteLiteral(">Spring.NET Framework</a>. Please refer to the <a");
 
-WriteLiteral(" href=\"http://www.springframework.net/doc-latest/reference/html/expressions.html\"" +
-"");
+WriteLiteral(" id=\"Config_Expressions_Browser_Documentation\"");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 593), Tuple.Create("\"", 655)
+            
+            #line 10 "..\..\Areas\Config\Views\Expressions\Browser.cshtml"
+                                                                                                                                  , Tuple.Create(Tuple.Create("", 600), Tuple.Create<System.Object, System.Int32>(Url.Content(Links.ClientSource.SpringExpressions_html)
+            
+            #line default
+            #line hidden
+, 600), false)
+);
+
+WriteLiteral(" title=\"Spring Framework Expression Documentation\"");
 
 WriteLiteral(" target=\"_blank\"");
 

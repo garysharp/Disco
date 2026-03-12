@@ -9,7 +9,7 @@ namespace Disco.Services.Plugins
 {
     public class UninstallPluginTask : ScheduledTask
     {
-        public override string TaskName { get { return "Uninstalling Plugin"; } }
+        public override string TaskName { get; } = "Uninstalling Plugin";
 
         protected override void ExecuteTask()
         {
@@ -46,7 +46,7 @@ namespace Disco.Services.Plugins
             }
 
             Status.Finished("Restarting Disco ICT, please wait...", "/Config/Plugins");
-            Plugins.RestartApp(TimeSpan.FromSeconds(1));
+            RestartAppScheduledTask.RestartApp(TimeSpan.FromSeconds(1));
         }
 
         public static ScheduledTaskStatus UninstallPlugin(PluginManifest Manifest, bool UninstallData)

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.SignalR;
+﻿using Disco.Web.App_Start;
 using Microsoft.Owin;
 using Owin;
 
@@ -6,16 +6,11 @@ using Owin;
 
 namespace Disco.Web
 {
-    public class OwinStartupConfig
+    public static class OwinStartupConfig
     {
-        public void Configuration(IAppBuilder app)
+        public static void Configuration(IAppBuilder app)
         {
-            var hubConfig = new HubConfiguration()
-            {
-                EnableJavaScriptProxies = false
-            };
-
-            app.MapSignalR("/API/Signalling", hubConfig);
+            app.ConfigureDiscoIctAuthentication();
         }
     }
 }

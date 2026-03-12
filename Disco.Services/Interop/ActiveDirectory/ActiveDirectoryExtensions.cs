@@ -57,6 +57,10 @@ namespace Disco.Services
         {
             return SearchResults.Select(sr => ADUserAccount.FromSearchResult(sr, Quick, AdditionalProperties));
         }
+        public static ADUserAccount AsADUserAccount(this ADDirectoryEntry directoryEntry, bool quick, string[] additionalProperties)
+        {
+            return ADUserAccount.FromDirectoryEntry(directoryEntry, quick, additionalProperties);
+        }
 
         // Machine Accounts
         public static ADMachineAccount AsADMachineAccount(this ADSearchResult SearchResult, string[] AdditionalProperties)

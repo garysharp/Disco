@@ -177,8 +177,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                                 return null;
                             }
 
-                            var ldapFilter = $"(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={memberUsername}))";
-
+                            var ldapFilter = $"(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={ADHelpers.EscapeLdapQuery(memberUsername)}))";
                             var adSearchResult = memberDomain.SearchEntireDomain(ldapFilter, adSearchLoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
                             if (adSearchResult != null)
                             {
@@ -336,7 +335,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                                         return null;
                                     }
 
-                                    var ldapFilter = $"(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={memberUsername}))";
+                                    var ldapFilter = $"(&(|(objectCategory=computer)(objectCategory=person))(sAMAccountName={ADHelpers.EscapeLdapQuery(memberUsername)}))";
 
                                     var adSearchResult = memberDomain.SearchEntireDomain(ldapFilter, adSearchLoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
                                     if (adSearchResult != null)

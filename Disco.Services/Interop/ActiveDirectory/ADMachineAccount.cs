@@ -10,7 +10,6 @@ namespace Disco.Services.Interop.ActiveDirectory
     public class ADMachineAccount : IADObject
     {
         internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "userAccountControl", "dNSHostName", "description", "netbootGUID", "isCriticalSystemObject" };
-        internal const string LdapSamAccountNameFilterTemplate = "(&(objectCategory=computer)(sAMAccountName={0}))";
         internal const string LdapNetbootGuidSingleFilterTemplate = "(&(objectCategory=computer)(netbootGUID={0}))";
         internal const string LdapNetbootGuidDoubleFilterTemplate = "(&(objectCategory=computer)(|(netbootGUID={0})(netbootGUID={1})))";
 
@@ -204,7 +203,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         #region Actions
 
-        public void RenameAccount(ADDomainController writableDomainController, string newName)
+        public void RenameAccount(ADDomainController writableDomainController, string newName, string newDnsName, out string oldName, out string oldDnsName)
         {
             if (IsCriticalSystemObject)
                 throw new InvalidOperationException($"This account [{DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
@@ -212,11 +211,16 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (!writableDomainController.IsWritable)
                 throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Delete Account) requires a writable domain controller.");
 
-            using (ADDirectoryEntry adEntry = writableDomainController.RetrieveDirectoryEntry(DistinguishedName))
+            using (ADDirectoryEntry adEntry = writableDomainController.RetrieveDirectoryEntry(DistinguishedName, new[] { "dNSHostName", "sAMAccountName" }))
             {
                 var entry = adEntry.Entry;
-                entry.Properties["dNSHostName"][0] = $"{newName}.{Domain.Name}";
+
+                oldDnsName = (string)entry.Properties["dNSHostName"][0];
+                oldName = (string)entry.Properties["sAMAccountName"][0];
+
+                entry.Properties["dNSHostName"][0] = newDnsName;
                 entry.Properties["sAMAccountName"][0] = $"{newName}$";
+
                 entry.CommitChanges();
                 entry.Rename($"CN={newName}");
                 entry.CommitChanges();

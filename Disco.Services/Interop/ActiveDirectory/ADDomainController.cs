@@ -131,12 +131,40 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ? ADUserAccount.LoadProperties.Concat(AdditionalProperties).ToArray()
                 : ADUserAccount.LoadProperties;
 
-            var result = RetrieveBySamAccountName(Id, ADUserAccount.LdapSamAccountNameFilterTemplate, loadProperites);
+            var result = RetrieveBySamAccountName(Id, "(&(objectCategory=Person)(sAMAccountName={0}))", loadProperites);
 
             if (result == null)
                 return null;
             else
                 return result.AsADUserAccount(false, AdditionalProperties);
+        }
+        public ADUserAccount RetrieveADUserAccountByUserPrincipalName(string userPrincipalName, string[] additionalProperties = null)
+        {
+            string[] loadProperites = (additionalProperties != null && additionalProperties.Length > 0)
+                ? ADUserAccount.LoadProperties.Concat(additionalProperties).ToArray()
+                : ADUserAccount.LoadProperties;
+
+            var filter = $"(&(objectCategory=Person)(userPrincipalName={ADHelpers.EscapeLdapQuery(userPrincipalName)}))";
+            var result = SearchEntireDomain(filter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
+
+            if (result == null)
+                return null;
+            else
+                return result.AsADUserAccount(false, additionalProperties);
+        }
+        public ADUserAccount RetrieveADUserAccountByDistinguishedName(string distinguishedName, string[] additionalProperties = null)
+        {
+            string[] loadProperites = (additionalProperties != null && additionalProperties.Length > 0)
+                ? ADUserAccount.LoadProperties.Concat(additionalProperties).ToArray()
+                : ADUserAccount.LoadProperties;
+
+            using (var entry = RetrieveDirectoryEntry(distinguishedName, loadProperites))
+            {
+                if (entry == null)
+                    return null;
+
+                return entry.AsADUserAccount(false, additionalProperties);
+            }
         }
         #endregion
 
@@ -156,7 +184,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             ADSearchResult adResult;
 
-            adResult = RetrieveBySamAccountName(Id, ADMachineAccount.LdapSamAccountNameFilterTemplate, loadProperites);
+            adResult = RetrieveBySamAccountName(Id, "(&(objectCategory=computer)(sAMAccountName={0}))", loadProperites);
             if (adResult == null && (UUIDNetbootGUID.HasValue || MacAddressNetbootGUID.HasValue))
             {
                 string ldapFilter;
@@ -197,7 +225,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
                 : ADGroup.LoadProperties;
 
-            var result = RetrieveBySamAccountName(Id, ADGroup.LdapSamAccountNameFilterTemplate, loadProperites);
+            var result = RetrieveBySamAccountName(Id, "(&(objectCategory=Group)(sAMAccountName={0}))", loadProperites);
 
             if (result == null)
                 return null;
@@ -227,7 +255,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var sidBinaryString = SecurityIdentifier.ToBinaryString();
 
-            string ldapFilter = string.Format(ADGroup.LdapSecurityIdentifierFilterTemplate, sidBinaryString);
+            string ldapFilter = string.Format("(&(objectCategory=Group)(objectSid={0}))", sidBinaryString);
             string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
                 ? ADGroup.LoadProperties.Concat(AdditionalProperties).ToArray()
                 : ADGroup.LoadProperties;
@@ -241,13 +269,12 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         #region Object
-        private const string ObjectLdapSamAccountNameFilter = "(&(|(objectCategory=Person)(objectCategory=Computer)(objectCategory=Group))(sAMAccountName={0}))";
         private static readonly string[] ObjectLoadProperties = { "objectCategory" };
         private static readonly string[] ObjectLoadPropertiesAll = ObjectLoadProperties.Concat(ADUserAccount.LoadProperties).Concat(ADMachineAccount.LoadProperties).Concat(ADGroup.LoadProperties).Distinct().ToArray();
 
         public IADObject RetrieveADObject(string Id, bool Quick, string[] AdditionalProperties = null)
         {
-            var result = RetrieveBySamAccountName(Id, ObjectLdapSamAccountNameFilter, ObjectLoadPropertiesAll);
+            var result = RetrieveBySamAccountName(Id, "(&(|(objectCategory=Person)(objectCategory=Computer)(objectCategory=Group))(sAMAccountName={0}))", ObjectLoadPropertiesAll);
 
             if (result == null)
                 return null;
@@ -336,7 +363,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (!Domain.NetBiosName.Equals(Id.Substring(0, slashIndex), StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException($"The Id [{Id}] is invalid for this domain [{Domain.Name}]", "Id");
 
-            var ldapFilter = string.Format(LdapFilterTemplate, Id.Substring(slashIndex + 1));
+            var ldapFilter = string.Format(LdapFilterTemplate, ADHelpers.EscapeLdapQuery(Id.Substring(slashIndex + 1)));
 
             return SearchEntireDomain(ldapFilter, LoadProperties, ActiveDirectory.SingleSearchResult).FirstOrDefault();
         }

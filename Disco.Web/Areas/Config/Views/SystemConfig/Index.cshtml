@@ -283,6 +283,70 @@
         </tr>
     </table>
 </div>
+
+<div class="form" style="width: 450px; margin-top: 15px;">
+    <h2>Single Sign-On</h2>
+    <table>
+        <tr>
+            <th style="width: 135px">
+                Provider:
+            </th>
+            <td>
+                @if (Model.SsoConfiguration == null)
+                {
+                    <div><strong>Windows Authentication</strong></div>
+                    <div class="smallMessage">
+                        Integrated Windows authentication enables users to log in with their Windows credentials, using Kerberos or NTLM.
+                    </div>
+                }
+                else
+                {
+                    <div><strong>Entra ID</strong></div>
+                    <div class="smallMessage">
+                        Entra ID (formerly Azure Active Directory) is a cloud-based identity and access management service
+                        that enables organizations to manage user identities, control access to applications, and enforce security policies.
+                    </div>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 135px">
+                Status:
+            </th>
+            <td>
+                @if (Model.SsoAdministrativelyDisabled)
+                {
+                    <div class="error">
+                        <i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;SSO configuration is administratively disabled.<br />
+                        The Windows Authentication provider is always enabled.<br />
+                        An administrator can adjust this setting in the <code>web.config</code> file<br />
+                        (<em>see: configuration/appSettings/DiscoDisableSSO</em>).
+                    </div>
+                }
+                else if (Model.SsoConfiguration != null && Model.SsoEnabled)
+                {
+                    <div><i class="fa fa-check-square fa-lg success"></i>&nbsp;<span>SSO Enabled</span></div>
+                }
+                else
+                {
+                    <div><i class="fa fa-check-square fa-lg success"></i>&nbsp;<span>Windows Authentication Enabled</span></div>
+                }
+            </td>
+        </tr>
+        @if (!Model.SsoAdministrativelyDisabled)
+        {
+            <tr>
+                <th style="width: 135px">
+                    &nbsp;
+                </th>
+                <td>
+                    @Html.ActionLinkSmallButton("Configure SSO", MVC.Config.SystemConfig.SSO())
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
 <div class="form" style="width: 450px; margin-top: 15px;">
     <h2>Active Directory</h2>
     <table>

@@ -45,12 +45,30 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         internal static string EscapeLdapQuery(string query)
         {
-            return query
-                .Replace(@"\", @"\5C")
-                .Replace("*", @"\2A")
-                .Replace("(", @"\28")
-                .Replace(")", @"\29")
-                .Replace("\0", @"\00");
+            StringBuilder sb = new StringBuilder(query.Length);
+            foreach (char c in query)
+                switch (c)
+                {
+                    case '\\':
+                        sb.Append(@"\5C");
+                        break;
+                    case '*':
+                        sb.Append(@"\2A");
+                        break;
+                    case '(':
+                        sb.Append(@"\28");
+                        break;
+                    case ')':
+                        sb.Append(@"\29");
+                        break;
+                    case '\0':
+                        sb.Append(@"\00");
+                        break;
+                    default:
+                        sb.Append(c);
+                        break;
+                }
+            return sb.ToString();
         }
 
         internal static string EscapeDistinguishedName(string DistinguishedName)

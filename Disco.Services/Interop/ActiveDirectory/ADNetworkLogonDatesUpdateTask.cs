@@ -51,7 +51,6 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public static bool UpdateLastNetworkLogonDate(Device Device)
         {
-            const string ldapFilterTemplate = "(&(objectCategory=Computer)(sAMAccountName={0}))";
             string[] ldapProperties = new string[] { "lastLogon", "lastLogonTimestamp" };
 
             DateTime? lastLogon = null;
@@ -62,7 +61,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
                 ActiveDirectory.ParseDomainAccountId(Device.DeviceDomainId + "$", out var deviceSamAccountName, out var deviceDomain);
 
-                var ldapFilter = string.Format(ldapFilterTemplate, ADHelpers.EscapeLdapQuery(deviceSamAccountName));
+                var ldapFilter = $"(&(objectCategory=Computer)(sAMAccountName={ADHelpers.EscapeLdapQuery(deviceSamAccountName)}))";
                 IEnumerable<ADDomainController> domainControllers;
 
                 if (context.SearchAllServers)

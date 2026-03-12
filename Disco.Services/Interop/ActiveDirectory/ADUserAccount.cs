@@ -8,10 +8,9 @@ namespace Disco.Services.Interop.ActiveDirectory
 {
     public class ADUserAccount : IADObject
     {
-        internal const string LdapSamAccountNameFilterTemplate = "(&(objectCategory=Person)(sAMAccountName={0}))";
         internal static string LdapSearchFilterTemplate = "(&(objectCategory=Person)(objectClass=user)(|(sAMAccountName={0}*)(displayName={0}*)(sn={0}*)(givenName={0}*)))";
-        internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "userAccountControl", "isCriticalSystemObject", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
-        internal static readonly string[] QuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "objectSid", "userAccountControl", "isCriticalSystemObject", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
+        internal static readonly string[] LoadProperties = { "name", "distinguishedName", "sAMAccountName", "userPrincipalName", "objectSid", "userAccountControl", "isCriticalSystemObject", "displayName", "sn", "givenName", "memberOf", "primaryGroupID", "mail", "telephoneNumber" };
+        internal static readonly string[] QuickLoadProperties = { "name", "distinguishedName", "sAMAccountName", "userPrincipalName", "objectSid", "userAccountControl", "isCriticalSystemObject", "displayName", "sn", "givenName", "mail", "telephoneNumber" };
 
 
         public ADDomain Domain { get; private set; }
@@ -21,6 +20,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public string Id { get { return $@"{Domain.NetBiosName}\{SamAccountName}"; } }
         public string SamAccountName { get; private set; }
+        public string UserPrincipalName { get; private set; }
 
         public string Name { get; private set; }
         public string DisplayName { get; private set; }
@@ -42,24 +42,25 @@ namespace Disco.Services.Interop.ActiveDirectory
         public bool IsLockedOut { get { return UserAccountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_LOCKOUT); } }
         public bool IsPasswordExpired { get { return UserAccountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_PASSWORD_EXPIRED); } }
 
-        private ADUserAccount(ADDomain Domain, string DistinguishedName, SecurityIdentifier SecurityIdentifier, string SamAccountName,
-            string Name, string DisplayName, string Surname, string GivenName, string Email, string Phone, ADUserAccountControlFlags UserAccountControl,
-            bool IsCriticalSystemObject, List<ADGroup> Groups, Dictionary<string, object[]> LoadedProperties)
+        private ADUserAccount(ADDomain domain, string distinguishedName, SecurityIdentifier securityIdentifier, string samAccountName, string userPrincipalName,
+            string name, string displayName, string surname, string givenName, string email, string phone, ADUserAccountControlFlags userAccountControl,
+            bool isCriticalSystemObject, List<ADGroup> groups, Dictionary<string, object[]> loadedProperties)
         {
-            this.Domain = Domain;
-            this.DistinguishedName = DistinguishedName;
-            this.SecurityIdentifier = SecurityIdentifier;
-            this.SamAccountName = SamAccountName;
-            this.Name = Name;
-            this.DisplayName = DisplayName;
-            this.Surname = Surname;
-            this.GivenName = GivenName;
-            this.Email = Email;
-            this.Phone = Phone;
-            this.UserAccountControl = UserAccountControl;
-            this.IsCriticalSystemObject = IsCriticalSystemObject;
-            this.Groups = Groups;
-            this.LoadedProperties = LoadedProperties;
+            Domain = domain;
+            DistinguishedName = distinguishedName;
+            SecurityIdentifier = securityIdentifier;
+            SamAccountName = samAccountName;
+            UserPrincipalName = userPrincipalName;
+            Name = name;
+            DisplayName = displayName;
+            Surname = surname;
+            GivenName = givenName;
+            Email = email;
+            Phone = phone;
+            UserAccountControl = userAccountControl;
+            IsCriticalSystemObject = isCriticalSystemObject;
+            Groups = groups;
+            LoadedProperties = loadedProperties;
         }
 
         public static ADUserAccount FromSearchResult(ADSearchResult SearchResult, bool Quick, string[] AdditionalProperties)
@@ -69,6 +70,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var name = SearchResult.Value<string>("name");
             var sAMAccountName = SearchResult.Value<string>("sAMAccountName");
+            var userPrincipalName = SearchResult.Value<string>("userPrincipalName");
             var distinguishedName = SearchResult.Value<string>("distinguishedName");
             var objectSid = new SecurityIdentifier(SearchResult.Value<byte[]>("objectSid"), 0);
 
@@ -114,6 +116,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 distinguishedName,
                 objectSid,
                 sAMAccountName,
+                userPrincipalName,
                 name,
                 displayName,
                 surname,
@@ -135,6 +138,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var name = properties.Value<string>("name");
             var sAMAccountName = properties.Value<string>("sAMAccountName");
+            var userPrincipalName = properties.Value<string>("userPrincipalName");
             var distinguishedName = properties.Value<string>("distinguishedName");
             var objectSid = new SecurityIdentifier(properties.Value<byte[]>("objectSid"), 0);
 
@@ -180,6 +184,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 distinguishedName,
                 objectSid,
                 sAMAccountName,
+                userPrincipalName,
                 name,
                 displayName,
                 surname,
@@ -236,6 +241,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             return new User
             {
                 UserId = Id,
+                UserPrincipalName = UserPrincipalName,
                 DisplayName = DisplayName,
                 Surname = Surname,
                 GivenName = GivenName,

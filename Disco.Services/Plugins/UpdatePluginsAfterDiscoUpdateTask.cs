@@ -8,7 +8,7 @@ namespace Disco.Services.Plugins
 {
     public class UpdatePluginsAfterDiscoUpdateTask : ScheduledTask
     {
-        private static object _startLock = new object();
+        private static readonly object _startLock = new object();
 
         public override string TaskName { get { return "Updating Disco ICT Plugins"; } }
 
@@ -34,7 +34,7 @@ namespace Disco.Services.Plugins
 
             // Restart
             Status.Finished("Restarting Disco ICT, please wait...", "/");
-            Plugins.RestartApp(TimeSpan.FromSeconds(1));
+            RestartAppScheduledTask.RestartApp(TimeSpan.FromSeconds(1));
         }
 
         public static ScheduledTaskStatus UpdateDiscoPlugins(bool ReturnExistingStatusIfRunning)

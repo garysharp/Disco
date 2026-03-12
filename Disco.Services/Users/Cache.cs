@@ -1,6 +1,7 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Repository;
 using Disco.Services.Authorization;
+using Disco.Services.Interop.ActiveDirectory;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -9,189 +10,118 @@ namespace Disco.Services.Users
 {
     internal static class Cache
     {
-        private static ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>> _Cache = new ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>>(StringComparer.OrdinalIgnoreCase);
-        private const long CacheTimeoutTicks = 6000000000; // 10 Minutes
+        private static readonly ConcurrentDictionary<string, CacheRecord> cache = new ConcurrentDictionary<string, CacheRecord>(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string, string> upnCache = new ConcurrentDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-        internal static AuthorizationToken GetAuthorization(string UserId, DiscoDataContext Database, bool ForceRefresh)
+        internal static bool TryGet(string userId, DiscoDataContext db, bool forceRefresh, out CacheRecord record)
         {
-            Tuple<User, AuthorizationToken, DateTime> record = Get(UserId, Database, ForceRefresh);
+            if (!forceRefresh && TryCache(userId, out record))
+                return true;
 
-            if (record == null)
-                return null;
-            else
-                return record.Item2;
-        }
-        internal static AuthorizationToken GetAuthorization(string UserId, bool ForceRefresh)
-        {
-            Tuple<User, AuthorizationToken, DateTime> record = Get(UserId, ForceRefresh);
-
-            if (record == null)
-                return null;
-            else
-                return record.Item2;
-        }
-        internal static AuthorizationToken GetAuthorization(string UserId, DiscoDataContext Database)
-        {
-            return GetAuthorization(UserId, Database, false);
-        }
-        internal static AuthorizationToken GetAuthorization(string UserId)
-        {
-            return GetAuthorization(UserId, false);
-        }
-
-        internal static bool TryGetUser(string UserId, DiscoDataContext Database, bool ForceRefresh, out User User)
-        {
-            return TryGet(UserId, Database, ForceRefresh, out User, out _, out _);
-        }
-
-        internal static User GetUser(string UserId, DiscoDataContext Database, bool ForceRefresh)
-        {
-            Tuple<User, AuthorizationToken, DateTime> record = Get(UserId, Database, ForceRefresh);
-
-            if (record == null)
-                return null;
-            else
-                return record.Item1;
-        }
-        internal static User GetUser(string UserId, bool ForceRefresh)
-        {
-            Tuple<User, AuthorizationToken, DateTime> record = Get(UserId, ForceRefresh);
-
-            if (record == null)
-                return null;
-            else
-                return record.Item1;
-        }
-        internal static User GetUser(string UserId, DiscoDataContext Database)
-        {
-            return GetUser(UserId, Database, false);
-        }
-        internal static User GetUser(string UserId)
-        {
-            return GetUser(UserId, false);
-        }
-
-        internal static bool TryGet(string UserId, DiscoDataContext Database, bool ForceRefresh, out User User, out AuthorizationToken AuthToken, out DateTime CacheExpirationTimestamp)
-        {
-            Tuple<User, AuthorizationToken, DateTime> record = null;
-
-            // Check Cache
-            if (!ForceRefresh)
-                record = TryUserCache(UserId);
-
-            if (record == null && UserService.TryImportUser(Database, UserId, out var user, out var authorizationToken))
-                record = SetValue(UserId, Tuple.Create(user, authorizationToken));
-
-            if (record != null)
+            if (UserService.TryImportUser(db, userId, out var user, out var authorizationToken))
             {
-                User = record.Item1;
-                AuthToken = record.Item2;
-                CacheExpirationTimestamp = record.Item3;
+                record = SetCache(user, authorizationToken);
                 return true;
             }
 
-            User = default;
-            AuthToken = default;
-            CacheExpirationTimestamp = default;
+            record = CacheRecord.Empty;
             return false;
         }
 
-        internal static Tuple<User, AuthorizationToken, DateTime> Get(string UserId, DiscoDataContext Database, bool ForceRefresh)
+        internal static bool TryGet(string userId, bool forceRefresh, out CacheRecord record)
         {
-            Tuple<User, AuthorizationToken, DateTime> record = null;
+            if (!forceRefresh && TryCache(userId, out record))
+                return true;
 
-            // Check Cache
-            if (!ForceRefresh)
-                record = TryUserCache(UserId);
+            using (var db = new DiscoDataContext())
+                return TryGet(userId, db, true, out record);
+        }
 
-            if (record == null)
+        internal static bool TryGet(string userId, DiscoDataContext db, out CacheRecord record)
+            => TryGet(userId, db, false, out record);
+
+        internal static bool TryGet(string userId, out CacheRecord record)
+            => TryGet(userId, false, out record);
+
+        internal static bool TryGetByUserPrincipalName(string userPrincipalName, DiscoDataContext db, bool forceRefresh, out CacheRecord record)
+        {
+            if (upnCache.TryGetValue(userPrincipalName, out var userId))
+                return TryGet(userId, db, forceRefresh, out record);
+
+            var adUserAccount = ActiveDirectory.RetrieveADUserAccountByUserPrincipalName(userPrincipalName);
+
+            if (adUserAccount != null && UserService.TryImportUser(db, adUserAccount, out var user, out var authorizationToken))
             {
-                var importedUser = UserService.ImportUser(Database, UserId);
-                record = SetValue(UserId, importedUser);
+                record = SetCache(user, authorizationToken);
+                return true;
             }
 
-            return record;
+            record = CacheRecord.Empty;
+            return false;
         }
-        internal static Tuple<User, AuthorizationToken, DateTime> Get(string UserId, DiscoDataContext Database)
-        {
-            return Get(UserId, Database, false);
-        }
-        internal static Tuple<User, AuthorizationToken, DateTime> Get(string UserId, bool ForceRefresh)
-        {
-            // Check Cache
-            Tuple<User, AuthorizationToken, DateTime> record = null;
 
-            if (!ForceRefresh)
-                record = TryUserCache(UserId);
-
-            if (record == null)
+        private static bool TryCache(string userId, out CacheRecord record)
+        {
+            if (cache.TryGetValue(userId, out record))
             {
-                // Load from Repository
-                using (DiscoDataContext database = new DiscoDataContext())
-                {
-                    record = Get(UserId, database, true);
-                }
-            }
-            return record;
-        }
-        internal static Tuple<User, AuthorizationToken, DateTime> Get(string UserId)
-        {
-            return Get(UserId, false);
-        }
-
-        internal static Tuple<User, AuthorizationToken, DateTime> TryUserCache(string UserId)
-        {
-            var cache = _Cache;
-
-            if (cache.TryGetValue(UserId, out var record))
-            {
-                if (record.Item3 > DateTime.Now)
-                    return record;
+                if (record.Expiration > DateTime.Now)
+                    return true;
                 else
-                    cache.TryRemove(UserId, out _);
-            }
-            return null;
-        }
-
-        internal static Tuple<User, AuthorizationToken, DateTime> SetValue(string UserId, Tuple<User, AuthorizationToken> Record)
-        {
-            var cache = _Cache;
-
-            var record = Tuple.Create(Record.Item1, Record.Item2, DateTime.Now.AddTicks(CacheTimeoutTicks));
-            if (cache.ContainsKey(UserId))
-            {
-                if (cache.TryGetValue(UserId, out var oldRecord))
                 {
-                    cache.TryUpdate(UserId, record, oldRecord);
-                    return record;
+                    cache.TryRemove(userId, out _);
+                    record = CacheRecord.Empty;
                 }
             }
-            cache.TryAdd(UserId, record);
+            return false;
+        }
+
+        private static CacheRecord SetCache(User user, AuthorizationToken authToken)
+        {
+            var record = new CacheRecord(user, authToken, DateTime.Now.AddMinutes(10));
+
+            upnCache.AddOrUpdate(record.User.UserPrincipalName, user.UserId, (upn, existing) => user.UserId);
+            cache.AddOrUpdate(user.UserId, record, (id, existing) => record);
+
             return record;
         }
 
-        internal static bool InvalidateRecord(string UserId)
+        internal static bool InvalidateRecord(string userId)
         {
-            return _Cache.TryRemove(UserId, out _);
+            return cache.TryRemove(userId, out _);
         }
 
         internal static void CleanStaleCache()
         {
-            var cache = _Cache;
-
             var userIds = cache.Keys.ToArray();
             foreach (string userId in userIds)
             {
                 if (cache.TryGetValue(userId, out var record))
                 {
-                    if (record.Item3 <= DateTime.Now)
+                    if (record.Expiration <= DateTime.Now)
                         cache.TryRemove(userId, out _);
                 }
             }
         }
+
         internal static void FlushCache()
         {
-            _Cache = new ConcurrentDictionary<string, Tuple<User, AuthorizationToken, DateTime>>(StringComparer.OrdinalIgnoreCase);
+            cache.Clear();
+        }
+
+        internal readonly struct CacheRecord
+        {
+            public static readonly CacheRecord Empty = new CacheRecord(null, null, DateTime.MinValue);
+
+            public readonly User User;
+            public readonly AuthorizationToken AuthToken;
+            public readonly DateTime Expiration;
+
+            public CacheRecord(User user, AuthorizationToken authToken, DateTime expiration)
+            {
+                User = user;
+                AuthToken = authToken;
+                Expiration = expiration;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using Disco.Services.Logging;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Security.Principal;
@@ -11,10 +12,11 @@ namespace Disco.Services.Interop.ActiveDirectory
 {
     public class ActiveDirectoryContext
     {
-        public ADSite Site { get; private set; }
-        public ADDomain PrimaryDomain { get; private set; }
-        public List<ADDomain> Domains { get; private set; }
-        public ActiveDirectoryManagedGroups ManagedGroups { get; private set; }
+        private readonly string rootDomainNamingContext;
+        public ADSite Site { get; }
+        public ADDomain PrimaryDomain { get; }
+        public List<ADDomain> Domains { get; }
+        public ActiveDirectoryManagedGroups ManagedGroups { get; } = new ActiveDirectoryManagedGroups();
 
         public List<string> AllServers
         {
@@ -37,25 +39,13 @@ namespace Disco.Services.Interop.ActiveDirectory
             }
         }
 
-        #region Constructor/Initializing
-
-        private ActiveDirectoryContext()
-        {
-            ManagedGroups = new ActiveDirectoryManagedGroups();
-        }
-
-        internal ActiveDirectoryContext(DiscoDataContext Database) : this()
-        {
-            Initialize(Database);
-        }
-
-        private void Initialize(DiscoDataContext Database)
+        internal ActiveDirectoryContext(DiscoDataContext db)
         {
             // Search Entire Directory (default: true)
-            searchAllServers = Database.DiscoConfiguration.ActiveDirectory.SearchAllServers ?? true;
+            searchAllServers = db.DiscoConfiguration.ActiveDirectory.SearchAllServers ?? true;
 
             // Set Search LDAP Filters
-            InitializeWildcardSearchSufixOnly(Database.DiscoConfiguration.ActiveDirectory.SearchWildcardSuffixOnly);
+            InitializeWildcardSearchSufixOnly(db.DiscoConfiguration.ActiveDirectory.SearchWildcardSuffixOnly);
 
             // Determine Site
             var computerSite = ActiveDirectorySite.GetComputerSite();
@@ -63,15 +53,18 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             // Determine Domains
             var computerDomain = Domain.GetComputerDomain();
-            var domains = computerDomain.Forest.Domains
+            var forest = computerDomain.Forest;
+            var domains = forest.Domains
                 .Cast<Domain>()
                 .Select(d => new ADDomain(this, d))
                 .ToList();
 
+            rootDomainNamingContext = (string)forest.RootDomain.GetDirectoryEntry().Properties["distinguishedName"].Value;
+
             // Try adding forest trust relationships
             try
             {
-                var trustRelationships = computerDomain.Forest.GetAllTrustRelationships();
+                var trustRelationships = forest.GetAllTrustRelationships();
 
                 foreach (TrustRelationshipInformation trustRelationship in trustRelationships)
                 {
@@ -111,7 +104,7 @@ namespace Disco.Services.Interop.ActiveDirectory
             Domains = domains;
 
             // Determine Search Scope Containers
-            ReinitializeSearchContainers(Database.DiscoConfiguration.ActiveDirectory.SearchContainers);
+            ReinitializeSearchContainers(db.DiscoConfiguration.ActiveDirectory.SearchContainers);
 
             // Determine Domain Controllers
             var siteDomainControllers = computerSite.Servers
@@ -122,8 +115,6 @@ namespace Disco.Services.Interop.ActiveDirectory
             Site.UpdateDomainControllers(siteDomainControllers);
             Domains.ForEach(domain => domain.UpdateDomainControllers(siteDomainControllers.Where(dc => dc.Domain == domain)));
         }
-
-        #endregion
 
         #region Domain Getters
 
@@ -174,7 +165,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         public ADDomain GetDomainFromSecurityIdentifier(SecurityIdentifier SecurityIdentifier)
         {
             if (!TryGetDomainFromSecurityIdentifier(SecurityIdentifier, out var domain))
-                throw new ArgumentException($"The domain for specified Security Identifier is unknown [{SecurityIdentifier.ToString()}]", "SecurityIdentifier");
+                throw new ArgumentException($"The domain for specified Security Identifier is unknown [{SecurityIdentifier}]", "SecurityIdentifier");
             return domain;
         }
 
@@ -216,6 +207,30 @@ namespace Disco.Services.Interop.ActiveDirectory
             return dc.RetrieveDirectoryEntry(DistinguishedName, LoadProperties);
         }
 
+        public bool TryGetDomainForUserPrincipalName(string userPrincipalName, out ADDomain domain, out string userId, out string distinguishedName)
+        {
+            using (var gcEntry = new DirectoryEntry($"GC://{rootDomainNamingContext}"))
+            {
+                var filter = $"(&(objectCategory=Person)(objectClass=user)(userPrincipalName={ADHelpers.EscapeLdapQuery(userPrincipalName)}))";
+                using (var gcSearcher = new DirectorySearcher(gcEntry, filter, new[] { "samAccountName", "distinguishedName" }))
+                {
+                    var gcResult = gcSearcher.FindOne();
+
+                    if (gcResult == null)
+                    {
+                        domain = null;
+                        userId = null;
+                        distinguishedName = null;
+                        return false;
+                    }
+
+                    distinguishedName = gcResult.Properties["distinguishedName"][0].ToString();
+                    userId = gcResult.Properties["samAccountName"][0].ToString();
+                    return TryGetDomainFromDistinguishedName(distinguishedName, out domain);
+                }
+            }
+        }
+
         #region Searching
 
         public IEnumerable<ADSearchResult> SearchEntireDirectory(string LdapFilter, string[] LoadProperties, int? ResultLimit = null)
@@ -240,7 +255,7 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             switch (queries.Count)
             {
-                case 0: // Nothing Queried                 
+                case 0: // Nothing Queried
                     return Enumerable.Empty<ADSearchResult>();
 
                 case 1: // Single-search

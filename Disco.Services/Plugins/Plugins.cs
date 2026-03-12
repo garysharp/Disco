@@ -8,7 +8,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Web;
 
 namespace Disco.Services.Plugins
 {
@@ -302,9 +301,9 @@ namespace Disco.Services.Plugins
                                                     throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] is not compatible: {pluginIncompatible.Reason}");
 
                                                 if (pluginManifest.HostVersionMin != null && pluginManifest.HostVersionMin > hostVersion)
-                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] does not support this version of Disco ICT (Requires v{pluginManifest.HostVersionMin.ToString()} or greater)");
+                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] does not support this version of Disco ICT (Requires v{pluginManifest.HostVersionMin} or greater)");
                                                 if (pluginManifest.HostVersionMax != null && pluginManifest.HostVersionMax < hostVersion)
-                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] does not support this version of Disco ICT (Support expired as of v{pluginManifest.HostVersionMax.ToString()})");
+                                                    throw new InvalidOperationException($"The plugin [{pluginManifest.Id} v{pluginManifest.VersionFormatted}] does not support this version of Disco ICT (Support expired as of v{pluginManifest.HostVersionMax})");
 
                                                 RegisterPluginAssemblyReferences(pluginManifest);
 
@@ -489,31 +488,6 @@ namespace Disco.Services.Plugins
             }
             return categoryDisplayNames;
         }
-
-        #region Restart App
-        private static object _restartTimerLock = new object();
-        private static Timer _restartTimer;
-        internal static void RestartApp(TimeSpan delay)
-        {
-            lock (_restartTimerLock)
-            {
-                if (_restartTimer != null)
-                {
-                    _restartTimer.Dispose();
-                }
-
-                if (delay == TimeSpan.Zero)
-                    HttpRuntime.UnloadAppDomain();
-                else
-                {
-                    _restartTimer = new Timer((state) =>
-                    {
-                        HttpRuntime.UnloadAppDomain();
-                    }, null, (int)delay.TotalMilliseconds, Timeout.Infinite);
-                }
-            }
-        }
-        #endregion
 
         #region Plugin Referenced Assemblies Resolving
 

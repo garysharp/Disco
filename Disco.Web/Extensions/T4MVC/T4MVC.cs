@@ -52,6 +52,7 @@ namespace T4MVC
     {
         public readonly string Name = "API";
         public Disco.Web.Areas.API.Controllers.ActivationController Activation = new Disco.Web.Areas.API.Controllers.T4MVC_ActivationController();
+        public Disco.Web.Areas.API.Controllers.AuthenticationController Authentication = new Disco.Web.Areas.API.Controllers.T4MVC_AuthenticationController();
         public Disco.Web.Areas.API.Controllers.AuthorizationRoleController AuthorizationRole = new Disco.Web.Areas.API.Controllers.T4MVC_AuthorizationRoleController();
         public Disco.Web.Areas.API.Controllers.DeviceBatchController DeviceBatch = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceBatchController();
         public Disco.Web.Areas.API.Controllers.DeviceCertificateController DeviceCertificate = new Disco.Web.Areas.API.Controllers.T4MVC_DeviceCertificateController();
@@ -522,6 +523,7 @@ namespace Links
         
         }
     
+        public static readonly string SpringExpressions_html = Url("SpringExpressions.html");
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public static class Style {
             public const string UrlPath = "~/ClientSource/Style";

@@ -90,7 +90,7 @@ namespace Disco.Services.Plugins
             ExecuteTaskInternal(Status, pluginPackagesLocation, updatePlugins);
 
             Status.Finished("Restarting Disco ICT, please wait...", "/Config/Plugins");
-            Plugins.RestartApp(immediateRestart ? TimeSpan.Zero : TimeSpan.FromSeconds(1));
+            RestartAppScheduledTask.RestartApp(immediateRestart ? TimeSpan.Zero : TimeSpan.FromSeconds(1));
         }
 
         public static List<PluginManifest> OfflineInstalledPlugins(DiscoDataContext Database)

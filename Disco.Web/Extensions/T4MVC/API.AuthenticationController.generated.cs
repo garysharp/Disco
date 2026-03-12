@@ -23,15 +23,15 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace Disco.Web.Areas.Config.Controllers
+namespace Disco.Web.Areas.API.Controllers
 {
-    public partial class SystemConfigController
+    public partial class AuthenticationController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public SystemConfigController() { }
+        public AuthenticationController() { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected SystemConfigController(Dummy d) { }
+        protected AuthenticationController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -59,15 +59,27 @@ namespace Disco.Web.Areas.Config.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ConfigureSsoTest()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfigureSsoTest);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ConfigureSso()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfigureSso);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public SystemConfigController Actions { get { return MVC.Config.SystemConfig; } }
+        public AuthenticationController Actions { get { return MVC.API.Authentication; } }
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Area = "Config";
+        public readonly string Area = "API";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "SystemConfig";
+        public readonly string Name = "Authentication";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "SystemConfig";
+        public const string NameConst = "Authentication";
         [GeneratedCode("T4MVC", "2.0")]
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -75,28 +87,35 @@ namespace Disco.Web.Areas.Config.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string Index = "Index";
-            public readonly string Activate = "Activate";
-            public readonly string SSO = "SSO";
+            public readonly string ConfigureSsoTest = "ConfigureSsoTest";
+            public readonly string ConfigureSso = "ConfigureSso";
+            public readonly string DisableSso = "DisableSso";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string Index = "Index";
-            public const string Activate = "Activate";
-            public const string SSO = "SSO";
+            public const string ConfigureSsoTest = "ConfigureSsoTest";
+            public const string ConfigureSso = "ConfigureSso";
+            public const string DisableSso = "DisableSso";
         }
 
 
-        static readonly ActionParamsClass_SSO s_params_SSO = new ActionParamsClass_SSO();
+        static readonly ActionParamsClass_ConfigureSsoTest s_params_ConfigureSsoTest = new ActionParamsClass_ConfigureSsoTest();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_SSO SSOParams { get { return s_params_SSO; } }
+        public ActionParamsClass_ConfigureSsoTest ConfigureSsoTestParams { get { return s_params_ConfigureSsoTest; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_SSO
+        public class ActionParamsClass_ConfigureSsoTest
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_ConfigureSso s_params_ConfigureSso = new ActionParamsClass_ConfigureSso();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ConfigureSso ConfigureSsoParams { get { return s_params_ConfigureSso; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ConfigureSso
         {
             public readonly string session = "session";
-            public readonly string error = "error";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -108,53 +127,47 @@ namespace Disco.Web.Areas.Config.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Activate = "Activate";
-                public readonly string Index = "Index";
-                public readonly string SSO = "SSO";
             }
-            public readonly string Activate = "~/Areas/Config/Views/SystemConfig/Activate.cshtml";
-            public readonly string Index = "~/Areas/Config/Views/SystemConfig/Index.cshtml";
-            public readonly string SSO = "~/Areas/Config/Views/SystemConfig/SSO.cshtml";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_SystemConfigController : Disco.Web.Areas.Config.Controllers.SystemConfigController
+    public partial class T4MVC_AuthenticationController : Disco.Web.Areas.API.Controllers.AuthenticationController
     {
-        public T4MVC_SystemConfigController() : base(Dummy.Instance) { }
+        public T4MVC_AuthenticationController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ConfigureSsoTestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Disco.Web.Areas.Config.Models.SystemConfig.SsoModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Index()
+        public override System.Web.Mvc.ActionResult ConfigureSsoTest(Disco.Web.Areas.Config.Models.SystemConfig.SsoModel model)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            IndexOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfigureSsoTest);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            ConfigureSsoTestOverride(callInfo, model);
             return callInfo;
         }
 
         [NonAction]
-        partial void ActivateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ConfigureSsoOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string session);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Activate()
+        public override System.Web.Mvc.ActionResult ConfigureSso(string session)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Activate);
-            ActivateOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void SSOOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string session, string error);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult SSO(string session, string error)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SSO);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ConfigureSso);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "session", session);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "error", error);
-            SSOOverride(callInfo, session, error);
+            ConfigureSsoOverride(callInfo, session);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DisableSsoOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult DisableSso()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DisableSso);
+            DisableSsoOverride(callInfo);
             return callInfo;
         }
 

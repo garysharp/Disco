@@ -47,90 +47,119 @@ namespace Disco.Services.Users
             }
         }
 
-        private static Tuple<User, AuthorizationToken, DateTime> CurrentUserToken
+        private static Cache.CacheRecord? CurrentUserRecord
         {
             get
             {
-                Tuple<User, AuthorizationToken, DateTime> token = null;
-
                 if (HttpContext.Current != null)
                 {
-                    if (HttpContext.Current.Request.IsAuthenticated)
-                        token = (Tuple<User, AuthorizationToken, DateTime>)HttpContext.Current.Items[_cacheHttpRequestKey];
-                    else
+                    if (!HttpContext.Current.Request.IsAuthenticated)
                         return null; // Not Authenticated
+
+                    if (HttpContext.Current.Items.Contains(_cacheHttpRequestKey))
+                        return (Cache.CacheRecord)HttpContext.Current.Items[_cacheHttpRequestKey];
                 }
 
-                if (token == null)
+                var userId = CurrentUserId;
+                if (userId == null)
+                    return null;
+
+                if (!Cache.TryGet(userId, out var record))
+                    return null;
+                else
                 {
-                    var userId = CurrentUserId;
-
-                    if (userId != null)
-                    {
-                        token = Cache.Get(userId);
-
-                        if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
-                            HttpContext.Current.Items[_cacheHttpRequestKey] = token;
-                    }
+                    if (HttpContext.Current?.Request.IsAuthenticated ?? false)
+                        HttpContext.Current.Items[_cacheHttpRequestKey] = record;
+                    return record;
                 }
 
-                return token;
             }
         }
+
         public static User CurrentUser
         {
             get
             {
-                var token = CurrentUserToken;
+                var record = CurrentUserRecord;
 
-                if (token == null)
-                    return null;
+                if (record.HasValue)
+                    return record.Value.User;
                 else
-                    return token.Item1;
+                    return null;
             }
         }
+
         public static AuthorizationToken CurrentAuthorization
         {
             get
             {
-                var token = CurrentUserToken;
+                var record = CurrentUserRecord;
 
-                if (token == null)
-                    return null;
+                if (record.HasValue)
+                    return record.Value.AuthToken;
                 else
-                    return token.Item2;
+                    return null;
             }
         }
 
         public static User GetUser(string UserId)
         {
-            return Cache.GetUser(UserId);
+            if (!Cache.TryGet(UserId, out var record))
+                return null;
+            return record.User;
         }
         public static User GetUser(string UserId, DiscoDataContext Database)
         {
-            return Cache.GetUser(UserId, Database);
+            if (!Cache.TryGet(UserId, Database, out var record))
+                return null;
+            return record.User;
         }
         public static User GetUser(string UserId, DiscoDataContext Database, bool ForceRefresh)
         {
-            return Cache.GetUser(UserId, Database, ForceRefresh);
+            if (!Cache.TryGet(UserId, Database, ForceRefresh, out var record))
+                return null;
+            return record.User;
         }
 
         public static bool TryGetUser(string UserId, DiscoDataContext Database, bool ForceRefresh, out User User)
         {
-            return Cache.TryGetUser(UserId, Database, ForceRefresh, out User);
+            if (!Cache.TryGet(UserId, Database, ForceRefresh, out var record))
+            {
+                User = null;
+                return false;
+            }
+            User = record.User;
+            return true;
+        }
+
+        public static bool TryGetUserByUserPrincipalName(string userPrincipalName, DiscoDataContext db, bool forceRefresh, out User user)
+        {
+            if (!Cache.TryGetByUserPrincipalName(userPrincipalName, db, forceRefresh, out var record))
+            {
+                user = null;
+                return false;
+            }
+            user = record.User;
+            return true;
         }
 
         public static AuthorizationToken GetAuthorization(string UserId)
         {
-            return Cache.GetAuthorization(UserId);
+            if (!Cache.TryGet(UserId, out var record))
+                return null;
+            return record.AuthToken;
         }
         public static AuthorizationToken GetAuthorization(string UserId, DiscoDataContext Database)
         {
-            return Cache.GetAuthorization(UserId, Database);
+            if (!Cache.TryGet(UserId, Database, out var record))
+                return null;
+            return record.AuthToken;
         }
         public static AuthorizationToken GetAuthorization(string UserId, DiscoDataContext Database, bool ForceRefresh)
         {
-            return Cache.GetAuthorization(UserId, Database, ForceRefresh);
+            if (!Cache.TryGet(UserId, Database, ForceRefresh, out var record))
+                return null;
+            return record.AuthToken;
         }
 
         public static bool InvalidateCachedUser(string UserId)
@@ -138,7 +167,7 @@ namespace Disco.Services.Users
             return Cache.InvalidateRecord(UserId);
         }
 
-        public static int CreateAuthorizationRole(DiscoDataContext Database, string name)
+        public static int CreateAuthorizationRole(DiscoDataContext db, string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("Role");
@@ -148,8 +177,8 @@ namespace Disco.Services.Users
                 Name = name,
                 ClaimsJson = JsonConvert.SerializeObject(new RoleClaims()),
             };
-            Database.AuthorizationRoles.Add(role);
-            Database.SaveChanges();
+            db.AuthorizationRoles.Add(role);
+            db.SaveChanges();
 
             AuthorizationLog.LogRoleCreated(role, CurrentUserId);
 
@@ -161,33 +190,35 @@ namespace Disco.Services.Users
 
             return role.Id;
         }
-        public static void DeleteAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
+
+        public static void DeleteAuthorizationRole(DiscoDataContext db, AuthorizationRole role)
         {
-            if (Role == null)
-                throw new ArgumentNullException(nameof(Role));
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
 
-            Database.AuthorizationRoles.Remove(Role);
-            Database.SaveChanges();
+            db.AuthorizationRoles.Remove(role);
+            db.SaveChanges();
 
-            AuthorizationLog.LogRoleDeleted(Role, CurrentUserId);
+            AuthorizationLog.LogRoleDeleted(role, CurrentUserId);
 
             // Remove from Role Cache
-            RoleCache.RemoveRole(Role);
+            RoleCache.RemoveRole(role);
 
             // Flush User Cache
             Cache.FlushCache();
         }
-        public static void UpdateAuthorizationRole(DiscoDataContext Database, AuthorizationRole Role)
-        {
-            if (Role == null)
-                throw new ArgumentNullException(nameof(Role));
-            if (Database == null)
-                throw new ArgumentNullException(nameof(Database));
 
-            Database.SaveChanges();
+        public static void UpdateAuthorizationRole(DiscoDataContext db, AuthorizationRole role)
+        {
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
+            if (db == null)
+                throw new ArgumentNullException(nameof(db));
+
+            db.SaveChanges();
 
             // Update Role Cache
-            RoleCache.AddOrUpdateRole(Role);
+            RoleCache.AddOrUpdateRole(role);
 
             // Flush User Cache
             Cache.FlushCache();
@@ -208,29 +239,30 @@ namespace Disco.Services.Users
                 return RoleCache.AdministratorSubjectIds;
             }
         }
-        public static void UpdateAdministratorSubjectIds(DiscoDataContext Database, IEnumerable<string> SubjectIds)
+
+        public static void UpdateAdministratorSubjectIds(DiscoDataContext db, IEnumerable<string> subjectIds)
         {
             // Update Database & In-Memory State
-            RoleCache.UpdateAdministratorSubjectIds(Database, SubjectIds);
+            RoleCache.UpdateAdministratorSubjectIds(db, subjectIds);
 
             // Flush User Cache
             Cache.FlushCache();
         }
 
-        internal static List<User> SearchUsers(DiscoDataContext Database, string Term, bool PersistResults, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit)
+        internal static List<User> SearchUsers(DiscoDataContext db, string term, bool persistResults, int? limitCount = ActiveDirectory.DefaultSearchResultLimit)
         {
-            var adImportedUsers = ActiveDirectory.SearchADUserAccounts(Term, Quick: true, ResultLimit: LimitCount).Select(adU => adU.ToRepositoryUser()).ToList();
+            var adImportedUsers = ActiveDirectory.SearchADUserAccounts(term, Quick: true, ResultLimit: limitCount).Select(adU => adU.ToRepositoryUser()).ToList();
 
-            if (PersistResults)
+            if (persistResults)
             {
                 foreach (var adU in adImportedUsers)
                 {
-                    var existingUser = Database.Users.Find(adU.UserId);
+                    var existingUser = db.Users.Find(adU.UserId);
                     if (existingUser != null)
                         existingUser.UpdateSelf(adU);
                     else
-                        Database.Users.Add(adU);
-                    Database.SaveChanges();
+                        db.Users.Add(adU);
+                    db.SaveChanges();
                     InvalidateCachedUser(adU.UserId);
                 }
             }
@@ -286,43 +318,33 @@ namespace Disco.Services.Users
                     return false;
                 }
 
-                User = adAccount.ToRepositoryUser();
-
-                // Update Repository
-                User existingUser = Database.Users.Find(User.UserId);
-                if (existingUser == null)
-                {
-                    Database.Users.Add(User);
-                    Database.SaveChanges();
-                }
-                else
-                {
-                    if (existingUser.UpdateSelf(User))
-                    {
-                        Database.SaveChanges();
-                    }
-                    User = existingUser;
-                }
-
-                AuthorizationToken = AuthorizationToken.BuildToken(User, adAccount.Groups.Select(g => g.Id));
-
-                return true;
+                return TryImportUser(Database, adAccount, out User, out AuthorizationToken);
             }
         }
 
-        internal static Tuple<User, AuthorizationToken> ImportUser(DiscoDataContext Database, string UserId)
+        internal static bool TryImportUser(DiscoDataContext database, ADUserAccount adUserAccount, out User user, out AuthorizationToken authorizationToken)
         {
-            if (string.IsNullOrEmpty(UserId))
-                throw new ArgumentNullException(nameof(UserId));
+            user = adUserAccount.ToRepositoryUser();
 
-            if (TryImportUser(Database, UserId, out var user, out var authorization))
+            // Update Repository
+            User existingUser = database.Users.Find(user.UserId);
+            if (existingUser == null)
             {
-                return Tuple.Create(user, authorization);
+                database.Users.Add(user);
+                database.SaveChanges();
             }
             else
             {
-                throw new ArgumentException($"Unable to import Active Directory user '{UserId}'", nameof(UserId));
+                if (existingUser.UpdateSelf(user))
+                {
+                    database.SaveChanges();
+                }
+                user = existingUser;
             }
+
+            authorizationToken = AuthorizationToken.BuildToken(user, adUserAccount.Groups.Select(g => g.Id));
+
+            return true;
         }
     }
 }

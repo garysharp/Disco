@@ -1,4 +1,5 @@
 ﻿using Disco.Data.Configuration;
+using Disco.Models.Services.Interop;
 using Disco.Models.Services.Interop.DiscoServices;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Interop.DiscoServices;
@@ -41,7 +42,7 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
         public string DataStoreLocation { get; set; }
 
         #region Database Connection
-        private Lazy<SqlConnectionStringBuilder> DatabaseConnectionString = new Lazy<SqlConnectionStringBuilder>(() =>
+        private readonly Lazy<SqlConnectionStringBuilder> DatabaseConnectionString = new Lazy<SqlConnectionStringBuilder>(() =>
         {
             return new SqlConnectionStringBuilder(Data.Repository.DiscoDatabaseConnectionFactory.DiscoDataContextConnectionString);
         });
@@ -73,6 +74,14 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 return DatabaseConnectionString.Value.IntegratedSecurity ? null : DatabaseConnectionString.Value.UserID;
             }
         }
+        #endregion
+
+        #region SSO
+
+        public bool SsoEnabled { get; set; }
+        public bool SsoAdministrativelyDisabled { get; set; }
+        public SsoConfiguration SsoConfiguration { get; set; }
+
         #endregion
 
         #region Active Directory
@@ -158,6 +167,9 @@ namespace Disco.Web.Areas.Config.Models.SystemConfig
                 UpdateRunningStatus = UpdateQueryTask.RunningStatus,
                 UpdateNextScheduled = UpdateQueryTask.NextScheduled,
                 UpdateBetaDeployment = config.UpdateBetaDeployment,
+                SsoAdministrativelyDisabled = config.SsoAdministrativelyDisabled,
+                SsoEnabled = config.SsoEnabled,
+                SsoConfiguration = config.SsoConfiguration,
             };
 
             // Is an update available?

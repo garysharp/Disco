@@ -11,6 +11,9 @@ namespace Disco.Models.Repository
         [StringLength(50), Key, Column("Id")]
         public string UserId { get; set; }
 
+        [StringLength(1024)]
+        public string UserPrincipalName { get; set; }
+
         [StringLength(200)]
         public string DisplayName { get; set; }
         [StringLength(200)]
@@ -107,27 +110,32 @@ namespace Disco.Models.Repository
             if (!UserId.Equals(u.UserId, StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("User Id's do not match", nameof(u));
 
-            if (Surname != u.Surname)
+            if (!string.Equals(UserPrincipalName, u.UserPrincipalName, StringComparison.Ordinal))
+            {
+                UserPrincipalName = u.UserPrincipalName;
+                changed = true;
+            }
+            if (!string.Equals(Surname, u.Surname, StringComparison.Ordinal))
             {
                 Surname = u.Surname;
                 changed = true;
             }
-            if (GivenName != u.GivenName)
+            if (!string.Equals(GivenName, u.GivenName, StringComparison.Ordinal))
             {
                 GivenName = u.GivenName;
                 changed = true;
             }
-            if (DisplayName != u.DisplayName)
+            if (!string.Equals(DisplayName, u.DisplayName, StringComparison.Ordinal))
             {
                 DisplayName = u.DisplayName;
                 changed = true;
             }
-            if (EmailAddress != u.EmailAddress)
+            if (!string.Equals(EmailAddress, u.EmailAddress, StringComparison.Ordinal))
             {
                 EmailAddress = u.EmailAddress;
                 changed = true;
             }
-            if (PhoneNumber != u.PhoneNumber)
+            if (!string.Equals(PhoneNumber, u.PhoneNumber, StringComparison.Ordinal))
             {
                 PhoneNumber = u.PhoneNumber;
                 changed = true;

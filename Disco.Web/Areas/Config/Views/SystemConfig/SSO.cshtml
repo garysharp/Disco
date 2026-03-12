@@ -1,0 +1,213 @@
+﻿@model SsoModel
+@using Disco.Web.Areas.Config.Models.SystemConfig
+@using Disco.Services.Interop.DiscoServices
+@{
+    Authorization.Require(Claims.DiscoAdminAccount);
+
+    ViewBag.Title = Html.ToBreadcrumb("Configuration", MVC.Config.Config.Index(), "System", MVC.Config.SystemConfig.Index(), "Single Sign-On");
+}
+
+@if (Model.Mode == SsoMode.WindowsAuthentication)
+{
+    <div class="form" style="width: 450px">
+        <table>
+            <tr>
+                <th style="width: 135px">
+                    Provider:
+                </th>
+                <td>
+                    <select id="ssoProvider">
+                        <option value="windowsAuthentication" selected>Windows Authentication</option>
+                        <option value="entraId">Entra ID (OpenID Connect)</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div data-provider="windowsAuthentication">
+        <div class="form" style="width: 450px; margin-top: 15px;">
+            <h2>Windows Authentication</h2>
+            <div class="info-box">
+                <p class="fa-p">
+                    <i class="fa fa-fw fa-info-circle"></i>
+                    Windows Authentication is enabled. No changes are required.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden" data-provider="entraId">
+        @using (Html.BeginForm(MVC.API.Authentication.ConfigureSsoTest()))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form" style="width: 450px; margin-top: 15px;">
+                <h2>Entra ID (OpenID Connect)</h2>
+                <table>
+                    <tr>
+                        <th style="width: 135px">
+                            Client ID:
+                        </th>
+                        <td>
+                            @Html.TextBoxFor(m => m.ClientId)<br />
+                            @Html.ValidationMessageFor(m => m.ClientId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="width: 135px">
+                            Tenant ID:
+                        </th>
+                        <td>
+                            @Html.TextBoxFor(m => m.TenantId)<br />
+                            @Html.ValidationMessageFor(m => m.TenantId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="width: 135px">
+                            &nbsp;
+                        </th>
+                        <td>
+                            <button type="submit" class="button">Test SSO Configuration</button>
+                            <div class="info-box">
+                                <p class="fa-p">
+                                    <i class="fa fa-fw fa-info-circle"></i>
+                                    Never disable Windows Authentication in IIS. This is still required for Device Enrolment.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
+    </div>
+    <script>
+        $(function () {
+            $('#ssoProvider')
+                .on('change', function () {
+                    var provider = $(this).val();
+                    $('[data-provider]').addClass('hidden');
+                    $('[data-provider="' + provider + '"]').removeClass('hidden');
+                });
+        });
+    </script>
+}
+else if (Model.Mode == SsoMode.Testing)
+{
+    <div class="form" style="width: 450px">
+        <h2>OpenID Connect Configuration Validated</h2>
+        <table>
+            <tr>
+                <th style="width: 135px">
+                    Authority:
+                </th>
+                <td>
+                    <div>
+                        <code>@Model.Authority</code>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Client ID:
+                </th>
+                <td>
+                    <div>
+                        <code>@Model.ClientId</code>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    &nbsp;
+                </th>
+                <td>
+                    @using (Html.BeginForm(MVC.API.Authentication.ConfigureSso()))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("session", Model.TestedSession)
+                        <button type="submit" class="button">Apply SSO Configuration</button>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+else if (Model.Mode == SsoMode.OpenIdConnect)
+{
+    <div class="form" style="width: 450px">
+        <h2>OpenID Connect Configured</h2>
+        <table>
+            <tr>
+                <th style="width: 135px">
+                    Authority:
+                </th>
+                <td>
+                    <div>
+                        <code>@Model.Authority</code>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Client ID:
+                </th>
+                <td>
+                    <div>
+                        <code>@Model.ClientId</code>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    &nbsp;
+                </th>
+                <td>
+                    <button id="Config_SystemConfig_SSO_Disable_Button" type="button" class="button error">Disable SSO</button>
+                    <div class="warning">
+                        <i class="fa fa-exclamation-circle fa-lg"></i>&nbsp;To make changes, SSO must be disabled.
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="Config_SystemConfig_SSO_Disable_Dialog" class="dialog" title="Disable Single Sign-On?">
+        @using (Html.BeginForm(MVC.API.Authentication.DisableSso()))
+        {
+            @Html.AntiForgeryToken()
+        }
+        <p>
+            <i class="fa fa-exclamation-triangle fa-lg warning"></i>
+            This action will disable SSO and enable Windows Authentication. When Windows Authentication is in use a new SSO configuration can be entered.<br />
+            <br />
+            Are you sure?
+        </p>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            let dialog = null;
+            $('#Config_SystemConfig_SSO_Disable_Button').click(function (e) {
+                e.preventDefault();
+                if (!dialog) {
+                    dialog = $('#Config_SystemConfig_SSO_Disable_Dialog').dialog({
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            "Disable SSO": function () {
+                                $(this)
+                                    .dialog("option", "buttons", null)
+                                    .find('form').trigger('submit');
+                            },
+                            Cancel: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+                dialog.dialog('open');
+                return false;
+            });
+
+        });
+    </script>
+}
