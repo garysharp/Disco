@@ -36,6 +36,12 @@ namespace Disco.Web.Areas.Config.Views.SystemConfig
     
     #line default
     #line hidden
+    
+    #line 4 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+    using Disco.Services.Plugins;
+    
+    #line default
+    #line hidden
     using Disco.Services.Web;
     using Disco.Web;
     
@@ -56,7 +62,7 @@ namespace Disco.Web.Areas.Config.Views.SystemConfig
         public override void Execute()
         {
             
-            #line 4 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 5 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
   
     Authorization.Require(Claims.DiscoAdminAccount);
 
@@ -68,7 +74,7 @@ namespace Disco.Web.Areas.Config.Views.SystemConfig
 WriteLiteral("\r\n\r\n");
 
             
-            #line 10 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 11 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
  if (Model.Mode == SsoMode.WindowsAuthentication)
 {
 
@@ -102,7 +108,7 @@ WriteLiteral(">Entra ID (OpenID Connect)</option>\r\n                    </selec
 "   </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 27 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 28 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
 
 
             
@@ -134,7 +140,7 @@ WriteLiteral("></i>\r\n                    Windows Authentication is enabled. No
 "ired.\r\n                </p>\r\n            </div>\r\n        </div>\r\n    </div>\r\n");
 
             
-            #line 39 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 40 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
 
 
             
@@ -149,29 +155,15 @@ WriteLiteral(" data-provider=\"entraId\"");
 WriteLiteral(">\r\n");
 
             
-            #line 41 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 42 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 41 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-         using (Html.BeginForm(MVC.API.Authentication.ConfigureSsoTest()))
+            #line 42 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+         if (!Request.IsSecureConnection)
         {
-            
-            
-            #line default
-            #line hidden
-            
-            #line 43 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-       Write(Html.AntiForgeryToken());
-
-            
-            #line default
-            #line hidden
-            
-            #line 43 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                                    
 
             
             #line default
@@ -182,98 +174,200 @@ WriteLiteral(" class=\"form\"");
 
 WriteLiteral(" style=\"width: 450px; margin-top: 15px;\"");
 
-WriteLiteral(">\r\n                <h2>Entra ID (OpenID Connect)</h2>\r\n                <table>\r\n " +
-"                   <tr>\r\n                        <th");
+WriteLiteral(">\r\n                <h2>Entra ID (OpenID Connect)</h2>\r\n                <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                    <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                        <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral(@"></i>
+                        To use Entra ID SSO authentication, a secure connection (HTTPS) is required.<br />
+                        Please access the configuration page over HTTPS to set up Entra ID SSO.<br />
+                        HTTPS certificates can be configured with the <a");
+
+WriteAttribute("href", Tuple.Create(" href=\"", 2047), Tuple.Create("\"", 2178)
+            
+            #line 51 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+, Tuple.Create(Tuple.Create("", 2054), Tuple.Create<System.Object, System.Int32>( Url.Action(Plugins.PluginInstalled("Hosting") ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install()) 
+            
+            #line default
+            #line hidden
+, 2054), false)
+);
+
+WriteLiteral(">Hosting plugin</a>.\r\n                    </p>\r\n                </div>\r\n         " +
+"   </div>\r\n");
+
+            
+            #line 55 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+        }
+        else
+        {
+            using (Html.BeginForm(MVC.API.Authentication.ConfigureSsoTest()))
+            {
+                
+            
+            #line default
+            #line hidden
+            
+            #line 60 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+           Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 60 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                                        
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                <div");
+
+WriteLiteral(" class=\"form\"");
+
+WriteLiteral(" style=\"width: 650px; margin-top: 15px;\"");
+
+WriteLiteral(@">
+                    <h2>Entra ID (OpenID Connect)</h2>
+
+                    <div>
+                        To use Entra ID SSO authentication:
+                    </div>
+                    <ol>
+                        <li>Create an Entra App Registration (<a");
+
+WriteLiteral(" href=\"https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-regis" +
+"ter-app\"");
+
+WriteLiteral(" target=\"_blank\"");
+
+WriteLiteral(">Instructions</a>)</li>\r\n                        <li>\r\n                          " +
+"  Configure a Redirect URI (<a");
+
+WriteLiteral(" href=\"https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redir" +
+"ect-uri\"");
+
+WriteLiteral(" target=\"_blank\"");
+
+WriteLiteral(">Instructions</a>)\r\n                            <ul>\r\n                           " +
+"     <li>Platform: <strong>Web</strong></li>\r\n                                <l" +
+"i>Redirect URI: <strong><code data-clipboard>");
+
+            
+            #line 73 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                                                                           Write(new Uri(Request.Url, "/API/Authentication/OIDC/SignIn"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral(@"</code></strong></li>
+                                <li>Enable: <strong><code>ID tokens</code></strong> (<em>Authentication &gt; Settings &gt; Web and SPA settings</em>)</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <table>
+                        <tr>
+                            <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">\r\n                            Client ID:\r\n                        </th>\r\n       " +
-"                 <td>\r\n");
+WriteLiteral(">\r\n                                Client ID:\r\n                            </th>\r" +
+"\n                            <td>\r\n");
 
-WriteLiteral("                            ");
+WriteLiteral("                                ");
 
             
-            #line 52 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                       Write(Html.TextBoxFor(m => m.ClientId));
+            #line 85 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                           Write(Html.TextBoxFor(m => m.ClientId));
 
             
             #line default
             #line hidden
 WriteLiteral("<br />\r\n");
 
-WriteLiteral("                            ");
+WriteLiteral("                                ");
 
             
-            #line 53 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                       Write(Html.ValidationMessageFor(m => m.ClientId));
+            #line 86 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                           Write(Html.ValidationMessageFor(m => m.ClientId));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n                    <" +
-"tr>\r\n                        <th");
+WriteLiteral("\r\n                            </td>\r\n                        </tr>\r\n             " +
+"           <tr>\r\n                            <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">\r\n                            Tenant ID:\r\n                        </th>\r\n       " +
-"                 <td>\r\n");
+WriteLiteral(">\r\n                                Tenant ID:\r\n                            </th>\r" +
+"\n                            <td>\r\n");
 
-WriteLiteral("                            ");
+WriteLiteral("                                ");
 
             
-            #line 61 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                       Write(Html.TextBoxFor(m => m.TenantId));
+            #line 94 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                           Write(Html.TextBoxFor(m => m.TenantId));
 
             
             #line default
             #line hidden
 WriteLiteral("<br />\r\n");
 
-WriteLiteral("                            ");
+WriteLiteral("                                ");
 
             
-            #line 62 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                       Write(Html.ValidationMessageFor(m => m.TenantId));
+            #line 95 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                           Write(Html.ValidationMessageFor(m => m.TenantId));
 
             
             #line default
             #line hidden
-WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n                    <" +
-"tr>\r\n                        <th");
+WriteLiteral("\r\n                            </td>\r\n                        </tr>\r\n             " +
+"           <tr>\r\n                            <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
-WriteLiteral(">\r\n                            &nbsp;\r\n                        </th>\r\n           " +
-"             <td>\r\n                            <button");
+WriteLiteral(">\r\n                                &nbsp;\r\n                            </th>\r\n   " +
+"                         <td>\r\n                                <button");
 
 WriteLiteral(" type=\"submit\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Test SSO Configuration</button>\r\n                            <div");
+WriteLiteral(">Test SSO Configuration</button>\r\n                                <div");
 
 WriteLiteral(" class=\"info-box\"");
 
-WriteLiteral(">\r\n                                <p");
+WriteLiteral(">\r\n                                    <p");
 
 WriteLiteral(" class=\"fa-p\"");
 
-WriteLiteral(">\r\n                                    <i");
+WriteLiteral(">\r\n                                        <i");
 
 WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
 
 WriteLiteral(@"></i>
-                                    Never disable Windows Authentication in IIS. This is still required for Device Enrolment.
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                                        Never disable Windows Authentication in IIS. This is still required for Device Enrolment.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 ");
 
             
-            #line 81 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 114 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            }
         }
 
             
@@ -294,7 +388,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 93 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 127 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
 }
 else if (Model.Mode == SsoMode.Testing)
 {
@@ -306,7 +400,7 @@ WriteLiteral("    <div");
 
 WriteLiteral(" class=\"form\"");
 
-WriteLiteral(" style=\"width: 450px\"");
+WriteLiteral(" style=\"width: 750px\"");
 
 WriteLiteral(">\r\n        <h2>OpenID Connect Configuration Validated</h2>\r\n        <table>\r\n    " +
 "        <tr>\r\n                <th");
@@ -317,7 +411,7 @@ WriteLiteral(">\r\n                    Authority:\r\n                </th>\r\n  
 "                   <div>\r\n                        <code>");
 
             
-            #line 105 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 139 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                          Write(Model.Authority);
 
             
@@ -332,7 +426,7 @@ WriteLiteral(">\r\n                    Client ID:\r\n                </th>\r\n  
 "                   <div>\r\n                        <code>");
 
             
-            #line 115 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 149 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                          Write(Model.ClientId);
 
             
@@ -346,13 +440,13 @@ WriteLiteral(" style=\"width: 135px\"");
 WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n                <td>\r\n");
 
             
-            #line 124 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 158 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 124 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 158 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                      using (Html.BeginForm(MVC.API.Authentication.ConfigureSso()))
                     {
                         
@@ -360,28 +454,28 @@ WriteLiteral(">\r\n                    &nbsp;\r\n                </th>\r\n      
             #line default
             #line hidden
             
-            #line 126 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 160 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 126 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 160 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                                                 
                         
             
             #line default
             #line hidden
             
-            #line 127 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 161 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                    Write(Html.Hidden("session", Model.TestedSession));
 
             
             #line default
             #line hidden
             
-            #line 127 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 161 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                                                                     
 
             
@@ -396,7 +490,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Apply SSO Configuration</button>\r\n");
 
             
-            #line 129 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 163 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                     }
 
             
@@ -405,7 +499,7 @@ WriteLiteral(">Apply SSO Configuration</button>\r\n");
 WriteLiteral("                </td>\r\n            </tr>\r\n        </table>\r\n    </div>\r\n");
 
             
-            #line 134 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 168 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
 }
 else if (Model.Mode == SsoMode.OpenIdConnect)
 {
@@ -417,7 +511,7 @@ WriteLiteral("    <div");
 
 WriteLiteral(" class=\"form\"");
 
-WriteLiteral(" style=\"width: 450px\"");
+WriteLiteral(" style=\"width: 750px\"");
 
 WriteLiteral(">\r\n        <h2>OpenID Connect Configured</h2>\r\n        <table>\r\n            <tr>\r" +
 "\n                <th");
@@ -425,11 +519,11 @@ WriteLiteral(">\r\n        <h2>OpenID Connect Configured</h2>\r\n        <table>
 WriteLiteral(" style=\"width: 135px\"");
 
 WriteLiteral(">\r\n                    Authority:\r\n                </th>\r\n                <td>\r\n " +
-"                   <div>\r\n                        <code>");
+"                   <div>\r\n                        <code data-clipboard>");
 
             
-            #line 146 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                         Write(Model.Authority);
+            #line 180 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                                        Write(Model.Authority);
 
             
             #line default
@@ -440,17 +534,60 @@ WriteLiteral("</code>\r\n                    </div>\r\n                </td>\r\n
 WriteLiteral(" style=\"width: 135px\"");
 
 WriteLiteral(">\r\n                    Client ID:\r\n                </th>\r\n                <td>\r\n " +
-"                   <div>\r\n                        <code>");
+"                   <div>\r\n                        <code data-clipboard>");
 
             
-            #line 156 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
-                         Write(Model.ClientId);
+            #line 190 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                                        Write(Model.ClientId);
 
             
             #line default
             #line hidden
 WriteLiteral("</code>\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n  " +
 "          <tr>\r\n                <th");
+
+WriteLiteral(" style=\"width: 135px\"");
+
+WriteLiteral(@">
+                    Redirect Platform:
+                </th>
+                <td>
+                    <div>
+                        <strong>Web</strong>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th");
+
+WriteLiteral(" style=\"width: 135px\"");
+
+WriteLiteral(">\r\n                    Redirect URI:\r\n                </th>\r\n                <td>" +
+"\r\n                    <div>\r\n                        <code data-clipboard>");
+
+            
+            #line 210 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+                                         Write(new Uri(Request.Url, "/API/Authentication/OIDC/SignIn"));
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</code>\r\n                    </div>\r\n                </td>\r\n            </tr>\r\n  " +
+"          <tr>\r\n                <th");
+
+WriteLiteral(" style=\"width: 135px\"");
+
+WriteLiteral(@">
+                    &nbsp;
+                </th>
+                <td>
+                    <div>
+                        <strong>ID tokens</strong> (Authentication &gt; Settings &gt; Web and SPA settings)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th");
 
 WriteLiteral(" style=\"width: 135px\"");
 
@@ -485,13 +622,13 @@ WriteLiteral(" title=\"Disable Single Sign-On?\"");
 WriteLiteral(">\r\n");
 
             
-            #line 174 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 238 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 174 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 238 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
          using (Html.BeginForm(MVC.API.Authentication.DisableSso()))
         {
             
@@ -499,14 +636,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 176 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 240 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 176 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 240 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
                                     
         }
 
@@ -557,7 +694,7 @@ WriteLiteral(@">
 ");
 
             
-            #line 213 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
+            #line 277 "..\..\Areas\Config\Views\SystemConfig\SSO.cshtml"
 }
 
             

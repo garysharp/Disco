@@ -1,6 +1,7 @@
 ﻿@model SsoModel
 @using Disco.Web.Areas.Config.Models.SystemConfig
 @using Disco.Services.Interop.DiscoServices
+@using Disco.Services.Plugins
 @{
     Authorization.Require(Claims.DiscoAdminAccount);
 
@@ -38,46 +39,79 @@
     </div>
 
     <div class="hidden" data-provider="entraId">
-        @using (Html.BeginForm(MVC.API.Authentication.ConfigureSsoTest()))
+        @if (!Request.IsSecureConnection)
         {
-            @Html.AntiForgeryToken()
             <div class="form" style="width: 450px; margin-top: 15px;">
                 <h2>Entra ID (OpenID Connect)</h2>
-                <table>
-                    <tr>
-                        <th style="width: 135px">
-                            Client ID:
-                        </th>
-                        <td>
-                            @Html.TextBoxFor(m => m.ClientId)<br />
-                            @Html.ValidationMessageFor(m => m.ClientId)
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="width: 135px">
-                            Tenant ID:
-                        </th>
-                        <td>
-                            @Html.TextBoxFor(m => m.TenantId)<br />
-                            @Html.ValidationMessageFor(m => m.TenantId)
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="width: 135px">
-                            &nbsp;
-                        </th>
-                        <td>
-                            <button type="submit" class="button">Test SSO Configuration</button>
-                            <div class="info-box">
-                                <p class="fa-p">
-                                    <i class="fa fa-fw fa-info-circle"></i>
-                                    Never disable Windows Authentication in IIS. This is still required for Device Enrolment.
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-fw fa-info-circle"></i>
+                        To use Entra ID SSO authentication, a secure connection (HTTPS) is required.<br />
+                        Please access the configuration page over HTTPS to set up Entra ID SSO.<br />
+                        HTTPS certificates can be configured with the <a href="@( Url.Action(Plugins.PluginInstalled("Hosting") ? MVC.Config.Plugins.Configure("Hosting") : MVC.Config.Plugins.Install()) )">Hosting plugin</a>.
+                    </p>
+                </div>
             </div>
+        }
+        else
+        {
+            using (Html.BeginForm(MVC.API.Authentication.ConfigureSsoTest()))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form" style="width: 650px; margin-top: 15px;">
+                    <h2>Entra ID (OpenID Connect)</h2>
+
+                    <div>
+                        To use Entra ID SSO authentication:
+                    </div>
+                    <ol>
+                        <li>Create an Entra App Registration (<a href="https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app" target="_blank">Instructions</a>)</li>
+                        <li>
+                            Configure a Redirect URI (<a href="https://learn.microsoft.com/en-us/entra/identity-platform/how-to-add-redirect-uri" target="_blank">Instructions</a>)
+                            <ul>
+                                <li>Platform: <strong>Web</strong></li>
+                                <li>Redirect URI: <strong><code data-clipboard>@(new Uri(Request.Url, "/API/Authentication/OIDC/SignIn"))</code></strong></li>
+                                <li>Enable: <strong><code>ID tokens</code></strong> (<em>Authentication &gt; Settings &gt; Web and SPA settings</em>)</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <table>
+                        <tr>
+                            <th style="width: 135px">
+                                Client ID:
+                            </th>
+                            <td>
+                                @Html.TextBoxFor(m => m.ClientId)<br />
+                                @Html.ValidationMessageFor(m => m.ClientId)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 135px">
+                                Tenant ID:
+                            </th>
+                            <td>
+                                @Html.TextBoxFor(m => m.TenantId)<br />
+                                @Html.ValidationMessageFor(m => m.TenantId)
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="width: 135px">
+                                &nbsp;
+                            </th>
+                            <td>
+                                <button type="submit" class="button">Test SSO Configuration</button>
+                                <div class="info-box">
+                                    <p class="fa-p">
+                                        <i class="fa fa-fw fa-info-circle"></i>
+                                        Never disable Windows Authentication in IIS. This is still required for Device Enrolment.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
         }
     </div>
     <script>
@@ -93,7 +127,7 @@
 }
 else if (Model.Mode == SsoMode.Testing)
 {
-    <div class="form" style="width: 450px">
+    <div class="form" style="width: 750px">
         <h2>OpenID Connect Configuration Validated</h2>
         <table>
             <tr>
@@ -134,7 +168,7 @@ else if (Model.Mode == SsoMode.Testing)
 }
 else if (Model.Mode == SsoMode.OpenIdConnect)
 {
-    <div class="form" style="width: 450px">
+    <div class="form" style="width: 750px">
         <h2>OpenID Connect Configured</h2>
         <table>
             <tr>
@@ -143,7 +177,7 @@ else if (Model.Mode == SsoMode.OpenIdConnect)
                 </th>
                 <td>
                     <div>
-                        <code>@Model.Authority</code>
+                        <code data-clipboard>@Model.Authority</code>
                     </div>
                 </td>
             </tr>
@@ -153,7 +187,37 @@ else if (Model.Mode == SsoMode.OpenIdConnect)
                 </th>
                 <td>
                     <div>
-                        <code>@Model.ClientId</code>
+                        <code data-clipboard>@Model.ClientId</code>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Redirect Platform:
+                </th>
+                <td>
+                    <div>
+                        <strong>Web</strong>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    Redirect URI:
+                </th>
+                <td>
+                    <div>
+                        <code data-clipboard>@(new Uri(Request.Url, "/API/Authentication/OIDC/SignIn"))</code>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 135px">
+                    &nbsp;
+                </th>
+                <td>
+                    <div>
+                        <strong>ID tokens</strong> (Authentication &gt; Settings &gt; Web and SPA settings)
                     </div>
                 </td>
             </tr>
