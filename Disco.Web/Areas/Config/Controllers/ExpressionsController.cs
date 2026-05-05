@@ -6,7 +6,6 @@ using Disco.Services.Plugins.Features.ExpressionExtensionProvider;
 using Disco.Services.Plugins.Features.UIExtension;
 using Disco.Services.Web;
 using Disco.Web.Areas.Config.Models.Expressions;
-using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -14,12 +13,6 @@ namespace Disco.Web.Areas.Config.Controllers
 {
     public partial class ExpressionsController : AuthorizedDatabaseController
     {
-        [DiscoAuthorize(Claims.DiscoAdminAccount)]
-        public virtual ActionResult Index()
-        {
-            throw new NotImplementedException();
-        }
-
         [DiscoAuthorize(Claims.Config.Show)]
         public virtual ActionResult Browser()
         {
