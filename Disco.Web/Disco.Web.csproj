@@ -1877,7 +1877,6 @@
     <None Include="Properties\PublishProfiles\SRV-WEB03 Production.pubxml" />
     <None Include="razorgenerator.directives" />
     <None Include="RazorGenerator.directives" />
-    <None Include="T4MVC.tt.settings.xml" />
     <None Include="Views\_ViewStart.cshtml">
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
