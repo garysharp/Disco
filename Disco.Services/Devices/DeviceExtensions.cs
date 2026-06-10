@@ -34,9 +34,9 @@ namespace Disco.Services
             {
                 throw new InvalidOperationException($"An error occurred rendering the computer name: [{ex.GetType().Name}] {ex.Message}", ex.InnerException);
             }
-            if (rendered == null || rendered.Length > 24)
+            if (rendered == null || rendered.Length > 15)
             {
-                throw new InvalidOperationException("The rendered computer name would be invalid or longer than 24 characters");
+                throw new InvalidOperationException("The rendered computer name would be invalid or longer than 15 characters");
             }
 
             return $@"{Domain.NetBiosName}\{rendered}";
