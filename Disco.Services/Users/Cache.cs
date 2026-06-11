@@ -79,7 +79,8 @@ namespace Disco.Services.Users
         {
             var record = new CacheRecord(user, authToken, DateTime.Now.AddMinutes(10));
 
-            upnCache.AddOrUpdate(record.User.UserPrincipalName, user.UserId, (upn, existing) => user.UserId);
+            if (record.User.UserPrincipalName != null)
+                upnCache.AddOrUpdate(record.User.UserPrincipalName, user.UserId, (upn, existing) => user.UserId);
             cache.AddOrUpdate(user.UserId, record, (id, existing) => record);
 
             return record;
