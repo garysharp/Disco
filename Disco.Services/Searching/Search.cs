@@ -239,19 +239,31 @@ namespace Disco.Services.Searching
             if (LimitCount.HasValue)
                 Query = Query.Take(LimitCount.Value);
 
-            var results = Query.Select(u => new UserSearchResultItem()
-            {
-                Id = u.UserId,
-                Surname = u.Surname,
-                GivenName = u.GivenName,
-                DisplayName = u.DisplayName,
-                AssignedDevicesCount = u.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue).Count(),
-                JobCount = u.Jobs.Count(),
-                JobCountOpen = u.Jobs.Count(j => !j.ClosedDate.HasValue),
-                UserFlagAssignments = u.UserFlagAssignments
-            }).ToList();
-
-            results.ForEach(u => u.FriendlyId = ActiveDirectory.FriendlyAccountId(u.Id));
+            var results = Query
+                .Select(u => new
+                {
+                    u.UserId,
+                    u.Surname,
+                    u.GivenName,
+                    u.DisplayName,
+                    AssignedDevicesCount = u.DeviceUserAssignments.Count(dua => !dua.UnassignedDate.HasValue),
+                    JobCount = u.Jobs.Count(),
+                    JobCountOpen = u.Jobs.Count(j => !j.ClosedDate.HasValue),
+                    UserFlagAssignments = u.UserFlagAssignments.Where(a => a.RemoveDate == null)
+                })
+                .AsEnumerable()
+                .Select(u => new UserSearchResultItem()
+                {
+                    Id = u.UserId,
+                    FriendlyId = ActiveDirectory.FriendlyAccountId(u.UserId),
+                    Surname = u.Surname,
+                    GivenName = u.GivenName,
+                    DisplayName = u.DisplayName,
+                    AssignedDevicesCount = u.AssignedDevicesCount,
+                    JobCount = u.JobCount,
+                    JobCountOpen = u.JobCountOpen,
+                    UserFlagAssignments = u.UserFlagAssignments.ToList()
+                }).ToList();
 
             return results;
         }
@@ -260,14 +272,14 @@ namespace Disco.Services.Searching
         #region Devices
         public static List<DeviceSearchResultItem> SearchDevices(DiscoDataContext Database, string Term, int? LimitCount = ActiveDirectory.DefaultSearchResultLimit, bool SearchDetails = false, bool includeDecommissioned = false)
         {
-            IQueryable<Device> query;
+            var query = Database.Devices.AsQueryable();
 
-            query = null;
+            if (!includeDecommissioned)
+                query = query.Where(d => d.DecommissionedDate == null);
 
             if (SearchDetails)
             {
-                query = Database.Devices
-                    .Where(d => includeDecommissioned || d.DecommissionedDate == null)
+                query = query
                     .Where(d =>
                         d.AssetNumber.Contains(Term) ||
                         d.DeviceDomainId.Contains(Term) ||
@@ -279,8 +291,7 @@ namespace Disco.Services.Searching
             }
             else
             {
-                query = Database.Devices
-                    .Where(d => includeDecommissioned || d.DecommissionedDate == null)
+                query = query
                     .Where(d =>
                         d.AssetNumber.Contains(Term) ||
                         d.DeviceDomainId.Contains(Term) ||
