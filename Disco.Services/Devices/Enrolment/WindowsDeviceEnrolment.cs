@@ -176,7 +176,7 @@ namespace Disco.Services.Devices.Enrolment
                     .Include(d => d.DeviceModel)
                     .Include(d => d.DeviceProfile)
                     .Include(d => d.DeviceDetails)
-                    .Where(d => d.SerialNumber == Request.SerialNumber).FirstOrDefault();
+                    .FirstOrDefault(d => d.SerialNumber == Request.SerialNumber);
                 EnrolmentLog.LogSessionProgress(sessionId, 15, "Discovering User/Device Disco ICT Permissions");
                 if (!sessionApproved)
                 {
@@ -208,7 +208,7 @@ namespace Disco.Services.Devices.Enrolment
                             {
                                 if (device.DeviceProfile.AllowUntrustedReimageJobEnrolment)
                                 {
-                                    if (Database.Jobs.Count(j => j.DeviceSerialNumber == device.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue) == 0)
+                                    if (!Database.Jobs.Any(j => j.DeviceSerialNumber == device.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue))
                                     {
                                         throw new EnrolmentSafeException($"Device has no open 'Software - Reimage' job (SN: '{Request.SerialNumber}')");
                                     }
@@ -448,7 +448,7 @@ namespace Disco.Services.Devices.Enrolment
                     }
 
                     // Enforce Organisational Unit
-                    if (!adMachineAccount.IsCriticalSystemObject && response.OfflineDomainJoinManifest == null && device.DeviceProfile.EnforceOrganisationalUnit)
+                    if (!adMachineAccount.IsCriticalSystemObject && device.DeviceProfile.EnforceOrganisationalUnit)
                     {
                         var parentDistinguishedName = adMachineAccount.ParentDistinguishedName;
                         if (string.IsNullOrWhiteSpace(device.DeviceProfile.OrganisationalUnit))
@@ -570,7 +570,7 @@ namespace Disco.Services.Devices.Enrolment
             catch (Exception ex2)
             {
                 EnrolmentLog.LogSessionError(response.SessionId, ex2);
-                throw ex2;
+                throw;
             }
             finally
             {

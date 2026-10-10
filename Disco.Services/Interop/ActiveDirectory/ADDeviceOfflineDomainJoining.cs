@@ -75,6 +75,10 @@ namespace Disco.Services.Interop.ActiveDirectory
             {
                 // rename the account
                 machineAccount.RenameAccount(dc, computerSamAccountName, $"{computerSamAccountName}.{machineAccount.Domain.Name}", out oldComputerSamAccountName, out oldDnsHostName);
+                // when the account it reused, it must be in the same OU as before, otherwise the provisioning will fail.
+                // So we ignore the specified OU and use the existing one. If enforced OU is required that can be set in the
+                // profile, and the account will be moved as enrolment continues
+                organisationalUnit = null;
             }
 
             var result = NetProvisionComputerAccount(dc.Domain.Name, computerSamAccountName, string.IsNullOrWhiteSpace(organisationalUnit) ? null : organisationalUnit, dc.Name, NETSETUP_PROVISION_FLAGS.NETSETUP_PROVISION_REUSE_ACCOUNT, out var provisionDataPointer, out var provisionDataLength);
@@ -88,7 +92,10 @@ namespace Disco.Services.Interop.ActiveDirectory
                     {
                         machineAccount.RenameAccount(dc, oldComputerSamAccountName, oldDnsHostName, out _, out _);
                     }
-                    catch { }
+                    catch
+                    {
+                        // this is to restore the original state, but if it fails, we don't want to throw an exception since the original error is more important
+                    }
                 }
 
                 var win32Exception = new System.ComponentModel.Win32Exception(result);
