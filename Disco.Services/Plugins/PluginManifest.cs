@@ -75,7 +75,7 @@ namespace Disco.Services.Plugins
         [JsonIgnore]
         private bool environmentInitalized { get; set; }
 
-        private static Dictionary<string, Tuple<string, DateTime>> WebResourceHashes = new Dictionary<string, Tuple<string, DateTime>>();
+        private static readonly Dictionary<string, Tuple<string, DateTime>> WebResourceHashes = new Dictionary<string, Tuple<string, DateTime>>();
 
         public List<PluginFeatureManifest> GetFeatures(Type FeatureCategoryType)
         {
@@ -128,10 +128,11 @@ namespace Disco.Services.Plugins
             return manifest;
         }
 
-        private static Lazy<IReadOnlyCollection<string>> pluginExcludedAssemblies = new Lazy<IReadOnlyCollection<string>>(() =>
+        private static readonly Lazy<IReadOnlyCollection<string>> pluginExcludedAssemblies = new Lazy<IReadOnlyCollection<string>>(() =>
         {
             return new List<string>()
             {
+                "BouncyCastle.Cryptography",
                 "C5",
                 "ClosedXML",
                 "Common.Logging",
@@ -164,6 +165,13 @@ namespace Disco.Services.Plugins
                 "Microsoft.Extensions.Logging",
                 "Microsoft.Extensions.Options",
                 "Microsoft.Extensions.Primitives",
+                "Microsoft.IdentityModel.Abstractions",
+                "Microsoft.IdentityModel.JsonWebTokens",
+                "Microsoft.IdentityModel.Logging",
+                "Microsoft.IdentityModel.Protocols",
+                "Microsoft.IdentityModel.Protocols.OpenIdConnect",
+                "Microsoft.IdentityModel.Tokens",
+                "Microsoft.IdentityModel.Tokens.Jwt",
                 "Microsoft.Owin",
                 "Microsoft.Owin.Host.SystemWeb",
                 "Microsoft.Owin.Security",
@@ -182,6 +190,7 @@ namespace Disco.Services.Plugins
                 "System.Data.SqlServerCe",
                 "System.Data.SqlServerCe.Entity",
                 "System.Diagnostics.DiagnosticSource",
+                "System.IdentityModel.Tokens.Jwt",
                 "System.IO.Pipelines",
                 "System.Memory",
                 "System.Net.Http",
@@ -196,6 +205,10 @@ namespace Disco.Services.Plugins
                 "System.Reactive.PlatformServices",
                 "System.Runtime.CompilerServices.Unsafe",
                 "System.Runtime.InteropServices.RuntimeInformation",
+                "System.Security.Cryptography.Algorithms",
+                "System.Security.Cryptography.Encoding",
+                "System.Security.Cryptography.Primitives",
+                "System.Security.Cryptography.X509Certificates",
                 "System.Text.Encodings.Web",
                 "System.Text.Json",
                 "System.Threading.Channels",

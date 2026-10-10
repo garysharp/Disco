@@ -1361,13 +1361,60 @@ WriteLiteral("                                    <p");
 WriteLiteral(" style=\"margin-top: 6px;\"");
 
 WriteLiteral(@">
-                                        The <code>DiscoAttachmentId</code> field is replaced with a unique QR Code which identifies the page when it is imported back into Disco ICT.
-                                    </p>
-                                </div>
+                                        The <code>DiscoAttachmentId</code> field is replaced with a unique QR Code which identifies the page when it is scanned and imported back into Disco ICT.
+                                        If you are exclusively using
 ");
 
             
-            #line 383 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 382 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                        
+            
+            #line default
+            #line hidden
+            
+            #line 382 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                         if (Disco.Services.Plugins.Plugins.PluginInstalled("DocFill"))
+                                        {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                            ");
+
+WriteLiteral("Document Fulfillment");
+
+WriteLiteral("\r\n");
+
+            
+            #line 385 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                        }
+                                        else
+                                        {
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 388 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                       Write(Html.ActionLink("Document Fulfillment", MVC.Config.Plugins.Install()));
+
+            
+            #line default
+            #line hidden
+            
+            #line 388 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                                                                                  
+                                        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        with this template this message can be ig" +
+"nored.\r\n                                    </p>\r\n                              " +
+"  </div>\r\n");
+
+            
+            #line 393 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
 
             
@@ -1382,7 +1429,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                ");
 
             
-            #line 385 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 395 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                            Write(Html.ActionLinkSmallButton("Download Template", MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id)));
 
             
@@ -1391,13 +1438,13 @@ WriteLiteral("                                ");
 WriteLiteral("\r\n");
 
             
-            #line 386 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 396 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 386 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 396 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                  if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.Upload))
                                 {
 
@@ -1424,13 +1471,13 @@ WriteLiteral(">\r\n                                        <h4>Select a PDF Temp
 "h4>\r\n                                        <div>\r\n");
 
             
-            #line 392 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 402 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             
             
             #line default
             #line hidden
             
-            #line 392 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 402 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                              using (Html.BeginForm(MVC.API.DocumentTemplate.Template(Model.DocumentTemplate.Id, true, null), FormMethod.Post, new { enctype = "multipart/form-data" }))
                                             {
                                                 
@@ -1438,14 +1485,14 @@ WriteLiteral(">\r\n                                        <h4>Select a PDF Temp
             #line default
             #line hidden
             
-            #line 394 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 404 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 394 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 404 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                         
 
             
@@ -1466,7 +1513,7 @@ WriteLiteral(" style=\"width: 250px;\"");
 WriteLiteral(" />\r\n");
 
             
-            #line 396 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 406 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             }
 
             
@@ -1512,7 +1559,7 @@ WriteLiteral(">\r\n                                        $(function () {\r\n  
 "                     });\r\n                                    </script>\r\n");
 
             
-            #line 437 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 447 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                 }
 
             
@@ -1522,7 +1569,7 @@ WriteLiteral("                            </div>\r\n                        </td
 "      </tr>\r\n");
 
             
-            #line 441 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 451 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                 }
 
             
@@ -1539,13 +1586,13 @@ WriteLiteral(">\r\n        <h2>Advanced Options</h2>\r\n        <table>\r\n     
 "sion:\r\n                    </th>\r\n                    <td>\r\n");
 
             
-            #line 455 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 465 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 455 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 465 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                          if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
                             
@@ -1553,56 +1600,56 @@ WriteLiteral(">\r\n        <h2>Advanced Options</h2>\r\n        <table>\r\n     
             #line default
             #line hidden
             
-            #line 457 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 467 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(Html.EditorFor(model => model.DocumentTemplate.FilterExpression));
 
             
             #line default
             #line hidden
             
-            #line 457 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 467 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                              
                             
             
             #line default
             #line hidden
             
-            #line 458 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 468 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 458 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 468 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      
                             
             
             #line default
             #line hidden
             
-            #line 459 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 469 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 459 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 469 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                    
                             
             
             #line default
             #line hidden
             
-            #line 460 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 470 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 460 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 470 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      
 
             
@@ -1624,7 +1671,7 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 470 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 480 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     Write(Url.Action(MVC.API.DocumentTemplate.UpdateFilterExpression(Model.DocumentTemplate.Id)));
 
             
@@ -1653,7 +1700,7 @@ WriteLiteral("\',\r\n                                        \'FilterExpression\
 "                      </script>\r\n");
 
             
-            #line 499 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 509 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         }
                         else
                         {
@@ -1670,7 +1717,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 505 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 515 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                             else
                             {
@@ -1687,7 +1734,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 509 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 519 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                Write(Model.DocumentTemplate.FilterExpression);
 
             
@@ -1696,7 +1743,7 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n                                </div>\r\n");
 
             
-            #line 511 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 521 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                         }
 
@@ -1728,13 +1775,13 @@ WriteLiteral(@"></i>This expression will be evaluated to determine if this templ
 ");
 
             
-            #line 525 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 535 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 525 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 535 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                          if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
                             
@@ -1742,56 +1789,56 @@ WriteLiteral(@"></i>This expression will be evaluated to determine if this templ
             #line default
             #line hidden
             
-            #line 527 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 537 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(Html.EditorFor(model => model.DocumentTemplate.OnGenerateExpression));
 
             
             #line default
             #line hidden
             
-            #line 527 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 537 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                  
                             
             
             #line default
             #line hidden
             
-            #line 528 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 538 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 528 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 538 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      
                             
             
             #line default
             #line hidden
             
-            #line 529 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 539 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 529 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 539 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                    
                             
             
             #line default
             #line hidden
             
-            #line 530 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 540 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 530 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 540 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      
 
             
@@ -1813,7 +1860,7 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 540 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 550 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     Write(Url.Action(MVC.API.DocumentTemplate.UpdateOnGenerateExpression(Model.DocumentTemplate.Id)));
 
             
@@ -1842,7 +1889,7 @@ WriteLiteral("\',\r\n                                        \'OnGenerateExpress
 "                          </script>\r\n");
 
             
-            #line 569 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 579 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         }
                         else
                         {
@@ -1859,7 +1906,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 575 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 585 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                             else
                             {
@@ -1876,7 +1923,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 579 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 589 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                Write(Model.DocumentTemplate.OnGenerateExpression);
 
             
@@ -1885,7 +1932,7 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n                                </div>\r\n");
 
             
-            #line 581 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 591 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                         }
 
@@ -1917,13 +1964,13 @@ WriteLiteral(@"></i>This expression will be evaluated each time a document is ge
 ");
 
             
-            #line 595 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 605 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 595 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 605 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                          if (canConfig && Authorization.Has(Claims.Config.DocumentTemplate.ConfigureFilterExpression))
                         {
                             
@@ -1931,56 +1978,56 @@ WriteLiteral(@"></i>This expression will be evaluated each time a document is ge
             #line default
             #line hidden
             
-            #line 597 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 607 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(Html.EditorFor(model => model.DocumentTemplate.OnImportAttachmentExpression));
 
             
             #line default
             #line hidden
             
-            #line 597 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 607 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                          
                             
             
             #line default
             #line hidden
             
-            #line 598 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 608 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxRemove());
 
             
             #line default
             #line hidden
             
-            #line 598 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 608 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      
                             
             
             #line default
             #line hidden
             
-            #line 599 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 609 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxSave());
 
             
             #line default
             #line hidden
             
-            #line 599 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 609 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                    
                             
             
             #line default
             #line hidden
             
-            #line 600 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 610 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(AjaxHelpers.AjaxLoader());
 
             
             #line default
             #line hidden
             
-            #line 600 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 610 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      
 
             
@@ -2002,7 +2049,7 @@ WriteLiteral(@">
                                         '");
 
             
-            #line 610 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 620 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     Write(Url.Action(MVC.API.DocumentTemplate.UpdateOnImportAttachmentExpression(Model.DocumentTemplate.Id)));
 
             
@@ -2031,7 +2078,7 @@ WriteLiteral("\',\r\n                                        \'OnImportAttachmen
 " });\r\n                            </script>\r\n");
 
             
-            #line 639 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 649 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         }
                         else
                         {
@@ -2048,7 +2095,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 645 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 655 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                             else
                             {
@@ -2065,7 +2112,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 649 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 659 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                Write(Model.DocumentTemplate.OnImportAttachmentExpression);
 
             
@@ -2074,7 +2121,7 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n                                </div>\r\n");
 
             
-            #line 651 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 661 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                         }
 
@@ -2106,13 +2153,13 @@ WriteLiteral(@"></i>This expression will be evaluated each time a document is im
 ");
 
             
-            #line 665 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 675 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 665 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 675 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                          if (canConfig && Authorization.Has(Claims.Config.UserFlag.Configure))
                         {
 
@@ -2137,14 +2184,14 @@ WriteLiteral(@">
                                 <tbody>
                                     <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 40621), Tuple.Create("\"", 40683)
+WriteAttribute("class", Tuple.Create(" class=\"", 41310), Tuple.Create("\"", 41372)
             
-            #line 677 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 40629), Tuple.Create<System.Object, System.Int32>(Model.OnImportUserFlagRules.Any() ? "hidden" : null
+            #line 687 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 41318), Tuple.Create<System.Object, System.Int32>(Model.OnImportUserFlagRules.Any() ? "hidden" : null
             
             #line default
             #line hidden
-, 40629), false)
+, 41318), false)
 );
 
 WriteLiteral(">\r\n                                        <td");
@@ -2158,13 +2205,13 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span></td>\r\n                                    </tr>\r\n");
 
             
-            #line 680 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 690 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 680 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 690 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                      foreach (var rule in Model.OnImportUserFlagRules)
                                     {
 
@@ -2176,7 +2223,7 @@ WriteLiteral("                                        <tr");
 WriteLiteral(" data-id=\"");
 
             
-            #line 682 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 692 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 Write(rule.Id);
 
             
@@ -2187,7 +2234,7 @@ WriteLiteral("\"");
 WriteLiteral(">\r\n                                            <td>");
 
             
-            #line 683 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 693 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             Write(rule.AddFlag ? "Assign" : "Remove");
 
             
@@ -2196,37 +2243,37 @@ WriteLiteral(">\r\n                                            <td>");
 WriteLiteral("</td>\r\n                                            <td>\r\n                        " +
 "                        <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 41233), Tuple.Create("\"", 41304)
-, Tuple.Create(Tuple.Create("", 41241), Tuple.Create("fa", 41241), true)
-, Tuple.Create(Tuple.Create(" ", 41243), Tuple.Create("fa-", 41244), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 41922), Tuple.Create("\"", 41993)
+, Tuple.Create(Tuple.Create("", 41930), Tuple.Create("fa", 41930), true)
+, Tuple.Create(Tuple.Create(" ", 41932), Tuple.Create("fa-", 41933), true)
             
-            #line 685 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 41247), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.Icon
-            
-            #line default
-            #line hidden
-, 41247), false)
-, Tuple.Create(Tuple.Create(" ", 41268), Tuple.Create("fa-lg", 41269), true)
-, Tuple.Create(Tuple.Create(" ", 41274), Tuple.Create("d-", 41275), true)
-            
-            #line 685 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-              , Tuple.Create(Tuple.Create("", 41277), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.IconColour
+            #line 695 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 41936), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.Icon
             
             #line default
             #line hidden
-, 41277), false)
+, 41936), false)
+, Tuple.Create(Tuple.Create(" ", 41957), Tuple.Create("fa-lg", 41958), true)
+, Tuple.Create(Tuple.Create(" ", 41963), Tuple.Create("d-", 41964), true)
+            
+            #line 695 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+              , Tuple.Create(Tuple.Create("", 41966), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.IconColour
+            
+            #line default
+            #line hidden
+, 41966), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 686 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 696 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 686 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 696 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                  if (Authorization.Has(Claims.Config.UserFlag.Configure))
                                                 {
 
@@ -2236,7 +2283,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                                                    <span>");
 
             
-            #line 688 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 698 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      Write(Html.ActionLink(rule.UserFlag.Name, MVC.Config.UserFlag.Index(rule.UserFlag.Id)));
 
             
@@ -2245,7 +2292,7 @@ WriteLiteral("                                                    <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 689 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 699 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 }
                                                 else
                                                 {
@@ -2256,7 +2303,7 @@ WriteLiteral("</span>\r\n");
 WriteLiteral("                                                    <span>");
 
             
-            #line 692 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 702 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                      Write(rule.UserFlag.Name);
 
             
@@ -2265,7 +2312,7 @@ WriteLiteral("                                                    <span>");
 WriteLiteral("</span>\r\n");
 
             
-            #line 693 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 703 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 }
 
             
@@ -2275,13 +2322,13 @@ WriteLiteral("                                            </td>\r\n             
 "              <td>\r\n");
 
             
-            #line 696 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 706 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 
             
             #line default
             #line hidden
             
-            #line 696 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 706 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                  if (string.IsNullOrWhiteSpace(rule.Comments))
                                                 {
 
@@ -2291,7 +2338,7 @@ WriteLiteral("                                            </td>\r\n             
 WriteLiteral("                                                    <span>&nbsp;</span>\r\n");
 
             
-            #line 699 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 709 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 }
                                                 else
                                                 {
@@ -2306,7 +2353,7 @@ WriteLiteral(" class=\"whitespace-pre-wrap\"");
 WriteLiteral(">");
 
             
-            #line 702 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 712 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                  Write(rule.Comments);
 
             
@@ -2315,7 +2362,7 @@ WriteLiteral(">");
 WriteLiteral("</span>\r\n");
 
             
-            #line 703 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 713 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 }
 
             
@@ -2338,7 +2385,7 @@ WriteLiteral("></i>\r\n                                            </td>\r\n    
 "                 </tr>\r\n");
 
             
-            #line 710 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 720 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     }
 
             
@@ -2347,7 +2394,7 @@ WriteLiteral("></i>\r\n                                            </td>\r\n    
 WriteLiteral("                                </tbody>\r\n                            </table>\r\n");
 
             
-            #line 713 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 723 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             using (Html.BeginForm(MVC.API.DocumentTemplate.RemoveOnImportUserFlagRule(Model.DocumentTemplate.Id), FormMethod.Post, new { id = "DocumentTemplate_OnImportUserFlagRules_Remove" }))
                             {
                                 
@@ -2355,28 +2402,28 @@ WriteLiteral("                                </tbody>\r\n                      
             #line default
             #line hidden
             
-            #line 715 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 725 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 715 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 725 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                         
                                 
             
             #line default
             #line hidden
             
-            #line 716 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 726 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                            Write(Html.Hidden("ruleId", ""));
 
             
             #line default
             #line hidden
             
-            #line 716 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 726 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                           
                             }
 
@@ -2399,19 +2446,19 @@ WriteLiteral(" id=\"DocumentTemplate_OnImportUserFlagRules_AddDialog\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 43709), Tuple.Create("\"", 43771)
-, Tuple.Create(Tuple.Create("", 43717), Tuple.Create("On", 43717), true)
-, Tuple.Create(Tuple.Create(" ", 43719), Tuple.Create("Import", 43720), true)
-, Tuple.Create(Tuple.Create(" ", 43726), Tuple.Create("User", 43727), true)
-, Tuple.Create(Tuple.Create(" ", 43731), Tuple.Create("Flag", 43732), true)
-, Tuple.Create(Tuple.Create(" ", 43736), Tuple.Create("Rule:", 43737), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 44398), Tuple.Create("\"", 44460)
+, Tuple.Create(Tuple.Create("", 44406), Tuple.Create("On", 44406), true)
+, Tuple.Create(Tuple.Create(" ", 44408), Tuple.Create("Import", 44409), true)
+, Tuple.Create(Tuple.Create(" ", 44415), Tuple.Create("User", 44416), true)
+, Tuple.Create(Tuple.Create(" ", 44420), Tuple.Create("Flag", 44421), true)
+, Tuple.Create(Tuple.Create(" ", 44425), Tuple.Create("Rule:", 44426), true)
             
-            #line 719 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                      , Tuple.Create(Tuple.Create(" ", 43742), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+            #line 729 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                      , Tuple.Create(Tuple.Create(" ", 44431), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 43743), false)
+, 44432), false)
 );
 
 WriteLiteral(">\r\n                                <div");
@@ -2421,13 +2468,13 @@ WriteLiteral(" class=\"brief\"");
 WriteLiteral(">\r\n");
 
             
-            #line 721 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 731 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 721 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 731 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                      switch (Model.DocumentTemplate.Scope)
                                     {
                                         case "Device":
@@ -2440,7 +2487,7 @@ WriteLiteral("                                            <div>\r\n             
 "gned user.\r\n                                            </div>\r\n");
 
             
-            #line 727 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 737 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             break;
                                         case "Job":
 
@@ -2452,7 +2499,7 @@ WriteLiteral("                                            <div>\r\n             
 "ted user.\r\n                                            </div>\r\n");
 
             
-            #line 732 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 742 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             break;
                                         case "User":
 
@@ -2464,7 +2511,7 @@ WriteLiteral("                                            <div>\r\n             
 "                                       </div>\r\n");
 
             
-            #line 737 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 747 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             break;
                                     }
 
@@ -2474,13 +2521,13 @@ WriteLiteral("                                            <div>\r\n             
 WriteLiteral("                                </div>\r\n");
 
             
-            #line 740 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 750 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 740 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 750 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                  using (Html.BeginForm(MVC.API.DocumentTemplate.AddOnImportUserFlagRule(Model.DocumentTemplate.Id)))
                                 {
                                     
@@ -2488,14 +2535,14 @@ WriteLiteral("                                </div>\r\n");
             #line default
             #line hidden
             
-            #line 742 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 752 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 742 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 752 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                             
 
             
@@ -2546,13 +2593,13 @@ WriteLiteral(" class=\"dialog-item-picker\"");
 WriteLiteral(">\r\n");
 
             
-            #line 752 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 762 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                         
             
             #line default
             #line hidden
             
-            #line 752 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 762 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                          foreach (var flag in Model.UserFlags)
                                         {
 
@@ -2565,72 +2612,72 @@ WriteLiteral(" class=\"item\"");
 
 WriteLiteral(">\r\n                                                <input");
 
-WriteAttribute("id", Tuple.Create(" id=\"", 46332), Tuple.Create("\"", 46393)
-, Tuple.Create(Tuple.Create("", 46337), Tuple.Create("DocumentTemplate_OnImportUserFlagRules_Add_Flag_", 46337), true)
+WriteAttribute("id", Tuple.Create(" id=\"", 47021), Tuple.Create("\"", 47082)
+, Tuple.Create(Tuple.Create("", 47026), Tuple.Create("DocumentTemplate_OnImportUserFlagRules_Add_Flag_", 47026), true)
             
-            #line 755 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                          , Tuple.Create(Tuple.Create("", 46385), Tuple.Create<System.Object, System.Int32>(flag.Id
+            #line 765 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                          , Tuple.Create(Tuple.Create("", 47074), Tuple.Create<System.Object, System.Int32>(flag.Id
             
             #line default
             #line hidden
-, 46385), false)
+, 47074), false)
 );
 
 WriteLiteral(" type=\"radio\"");
 
 WriteLiteral(" name=\"userFlagId\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 46425), Tuple.Create("\"", 46441)
+WriteAttribute("value", Tuple.Create(" value=\"", 47114), Tuple.Create("\"", 47130)
             
-            #line 755 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                          , Tuple.Create(Tuple.Create("", 46433), Tuple.Create<System.Object, System.Int32>(flag.Id
+            #line 765 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                                          , Tuple.Create(Tuple.Create("", 47122), Tuple.Create<System.Object, System.Int32>(flag.Id
             
             #line default
             #line hidden
-, 46433), false)
+, 47122), false)
 );
 
 WriteLiteral(" required />\r\n                                                <label");
 
-WriteAttribute("for", Tuple.Create(" for=\"", 46510), Tuple.Create("\"", 46572)
-, Tuple.Create(Tuple.Create("", 46516), Tuple.Create("DocumentTemplate_OnImportUserFlagRules_Add_Flag_", 46516), true)
+WriteAttribute("for", Tuple.Create(" for=\"", 47199), Tuple.Create("\"", 47261)
+, Tuple.Create(Tuple.Create("", 47205), Tuple.Create("DocumentTemplate_OnImportUserFlagRules_Add_Flag_", 47205), true)
             
-            #line 756 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                           , Tuple.Create(Tuple.Create("", 46564), Tuple.Create<System.Object, System.Int32>(flag.Id
+            #line 766 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                           , Tuple.Create(Tuple.Create("", 47253), Tuple.Create<System.Object, System.Int32>(flag.Id
             
             #line default
             #line hidden
-, 46564), false)
+, 47253), false)
 );
 
 WriteLiteral("><i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 46576), Tuple.Create("\"", 46635)
-, Tuple.Create(Tuple.Create("", 46584), Tuple.Create("fa", 46584), true)
-, Tuple.Create(Tuple.Create(" ", 46586), Tuple.Create("fa-", 46587), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 47265), Tuple.Create("\"", 47324)
+, Tuple.Create(Tuple.Create("", 47273), Tuple.Create("fa", 47273), true)
+, Tuple.Create(Tuple.Create(" ", 47275), Tuple.Create("fa-", 47276), true)
             
-            #line 756 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                      , Tuple.Create(Tuple.Create("", 46590), Tuple.Create<System.Object, System.Int32>(flag.Icon
-            
-            #line default
-            #line hidden
-, 46590), false)
-, Tuple.Create(Tuple.Create(" ", 46602), Tuple.Create("fa-fw", 46603), true)
-, Tuple.Create(Tuple.Create(" ", 46608), Tuple.Create("fa-lg", 46609), true)
-, Tuple.Create(Tuple.Create(" ", 46614), Tuple.Create("d-", 46615), true)
-            
-            #line 756 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                                 , Tuple.Create(Tuple.Create("", 46617), Tuple.Create<System.Object, System.Int32>(flag.IconColour
+            #line 766 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                      , Tuple.Create(Tuple.Create("", 47279), Tuple.Create<System.Object, System.Int32>(flag.Icon
             
             #line default
             #line hidden
-, 46617), false)
+, 47279), false)
+, Tuple.Create(Tuple.Create(" ", 47291), Tuple.Create("fa-fw", 47292), true)
+, Tuple.Create(Tuple.Create(" ", 47297), Tuple.Create("fa-lg", 47298), true)
+, Tuple.Create(Tuple.Create(" ", 47303), Tuple.Create("d-", 47304), true)
+            
+            #line 766 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                                                 , Tuple.Create(Tuple.Create("", 47306), Tuple.Create<System.Object, System.Int32>(flag.IconColour
+            
+            #line default
+            #line hidden
+, 47306), false)
 );
 
 WriteLiteral("></i>");
 
             
-            #line 756 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 766 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                                                                                     Write(flag.Name);
 
             
@@ -2639,7 +2686,7 @@ WriteLiteral("></i>");
 WriteLiteral("</label>\r\n                                            </div>\r\n");
 
             
-            #line 758 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 768 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                         }
 
             
@@ -2667,7 +2714,7 @@ WriteLiteral(" name=\"comments\"");
 WriteLiteral("></textarea>\r\n                                    </div>\r\n");
 
             
-            #line 766 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 776 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                 }
 
             
@@ -2676,7 +2723,7 @@ WriteLiteral("></textarea>\r\n                                    </div>\r\n");
 WriteLiteral("                            </div>\r\n");
 
             
-            #line 768 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 778 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
 
 
             
@@ -2782,7 +2829,7 @@ WriteLiteral(">\r\n                        $(function () {\r\n                  
 "");
 
             
-            #line 880 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 890 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                 }
                 else
                 {
@@ -2799,7 +2846,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None Specified&gt;</span>\r\n");
 
             
-            #line 886 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 896 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                     }
                     else
                     {
@@ -2823,13 +2870,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 898 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 908 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 898 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 908 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                  foreach (var rule in Model.OnImportUserFlagRules)
                                 {
 
@@ -2840,7 +2887,7 @@ WriteLiteral("                                    <tr>\r\n                      
 " <td>");
 
             
-            #line 901 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 911 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                         Write(rule.AddFlag ? "Assign" : "Remove");
 
             
@@ -2849,37 +2896,37 @@ WriteLiteral("                                    <tr>\r\n                      
 WriteLiteral("</td>\r\n                                        <td>\r\n                            " +
 "                <i");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 54838), Tuple.Create("\"", 54909)
-, Tuple.Create(Tuple.Create("", 54846), Tuple.Create("fa", 54846), true)
-, Tuple.Create(Tuple.Create(" ", 54848), Tuple.Create("fa-", 54849), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 55527), Tuple.Create("\"", 55598)
+, Tuple.Create(Tuple.Create("", 55535), Tuple.Create("fa", 55535), true)
+, Tuple.Create(Tuple.Create(" ", 55537), Tuple.Create("fa-", 55538), true)
             
-            #line 903 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 54852), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.Icon
-            
-            #line default
-            #line hidden
-, 54852), false)
-, Tuple.Create(Tuple.Create(" ", 54873), Tuple.Create("fa-lg", 54874), true)
-, Tuple.Create(Tuple.Create(" ", 54879), Tuple.Create("d-", 54880), true)
-            
-            #line 903 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-          , Tuple.Create(Tuple.Create("", 54882), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.IconColour
+            #line 913 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 55541), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.Icon
             
             #line default
             #line hidden
-, 54882), false)
+, 55541), false)
+, Tuple.Create(Tuple.Create(" ", 55562), Tuple.Create("fa-lg", 55563), true)
+, Tuple.Create(Tuple.Create(" ", 55568), Tuple.Create("d-", 55569), true)
+            
+            #line 913 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+          , Tuple.Create(Tuple.Create("", 55571), Tuple.Create<System.Object, System.Int32>(rule.UserFlag.IconColour
+            
+            #line default
+            #line hidden
+, 55571), false)
 );
 
 WriteLiteral("></i>\r\n");
 
             
-            #line 904 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 914 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                             
             
             #line default
             #line hidden
             
-            #line 904 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 914 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                              if (Authorization.Has(Claims.Config.UserFlag.Configure))
                                             {
 
@@ -2889,59 +2936,13 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                                                <span>");
 
             
-            #line 906 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 916 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                  Write(Html.ActionLink(rule.UserFlag.Name, MVC.Config.UserFlag.Index(rule.UserFlag.Id)));
 
             
             #line default
             #line hidden
 WriteLiteral("</span>\r\n");
-
-            
-            #line 907 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                            }
-                                            else
-                                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                                <span>");
-
-            
-            #line 910 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                 Write(rule.UserFlag.Name);
-
-            
-            #line default
-            #line hidden
-WriteLiteral("</span>\r\n");
-
-            
-            #line 911 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                            }
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                        </td>\r\n                                  " +
-"      <td>\r\n");
-
-            
-            #line 914 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                            
-            
-            #line default
-            #line hidden
-            
-            #line 914 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                             if (string.IsNullOrWhiteSpace(rule.Comments))
-                                            {
-
-            
-            #line default
-            #line hidden
-WriteLiteral("                                                <span>&nbsp;</span>\r\n");
 
             
             #line 917 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
@@ -2952,15 +2953,11 @@ WriteLiteral("                                                <span>&nbsp;</span
             
             #line default
             #line hidden
-WriteLiteral("                                                <span");
-
-WriteLiteral(" class=\"whitespace-pre-wrap\"");
-
-WriteLiteral(">");
+WriteLiteral("                                                <span>");
 
             
             #line 920 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                                                                             Write(rule.Comments);
+                                                 Write(rule.UserFlag.Name);
 
             
             #line default
@@ -2975,10 +2972,60 @@ WriteLiteral("</span>\r\n");
             #line default
             #line hidden
 WriteLiteral("                                        </td>\r\n                                  " +
-"  </tr>\r\n");
+"      <td>\r\n");
 
             
             #line 924 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                            
+            
+            #line default
+            #line hidden
+            
+            #line 924 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                             if (string.IsNullOrWhiteSpace(rule.Comments))
+                                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                <span>&nbsp;</span>\r\n");
+
+            
+            #line 927 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                            }
+                                            else
+                                            {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                                <span");
+
+WriteLiteral(" class=\"whitespace-pre-wrap\"");
+
+WriteLiteral(">");
+
+            
+            #line 930 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                                                             Write(rule.Comments);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</span>\r\n");
+
+            
+            #line 931 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                                            }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                        </td>\r\n                                  " +
+"  </tr>\r\n");
+
+            
+            #line 934 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                 }
 
             
@@ -2987,7 +3034,7 @@ WriteLiteral("                                        </td>\r\n                 
 WriteLiteral("                            </tbody>\r\n                        </table>\r\n");
 
             
-            #line 927 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 937 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                     }
                 }
 
@@ -3025,7 +3072,7 @@ WriteLiteral(@"></i>
 WriteLiteral("                                    ");
 
             
-            #line 945 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 955 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                                {
                                    CanConfigure = canConfig,
@@ -3044,7 +3091,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                                    ");
 
             
-            #line 954 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 964 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupInstance, new LinkedGroupModel()
                                {
                                    CanConfigure = canConfig,
@@ -3061,13 +3108,13 @@ WriteLiteral("                                    ");
 WriteLiteral("\r\n");
 
             
-            #line 963 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 973 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     
             
             #line default
             #line hidden
             
-            #line 963 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 973 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                      if (canConfig)
                                     {
                                         
@@ -3075,14 +3122,14 @@ WriteLiteral("\r\n");
             #line default
             #line hidden
             
-            #line 965 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 975 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                    Write(Html.Partial(MVC.Config.Shared.Views.LinkedGroupShared));
 
             
             #line default
             #line hidden
             
-            #line 965 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 975 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                 
                                     }
 
@@ -3100,7 +3147,7 @@ WriteLiteral(">\r\n                <h2>Template Expressions</h2>\r\n");
 WriteLiteral("                ");
 
             
-            #line 975 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 985 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
            Write(Html.Partial(MVC.Config.DocumentTemplate.Views._ExpressionsTable, Model.TemplateExpressions));
 
             
@@ -3117,13 +3164,13 @@ WriteLiteral(" class=\"dialog\"");
 WriteLiteral(">\r\n");
 
             
-            #line 979 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 989 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 979 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 989 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              using (Html.BeginForm(MVC.API.DocumentTemplate.Delete(Model.DocumentTemplate.Id, true)))
             {
                 
@@ -3131,14 +3178,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 981 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 991 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 981 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 991 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                         
             }
 
@@ -3194,13 +3241,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1019 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1029 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 1019 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1029 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (hideAdvanced)
             {
 
@@ -3226,7 +3273,7 @@ WriteLiteral(@"                <script>
 ");
 
             
-            #line 1030 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1040 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             }
 
             
@@ -3235,7 +3282,7 @@ WriteLiteral(@"                <script>
 WriteLiteral("            ");
 
             
-            #line 1031 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1041 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (Authorization.Has(Claims.Config.Show))
             {
                 
@@ -3243,14 +3290,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 1033 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1043 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
            Write(Html.ActionLinkButton("Expression Browser", MVC.Config.Expressions.Browser()));
 
             
             #line default
             #line hidden
             
-            #line 1033 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1043 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                               
             }
 
@@ -3260,7 +3307,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 1035 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1045 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (Authorization.Has(Claims.Config.DocumentTemplate.Export))
             {
                 
@@ -3268,14 +3315,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 1037 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1047 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
            Write(Html.ActionLinkButton("Export Instances", MVC.Config.DocumentTemplate.Export(Model.DocumentTemplate.Id, null)));
 
             
             #line default
             #line hidden
             
-            #line 1037 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1047 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                                
             }
 
@@ -3285,7 +3332,7 @@ WriteLiteral("            ");
 WriteLiteral("            ");
 
             
-            #line 1039 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1049 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (canBulkDownload)
             {
 
@@ -3308,28 +3355,28 @@ WriteLiteral(" id=\"dialogBulkDownload\"");
 
 WriteLiteral(" class=\"dialog\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 62617), Tuple.Create("\"", 62673)
-, Tuple.Create(Tuple.Create("", 62625), Tuple.Create("Download", 62625), true)
-, Tuple.Create(Tuple.Create(" ", 62633), Tuple.Create("Instances:", 62634), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 63306), Tuple.Create("\"", 63362)
+, Tuple.Create(Tuple.Create("", 63314), Tuple.Create("Download", 63314), true)
+, Tuple.Create(Tuple.Create(" ", 63322), Tuple.Create("Instances:", 63323), true)
             
-            #line 1042 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-      , Tuple.Create(Tuple.Create(" ", 62644), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+            #line 1052 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+      , Tuple.Create(Tuple.Create(" ", 63333), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 62645), false)
+, 63334), false)
 );
 
 WriteLiteral(">\r\n");
 
             
-            #line 1043 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1053 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 1043 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1053 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                      using (Html.BeginForm(MVC.API.DocumentTemplate.BulkDownload(Model.DocumentTemplate.Id)))
                     {
                         
@@ -3337,14 +3384,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 1045 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1055 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                    Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1045 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1055 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                 
 
             
@@ -3368,7 +3415,7 @@ WriteLiteral(" value=\"True\"");
 WriteLiteral(" checked /> Latest ");
 
             
-            #line 1049 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1059 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                        Write(Model.DocumentTemplate.Scope);
 
             
@@ -3386,7 +3433,7 @@ WriteLiteral(" value=\"False\"");
 WriteLiteral(" /> All ");
 
             
-            #line 1052 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1062 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                              Write(Model.DocumentTemplate.Scope);
 
             
@@ -3406,21 +3453,21 @@ WriteLiteral(" type=\"date\"");
 
 WriteLiteral(" name=\"threshold\"");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 63614), Tuple.Create("\"", 63658)
+WriteAttribute("value", Tuple.Create(" value=\"", 64303), Tuple.Create("\"", 64347)
             
-            #line 1058 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-              , Tuple.Create(Tuple.Create("", 63622), Tuple.Create<System.Object, System.Int32>(DateTime.Now.ToString("yyyy")
+            #line 1068 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+              , Tuple.Create(Tuple.Create("", 64311), Tuple.Create<System.Object, System.Int32>(DateTime.Now.ToString("yyyy")
             
             #line default
             #line hidden
-, 63622), false)
-, Tuple.Create(Tuple.Create("", 63652), Tuple.Create("-01-01", 63652), true)
+, 64311), false)
+, Tuple.Create(Tuple.Create("", 64341), Tuple.Create("-01-01", 64341), true)
 );
 
 WriteLiteral(" /></label>\r\n                        </div>\r\n");
 
             
-            #line 1060 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1070 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                     }
 
             
@@ -3429,7 +3476,7 @@ WriteLiteral(" /></label>\r\n                        </div>\r\n");
 WriteLiteral("                </div>\r\n");
 
             
-            #line 1062 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1072 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
 
 
             
@@ -3463,7 +3510,7 @@ WriteLiteral("                <script>\r\n                    $(function () {\r\
 "                   });\r\n                </script>\r\n");
 
             
-            #line 1098 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1108 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             }
 
             
@@ -3472,7 +3519,7 @@ WriteLiteral("                <script>\r\n                    $(function () {\r\
 WriteLiteral("            ");
 
             
-            #line 1099 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1109 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (canBulkGenerate)
             {
                 if (Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.User || Model.DocumentTemplate.Scope == DocumentTemplate.DocumentTemplateScopes.Device)
@@ -3482,14 +3529,14 @@ WriteLiteral("            ");
             #line default
             #line hidden
             
-            #line 1103 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1113 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                Write(Html.ActionLinkButton("Bulk Generate", MVC.Config.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)));
 
             
             #line default
             #line hidden
             
-            #line 1103 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1113 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                                                                                                 
                 }
                 else
@@ -3514,16 +3561,16 @@ WriteLiteral(" id=\"dialogBulkGenerate\"");
 
 WriteLiteral(" class=\"dialog dialog-bulk-generate\"");
 
-WriteAttribute("title", Tuple.Create(" title=\"", 66449), Tuple.Create("\"", 66500)
-, Tuple.Create(Tuple.Create("", 66457), Tuple.Create("Bulk", 66457), true)
-, Tuple.Create(Tuple.Create(" ", 66461), Tuple.Create("Generate:", 66462), true)
+WriteAttribute("title", Tuple.Create(" title=\"", 67138), Tuple.Create("\"", 67189)
+, Tuple.Create(Tuple.Create("", 67146), Tuple.Create("Bulk", 67146), true)
+, Tuple.Create(Tuple.Create(" ", 67150), Tuple.Create("Generate:", 67151), true)
             
-            #line 1108 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-                          , Tuple.Create(Tuple.Create(" ", 66471), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
+            #line 1118 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+                          , Tuple.Create(Tuple.Create(" ", 67160), Tuple.Create<System.Object, System.Int32>(Model.DocumentTemplate.Id
             
             #line default
             #line hidden
-, 66472), false)
+, 67161), false)
 );
 
 WriteLiteral(">\r\n                        <div");
@@ -3533,13 +3580,13 @@ WriteLiteral(" class=\"brief\"");
 WriteLiteral(">\r\n");
 
             
-            #line 1110 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1120 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 1110 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1120 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                              switch (Model.DocumentTemplate.Scope)
                             {
                                 case "Device":
@@ -3581,7 +3628,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">01234567;ABCD9876;8VQ6G2R</div>\r\n                                    </div>\r\n");
 
             
-            #line 1126 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1136 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     break;
                                 case "Job":
 
@@ -3620,7 +3667,7 @@ WriteLiteral(" class=\"example3 code\"");
 WriteLiteral(">86;99;44</div>\r\n                                    </div>\r\n");
 
             
-            #line 1141 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1151 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                     break;
                             }
 
@@ -3630,13 +3677,13 @@ WriteLiteral(">86;99;44</div>\r\n                                    </div>\r\n"
 WriteLiteral("                        </div>\r\n");
 
             
-            #line 1144 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1154 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 1144 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1154 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                          using (Html.BeginForm(MVC.API.DocumentTemplate.BulkGenerate(Model.DocumentTemplate.Id)))
                         {
                             
@@ -3644,14 +3691,14 @@ WriteLiteral("                        </div>\r\n");
             #line default
             #line hidden
             
-            #line 1146 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1156 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 1146 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1156 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                                                     
 
             
@@ -3680,7 +3727,7 @@ WriteLiteral(" data-val-required=\"Identifiers are required\"");
 WriteLiteral("></textarea>\r\n");
 
             
-            #line 1149 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1159 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             if (Model.TemplatePageCount > 1 && Model.TemplatePageCount % 2 != 0)
                             {
 
@@ -3709,7 +3756,7 @@ WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n         
 "      </div>\r\n");
 
             
-            #line 1154 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1164 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                             }
                         }
 
@@ -3719,7 +3766,7 @@ WriteLiteral(">Insert Blank Pages for Double-Sided Printing</label>\r\n         
 WriteLiteral("                    </div>\r\n");
 
             
-            #line 1157 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1167 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
 
 
             
@@ -3757,7 +3804,7 @@ WriteLiteral(@"                    <script>
 ");
 
             
-            #line 1187 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1197 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
                 }
             }
 
@@ -3767,7 +3814,7 @@ WriteLiteral(@"                    <script>
 WriteLiteral("            ");
 
             
-            #line 1189 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1199 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
              if (Authorization.Has(Claims.Config.DocumentTemplate.Delete))
             {
 
@@ -3785,7 +3832,7 @@ WriteLiteral(" class=\"button\"");
 WriteLiteral(">Delete</button>\r\n");
 
             
-            #line 1192 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1202 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
             }
 
             
@@ -3794,13 +3841,13 @@ WriteLiteral(">Delete</button>\r\n");
 WriteLiteral("        </div>\r\n");
 
             
-            #line 1194 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1204 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 1194 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1204 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
          if (Model.BulkGenerateDownloadId.HasValue)
         {
 
@@ -3817,14 +3864,14 @@ WriteLiteral(" title=\"Download Bulk Documents\"");
 
 WriteLiteral(">\r\n                <a");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 71660), Tuple.Create("\"", 71797)
+WriteAttribute("href", Tuple.Create(" href=\"", 72349), Tuple.Create("\"", 72486)
             
-            #line 1197 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
-, Tuple.Create(Tuple.Create("", 71667), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId.Value, Model.BulkGenerateDownloadFilename))
+            #line 1207 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+, Tuple.Create(Tuple.Create("", 72356), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.API.DocumentTemplate.BulkGenerateDownload(Model.BulkGenerateDownloadId.Value, Model.BulkGenerateDownloadFilename))
             
             #line default
             #line hidden
-, 71667), false)
+, 72356), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -3850,7 +3897,7 @@ WriteLiteral(@"            <script>
 ");
 
             
-            #line 1211 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
+            #line 1221 "..\..\Areas\Config\Views\DocumentTemplate\Show.cshtml"
         }
             
             #line default

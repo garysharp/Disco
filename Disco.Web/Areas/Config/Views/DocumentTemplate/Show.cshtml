@@ -377,7 +377,17 @@
                                         }
                                     }
                                     <p style="margin-top: 6px;">
-                                        The <code>DiscoAttachmentId</code> field is replaced with a unique QR Code which identifies the page when it is imported back into Disco ICT.
+                                        The <code>DiscoAttachmentId</code> field is replaced with a unique QR Code which identifies the page when it is scanned and imported back into Disco ICT.
+                                        If you are exclusively using
+                                        @if (Disco.Services.Plugins.Plugins.PluginInstalled("DocFill"))
+                                        {
+                                            <text>Document Fulfillment</text>
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Document Fulfillment", MVC.Config.Plugins.Install())
+                                        }
+                                        with this template this message can be ignored.
                                     </p>
                                 </div>
                             }
