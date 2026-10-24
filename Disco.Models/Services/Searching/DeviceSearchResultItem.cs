@@ -7,17 +7,17 @@ namespace Disco.Models.Services.Searching
     public class DeviceSearchResultItem : ISearchResultItem
     {
         private const string type = "Device";
-        private Lazy<string[]> LazyScoreValue;
+        private readonly Lazy<string[]> lazyScoreValue;
 
         public DeviceSearchResultItem()
         {
-            LazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
+            lazyScoreValue = new Lazy<string[]>(BuildScoreValues, false);
         }
 
         public string Id { get; set; }
         public string Type { get { return type; } }
-        public string Description { get { return $"{Id} ({ComputerName})"; } }
-        public string[] ScoreValues { get { return LazyScoreValue.Value; } }
+        public string Description { get { return $"{Id} ({DnsHostName ?? ComputerName})"; } }
+        public string[] ScoreValues { get { return lazyScoreValue.Value; } }
 
         public string AssetNumber { get; set; }
         public string AssignedUserDescription
@@ -37,6 +37,7 @@ namespace Disco.Models.Services.Searching
         public string AssignedUserDisplayName { get; set; }
         public string AssignedUserId { get; set; }
         public string ComputerName { get; set; }
+        public string DnsHostName { get; set; }
         public string DeviceModelDescription { get; set; }
         public string DeviceProfileName { get; set; }
         public string DeviceBatchName { get; set; }
@@ -51,7 +52,7 @@ namespace Disco.Models.Services.Searching
                 return new string[] {
                     Id,
                     AssetNumber,
-                    ComputerName
+                    DnsHostName ?? ComputerName
                 };
             }
             else
@@ -59,7 +60,7 @@ namespace Disco.Models.Services.Searching
                 return new string[] {
                     Id,
                     AssetNumber,
-                    ComputerName,
+                    DnsHostName ?? ComputerName,
                     AssignedUserId.Substring(AssignedUserId.IndexOf('\\') + 1),
                     AssignedUserId,
                     AssignedUserDisplayName

@@ -382,6 +382,7 @@
     <Compile Include="Devices\DeviceFlags\DeviceFlagDevicesManagedGroup.cs" />
     <Compile Include="Devices\Importing\DeviceDecommissionImportContext.cs" />
     <Compile Include="Devices\Importing\DeviceDecommissionImportRecord.cs" />
+    <Compile Include="Devices\Importing\Fields\DeviceDnsHostNameImportField.cs" />
     <Compile Include="Documents\DocumentExport.cs" />
     <Compile Include="Exporting\Exporter.cs" />
     <Compile Include="Exporting\ExportTask.cs" />
@@ -488,6 +489,7 @@
     <Compile Include="Interop\ActiveDirectory\ADManagedGroup.cs" />
     <Compile Include="Interop\ActiveDirectory\ADManagedGroupsSyncTask.cs" />
     <Compile Include="Interop\ActiveDirectory\ADEnforceDeviceProfileOrganisationalUnitTask.cs" />
+    <Compile Include="Interop\ActiveDirectory\ADDeviceDnsHostNameUpdateTask.cs" />
     <Compile Include="Interop\ActiveDirectory\ADOrganisationalUnit.cs" />
     <Compile Include="Interop\ActiveDirectory\ADSearchResult.cs" />
     <Compile Include="Interop\ActiveDirectory\ADSite.cs" />

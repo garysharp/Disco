@@ -20,8 +20,10 @@ namespace Disco.Models.Repository
         public int DeviceProfileId { get; set; }
         public int? DeviceBatchId { get; set; }
 
-        [StringLength(50), Column("ComputerName")]
+        [StringLength(1024), Column("ComputerName")]
         public string DeviceDomainId { get; set; }
+        [StringLength(2048)]
+        public string DnsHostName { get; set; }
         public string AssignedUserId { get; set; }
         public DateTime? LastNetworkLogonDate { get; set; }
 

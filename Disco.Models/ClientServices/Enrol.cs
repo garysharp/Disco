@@ -14,6 +14,7 @@ namespace Disco.Models.ClientServices
 
         public string DNSDomainName { get; set; }
         public string ComputerName { get; set; }
+        public string DnsHostName { get; set; }
         public bool IsPartOfDomain { get; set; }
 
         public string RunningUserName { get; set; }

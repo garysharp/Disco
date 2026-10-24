@@ -15,6 +15,7 @@ using Disco.Web.Areas.API.Models.DeviceModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
@@ -31,6 +32,7 @@ namespace Disco.Web.Areas.API.Controllers
         private const string pWirelessProfileProviders = "wirelessprofileproviders";
         private const string pOrganisationalUnit = "organisationalunit";
         private const string pDefaultOrganisationAddress = "defaultorganisationaddress";
+        private const string pAllowLongComputerNames = "allowlongcomputernames";
         private const string pEnforceComputerNameConvention = "enforcecomputernameconvention";
         private const string pEnforceOrganisationalUnit = "enforceorganisationalunit";
         private const string pProvisionADAccount = "provisionadaccount";
@@ -82,6 +84,9 @@ namespace Disco.Web.Areas.API.Controllers
                             break;
                         case pDefaultOrganisationAddress:
                             UpdateDefaultOrganisationAddress(deviceProfile, value);
+                            break;
+                        case pAllowLongComputerNames:
+                            UpdateAllowLongComputerNames(deviceProfile, value);
                             break;
                         case pEnforceComputerNameConvention:
                             UpdateEnforceComputerNameConvention(deviceProfile, value);
@@ -224,7 +229,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             Database.SaveChanges();
 
-            deviceProfile.ComputerNameInvalidateCache();
+            deviceProfile.InvalidateExpressionCache();
 
             if (redirect.GetValueOrDefault(false))
                 return RedirectToAction(MVC.Config.DeviceProfile.Index(deviceProfile.Id));
@@ -267,24 +272,35 @@ namespace Disco.Web.Areas.API.Controllers
                 };
                 try
                 {
-                    var rendered = expression.EvaluateFirst<string>(device, evaluatorVariables);
+                    var renderedDnsName = expression.EvaluateFirst<string>(device, evaluatorVariables);
                     deviceResult.Url = Url.Action(MVC.Device.Show(device.SerialNumber));
-                    deviceResult.RenderedComputerName = rendered;
+                    deviceResult.RenderedDnsName = renderedDnsName;
+                    if (renderedDnsName.Length > 15)
+                        deviceResult.RenderedComputerName = renderedDnsName.Substring(0, 15);
+                    else
+                        deviceResult.RenderedComputerName = renderedDnsName;
                     deviceResult.Success = true;
 
-                    if (string.IsNullOrWhiteSpace(rendered))
+                    if (string.IsNullOrWhiteSpace(renderedDnsName))
                     {
                         deviceResult.Success = false;
                         deviceResult.ErrorMessage = "Rendered computer name is null or blank";
                     }
                     else
                     {
-                        if (rendered.Length > 15)
+                        if (renderedDnsName.Length > 15)
                         {
-                            deviceResult.Success = false;
-                            deviceResult.ErrorMessage = "Must be no more than 15 characters";
+                            if (deviceProfile.AllowLongComputerNames)
+                            {
+                                deviceResult.WarningMessage = $"Truncated sAMAccountName: {deviceResult.RenderedComputerName}";
+                            }
+                            else
+                            {
+                                deviceResult.Success = false;
+                                deviceResult.ErrorMessage = "Must be no more than 15 characters";
+                            }
                         }
-                        var invalidCharacters = Regex.Matches(rendered, @"[^a-z0-9\-]", RegexOptions.IgnoreCase);
+                        var invalidCharacters = Regex.Matches(renderedDnsName, @"[^a-z0-9\-]", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(100));
                         if (invalidCharacters.Count > 0)
                         {
                             deviceResult.Success = false;
@@ -319,11 +335,36 @@ namespace Disco.Web.Areas.API.Controllers
 
             if (result.UserSpecifiedResult == null && result.RandomDeviceResults.Count > 0)
             {
-                result.UserSpecifiedResult = result.RandomDeviceResults.First();
+                result.UserSpecifiedResult = result.RandomDeviceResults[0];
                 result.RandomDeviceResults.RemoveAt(0);
             }
 
+            if (result.RandomDeviceResults.Count > 0)
+            {
+                var specifiedName = result.UserSpecifiedResult?.RenderedComputerName;
+                foreach (var item in result.RandomDeviceResults)
+                {
+                    if (string.Equals(item.RenderedComputerName, specifiedName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        item.Success = false;
+                        item.ErrorMessage = $"Would override computer name for {result.UserSpecifiedResult.DeviceSerialNumber}";
+                    }
+                    foreach (var otherItem in result.RandomDeviceResults.Where(i => i != item && string.Equals(item.RenderedComputerName, i.RenderedComputerName, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        item.Success = false;
+                        item.ErrorMessage = $"Would override computer name for {otherItem.DeviceSerialNumber}";
+                    }
+                }
+            }
+
             return Json(result);
+        }
+
+        [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult UpdateAllowLongComputerNames(int id, string AllowLongComputerNames = null, bool? redirect = null)
+        {
+            return Update(id, pAllowLongComputerNames, AllowLongComputerNames, redirect);
         }
 
         [DiscoAuthorize(Claims.Config.DeviceProfile.Configure)]
@@ -631,88 +672,60 @@ namespace Disco.Web.Areas.API.Controllers
             Database.SaveChanges();
         }
 
+        private void UpdateAllowLongComputerNames(DeviceProfile deviceProfile, string allowLongComputerNames)
+        {
+            deviceProfile.AllowLongComputerNames = ParseBooleanOrThrow(allowLongComputerNames);
+
+            Database.SaveChanges();
+        }
+
         private void UpdateEnforceComputerNameConvention(DeviceProfile deviceProfile, string enforceComputerNameConvention)
         {
-            if (bool.TryParse(enforceComputerNameConvention, out var bValue))
-            {
-                deviceProfile.EnforceComputerNameConvention = bValue;
+            deviceProfile.EnforceComputerNameConvention = ParseBooleanOrThrow(enforceComputerNameConvention);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private void UpdateEnforceOrganisationalUnit(DeviceProfile deviceProfile, string enforceOrganisationalUnit)
         {
-            if (bool.TryParse(enforceOrganisationalUnit, out var bValue))
-            {
-                deviceProfile.EnforceOrganisationalUnit = bValue;
+            deviceProfile.EnforceOrganisationalUnit = ParseBooleanOrThrow(enforceOrganisationalUnit);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private void UpdateProvisionADAccount(DeviceProfile deviceProfile, string provisionADAccount)
         {
-            if (bool.TryParse(provisionADAccount, out var bValue))
-            {
-                deviceProfile.ProvisionADAccount = bValue;
+            deviceProfile.ProvisionADAccount = ParseBooleanOrThrow(provisionADAccount);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private void UpdateProvisionFromOtherDomain(DeviceProfile deviceProfile, string provisionFromOtherDomain)
         {
-            if (bool.TryParse(provisionFromOtherDomain, out var bValue))
-            {
-                deviceProfile.ProvisionFromOtherDomain = bValue;
+            deviceProfile.ProvisionFromOtherDomain = ParseBooleanOrThrow(provisionFromOtherDomain);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private void UpdateAssignedUserLocalAdmin(DeviceProfile deviceProfile, string assignedUserLocalAdmin)
         {
-            if (bool.TryParse(assignedUserLocalAdmin, out var bValue))
-            {
-                deviceProfile.AssignedUserLocalAdmin = bValue;
+            deviceProfile.AssignedUserLocalAdmin = ParseBooleanOrThrow(assignedUserLocalAdmin);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private void UpdateSetAssignedUserForLogon(DeviceProfile deviceProfile, string setAssignedUserForLogon)
         {
-            if (bool.TryParse(setAssignedUserForLogon, out var bValue))
-            {
-                deviceProfile.SetAssignedUserForLogon = bValue;
+            deviceProfile.SetAssignedUserForLogon = ParseBooleanOrThrow(setAssignedUserForLogon);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private void UpdateAllowUntrustedReimageJobEnrolment(DeviceProfile deviceProfile, string allowUntrustedReimageJobEnrolment)
         {
-            if (bool.TryParse(allowUntrustedReimageJobEnrolment, out var bValue))
-            {
-                deviceProfile.AllowUntrustedReimageJobEnrolment = bValue;
+            deviceProfile.AllowUntrustedReimageJobEnrolment = ParseBooleanOrThrow(allowUntrustedReimageJobEnrolment);
 
-                Database.SaveChanges();
-                return;
-            }
-            throw new Exception("Invalid Boolean Value");
+            Database.SaveChanges();
         }
 
         private ScheduledTaskStatus UpdateDevicesLinkedGroup(DeviceProfile deviceProfile, string devicesLinkedGroup, bool updateDescription)
@@ -847,5 +860,11 @@ namespace Disco.Web.Areas.API.Controllers
 
         #endregion
 
+        private static bool ParseBooleanOrThrow(string value, [CallerMemberName] string memberName = null)
+        {
+            if (!bool.TryParse(value, out var bValue))
+                throw new ArgumentOutOfRangeException(memberName, "Invalid boolean value");
+            return bValue;
+        }
     }
 }

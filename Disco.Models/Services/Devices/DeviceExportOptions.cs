@@ -22,6 +22,8 @@ namespace Disco.Models.Services.Devices
         public bool DeviceLocation { get; set; }
         [Display(GroupName = "Device", Name = "Computer Name", Description = "The device computer name")]
         public bool DeviceComputerName { get; set; }
+        [Display(GroupName = "Device", Name = "DNS Host Name", Description = "The device DNS host name")]
+        public bool DeviceDnsHostName { get; set; }
         [Display(GroupName = "Device", Name = "Last Network Logon", Description = "The last recorded time the device access the network")]
         public bool DeviceLastNetworkLogon { get; set; }
         [Display(GroupName = "Device", Name = "Created Date", Description = "The date the device was created in Disco ICT")]

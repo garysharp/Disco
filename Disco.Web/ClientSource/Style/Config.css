@@ -293,6 +293,12 @@ table.deviceProfileTable th.deviceCount {
   width: 100%;
   font-family: Consolas, "Courier New", monospace;
 }
+#dialogDnsHostNameTemplate #dnsHostNameTemplate {
+  box-sizing: border-box;
+  height: 48px;
+  width: 100%;
+  font-family: Consolas, "Courier New", monospace;
+}
 #dialogOrganisationalUnit .enforceOrganisationalUnit {
   line-height: 2.2em;
 }

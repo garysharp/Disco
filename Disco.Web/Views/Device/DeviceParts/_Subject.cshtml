@@ -41,6 +41,14 @@
                                 }
                             </td>
                         </tr>
+                        <tr class="@(!string.IsNullOrWhiteSpace(Model.Device.DnsHostName) && !string.Equals(Model.Device.DnsHostName, Model.Device.ComputerName) ? null : "hidden")">
+                            <td>
+                                <span title="DNS Host Name">DNS Name:</span>
+                            </td>
+                            <td>
+                                <span id="Device_Show_Details_Asset_DnsName" title="DNS Name" data-clipboard>@Model.Device.DnsHostName</span>
+                            </td>
+                        </tr>
                         <tr>
                             <td>Asset:</td>
                             <td>

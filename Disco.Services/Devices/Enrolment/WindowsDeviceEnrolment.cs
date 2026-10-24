@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Web.UI.WebControls;
 
 namespace Disco.Services.Devices.Enrolment
 {
@@ -99,18 +100,18 @@ namespace Disco.Services.Devices.Enrolment
             enrolResponse.IsPending = false;
         }
 
-        public static EnrolResponse Enrol(DiscoDataContext Database, string Username, Enrol Request)
+        public static EnrolResponse Enrol(DiscoDataContext database, string username, Enrol request)
         {
             CleanupPendingEnrolments();
 
-            ADMachineAccount adMachineAccount = null;
+            var adMachineAccount = default(ADMachineAccount);
 
-            EnrolResponse response = new EnrolResponse();
+            var response = new EnrolResponse();
 
-            AuthorizationToken authenticatedToken = null;
-            bool isAuthenticated = false;
+            var authenticatedToken = default(AuthorizationToken);
+            var isAuthenticated = false;
 
-            ADDomain domain = null;
+            var domain = default(ADDomain);
             Lazy<ADDomainController> domainController = new Lazy<ADDomainController>(() =>
             {
                 if (domain == null)
@@ -121,17 +122,17 @@ namespace Disco.Services.Devices.Enrolment
             try
             {
                 string sessionId;
-                bool sessionApproved = false;
-                if (!string.IsNullOrWhiteSpace(Request.PendingSessionId))
+                var sessionApproved = false;
+                if (!string.IsNullOrWhiteSpace(request.PendingSessionId))
                 {
-                    if (!pendingEnrolments.TryGetValue(Request.PendingSessionId, out var pendingResponse))
+                    if (!pendingEnrolments.TryGetValue(request.PendingSessionId, out var pendingResponse))
                         throw new EnrolmentSafeException("The pending session is invalid or has expired");
                     if (pendingResponse.PendingTimeout < DateTimeOffset.Now)
                     {
-                        pendingEnrolments.TryRemove(Request.PendingSessionId, out _);
+                        pendingEnrolments.TryRemove(request.PendingSessionId, out _);
                         throw new EnrolmentSafeException("The pending session has expired");
                     }
-                    if (!string.Equals(pendingResponse.PendingAuthorization, Request.PendingAuthorization, StringComparison.Ordinal))
+                    if (!string.Equals(pendingResponse.PendingAuthorization, request.PendingAuthorization, StringComparison.Ordinal))
                         throw new EnrolmentSafeException("The pending session authorization is incorrect");
 
                     sessionId = pendingResponse.SessionId;
@@ -148,35 +149,35 @@ namespace Disco.Services.Devices.Enrolment
                     // session approved; continue
                     sessionApproved = true;
 
-                    EnrolmentLog.LogSessionContinuing(sessionId, Request.SerialNumber, EnrolmentTypes.Normal);
+                    EnrolmentLog.LogSessionContinuing(sessionId, request.SerialNumber, EnrolmentTypes.Normal);
                 }
                 else
                 {
                     sessionId = Guid.NewGuid().ToString("B");
                     response.SessionId = sessionId;
 
-                    EnrolmentLog.LogSessionStarting(sessionId, Request.SerialNumber, EnrolmentTypes.Normal);
+                    EnrolmentLog.LogSessionStarting(sessionId, request.SerialNumber, EnrolmentTypes.Normal);
                 }
 
-                EnrolmentLog.LogSessionDeviceInfo(sessionId, Request);
+                EnrolmentLog.LogSessionDeviceInfo(sessionId, request);
 
-                if (Request.SerialNumber.Contains("/") || Request.SerialNumber.Contains(@"\"))
+                if (request.SerialNumber.Contains("/") || request.SerialNumber.Contains(@"\"))
                     throw new EnrolmentSafeException(@"The serial number cannot contain '/' or '\' characters.");
 
                 EnrolmentLog.LogSessionProgress(sessionId, 10, "Loading User Data");
-                if (!string.IsNullOrWhiteSpace(Username))
+                if (!string.IsNullOrWhiteSpace(username))
                 {
-                    authenticatedToken = UserService.GetAuthorization(Username, Database);
-                    isAuthenticated = (authenticatedToken != null);
+                    authenticatedToken = UserService.GetAuthorization(username, database);
+                    isAuthenticated = authenticatedToken != null;
                 }
                 EnrolmentLog.LogSessionProgress(sessionId, 13, "Loading Device Data");
 
-                Device device = Database.Devices
+                Device device = database.Devices
                     .Include(d => d.AssignedUser)
                     .Include(d => d.DeviceModel)
                     .Include(d => d.DeviceProfile)
                     .Include(d => d.DeviceDetails)
-                    .FirstOrDefault(d => d.SerialNumber == Request.SerialNumber);
+                    .FirstOrDefault(d => d.SerialNumber == request.SerialNumber);
                 EnrolmentLog.LogSessionProgress(sessionId, 15, "Discovering User/Device Disco ICT Permissions");
                 if (!sessionApproved)
                 {
@@ -187,35 +188,35 @@ namespace Disco.Services.Devices.Enrolment
                             if (!authenticatedToken.Has(Claims.Device.Actions.EnrolDevices))
                             {
                                 if (!authenticatedToken.Has(Claims.ComputerAccount))
-                                    throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
-                                else if (!string.Equals($"{Request.ComputerName}$", authenticatedToken.User.DomainUsername, StringComparison.OrdinalIgnoreCase))
-                                    throw new InvalidOperationException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Computer Name: {Request.ComputerName}; Auth User: {authenticatedToken.User.UserId})");
+                                    throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
+                                else if (!string.Equals($"{request.ComputerName}$", authenticatedToken.User.DomainUsername, StringComparison.OrdinalIgnoreCase))
+                                    throw new InvalidOperationException($"Connection not correctly authenticated (SN: {request.SerialNumber}; Computer Name: {request.ComputerName}; Auth User: {authenticatedToken.User.UserId})");
 
-                                if (domain == null && !ActiveDirectory.Context.TryGetDomainByName(Request.DNSDomainName, out domain))
-                                    throw new EnrolmentSafeException($"The specified domain name '{Request.DNSDomainName}' is not recognized or reachable.");
+                                if (domain == null && !ActiveDirectory.Context.TryGetDomainByName(request.DNSDomainName, out domain))
+                                    throw new EnrolmentSafeException($"The specified domain name '{request.DNSDomainName}' is not recognized or reachable.");
 
-                                if (!authenticatedToken.User.UserId.Equals($@"{domain.NetBiosName}\{Request.ComputerName}$", StringComparison.OrdinalIgnoreCase))
-                                    throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {Request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
+                                if (!authenticatedToken.User.UserId.Equals($@"{domain.NetBiosName}\{request.ComputerName}$", StringComparison.OrdinalIgnoreCase))
+                                    throw new EnrolmentSafeException($"Connection not correctly authenticated (SN: {request.SerialNumber}; Auth User: {authenticatedToken.User.UserId})");
                             }
                         }
                         else
                         {
                             if (device == null)
                             {
-                                throw new EnrolmentSafeException($"Unknown Device Serial Number (SN: '{Request.SerialNumber}')");
+                                throw new EnrolmentSafeException($"Unknown Device Serial Number (SN: '{request.SerialNumber}')");
                             }
                             if (!device.AllowUnauthenticatedEnrol)
                             {
                                 if (device.DeviceProfile.AllowUntrustedReimageJobEnrolment)
                                 {
-                                    if (!Database.Jobs.Any(j => j.DeviceSerialNumber == device.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue))
+                                    if (!database.Jobs.Any(j => j.DeviceSerialNumber == device.SerialNumber && j.JobTypeId == JobType.JobTypeIds.SImg && !j.ClosedDate.HasValue))
                                     {
-                                        throw new EnrolmentSafeException($"Device has no open 'Software - Reimage' job (SN: '{Request.SerialNumber}')");
+                                        throw new EnrolmentSafeException($"Device has no open 'Software - Reimage' job (SN: '{request.SerialNumber}')");
                                     }
                                 }
                                 else
                                 {
-                                    throw new EnrolmentSafeException($"Device isn't allowed an Unauthenticated Enrolment (SN: '{Request.SerialNumber}')");
+                                    throw new EnrolmentSafeException($"Device isn't allowed an Unauthenticated Enrolment (SN: '{request.SerialNumber}')");
                                 }
                             }
                         }
@@ -230,10 +231,10 @@ namespace Disco.Services.Devices.Enrolment
                             rng.GetBytes(authBytes);
                             response.PendingAuthorization = Convert.ToBase64String(authBytes);
                         }
-                        response.PendingTimeout = DateTimeOffset.Now.Add(Database.DiscoConfiguration.Bootstrapper.PendingTimeout);
+                        response.PendingTimeout = DateTimeOffset.Now.Add(database.DiscoConfiguration.Bootstrapper.PendingTimeout);
                         response.PendingIdentifier = GeneratePendingIdentifier();
 
-                        EnrolmentLog.LogSessionPending(sessionId, Request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason, response.PendingIdentifier, device?.DeviceProfileId, device?.DeviceBatchId);
+                        EnrolmentLog.LogSessionPending(sessionId, request.SerialNumber, EnrolmentTypes.Normal, response.PendingReason, response.PendingIdentifier, device?.DeviceProfileId, device?.DeviceBatchId);
 
                         if (pendingEnrolments.TryAdd(sessionId, response))
                             return response;
@@ -248,54 +249,62 @@ namespace Disco.Services.Devices.Enrolment
                 else if (device != null)
                     deviceProfileId = device.DeviceProfileId;
                 else
-                    deviceProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
-                var deviceProfile = Database.DeviceProfiles.Find(deviceProfileId)
+                    deviceProfileId = database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+                var deviceProfile = database.DeviceProfiles.Find(deviceProfileId)
                     ?? throw new InvalidOperationException($"Device profile {deviceProfileId} was not found, please check your default profile configuration");
 
-                if (Request.IsPartOfDomain && !string.IsNullOrWhiteSpace(Request.ComputerName))
+                if (request.IsPartOfDomain && !string.IsNullOrWhiteSpace(request.ComputerName))
                 {
-                    if (ActiveDirectory.Context.TryGetDomainByName(Request.DNSDomainName, out domain))
+                    if (ActiveDirectory.Context.TryGetDomainByName(request.DNSDomainName, out domain))
                     {
                         EnrolmentLog.LogSessionProgress(sessionId, 20, "Loading Active Directory Computer Account");
                         Guid? uuidGuid = null;
                         Guid? macAddressGuid = null;
-                        if (!string.IsNullOrEmpty(Request.Hardware.UUID))
-                            uuidGuid = ADMachineAccount.NetbootGUIDFromUUID(Request.Hardware.UUID);
+                        if (!string.IsNullOrEmpty(request.Hardware.UUID))
+                            uuidGuid = ADMachineAccount.NetbootGUIDFromUUID(request.Hardware.UUID);
 
                         // Use non-Wlan Adapter with fastest speed
-                        var macAddress = Request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
+                        var macAddress = request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
                         if (!string.IsNullOrEmpty(macAddress))
                             macAddressGuid = ADMachineAccount.NetbootGUIDFromMACAddress(macAddress);
 
-                        var requestDeviceId = $@"{domain.NetBiosName}\{Request.ComputerName}";
+                        var requestDeviceId = $@"{domain.NetBiosName}\{request.ComputerName}";
 
                         adMachineAccount = domainController.Value.RetrieveADMachineAccount(requestDeviceId, uuidGuid, macAddressGuid);
                     }
                     else if (!deviceProfile.ProvisionFromOtherDomain)
                     {
-                        throw new EnrolmentSafeException($"The specified domain name '{Request.DNSDomainName}' is not recognized or reachable.");
+                        throw new EnrolmentSafeException($"The specified domain name '{request.DNSDomainName}' is not recognized or reachable.");
                     }
                 }
+
+                var dnsHostName = adMachineAccount?.DnsName ?? request.DnsHostName;
+                if (string.IsNullOrWhiteSpace(dnsHostName))
+                    dnsHostName = null;
+                else if (dnsHostName.Contains("."))
+                    dnsHostName = dnsHostName.Substring(0, dnsHostName.IndexOf("."));
+
                 if (device == null)
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "New Device, Creating Disco Instance");
-                    EnrolmentLog.LogSessionTaskAddedDevice(sessionId, Request.SerialNumber);
+                    EnrolmentLog.LogSessionTaskAddedDevice(sessionId, request.SerialNumber);
 
                     var deviceBatch = default(DeviceBatch);
                     if (response.DeviceBatchId.HasValue)
-                        deviceBatch = Database.DeviceBatches.Find(response.DeviceBatchId.Value);
+                        deviceBatch = database.DeviceBatches.Find(response.DeviceBatchId.Value);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
+                    var deviceModelResult = database.DeviceModels.GetOrCreateDeviceModel(request.Hardware.Manufacturer, request.Hardware.Model, request.Hardware.ModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
-                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.SerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, request.SerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                     else
-                        EnrolmentLog.LogSessionDevice(sessionId, Request.SerialNumber, deviceModel.Id);
+                        EnrolmentLog.LogSessionDevice(sessionId, request.SerialNumber, deviceModel.Id);
 
                     device = new Device
                     {
-                        SerialNumber = Request.SerialNumber,
-                        DeviceDomainId = domain == null ? Request.ComputerName : $@"{domain.NetBiosName}\{Request.ComputerName}",
+                        SerialNumber = request.SerialNumber,
+                        DeviceDomainId = domain == null ? request.ComputerName : $@"{domain.NetBiosName}\{request.ComputerName}",
+                        DnsHostName = dnsHostName,
                         DeviceProfile = deviceProfile,
                         DeviceModel = deviceModel,
                         DeviceBatch = deviceBatch,
@@ -305,19 +314,19 @@ namespace Disco.Services.Devices.Enrolment
                         LastEnrolDate = DateTime.Now,
                         DeviceDetails = new List<DeviceDetail>()
                     };
-                    Database.Devices.Add(device);
+                    database.Devices.Add(device);
                 }
                 else
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 30, "Existing Device, Updating Disco Instance");
-                    EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, Request.SerialNumber);
+                    EnrolmentLog.LogSessionTaskUpdatingDevice(sessionId, request.SerialNumber);
 
-                    var deviceModelResult = Database.DeviceModels.GetOrCreateDeviceModel(Request.Hardware.Manufacturer, Request.Hardware.Model, Request.Hardware.ModelType);
+                    var deviceModelResult = database.DeviceModels.GetOrCreateDeviceModel(request.Hardware.Manufacturer, request.Hardware.Model, request.Hardware.ModelType);
                     DeviceModel deviceModel = deviceModelResult.Item1;
                     if (deviceModelResult.Item2)
-                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, Request.SerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
+                        EnrolmentLog.LogSessionTaskCreatedDeviceModel(sessionId, request.SerialNumber, deviceModelResult.Item1.Manufacturer, deviceModelResult.Item1.Model);
                     else
-                        EnrolmentLog.LogSessionDevice(sessionId, Request.SerialNumber, deviceModel.Id);
+                        EnrolmentLog.LogSessionDevice(sessionId, request.SerialNumber, deviceModel.Id);
 
                     device.DeviceModel = deviceModel;
 
@@ -329,7 +338,7 @@ namespace Disco.Services.Devices.Enrolment
 
                     if (response.DeviceBatchId.HasValue && device.DeviceBatch?.Id != response.DeviceBatchId.Value)
                     {
-                        var deviceBatch = Database.DeviceBatches.Find(response.DeviceBatchId.Value);
+                        var deviceBatch = database.DeviceBatches.Find(response.DeviceBatchId.Value);
                         if (deviceBatch != null)
                         {
                             device.DeviceBatch = deviceBatch;
@@ -337,9 +346,8 @@ namespace Disco.Services.Devices.Enrolment
                         }
                     }
 
-                    var deviceDomainId = domain == null ? Request.ComputerName : $@"{domain.NetBiosName}\{Request.ComputerName}";
-                    if (!string.Equals(device.DeviceDomainId, deviceDomainId, StringComparison.Ordinal))
-                        device.DeviceDomainId = deviceDomainId;
+                    device.DeviceDomainId = domain == null ? request.ComputerName : $@"{domain.NetBiosName}\{request.ComputerName}";
+                    device.DnsHostName = dnsHostName;
 
                     if (!device.EnrolledDate.HasValue)
                         device.EnrolledDate = DateTime.Now;
@@ -347,30 +355,30 @@ namespace Disco.Services.Devices.Enrolment
                 }
 
                 // store hardware audit information
-                var lanMacAddresses = string.Join("; ", Request.Hardware.NetworkAdapters?.Where(na => !na.IsWlanAdapter).Select(na => na.MACAddress));
-                var wlanMacAddresses = string.Join("; ", Request.Hardware.NetworkAdapters?.Where(na => na.IsWlanAdapter).Select(na => na.MACAddress));
+                var lanMacAddresses = string.Join("; ", request.Hardware.NetworkAdapters?.Where(na => !na.IsWlanAdapter).Select(na => na.MACAddress));
+                var wlanMacAddresses = string.Join("; ", request.Hardware.NetworkAdapters?.Where(na => na.IsWlanAdapter).Select(na => na.MACAddress));
                 if (!string.IsNullOrEmpty(lanMacAddresses))
                     device.DeviceDetails.LanMacAddress(device, lanMacAddresses);
                 if (!string.IsNullOrEmpty(wlanMacAddresses))
                     device.DeviceDetails.WLanMacAddress(device, wlanMacAddresses);
-                if (Request.Hardware.Bios?.Count > 0)
-                    device.DeviceDetails.Bios(device, Request.Hardware.Bios);
-                if (Request.Hardware.BasebBoard?.Count > 0)
-                    device.DeviceDetails.BaseBoard(device, Request.Hardware.BasebBoard);
-                if (Request.Hardware.ComputerSystem?.Count > 0)
-                    device.DeviceDetails.ComputerSystem(device, Request.Hardware.ComputerSystem);
-                if (Request.Hardware.Processors?.Count > 0)
-                    device.DeviceDetails.Processors(device, Request.Hardware.Processors);
-                if (Request.Hardware.PhysicalMemory?.Count > 0)
-                    device.DeviceDetails.PhysicalMemory(device, Request.Hardware.PhysicalMemory);
-                if (Request.Hardware.DiskDrives?.Count > 0)
-                    device.DeviceDetails.DiskDrives(device, Request.Hardware.DiskDrives);
-                if (Request.Hardware.NetworkAdapters?.Count > 0)
-                    device.DeviceDetails.NetworkAdapters(device, Request.Hardware.NetworkAdapters);
-                if (Request.Hardware.Batteries?.Count > 0)
-                    device.DeviceDetails.Batteries(device, Request.Hardware.Batteries);
-                if (!string.IsNullOrWhiteSpace(Request.Hardware.MdmHardwareData))
-                    device.DeviceDetails.MdmHardwareData(device, Request.Hardware.MdmHardwareData);
+                if (request.Hardware.Bios?.Count > 0)
+                    device.DeviceDetails.Bios(device, request.Hardware.Bios);
+                if (request.Hardware.BasebBoard?.Count > 0)
+                    device.DeviceDetails.BaseBoard(device, request.Hardware.BasebBoard);
+                if (request.Hardware.ComputerSystem?.Count > 0)
+                    device.DeviceDetails.ComputerSystem(device, request.Hardware.ComputerSystem);
+                if (request.Hardware.Processors?.Count > 0)
+                    device.DeviceDetails.Processors(device, request.Hardware.Processors);
+                if (request.Hardware.PhysicalMemory?.Count > 0)
+                    device.DeviceDetails.PhysicalMemory(device, request.Hardware.PhysicalMemory);
+                if (request.Hardware.DiskDrives?.Count > 0)
+                    device.DeviceDetails.DiskDrives(device, request.Hardware.DiskDrives);
+                if (request.Hardware.NetworkAdapters?.Count > 0)
+                    device.DeviceDetails.NetworkAdapters(device, request.Hardware.NetworkAdapters);
+                if (request.Hardware.Batteries?.Count > 0)
+                    device.DeviceDetails.Batteries(device, request.Hardware.Batteries);
+                if (!string.IsNullOrWhiteSpace(request.Hardware.MdmHardwareData))
+                    device.DeviceDetails.MdmHardwareData(device, request.Hardware.MdmHardwareData);
 
                 if (adMachineAccount == null)
                 {
@@ -384,17 +392,31 @@ namespace Disco.Services.Devices.Enrolment
                             domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(device.DeviceProfile.OrganisationalUnit);
 
                         if (string.IsNullOrEmpty(device.DeviceDomainId) || device.DeviceProfile.EnforceComputerNameConvention)
-                            device.DeviceDomainId = device.ComputerNameRender(Database, domain);
+                        {
+                            var (renderedDeviceDomainId, renderedDnsHostName) = device.RenderComputerNames(database, domain);
+                            device.DeviceDomainId = renderedDeviceDomainId;
+                            device.DnsHostName = renderedDnsHostName;
+                        }
                         else if (!ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
                             if (device.DeviceProfile.EnforceComputerNameConvention)
-                                device.DeviceDomainId = device.ComputerNameRender(Database, domain);
+                            {
+                                var (renderedDeviceDomainId, renderedDnsHostName) = device.RenderComputerNames(database, domain);
+                                device.DeviceDomainId = renderedDeviceDomainId;
+                                device.DnsHostName = renderedDnsHostName;
+                            }
                             else
-                                device.DeviceDomainId = $@"{domain.NetBiosName}\{Request.ComputerName}";
+                            {
+                                device.DeviceDomainId = $@"{domain.NetBiosName}\{request.ComputerName}";
+                                device.DnsHostName = request.DnsHostName ?? device.ComputerName;
+                            }
 
                         EnrolmentLog.LogSessionTaskProvisioningADAccount(sessionId, device.SerialNumber, device.DeviceDomainId);
                         adMachineAccount = domainController.Value.RetrieveADMachineAccount(device.DeviceDomainId);
 
-                        response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount);
+                        if (device.DnsHostName.Length > 15)
+                            EnrolmentLog.LogSessionWarning(sessionId, $"The sAMAccountName (Computer Name) is limited to 15 characters in Active Directory. The name will be shortened to \"{device.DnsHostName.Substring(0, 15)}\", which may cause conflicts or override existing names. The DNS Name \"{device.DnsHostName}\" will be used.");
+
+                        response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DnsHostName, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount);
 
                         response.RequireReboot = true;
                     }
@@ -405,18 +427,19 @@ namespace Disco.Services.Devices.Enrolment
                     }
                     else if (ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId, out var accountUsername, out var accountDomain))
                     {
-                        response.DomainName = accountDomain == null ? null : accountDomain.NetBiosName;
+                        response.DomainName = accountDomain?.NetBiosName;
                         response.ComputerName = accountUsername;
                     }
                     else
                     {
-                        response.DomainName = Request.DNSDomainName;
-                        response.ComputerName = Request.ComputerName;
+                        response.DomainName = request.DNSDomainName;
+                        response.ComputerName = request.ComputerName;
                     }
                 }
                 else
                 {
                     device.DeviceDomainId = adMachineAccount.Id.Trim('$');
+                    device.DnsHostName = dnsHostName;
                     response.ComputerName = adMachineAccount.Name;
                     response.DomainName = adMachineAccount.Domain.NetBiosName;
 
@@ -428,20 +451,24 @@ namespace Disco.Services.Devices.Enrolment
                         if (domain == null)
                             domain = ActiveDirectory.Context.GetDomainFromDistinguishedName(device.DeviceProfile.OrganisationalUnit);
 
-                        var calculatedComputerName = device.ComputerNameRender(Database, domain);
-                        ActiveDirectory.ParseDomainAccountId(calculatedComputerName, out string calculatedAccountUsername);
+                        var (renderedDeviceDomainId, renderedDnsHostName) = device.RenderComputerNames(database, domain);
+                        ActiveDirectory.ParseDomainAccountId(renderedDeviceDomainId, out string calculatedAccountUsername);
 
-                        if (!Request.ComputerName.Equals(calculatedAccountUsername, StringComparison.OrdinalIgnoreCase))
+                        if (!request.ComputerName.Equals(calculatedAccountUsername, StringComparison.OrdinalIgnoreCase))
                         {
-                            EnrolmentLog.LogSessionProgress(sessionId, 50, $"Renaming Device: {Request.ComputerName} -> {calculatedComputerName}");
-                            EnrolmentLog.LogSessionTaskRenamingDevice(sessionId, Request.ComputerName, calculatedComputerName);
+                            EnrolmentLog.LogSessionProgress(sessionId, 50, $"Renaming Device: {request.ComputerName} -> {renderedDeviceDomainId}");
+                            EnrolmentLog.LogSessionTaskRenamingDevice(sessionId, request.ComputerName, renderedDeviceDomainId);
 
-                            device.DeviceDomainId = calculatedComputerName;
+                            if (renderedDnsHostName.Length > 15)
+                                EnrolmentLog.LogSessionWarning(sessionId, $"The sAMAccountName (Computer Name) is limited to 15 characters in Active Directory. The name will be shortened to \"{renderedDnsHostName.Substring(0, 15)}\", which may cause conflicts or override existing names. The DNS Name \"{renderedDnsHostName}\" will be used.");
+
+                            device.DeviceDomainId = renderedDeviceDomainId;
+                            device.DnsHostName = renderedDnsHostName;
                             response.DomainName = domain.NetBiosName;
                             response.ComputerName = calculatedAccountUsername;
 
                             // Create New Account
-                            response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DeviceDomainId, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount);
+                            response.OfflineDomainJoinManifest = domainController.Value.OfflineDomainJoinProvision(device.DnsHostName, device.DeviceProfile.OrganisationalUnit, ref adMachineAccount);
 
                             response.RequireReboot = true;
                         }
@@ -479,8 +506,8 @@ namespace Disco.Services.Devices.Enrolment
                     try
                     {
                         // Use non-Wlan Adapter with fastest speed
-                        var macAddress = Request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
-                        adMachineAccount.UpdateNetbootGUID(Request.Hardware.UUID, macAddress);
+                        var macAddress = request.Hardware?.NetworkAdapters?.Where(na => !na.IsWlanAdapter).OrderByDescending(na => na.Speed).Select(na => na.MACAddress).FirstOrDefault();
+                        adMachineAccount.UpdateNetbootGUID(request.Hardware.UUID, macAddress);
                         if (device.AssignedUser != null)
                             adMachineAccount.SetDescription(device);
                     }
@@ -521,7 +548,7 @@ namespace Disco.Services.Devices.Enrolment
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 90, "Provisioning Certificates");
 
-                    var provisionResult = device.ProvisionCertificates(Database, Request, out var provisionedCertificates);
+                    var provisionResult = device.ProvisionCertificates(database, request, out var provisionedCertificates);
 
                     if (provisionedCertificates != null && provisionedCertificates.Count > 0)
                     {
@@ -539,7 +566,7 @@ namespace Disco.Services.Devices.Enrolment
                 {
                     EnrolmentLog.LogSessionProgress(sessionId, 95, "Provisioning Wireless Profiles");
 
-                    var provisionResult = device.ProvisionWirelessProfiles(Database, Request);
+                    var provisionResult = device.ProvisionWirelessProfiles(database, request);
 
                     if (provisionResult != null && provisionResult.Profiles != null)
                     {

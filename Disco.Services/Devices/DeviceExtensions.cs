@@ -15,16 +15,34 @@ namespace Disco.Services
 {
     public static class DeviceExtensions
     {
-        public static string ComputerNameRender(this Device device, DiscoDataContext Database, ADDomain Domain)
+        public static (string deviceDomainId, string dnsHostName) RenderComputerNames(this Device device, DiscoDataContext database, ADDomain domain)
         {
-            if (Domain == null)
-                throw new ArgumentNullException("Domain");
+            if (domain == null)
+                throw new ArgumentNullException(nameof(domain));
 
+            var dnsHostName = device.RenderHostName(database);
+            var hostName = $@"{domain.NetBiosName}\{dnsHostName}";
+
+            if (dnsHostName.Length > 15)
+            {
+                if (device.DeviceProfile == null)
+                    throw new InvalidOperationException("DeviceProfile is required to render the host name");
+                if (!device.DeviceProfile.AllowLongComputerNames)
+                    throw new InvalidOperationException("The rendered host name is longer than 15 characters and the device profile does not allow long computer names");
+
+                hostName = $@"{domain.NetBiosName}\{dnsHostName.Substring(0, 15)}";
+            }
+
+            return (hostName, dnsHostName);
+        }
+
+        public static string RenderHostName(this Device device, DiscoDataContext database)
+        {
             var deviceProfile = device.DeviceProfile;
             Expression computerNameTemplateExpression = null;
             computerNameTemplateExpression = ExpressionCache.GetOrCreateSingleExpressions(string.Format(DeviceProfileExtensions.ComputerNameExpressionCacheTemplate, deviceProfile.Id),
                 () => Expression.TokenizeSingleDynamic(null, deviceProfile.ComputerNameTemplate, 0));
-            var evaluatorVariables = Expression.StandardVariables(null, Database, UserService.CurrentUser, DateTime.Now, null, device);
+            var evaluatorVariables = Expression.StandardVariables(null, database, UserService.CurrentUser, DateTime.Now, null, device);
             string rendered;
             try
             {
@@ -32,15 +50,24 @@ namespace Disco.Services
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"An error occurred rendering the computer name: [{ex.GetType().Name}] {ex.Message}", ex.InnerException);
-            }
-            if (rendered == null || rendered.Length > 15)
-            {
-                throw new InvalidOperationException("The rendered computer name would be invalid or longer than 15 characters");
+                throw new InvalidOperationException($"An error occurred rendering the host name: [{ex.GetType().Name}] {ex.Message}", ex.InnerException);
             }
 
-            return $@"{Domain.NetBiosName}\{rendered}";
+            if (string.IsNullOrWhiteSpace(rendered))
+                throw new InvalidOperationException("The rendered host name would be invalid");
+
+            if (rendered.Length > 2048)
+                throw new InvalidOperationException("The rendered host name can not be longer than the 2048 character limit");
+
+            if (rendered.IndexOfAny(new char[] { ' ', '\t', '\r', '\n' }) >= 0)
+                throw new InvalidOperationException("The rendered host name cannot contain whitespace characters");
+
+            if (rendered.IndexOf('.') >= 0)
+                throw new InvalidOperationException("The rendered host name cannot contain a period character");
+
+            return rendered;
         }
+
         public static List<DocumentTemplate> AvailableDocumentTemplates(this Device d, DiscoDataContext Database, User User, DateTime TimeStamp)
         {
             List<DocumentTemplate> ats = Database.DocumentTemplates

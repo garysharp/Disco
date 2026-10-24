@@ -133,6 +133,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UpdateAllowLongComputerNames()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAllowLongComputerNames);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult UpdateEnforceComputerNameConvention()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateEnforceComputerNameConvention);
@@ -231,6 +237,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string UpdateDefaultOrganisationAddress = "UpdateDefaultOrganisationAddress";
             public readonly string UpdateComputerNameTemplate = "UpdateComputerNameTemplate";
             public readonly string TestComputerNameTemplate = "TestComputerNameTemplate";
+            public readonly string UpdateAllowLongComputerNames = "UpdateAllowLongComputerNames";
             public readonly string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public readonly string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public readonly string UpdateProvisionADAccount = "UpdateProvisionADAccount";
@@ -260,6 +267,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string UpdateDefaultOrganisationAddress = "UpdateDefaultOrganisationAddress";
             public const string UpdateComputerNameTemplate = "UpdateComputerNameTemplate";
             public const string TestComputerNameTemplate = "TestComputerNameTemplate";
+            public const string UpdateAllowLongComputerNames = "UpdateAllowLongComputerNames";
             public const string UpdateEnforceComputerNameConvention = "UpdateEnforceComputerNameConvention";
             public const string UpdateEnforceOrganisationalUnit = "UpdateEnforceOrganisationalUnit";
             public const string UpdateProvisionADAccount = "UpdateProvisionADAccount";
@@ -396,6 +404,16 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string id = "id";
             public readonly string ComputerNameTemplate = "ComputerNameTemplate";
             public readonly string UserSpecifiedDeviceSerialNumber = "UserSpecifiedDeviceSerialNumber";
+        }
+        static readonly ActionParamsClass_UpdateAllowLongComputerNames s_params_UpdateAllowLongComputerNames = new ActionParamsClass_UpdateAllowLongComputerNames();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UpdateAllowLongComputerNames UpdateAllowLongComputerNamesParams { get { return s_params_UpdateAllowLongComputerNames; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UpdateAllowLongComputerNames
+        {
+            public readonly string id = "id";
+            public readonly string AllowLongComputerNames = "AllowLongComputerNames";
+            public readonly string redirect = "redirect";
         }
         static readonly ActionParamsClass_UpdateEnforceComputerNameConvention s_params_UpdateEnforceComputerNameConvention = new ActionParamsClass_UpdateEnforceComputerNameConvention();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -702,6 +720,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ComputerNameTemplate", ComputerNameTemplate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "UserSpecifiedDeviceSerialNumber", UserSpecifiedDeviceSerialNumber);
             TestComputerNameTemplateOverride(callInfo, id, ComputerNameTemplate, UserSpecifiedDeviceSerialNumber);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void UpdateAllowLongComputerNamesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, int id, string AllowLongComputerNames, bool? redirect);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UpdateAllowLongComputerNames(int id, string AllowLongComputerNames, bool? redirect)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UpdateAllowLongComputerNames);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "id", id);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "AllowLongComputerNames", AllowLongComputerNames);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "redirect", redirect);
+            UpdateAllowLongComputerNamesOverride(callInfo, id, AllowLongComputerNames, redirect);
             return callInfo;
         }
 

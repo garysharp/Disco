@@ -14,6 +14,7 @@ namespace Disco.Services.Devices.Importing
             {
                 { DeviceImportFieldTypes.DeviceSerialNumber, typeof(DeviceSerialNumberImportField) },
                 { DeviceImportFieldTypes.DeviceComputerName, typeof(DeviceComputerNameImportField) },
+                { DeviceImportFieldTypes.DeviceDnsHostName, typeof(DeviceDnsHostNameImportField) },
                 { DeviceImportFieldTypes.DeviceAssetNumber, typeof(DeviceAssetNumberImportField) },
                 { DeviceImportFieldTypes.DeviceLocation, typeof(DeviceLocationImportField) },
                 { DeviceImportFieldTypes.DeviceAllowUnauthenticatedEnrol, typeof(DeviceAllowUnauthenticatedEnrolImportField) },

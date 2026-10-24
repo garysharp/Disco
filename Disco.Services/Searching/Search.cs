@@ -45,9 +45,9 @@ namespace Disco.Services.Searching
 
             return query.Select(j => new
             {
-                Id = j.Id,
-                DeviceSerialNumber = j.DeviceSerialNumber,
-                UserId = j.UserId,
+                j.Id,
+                j.DeviceSerialNumber,
+                j.UserId,
                 UserDisplayName = j.User.DisplayName
             }).ToArray().Select(i => new JobSearchResultItem()
             {
@@ -283,6 +283,7 @@ namespace Disco.Services.Searching
                     .Where(d =>
                         d.AssetNumber.Contains(Term) ||
                         d.DeviceDomainId.Contains(Term) ||
+                        d.DnsHostName.Contains(Term) ||
                         d.SerialNumber.Contains(Term) ||
                         d.Location.Contains(Term) ||
                         Term.Contains(d.SerialNumber) ||
@@ -295,6 +296,7 @@ namespace Disco.Services.Searching
                     .Where(d =>
                         d.AssetNumber.Contains(Term) ||
                         d.DeviceDomainId.Contains(Term) ||
+                        d.DnsHostName.Contains(Term) ||
                         d.SerialNumber.Contains(Term) ||
                         d.Location.Contains(Term) ||
                         Term.Contains(d.SerialNumber)
@@ -330,6 +332,7 @@ namespace Disco.Services.Searching
                 Id = d.SerialNumber,
                 AssetNumber = d.AssetNumber,
                 ComputerName = d.DeviceDomainId,
+                DnsHostName = d.DnsHostName,
                 DeviceModelDescription = d.DeviceModel.Description,
                 DeviceProfileName = d.DeviceProfile.Name,
                 DeviceBatchName = d.DeviceBatch.Name,

@@ -208,6 +208,7 @@ namespace Disco.Services.Devices
             metadata.Add(o => o.DeviceAssetNumber, r => r.Device.AssetNumber);
             metadata.Add(o => o.DeviceLocation, r => r.Device.Location);
             metadata.Add(o => o.DeviceComputerName, r => r.Device.DeviceDomainId);
+            metadata.Add(o => o.DeviceDnsHostName, r => r.Device.DnsHostName);
             metadata.Add(o => o.DeviceLastNetworkLogon, r => r.Device.LastNetworkLogonDate);
             metadata.Add(o => o.DeviceCreatedDate, r => r.Device.CreatedDate);
             metadata.Add(o => o.DeviceFirstEnrolledDate, r => r.Device.EnrolledDate);

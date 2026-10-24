@@ -14,8 +14,10 @@ namespace Disco.Web.Areas.API.Models.DeviceModel
             public string DeviceSerialNumber { get; set; }
             public bool Success { get; set; }
             public string ErrorMessage { get; set; }
+            public string WarningMessage { get; set; }
             public string DeviceComputerName { get; set; }
             public string RenderedComputerName { get; set; }
+            public string RenderedDnsName { get; set; }
             public string Url { get; set; }
         }
 

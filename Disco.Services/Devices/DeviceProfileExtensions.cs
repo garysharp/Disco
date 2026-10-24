@@ -19,17 +19,19 @@ namespace Disco.Services
     public static class DeviceProfileExtensions
     {
         public const string ComputerNameExpressionCacheTemplate = "ComputerNameTemplate_{0}";
+        public const string DnsHostNameExpressionCacheTemplate = "DnsHostNameTemplate_{0}";
 
-        public static void ComputerNameInvalidateCache(this DeviceProfile deviceProfile)
+        public static void InvalidateExpressionCache(this DeviceProfile deviceProfile)
         {
             ExpressionCache.InvalidateSingleCache(string.Format(ComputerNameExpressionCacheTemplate, deviceProfile.Id));
+            ExpressionCache.InvalidateSingleCache(string.Format(DnsHostNameExpressionCacheTemplate, deviceProfile.Id));
         }
 
-        public static OrganisationAddress DefaultOrganisationAddressDetails(this DeviceProfile deviceProfile, DiscoDataContext Database)
+        public static OrganisationAddress DefaultOrganisationAddressDetails(this DeviceProfile deviceProfile, DiscoDataContext database)
         {
             if (deviceProfile.DefaultOrganisationAddress.HasValue)
             {
-                return Database.DiscoConfiguration.OrganisationAddresses.GetAddress(deviceProfile.DefaultOrganisationAddress.Value);
+                return database.DiscoConfiguration.OrganisationAddresses.GetAddress(deviceProfile.DefaultOrganisationAddress.Value);
             }
             else
             {
@@ -37,7 +39,7 @@ namespace Disco.Services
             }
         }
 
-        public static bool CanDelete(this DeviceProfile dp, DiscoDataContext Database)
+        public static bool CanDelete(this DeviceProfile dp, DiscoDataContext database)
         {
             if (!UserService.CurrentAuthorization.Has(Claims.Config.DeviceProfile.Delete))
                 return false;
@@ -47,28 +49,28 @@ namespace Disco.Services
                 return false;
 
             // Can't Delete if Contains Devices
-            if (Database.Devices.Count(d => d.DeviceProfileId == dp.Id) > 0)
+            if (database.Devices.Any(d => d.DeviceProfileId == dp.Id))
                 return false;
 
             return true;
         }
-        public static void Delete(this DeviceProfile dp, DiscoDataContext Database)
+        public static void Delete(this DeviceProfile dp, DiscoDataContext database)
         {
-            if (!dp.CanDelete(Database))
+            if (!dp.CanDelete(database))
                 throw new InvalidOperationException("The state of this Device Profile doesn't allow it to be deleted");
 
             // Update Defaults
-            if (Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId == dp.Id)
-                Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId = 1;
-            if (Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId == dp.Id)
-                Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId = 1;
+            if (database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId == dp.Id)
+                database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId = 1;
+            if (database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId == dp.Id)
+                database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId = 1;
 
             // Remove Linked Group
             ActiveDirectory.Context.ManagedGroups.Remove(DeviceProfileDevicesManagedGroup.GetKey(dp));
             ActiveDirectory.Context.ManagedGroups.Remove(DeviceProfileAssignedUsersManagedGroup.GetKey(dp));
 
             // Delete Profile
-            Database.DeviceProfiles.Remove(dp);
+            database.DeviceProfiles.Remove(dp);
         }
 
         public static bool CanDecommission(this DeviceProfile dp, DiscoDataContext database)

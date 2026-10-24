@@ -8,6 +8,8 @@ namespace Disco.Models.Services.Devices.Importing
         DeviceSerialNumber,
         [Display(Name = "Device Computer Name", Description = "The device computer name")]
         DeviceComputerName,
+        [Display(Name = "Device DNS Host Name", Description = "The device DNS host name")]
+        DeviceDnsHostName,
         [Display(Name = "Device Asset Number", Description = "The device asset number")]
         DeviceAssetNumber,
         [Display(Name = "Device Location", Description = "The device location")]

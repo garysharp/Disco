@@ -2,6 +2,7 @@
 using Disco.Models.ClientServices;
 using Microsoft.Win32;
 using System;
+using System.Net;
 using System.Runtime.InteropServices;
 
 namespace Disco.Client.Extensions
@@ -14,6 +15,15 @@ namespace Disco.Client.Extensions
             enrol.RunningUserDomain = Environment.UserDomainName;
             enrol.RunningUserName = Environment.UserName;
             enrol.RunningInteractively = Environment.UserInteractive;
+
+            try
+            {
+                enrol.DnsHostName = Dns.GetHostName();
+            }
+            catch (Exception)
+            {
+                enrol.DnsHostName = null;
+            }
 
             // Hardware Audit
             enrol.Hardware = Hardware.Information;

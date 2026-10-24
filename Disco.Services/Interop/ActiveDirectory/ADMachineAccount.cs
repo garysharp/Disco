@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 
@@ -37,64 +38,57 @@ namespace Disco.Services.Interop.ActiveDirectory
         public bool IsDisabled { get { return UserAccountControl.HasFlag(ADUserAccountControlFlags.ADS_UF_ACCOUNTDISABLE); } }
 
         public string ParentDistinguishedName
+            => DistinguishedName.Substring(DistinguishedName.IndexOf(',') + 1);
+
+        private ADMachineAccount(ADDomain domain, string distinguishedName, SecurityIdentifier securityIdentifier, string samAccountName, string name, string description, string dnsName, Guid netbootGUID, ADUserAccountControlFlags userAccountControl, bool isCriticalSystemObject, Dictionary<string, object[]> loadedProperties)
         {
-            get
-            {
-                return DistinguishedName.Substring(DistinguishedName.IndexOf(',') + 1);
-            }
+            Domain = domain;
+            DistinguishedName = distinguishedName;
+            SecurityIdentifier = securityIdentifier;
+            SamAccountName = samAccountName;
+            Name = name;
+            Description = description;
+            DnsName = dnsName;
+            NetbootGUID = netbootGUID;
+            UserAccountControl = userAccountControl;
+            IsCriticalSystemObject = isCriticalSystemObject;
+            LoadedProperties = loadedProperties;
         }
 
-        private ADMachineAccount(ADDomain Domain, string DistinguishedName, SecurityIdentifier SecurityIdentifier, string SamAccountName, string Name, string Description, string DnsName, Guid NetbootGUID, ADUserAccountControlFlags UserAccountControl, bool IsCriticalSystemObject, Dictionary<string, object[]> LoadedProperties)
+        public static ADMachineAccount FromSearchResult(ADSearchResult searchResult, string[] additionalProperties)
         {
-            this.Domain = Domain;
-            this.DistinguishedName = DistinguishedName;
-            this.SecurityIdentifier = SecurityIdentifier;
-            this.SamAccountName = SamAccountName;
-            this.Name = Name;
-            this.Description = Description;
-            this.DnsName = DnsName;
-            this.NetbootGUID = NetbootGUID;
-            this.UserAccountControl = UserAccountControl;
-            this.IsCriticalSystemObject = IsCriticalSystemObject;
-            this.LoadedProperties = LoadedProperties;
-        }
+            if (searchResult == null)
+                throw new ArgumentNullException(nameof(searchResult));
 
-        public static ADMachineAccount FromSearchResult(ADSearchResult SearchResult, string[] AdditionalProperties)
-        {
-            if (SearchResult == null)
-                throw new ArgumentNullException("SearchResult");
+            var name = searchResult.Value<string>("name");
+            var description = searchResult.Value<string>("description");
+            var sAMAccountName = searchResult.Value<string>("sAMAccountName");
+            var distinguishedName = searchResult.Value<string>("distinguishedName");
+            var objectSid = new SecurityIdentifier(searchResult.Value<byte[]>("objectSid"), 0);
 
-            var name = SearchResult.Value<string>("name");
-            var description = SearchResult.Value<string>("description");
-            var sAMAccountName = SearchResult.Value<string>("sAMAccountName");
-            var distinguishedName = SearchResult.Value<string>("distinguishedName");
-            var objectSid = new SecurityIdentifier(SearchResult.Value<byte[]>("objectSid"), 0);
+            var dNSName = searchResult.Value<string>("dNSHostName")
+                ?? $"{sAMAccountName.TrimEnd('$')}.{searchResult.Domain.Name}";
+            var userAccountControl = (ADUserAccountControlFlags)searchResult.Value<int>("userAccountControl");
+            var isCriticalSystemObject = searchResult.Value<bool>("isCriticalSystemObject");
 
-            var dNSName = SearchResult.Value<string>("dNSHostName");
-            if (dNSName == null)
-                dNSName = $"{sAMAccountName.TrimEnd('$')}.{SearchResult.Domain.Name}";
-
-            var userAccountControl = (ADUserAccountControlFlags)SearchResult.Value<int>("userAccountControl");
-            var isCriticalSystemObject = SearchResult.Value<bool>("isCriticalSystemObject");
-
-            var netbootGUID = default(Guid);
-            var netbootGuidBytes = SearchResult.Value<byte[]>("netbootGUID");
+            var netbootGUID = Guid.Empty;
+            var netbootGuidBytes = searchResult.Value<byte[]>("netbootGUID");
             if (netbootGuidBytes != null)
                 netbootGUID = new Guid(netbootGuidBytes);
 
             // Additional Properties
-            Dictionary<string, object[]> additionalProperties;
-            if (AdditionalProperties != null)
-                additionalProperties = AdditionalProperties
-                    .Select(p => Tuple.Create(p, SearchResult.Values<object>(p).ToArray()))
+            Dictionary<string, object[]> additional;
+            if (additionalProperties != null)
+                additional = additionalProperties
+                    .Select(p => Tuple.Create(p, searchResult.Values<object>(p).ToArray()))
                     .ToDictionary(t => t.Item1, t => t.Item2);
             else
             {
-                additionalProperties = new Dictionary<string, object[]>();
+                additional = new Dictionary<string, object[]>();
             }
 
             return new ADMachineAccount(
-                SearchResult.Domain,
+                searchResult.Domain,
                 distinguishedName,
                 objectSid,
                 sAMAccountName,
@@ -104,7 +98,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 netbootGUID,
                 userAccountControl,
                 isCriticalSystemObject,
-                additionalProperties);
+                additional);
         }
 
         public static ADMachineAccount FromDirectoryEntry(ADDirectoryEntry directoryEntry, string[] additionalProperties)
@@ -120,14 +114,13 @@ namespace Disco.Services.Interop.ActiveDirectory
             var distinguishedName = properties.Value<string>("distinguishedName");
             var objectSid = new SecurityIdentifier(properties.Value<byte[]>("objectSid"), 0);
 
-            var dNSName = properties.Value<string>("dNSHostName");
-            if (dNSName == null)
-                dNSName = $"{sAMAccountName.TrimEnd('$')}.{directoryEntry.Domain.Name}";
+            var dNSName = properties.Value<string>("dNSHostName")
+                ?? $"{sAMAccountName.TrimEnd('$')}.{directoryEntry.Domain.Name}";
 
             var userAccountControl = (ADUserAccountControlFlags)properties.Value<int>("userAccountControl");
             var isCriticalSystemObject = properties.Value<bool>("isCriticalSystemObject");
 
-            var netbootGUID = default(Guid);
+            var netbootGUID = Guid.Empty;
             var netbootGuidBytes = properties.Value<byte[]>("netbootGUID");
             if (netbootGuidBytes != null)
                 netbootGUID = new Guid(netbootGuidBytes);
@@ -209,7 +202,7 @@ namespace Disco.Services.Interop.ActiveDirectory
                 throw new InvalidOperationException($"This account [{DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
 
             if (!writableDomainController.IsWritable)
-                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Delete Account) requires a writable domain controller.");
+                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Rename Account) requires a writable domain controller.");
 
             using (ADDirectoryEntry adEntry = writableDomainController.RetrieveDirectoryEntry(DistinguishedName, new[] { "dNSHostName", "sAMAccountName" }))
             {
@@ -218,16 +211,57 @@ namespace Disco.Services.Interop.ActiveDirectory
                 oldDnsName = (string)entry.Properties["dNSHostName"][0];
                 oldName = (string)entry.Properties["sAMAccountName"][0];
 
+                var nameChanged = !string.Equals(oldName, $"{newName}$", StringComparison.Ordinal);
+                var dnsNameChanged = !string.Equals(oldDnsName, newDnsName, StringComparison.OrdinalIgnoreCase);
+
+                if (!nameChanged && !dnsNameChanged)
+                    return;
+
+                if (nameChanged)
+                    entry.Properties["sAMAccountName"][0] = $"{newName}$";
+
+                if (dnsNameChanged)
+                    entry.Properties["dNSHostName"][0] = newDnsName;
+
+                entry.CommitChanges();
+
+                if (dnsNameChanged)
+                    DnsName = newDnsName;
+
+                if (nameChanged)
+                {
+                    entry.Rename($"CN={newName}");
+                    entry.CommitChanges();
+
+                    // Update Distinguished Name
+                    Name = newName;
+                    DistinguishedName = entry.Properties["distinguishedName"][0].ToString();
+                }
+            }
+        }
+
+        public bool SetDnsHostName(ADDomainController writableDomainController, string newDnsName, out string oldDnsName)
+        {
+            if (IsCriticalSystemObject)
+                throw new InvalidOperationException($"This account [{DistinguishedName}] is a Critical System Active Directory Object and Disco ICT refuses to modify it");
+
+            if (!writableDomainController.IsWritable)
+                throw new InvalidOperationException($"The domain controller [{Name}] is not writable. This action (Set DNS Host Name) requires a writable domain controller.");
+
+            using (ADDirectoryEntry adEntry = writableDomainController.RetrieveDirectoryEntry(DistinguishedName, new[] { "dNSHostName", "sAMAccountName" }))
+            {
+                var entry = adEntry.Entry;
+
+                oldDnsName = (string)entry.Properties["dNSHostName"][0];
+
+                if (!string.Equals(oldDnsName, newDnsName, StringComparison.OrdinalIgnoreCase))
+                    return false;
+
                 entry.Properties["dNSHostName"][0] = newDnsName;
-                entry.Properties["sAMAccountName"][0] = $"{newName}$";
-
-                entry.CommitChanges();
-                entry.Rename($"CN={newName}");
                 entry.CommitChanges();
 
-                // Update Distinguished Name
-                Name = newName;
-                DistinguishedName = entry.Properties["distinguishedName"][0].ToString();
+                DnsName = newDnsName;
+                return true;
             }
         }
 
@@ -493,14 +527,14 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is ADMachineAccount))
-                return false;
+            if (obj is ADMachineAccount account)
+                return DistinguishedName == account.DistinguishedName;
             else
-                return DistinguishedName == ((ADMachineAccount)obj).DistinguishedName;
+                return false;
         }
         public override int GetHashCode()
         {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
+            return RuntimeHelpers.GetHashCode(DistinguishedName);
         }
     }
 }

@@ -169,52 +169,52 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         #region Machine Accounts
-        public ADMachineAccount RetrieveADMachineAccount(string Id, Guid? UUIDNetbootGUID, Guid? MacAddressNetbootGUID, string[] AdditionalProperties = null)
+        public ADMachineAccount RetrieveADMachineAccount(string id, Guid? uuidNetbootGUID, Guid? macAddressNetbootGUID, string[] additionalProperties = null)
         {
-            if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException(nameof(id));
 
             // Add $ identifier for machine accounts
-            if (!Id.EndsWith("$"))
-                Id += "$";
+            if (!id.EndsWith("$"))
+                id += "$";
 
-            string[] loadProperites = (AdditionalProperties != null && AdditionalProperties.Length > 0)
-                ? ADMachineAccount.LoadProperties.Concat(AdditionalProperties).ToArray()
+            string[] loadProperites = (additionalProperties != null && additionalProperties.Length > 0)
+                ? ADMachineAccount.LoadProperties.Concat(additionalProperties).ToArray()
                 : ADMachineAccount.LoadProperties;
 
             ADSearchResult adResult;
 
-            adResult = RetrieveBySamAccountName(Id, "(&(objectCategory=computer)(sAMAccountName={0}))", loadProperites);
-            if (adResult == null && (UUIDNetbootGUID.HasValue || MacAddressNetbootGUID.HasValue))
+            adResult = RetrieveBySamAccountName(id, "(&(objectCategory=computer)(sAMAccountName={0}))", loadProperites);
+            if (adResult == null && (uuidNetbootGUID.HasValue || macAddressNetbootGUID.HasValue))
             {
                 string ldapFilter;
-                if (UUIDNetbootGUID.HasValue && MacAddressNetbootGUID.HasValue)
+                if (uuidNetbootGUID.HasValue && macAddressNetbootGUID.HasValue)
                 {
-                    ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidDoubleFilterTemplate, UUIDNetbootGUID.Value.ToLdapQueryFormat(), MacAddressNetbootGUID.Value.ToLdapQueryFormat());
+                    ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidDoubleFilterTemplate, uuidNetbootGUID.Value.ToLdapQueryFormat(), macAddressNetbootGUID.Value.ToLdapQueryFormat());
                 }
-                else if (UUIDNetbootGUID.HasValue)
+                else if (uuidNetbootGUID.HasValue)
                 {
-                    ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidSingleFilterTemplate, UUIDNetbootGUID.Value.ToLdapQueryFormat());
+                    ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidSingleFilterTemplate, uuidNetbootGUID.Value.ToLdapQueryFormat());
                 }
                 else // MacAddressNetbootGUID.HasValue
                 {
-                    ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidSingleFilterTemplate, MacAddressNetbootGUID.Value.ToLdapQueryFormat());
+                    ldapFilter = string.Format(ADMachineAccount.LdapNetbootGuidSingleFilterTemplate, macAddressNetbootGUID.Value.ToLdapQueryFormat());
                 }
                 adResult = SearchEntireDomain(ldapFilter, loadProperites, ActiveDirectory.SingleSearchResult).FirstOrDefault();
             }
 
             if (adResult != null)
-                return adResult.AsADMachineAccount(AdditionalProperties);
+                return adResult.AsADMachineAccount(additionalProperties);
             else
                 return null; // Not Found
         }
-        public ADMachineAccount RetrieveADMachineAccount(string Id, string[] AdditionalProperties = null)
+        public ADMachineAccount RetrieveADMachineAccount(string id, string[] additionalProperties = null)
         {
-            return RetrieveADMachineAccount(Id, null, null, AdditionalProperties);
+            return RetrieveADMachineAccount(id, null, null, additionalProperties);
         }
-        public ADMachineAccount RetrieveADMachineAccount(string Id, Guid? NetbootGUID, string[] AdditionalProperties = null)
+        public ADMachineAccount RetrieveADMachineAccount(string id, Guid? netbootGUID, string[] additionalProperties = null)
         {
-            return RetrieveADMachineAccount(Id, NetbootGUID, null, AdditionalProperties);
+            return RetrieveADMachineAccount(id, netbootGUID, null, additionalProperties);
         }
         #endregion
 

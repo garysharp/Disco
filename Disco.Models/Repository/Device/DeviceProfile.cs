@@ -24,6 +24,8 @@ namespace Disco.Models.Repository
         [Required, DataType(DataType.MultilineText)]
         public string ComputerNameTemplate { get; set; }
 
+        public bool AllowLongComputerNames { get; set; }
+
         [Required]
         public DistributionTypes? DistributionType { get; set; }
 
@@ -67,7 +69,7 @@ namespace Disco.Models.Repository
 
         public const string DefaultComputerNameTemplate = "DeviceProfile.ShortName + '-' + SerialNumber";
 
-        public enum DistributionTypes : int
+        public enum DistributionTypes
         {
             OneToMany = 0,
             OneToOne = 1

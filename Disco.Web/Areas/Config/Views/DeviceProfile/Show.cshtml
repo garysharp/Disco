@@ -22,7 +22,7 @@
         Html.BundleDeferred("~/ClientScripts/Modules/Disco-PropertyChangeHelpers");
     }
 }
-<div id="configurationDeviceProfileShow" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 640px">
+<div id="configurationDeviceProfileShow" class="form@(hideAdvanced ? " Config_HideAdvanced" : null)" style="width: 640px" data-searchdevicesurl="@Url.Action(MVC.API.Search.Devices())" data-expressionbrowserurl="@Url.Action(MVC.Config.Expressions.Browser())">
     <table>
         <tr>
             <th style="width: 170px;">
@@ -501,10 +501,12 @@
                                                         $('<span class="code">').text(result.DeviceComputerName)
                                                             .appendTo(columns.eq(1))
                                                         columns.eq(2).html('');
-                                                        $('<span class="code">').text(result.RenderedComputerName)
+                                                        $('<span class="code">').text(result.RenderedDnsName)
                                                             .appendTo(columns.eq(2))
                                                         if (!result.Success) {
                                                             $('<div class="info-box error code whitespace-pre-wrap">').text(result.ErrorMessage).appendTo(columns[2]);
+                                                        } else if (result.WarningMessage) {
+                                                            $('<div class="info-box warning code whitespace-pre-wrap">').text(result.WarningMessage).appendTo(columns.eq(2));
                                                         }
                                                     }
                                                     if (data.RandomDeviceResults) {
@@ -520,10 +522,12 @@
                                                                 .appendTo(columns.eq(0));
                                                             $('<span class="code">').text(result.DeviceComputerName)
                                                                 .appendTo(columns.eq(1))
-                                                            $('<span class="code">').text(result.RenderedComputerName)
+                                                            $('<span class="code">').text(result.RenderedDnsName)
                                                                 .appendTo(columns.eq(2))
                                                             if (!result.Success) {
                                                                 $('<div class="info-box error code whitespace-pre-wrap">').text(result.ErrorMessage).appendTo(columns.eq(2));
+                                                            } else if (result.WarningMessage) {
+                                                                $('<div class="info-box warning code whitespace-pre-wrap">').text(result.WarningMessage).appendTo(columns.eq(2));
                                                             }
                                                             row.appendTo($table);
                                                         }
@@ -575,6 +579,36 @@
                         });
                     </script>
                 }
+                <div style="margin-top: 8px;">
+                    @if (canConfig)
+                    {
+                        <input id="DeviceProfile_AllowLongComputerNames" type="checkbox" @(Model.DeviceProfile.AllowLongComputerNames ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) />
+                        <script type="text/javascript">
+                            $(function () {
+                                document.DiscoFunctions.PropertyChangeHelper(
+                                    $('#DeviceProfile_AllowLongComputerNames'),
+                                    null,
+                                    '@Url.Action(MVC.API.DeviceProfile.UpdateAllowLongComputerNames(Model.DeviceProfile.Id))',
+                                    'AllowLongComputerNames'
+                                );
+                            });
+                        </script>
+                    }
+                    else
+                    {
+                        <input id="DeviceProfile_AllowLongComputerNames" type="checkbox" @(Model.DeviceProfile.AllowLongComputerNames ? new MvcHtmlString("checked=\"checked\" ") : new MvcHtmlString(string.Empty)) disabled="disabled" />
+                    }
+                    <label for="DeviceProfile_AllowLongComputerNames">
+                        Allow Long Computer Names (over 15 characters)
+                    </label>
+                    @AjaxHelpers.AjaxLoader()
+                </div>
+                <div class="info-box">
+                    <p class="fa-p">
+                        <i class="fa fa-info-circle"></i>Active Directory only allows computer names (sAMAccountName) up to 15 characters. However a computers DNS name can be longer. If this option is enabled, a longer DNS name can be used, however the sAMAccountName will be truncated to 15 characters.
+                        This may cause conflicts or account overwrites if the first 15 characters of the computer name are not unique.
+                    </p>
+                </div>
                 <div style="margin-top: 8px;">
                     @if (canConfig)
                     {

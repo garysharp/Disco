@@ -239,20 +239,8 @@ namespace Disco.Web.Controllers
                 .Include(d => d.DeviceFlagAssignments.Select(a => a.DeviceFlag))
                 .Include(d => d.DeviceFlagAssignments.Select(a => a.AddedUser))
                 .Include(d => d.DeviceFlagAssignments.Select(a => a.RemovedUser))
-                .FirstOrDefault(d => d.SerialNumber == id);
-
-            if (m.Device == null)
-                throw new ArgumentException($"Unknown Device: [{id}]", "id");
-
-            // No Necessary - Yet...
-            //if (!string.IsNullOrWhiteSpace(m.Device.ComputerName))
-            //{
-            //    var adMachineAccount = BI.Interop.ActiveDirectory.ActiveDirectory.GetMachineAccount(m.Device.ComputerName);
-            //    if (adMachineAccount != null)
-            //    {
-            //        m.OrganisationUnit = adMachineAccount.ParentDistinguishedName;
-            //    }
-            //}
+                .FirstOrDefault(d => d.SerialNumber == id)
+                ?? throw new ArgumentException($"Unknown Device: [{id}]", nameof(id));
 
             if (Authorization.Has(Claims.Device.Properties.DeviceProfile))
             {

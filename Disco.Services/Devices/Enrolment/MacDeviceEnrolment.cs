@@ -207,7 +207,7 @@ namespace Disco.Services.Devices.Enrolment
                     .Include(d => d.DeviceProfile)
                     .Include(d => d.DeviceModel)
                     .Include(d => d.DeviceDetails)
-                    .Where(d => d.SerialNumber == Request.DeviceSerialNumber).FirstOrDefault();
+                    .FirstOrDefault(d => d.SerialNumber == Request.DeviceSerialNumber);
                 if (!Trusted)
                 {
                     if (device == null)
@@ -269,10 +269,7 @@ namespace Disco.Services.Devices.Enrolment
 
                 device.LastEnrolDate = DateTime.Now;
                 device.AllowUnauthenticatedEnrol = false;
-                // Removed 2012-06-14 G# - Properties moved to DeviceProfile model & DB Migrated in DBv3.
-                //DeviceProfileConfiguration RepoDeviceProfileContext = RepoDevice.DeviceProfile.Configuration(Context);
                 EnrolmentLog.LogSessionProgress(sessionId, 90, "Building Response");
-                //if (RepoDeviceProfileContext.DistributionType == DeviceProfileConfiguration.DeviceProfileDistributionTypes.OneToOne && RepoDevice.AssignedUser != null)
                 if (device.DeviceProfile.DistributionType == DeviceProfile.DistributionTypes.OneToOne && device.AssignedUser != null)
                 {
                     ADUserAccount AssignedUserInfo = ActiveDirectory.RetrieveADUserAccount(device.AssignedUser.UserId);
@@ -293,7 +290,7 @@ namespace Disco.Services.Devices.Enrolment
             catch (Exception ex2)
             {
                 EnrolmentLog.LogSessionError(sessionId, ex2);
-                throw ex2;
+                throw;
             }
             finally
             {

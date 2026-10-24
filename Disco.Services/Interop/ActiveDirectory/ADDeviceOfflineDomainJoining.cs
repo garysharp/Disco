@@ -35,7 +35,7 @@ namespace Disco.Services.Interop.ActiveDirectory
         [DllImport("Netapi32.dll", SetLastError = true)]
         private static extern int NetApiBufferFree(IntPtr Buffer);
 
-        public static string OfflineDomainJoinProvision(this ADDomainController dc, string computerSamAccountName, string organisationalUnit, ref ADMachineAccount machineAccount)
+        public static string OfflineDomainJoinProvision(this ADDomainController dc, string dnsHostName, string organisationalUnit, ref ADMachineAccount machineAccount)
         {
             if (machineAccount != null && machineAccount.IsCriticalSystemObject)
                 throw new InvalidOperationException($"This account {machineAccount.DistinguishedName} is a Critical System Active Directory Object and Disco ICT refuses to modify it");
@@ -43,14 +43,12 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (!dc.IsWritable)
                 throw new InvalidOperationException($"The domain controller [{dc.Name}] is not writable. This action (Offline Domain Join Provision) requires a writable domain controller.");
 
-            if (!string.IsNullOrWhiteSpace(computerSamAccountName))
-                computerSamAccountName = computerSamAccountName.TrimEnd('$');
-            if (!string.IsNullOrWhiteSpace(computerSamAccountName) && computerSamAccountName.Contains('\\'))
-                computerSamAccountName = computerSamAccountName.Substring(computerSamAccountName.IndexOf('\\') + 1);
+            if (string.IsNullOrWhiteSpace(dnsHostName))
+                throw new ArgumentException("Invalid Computer Name", nameof(dnsHostName));
 
-            // NetBIOS Limit (16 characters; "{ComputerName}$"; 15 characters allowed)
-            if (string.IsNullOrWhiteSpace(computerSamAccountName) || computerSamAccountName.Length > 15)
-                throw new ArgumentException("Invalid Computer Name; > 0 and <= 15", "ComputerName");
+            var computerSamAccountName = dnsHostName;
+            if (dnsHostName.Length > 15)
+                computerSamAccountName = dnsHostName.Substring(0, 15);
 
             // Ensure Specified OU Exists
             if (!string.IsNullOrEmpty(organisationalUnit))
@@ -60,12 +58,12 @@ namespace Disco.Services.Interop.ActiveDirectory
                     using (var deOU = dc.RetrieveDirectoryEntry(organisationalUnit, new string[] { "distinguishedName" }))
                     {
                         if (deOU == null)
-                            throw new Exception($"OU's Directory Entry couldn't be found at [{organisationalUnit}]");
+                            throw new ArgumentException($"OU's Directory Entry couldn't be found at [{organisationalUnit}]", nameof(organisationalUnit));
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException($"An error occurred while trying to locate the specified OU: {organisationalUnit}", "OrganisationalUnit", ex);
+                    throw new ArgumentException($"An error occurred while trying to locate the specified OU: {organisationalUnit}", nameof(organisationalUnit), ex);
                 }
             }
 
@@ -74,14 +72,14 @@ namespace Disco.Services.Interop.ActiveDirectory
             if (machineAccount != null && !string.Equals(machineAccount.Name, computerSamAccountName, StringComparison.Ordinal))
             {
                 // rename the account
-                machineAccount.RenameAccount(dc, computerSamAccountName, $"{computerSamAccountName}.{machineAccount.Domain.Name}", out oldComputerSamAccountName, out oldDnsHostName);
+                machineAccount.RenameAccount(dc, computerSamAccountName, $"{dnsHostName}.{machineAccount.Domain.Name}", out oldComputerSamAccountName, out oldDnsHostName);
                 // when the account it reused, it must be in the same OU as before, otherwise the provisioning will fail.
                 // So we ignore the specified OU and use the existing one. If enforced OU is required that can be set in the
                 // profile, and the account will be moved as enrolment continues
                 organisationalUnit = null;
             }
 
-            var result = NetProvisionComputerAccount(dc.Domain.Name, computerSamAccountName, string.IsNullOrWhiteSpace(organisationalUnit) ? null : organisationalUnit, dc.Name, NETSETUP_PROVISION_FLAGS.NETSETUP_PROVISION_REUSE_ACCOUNT, out var provisionDataPointer, out var provisionDataLength);
+            var result = NetProvisionComputerAccount(dc.Domain.Name, dnsHostName, string.IsNullOrWhiteSpace(organisationalUnit) ? null : organisationalUnit, dc.Name, NETSETUP_PROVISION_FLAGS.NETSETUP_PROVISION_REUSE_ACCOUNT, out var provisionDataPointer, out var provisionDataLength);
 
             if (result != 0)
             {
@@ -107,11 +105,11 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             var buffer = new byte[provisionDataLength];
             Marshal.Copy(provisionDataPointer, buffer, 0, provisionDataLength);
-            var freeResult = NetApiBufferFree(provisionDataPointer);
+            NetApiBufferFree(provisionDataPointer);
             var encodedResult = Convert.ToBase64String(buffer);
 
             // Reload Machine Account
-            machineAccount = dc.RetrieveADMachineAccount($@"{dc.Domain.NetBiosName}\{computerSamAccountName}", (machineAccount == null ? null : machineAccount.LoadedProperties.Keys.ToArray()));
+            machineAccount = dc.RetrieveADMachineAccount($@"{dc.Domain.NetBiosName}\{computerSamAccountName}", machineAccount?.LoadedProperties.Keys.ToArray());
 
             return encodedResult;
         }
