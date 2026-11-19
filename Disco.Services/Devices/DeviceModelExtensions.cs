@@ -11,7 +11,7 @@ namespace Disco.Services
 {
     public static class DeviceModelExtensions
     {
-        private static object _CreateDeviceModelLock = new object();
+        private readonly static object createDeviceModelLock = new object();
 
         public static bool CanDelete(this DeviceModel dm, DiscoDataContext Database)
         {
@@ -81,7 +81,7 @@ namespace Disco.Services
             if (deviceModel == null)
             {
                 // Ensure only one thread/request at a time
-                lock (_CreateDeviceModelLock)
+                lock (createDeviceModelLock)
                 {
                     // Check again now that lock is enforced
                     deviceModel = DeviceModelsSet.Where(dm => dm.ModelType != DeviceModel.CustomModelType).FirstOrDefault(dm => dm.Manufacturer == Manufacturer && dm.Model == Model);

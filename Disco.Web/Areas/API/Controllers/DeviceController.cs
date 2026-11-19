@@ -442,13 +442,11 @@ namespace Disco.Web.Areas.API.Controllers
         public virtual ActionResult LastNetworkLogonDate(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentNullException("id", "The Device Serial Number is required");
+                throw new ArgumentNullException(nameof(id), "The Device Serial Number is required");
 
             var device = Database.Devices.Find(id);
             if (device == null)
-            {
                 return HttpNotFound("Invalid Device Serial Number");
-            }
 
             if (device.UpdateLastNetworkLogonDate())
                 Database.SaveChanges();
@@ -474,7 +472,7 @@ namespace Disco.Web.Areas.API.Controllers
 
             var device = Database.Devices
                 .Include(d => d.DeviceComments.Select(l => l.TechUser))
-                .Where(d => d.SerialNumber == id).FirstOrDefault();
+                .FirstOrDefault(d => d.SerialNumber == id);
             if (device == null)
                 return BadRequest("Invalid Device Serial Number");
 
@@ -747,27 +745,10 @@ namespace Disco.Web.Areas.API.Controllers
         #endregion
 
         #region Importing
-        internal const string ImportSessionCacheKey = "DeviceImportContext_{0}";
-
-        internal static void Import_StoreContext(IDeviceImportContext Context)
-        {
-            string key = string.Format(ImportSessionCacheKey, Context.SessionId);
-            HttpRuntime.Cache.Insert(key, Context, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
-        }
-        internal static IDeviceImportContext Import_RetrieveContext(string SessionId, bool Remove = false)
-        {
-            string key = string.Format(ImportSessionCacheKey, SessionId);
-            IDeviceImportContext context = HttpRuntime.Cache.Get(key) as IDeviceImportContext;
-
-            if (Remove && context != null)
-                HttpRuntime.Cache.Remove(key);
-
-            return context;
-        }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
         [HttpPost, ValidateAntiForgeryToken]
-        public virtual ActionResult ImportBegin(HttpPostedFileBase ImportFile, bool HasHeader)
+        public virtual ActionResult ImportBegin(HttpPostedFileBase ImportFile, bool? HasHeader)
         {
             if (ImportFile == null || ImportFile.ContentLength == 0)
                 throw new ArgumentNullException("ImportFile");
@@ -776,8 +757,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (fileName.Contains(@"\"))
                 fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
 
-            var context = DeviceImport.BeginImport(Database, fileName, HasHeader, ImportFile.InputStream);
-            Import_StoreContext(context);
+            var context = DeviceImport.BeginImport(Database, fileName, HasHeader.GetValueOrDefault(), ImportFile.InputStream);
 
             return RedirectToAction(MVC.Device.ImportHeaders(context.SessionId));
         }
@@ -789,7 +769,7 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrWhiteSpace(Id))
                 throw new ArgumentNullException(nameof(Id));
 
-            var context = Import_RetrieveContext(Id)
+            var context = DeviceImport.RetrieveContext(Id) as DeviceImportContextBase
                 ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
 
             context.UpdateColumnTypes(Headers);
@@ -813,13 +793,35 @@ namespace Disco.Web.Areas.API.Controllers
             if (string.IsNullOrWhiteSpace(Id))
                 throw new ArgumentNullException(nameof(Id));
 
-            var context = Import_RetrieveContext(Id)
+            var context = DeviceImport.RetrieveContext(Id)
                 ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
 
             var status = DeviceImportApplyTask.ScheduleNow(context);
             status.SetFinishedUrl(Url.Action(MVC.Device.Import(context.SessionId)));
 
             return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ImportIntuneBegin(HttpPostedFileBase file, bool? assignDeviceToPrimaryUser, int? defaultDeviceProfileId)
+        {
+            if (file == null || file.ContentLength == 0)
+                throw new ArgumentNullException(nameof(file));
+
+            var fileName = file.FileName;
+            if (fileName.Contains(@"\"))
+                fileName = fileName.Substring(fileName.LastIndexOf('\\') + 1);
+
+            var config = new IntuneDeviceImportConfiguration()
+            {
+                AssignDeviceToPrimaryUser = assignDeviceToPrimaryUser.GetValueOrDefault(),
+                DefaultDeviceProfileId = defaultDeviceProfileId,
+            };
+
+            var context = DeviceImport.BeginIntuneImport(fileName, file.InputStream, config);
+
+            return ParseImportAndRedirectToReview(context, MVC.Device.ImportIntune(context.SessionId));
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
@@ -832,9 +834,8 @@ namespace Disco.Web.Areas.API.Controllers
                 throw new ArgumentNullException(nameof(decommissionReason), "Decommission Reason is required");
 
             var context = DeviceImport.BeginDecommissionImport(Database, deviceBatch, decommissionReason.Value, unassignUsers.GetValueOrDefault());
-            Import_StoreContext(context);
 
-            return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
+            return ParseImportAndRedirectToReview(context);
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
@@ -845,9 +846,10 @@ namespace Disco.Web.Areas.API.Controllers
                 ?? throw new ArgumentException("Invalid Device Profile Id", nameof(id));
             if (decommissionReason == null)
                 throw new ArgumentNullException(nameof(decommissionReason), "Decommission Reason is required");
+
             var context = DeviceImport.BeginDecommissionImport(Database, deviceProfile, decommissionReason.Value, unassignUsers.GetValueOrDefault());
-            Import_StoreContext(context);
-            return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
+
+            return ParseImportAndRedirectToReview(context);
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
@@ -858,9 +860,25 @@ namespace Disco.Web.Areas.API.Controllers
                 ?? throw new ArgumentException("Invalid Device Model Id", nameof(id));
             if (decommissionReason == null)
                 throw new ArgumentNullException(nameof(decommissionReason), "Decommission Reason is required");
+
             var context = DeviceImport.BeginDecommissionImport(Database, deviceModel, decommissionReason.Value, unassignUsers.GetValueOrDefault());
-            Import_StoreContext(context);
-            return RedirectToAction(MVC.Device.ImportReview(context.SessionId));
+
+            return ParseImportAndRedirectToReview(context);
+        }
+
+        private ActionResult ParseImportAndRedirectToReview(IDeviceImportContextActions context, ActionResult finishedRoute = null)
+        {
+            var status = DeviceImportParseTask.ScheduleNow(context);
+
+            if (finishedRoute == null)
+                finishedRoute = MVC.Device.ImportReview(context.SessionId);
+
+            status.SetFinishedUrl(Url.Action(finishedRoute));
+
+            if (status.WaitUntilFinished(TimeSpan.FromSeconds(2)))
+                return RedirectToAction(finishedRoute);
+            else
+                return RedirectToAction(MVC.Config.Logging.TaskStatus(status.SessionId));
         }
 
         #endregion

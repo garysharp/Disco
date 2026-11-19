@@ -20,51 +20,26 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            if (DataReader.TryGetNullableBool(ColumnIndex, out parsedValue))
-            {
+            if (valueReader.TryGetNullableBool(out parsedValue))
                 friendlyValue = parsedValue.ToString();
-            }
             else
-            {
                 return Error("Expected a Boolean expression (True, 1, Yes, On, False, 0, No, Off)");
-            }
 
             friendlyValue = parsedValue?.ToString() ?? "Not Set";
-
-            if (parsedValue.HasValue && parsedValue.Value == true)
-            {
-                // Check Decommissioned
-                bool? importDecommissioning = null;
-                int? decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
-                int? decommissionedReasonIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedReason);
-                if (decommissionedDateIndex.HasValue || decommissionedReasonIndex.HasValue)
-                {
-                    importDecommissioning = (decommissionedDateIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedDateIndex.Value))) ||
-                        (decommissionedReasonIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedReasonIndex.Value)));
-                }
-
-                if (importDecommissioning.HasValue && importDecommissioning.Value)
-                    return Error("Cannot enrol a device being decommissioned");
-
-                if (ExistingDevice != null && ExistingDevice.DecommissionedDate.HasValue && !importDecommissioning.HasValue)
-                {
-                    return Error("Cannot enrol a decommissioned device");
-                }
-            }
 
             if (!parsedValue.HasValue)
             {
                 return Success(EntityState.Unchanged);
             }
-            else if (ExistingDevice == null && parsedValue.Value != false) // Default: True
+            else if (existingDevice == null && !parsedValue.Value) // Default: True
             {
                 return Success(EntityState.Added);
             }
-            else if (ExistingDevice != null && ExistingDevice.AllowUnauthenticatedEnrol != parsedValue)
+            else if (existingDevice != null && existingDevice.AllowUnauthenticatedEnrol != parsedValue)
             {
-                friendlyPreviousValue = ExistingDevice.AllowUnauthenticatedEnrol.ToString();
+                friendlyPreviousValue = existingDevice.AllowUnauthenticatedEnrol.ToString();
 
                 return Success(EntityState.Modified);
             }
@@ -72,13 +47,30 @@ namespace Disco.Services.Devices.Importing.Fields
                 return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Parsed(DeviceImportDatabaseParsingState state, Device existingDevice, IEnumerable<IDeviceImportRecord> records, IDeviceImportRecord record)
+        {
+            if (parsedValue.GetValueOrDefault())
+            {
+                // Check Decommissioned
+                var (isDecommissioning, isRecommissioning) = record.GetDecommissioningState();
+
+                if (isDecommissioning)
+                    return Error("Cannot enrol a device being decommissioned");
+
+                if (existingDevice != null && existingDevice.DecommissionedDate.HasValue && !isRecommissioning)
+                    return Error("Cannot enrol a decommissioned device");
+            }
+
+            return true;
+        }
+
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (parsedValue.HasValue &&
                 (FieldAction == EntityState.Modified ||
                 FieldAction == EntityState.Added))
             {
-                Device.AllowUnauthenticatedEnrol = parsedValue.Value;
+                device.AllowUnauthenticatedEnrol = parsedValue.Value;
 
                 return true;
             }
@@ -88,10 +80,10 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("trust enrol", StringComparison.OrdinalIgnoreCase) >= 0 ||
                     h.Name.IndexOf("enrolment trusted", StringComparison.OrdinalIgnoreCase) >= 0 ||
@@ -99,7 +91,7 @@ namespace Disco.Services.Devices.Importing.Fields
                     );
 
             // All Boolean
-            possibleColumns = possibleColumns.Where(h => DataReader.TestAllNullableBool(h.Index)).ToList();
+            possibleColumns = possibleColumns.Where(h => dataReader.TestAllNullableBool(h.Index)).ToList();
 
             return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }

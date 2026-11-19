@@ -140,6 +140,9 @@ namespace Disco.Services.Interop.ActiveDirectory
         }
         public ADUserAccount RetrieveADUserAccountByUserPrincipalName(string userPrincipalName, string[] additionalProperties = null)
         {
+            if (!Domain.CanContainUserPrincipalName(userPrincipalName))
+                return null;
+
             string[] loadProperites = (additionalProperties != null && additionalProperties.Length > 0)
                 ? ADUserAccount.LoadProperties.Concat(additionalProperties).ToArray()
                 : ADUserAccount.LoadProperties;

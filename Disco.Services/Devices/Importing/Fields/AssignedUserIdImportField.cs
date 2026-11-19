@@ -42,9 +42,9 @@ namespace Disco.Services.Devices.Importing.Fields
             return field;
         }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            var value = friendlyValue = DataReader.GetString(ColumnIndex);
+            var value = friendlyValue = valueReader.GetString();
 
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -70,7 +70,7 @@ namespace Disco.Services.Devices.Importing.Fields
                 // Try Database
                 using (var database = new DiscoDataContext())
                 {
-                    User user = database.Users.FirstOrDefault(u => u.UserId == parsedValue);
+                    var user = database.Users.FirstOrDefault(u => u.UserId == parsedValue);
                     try
                     {
                         // Try Updating from AD
@@ -84,34 +84,16 @@ namespace Disco.Services.Devices.Importing.Fields
                     parsedValue = user.UserId;
                     friendlyValue = $"{user.DisplayName} [{user.UserId}]";
                 }
-
-                // Check Decommissioned
-                bool? importDecommissioning = null;
-                int? decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
-                int? decommissionedReasonIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedReason);
-                if (decommissionedDateIndex.HasValue || decommissionedReasonIndex.HasValue)
-                {
-                    importDecommissioning = (decommissionedDateIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedDateIndex.Value))) ||
-                        (decommissionedReasonIndex.HasValue && !string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedReasonIndex.Value)));
-                }
-
-                if (importDecommissioning.HasValue && importDecommissioning.Value)
-                    return Error("Cannot assign a user to a device being decommissioned");
-
-                if (ExistingDevice != null && ExistingDevice.DecommissionedDate.HasValue && !importDecommissioning.HasValue)
-                {
-                    return Error("Cannot assign a user to a decommissioned device");
-                }
             }
 
-            if (ExistingDevice == null && parsedValue != null)
+            if (existingDevice == null && parsedValue != null)
             {
                 return Success(EntityState.Added);
             }
-            else if (ExistingDevice != null && ExistingDevice.AssignedUserId != parsedValue)
+            else if (existingDevice != null && existingDevice.AssignedUserId != parsedValue)
             {
-                if (ExistingDevice.AssignedUserId != null)
-                    friendlyPreviousValue = $"{ExistingDevice.AssignedUser.DisplayName} [{ExistingDevice.AssignedUser.UserId}]";
+                if (existingDevice.AssignedUserId != null)
+                    friendlyPreviousValue = $"{existingDevice.AssignedUser.DisplayName} [{existingDevice.AssignedUser.UserId}]";
                 else
                     friendlyPreviousValue = null;
 
@@ -121,15 +103,32 @@ namespace Disco.Services.Devices.Importing.Fields
                 return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Parsed(DeviceImportDatabaseParsingState state, Device existingDevice, IEnumerable<IDeviceImportRecord> records, IDeviceImportRecord record)
+        {
+            if (parsedValue != null)
+            {
+                // Check Decommissioned
+                var (isDecommissioning, isRecommissioning) = record.GetDecommissioningState();
+
+                if (isDecommissioning)
+                    return Error("Cannot assign a user to a device being decommissioned");
+
+                if (existingDevice != null && existingDevice.DecommissionedDate.HasValue && !isRecommissioning)
+                    return Error("Cannot assign a user to a decommissioned device");
+            }
+
+            return true;
+        }
+
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Modified)
             {
                 // Remove Current Assignments
-                var currentAssignments = Device.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue);
+                var currentAssignments = device.DeviceUserAssignments.Where(dua => !dua.UnassignedDate.HasValue);
                 foreach (var currentAssignment in currentAssignments)
                 {
-                    currentAssignment.Unassign(Database);
+                    currentAssignment.Unassign(database);
                 }
             }
 
@@ -138,22 +137,22 @@ namespace Disco.Services.Devices.Importing.Fields
                 // Add Assignment
                 if (parsedValue != null)
                 {
-                    var user = Database.Users.FirstOrDefault(u => u.UserId == parsedValue);
+                    var user = database.Users.FirstOrDefault(u => u.UserId == parsedValue);
                     var assignment = new DeviceUserAssignment()
                     {
-                        Device = Device,
-                        DeviceSerialNumber = Device.SerialNumber,
+                        Device = device,
+                        DeviceSerialNumber = device.SerialNumber,
                         AssignedUserId = user.UserId,
                         AssignedUser = user,
                         AssignedDate = DateTime.Now
                     };
-                    Database.DeviceUserAssignments.Add(assignment);
-                    Device.AssignedUser = user;
-                    Device.AssignedUserId = user.UserId;
+                    database.DeviceUserAssignments.Add(assignment);
+                    device.AssignedUser = user;
+                    device.AssignedUserId = user.UserId;
                 }
                 else
                 {
-                    Device.AssignedUserId = null;
+                    device.AssignedUserId = null;
                 }
 
                 return true;
@@ -164,35 +163,33 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
+        public override void Applied(DiscoDataContext database, Device device, ref bool deviceADDescriptionSet)
         {
-            if (!DeviceADDescriptionSet)
+            if (!deviceADDescriptionSet &&
+                ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
             {
-                if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
-                {
-                    var adAccount = Device.ActiveDirectoryAccount();
+                var adAccount = device.ActiveDirectoryAccount();
 
-                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                {
+                    try
                     {
-                        try
-                        {
-                            adAccount.SetDescription(Device);
-                        }
-                        catch (Exception ex)
-                        {
-                            SystemLog.LogWarning($"Unable to update AD Machine Account Description for {Device.DeviceDomainId}: {ex.Message}");
-                            throw;
-                        }
-                        DeviceADDescriptionSet = true;
+                        adAccount.SetDescription(device);
                     }
+                    catch (Exception ex)
+                    {
+                        SystemLog.LogWarning($"Unable to update AD Machine Account Description for {device.DeviceDomainId}: {ex.Message}");
+                        throw;
+                    }
+                    deviceADDescriptionSet = true;
                 }
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("user", StringComparison.OrdinalIgnoreCase) >= 0);
 

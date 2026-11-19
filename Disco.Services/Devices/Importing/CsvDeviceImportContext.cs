@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Disco.Services.Devices.Importing
 {
-    public class CsvDeviceImportContext : BaseDeviceImportContext
+    public class CsvDeviceImportContext : DeviceImportContextBase
     {
         private List<string[]> rawData;
         private bool hasHeaderRow;
@@ -30,7 +30,7 @@ namespace Disco.Services.Devices.Importing
 
         public override IDeviceImportDataReader GetDataReader()
         {
-            return new CsvDeviceImportDataReader(this, rawData, hasHeaderRow);
+            return new CsvDeviceImportDataReader(rawData, hasHeaderRow);
         }
 
         private void ParseCsv(Stream CsvStream)

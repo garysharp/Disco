@@ -684,13 +684,15 @@
   margin-top: 10px;
   display: none;
 }
-#Devices_Import #ImportFile {
-  width: 96%;
-  margin-bottom: 8px;
+#Devices_Import {
+  width: 700px;
+  margin: 0 auto;
+}
+#Devices_Import #Devices_Import_Modes button {
+  padding-right: 10px;
 }
 #Devices_Import #Devices_Import_Documentation {
-  width: 700px;
-  margin: 20px auto;
+  margin-top: 20px;
 }
 #Devices_Import #Devices_Import_Documentation > table > tbody th:first-child {
   width: 220px;
@@ -705,6 +707,10 @@
 #Devices_Import_Completed_Dialog i {
   margin-right: 10px;
   color: #60A917;
+}
+#Devices_Import_Custom_Dialog {
+  text-align: center;
+  padding: 15px;
 }
 #Devices_Import_Loading_Dialog {
   padding-top: 50px;

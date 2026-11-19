@@ -20,23 +20,24 @@ namespace Disco.Services.Tasks
 
         Exception TaskException { get; }
 
-        void UpdateStatus(byte Progress);
-        void UpdateStatus(double Progress);
-        void UpdateStatus(string CurrentDescription);
-        void UpdateStatus(byte Progress, string CurrentDescription);
-        void UpdateStatus(double Progress, string CurrentDescription);
-        void UpdateStatus(byte Progress, string CurrentProcess, string CurrentDescription);
-        void UpdateStatus(double Progress, string CurrentProcess, string CurrentDescription);
+        void UpdateStatus(byte progress);
+        void UpdateStatus(double progress);
+        void UpdateStatus(int progressIndex, int progressCount, string currentDescription);
+        void UpdateStatus(string currentDescription);
+        void UpdateStatus(byte progress, string currentDescription);
+        void UpdateStatus(double progress, string currentDescription);
+        void UpdateStatus(byte progress, string currentProcess, string currentDescription);
+        void UpdateStatus(double progress, string currentProcess, string currentDescription);
 
-        void SetFinishedUrl(string FinishedUrl);
-        void SetFinishedMessage(string FinishedMessage);
+        void SetFinishedUrl(string finishedUrl);
+        void SetFinishedMessage(string finishedMessage);
         void Finished();
-        void Finished(string FinishedMessage);
-        void Finished(string FinishedMessage, string FinishedUrl);
+        void Finished(string finishedMessage);
+        void Finished(string finishedMessage, string finishedUrl);
 
-        void SetTaskException(Exception TaskException);
+        void SetTaskException(Exception taskException);
 
-        void LogWarning(string Message);
-        void LogInformation(string Message);
+        void LogWarning(string message);
+        void LogInformation(string message);
     }
 }

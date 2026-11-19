@@ -321,9 +321,9 @@ WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbod
             #line hidden
             
             #line 47 "..\..\Views\Device\ImportHeaders.cshtml"
-                 using (var dataReader = Model.Context.GetDataReader())
-                {
-                    for (int r = 0; r < Math.Min(10, Model.Context.RecordCount); r++)
+                  
+                    var dataReader = Model.ContextBase.GetDataReader();
+                    for (int r = 0; r < Math.Min(10, Model.ContextBase.RecordCount); r++)
                     {
                         dataReader.Read();
 
@@ -340,7 +340,7 @@ WriteLiteral("                        <tr>\r\n");
             #line hidden
             
             #line 53 "..\..\Views\Device\ImportHeaders.cshtml"
-                             for (int c = 0; c < Model.Context.ColumnCount; c++)
+                             for (int c = 0; c < Model.ContextBase.ColumnCount; c++)
                             {
 
             
@@ -363,7 +363,7 @@ WriteLiteral(">");
 
             
             #line 55 "..\..\Views\Device\ImportHeaders.cshtml"
-                                                     Write(dataReader.GetString(c));
+                                                     Write(dataReader.GetValue(c).GetString());
 
             
             #line default
@@ -382,12 +382,11 @@ WriteLiteral("                        </tr>\r\n");
             
             #line 58 "..\..\Views\Device\ImportHeaders.cshtml"
                     }
-                }
-
+                
             
             #line default
             #line hidden
-WriteLiteral("            </tbody>\r\n        </table>\r\n    </div>\r\n    <div");
+WriteLiteral("\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n    <div");
 
 WriteLiteral(" class=\"actionBar\"");
 

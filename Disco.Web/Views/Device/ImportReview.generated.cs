@@ -680,7 +680,7 @@ WriteLiteral(">\r\n");
             #line hidden
             
             #line 123 "..\..\Views\Device\ImportReview.cshtml"
-         if (Model.Context.AllowBacktracking)
+         if (Model.ContextActions.AllowBacktracking)
         {
 
             
@@ -690,14 +690,14 @@ WriteLiteral("            <a");
 
 WriteLiteral(" id=\"Devices_Import_Review_ChangeHeaders\"");
 
-WriteAttribute("href", Tuple.Create(" href=\"", 6658), Tuple.Create("\"", 6727)
+WriteAttribute("href", Tuple.Create(" href=\"", 6665), Tuple.Create("\"", 6734)
             
             #line 125 "..\..\Views\Device\ImportReview.cshtml"
-, Tuple.Create(Tuple.Create("", 6665), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))
+, Tuple.Create(Tuple.Create("", 6672), Tuple.Create<System.Object, System.Int32>(Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))
             
             #line default
             #line hidden
-, 6665), false)
+, 6672), false)
 );
 
 WriteLiteral(" class=\"button\"");
@@ -706,7 +706,7 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-caret-left\"");
 
-WriteLiteral("></i>Change Import Columns</a>\r\n");
+WriteLiteral("></i> Change Import Columns</a>\r\n");
 
             
             #line 126 "..\..\Views\Device\ImportReview.cshtml"
@@ -735,7 +735,7 @@ WriteLiteral(" disabled><i");
 
 WriteLiteral(" class=\"fa fa-wrench\"");
 
-WriteLiteral("></i>Apply Device Import</button>\r\n");
+WriteLiteral("></i> Apply Device Import</button>\r\n");
 
             
             #line 130 "..\..\Views\Device\ImportReview.cshtml"
@@ -774,7 +774,7 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-wrench\"");
 
-WriteLiteral("></i>Apply Device Import</button>\r\n");
+WriteLiteral("></i> Apply Device Import</button>\r\n");
 
             
             #line 137 "..\..\Views\Device\ImportReview.cshtml"

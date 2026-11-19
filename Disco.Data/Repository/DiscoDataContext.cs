@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Repository;
 using System;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
@@ -7,11 +8,27 @@ namespace Disco.Data.Repository
 {
     public class DiscoDataContext : DbContext
     {
-        private Lazy<Configuration.SystemConfiguration> _Configuration;
+        private readonly Lazy<Configuration.SystemConfiguration> configuration;
 
         public DiscoDataContext()
         {
-            _Configuration = new Lazy<Configuration.SystemConfiguration>(() => new Configuration.SystemConfiguration(this));
+            configuration = CreateConfiguration();
+        }
+
+        public DiscoDataContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+            configuration = CreateConfiguration();
+        }
+
+        public DiscoDataContext(DbConnection existingConnection, bool contextOwnsConnection)
+            : base(existingConnection, contextOwnsConnection)
+        {
+            configuration = CreateConfiguration();
+        }
+
+        private Lazy<Configuration.SystemConfiguration> CreateConfiguration()
+        {
+            return new Lazy<Configuration.SystemConfiguration>(() => new Configuration.SystemConfiguration(this));
         }
 
         public virtual DbSet<ConfigurationItem> ConfigurationItems { get; set; }
@@ -60,7 +77,7 @@ namespace Disco.Data.Repository
         {
             get
             {
-                return _Configuration.Value;
+                return configuration.Value;
             }
         }
 
@@ -80,12 +97,10 @@ namespace Disco.Data.Repository
         // Hook for Repository Monitor
         public override int SaveChanges()
         {
-            int changeCount = 0;
-
             // Notify before changes are committed
             var changes = Monitor.RepositoryMonitor.BeforeSaveChanges(this);
 
-            changeCount = base.SaveChanges();
+            var changeCount = base.SaveChanges();
 
             if (changes.Length > 0)
             {

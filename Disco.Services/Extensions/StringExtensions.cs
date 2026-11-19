@@ -118,11 +118,6 @@ namespace Disco
         }
 
         public static string NullOrTrimmed(this string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-                return null;
-            else
-                return value.Trim();
-        }
+            => value?.Trim();
     }
 }

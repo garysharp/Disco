@@ -81,6 +81,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.7, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.7\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.TimeProvider, Version=10.0.0.7, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.TimeProvider.10.0.7\lib\net462\Microsoft.Bcl.TimeProvider.dll</HintPath>
     </Reference>
@@ -380,22 +383,33 @@
     <Compile Include="Devices\DeviceFlags\DeviceFlagService.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagDeviceAssignedUsersManagedGroup.cs" />
     <Compile Include="Devices\DeviceFlags\DeviceFlagDevicesManagedGroup.cs" />
-    <Compile Include="Devices\Importing\DeviceDecommissionImportContext.cs" />
-    <Compile Include="Devices\Importing\DeviceDecommissionImportRecord.cs" />
+    <Compile Include="Devices\Importing\Decommissioning\DeviceDecommissionImportContext.cs" />
+    <Compile Include="Devices\Importing\Decommissioning\DeviceDecommissionImportRecord.cs" />
+    <Compile Include="Devices\Importing\DeviceImportHelpers.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDnsHostNameImportField.cs" />
+    <Compile Include="Devices\Importing\IDeviceImportContextActions.cs" />
+    <Compile Include="Devices\Importing\IDeviceImportDataReader.cs" />
+    <Compile Include="Devices\Importing\IDeviceImportValueReader.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneAssignedUserIdImportField.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneDeviceCheckInDateImportField.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneDeviceImport.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneCsvDeviceRecord.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneDeviceImportColumn.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneDeviceComputerNameImportField.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneDeviceModelImportField.cs" />
+    <Compile Include="Devices\Importing\Intune\IntuneDeviceRecord.cs" />
     <Compile Include="Documents\DocumentExport.cs" />
     <Compile Include="Exporting\Exporter.cs" />
     <Compile Include="Exporting\ExportTask.cs" />
     <Compile Include="Exporting\ExportTaskContext.cs" />
-    <Compile Include="Devices\Importing\BaseDeviceImportContext.cs" />
+    <Compile Include="Devices\Importing\DeviceImportContextBase.cs" />
     <Compile Include="Devices\Importing\CsvDeviceImportDataReader.cs" />
     <Compile Include="Devices\Importing\DeviceImport.cs" />
     <Compile Include="Devices\Importing\DeviceImportApplyTask.cs" />
     <Compile Include="Devices\Importing\CsvDeviceImportContext.cs" />
-    <Compile Include="Devices\Importing\DeviceImportDatabaseCache.cs" />
+    <Compile Include="Devices\Importing\DeviceImportDatabaseParsingState.cs" />
     <Compile Include="Devices\Importing\DeviceImportFieldBase.cs" />
     <Compile Include="Devices\Importing\DeviceImportColumn.cs" />
-    <Compile Include="Devices\Importing\DeviceImportInMemoryCache.cs" />
     <Compile Include="Devices\Importing\DeviceImportParseTask.cs" />
     <Compile Include="Devices\Importing\DeviceImportRecord.cs" />
     <Compile Include="Devices\Importing\Fields\BatchIdImportField.cs" />
@@ -414,7 +428,6 @@
     <Compile Include="Devices\Importing\Fields\DeviceAssetNumberImportField.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceSerialNumberImportField.cs" />
     <Compile Include="Devices\Importing\Fields\ModelIdImportField.cs" />
-    <Compile Include="Devices\Importing\IDeviceImportCache.cs" />
     <Compile Include="Devices\DeviceUpdatesHub.cs" />
     <Compile Include="Devices\Importing\XlsxDeviceImportContext.cs" />
     <Compile Include="Devices\Importing\XlsxDeviceImportDataReader.cs" />
@@ -465,6 +478,7 @@
     <Compile Include="Expressions\IExpressionPart.cs" />
     <Compile Include="Expressions\LazyDictionary.cs" />
     <Compile Include="Expressions\TextExpressionPart.cs" />
+    <Compile Include="Extensions\Csv.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\ImagingExtensions.cs" />

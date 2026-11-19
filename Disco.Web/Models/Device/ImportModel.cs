@@ -5,18 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 
 namespace Disco.Web.Models.Device
 {
     public class ImportModel : DeviceImportModel
     {
-        [Required, Display(Name = "Import File")]
-        public HttpPostedFileBase ImportFile { get; set; }
-
-        [Required, Display(Name = "Has Header")]
-        public bool HasHeader { get; set; }
-
         public IDeviceImportContext CompletedImportSessionContext { get; set; }
 
         public List<DeviceModel> DeviceModels { get; set; }
@@ -25,10 +18,10 @@ namespace Disco.Web.Models.Device
 
         public IEnumerable<Tuple<string, string, string>> HeaderTypes { get; set; }
 
+        public IntuneDeviceImportConfiguration LastIntuneDeviceImportConfiguration { get; set; }
+
         public ImportModel()
         {
-            HasHeader = true;
-
             HeaderTypes = typeof(DeviceImportFieldTypes)
                 .GetFields()
                 .Select(p => Tuple.Create(p, (DisplayAttribute)p.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault()))

@@ -4,7 +4,6 @@ using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Logging;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -22,15 +21,15 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            if (DataReader.TryGetNullableInt(ColumnIndex, out var intValue))
+            if (valueReader.TryGetNullableInt(out var intValue))
             {
                 if (!intValue.HasValue)
                 {
-                    if (ExistingDevice == null)
+                    if (existingDevice == null)
                     {
-                        intValue = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId; // Default Model for new devices
+                        intValue = state.Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId; // Default Model for new devices
                     }
                     else
                     {
@@ -46,18 +45,18 @@ namespace Disco.Services.Devices.Importing.Fields
                 return Error("The Profile Identifier must be a number");
             }
 
-            var p = Cache.DeviceProfiles.FirstOrDefault(dp => dp.Id == parsedValue);
+            var p = state.DeviceProfiles.FirstOrDefault(dp => dp.Id == parsedValue);
 
             if (p == null)
                 return Error($"The identifier ({parsedValue}) does not match any Device Profile");
 
             friendlyValue = $"{p.Description} [{p.Id}]";
 
-            if (ExistingDevice == null)
+            if (existingDevice == null)
                 return Success(EntityState.Added);
-            else if (ExistingDevice != null && ExistingDevice.DeviceProfileId != parsedValue)
+            else if (existingDevice != null && existingDevice.DeviceProfileId != parsedValue)
             {
-                var previousProfile = Cache.DeviceProfiles.FirstOrDefault(dp => dp.Id == ExistingDevice.DeviceProfileId);
+                var previousProfile = state.DeviceProfiles.FirstOrDefault(dp => dp.Id == existingDevice.DeviceProfileId);
                 friendlyPreviousValue = $"{previousProfile.Description} [{previousProfile.Id}]";
 
                 return Success(EntityState.Modified);
@@ -66,12 +65,12 @@ namespace Disco.Services.Devices.Importing.Fields
                 return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Added ||
                 FieldAction == EntityState.Modified)
             {
-                Device.DeviceProfileId = parsedValue;
+                device.DeviceProfileId = parsedValue;
                 return true;
             }
             else
@@ -80,40 +79,37 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
+        public override void Applied(DiscoDataContext database, Device device, ref bool deviceADDescriptionSet)
         {
-            if (!DeviceADDescriptionSet)
+            if (!deviceADDescriptionSet && ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
             {
-                if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
-                {
-                    var adAccount = Device.ActiveDirectoryAccount();
+                var adAccount = device.ActiveDirectoryAccount();
 
-                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                {
+                    try
                     {
-                        try
-                        {
-                            adAccount.SetDescription(Device);
-                        }
-                        catch (Exception ex)
-                        {
-                            SystemLog.LogWarning($"Unable to update AD Machine Account Description for {Device.DeviceDomainId}: {ex.Message}");
-                            throw;
-                        }
-                        DeviceADDescriptionSet = true;
+                        adAccount.SetDescription(device);
                     }
+                    catch (Exception ex)
+                    {
+                        SystemLog.LogWarning($"Unable to update AD Machine Account Description for {device.DeviceDomainId}: {ex.Message}");
+                        throw;
+                    }
+                    deviceADDescriptionSet = true;
                 }
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("profile", StringComparison.OrdinalIgnoreCase) >= 0);
 
             // All Integers Numbers
-            possibleColumns = possibleColumns.Where(h => DataReader.TestAllInt(h.Index)).ToList();
+            possibleColumns = possibleColumns.Where(h => dataReader.TestAllInt(h.Index)).ToList();
 
             // Multiple Columns, tighten column definition
             if (possibleColumns.Count() > 1)

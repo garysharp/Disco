@@ -18,22 +18,23 @@ namespace Disco.Services.Devices.Importing
         public abstract string FriendlyValue { get; }
         public abstract string FriendlyPreviousValue { get; }
 
-        public abstract bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex);
-        public abstract bool Apply(DiscoDataContext Database, Device Device);
-        public virtual void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet) { return; }
+        public abstract bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader);
+        public virtual bool Parsed(DeviceImportDatabaseParsingState state, Device existingDevice, IEnumerable<IDeviceImportRecord> records, IDeviceImportRecord record) => true;
+        public abstract bool Apply(DiscoDataContext database, Device device);
+        public virtual void Applied(DiscoDataContext database, Device device, ref bool deviceADDescriptionSet) { }
 
-        public abstract int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader);
+        public abstract int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader);
 
         #region Helpers
-        protected bool Error(string Message)
+        protected bool Error(string message)
         {
-            ErrorMessage = Message;
+            ErrorMessage = message;
             FieldAction = null;
             return false;
         }
-        protected bool Success(EntityState Action)
+        protected bool Success(EntityState action)
         {
-            FieldAction = Action;
+            FieldAction = action;
             return true;
         }
         #endregion

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace Disco.Services.Devices.Importing
+namespace Disco.Services.Devices.Importing.Decommissioning
 {
     internal class DeviceDecommissionImportRecord : IDeviceImportRecord
     {
@@ -12,7 +12,8 @@ namespace Disco.Services.Devices.Importing
         public string DeviceSerialNumber { get; }
         public IEnumerable<IDeviceImportField> Fields { get; }
         public EntityState RecordAction { get; }
-        public bool HasError { get; }
+        public bool HasError
+            => Fields.Any(f => !f.FieldAction.HasValue);
 
         public DeviceDecommissionImportRecord(Device device, int index, IEnumerable<IDeviceImportField> fields)
         {

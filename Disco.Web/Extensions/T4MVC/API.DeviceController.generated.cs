@@ -236,6 +236,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportIntuneBegin()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportIntuneBegin);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult DeviceBatchDecommission()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceBatchDecommission);
@@ -315,6 +321,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImportBegin = "ImportBegin";
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportApply = "ImportApply";
+            public readonly string ImportIntuneBegin = "ImportIntuneBegin";
             public readonly string DeviceBatchDecommission = "DeviceBatchDecommission";
             public readonly string DeviceProfileDecommission = "DeviceProfileDecommission";
             public readonly string DeviceModelDecommission = "DeviceModelDecommission";
@@ -356,6 +363,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImportBegin = "ImportBegin";
             public const string ImportParse = "ImportParse";
             public const string ImportApply = "ImportApply";
+            public const string ImportIntuneBegin = "ImportIntuneBegin";
             public const string DeviceBatchDecommission = "DeviceBatchDecommission";
             public const string DeviceProfileDecommission = "DeviceProfileDecommission";
             public const string DeviceModelDecommission = "DeviceModelDecommission";
@@ -628,6 +636,16 @@ namespace Disco.Web.Areas.API.Controllers
         public class ActionParamsClass_ImportApply
         {
             public readonly string Id = "Id";
+        }
+        static readonly ActionParamsClass_ImportIntuneBegin s_params_ImportIntuneBegin = new ActionParamsClass_ImportIntuneBegin();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportIntuneBegin ImportIntuneBeginParams { get { return s_params_ImportIntuneBegin; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportIntuneBegin
+        {
+            public readonly string file = "file";
+            public readonly string assignDeviceToPrimaryUser = "assignDeviceToPrimaryUser";
+            public readonly string defaultDeviceProfileId = "defaultDeviceProfileId";
         }
         static readonly ActionParamsClass_DeviceBatchDecommission s_params_DeviceBatchDecommission = new ActionParamsClass_DeviceBatchDecommission();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -1044,10 +1062,10 @@ namespace Disco.Web.Areas.API.Controllers
         }
 
         [NonAction]
-        partial void ImportBeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase ImportFile, bool HasHeader);
+        partial void ImportBeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase ImportFile, bool? HasHeader);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult ImportBegin(System.Web.HttpPostedFileBase ImportFile, bool HasHeader)
+        public override System.Web.Mvc.ActionResult ImportBegin(System.Web.HttpPostedFileBase ImportFile, bool? HasHeader)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportBegin);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ImportFile", ImportFile);
@@ -1078,6 +1096,20 @@ namespace Disco.Web.Areas.API.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportApply);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             ImportApplyOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ImportIntuneBeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase file, bool? assignDeviceToPrimaryUser, int? defaultDeviceProfileId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ImportIntuneBegin(System.Web.HttpPostedFileBase file, bool? assignDeviceToPrimaryUser, int? defaultDeviceProfileId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportIntuneBegin);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "file", file);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "assignDeviceToPrimaryUser", assignDeviceToPrimaryUser);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "defaultDeviceProfileId", defaultDeviceProfileId);
+            ImportIntuneBeginOverride(callInfo, file, assignDeviceToPrimaryUser, defaultDeviceProfileId);
             return callInfo;
         }
 

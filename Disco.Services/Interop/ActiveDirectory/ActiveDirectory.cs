@@ -76,10 +76,15 @@ namespace Disco.Services.Interop.ActiveDirectory
 
         public static ADUserAccount RetrieveADUserAccountByUserPrincipalName(string userPrincipalName, params string[] additionalProperties)
         {
-            var user = Context.PrimaryDomain.GetAvailableDomainController().RetrieveADUserAccountByUserPrincipalName(userPrincipalName, additionalProperties);
+            if (Context.PrimaryDomain.CanContainUserPrincipalName(userPrincipalName))
+            {
+                var user = Context.PrimaryDomain.GetAvailableDomainController().RetrieveADUserAccountByUserPrincipalName(userPrincipalName, additionalProperties);
+                if (user != null)
+                    return user;
+            }
 
-            if (user != null)
-                return user;
+            if (!Context.Domains.Any(d => d != Context.PrimaryDomain && d.CanContainUserPrincipalName(userPrincipalName)))
+                return null;
 
             if (!Context.TryGetDomainForUserPrincipalName(userPrincipalName, out var domain, out _, out var distinguishedName))
                 return null;

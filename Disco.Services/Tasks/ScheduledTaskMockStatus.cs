@@ -26,87 +26,97 @@ namespace Disco.Services.Tasks
         public ScheduledTaskMockStatus() : this("Unknown Task")
         { }
 
-        public ScheduledTaskMockStatus(string TaskName)
+        public ScheduledTaskMockStatus(string taskName)
         {
-            this.TaskName = TaskName;
+            TaskName = taskName;
         }
 
-        private byte CalculateProgressValue(byte Progress)
+        private byte CalculateProgressValue(byte progress)
         {
-            return (byte)((Progress * ProgressMultiplier) + ProgressOffset);
+            return (byte)((progress * ProgressMultiplier) + ProgressOffset);
         }
 
-        public void UpdateStatus(byte Progress)
+        public void UpdateStatus(byte progress)
         {
-            this.Progress = CalculateProgressValue(Progress);
+            Progress = CalculateProgressValue(progress);
         }
-        public void UpdateStatus(double Progress)
+        public void UpdateStatus(double progress)
         {
-            UpdateStatus((byte)Progress);
+            UpdateStatus((byte)progress);
         }
-        public void UpdateStatus(string CurrentDescription)
+        public void UpdateStatus(string currentDescription)
         {
             if (!IgnoreCurrentDescription)
-                this.CurrentDescription = CurrentDescription;
+                CurrentDescription = currentDescription;
         }
-        public void UpdateStatus(byte Progress, string CurrentDescription)
+        public void UpdateStatus(int progressIndex, int progressCount, string currentDescription)
         {
-            this.Progress = CalculateProgressValue(Progress);
+            if (progressCount <= 0)
+                UpdateStatus(0, currentDescription);
+            else
+            {
+                var progress = (byte)((progressIndex / (double)progressCount) * 100);
+                UpdateStatus(progress, currentDescription);
+            }
+        }
+        public void UpdateStatus(byte progress, string currentDescription)
+        {
+            Progress = CalculateProgressValue(progress);
             if (!IgnoreCurrentDescription)
-                this.CurrentDescription = CurrentDescription;
+                CurrentDescription = currentDescription;
         }
-        public void UpdateStatus(double Progress, string CurrentDescription)
+        public void UpdateStatus(double progress, string currentDescription)
         {
-            UpdateStatus((byte)Progress, CurrentDescription);
+            UpdateStatus((byte)progress, currentDescription);
         }
-        public void UpdateStatus(byte Progress, string CurrentProcess, string CurrentDescription)
+        public void UpdateStatus(byte progress, string currentProcess, string currentDescription)
         {
-            this.Progress = CalculateProgressValue(Progress);
+            Progress = CalculateProgressValue(progress);
             if (!IgnoreCurrentProcessChanges)
-                this.CurrentProcess = CurrentProcess;
+                CurrentProcess = currentProcess;
             if (!IgnoreCurrentDescription)
-                this.CurrentDescription = CurrentDescription;
+                CurrentDescription = currentDescription;
         }
-        public void UpdateStatus(double Progress, string CurrentProcess, string CurrentDescription)
+        public void UpdateStatus(double progress, string currentProcess, string currentDescription)
         {
-            UpdateStatus((byte)Progress, CurrentProcess, CurrentDescription);
+            UpdateStatus((byte)progress, currentProcess, currentDescription);
         }
 
-        public void SetFinishedUrl(string FinishedUrl)
+        public void SetFinishedUrl(string finishedUrl)
         {
-            this.FinishedUrl = FinishedUrl;
+            FinishedUrl = finishedUrl;
         }
-        public void SetFinishedMessage(string FinishedMessage)
+        public void SetFinishedMessage(string finishedMessage)
         {
-            this.FinishedMessage = FinishedMessage;
+            FinishedMessage = finishedMessage;
         }
         public void Finished()
         {
             Finished(FinishedMessage, FinishedUrl);
         }
-        public void Finished(string FinishedMessage)
+        public void Finished(string finishedMessage)
         {
-            Finished(FinishedMessage, FinishedUrl);
+            Finished(finishedMessage, FinishedUrl);
         }
-        public void Finished(string FinishedMessage, string FinishedUrl)
+        public void Finished(string finishedMessage, string finishedUrl)
         {
-            this.FinishedMessage = FinishedMessage;
-            this.FinishedUrl = FinishedUrl;
-        }
-
-        public void SetTaskException(Exception TaskException)
-        {
-            this.TaskException = TaskException;
+            FinishedMessage = finishedMessage;
+            FinishedUrl = finishedUrl;
         }
 
-        public void LogWarning(string Message)
+        public void SetTaskException(Exception taskException)
         {
-            ScheduledTasksLog.LogScheduledTaskWarning(TaskName, null, Message);
+            TaskException = taskException;
         }
 
-        public void LogInformation(string Message)
+        public void LogWarning(string message)
         {
-            ScheduledTasksLog.LogScheduledTaskInformation(TaskName, null, Message);
+            ScheduledTasksLog.LogScheduledTaskWarning(TaskName, null, message);
+        }
+
+        public void LogInformation(string message)
+        {
+            ScheduledTasksLog.LogScheduledTaskInformation(TaskName, null, message);
         }
 
         [Obsolete("Use ScheduledTaskMockStatus.Create(TaskName) instead")]
@@ -115,9 +125,9 @@ namespace Disco.Services.Tasks
             return new ScheduledTaskMockStatus();
         }
 
-        public static ScheduledTaskMockStatus Create(string TaskName)
+        public static ScheduledTaskMockStatus Create(string taskName)
         {
-            return new ScheduledTaskMockStatus(TaskName);
+            return new ScheduledTaskMockStatus(taskName);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Disco.Services.Devices.Importing
 {
-    public class XlsxDeviceImportContext : BaseDeviceImportContext
+    public class XlsxDeviceImportContext : DeviceImportContextBase
     {
         private bool hasHeaderRow;
         private List<object[]> rawData;
@@ -35,7 +35,7 @@ namespace Disco.Services.Devices.Importing
 
         public override IDeviceImportDataReader GetDataReader()
         {
-            return new XlsxDeviceImportDataReader(this, rawData, hasHeaderRow);
+            return new XlsxDeviceImportDataReader(rawData, hasHeaderRow);
         }
 
         private void ParseXlsx(Stream XlsxStream)

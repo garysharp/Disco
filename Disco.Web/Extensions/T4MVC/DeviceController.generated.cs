@@ -85,6 +85,12 @@ namespace Disco.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportIntune()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportIntune);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Show()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Show);
@@ -111,6 +117,7 @@ namespace Disco.Web.Controllers
             public readonly string Import = "Import";
             public readonly string ImportHeaders = "ImportHeaders";
             public readonly string ImportReview = "ImportReview";
+            public readonly string ImportIntune = "ImportIntune";
             public readonly string Show = "Show";
         }
 
@@ -123,6 +130,7 @@ namespace Disco.Web.Controllers
             public const string Import = "Import";
             public const string ImportHeaders = "ImportHeaders";
             public const string ImportReview = "ImportReview";
+            public const string ImportIntune = "ImportIntune";
             public const string Show = "Show";
         }
 
@@ -169,6 +177,14 @@ namespace Disco.Web.Controllers
         {
             public readonly string Id = "Id";
         }
+        static readonly ActionParamsClass_ImportIntune s_params_ImportIntune = new ActionParamsClass_ImportIntune();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportIntune ImportIntuneParams { get { return s_params_ImportIntune; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportIntune
+        {
+            public readonly string Id = "Id";
+        }
         static readonly ActionParamsClass_Show s_params_Show = new ActionParamsClass_Show();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Show ShowParams { get { return s_params_Show; } }
@@ -193,6 +209,7 @@ namespace Disco.Web.Controllers
                 public readonly string Export = "Export";
                 public readonly string Import = "Import";
                 public readonly string ImportHeaders = "ImportHeaders";
+                public readonly string ImportIntune = "ImportIntune";
                 public readonly string ImportReview = "ImportReview";
                 public readonly string Index = "Index";
                 public readonly string Show = "Show";
@@ -203,6 +220,7 @@ namespace Disco.Web.Controllers
             public readonly string Export = "~/Views/Device/Export.cshtml";
             public readonly string Import = "~/Views/Device/Import.cshtml";
             public readonly string ImportHeaders = "~/Views/Device/ImportHeaders.cshtml";
+            public readonly string ImportIntune = "~/Views/Device/ImportIntune.cshtml";
             public readonly string ImportReview = "~/Views/Device/ImportReview.cshtml";
             public readonly string Index = "~/Views/Device/Index.cshtml";
             public readonly string Show = "~/Views/Device/Show.cshtml";
@@ -322,6 +340,18 @@ namespace Disco.Web.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportReview);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
             ImportReviewOverride(callInfo, Id);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ImportIntuneOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string Id);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ImportIntune(string Id)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportIntune);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "Id", Id);
+            ImportIntuneOverride(callInfo, Id);
             return callInfo;
         }
 

@@ -17,27 +17,24 @@ namespace Disco.Services.Interop.ActiveDirectory
         private const int DomainMaintanceIntervalMinutes = 15;
         private const int SearchExceptionRetryMax = 4;
 
-        private ActiveDirectoryContext context;
+        private readonly ActiveDirectoryContext context;
         private ConcurrentStack<ADDomainController> domainControllers;
 
+        private readonly HashSet<string> upnSuffixes;
+
         private int domainControllerRoundRobin = -1;
-        private object domainMaintainLock = new object();
+        private readonly object domainMaintainLock = new object();
         private DateTime domainMaintenanceNext;
 
         public Domain Domain { get; private set; }
-        public IEnumerable<ADDomainController> DomainControllers
-        {
-            get
-            {
-                return domainControllers.ToArray();
-            }
-        }
+        public IEnumerable<ADDomainController> DomainControllers => domainControllers.ToArray();
 
-        public string Name { get; private set; }
-        public string NetBiosName { get; private set; }
-        public string DistinguishedName { get; private set; }
-        public string ConfigurationNamingContext { get; private set; }
-        public SecurityIdentifier SecurityIdentifier { get; private set; }
+        public string Name { get; }
+        public string NetBiosName { get; }
+        public string DistinguishedName { get; }
+        public string ConfigurationNamingContext { get; }
+        public SecurityIdentifier SecurityIdentifier { get; }
+        public IEnumerable<string> UpnSuffixes => upnSuffixes;
 
         public List<string> SearchContainers { get; private set; }
 
@@ -50,11 +47,6 @@ namespace Disco.Services.Interop.ActiveDirectory
             domainControllers = null;
             domainMaintenanceNext = DateTime.Now.AddMinutes(DomainMaintanceIntervalMinutes);
 
-            Initialize();
-        }
-
-        private void Initialize()
-        {
             Name = Domain.Name;
 
             var dc = Domain.FindDomainController();
@@ -74,6 +66,11 @@ namespace Disco.Services.Interop.ActiveDirectory
 
             using (var configSearchRoot = new DirectoryEntry(ldapPath + "CN=Partitions," + ConfigurationNamingContext))
             {
+                upnSuffixes = new[] { Name }
+                    .Concat(configSearchRoot.Properties["uPNSuffixes"].Cast<string>())
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
                 var configSearchFilter = $"(&(objectcategory=Crossref)(dnsRoot={Name})(netBIOSName=*))";
 
                 using (var configSearcher = new DirectorySearcher(configSearchRoot, configSearchFilter, new string[] { "NetBIOSName" }, System.DirectoryServices.SearchScope.OneLevel))
@@ -321,13 +318,9 @@ namespace Disco.Services.Interop.ActiveDirectory
         #endregion
 
         internal void UpdateSearchContainers(List<string> Containers)
-        {
-            SearchContainers = Containers ?? new List<string>();
-        }
+            => SearchContainers = Containers ?? new List<string>();
         internal void UpdateSearchEntireDomain()
-        {
-            SearchContainers = null;
-        }
+            => SearchContainers = null;
 
         #region Helpers
 
@@ -361,23 +354,25 @@ namespace Disco.Services.Interop.ActiveDirectory
             return name.ToString();
         }
 
+        public bool CanContainUserPrincipalName(string userPrincipalName)
+        {
+            if (string.IsNullOrWhiteSpace(userPrincipalName))
+                return false;
+            var index = userPrincipalName.IndexOf('@');
+            if (index < 0 || index == userPrincipalName.Length - 1)
+                return false;
+            var upnSuffix = userPrincipalName.Substring(index + 1);
+            return upnSuffixes.Contains(upnSuffix);
+        }
+
         #endregion
 
         public override string ToString()
-        {
-            return $"{Name} [{NetBiosName}]";
-        }
+            => $"{Name} [{NetBiosName}]";
 
         public override bool Equals(object obj)
-        {
-            if (obj == null || !(obj is ADDomain))
-                return false;
-            else
-                return DistinguishedName == ((ADDomain)obj).DistinguishedName;
-        }
+            => obj is ADDomain otherDomain && DistinguishedName == otherDomain.DistinguishedName;
         public override int GetHashCode()
-        {
-            return System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
-        }
+            => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(DistinguishedName);
     }
 }

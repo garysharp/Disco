@@ -15,7 +15,7 @@ namespace Disco.Services.Devices.Importing.Fields
         private string rawValue;
         private DecommissionReasons? parsedValue;
         private DecommissionReasons? previousValue;
-        private bool setDate { get; set; }
+        private bool setDate;
         private static Lazy<Dictionary<string, DecommissionReasons>> decommissionReasonsMap = new Lazy<Dictionary<string, DecommissionReasons>>(() => BuildDecommissionReasonsMap());
 
         public override DeviceImportFieldTypes FieldType { get { return DeviceImportFieldTypes.DeviceDecommissionedReason; } }
@@ -44,9 +44,9 @@ namespace Disco.Services.Devices.Importing.Fields
             return field;
         }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            var value = DataReader.GetString(ColumnIndex);
+            var value = valueReader.GetString();
 
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -66,44 +66,53 @@ namespace Disco.Services.Devices.Importing.Fields
                 }
             }
 
-            var decommissionedDateIndex = Context.GetColumnByType(DeviceImportFieldTypes.DeviceDecommissionedDate);
-            if (parsedValue.HasValue && !decommissionedDateIndex.HasValue)
+            if (existingDevice != null && existingDevice.DecommissionReason != parsedValue)
             {
-                if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(ExistingDevice, Context, DataReader, out var errorMessage))
-                    return Error(errorMessage);
-
-                setDate = true;
-            }
-            else if (parsedValue.HasValue && string.IsNullOrWhiteSpace(DataReader.GetString(decommissionedDateIndex.Value)))
-            {
-                setDate = true;
-            }
-
-            if (ExistingDevice != null && ExistingDevice.DecommissionReason != parsedValue)
-            {
-                previousValue = ExistingDevice.DecommissionReason;
+                previousValue = existingDevice.DecommissionReason;
                 return Success(EntityState.Modified);
             }
             else
                 return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Parsed(DeviceImportDatabaseParsingState state, Device existingDevice, IEnumerable<IDeviceImportRecord> records, IDeviceImportRecord record)
+        {
+            var decommissionedDateField = record.Fields.FirstOrDefault(f => f.FieldType == DeviceImportFieldTypes.DeviceDecommissionedDate);
+
+            if (parsedValue.HasValue)
+            {
+                if (decommissionedDateField == null)
+                {
+                    if (!DeviceDecommissionedDateImportField.CanDecommissionDevice(existingDevice, record, out var errorMessage))
+                        return Error(errorMessage);
+
+                    setDate = true;
+                }
+                else if (decommissionedDateField.RawParsedValue == null)
+                {
+                    setDate = true;
+                }
+            }
+
+            return true;
+        }
+
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Modified)
             {
                 // Decommission or Recommission Device
-                Device.DecommissionReason = parsedValue;
+                device.DecommissionReason = parsedValue;
 
                 if (setDate)
                 {
-                    if (parsedValue.HasValue && !Device.DecommissionedDate.HasValue)
+                    if (parsedValue.HasValue && !device.DecommissionedDate.HasValue)
                     {
-                        Device.DecommissionedDate = DateTime.Now;
+                        device.DecommissionedDate = DateTime.Now;
                     }
-                    else if (!parsedValue.HasValue && Device.DecommissionedDate.HasValue)
+                    else if (!parsedValue.HasValue && device.DecommissionedDate.HasValue)
                     {
-                        Device.DecommissionedDate = null;
+                        device.DecommissionedDate = null;
                     }
                 }
 
@@ -115,50 +124,47 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override void Applied(DiscoDataContext Database, Device Device, ref bool DeviceADDescriptionSet)
+        public override void Applied(DiscoDataContext database, Device device, ref bool deviceADDescriptionSet)
         {
             // Only Enable/Disable if DeviceDecommissionedDate field is not present
-            if (setDate)
+            if (setDate && ActiveDirectory.IsValidDomainAccountId(device.DeviceDomainId))
             {
-                if (ActiveDirectory.IsValidDomainAccountId(Device.DeviceDomainId))
+                var adAccount = device.ActiveDirectoryAccount();
+
+                if (adAccount != null && !adAccount.IsCriticalSystemObject)
                 {
-                    var adAccount = Device.ActiveDirectoryAccount();
-
-                    if (adAccount != null && !adAccount.IsCriticalSystemObject)
+                    if (device.DecommissionedDate.HasValue)
                     {
-                        if (Device.DecommissionedDate.HasValue)
-                        {
-                            // Disable AD Account
-                            adAccount.DisableAccount();
-                        }
-                        else
-                        {
-                            // Enable AD Account
-                            adAccount.EnableAccount();
-                        }
+                        // Disable AD Account
+                        adAccount.DisableAccount();
+                    }
+                    else
+                    {
+                        // Enable AD Account
+                        adAccount.EnableAccount();
+                    }
 
-                        if (!DeviceADDescriptionSet)
+                    if (!deviceADDescriptionSet)
+                    {
+                        try
                         {
-                            try
-                            {
-                                adAccount.SetDescription(Device);
-                            }
-                            catch (Exception ex)
-                            {
-                                SystemLog.LogWarning($"Unable to update AD Machine Account Description for {Device.DeviceDomainId}: {ex.Message}");
-                                throw;
-                            }
-                            DeviceADDescriptionSet = true;
+                            adAccount.SetDescription(device);
                         }
+                        catch (Exception ex)
+                        {
+                            SystemLog.LogWarning($"Unable to update AD Machine Account Description for {device.DeviceDomainId}: {ex.Message}");
+                            throw;
+                        }
+                        deviceADDescriptionSet = true;
                     }
                 }
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("decommission reason", StringComparison.OrdinalIgnoreCase) >= 0 ||
                     h.Name.IndexOf("decommissionreason", StringComparison.OrdinalIgnoreCase) >= 0 ||

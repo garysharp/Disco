@@ -2,7 +2,6 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -20,9 +19,9 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue; } }
         public override string FriendlyPreviousValue { get { return previousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            var value = DataReader.GetString(ColumnIndex);
+            var value = valueReader.GetString();
 
             if (string.IsNullOrWhiteSpace(value))
                 parsedValue = null;
@@ -38,15 +37,15 @@ namespace Disco.Services.Devices.Importing.Fields
             if (parsedValue.IndexOf('.') >= 0)
                 return Error("Cannot contain a period character");
 
-            if (ExistingDevice != null)
+            if (existingDevice != null)
             {
-                if (string.Equals(parsedValue, ExistingDevice.DnsHostName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(parsedValue, existingDevice.DnsHostName, StringComparison.OrdinalIgnoreCase))
                     return Success(EntityState.Unchanged);
-                if (ExistingDevice.EnrolledDate.HasValue)
+                if (existingDevice.EnrolledDate.HasValue)
                     return Error("The Device DNS Host Name cannot be changed after a device has enrolled");
                 else
                 {
-                    previousValue = ExistingDevice.DnsHostName;
+                    previousValue = existingDevice.DnsHostName;
                     return Success(EntityState.Modified);
                 }
             }
@@ -54,12 +53,12 @@ namespace Disco.Services.Devices.Importing.Fields
             return Success(EntityState.Added);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Added ||
                 FieldAction == EntityState.Modified)
             {
-                Device.DnsHostName = parsedValue;
+                device.DnsHostName = parsedValue;
                 return true;
             }
             else
@@ -68,10 +67,10 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("dns", StringComparison.OrdinalIgnoreCase) >= 0);
 

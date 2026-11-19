@@ -2,7 +2,6 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -19,9 +18,9 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return parsedValue; } }
         public override string FriendlyPreviousValue { get { return previousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            var value = DataReader.GetString(ColumnIndex);
+            var value = valueReader.GetString();
 
             if (string.IsNullOrWhiteSpace(value))
                 parsedValue = null;
@@ -32,23 +31,23 @@ namespace Disco.Services.Devices.Importing.Fields
                     return Error("Cannot be more than 40 characters");
             }
 
-            if (ExistingDevice == null && parsedValue != null)
+            if (existingDevice == null && parsedValue != null)
                 return Success(EntityState.Added);
-            else if (ExistingDevice != null && ExistingDevice.AssetNumber != parsedValue)
+            else if (existingDevice != null && existingDevice.AssetNumber != parsedValue)
             {
-                previousValue = ExistingDevice.AssetNumber;
+                previousValue = existingDevice.AssetNumber;
                 return Success(EntityState.Modified);
             }
             else
                 return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Added ||
                 FieldAction == EntityState.Modified)
             {
-                Device.AssetNumber = parsedValue;
+                device.AssetNumber = parsedValue;
                 return true;
             }
             else
@@ -57,10 +56,10 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("asset", StringComparison.OrdinalIgnoreCase) >= 0);
 

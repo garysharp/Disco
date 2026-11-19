@@ -13,7 +13,7 @@ namespace Disco.Services.Devices.Importing
         public IDeviceImportField GetHandlerInstance()
         {
             if (Handler == null)
-                throw new InvalidOperationException($"No field handler available for this type {Type.ToString()}.");
+                throw new InvalidOperationException($"No field handler available for this type {Type}.");
 
             return (IDeviceImportField)Activator.CreateInstance(Handler);
         }

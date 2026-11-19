@@ -1,6 +1,4 @@
-﻿using Disco.Data.Repository;
-using Disco.Models.Services.Devices.Importing;
-using Disco.Services.Tasks;
+﻿using Disco.Services.Tasks;
 using Quartz;
 using System;
 
@@ -8,20 +6,18 @@ namespace Disco.Services.Devices.Importing
 {
     public class DeviceImportApplyTask : ScheduledTask
     {
-        private const string JobDataMapContext = "Context";
-
         public override string TaskName { get { return "Import Devices - Applying Changes"; } }
         public override bool SingleInstanceTask { get { return false; } }
         public override bool CancelInitiallySupported { get { return false; } }
 
-        public static ScheduledTaskStatus ScheduleNow(IDeviceImportContext Context)
+        public static ScheduledTaskStatus ScheduleNow(IDeviceImportContextActions context)
         {
-            if (Context == null)
-                throw new ArgumentNullException(nameof(Context));
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
 
             // Build Data Map
             var task = new DeviceImportApplyTask();
-            JobDataMap taskData = new JobDataMap() { { JobDataMapContext, Context } };
+            JobDataMap taskData = new JobDataMap() { { nameof(IDeviceImportContextActions), context } };
 
             // Schedule Task
             return task.ScheduleTask(taskData);
@@ -29,12 +25,9 @@ namespace Disco.Services.Devices.Importing
 
         protected override void ExecuteTask()
         {
-            var context = (IDeviceImportContext)ExecutionContext.JobDetail.JobDataMap[JobDataMapContext];
+            var context = (IDeviceImportContextActions)ExecutionContext.JobDetail.JobDataMap[nameof(IDeviceImportContextActions)];
 
-            using (DiscoDataContext Database = new DiscoDataContext())
-            {
-                context.AffectedRecords = context.ApplyRecords(Database, Status);
-            }
+            context.Apply(Status);
 
             Status.SetFinishedMessage($"Successfully imported/updated {context.AffectedRecords} device{(context.AffectedRecords == 1 ? null : "s")}");
         }

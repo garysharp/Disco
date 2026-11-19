@@ -1,5 +1,6 @@
 ﻿using Disco.Data.Repository;
 using Disco.Models.Services.Devices;
+using Disco.Models.Services.Devices.Importing;
 
 namespace Disco.Data.Configuration.Modules
 {
@@ -18,6 +19,12 @@ namespace Disco.Data.Configuration.Modules
         public bool EnrollmentLegacyDiscoveryDisabled
         {
             get => Get(false);
+            set => Set(value);
+        }
+
+        public IntuneDeviceImportConfiguration LastIntuneImportConfiguration
+        {
+            get => Get(new IntuneDeviceImportConfiguration());
             set => Set(value);
         }
     }

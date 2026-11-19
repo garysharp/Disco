@@ -13,11 +13,11 @@ namespace Disco.Services.Devices.Importing.Fields
         private const int maxLength = 60;
         private string parsedValue;
 
-        public override DeviceImportFieldTypes FieldType { get { return DeviceImportFieldTypes.DeviceSerialNumber; } }
+        public override DeviceImportFieldTypes FieldType => DeviceImportFieldTypes.DeviceSerialNumber;
 
-        public override object RawParsedValue { get { return parsedValue; } }
-        public override string FriendlyValue { get { return parsedValue; } }
-        public override string FriendlyPreviousValue { get { return parsedValue; } }
+        public override object RawParsedValue => parsedValue;
+        public override string FriendlyValue => parsedValue;
+        public override string FriendlyPreviousValue => parsedValue;
 
         public static DeviceSerialNumberImportField Create(Device device)
         {
@@ -29,9 +29,9 @@ namespace Disco.Services.Devices.Importing.Fields
             return field;
         }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            var value = DataReader.GetString(ColumnIndex);
+            var value = valueReader.GetString();
 
             // Validate
             if (string.IsNullOrWhiteSpace(value))
@@ -47,48 +47,36 @@ namespace Disco.Services.Devices.Importing.Fields
                     return Error(@"The '\' character is not allowed.");
             }
 
-            // Duplicate
-            var duplicate = PreviousRecords
-                .Where(r => IsDeviceSerialNumberValid(r.DeviceSerialNumber))
-                .FirstOrDefault(r => r.DeviceSerialNumber.Equals(parsedValue, StringComparison.OrdinalIgnoreCase));
-            if (duplicate != null)
-                return Error($"This Device Serial Number was already present on Row {DataReader.GetRowNumber(duplicate.Index)}");
-
             // No action required
             return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Parsed(DeviceImportDatabaseParsingState state, Device existingDevice, IEnumerable<IDeviceImportRecord> records, IDeviceImportRecord record)
+        {
+            var duplicate = records
+                .TakeWhile(r => r != record)
+                .FirstOrDefault(r => string.Equals(parsedValue, r.DeviceSerialNumber, StringComparison.OrdinalIgnoreCase));
+
+            if (duplicate != null)
+                return Error($"The Device Serial Number was already present on Row {duplicate.Index}");
+
+            return true;
+        }
+
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             // Do nothing for Device Serial Number
             return false;
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // 'serial' in column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn && h.Name.IndexOf("serial", StringComparison.OrdinalIgnoreCase) >= 0);
 
             // All Values
-            possibleColumns = possibleColumns.Where(h => DataReader.TestAllNotEmpty(h.Index)).ToList();
-
-            if (possibleColumns.Count() > 1)
-            {
-                // Hunt Database
-                var possibleColumnIndex = possibleColumns.Where(h =>
-                {
-                    try
-                    {
-                        var top50SerialNumbers = DataReader.GetStrings(h.Index).Take(50).ToList();
-                        return Database.Devices.Count(d => top50SerialNumbers.Contains(d.SerialNumber)) > 0;
-                    }
-                    catch (Exception) { return false; }
-                }).Select(h => (int?)h.Index).FirstOrDefault();
-
-                if (possibleColumnIndex.HasValue)
-                    return possibleColumnIndex;
-            }
+            possibleColumns = possibleColumns.Where(h => dataReader.TestAllNotEmpty(h.Index)).ToList();
 
             return possibleColumns.Select(h => (int?)h.Index).FirstOrDefault();
         }

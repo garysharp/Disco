@@ -222,7 +222,9 @@
     </Compile>
     <Compile Include="Repository\DiscoDatabaseConnectionFactory.cs" />
     <Compile Include="Repository\DiscoDataContext.cs" />
+    <Compile Include="Repository\DiscoDataContextProvider.cs" />
     <Compile Include="Repository\DiscoDataSeeder.cs" />
+    <Compile Include="Repository\IDiscoDataContextFactory.cs" />
     <Compile Include="Repository\Monitor\RepositoryMonitor.cs" />
     <Compile Include="Repository\Monitor\RepositoryMonitorEvent.cs" />
     <Compile Include="Repository\Monitor\RepositoryMonitorEventType.cs" />

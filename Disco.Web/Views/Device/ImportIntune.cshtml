@@ -1,0 +1,168 @@
+﻿@model Disco.Web.Models.Device.ImportIntuneModel
+@using Disco.Models.Services.Devices.Importing;
+@using System.Data;
+@{
+    Authorization.Require(Claims.Device.Actions.Import);
+
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Microsoft Intune Devices", MVC.Device.Import(), Model.Context.DatasetName);
+}
+<div id="Devices_Import_Review">
+
+    <h2>Review Pending Changes</h2>
+
+    <h3>Parsed @Model.Context.Records.Count Device Record@(Model.Context.Records.Count != 1 ? "s" : null)</h3>
+    <h4>
+        @Model.ImportRecordCount of @Model.Context.Records.Count Device@(Model.Context.Records.Count != 1 ? "s" : null) are ready for import.
+    </h4>
+    @if (Model.ErrorRecordCount > 0)
+    {
+        <h4 class="field-validation-error">
+            @(Model.ErrorRecordCount) Record@(Model.ErrorRecordCount != 1 ? "s" : null) will be skipped due to parse errors.
+        </h4>
+    }
+    <div id="Devices_Import_Review_Navigation">
+        <ul class="none">
+            @if (Model.ErrorRecordCount > 0)
+            {
+                <li class="actionDetached">
+                    <input id="Devices_Import_Review_Navigation_Error" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_Error">Show Errors (@(Model.ErrorRecordCount))</label>
+                </li>
+            }@if (Model.NewRecordCount > 0)
+            {
+                <li class="actionAdded">
+                    <input id="Devices_Import_Review_Navigation_New" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_New">Show New Devices (@(Model.NewRecordCount))</label>
+                </li>
+            }@if (Model.ModifiedRecordCount > 0)
+            {
+                <li class="actionModified">
+                    <input id="Devices_Import_Review_Navigation_Modified" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_Modified">Show Modified Devices (@(Model.ModifiedRecordCount))</label>
+                </li>
+            }@if (Model.UnmodifiedRecordCount > 0)
+            {
+                <li class="actionUnchanged">
+                    <input id="Devices_Import_Review_Navigation_Unchanged" type="checkbox" checked /><label for="Devices_Import_Review_Navigation_Unchanged">Show Unchanged Devices (@(Model.UnmodifiedRecordCount))</label>
+                </li>
+            }
+        </ul>
+        <script>
+            $(function () {
+                $navigationContainer = $('#Devices_Import_Review_Navigation');
+                $tableBody = $('#Devices_Import_Review_TableContainer').find('tbody');
+
+                $navigationContainer.on('change', 'input', function () {
+                    $tableBody.find('tr').show();
+
+                    $navigationContainer.find('input').each(function () {
+                        var $this = $(this);
+                        var action = $this.closest('li').attr('class');
+                        var records = $tableBody.find('tr.' + action);
+                        if ($this.is(':checked')) {
+                            records.show();
+                        } else {
+                            records.hide();
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+    <div id="Devices_Import_Review_TableContainer">
+        <table class="tableData">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Row</th>
+                    @foreach (var header in Model.Context.Columns)
+                    {
+                        <th>@header.Name</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model.Context.Records)
+                {
+                    <tr class="action@(record.RecordAction)">
+                        <td class="action"><i class="fa fa-fw"></i></td>
+                        <td>@(record.Index)</td>
+                        @foreach (var field in record.Fields)
+                        {
+                            var friendlyValue = field.FriendlyValue;
+                            <td class="header@(field.FieldType) action@(field.FieldAction.HasValue ? field.FieldAction.ToString() : "Error")" data-previousvalue="@(field.FieldAction.HasValue && field.FieldAction.Value == System.Data.EntityState.Modified ? field.FriendlyPreviousValue : null)">
+                                @if (!field.FieldAction.HasValue)
+                                {
+                                    <span class="errorMessage"><strong>Error:</strong> @field.ErrorMessage</span>
+                                    <i class="fa fa-exclamation-triangle fa-fw"></i>
+                                }
+                                @if (string.IsNullOrEmpty(friendlyValue))
+                                {<span class="smallMessage">&lt;None&gt;</span>}
+                                else if (field.FieldType == DeviceImportFieldTypes.DeviceSerialNumber && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Added)
+                                {
+                                    @Html.ActionLink(friendlyValue, MVC.Device.Show((string)field.RawParsedValue), new { target = "_blank" })}
+                                else if (field.FieldType == DeviceImportFieldTypes.AssignedUserId && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Unchanged)
+                                {
+                                    @Html.ActionLink(friendlyValue, MVC.User.Show((string)field.RawParsedValue), new { target = "_blank" })}
+                                else
+                                {@friendlyValue}
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="actionBar">
+        @if (Model.ImportRecordCount == 0)
+        {
+            <button id="Devices_Import_Review_Apply" class="button disabled" disabled><i class="fa fa-wrench"></i> Apply Intune Device Import</button>
+        }
+        else
+        {
+            using (Html.BeginForm(MVC.API.Device.ImportApply(Model.Context.SessionId)))
+            {
+                @Html.AntiForgeryToken();
+                <button id="Devices_Import_Review_Apply" type="submit" class="button"><i class="fa fa-wrench"></i> Apply Intune Device Import</button>
+            }
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        $Devices_Import_Review_TableContainer = $('#Devices_Import_Review_TableContainer');
+
+        $Devices_Import_Review_TableContainer.find('tbody').tooltip({
+            items: 'td.action, td.actionError, td.actionModified',
+            content: function () {
+                var $this = $(this);
+
+                if ($this.hasClass('action')) {
+                    var record = $(this).closest('tr');
+
+                    if (record.hasClass('actionDetached')) {
+                        return '<strong>Error Parsing Record</strong><div>Review the record fields for details about any errors.</div><div class="smallMessage">This record will be skipped.</div>';
+                    } else if (record.hasClass('actionUnchanged')) {
+                        return '<strong>No Changes</strong><div>No changes were found while parsing this record.</div><div class="smallMessage">This record will be skipped.</div>';
+                    } else if (record.hasClass('actionModified')) {
+                        return '<strong>Pending Changes</strong><div>This record contains changes which will be applied.</div>';
+                    } else if (record.hasClass('actionAdded')) {
+                        return '<strong>New Record</strong><div>This record will be imported.</div>';
+                    }
+                } else if ($this.hasClass('actionError')) {
+                    return $(this).find('span.errorMessage').html();
+                } else if ($this.hasClass('actionModified')) {
+                    var v = $(this).attr('data-previousvalue');
+                    if (v) {
+                        return '<strong>Previous Value:</strong><br />' + v;
+                    } else {
+                        return '<strong>Previous Value:</strong><br /><em>&lt;None&gt;</em>';
+                    }
+                }
+            },
+            position: {
+                my: "left top",
+                at: "left bottom",
+                collision: "flipfit flip"
+            }
+        });
+
+    });
+</script>

@@ -6,57 +6,13 @@
     ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Devices");
 }
 <div id="Devices_Import">
-    @using (Html.BeginForm(MVC.API.Device.ImportBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        @Html.AntiForgeryToken()
-        <div id="importDialog" class="form" style="width: 450px">
-            <h2>Import Devices</h2>
-            <table>
-                <tr>
-                    <th>
-                        @Html.LabelFor(m => m.ImportFile)
-                    </th>
-                    <td>
-                        <input id="ImportFile" name="ImportFile" type="file" data-val="true" data-val-required="An Import File is required." accept=".xlsx,.csv" /><br />
-                        @Html.ValidationMessageFor(m => m.ImportFile)
-                        <div>
-                            @Html.CheckBoxFor(m => m.HasHeader)
-                            @Html.LabelFor(m => m.HasHeader)
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            <p class="actions">
-                <input type="submit" class="button" value="Begin Import" />
-            </p>
-        </div>
-        <div id="Devices_Import_Loading_Dialog" class="dialog" title="Loading devices import...">
-            <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading device import...</h4>
-        </div>
-        <script>
-            $(function () {
-                var $Devices_Import_Loading_Dialog = null;
+    <div id="Devices_Import_Modes">
+        <button id="Devices_Import_Custom_Button" type="button" class="button">Custom Import</button>
+        <button id="Devices_Import_Intune_Button" type="button" class="button">Microsoft Intune Import</button>
+    </div>
 
-                $('#ImportFile').closest('form').submit(function () {
-                    if ($Devices_Import_Loading_Dialog == null) {
-                        $Devices_Import_Loading_Dialog = $('#Devices_Import_Loading_Dialog').dialog({
-                            width: 400,
-                            height: 160,
-                            resizable: false,
-                            modal: true,
-                            autoOpen: false
-                        });
-                    }
-
-                    window.setTimeout(function () {
-                        $Devices_Import_Loading_Dialog.dialog('open');
-                    }, 200);
-                });
-            });
-        </script>
-    }
     <div id="Devices_Import_Documentation">
-        <h3>XLSX/CSV Import Specification</h3>
+        <h3>Custom XLSX/CSV Import Specification</h3>
         <h4>Format</h4>
         <ul>
             <li>
@@ -213,6 +169,147 @@
             });
         </script>
     </div>
+
+    <div id="Devices_Import_Custom_Dialog" class="dialog" title="Import Devices">
+        @using (Html.BeginForm(MVC.API.Device.ImportBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div>
+                <input id="CustomImportFile" name="ImportFile" type="file" required accept=".xlsx,.csv" />
+            </div>
+            <div>
+                <input id="CustomHasHeader" type="checkbox" name="HasHeader" value="true" checked />
+                <label for="CustomHasHeader">Has Header</label>
+            </div>
+        }
+    </div>
+
+    <div id="Devices_Import_Intune_Dialog" class="dialog" title="Import Microsoft Intune Devices">
+        @using (Html.BeginForm(MVC.API.Device.ImportIntuneBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <table class="genericData">
+                <tbody>
+                    <tr>
+                        <th style="width: 94px">Zip/Csv File</th>
+                        <td><input name="file" type="file" required accept=".zip,.csv" /></td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="DefaultDeviceProfileId">Device Profile</label>
+                            <div class="smallMessage">(New devices only)</div>
+                        </th>
+                        <td>
+                            <select id="DefaultDeviceProfileId" name="defaultDeviceProfileId">
+                                @foreach (var profile in Model.DeviceProfiles.OrderBy(p => p.Name))
+                                {
+                                    <option value="@profile.Id" @(Model.LastIntuneDeviceImportConfiguration.DefaultDeviceProfileId == profile.Id ? "selected" : null)>@profile.Name</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Assigned User
+                        </th>
+                        <td>
+                            <input id="AssignDeviceToPrimaryUser" type="checkbox" name="assignDeviceToPrimaryUser" value="true" @(Model.LastIntuneDeviceImportConfiguration.AssignDeviceToPrimaryUser == true ? "checked" : null) />
+                            <label for="AssignDeviceToPrimaryUser">Assign device to primary user</label>
+                            <div class="smallMessage">(User details 'Email Address' and 'Department Email' will also be used for matching if present)</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <p class="fa-p">
+                    <i class="fa fa-fw fa-info-circle"></i> Upload a Microsoft Intune export file in either <strong>CSV</strong> or <strong>ZIP</strong> format.
+                    <br />
+                    Microsoft Intune &gt; All Devices &gt; Export &gt; Include all inventory data in the exported file.
+                </p>
+            </div>
+        }
+    </div>
+
+    <div id="Devices_Import_Loading_Dialog" class="dialog" title="Loading devices import...">
+        <h4><i class="fa fa-lg fa-cog fa-spin" title="Please Wait"></i>Loading device import...</h4>
+    </div>
+    <script>
+        $(function () {
+            let $Devices_Import_Loading_Dialog = null;
+
+            function openImportLoadingDialog() {
+                if ($Devices_Import_Loading_Dialog == null) {
+                    $Devices_Import_Loading_Dialog = $('#Devices_Import_Loading_Dialog').dialog({
+                        width: 400,
+                        height: 160,
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false
+                    });
+                }
+
+                window.setTimeout(function () {
+                    $Devices_Import_Loading_Dialog.dialog('open');
+                }, 200);
+            }
+
+            let $Devices_Import_Custom_Dialog = null;
+            $('#Devices_Import_Custom_Button').on('click', function () {
+                if ($Devices_Import_Custom_Dialog == null) {
+                    $Devices_Import_Custom_Dialog = $('#Devices_Import_Custom_Dialog').dialog({
+                        width: 400,
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            'Cancel': function () {
+                                $(this).dialog('close');
+                            },
+                            'Begin Import': function () {
+                                const $form = $(this).find('form');
+                                if (!$form[0].reportValidity()) {
+                                    return;
+                                }
+                                $form.trigger('submit');
+                                $(this).dialog('close');
+                                openImportLoadingDialog();
+                            }
+                        }
+                    });
+                }
+                $Devices_Import_Custom_Dialog.dialog('open');
+            });
+
+            let $Devices_Import_Intune_Dialog = null;
+            $('#Devices_Import_Intune_Button').on('click', function () {
+                if ($Devices_Import_Intune_Dialog == null) {
+                    $Devices_Import_Intune_Dialog = $('#Devices_Import_Intune_Dialog').dialog({
+                        width: 400,
+                        resizable: false,
+                        modal: true,
+                        autoOpen: false,
+                        buttons: {
+                            'Cancel': function () {
+                                $(this).dialog('close');
+                            },
+                            'Begin Import': function () {
+                                const $form = $(this).find('form');
+                                if (!$form[0].reportValidity()) {
+                                    return;
+                                }
+                                $form.trigger('submit');
+                                $(this).dialog('close');
+                                openImportLoadingDialog();
+                            }
+                        }
+                    });
+                }
+                $Devices_Import_Intune_Dialog.dialog('open');
+            });
+
+        });
+    </script>
 </div>
 @if (Model.CompletedImportSessionContext != null)
 {

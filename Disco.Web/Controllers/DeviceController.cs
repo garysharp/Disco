@@ -5,6 +5,7 @@ using Disco.Models.UI.Device;
 using Disco.Services;
 using Disco.Services.Authorization;
 using Disco.Services.Devices.DeviceFlags;
+using Disco.Services.Devices.Importing;
 using Disco.Services.Exporting;
 using Disco.Services.Interop.ActiveDirectory;
 using Disco.Services.Plugins.Features.DetailsProvider;
@@ -155,11 +156,20 @@ namespace Disco.Web.Controllers
             {
                 DeviceModels = Database.DeviceModels.ToList(),
                 DeviceProfiles = Database.DeviceProfiles.ToList(),
-                DeviceBatches = Database.DeviceBatches.ToList()
+                DeviceBatches = Database.DeviceBatches.ToList(),
+                LastIntuneDeviceImportConfiguration = Database.DiscoConfiguration.Devices.LastIntuneImportConfiguration,
             };
 
+            if (m.LastIntuneDeviceImportConfiguration.DefaultDeviceProfileId == null)
+            {
+                var defaultProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
+                if (defaultProfileId <= 0)
+                    defaultProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+                m.LastIntuneDeviceImportConfiguration.DefaultDeviceProfileId = defaultProfileId;
+            }
+
             if (!string.IsNullOrWhiteSpace(Id))
-                m.CompletedImportSessionContext = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id, Remove: true);
+                m.CompletedImportSessionContext = DeviceImport.RetrieveContext(Id, remove: true);
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportModel>(ControllerContext, m);
@@ -171,16 +181,15 @@ namespace Disco.Web.Controllers
         public virtual ActionResult ImportHeaders(string Id)
         {
             if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
+                throw new ArgumentNullException(nameof(Id));
 
-            var context = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id);
-
-            if (context == null)
-                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+            var context = DeviceImport.RetrieveContext(Id) as DeviceImportContextBase
+                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
 
             var m = new Models.Device.ImportHeadersModel()
             {
-                Context = context
+                Context = context,
+                ContextBase = context,
             };
 
             // UI Extensions
@@ -195,10 +204,8 @@ namespace Disco.Web.Controllers
             if (string.IsNullOrWhiteSpace(Id))
                 throw new ArgumentNullException("Id");
 
-            var context = Areas.API.Controllers.DeviceController.Import_RetrieveContext(Id);
-
-            if (context == null)
-                throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", "Id");
+            var context = DeviceImport.RetrieveContext(Id)
+                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
 
             var m = new Models.Device.ImportReviewModel()
             {
@@ -211,6 +218,23 @@ namespace Disco.Web.Controllers
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportReviewModel>(ControllerContext, m);
+
+            return View(m);
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
+        public virtual ActionResult ImportIntune(string Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+                throw new ArgumentNullException(nameof(Id));
+
+            var context = DeviceImport.RetrieveContext(Id)
+                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
+
+            var m = new Models.Device.ImportIntuneModel(context);
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceImportIntuneModel>(ControllerContext, m);
 
             return View(m);
         }

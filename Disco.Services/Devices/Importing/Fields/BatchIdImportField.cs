@@ -2,7 +2,6 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -20,9 +19,9 @@ namespace Disco.Services.Devices.Importing.Fields
         public override string FriendlyValue { get { return friendlyValue; } }
         public override string FriendlyPreviousValue { get { return friendlyPreviousValue; } }
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            if (DataReader.TryGetNullableInt(ColumnIndex, out parsedValue))
+            if (valueReader.TryGetNullableInt(out parsedValue))
             {
                 friendlyValue = parsedValue.ToString();
             }
@@ -33,7 +32,7 @@ namespace Disco.Services.Devices.Importing.Fields
 
             if (parsedValue.HasValue)
             {
-                var b = Cache.DeviceBatches.FirstOrDefault(db => db.Id == parsedValue);
+                var b = state.DeviceBatches.FirstOrDefault(db => db.Id == parsedValue);
                 if (b == null)
                     return Error($"The identifier ({friendlyValue}) does not match any Device Batch");
                 friendlyValue = $"{b.Name} [{b.Id}]";
@@ -41,13 +40,13 @@ namespace Disco.Services.Devices.Importing.Fields
             else
                 friendlyValue = null;
 
-            if (ExistingDevice == null)
+            if (existingDevice == null)
                 return Success(EntityState.Added);
-            else if (ExistingDevice != null && ExistingDevice.DeviceBatchId != parsedValue)
+            else if (existingDevice.DeviceBatchId != parsedValue)
             {
                 DeviceBatch previousBatch = null;
-                if (ExistingDevice.DeviceBatchId.HasValue)
-                    previousBatch = Cache.DeviceBatches.FirstOrDefault(db => db.Id == ExistingDevice.DeviceBatchId.Value);
+                if (existingDevice.DeviceBatchId.HasValue)
+                    previousBatch = state.DeviceBatches.FirstOrDefault(db => db.Id == existingDevice.DeviceBatchId.Value);
 
                 if (previousBatch != null)
                     friendlyPreviousValue = $"{previousBatch.Name} [{previousBatch.Id}]";
@@ -58,12 +57,12 @@ namespace Disco.Services.Devices.Importing.Fields
                 return Success(EntityState.Unchanged);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Added ||
                 FieldAction == EntityState.Modified)
             {
-                Device.DeviceBatchId = parsedValue;
+                device.DeviceBatchId = parsedValue;
                 return true;
             }
             else
@@ -72,16 +71,16 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("batch", StringComparison.OrdinalIgnoreCase) >= 0);
 
             // All Nullable<int> Values
             possibleColumns = possibleColumns
-                .Where(h => DataReader.TestAllNullableInt(h.Index)).ToList();
+                .Where(h => dataReader.TestAllNullableInt(h.Index)).ToList();
 
             // Multiple Columns, tighten column definition
             if (possibleColumns.Count() > 1)

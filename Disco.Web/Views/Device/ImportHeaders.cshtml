@@ -44,15 +44,15 @@
                 </tr>
             </thead>
             <tbody>
-                @using (var dataReader = Model.Context.GetDataReader())
-                {
-                    for (int r = 0; r < Math.Min(10, Model.Context.RecordCount); r++)
+                @{
+                    var dataReader = Model.ContextBase.GetDataReader();
+                    for (int r = 0; r < Math.Min(10, Model.ContextBase.RecordCount); r++)
                     {
                         dataReader.Read();
                         <tr>
-                            @for (int c = 0; c < Model.Context.ColumnCount; c++)
+                            @for (int c = 0; c < Model.ContextBase.ColumnCount; c++)
                             {
-                                <td data-headerindex="@c">@dataReader.GetString(c)</td>
+                                <td data-headerindex="@c">@dataReader.GetValue(c).GetString()</td>
                             }
                         </tr>
                     }

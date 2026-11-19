@@ -1,5 +1,6 @@
 ﻿using Disco.Models.Services.Devices.Importing;
 using Disco.Models.UI.Device;
+using Disco.Services.Devices.Importing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,7 @@ namespace Disco.Web.Models.Device
     public class ImportReviewModel : DeviceImportReviewModel
     {
         public IDeviceImportContext Context { get; set; }
+        public IDeviceImportContextActions ContextActions => Context as IDeviceImportContextActions;
 
         public int StatisticErrorRecords { get; set; }
         public int StatisticNewRecords { get; set; }

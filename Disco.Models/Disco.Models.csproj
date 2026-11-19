@@ -68,6 +68,12 @@
     <Compile Include="Services\Devices\DeviceEnrolmentServerDiscoveryMethod.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportOptions.cs" />
     <Compile Include="Services\Devices\DeviceFlags\DeviceFlagExportRecord.cs" />
+    <Compile Include="Services\Devices\Importing\DeviceImportFieldTypes.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportField.cs" />
+    <Compile Include="Services\Devices\Importing\IDeviceImportRecord.cs" />
+    <Compile Include="Services\Devices\Importing\IntuneDeviceImportConfiguration.cs" />
     <Compile Include="Services\Documents\DocumentExportOptions.cs" />
     <Compile Include="Services\Documents\DocumentExportRecord.cs" />
     <Compile Include="Services\Exporting\ExportOptionField.cs" />
@@ -91,8 +97,6 @@
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileStore.cs" />
     <Compile Include="ClientServices\EnrolmentInformation\WirelessProfileTransformation.cs" />
     <Compile Include="Repository\Device\DeviceBatchAttachment.cs" />
-    <Compile Include="Services\Devices\Importing\IDeviceImportColumn.cs" />
-    <Compile Include="Services\Devices\Importing\IDeviceImportDataReader.cs" />
     <Compile Include="Services\Documents\DocumentField.cs" />
     <Compile Include="Services\Documents\DocumentFieldType.cs" />
     <Compile Include="Services\Documents\DocumentTemplatePackage.cs" />
@@ -160,10 +164,6 @@
     <Compile Include="Exporting\ExportResult.cs" />
     <Compile Include="Services\Devices\DeviceExportTypes.cs" />
     <Compile Include="Services\Devices\DeviceExportOptions.cs" />
-    <Compile Include="Services\Devices\Importing\DeviceImportFieldTypes.cs" />
-    <Compile Include="Services\Devices\Importing\IDeviceImportRecord.cs" />
-    <Compile Include="Services\Devices\Importing\IDeviceImportContext.cs" />
-    <Compile Include="Services\Devices\Importing\IDeviceImportField.cs" />
     <Compile Include="Services\Interop\ActiveDirectory\ADManagedGroupConfiguration.cs" />
     <Compile Include="Services\Interop\DiscoServices\PluginIncompatibility.cs" />
     <Compile Include="Services\Interop\DiscoServices\PluginLibraryIncompatibility.cs" />
@@ -247,6 +247,7 @@
     <Compile Include="UI\Device\DeviceImportModel.cs" />
     <Compile Include="UI\Device\DeviceImportReviewModel.cs" />
     <Compile Include="UI\Device\DeviceIndexModel.cs" />
+    <Compile Include="UI\Device\DeviceImportIntuneModel.cs" />
     <Compile Include="UI\Device\DeviceShowModel.cs" />
     <Compile Include="UI\Job\JobExportModel.cs" />
     <Compile Include="UI\Job\JobCreateModel.cs" />

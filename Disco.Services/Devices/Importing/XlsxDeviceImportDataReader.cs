@@ -8,23 +8,21 @@ namespace Disco.Services.Devices.Importing
 {
     public class XlsxDeviceImportDataReader : IDeviceImportDataReader
     {
-        private static string[] TrueValues = { "true", "1", "yes", "-1", "on" };
-        private static string[] FalseValues = { "false", "0", "no", "off" };
+        private readonly static string[] TrueValues = { "true", "1", "yes", "-1", "on" };
+        private readonly static string[] FalseValues = { "false", "0", "no", "off" };
 
-        private XlsxDeviceImportContext context;
-        private List<object[]> rawData;
+        private readonly List<object[]> rawData;
         private int currentRowIndex;
-        private int rowOffset;
+        private readonly int rowOffset;
         private object[] currentRow;
 
         public int Index { get { return currentRowIndex; } }
 
-        public XlsxDeviceImportDataReader(XlsxDeviceImportContext Context, List<object[]> RawData, bool HasHeaderRow)
+        public XlsxDeviceImportDataReader(List<object[]> rawData, bool hasHeaderRow)
         {
-            context = Context;
-            rawData = RawData;
+            this.rawData = rawData;
             currentRowIndex = -1;
-            rowOffset = HasHeaderRow ? 2 : 1;
+            rowOffset = hasHeaderRow ? 2 : 1;
         }
 
         public void Reset()
@@ -45,214 +43,205 @@ namespace Disco.Services.Devices.Importing
             return true;
         }
 
-        public int GetRowNumber(int Index)
+        public int GetRowNumber(int index)
         {
-            return Index + rowOffset;
+            return index + rowOffset;
         }
 
-        public string GetString(int ColumnIndex)
+
+        public IDeviceImportValueReader GetValue(int columnIndex)
         {
             if (currentRow == null)
                 throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
 
-            var cell = currentRow[ColumnIndex];
-
-            if (cell == null)
-                return null;
-            else
-                return cell.ToString();
+            return new XlsxDeviceImportValueReader(currentRow[columnIndex]);
         }
 
-        public IEnumerable<string> GetStrings(int ColumnIndex)
+        public bool TestAllNotEmpty(int columnIndex)
         {
-            return rawData.Select(r => r[ColumnIndex]?.ToString());
+            return rawData.Select(r => r[columnIndex]?.ToString())
+                .All(s => !string.IsNullOrWhiteSpace(s));
         }
 
-        public bool TryGetNullableInt(int ColumnIndex, out int? value)
+        public bool TestAllNullableInt(int columnIndex)
         {
-            if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
-
-            return TryGetNullableInt(currentRow[ColumnIndex], out value);
-        }
-
-        public bool TryGetNullableBool(int ColumnIndex, out bool? value)
-        {
-            if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
-
-            return TryGetNullableBool(currentRow[ColumnIndex], out value);
-        }
-
-        public bool TryGetNullableDateTime(int ColumnIndex, out DateTime? value)
-        {
-            if (currentRow == null)
-                throw new InvalidOperationException($"{nameof(Read)} must be called before retrieving values");
-
-            return TryGetNullableDateTime(currentRow[ColumnIndex], out value);
-        }
-
-        public bool TestAllNotEmpty(int ColumnIndex)
-        {
-            return GetStrings(ColumnIndex).All(s => !string.IsNullOrWhiteSpace(s));
-        }
-
-        public bool TestAllNullableInt(int ColumnIndex)
-        {
-            return rawData.Select(r => r[ColumnIndex])
+            return rawData.Select(r => r[columnIndex])
                 .All(c =>
                 {
-                    return TryGetNullableInt(c, out var value);
+                    return XlsxDeviceImportValueReader.TryGetNullableInt(c, out _);
                 });
         }
 
-        public bool TestAllInt(int ColumnIndex)
+        public bool TestAllInt(int columnIndex)
         {
-            return rawData.Select(r => r[ColumnIndex])
+            return rawData.Select(r => r[columnIndex])
                 .All(c =>
                 {
-                    return TryGetNullableInt(c, out var value) && value.HasValue;
+                    return XlsxDeviceImportValueReader.TryGetNullableInt(c, out var value) && value.HasValue;
                 });
         }
 
-        public bool TestAllNullableBool(int ColumnIndex)
+        public bool TestAllNullableBool(int columnIndex)
         {
-            return rawData.Select(r => r[ColumnIndex])
+            return rawData.Select(r => r[columnIndex])
                 .All(c =>
                 {
-                    return TryGetNullableBool(c, out var value);
+                    return XlsxDeviceImportValueReader.TryGetNullableBool(c, out _);
                 });
         }
 
-        public bool TestAllNullableDateTime(int ColumnIndex)
+        public bool TestAllNullableDateTime(int columnIndex)
         {
-            return rawData.Select(r => r[ColumnIndex])
+            return rawData.Select(r => r[columnIndex])
                 .All(c =>
                 {
-                    return TryGetNullableDateTime(c, out var value);
+                    return XlsxDeviceImportValueReader.TryGetNullableDateTime(c, out _);
                 });
         }
 
-        public void Dispose()
+        private sealed class XlsxDeviceImportValueReader : IDeviceImportValueReader
         {
-            // Nothing to dispose
-        }
+            private readonly object columnValue;
 
-        private bool TryGetNullableDateTime(object Content, out DateTime? value)
-        {
-            if (Content == null)
+            public XlsxDeviceImportValueReader(object columnValue)
             {
-                value = null;
-                return true;
+                this.columnValue = columnValue;
             }
 
-            if (Content is DateTime)
+            public string GetString()
             {
-                value = (DateTime)Content;
-                return true;
+                if (columnValue == null)
+                    return null;
+                else
+                    return columnValue.ToString();
             }
 
-            var stringValue = Content.ToString();
+            public bool TryGetNullableInt(out int? value)
+                => TryGetNullableInt(columnValue, out value);
 
-            if (string.IsNullOrWhiteSpace(stringValue))
-            {
-                value = null;
-                return true;
-            }
-            else
-            {
-                stringValue = stringValue.Trim();
+            public bool TryGetNullableBool(out bool? value)
+                => TryGetNullableBool(columnValue, out value);
 
-                if (DateTime.TryParse(stringValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal, out var valueDateTime))
+            public bool TryGetNullableDateTime(out DateTime? value)
+                => TryGetNullableDateTime(columnValue, out value);
+
+            internal static bool TryGetNullableDateTime(object Content, out DateTime? value)
+            {
+                if (Content == null)
                 {
-                    value = valueDateTime;
+                    value = null;
+                    return true;
+                }
+
+                if (Content is DateTime dateTimeContent)
+                {
+                    value = dateTimeContent;
+                    return true;
+                }
+
+                var stringValue = Content.ToString();
+
+                if (string.IsNullOrWhiteSpace(stringValue))
+                {
+                    value = null;
                     return true;
                 }
                 else
                 {
-                    value = null;
-                    return false;
+                    stringValue = stringValue.Trim();
+
+                    if (DateTime.TryParse(stringValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeLocal, out var valueDateTime))
+                    {
+                        value = valueDateTime;
+                        return true;
+                    }
+                    else
+                    {
+                        value = null;
+                        return false;
+                    }
                 }
             }
-        }
 
-        private bool TryGetNullableBool(object Content, out bool? value)
-        {
-            if (Content == null)
+            internal static bool TryGetNullableBool(object content, out bool? value)
             {
-                value = null;
-                return true;
-            }
-
-            if (Content is bool)
-            {
-                value = (bool)Content;
-                return true;
-            }
-
-            var stringValue = Content.ToString();
-
-            if (string.IsNullOrWhiteSpace(stringValue))
-            {
-                value = null;
-                return true;
-            }
-            else
-            {
-                stringValue = stringValue.Trim();
-
-                if (TrueValues.Contains(stringValue, StringComparer.OrdinalIgnoreCase))
+                if (content == null)
                 {
-                    value = true;
+                    value = null;
                     return true;
                 }
-                else if (FalseValues.Contains(stringValue, StringComparer.OrdinalIgnoreCase))
+
+                if (content is bool boolContent)
                 {
-                    value = false;
+                    value = boolContent;
+                    return true;
+                }
+
+                var stringValue = content.ToString();
+
+                if (string.IsNullOrWhiteSpace(stringValue))
+                {
+                    value = null;
                     return true;
                 }
                 else
                 {
-                    value = null;
-                    return false;
+                    stringValue = stringValue.Trim();
+
+                    if (TrueValues.Contains(stringValue, StringComparer.OrdinalIgnoreCase))
+                    {
+                        value = true;
+                        return true;
+                    }
+                    else if (FalseValues.Contains(stringValue, StringComparer.OrdinalIgnoreCase))
+                    {
+                        value = false;
+                        return true;
+                    }
+                    else
+                    {
+                        value = null;
+                        return false;
+                    }
                 }
             }
-        }
 
-        private bool TryGetNullableInt(object Content, out int? value)
-        {
-            if (Content == null)
+            internal static bool TryGetNullableInt(object content, out int? value)
             {
-                value = null;
-                return true;
-            }
-
-            if (Content is double)
-            {
-                value = (int)((double)Content);
-                return true;
-            }
-
-            var stringValue = Content.ToString();
-
-            if (string.IsNullOrWhiteSpace(stringValue))
-            {
-                value = null;
-                return true;
-            }
-            else
-            {
-                if (int.TryParse(stringValue, out var intValue))
+                if (content == null)
                 {
-                    value = intValue;
+                    value = null;
+                    return true;
+                }
+
+                if (content is double doubleContent)
+                {
+                    value = (int)doubleContent;
+                    return true;
+                }
+
+                var stringValue = content.ToString();
+
+                if (string.IsNullOrWhiteSpace(stringValue))
+                {
+                    value = null;
                     return true;
                 }
                 else
                 {
-                    value = null;
-                    return false;
+                    if (int.TryParse(stringValue, out var intValue))
+                    {
+                        value = intValue;
+                        return true;
+                    }
+                    else
+                    {
+                        value = null;
+                        return false;
+                    }
                 }
             }
         }
+
     }
 }

@@ -3,7 +3,6 @@ using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Interop.ActiveDirectory;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -11,19 +10,19 @@ namespace Disco.Services.Devices.Importing.Fields
 {
     internal class DeviceComputerNameImportField : DeviceImportFieldBase
     {
-        private const int maxLength = 60;
+        private const int maxLength = 1024;
         private string parsedValue;
         private string previousValue;
 
-        public override DeviceImportFieldTypes FieldType { get { return DeviceImportFieldTypes.DeviceComputerName; } }
+        public override DeviceImportFieldTypes FieldType => DeviceImportFieldTypes.DeviceComputerName;
 
-        public override object RawParsedValue { get { return parsedValue; } }
-        public override string FriendlyValue { get { return parsedValue; } }
-        public override string FriendlyPreviousValue { get { return previousValue; } }
+        public override object RawParsedValue => parsedValue;
+        public override string FriendlyValue => parsedValue;
+        public override string FriendlyPreviousValue => previousValue;
 
-        public override bool Parse(DiscoDataContext Database, IDeviceImportCache Cache, IDeviceImportContext Context, string DeviceSerialNumber, Device ExistingDevice, List<IDeviceImportRecord> PreviousRecords, IDeviceImportDataReader DataReader, int ColumnIndex)
+        public override bool Parse(DeviceImportDatabaseParsingState state, Device existingDevice, IDeviceImportValueReader valueReader)
         {
-            var value = DataReader.GetString(ColumnIndex);
+            var value = valueReader.GetString();
 
             if (string.IsNullOrWhiteSpace(value))
                 parsedValue = null;
@@ -48,15 +47,15 @@ namespace Disco.Services.Devices.Importing.Fields
             if (parsedValue.Length > maxLength)
                 return Error($"Cannot be more than {maxLength} characters");
 
-            if (ExistingDevice != null)
+            if (existingDevice != null)
             {
-                if (string.Equals(parsedValue, ExistingDevice.DeviceDomainId, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(parsedValue, existingDevice.DeviceDomainId, StringComparison.OrdinalIgnoreCase))
                     return Success(EntityState.Unchanged);
-                if (ExistingDevice.EnrolledDate.HasValue)
+                if (existingDevice.EnrolledDate.HasValue)
                     return Error("The Device Computer Name cannot be changed after a device has enrolled");
                 else
                 {
-                    previousValue = ExistingDevice.DeviceDomainId;
+                    previousValue = existingDevice.DeviceDomainId;
                     return Success(EntityState.Modified);
                 }
             }
@@ -64,12 +63,12 @@ namespace Disco.Services.Devices.Importing.Fields
             return Success(EntityState.Added);
         }
 
-        public override bool Apply(DiscoDataContext Database, Device Device)
+        public override bool Apply(DiscoDataContext database, Device device)
         {
             if (FieldAction == EntityState.Added ||
                 FieldAction == EntityState.Modified)
             {
-                Device.DeviceDomainId = parsedValue;
+                device.DeviceDomainId = parsedValue;
                 return true;
             }
             else
@@ -78,10 +77,10 @@ namespace Disco.Services.Devices.Importing.Fields
             }
         }
 
-        public override int? GuessColumn(DiscoDataContext Database, IDeviceImportContext Context, IDeviceImportDataReader DataReader)
+        public override int? GuessColumn(IDeviceImportContext context, IDeviceImportDataReader dataReader)
         {
             // column name
-            var possibleColumns = Context.Columns
+            var possibleColumns = context.Columns
                 .Where(h => h.Type == DeviceImportFieldTypes.IgnoreColumn &&
                     h.Name.IndexOf("name", StringComparison.OrdinalIgnoreCase) >= 0);
 

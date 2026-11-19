@@ -120,20 +120,20 @@
         </table>
     </div>
     <div class="actionBar">
-        @if (Model.Context.AllowBacktracking)
+        @if (Model.ContextActions.AllowBacktracking)
         {
-            <a id="Devices_Import_Review_ChangeHeaders" href="@Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))" class="button"><i class="fa fa-caret-left"></i>Change Import Columns</a>
+            <a id="Devices_Import_Review_ChangeHeaders" href="@Url.Action(MVC.Device.ImportHeaders(Model.Context.SessionId))" class="button"><i class="fa fa-caret-left"></i> Change Import Columns</a>
         }
         @if (Model.StatisticImportRecords == 0)
         {
-            <button id="Devices_Import_Review_Apply" class="button disabled" disabled><i class="fa fa-wrench"></i>Apply Device Import</button>
+            <button id="Devices_Import_Review_Apply" class="button disabled" disabled><i class="fa fa-wrench"></i> Apply Device Import</button>
         }
         else
         {
             using (Html.BeginForm(MVC.API.Device.ImportApply(Model.Context.SessionId)))
             {
                 @Html.AntiForgeryToken();
-                <button id="Devices_Import_Review_Apply" type="submit" class="button"><i class="fa fa-wrench"></i>Apply Device Import</button>
+                <button id="Devices_Import_Review_Apply" type="submit" class="button"><i class="fa fa-wrench"></i> Apply Device Import</button>
             }
         }
     </div>
