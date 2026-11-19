@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Disco.Services.Devices.Importing.Intune
 {
-    internal class IntuneDeviceRecord : IDeviceImportRecord
+    internal sealed class IntuneDeviceRecord : IDeviceImportRecord
     {
         public int Index => CsvRecord.RowNumber;
         public string DeviceSerialNumber { get; }

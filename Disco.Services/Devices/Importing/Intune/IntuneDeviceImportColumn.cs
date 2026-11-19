@@ -3,7 +3,7 @@ using System;
 
 namespace Disco.Services.Devices.Importing.Intune
 {
-    internal class IntuneDeviceImportColumn : DeviceImportColumn
+    internal sealed class IntuneDeviceImportColumn : DeviceImportColumn
     {
         public Func<IntuneCsvDeviceRecord, object> ValueSelector { get; }
 

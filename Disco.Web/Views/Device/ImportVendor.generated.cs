@@ -14,7 +14,7 @@ namespace Disco.Web.Views.Device
     using System;
     using System.Collections.Generic;
     
-    #line 3 "..\..\Views\Device\ImportIntune.cshtml"
+    #line 3 "..\..\Views\Device\ImportVendor.cshtml"
     using System.Data;
     
     #line default
@@ -35,7 +35,7 @@ namespace Disco.Web.Views.Device
     using Disco;
     using Disco.Models.Repository;
     
-    #line 2 "..\..\Views\Device\ImportIntune.cshtml"
+    #line 2 "..\..\Views\Device\ImportVendor.cshtml"
     using Disco.Models.Services.Devices.Importing;
     
     #line default
@@ -47,20 +47,20 @@ namespace Disco.Web.Views.Device
     using Disco.Web.Extensions;
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("RazorGenerator", "2.0.0.0")]
-    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/ImportIntune.cshtml")]
-    public partial class ImportIntune : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ImportIntuneModel>
+    [System.Web.WebPages.PageVirtualPathAttribute("~/Views/Device/ImportVendor.cshtml")]
+    public partial class ImportVendor : Disco.Services.Web.WebViewPage<Disco.Web.Models.Device.ImportVendorModel>
     {
-        public ImportIntune()
+        public ImportVendor()
         {
         }
         public override void Execute()
         {
             
-            #line 4 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 4 "..\..\Views\Device\ImportVendor.cshtml"
   
     Authorization.Require(Claims.Device.Actions.Import);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Microsoft Intune Devices", MVC.Device.Import(), Model.Context.DatasetName);
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import " + Model.VendorName + " Devices", MVC.Device.Import(), Model.Context.DatasetName);
 
             
             #line default
@@ -72,7 +72,7 @@ WriteLiteral(" id=\"Devices_Import_Review\"");
 WriteLiteral(">\r\n\r\n    <h2>Review Pending Changes</h2>\r\n\r\n    <h3>Parsed ");
 
             
-            #line 13 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 13 "..\..\Views\Device\ImportVendor.cshtml"
           Write(Model.Context.Records.Count);
 
             
@@ -81,7 +81,7 @@ WriteLiteral(">\r\n\r\n    <h2>Review Pending Changes</h2>\r\n\r\n    <h3>Parsed
 WriteLiteral(" Device Record");
 
             
-            #line 13 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 13 "..\..\Views\Device\ImportVendor.cshtml"
                                                      Write(Model.Context.Records.Count != 1 ? "s" : null);
 
             
@@ -92,7 +92,7 @@ WriteLiteral("</h3>\r\n    <h4>\r\n");
 WriteLiteral("        ");
 
             
-            #line 15 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 15 "..\..\Views\Device\ImportVendor.cshtml"
    Write(Model.ImportRecordCount);
 
             
@@ -101,7 +101,7 @@ WriteLiteral("        ");
 WriteLiteral(" of ");
 
             
-            #line 15 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 15 "..\..\Views\Device\ImportVendor.cshtml"
                                Write(Model.Context.Records.Count);
 
             
@@ -110,7 +110,7 @@ WriteLiteral(" of ");
 WriteLiteral(" Device");
 
             
-            #line 15 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 15 "..\..\Views\Device\ImportVendor.cshtml"
                                                                    Write(Model.Context.Records.Count != 1 ? "s" : null);
 
             
@@ -119,13 +119,13 @@ WriteLiteral(" Device");
 WriteLiteral(" are ready for import.\r\n    </h4>\r\n");
 
             
-            #line 17 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 17 "..\..\Views\Device\ImportVendor.cshtml"
     
             
             #line default
             #line hidden
             
-            #line 17 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 17 "..\..\Views\Device\ImportVendor.cshtml"
      if (Model.ErrorRecordCount > 0)
     {
 
@@ -141,7 +141,7 @@ WriteLiteral(">\r\n");
 WriteLiteral("            ");
 
             
-            #line 20 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 20 "..\..\Views\Device\ImportVendor.cshtml"
         Write(Model.ErrorRecordCount);
 
             
@@ -150,7 +150,7 @@ WriteLiteral("            ");
 WriteLiteral(" Record");
 
             
-            #line 20 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 20 "..\..\Views\Device\ImportVendor.cshtml"
                                         Write(Model.ErrorRecordCount != 1 ? "s" : null);
 
             
@@ -159,7 +159,7 @@ WriteLiteral(" Record");
 WriteLiteral(" will be skipped due to parse errors.\r\n        </h4>\r\n");
 
             
-            #line 22 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 22 "..\..\Views\Device\ImportVendor.cshtml"
     }
 
             
@@ -176,13 +176,13 @@ WriteLiteral(" class=\"none\"");
 WriteLiteral(">\r\n");
 
             
-            #line 25 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 25 "..\..\Views\Device\ImportVendor.cshtml"
             
             
             #line default
             #line hidden
             
-            #line 25 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 25 "..\..\Views\Device\ImportVendor.cshtml"
              if (Model.ErrorRecordCount > 0)
             {
 
@@ -206,7 +206,7 @@ WriteLiteral(" for=\"Devices_Import_Review_Navigation_Error\"");
 WriteLiteral(">Show Errors (");
 
             
-            #line 28 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 28 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                                               Write(Model.ErrorRecordCount);
 
             
@@ -215,13 +215,13 @@ WriteLiteral(">Show Errors (");
 WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
-            #line 30 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 30 "..\..\Views\Device\ImportVendor.cshtml"
             }
             
             #line default
             #line hidden
             
-            #line 30 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 30 "..\..\Views\Device\ImportVendor.cshtml"
               if (Model.NewRecordCount > 0)
             {
 
@@ -245,7 +245,7 @@ WriteLiteral(" for=\"Devices_Import_Review_Navigation_New\"");
 WriteLiteral(">Show New Devices (");
 
             
-            #line 33 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 33 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                                                Write(Model.NewRecordCount);
 
             
@@ -254,13 +254,13 @@ WriteLiteral(">Show New Devices (");
 WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
-            #line 35 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 35 "..\..\Views\Device\ImportVendor.cshtml"
             }
             
             #line default
             #line hidden
             
-            #line 35 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 35 "..\..\Views\Device\ImportVendor.cshtml"
               if (Model.ModifiedRecordCount > 0)
             {
 
@@ -284,7 +284,7 @@ WriteLiteral(" for=\"Devices_Import_Review_Navigation_Modified\"");
 WriteLiteral(">Show Modified Devices (");
 
             
-            #line 38 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 38 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                                                               Write(Model.ModifiedRecordCount);
 
             
@@ -293,13 +293,13 @@ WriteLiteral(">Show Modified Devices (");
 WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
-            #line 40 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 40 "..\..\Views\Device\ImportVendor.cshtml"
             }
             
             #line default
             #line hidden
             
-            #line 40 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 40 "..\..\Views\Device\ImportVendor.cshtml"
               if (Model.UnmodifiedRecordCount > 0)
             {
 
@@ -323,7 +323,7 @@ WriteLiteral(" for=\"Devices_Import_Review_Navigation_Unchanged\"");
 WriteLiteral(">Show Unchanged Devices (");
 
             
-            #line 43 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 43 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                                                                  Write(Model.UnmodifiedRecordCount);
 
             
@@ -332,7 +332,7 @@ WriteLiteral(">Show Unchanged Devices (");
 WriteLiteral(")</label>\r\n                </li>\r\n");
 
             
-            #line 45 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 45 "..\..\Views\Device\ImportVendor.cshtml"
             }
 
             
@@ -373,13 +373,13 @@ WriteLiteral(">\r\n            <thead>\r\n                <tr>\r\n              
 "\r\n                    <th>Row</th>\r\n");
 
             
-            #line 75 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 75 "..\..\Views\Device\ImportVendor.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 75 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 75 "..\..\Views\Device\ImportVendor.cshtml"
                      foreach (var header in Model.Context.Columns)
                     {
 
@@ -389,7 +389,7 @@ WriteLiteral(">\r\n            <thead>\r\n                <tr>\r\n              
 WriteLiteral("                        <th>");
 
             
-            #line 77 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 77 "..\..\Views\Device\ImportVendor.cshtml"
                        Write(header.Name);
 
             
@@ -398,7 +398,7 @@ WriteLiteral("                        <th>");
 WriteLiteral("</th>\r\n");
 
             
-            #line 78 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 78 "..\..\Views\Device\ImportVendor.cshtml"
                     }
 
             
@@ -407,13 +407,13 @@ WriteLiteral("</th>\r\n");
 WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbody>\r\n");
 
             
-            #line 82 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 82 "..\..\Views\Device\ImportVendor.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 82 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 82 "..\..\Views\Device\ImportVendor.cshtml"
                  foreach (var record in Model.Context.Records)
                 {
 
@@ -422,15 +422,15 @@ WriteLiteral("                </tr>\r\n            </thead>\r\n            <tbod
             #line hidden
 WriteLiteral("                    <tr");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 3836), Tuple.Create("\"", 3872)
-, Tuple.Create(Tuple.Create("", 3844), Tuple.Create("action", 3844), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 3844), Tuple.Create("\"", 3880)
+, Tuple.Create(Tuple.Create("", 3852), Tuple.Create("action", 3852), true)
             
-            #line 84 "..\..\Views\Device\ImportIntune.cshtml"
-, Tuple.Create(Tuple.Create("", 3850), Tuple.Create<System.Object, System.Int32>(record.RecordAction
+            #line 84 "..\..\Views\Device\ImportVendor.cshtml"
+, Tuple.Create(Tuple.Create("", 3858), Tuple.Create<System.Object, System.Int32>(record.RecordAction
             
             #line default
             #line hidden
-, 3850), false)
+, 3858), false)
 );
 
 WriteLiteral(">\r\n                        <td");
@@ -444,7 +444,7 @@ WriteLiteral(" class=\"fa fa-fw\"");
 WriteLiteral("></i></td>\r\n                        <td>");
 
             
-            #line 86 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 86 "..\..\Views\Device\ImportVendor.cshtml"
                         Write(record.Index);
 
             
@@ -453,13 +453,13 @@ WriteLiteral("></i></td>\r\n                        <td>");
 WriteLiteral("</td>\r\n");
 
             
-            #line 87 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 87 "..\..\Views\Device\ImportVendor.cshtml"
                         
             
             #line default
             #line hidden
             
-            #line 87 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 87 "..\..\Views\Device\ImportVendor.cshtml"
                          foreach (var field in record.Fields)
                         {
                             var friendlyValue = field.FriendlyValue;
@@ -469,29 +469,29 @@ WriteLiteral("</td>\r\n");
             #line hidden
 WriteLiteral("                            <td");
 
-WriteAttribute("class", Tuple.Create(" class=\"", 4191), Tuple.Create("\"", 4300)
-, Tuple.Create(Tuple.Create("", 4199), Tuple.Create("header", 4199), true)
+WriteAttribute("class", Tuple.Create(" class=\"", 4199), Tuple.Create("\"", 4308)
+, Tuple.Create(Tuple.Create("", 4207), Tuple.Create("header", 4207), true)
             
-            #line 90 "..\..\Views\Device\ImportIntune.cshtml"
-, Tuple.Create(Tuple.Create("", 4205), Tuple.Create<System.Object, System.Int32>(field.FieldType
-            
-            #line default
-            #line hidden
-, 4205), false)
-, Tuple.Create(Tuple.Create(" ", 4223), Tuple.Create("action", 4224), true)
-            
-            #line 90 "..\..\Views\Device\ImportIntune.cshtml"
-, Tuple.Create(Tuple.Create("", 4230), Tuple.Create<System.Object, System.Int32>(field.FieldAction.HasValue ? field.FieldAction.ToString() : "Error"
+            #line 90 "..\..\Views\Device\ImportVendor.cshtml"
+, Tuple.Create(Tuple.Create("", 4213), Tuple.Create<System.Object, System.Int32>(field.FieldType
             
             #line default
             #line hidden
-, 4230), false)
+, 4213), false)
+, Tuple.Create(Tuple.Create(" ", 4231), Tuple.Create("action", 4232), true)
+            
+            #line 90 "..\..\Views\Device\ImportVendor.cshtml"
+, Tuple.Create(Tuple.Create("", 4238), Tuple.Create<System.Object, System.Int32>(field.FieldAction.HasValue ? field.FieldAction.ToString() : "Error"
+            
+            #line default
+            #line hidden
+, 4238), false)
 );
 
 WriteLiteral(" data-previousvalue=\"");
 
             
-            #line 90 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 90 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                                               Write(field.FieldAction.HasValue && field.FieldAction.Value == System.Data.EntityState.Modified ? field.FriendlyPreviousValue : null);
 
             
@@ -502,13 +502,13 @@ WriteLiteral("\"");
 WriteLiteral(">\r\n");
 
             
-            #line 91 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 91 "..\..\Views\Device\ImportVendor.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 91 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 91 "..\..\Views\Device\ImportVendor.cshtml"
                                  if (!field.FieldAction.HasValue)
                                 {
 
@@ -522,7 +522,7 @@ WriteLiteral(" class=\"errorMessage\"");
 WriteLiteral("><strong>Error:</strong> ");
 
             
-            #line 93 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 93 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                   Write(field.ErrorMessage);
 
             
@@ -537,7 +537,7 @@ WriteLiteral(" class=\"fa fa-exclamation-triangle fa-fw\"");
 WriteLiteral("></i>\r\n");
 
             
-            #line 95 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 95 "..\..\Views\Device\ImportVendor.cshtml"
                                 }
 
             
@@ -546,7 +546,7 @@ WriteLiteral("></i>\r\n");
 WriteLiteral("                                ");
 
             
-            #line 96 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 96 "..\..\Views\Device\ImportVendor.cshtml"
                                  if (string.IsNullOrEmpty(friendlyValue))
                                 {
             
@@ -559,7 +559,7 @@ WriteLiteral(" class=\"smallMessage\"");
 WriteLiteral(">&lt;None&gt;</span>");
 
             
-            #line 97 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 97 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                }
                                 else if (field.FieldType == DeviceImportFieldTypes.DeviceSerialNumber && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Added)
                                 {
@@ -568,14 +568,14 @@ WriteLiteral(">&lt;None&gt;</span>");
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 100 "..\..\Views\Device\ImportVendor.cshtml"
                                Write(Html.ActionLink(friendlyValue, MVC.Device.Show((string)field.RawParsedValue), new { target = "_blank" }));
 
             
             #line default
             #line hidden
             
-            #line 100 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 100 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                              }
                                 else if (field.FieldType == DeviceImportFieldTypes.AssignedUserId && field.FieldAction.HasValue && field.FieldAction.Value != EntityState.Unchanged)
                                 {
@@ -584,14 +584,14 @@ WriteLiteral(">&lt;None&gt;</span>");
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 103 "..\..\Views\Device\ImportVendor.cshtml"
                                Write(Html.ActionLink(friendlyValue, MVC.User.Show((string)field.RawParsedValue), new { target = "_blank" }));
 
             
             #line default
             #line hidden
             
-            #line 103 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 103 "..\..\Views\Device\ImportVendor.cshtml"
                                                                                                                                            }
                                 else
                                 {
@@ -599,14 +599,14 @@ WriteLiteral(">&lt;None&gt;</span>");
             #line default
             #line hidden
             
-            #line 105 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 105 "..\..\Views\Device\ImportVendor.cshtml"
                             Write(friendlyValue);
 
             
             #line default
             #line hidden
             
-            #line 105 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 105 "..\..\Views\Device\ImportVendor.cshtml"
                                                }
 
             
@@ -615,7 +615,7 @@ WriteLiteral(">&lt;None&gt;</span>");
 WriteLiteral("                            </td>\r\n");
 
             
-            #line 107 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 107 "..\..\Views\Device\ImportVendor.cshtml"
                         }
 
             
@@ -624,7 +624,7 @@ WriteLiteral("                            </td>\r\n");
 WriteLiteral("                    </tr>\r\n");
 
             
-            #line 109 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 109 "..\..\Views\Device\ImportVendor.cshtml"
                 }
 
             
@@ -637,13 +637,13 @@ WriteLiteral(" class=\"actionBar\"");
 WriteLiteral(">\r\n");
 
             
-            #line 114 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 114 "..\..\Views\Device\ImportVendor.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 114 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 114 "..\..\Views\Device\ImportVendor.cshtml"
          if (Model.ImportRecordCount == 0)
         {
 
@@ -660,10 +660,19 @@ WriteLiteral(" disabled><i");
 
 WriteLiteral(" class=\"fa fa-wrench\"");
 
-WriteLiteral("></i> Apply Intune Device Import</button>\r\n");
+WriteLiteral("></i> Apply ");
 
             
-            #line 117 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 116 "..\..\Views\Device\ImportVendor.cshtml"
+                                                                                                                    Write(Model.VendorName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" Device Import</button>\r\n");
+
+            
+            #line 117 "..\..\Views\Device\ImportVendor.cshtml"
         }
         else
         {
@@ -674,14 +683,14 @@ WriteLiteral("></i> Apply Intune Device Import</button>\r\n");
             #line default
             #line hidden
             
-            #line 122 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 122 "..\..\Views\Device\ImportVendor.cshtml"
            Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 122 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 122 "..\..\Views\Device\ImportVendor.cshtml"
                                         ;
 
             
@@ -699,10 +708,19 @@ WriteLiteral("><i");
 
 WriteLiteral(" class=\"fa fa-wrench\"");
 
-WriteLiteral("></i> Apply Intune Device Import</button>\r\n");
+WriteLiteral("></i> Apply ");
 
             
-            #line 124 "..\..\Views\Device\ImportIntune.cshtml"
+            #line 123 "..\..\Views\Device\ImportVendor.cshtml"
+                                                                                                                    Write(Model.VendorName);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(" Device Import</button>\r\n");
+
+            
+            #line 124 "..\..\Views\Device\ImportVendor.cshtml"
             }
         }
 

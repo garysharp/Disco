@@ -1,4 +1,5 @@
 using Disco.Data.Repository;
+using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Devices.Importing.Intune;
 using Disco.Services.Tasks;
 using Effort;
@@ -66,7 +67,7 @@ namespace Disco.Services.Tests.Integration.Devices.Importing.Intune
             var status = ScheduledTaskMockStatus.Create("Intune import integration test");
             status.ProgressMultiplier = 1;
 
-            var import = IntuneDeviceImport.Create("testfile.csv", CreateMemoryStream(csv));
+            var import = IntuneDeviceImport.Create("testfile.csv", CreateMemoryStream(csv), new IntuneDeviceImportConfiguration());
 
             import.Parse(status);
 
@@ -102,7 +103,7 @@ namespace Disco.Services.Tests.Integration.Devices.Importing.Intune
             var status = ScheduledTaskMockStatus.Create("Intune import integration test");
             status.ProgressMultiplier = 1;
 
-            var import = IntuneDeviceImport.Create("testfile.zip", stream);
+            var import = IntuneDeviceImport.Create("testfile.zip", stream, new IntuneDeviceImportConfiguration());
 
             import.Parse(status);
 
@@ -118,7 +119,7 @@ namespace Disco.Services.Tests.Integration.Devices.Importing.Intune
             var status = ScheduledTaskMockStatus.Create("Intune import integration test");
             status.ProgressMultiplier = 1;
 
-            var import = IntuneDeviceImport.Create("testfile.csv", CreateMemoryStream(csv));
+            var import = IntuneDeviceImport.Create("testfile.csv", CreateMemoryStream(csv), new IntuneDeviceImportConfiguration());
 
             Assert.Throws<FormatException>(() => import.Parse(status));
             Assert.Equal((byte)5, status.Progress);

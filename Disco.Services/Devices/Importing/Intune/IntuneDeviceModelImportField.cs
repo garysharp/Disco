@@ -30,9 +30,12 @@ namespace Disco.Services.Devices.Importing.Intune
 
             PreviousDeviceModel = existingDevice?.DeviceModel;
 
-            if (string.IsNullOrEmpty(ManufacturerName))
+            if (string.IsNullOrWhiteSpace(ManufacturerName) && string.IsNullOrWhiteSpace(ModelName))
+                return Success(EntityState.Unchanged);
+
+            if (string.IsNullOrWhiteSpace(ManufacturerName))
                 ManufacturerName = "Unknown";
-            if (string.IsNullOrEmpty(ModelName))
+            if (string.IsNullOrWhiteSpace(ModelName))
                 ModelName = "Unknown";
 
             DeviceModel = state.DeviceModels.FirstOrDefault(m =>

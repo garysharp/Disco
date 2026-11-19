@@ -19,6 +19,7 @@ namespace Disco.Web.Models.Device
         public IEnumerable<Tuple<string, string, string>> HeaderTypes { get; set; }
 
         public IntuneDeviceImportConfiguration LastIntuneDeviceImportConfiguration { get; set; }
+        public GoogleDeviceImportConfiguration LastGoogleDeviceImportConfiguration { get; set; }
 
         public ImportModel()
         {

@@ -158,15 +158,17 @@ namespace Disco.Web.Controllers
                 DeviceProfiles = Database.DeviceProfiles.ToList(),
                 DeviceBatches = Database.DeviceBatches.ToList(),
                 LastIntuneDeviceImportConfiguration = Database.DiscoConfiguration.Devices.LastIntuneImportConfiguration,
+                LastGoogleDeviceImportConfiguration = Database.DiscoConfiguration.Devices.LastGoogleImportConfiguration,
             };
 
+            var defaultProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
+            if (defaultProfileId <= 0)
+                defaultProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
+
             if (m.LastIntuneDeviceImportConfiguration.DefaultDeviceProfileId == null)
-            {
-                var defaultProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultAddDeviceOfflineDeviceProfileId;
-                if (defaultProfileId <= 0)
-                    defaultProfileId = Database.DiscoConfiguration.DeviceProfiles.DefaultDeviceProfileId;
                 m.LastIntuneDeviceImportConfiguration.DefaultDeviceProfileId = defaultProfileId;
-            }
+            if (!m.DeviceProfiles.Any(p => p.Id == m.LastGoogleDeviceImportConfiguration.DefaultDeviceProfileId))
+                m.LastGoogleDeviceImportConfiguration.DefaultDeviceProfileId = defaultProfileId;
 
             if (!string.IsNullOrWhiteSpace(Id))
                 m.CompletedImportSessionContext = DeviceImport.RetrieveContext(Id, remove: true);
@@ -202,7 +204,7 @@ namespace Disco.Web.Controllers
         public virtual ActionResult ImportReview(string Id)
         {
             if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException("Id");
+                throw new ArgumentNullException(nameof(Id));
 
             var context = DeviceImport.RetrieveContext(Id)
                 ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
@@ -223,20 +225,42 @@ namespace Disco.Web.Controllers
         }
 
         [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
+        public virtual ActionResult ImportGoogle(string Id)
+        {
+            var m = BuildImportVendorModel(Id, "Google");
+
+            if (m.Context.GetType().Name != "GoogleDeviceImport")
+                throw new InvalidOperationException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again");
+
+            // UI Extensions
+            UIExtensions.ExecuteExtensions<DeviceImportGoogleModel>(ControllerContext, m);
+
+            return View(MVC.Device.Views.ImportVendor, m);
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import), HttpGet]
         public virtual ActionResult ImportIntune(string Id)
         {
-            if (string.IsNullOrWhiteSpace(Id))
-                throw new ArgumentNullException(nameof(Id));
+            var m = BuildImportVendorModel(Id, "Microsoft Intune");
 
-            var context = DeviceImport.RetrieveContext(Id)
-                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(Id));
-
-            var m = new Models.Device.ImportIntuneModel(context);
+            if (m.Context.GetType().Name != "IntuneDeviceImport")
+                throw new InvalidOperationException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again");
 
             // UI Extensions
             UIExtensions.ExecuteExtensions<DeviceImportIntuneModel>(ControllerContext, m);
 
-            return View(m);
+            return View(MVC.Device.Views.ImportVendor, m);
+        }
+
+        private static Models.Device.ImportVendorModel BuildImportVendorModel(string id, string vendorName)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException(nameof(id));
+
+            var context = DeviceImport.RetrieveContext(id)
+                ?? throw new ArgumentException("The Import Session Id is invalid or the session timed out (60 minutes), try importing again", nameof(id));
+
+            return new Models.Device.ImportVendorModel(vendorName, context);
         }
         #endregion
 

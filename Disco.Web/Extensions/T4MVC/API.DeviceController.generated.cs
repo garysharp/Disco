@@ -242,6 +242,12 @@ namespace Disco.Web.Areas.API.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ImportGoogleBegin()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportGoogleBegin);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult DeviceBatchDecommission()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.DeviceBatchDecommission);
@@ -322,6 +328,7 @@ namespace Disco.Web.Areas.API.Controllers
             public readonly string ImportParse = "ImportParse";
             public readonly string ImportApply = "ImportApply";
             public readonly string ImportIntuneBegin = "ImportIntuneBegin";
+            public readonly string ImportGoogleBegin = "ImportGoogleBegin";
             public readonly string DeviceBatchDecommission = "DeviceBatchDecommission";
             public readonly string DeviceProfileDecommission = "DeviceProfileDecommission";
             public readonly string DeviceModelDecommission = "DeviceModelDecommission";
@@ -364,6 +371,7 @@ namespace Disco.Web.Areas.API.Controllers
             public const string ImportParse = "ImportParse";
             public const string ImportApply = "ImportApply";
             public const string ImportIntuneBegin = "ImportIntuneBegin";
+            public const string ImportGoogleBegin = "ImportGoogleBegin";
             public const string DeviceBatchDecommission = "DeviceBatchDecommission";
             public const string DeviceProfileDecommission = "DeviceProfileDecommission";
             public const string DeviceModelDecommission = "DeviceModelDecommission";
@@ -645,6 +653,16 @@ namespace Disco.Web.Areas.API.Controllers
         {
             public readonly string file = "file";
             public readonly string assignDeviceToPrimaryUser = "assignDeviceToPrimaryUser";
+            public readonly string defaultDeviceProfileId = "defaultDeviceProfileId";
+        }
+        static readonly ActionParamsClass_ImportGoogleBegin s_params_ImportGoogleBegin = new ActionParamsClass_ImportGoogleBegin();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ImportGoogleBegin ImportGoogleBeginParams { get { return s_params_ImportGoogleBegin; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ImportGoogleBegin
+        {
+            public readonly string file = "file";
+            public readonly string assignedUserSource = "assignedUserSource";
             public readonly string defaultDeviceProfileId = "defaultDeviceProfileId";
         }
         static readonly ActionParamsClass_DeviceBatchDecommission s_params_DeviceBatchDecommission = new ActionParamsClass_DeviceBatchDecommission();
@@ -1110,6 +1128,20 @@ namespace Disco.Web.Areas.API.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "assignDeviceToPrimaryUser", assignDeviceToPrimaryUser);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "defaultDeviceProfileId", defaultDeviceProfileId);
             ImportIntuneBeginOverride(callInfo, file, assignDeviceToPrimaryUser, defaultDeviceProfileId);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ImportGoogleBeginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase file, Disco.Models.Services.Devices.Importing.GoogleDeviceImportUserSource? assignedUserSource, int? defaultDeviceProfileId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ImportGoogleBegin(System.Web.HttpPostedFileBase file, Disco.Models.Services.Devices.Importing.GoogleDeviceImportUserSource? assignedUserSource, int? defaultDeviceProfileId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ImportGoogleBegin);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "file", file);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "assignedUserSource", assignedUserSource);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "defaultDeviceProfileId", defaultDeviceProfileId);
+            ImportGoogleBeginOverride(callInfo, file, assignedUserSource, defaultDeviceProfileId);
             return callInfo;
         }
 

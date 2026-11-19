@@ -2,6 +2,7 @@
 using Disco.Models.Repository;
 using Disco.Models.Services.Devices.Importing;
 using Disco.Services.Devices.Importing.Decommissioning;
+using Disco.Services.Devices.Importing.Google;
 using Disco.Services.Devices.Importing.Intune;
 using System;
 using System.IO;
@@ -43,6 +44,13 @@ namespace Disco.Services.Devices.Importing
         public static IDeviceImportContextActions BeginIntuneImport(string filename, Stream stream, IntuneDeviceImportConfiguration configuration)
         {
             var context = IntuneDeviceImport.Create(filename, stream, configuration);
+            StoreContext(context);
+            return context;
+        }
+
+        public static IDeviceImportContextActions BeginGoogleImport(string filename, Stream stream, GoogleDeviceImportConfiguration configuration)
+        {
+            var context = new GoogleDeviceImport(filename, stream, configuration);
             StoreContext(context);
             return context;
         }

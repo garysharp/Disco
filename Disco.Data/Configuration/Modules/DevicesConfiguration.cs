@@ -27,5 +27,11 @@ namespace Disco.Data.Configuration.Modules
             get => Get(new IntuneDeviceImportConfiguration());
             set => Set(value);
         }
+
+        public GoogleDeviceImportConfiguration LastGoogleImportConfiguration
+        {
+            get => Get(new GoogleDeviceImportConfiguration());
+            set => Set(value);
+        }
     }
 }

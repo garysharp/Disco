@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace Disco.Web.Models.Device
 {
-    public class ImportIntuneModel : DeviceImportIntuneModel
+    public class ImportVendorModel : DeviceImportIntuneModel, DeviceImportGoogleModel
     {
+        public string VendorName { get; }
         public IDeviceImportContext Context { get; }
 
         public int ErrorRecordCount { get; }
@@ -15,8 +16,9 @@ namespace Disco.Web.Models.Device
         public int UnmodifiedRecordCount { get; }
         public int ImportRecordCount { get; }
 
-        public ImportIntuneModel(IDeviceImportContext context)
+        public ImportVendorModel(string vendorName, IDeviceImportContext context)
         {
+            VendorName = vendorName;
             Context = context;
 
             ErrorRecordCount = context.Records.Count(r => r.HasError);

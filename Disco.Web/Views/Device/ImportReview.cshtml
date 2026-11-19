@@ -164,7 +164,7 @@
                 } else if ($this.hasClass('actionModified')) {
                     var v = $(this).attr('data-previousvalue');
                     if (v) {
-                        return '<strong>Previous Value:</strong><br />' + v;
+                        return '<strong>Previous Value:</strong><br />' + $('<div>').text(v).html();
                     } else {
                         return '<strong>Previous Value:</strong><br /><em>&lt;None&gt;</em>';
                     }

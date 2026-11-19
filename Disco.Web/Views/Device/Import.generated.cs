@@ -83,7 +83,15 @@ WriteLiteral(" type=\"button\"");
 
 WriteLiteral(" class=\"button\"");
 
-WriteLiteral(">Microsoft Intune Import</button>\r\n    </div>\r\n\r\n    <div");
+WriteLiteral(">Microsoft Intune Import</button>\r\n        <button");
+
+WriteLiteral(" id=\"Devices_Import_Google_Button\"");
+
+WriteLiteral(" type=\"button\"");
+
+WriteLiteral(" class=\"button\"");
+
+WriteLiteral(">Google Import</button>\r\n    </div>\r\n\r\n    <div");
 
 WriteLiteral(" id=\"Devices_Import_Documentation\"");
 
@@ -125,13 +133,13 @@ WriteLiteral(">Field Name</th>\r\n                    <th>Description</th>\r\n  
 "\r\n            </thead>\r\n            <tbody>\r\n");
 
             
-            #line 37 "..\..\Views\Device\Import.cshtml"
+            #line 38 "..\..\Views\Device\Import.cshtml"
                 
             
             #line default
             #line hidden
             
-            #line 37 "..\..\Views\Device\Import.cshtml"
+            #line 38 "..\..\Views\Device\Import.cshtml"
                  foreach (var field in Model.HeaderTypes)
                 {
 
@@ -141,7 +149,7 @@ WriteLiteral(">Field Name</th>\r\n                    <th>Description</th>\r\n  
 WriteLiteral("                    <tr>\r\n                        <th>");
 
             
-            #line 40 "..\..\Views\Device\Import.cshtml"
+            #line 41 "..\..\Views\Device\Import.cshtml"
                        Write(field.Item2);
 
             
@@ -152,7 +160,7 @@ WriteLiteral("</th>\r\n                        <td>\r\n");
 WriteLiteral("                            ");
 
             
-            #line 42 "..\..\Views\Device\Import.cshtml"
+            #line 43 "..\..\Views\Device\Import.cshtml"
                        Write(field.Item3);
 
             
@@ -161,13 +169,13 @@ WriteLiteral("                            ");
 WriteLiteral("\r\n");
 
             
-            #line 43 "..\..\Views\Device\Import.cshtml"
+            #line 44 "..\..\Views\Device\Import.cshtml"
                             
             
             #line default
             #line hidden
             
-            #line 43 "..\..\Views\Device\Import.cshtml"
+            #line 44 "..\..\Views\Device\Import.cshtml"
                              if (field.Item1 == DeviceImportFieldTypes.DeviceSerialNumber.ToString())
                             {
 
@@ -177,7 +185,7 @@ WriteLiteral("\r\n");
 WriteLiteral("                                <strong>Required</strong>\r\n");
 
             
-            #line 46 "..\..\Views\Device\Import.cshtml"
+            #line 47 "..\..\Views\Device\Import.cshtml"
                             }
                             else if (field.Item1 == DeviceImportFieldTypes.ModelId.ToString())
                             {
@@ -194,7 +202,7 @@ WriteLiteral(" id=\"Devices_Import_Documentation_DeviceModels_Button\"");
 WriteLiteral(">Show IDs</a>)</span>\r\n");
 
             
-            #line 50 "..\..\Views\Device\Import.cshtml"
+            #line 51 "..\..\Views\Device\Import.cshtml"
                             }
                             else if (field.Item1 == DeviceImportFieldTypes.ProfileId.ToString())
                             {
@@ -211,7 +219,7 @@ WriteLiteral(" id=\"Devices_Import_Documentation_DeviceProfiles_Button\"");
 WriteLiteral(">Show IDs</a>)</span>\r\n");
 
             
-            #line 54 "..\..\Views\Device\Import.cshtml"
+            #line 55 "..\..\Views\Device\Import.cshtml"
                             }
                             else if (field.Item1 == DeviceImportFieldTypes.BatchId.ToString())
                             {
@@ -228,7 +236,7 @@ WriteLiteral(" id=\"Devices_Import_Documentation_DeviceBatches_Button\"");
 WriteLiteral(">Show IDs</a>)</span>\r\n");
 
             
-            #line 58 "..\..\Views\Device\Import.cshtml"
+            #line 59 "..\..\Views\Device\Import.cshtml"
                             }
 
             
@@ -237,7 +245,7 @@ WriteLiteral(">Show IDs</a>)</span>\r\n");
 WriteLiteral("\r\n                        </td>\r\n                    </tr>\r\n");
 
             
-            #line 62 "..\..\Views\Device\Import.cshtml"
+            #line 63 "..\..\Views\Device\Import.cshtml"
                 }
 
             
@@ -268,13 +276,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 78 "..\..\Views\Device\Import.cshtml"
+            #line 79 "..\..\Views\Device\Import.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 78 "..\..\Views\Device\Import.cshtml"
+            #line 79 "..\..\Views\Device\Import.cshtml"
                      foreach (var dm in Model.DeviceModels)
                     {
 
@@ -284,7 +292,7 @@ WriteLiteral(@">
 WriteLiteral("                        <tr>\r\n                            <td>");
 
             
-            #line 81 "..\..\Views\Device\Import.cshtml"
+            #line 82 "..\..\Views\Device\Import.cshtml"
                            Write(Html.ActionLink(dm.Id.ToString(), MVC.Config.DeviceModel.Index(dm.Id)));
 
             
@@ -293,7 +301,7 @@ WriteLiteral("                        <tr>\r\n                            <td>")
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 82 "..\..\Views\Device\Import.cshtml"
+            #line 83 "..\..\Views\Device\Import.cshtml"
                            Write(dm.ToString());
 
             
@@ -302,7 +310,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 83 "..\..\Views\Device\Import.cshtml"
+            #line 84 "..\..\Views\Device\Import.cshtml"
                            Write(dm.Manufacturer);
 
             
@@ -311,7 +319,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 84 "..\..\Views\Device\Import.cshtml"
+            #line 85 "..\..\Views\Device\Import.cshtml"
                            Write(dm.Model);
 
             
@@ -320,7 +328,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                        </tr>\r\n");
 
             
-            #line 86 "..\..\Views\Device\Import.cshtml"
+            #line 87 "..\..\Views\Device\Import.cshtml"
                     }
 
             
@@ -351,13 +359,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 102 "..\..\Views\Device\Import.cshtml"
+            #line 103 "..\..\Views\Device\Import.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 102 "..\..\Views\Device\Import.cshtml"
+            #line 103 "..\..\Views\Device\Import.cshtml"
                      foreach (var dp in Model.DeviceProfiles)
                     {
 
@@ -367,7 +375,7 @@ WriteLiteral(@">
 WriteLiteral("                        <tr>\r\n                            <td>");
 
             
-            #line 105 "..\..\Views\Device\Import.cshtml"
+            #line 106 "..\..\Views\Device\Import.cshtml"
                            Write(Html.ActionLink(dp.Id.ToString(), MVC.Config.DeviceProfile.Index(dp.Id)));
 
             
@@ -376,7 +384,7 @@ WriteLiteral("                        <tr>\r\n                            <td>")
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 106 "..\..\Views\Device\Import.cshtml"
+            #line 107 "..\..\Views\Device\Import.cshtml"
                            Write(dp.Name);
 
             
@@ -385,7 +393,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 107 "..\..\Views\Device\Import.cshtml"
+            #line 108 "..\..\Views\Device\Import.cshtml"
                            Write(dp.ShortName);
 
             
@@ -394,7 +402,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 108 "..\..\Views\Device\Import.cshtml"
+            #line 109 "..\..\Views\Device\Import.cshtml"
                            Write(dp.Description);
 
             
@@ -403,7 +411,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                        </tr>\r\n");
 
             
-            #line 110 "..\..\Views\Device\Import.cshtml"
+            #line 111 "..\..\Views\Device\Import.cshtml"
                     }
 
             
@@ -433,13 +441,13 @@ WriteLiteral(@">
 ");
 
             
-            #line 125 "..\..\Views\Device\Import.cshtml"
+            #line 126 "..\..\Views\Device\Import.cshtml"
                     
             
             #line default
             #line hidden
             
-            #line 125 "..\..\Views\Device\Import.cshtml"
+            #line 126 "..\..\Views\Device\Import.cshtml"
                      foreach (var db in Model.DeviceBatches)
                     {
 
@@ -449,7 +457,7 @@ WriteLiteral(@">
 WriteLiteral("                        <tr>\r\n                            <td>");
 
             
-            #line 128 "..\..\Views\Device\Import.cshtml"
+            #line 129 "..\..\Views\Device\Import.cshtml"
                            Write(Html.ActionLink(db.Id.ToString(), MVC.Config.DeviceBatch.Index(db.Id)));
 
             
@@ -458,7 +466,7 @@ WriteLiteral("                        <tr>\r\n                            <td>")
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 129 "..\..\Views\Device\Import.cshtml"
+            #line 130 "..\..\Views\Device\Import.cshtml"
                            Write(db.Name);
 
             
@@ -467,7 +475,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                            <td>");
 
             
-            #line 130 "..\..\Views\Device\Import.cshtml"
+            #line 131 "..\..\Views\Device\Import.cshtml"
                            Write(CommonHelpers.FriendlyDate(db.PurchaseDate));
 
             
@@ -476,7 +484,7 @@ WriteLiteral("</td>\r\n                            <td>");
 WriteLiteral("</td>\r\n                        </tr>\r\n");
 
             
-            #line 132 "..\..\Views\Device\Import.cshtml"
+            #line 133 "..\..\Views\Device\Import.cshtml"
                     }
 
             
@@ -514,13 +522,13 @@ WriteLiteral(" title=\"Import Devices\"");
 WriteLiteral(">\r\n");
 
             
-            #line 174 "..\..\Views\Device\Import.cshtml"
+            #line 175 "..\..\Views\Device\Import.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 174 "..\..\Views\Device\Import.cshtml"
+            #line 175 "..\..\Views\Device\Import.cshtml"
          using (Html.BeginForm(MVC.API.Device.ImportBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             
@@ -528,14 +536,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 176 "..\..\Views\Device\Import.cshtml"
+            #line 177 "..\..\Views\Device\Import.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 176 "..\..\Views\Device\Import.cshtml"
+            #line 177 "..\..\Views\Device\Import.cshtml"
                                     
 
             
@@ -572,7 +580,7 @@ WriteLiteral(" for=\"CustomHasHeader\"");
 WriteLiteral(">Has Header</label>\r\n            </div>\r\n");
 
             
-            #line 184 "..\..\Views\Device\Import.cshtml"
+            #line 185 "..\..\Views\Device\Import.cshtml"
         }
 
             
@@ -589,13 +597,13 @@ WriteLiteral(" title=\"Import Microsoft Intune Devices\"");
 WriteLiteral(">\r\n");
 
             
-            #line 188 "..\..\Views\Device\Import.cshtml"
+            #line 189 "..\..\Views\Device\Import.cshtml"
         
             
             #line default
             #line hidden
             
-            #line 188 "..\..\Views\Device\Import.cshtml"
+            #line 189 "..\..\Views\Device\Import.cshtml"
          using (Html.BeginForm(MVC.API.Device.ImportIntuneBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             
@@ -603,14 +611,14 @@ WriteLiteral(">\r\n");
             #line default
             #line hidden
             
-            #line 190 "..\..\Views\Device\Import.cshtml"
+            #line 191 "..\..\Views\Device\Import.cshtml"
        Write(Html.AntiForgeryToken());
 
             
             #line default
             #line hidden
             
-            #line 190 "..\..\Views\Device\Import.cshtml"
+            #line 191 "..\..\Views\Device\Import.cshtml"
                                     
 
             
@@ -654,13 +662,13 @@ WriteLiteral(" name=\"defaultDeviceProfileId\"");
 WriteLiteral(">\r\n");
 
             
-            #line 204 "..\..\Views\Device\Import.cshtml"
+            #line 205 "..\..\Views\Device\Import.cshtml"
                                 
             
             #line default
             #line hidden
             
-            #line 204 "..\..\Views\Device\Import.cshtml"
+            #line 205 "..\..\Views\Device\Import.cshtml"
                                  foreach (var profile in Model.DeviceProfiles.OrderBy(p => p.Name))
                                 {
 
@@ -669,20 +677,20 @@ WriteLiteral(">\r\n");
             #line hidden
 WriteLiteral("                                    <option");
 
-WriteAttribute("value", Tuple.Create(" value=\"", 9339), Tuple.Create("\"", 9358)
+WriteAttribute("value", Tuple.Create(" value=\"", 9442), Tuple.Create("\"", 9461)
             
-            #line 206 "..\..\Views\Device\Import.cshtml"
-, Tuple.Create(Tuple.Create("", 9347), Tuple.Create<System.Object, System.Int32>(profile.Id
+            #line 207 "..\..\Views\Device\Import.cshtml"
+, Tuple.Create(Tuple.Create("", 9450), Tuple.Create<System.Object, System.Int32>(profile.Id
             
             #line default
             #line hidden
-, 9347), false)
+, 9450), false)
 );
 
 WriteLiteral(" ");
 
             
-            #line 206 "..\..\Views\Device\Import.cshtml"
+            #line 207 "..\..\Views\Device\Import.cshtml"
                                                             Write(Model.LastIntuneDeviceImportConfiguration.DefaultDeviceProfileId == profile.Id ? "selected" : null);
 
             
@@ -691,7 +699,7 @@ WriteLiteral(" ");
 WriteLiteral(">");
 
             
-            #line 206 "..\..\Views\Device\Import.cshtml"
+            #line 207 "..\..\Views\Device\Import.cshtml"
                                                                                                                                                                  Write(profile.Name);
 
             
@@ -700,7 +708,7 @@ WriteLiteral(">");
 WriteLiteral("</option>\r\n");
 
             
-            #line 207 "..\..\Views\Device\Import.cshtml"
+            #line 208 "..\..\Views\Device\Import.cshtml"
                                 }
 
             
@@ -727,7 +735,7 @@ WriteLiteral(" value=\"true\"");
 WriteLiteral(" ");
 
             
-            #line 216 "..\..\Views\Device\Import.cshtml"
+            #line 217 "..\..\Views\Device\Import.cshtml"
                                                                                                                             Write(Model.LastIntuneDeviceImportConfiguration.AssignDeviceToPrimaryUser == true ? "checked" : null);
 
             
@@ -746,7 +754,7 @@ WriteLiteral(">(User details \'Email Address\' and \'Department Email\' will als
 "\n                </tbody>\r\n            </table>\r\n");
 
             
-            #line 223 "..\..\Views\Device\Import.cshtml"
+            #line 224 "..\..\Views\Device\Import.cshtml"
 
 
             
@@ -772,7 +780,231 @@ WriteLiteral(@"></i> Upload a Microsoft Intune export file in either <strong>CSV
 ");
 
             
-            #line 231 "..\..\Views\Device\Import.cshtml"
+            #line 232 "..\..\Views\Device\Import.cshtml"
+        }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("    </div>\r\n\r\n    <div");
+
+WriteLiteral(" id=\"Devices_Import_Google_Dialog\"");
+
+WriteLiteral(" class=\"dialog\"");
+
+WriteLiteral(" title=\"Import Google Admin Devices\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 236 "..\..\Views\Device\Import.cshtml"
+        
+            
+            #line default
+            #line hidden
+            
+            #line 236 "..\..\Views\Device\Import.cshtml"
+         using (Html.BeginForm(MVC.API.Device.ImportGoogleBegin(), FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            
+            
+            #line default
+            #line hidden
+            
+            #line 238 "..\..\Views\Device\Import.cshtml"
+       Write(Html.AntiForgeryToken());
+
+            
+            #line default
+            #line hidden
+            
+            #line 238 "..\..\Views\Device\Import.cshtml"
+                                    
+            var configuration = Model.LastGoogleDeviceImportConfiguration;
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <table");
+
+WriteLiteral(" class=\"genericData\"");
+
+WriteLiteral(">\r\n                <tbody>\r\n                    <tr>\r\n                        <th" +
+"");
+
+WriteLiteral(" style=\"width: 94px\"");
+
+WriteLiteral("><label");
+
+WriteLiteral(" for=\"GoogleImportFile\"");
+
+WriteLiteral(">CSV File</label></th>\r\n                        <td><input");
+
+WriteLiteral(" id=\"GoogleImportFile\"");
+
+WriteLiteral(" name=\"file\"");
+
+WriteLiteral(" type=\"file\"");
+
+WriteLiteral(" required");
+
+WriteLiteral(" accept=\".csv\"");
+
+WriteLiteral(" /></td>\r\n                    </tr>\r\n                    <tr>\r\n                  " +
+"      <th>\r\n                            <label");
+
+WriteLiteral(" for=\"GoogleDefaultDeviceProfileId\"");
+
+WriteLiteral(">Device Profile</label>\r\n                            <div");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">(New devices only)</div>\r\n                        </th>\r\n                       " +
+" <td>\r\n                            <select");
+
+WriteLiteral(" id=\"GoogleDefaultDeviceProfileId\"");
+
+WriteLiteral(" name=\"defaultDeviceProfileId\"");
+
+WriteLiteral(">\r\n");
+
+            
+            #line 253 "..\..\Views\Device\Import.cshtml"
+                                
+            
+            #line default
+            #line hidden
+            
+            #line 253 "..\..\Views\Device\Import.cshtml"
+                                 foreach (var profile in Model.DeviceProfiles.OrderBy(p => p.Name))
+                                {
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                                    <option");
+
+WriteAttribute("value", Tuple.Create(" value=\"", 12183), Tuple.Create("\"", 12202)
+            
+            #line 255 "..\..\Views\Device\Import.cshtml"
+, Tuple.Create(Tuple.Create("", 12191), Tuple.Create<System.Object, System.Int32>(profile.Id
+            
+            #line default
+            #line hidden
+, 12191), false)
+);
+
+WriteLiteral(" ");
+
+            
+            #line 255 "..\..\Views\Device\Import.cshtml"
+                                                            Write(configuration.DefaultDeviceProfileId == profile.Id ? "selected" : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(">");
+
+            
+            #line 255 "..\..\Views\Device\Import.cshtml"
+                                                                                                                                     Write(profile.Name);
+
+            
+            #line default
+            #line hidden
+WriteLiteral("</option>\r\n");
+
+            
+            #line 256 "..\..\Views\Device\Import.cshtml"
+                                }
+
+            
+            #line default
+            #line hidden
+WriteLiteral("                            </select>\r\n                        </td>\r\n           " +
+"         </tr>\r\n                    <tr>\r\n                        <th><label");
+
+WriteLiteral(" for=\"GoogleAssignedUserSource\"");
+
+WriteLiteral(">Assigned User</label></th>\r\n                        <td>\r\n                      " +
+"      <select");
+
+WriteLiteral(" id=\"GoogleAssignedUserSource\"");
+
+WriteLiteral(" name=\"assignedUserSource\"");
+
+WriteLiteral(">\r\n                                <option");
+
+WriteLiteral(" value=\"None\"");
+
+WriteLiteral(" ");
+
+            
+            #line 264 "..\..\Views\Device\Import.cshtml"
+                                                 Write(configuration.AssignedUserSource == GoogleDeviceImportUserSource.None ? "selected" : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(">Do not change assigned users</option>\r\n                                <option");
+
+WriteLiteral(" value=\"AnnotatedUser\"");
+
+WriteLiteral(" ");
+
+            
+            #line 265 "..\..\Views\Device\Import.cshtml"
+                                                          Write(configuration.AssignedUserSource == GoogleDeviceImportUserSource.AnnotatedUser ? "selected" : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(">Annotated user</option>\r\n                                <option");
+
+WriteLiteral(" value=\"MostRecentUser\"");
+
+WriteLiteral(" ");
+
+            
+            #line 266 "..\..\Views\Device\Import.cshtml"
+                                                           Write(configuration.AssignedUserSource == GoogleDeviceImportUserSource.MostRecentUser ? "selected" : null);
+
+            
+            #line default
+            #line hidden
+WriteLiteral(">Most recent user</option>\r\n                            </select>\r\n              " +
+"              <div");
+
+WriteLiteral(" class=\"smallMessage\"");
+
+WriteLiteral(">(User details \'Email Address\' and \'Department Email\' will also be used for match" +
+"ing if present)</div>\r\n                        </td>\r\n                    </tr>\r" +
+"\n                </tbody>\r\n            </table>\r\n");
+
+            
+            #line 273 "..\..\Views\Device\Import.cshtml"
+
+
+            
+            #line default
+            #line hidden
+WriteLiteral("            <div");
+
+WriteLiteral(" class=\"info-box\"");
+
+WriteLiteral(">\r\n                <p");
+
+WriteLiteral(" class=\"fa-p\"");
+
+WriteLiteral(">\r\n                    <i");
+
+WriteLiteral(" class=\"fa fa-fw fa-info-circle\"");
+
+WriteLiteral("></i> Upload a Google Admin ChromeOS device export in <strong>CSV</strong> format" +
+".\r\n                </p>\r\n            </div>\r\n");
+
+            
+            #line 279 "..\..\Views\Device\Import.cshtml"
         }
 
             
@@ -833,10 +1065,26 @@ WriteLiteral("></i>Loading device import...</h4>\r\n    </div>\r\n    <script>\r
 "                               openImportLoadingDialog();\r\n                     " +
 "       }\r\n                        }\r\n                    });\r\n                }\r" +
 "\n                $Devices_Import_Intune_Dialog.dialog(\'open\');\r\n            });\r" +
-"\n\r\n        });\r\n    </script>\r\n</div>\r\n");
+"\n\r\n            let $Devices_Import_Google_Dialog = null;\r\n            $(\'#Device" +
+"s_Import_Google_Button\').on(\'click\', function () {\r\n                if ($Devices" +
+"_Import_Google_Dialog == null) {\r\n                    $Devices_Import_Google_Dia" +
+"log = $(\'#Devices_Import_Google_Dialog\').dialog({\r\n                        width" +
+": 450,\r\n                        resizable: false,\r\n                        modal" +
+": true,\r\n                        autoOpen: false,\r\n                        butto" +
+"ns: {\r\n                            \'Cancel\': function () {\r\n                    " +
+"            $(this).dialog(\'close\');\r\n                            },\r\n          " +
+"                  \'Begin Import\': function () {\r\n                               " +
+" const $form = $(this).find(\'form\');\r\n                                if (!$form" +
+"[0].reportValidity()) {\r\n                                    return;\r\n          " +
+"                      }\r\n                                $form.trigger(\'submit\')" +
+";\r\n                                $(this).dialog(\'close\');\r\n                   " +
+"             openImportLoadingDialog();\r\n                            }\r\n        " +
+"                }\r\n                    });\r\n                }\r\n                $" +
+"Devices_Import_Google_Dialog.dialog(\'open\');\r\n            });\r\n        });\r\n    " +
+"</script>\r\n</div>\r\n");
 
             
-            #line 314 "..\..\Views\Device\Import.cshtml"
+            #line 388 "..\..\Views\Device\Import.cshtml"
  if (Model.CompletedImportSessionContext != null)
 {
 
@@ -858,7 +1106,7 @@ WriteLiteral(" class=\"fa fa-lg fa-check\"");
 WriteLiteral("></i>Successfully imported/updated ");
 
             
-            #line 317 "..\..\Views\Device\Import.cshtml"
+            #line 391 "..\..\Views\Device\Import.cshtml"
                                                                       Write(Model.CompletedImportSessionContext.AffectedRecords);
 
             
@@ -867,7 +1115,7 @@ WriteLiteral("></i>Successfully imported/updated ");
 WriteLiteral(" device");
 
             
-            #line 317 "..\..\Views\Device\Import.cshtml"
+            #line 391 "..\..\Views\Device\Import.cshtml"
                                                                                                                                   Write(Model.CompletedImportSessionContext.AffectedRecords != 1 ? "s" : null);
 
             
@@ -876,7 +1124,7 @@ WriteLiteral(" device");
 WriteLiteral(".</h3>\r\n        <div><code>");
 
             
-            #line 318 "..\..\Views\Device\Import.cshtml"
+            #line 392 "..\..\Views\Device\Import.cshtml"
               Write(Model.CompletedImportSessionContext.Filename);
 
             
@@ -903,7 +1151,7 @@ WriteLiteral(@"    <script>
 ");
 
             
-            #line 336 "..\..\Views\Device\Import.cshtml"
+            #line 410 "..\..\Views\Device\Import.cshtml"
 }
 
             

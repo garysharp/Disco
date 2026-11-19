@@ -387,9 +387,14 @@
     <Compile Include="Devices\Importing\Decommissioning\DeviceDecommissionImportRecord.cs" />
     <Compile Include="Devices\Importing\DeviceImportHelpers.cs" />
     <Compile Include="Devices\Importing\Fields\DeviceDnsHostNameImportField.cs" />
+    <Compile Include="Devices\Importing\Google\GoogleDeviceImportColumn.cs" />
+    <Compile Include="Devices\Importing\Google\GoogleDeviceRecord.cs" />
     <Compile Include="Devices\Importing\IDeviceImportContextActions.cs" />
     <Compile Include="Devices\Importing\IDeviceImportDataReader.cs" />
     <Compile Include="Devices\Importing\IDeviceImportValueReader.cs" />
+    <Compile Include="Devices\Importing\Google\GoogleCsvDeviceRecord.cs" />
+    <Compile Include="Devices\Importing\Google\GoogleDeviceImport.cs" />
+    <Compile Include="Devices\Importing\Google\GoogleDeviceModelImportField.cs" />
     <Compile Include="Devices\Importing\Intune\IntuneAssignedUserIdImportField.cs" />
     <Compile Include="Devices\Importing\Intune\IntuneDeviceCheckInDateImportField.cs" />
     <Compile Include="Devices\Importing\Intune\IntuneDeviceImport.cs" />

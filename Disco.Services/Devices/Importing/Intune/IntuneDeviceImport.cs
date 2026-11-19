@@ -16,16 +16,7 @@ namespace Disco.Services.Devices.Importing.Intune
     internal class IntuneDeviceImport : IDeviceImportContextActions
     {
         private readonly MemoryStream stream;
-        private readonly List<IntuneDeviceImportColumn> columns = new List<IntuneDeviceImportColumn>()
-        {
-            IntuneDeviceImportColumn.Create<DeviceSerialNumberImportField>(0, "Serial number", DeviceImportFieldTypes.DeviceSerialNumber, r => r.SerialNumber),
-            IntuneDeviceImportColumn.Create<IntuneDeviceComputerNameImportField>(1, "Device name", DeviceImportFieldTypes.DeviceComputerName, r => r.DeviceName),
-            IntuneDeviceImportColumn.Create<IntuneDeviceCheckInDateImportField>(2, "Last check-in", DeviceImportFieldTypes.IgnoreColumn, r => r.LastCheckIn),
-            IntuneDeviceImportColumn.Create<IntuneDeviceModelImportField>(3, "Manufacturer / Model", DeviceImportFieldTypes.ModelId, r => null),
-            IntuneDeviceImportColumn.Create<IntuneAssignedUserIdImportField>(4, "Primary user UPN", DeviceImportFieldTypes.AssignedUserId, r => r.PrimaryUserUpn),
-            IntuneDeviceImportColumn.Create<DetailWLanMacAddressImportField>(5, "Wi-Fi MAC", DeviceImportFieldTypes.DetailWLanMacAddress, r => r.WiFiMac),
-            IntuneDeviceImportColumn.Create<DetailLanMacAddressImportField>(6, "EthernetMAC", DeviceImportFieldTypes.DetailLanMacAddress, r => r.EthernetMac),
-        };
+        private readonly List<IntuneDeviceImportColumn> columns;
         private readonly IntuneDeviceImportConfiguration configuration;
 
         public string SessionId { get; }
@@ -46,8 +37,21 @@ namespace Disco.Services.Devices.Importing.Intune
             Filename = filename;
 
             this.configuration = configuration;
-            if (!configuration.AssignDeviceToPrimaryUser)
-                columns.RemoveAll(c => c.Type == DeviceImportFieldTypes.AssignedUserId);
+
+            var columnNumber = 0;
+            columns = new List<IntuneDeviceImportColumn>()
+            {
+                IntuneDeviceImportColumn.Create<DeviceSerialNumberImportField>(columnNumber++, "Serial number", DeviceImportFieldTypes.DeviceSerialNumber, r => r.SerialNumber),
+                IntuneDeviceImportColumn.Create<IntuneDeviceComputerNameImportField>(columnNumber++, "Device name", DeviceImportFieldTypes.DeviceComputerName, r => r.DeviceName),
+                IntuneDeviceImportColumn.Create<IntuneDeviceCheckInDateImportField>(columnNumber++, "Last check-in", DeviceImportFieldTypes.IgnoreColumn, r => r.LastCheckIn),
+                IntuneDeviceImportColumn.Create<IntuneDeviceModelImportField>(columnNumber++, "Manufacturer / Model", DeviceImportFieldTypes.ModelId, r => null),
+            };
+
+            if (configuration.AssignDeviceToPrimaryUser)
+                columns.Add(IntuneDeviceImportColumn.Create<IntuneAssignedUserIdImportField>(columnNumber++, "Primary user UPN", DeviceImportFieldTypes.AssignedUserId, r => r.PrimaryUserUpn));
+
+            columns.Add(IntuneDeviceImportColumn.Create<DetailWLanMacAddressImportField>(columnNumber++, "Wi-Fi MAC", DeviceImportFieldTypes.DetailWLanMacAddress, r => r.WiFiMac));
+            columns.Add(IntuneDeviceImportColumn.Create<DetailLanMacAddressImportField>(columnNumber, "EthernetMAC", DeviceImportFieldTypes.DetailLanMacAddress, r => r.EthernetMac));
 
             this.stream = new MemoryStream();
             stream.CopyTo(this.stream);
@@ -124,7 +128,7 @@ namespace Disco.Services.Devices.Importing.Intune
             var missingDeviceModels = Records
                 .SelectMany(r => r.Fields.OfType<IntuneDeviceModelImportField>())
                 .Where(f => f.DeviceModel == null)
-                .GroupBy(f => (f.ManufacturerName, f.ModelName))
+                .GroupBy(f => (f.ManufacturerName, f.ModelName), DeviceModelNameComparer.Instance)
                 .ToList();
 
             using (var database = DiscoDataContextProvider.Create())
@@ -210,6 +214,26 @@ namespace Disco.Services.Devices.Importing.Intune
             return (header[2] == 0x03 && header[3] == 0x04)
                 || (header[2] == 0x05 && header[3] == 0x06)
                 || (header[2] == 0x07 && header[3] == 0x08);
+        }
+
+        private sealed class DeviceModelNameComparer : IEqualityComparer<(string ManufacturerName, string ModelName)>
+        {
+            public static readonly DeviceModelNameComparer Instance = new DeviceModelNameComparer();
+
+            public bool Equals((string ManufacturerName, string ModelName) x, (string ManufacturerName, string ModelName) y)
+            {
+                return StringComparer.OrdinalIgnoreCase.Equals(x.ManufacturerName, y.ManufacturerName)
+                    && StringComparer.OrdinalIgnoreCase.Equals(x.ModelName, y.ModelName);
+            }
+
+            public int GetHashCode((string ManufacturerName, string ModelName) value)
+            {
+                unchecked
+                {
+                    var hashCode = value.ManufacturerName == null ? 0 : StringComparer.OrdinalIgnoreCase.GetHashCode(value.ManufacturerName);
+                    return (hashCode * 397) ^ (value.ModelName == null ? 0 : StringComparer.OrdinalIgnoreCase.GetHashCode(value.ModelName));
+                }
+            }
         }
 
         internal sealed class IntuneDeviceImportValueReader : IDeviceImportValueReader

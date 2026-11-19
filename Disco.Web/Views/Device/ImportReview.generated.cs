@@ -805,12 +805,12 @@ WriteLiteral("    </div>\r\n</div>\r\n<script>\r\n    $(function () {\r\n       
 "            return $(this).find(\'span.errorMessage\').html();\r\n                } " +
 "else if ($this.hasClass(\'actionModified\')) {\r\n                    var v = $(this" +
 ").attr(\'data-previousvalue\');\r\n                    if (v) {\r\n                   " +
-"     return \'<strong>Previous Value:</strong><br />\' + v;\r\n                    }" +
-" else {\r\n                        return \'<strong>Previous Value:</strong><br /><" +
-"em>&lt;None&gt;</em>\';\r\n                    }\r\n                }\r\n            }," +
-"\r\n            position: {\r\n                my: \"left top\",\r\n                at: " +
-"\"left bottom\",\r\n                collision: \"flipfit flip\"\r\n            }\r\n      " +
-"  });\r\n\r\n    });\r\n</script>\r\n");
+"     return \'<strong>Previous Value:</strong><br />\' + $(\'<div>\').text(v).html()" +
+";\r\n                    } else {\r\n                        return \'<strong>Previou" +
+"s Value:</strong><br /><em>&lt;None&gt;</em>\';\r\n                    }\r\n         " +
+"       }\r\n            },\r\n            position: {\r\n                my: \"left top" +
+"\",\r\n                at: \"left bottom\",\r\n                collision: \"flipfit flip" +
+"\"\r\n            }\r\n        });\r\n\r\n    });\r\n</script>\r\n");
 
         }
     }

@@ -826,6 +826,31 @@ namespace Disco.Web.Areas.API.Controllers
 
         [DiscoAuthorize(Claims.Device.Actions.Import)]
         [HttpPost, ValidateAntiForgeryToken]
+        public virtual ActionResult ImportGoogleBegin(HttpPostedFileBase file, GoogleDeviceImportUserSource? assignedUserSource, int? defaultDeviceProfileId)
+        {
+            if (file == null || file.ContentLength == 0)
+                throw new ArgumentNullException(nameof(file));
+
+            var fileName = Path.GetFileName(file.FileName);
+            if (!string.Equals(Path.GetExtension(fileName), ".csv", StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException("Upload a Google Admin CSV export.", nameof(file));
+
+            if (!ModelState.IsValid || !assignedUserSource.HasValue || !Enum.IsDefined(typeof(GoogleDeviceImportUserSource), assignedUserSource.Value))
+                throw new ArgumentException("Select a valid Google import user source.", nameof(assignedUserSource));
+            if (defaultDeviceProfileId.HasValue && Database.DeviceProfiles.Find(defaultDeviceProfileId.Value) == null)
+                throw new ArgumentException("Select a valid Device Profile.", nameof(defaultDeviceProfileId));
+
+            var configuration = new GoogleDeviceImportConfiguration
+            {
+                AssignedUserSource = assignedUserSource.Value,
+                DefaultDeviceProfileId = defaultDeviceProfileId,
+            };
+            var context = DeviceImport.BeginGoogleImport(fileName, file.InputStream, configuration);
+            return ParseImportAndRedirectToReview(context, MVC.Device.ImportGoogle(context.SessionId));
+        }
+
+        [DiscoAuthorize(Claims.Device.Actions.Import)]
+        [HttpPost, ValidateAntiForgeryToken]
         public virtual ActionResult DeviceBatchDecommission(int id, DecommissionReasons? decommissionReason = null, bool? unassignUsers = null)
         {
             var deviceBatch = Database.DeviceBatches.Find(id)

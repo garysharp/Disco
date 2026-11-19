@@ -1,10 +1,10 @@
-﻿@model Disco.Web.Models.Device.ImportIntuneModel
+﻿@model Disco.Web.Models.Device.ImportVendorModel
 @using Disco.Models.Services.Devices.Importing;
 @using System.Data;
 @{
     Authorization.Require(Claims.Device.Actions.Import);
 
-    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import Microsoft Intune Devices", MVC.Device.Import(), Model.Context.DatasetName);
+    ViewBag.Title = Html.ToBreadcrumb("Devices", MVC.Device.Index(), "Import " + Model.VendorName + " Devices", MVC.Device.Import(), Model.Context.DatasetName);
 }
 <div id="Devices_Import_Review">
 
@@ -113,14 +113,14 @@
     <div class="actionBar">
         @if (Model.ImportRecordCount == 0)
         {
-            <button id="Devices_Import_Review_Apply" class="button disabled" disabled><i class="fa fa-wrench"></i> Apply Intune Device Import</button>
+            <button id="Devices_Import_Review_Apply" class="button disabled" disabled><i class="fa fa-wrench"></i> Apply @Model.VendorName Device Import</button>
         }
         else
         {
             using (Html.BeginForm(MVC.API.Device.ImportApply(Model.Context.SessionId)))
             {
                 @Html.AntiForgeryToken();
-                <button id="Devices_Import_Review_Apply" type="submit" class="button"><i class="fa fa-wrench"></i> Apply Intune Device Import</button>
+                <button id="Devices_Import_Review_Apply" type="submit" class="button"><i class="fa fa-wrench"></i> Apply @Model.VendorName Device Import</button>
             }
         }
     </div>

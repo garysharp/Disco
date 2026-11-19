@@ -284,6 +284,10 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>ImportReview.generated.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\Device\ImportVendor.cshtml">
+      <Generator>RazorGenerator</Generator>
+      <LastGenOutput>ImportVendor.generated.cs</LastGenOutput>
+    </Content>
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
@@ -1848,7 +1852,7 @@
     <Compile Include="Models\Device\AddOfflineModel.cs" />
     <Compile Include="Models\Device\ExportModel.cs" />
     <Compile Include="Models\Device\ImportHeadersModel.cs" />
-    <Compile Include="Models\Device\ImportIntuneModel.cs" />
+    <Compile Include="Models\Device\ImportVendorModel.cs" />
     <Compile Include="Models\Device\ImportModel.cs" />
     <Compile Include="Models\Device\ImportReviewModel.cs" />
     <Compile Include="Models\Device\IndexModel.cs" />
@@ -1886,6 +1890,11 @@
       <Generator>RazorGenerator</Generator>
       <LastGenOutput>_ViewStart.generated.cs</LastGenOutput>
     </None>
+    <Compile Include="Views\Device\ImportVendor.generated.cs">
+      <DependentUpon>ImportVendor.cshtml</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Views\Device\ImportReview.generated.cs">
       <DependentUpon>ImportReview.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -2021,15 +2030,6 @@
       <DependentUpon>ImportHeaders.cshtml</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <None Include="Views\Device\ImportIntune.cshtml">
-      <Generator>RazorGenerator</Generator>
-      <LastGenOutput>ImportIntune.generated.cs</LastGenOutput>
-    </None>
-    <Compile Include="Views\Device\ImportIntune.generated.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ImportIntune.cshtml</DependentUpon>
     </Compile>
     <None Include="Views\Device\Index.cshtml">
       <Generator>RazorGenerator</Generator>
