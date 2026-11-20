@@ -52,7 +52,7 @@ namespace Disco.Services.Devices.Importing.Intune
                 // Check User Exists
 
                 // Try Database
-                using (var database = new DiscoDataContext())
+                using (var database = DiscoDataContextProvider.Create())
                 {
                     var user = database.Users.FirstOrDefault(u => u.UserPrincipalName == userPrincipalName);
                     try

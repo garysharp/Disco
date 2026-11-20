@@ -68,7 +68,7 @@ namespace Disco.Services.Devices.Importing.Fields
                 // Check User Exists
 
                 // Try Database
-                using (var database = new DiscoDataContext())
+                using (var database = DiscoDataContextProvider.Create())
                 {
                     var user = database.Users.FirstOrDefault(u => u.UserId == parsedValue);
                     try
